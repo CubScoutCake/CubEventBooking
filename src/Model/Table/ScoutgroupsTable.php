@@ -27,8 +27,8 @@ class ScoutgroupsTable extends Table
     public function initialize(array $config)
     {
         $this->table('scoutgroups');
-        $this->displayField('scoutgroup');
-        $this->primaryKey('scoutgroup');
+        $this->displayField('id');
+        $this->primaryKey('id');
         $this->belongsTo('Districts', [
             'foreignKey' => 'district_id',
             'joinType' => 'INNER'

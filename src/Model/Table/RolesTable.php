@@ -25,7 +25,7 @@ class RolesTable extends Table
     public function initialize(array $config)
     {
         $this->table('roles');
-        $this->displayField('id');
+        $this->displayField('role');
         $this->primaryKey('id');
         $this->hasMany('Attendees', [
             'foreignKey' => 'role_id'
@@ -48,7 +48,7 @@ class RolesTable extends Table
             ->allowEmpty('id', 'create');
             
         $validator
-            ->allowEmpty('description');
+            ->allowEmpty('role');
             
         $validator
             ->add('invested', 'valid', ['rule' => 'boolean'])
