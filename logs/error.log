@@ -1,0 +1,1243 @@
+2015-06-10 18:58:58 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:09:36 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:09:43 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:10:49 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:13:50 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:15:39 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:30:46 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:34:09 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:34:12 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:34:12 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Hertscubs could not be found.
+Exception Attributes: array (
+  'class' => 'Hertscubs',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs
+Stack Trace:
+#0 /var/www/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-06-10 19:34:54 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:34:55 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Hertscubs could not be found.
+Exception Attributes: array (
+  'class' => 'Hertscubs',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs
+Stack Trace:
+#0 /var/www/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-06-10 19:35:11 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:35:12 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Hertscubs could not be found.
+Exception Attributes: array (
+  'class' => 'Hertscubs',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs
+Stack Trace:
+#0 /var/www/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-06-10 19:35:13 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:35:13 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:35:18 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:35:18 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:35:19 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Hertscubs could not be found.
+Exception Attributes: array (
+  'class' => 'Hertscubs',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs
+Stack Trace:
+#0 /var/www/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-06-10 19:35:23 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:35:56 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:37:35 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:37:36 Error: [PDOException] SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`hertscubs`.`users`, CONSTRAINT `district_key` FOREIGN KEY (`district`) REFERENCES `districts` (`district`) ON UPDATE CASCADE)
+Request URL: /users/add
+Stack Trace:
+#0 /var/www/hertscubs/vendor/cakephp/cakephp/src/Database/Statement/MysqlStatement.php(36): PDOStatement->execute(NULL)
+#1 /var/www/hertscubs/vendor/cakephp/cakephp/src/Database/Connection.php(274): Cake\Database\Statement\MysqlStatement->execute()
+#2 /var/www/hertscubs/vendor/cakephp/cakephp/src/Database/Query.php(175): Cake\Database\Connection->run(Object(Cake\ORM\Query))
+#3 /var/www/hertscubs/vendor/cakephp/cakephp/src/ORM/Table.php(1462): Cake\Database\Query->execute()
+#4 /var/www/hertscubs/vendor/cakephp/cakephp/src/ORM/Table.php(1382): Cake\ORM\Table->_insert(Object(App\Model\Entity\User), Array)
+#5 /var/www/hertscubs/vendor/cakephp/cakephp/src/ORM/Table.php(1313): Cake\ORM\Table->_processSave(Object(App\Model\Entity\User), Object(ArrayObject))
+#6 /var/www/hertscubs/vendor/cakephp/cakephp/src/Database/Connection.php(561): Cake\ORM\Table->Cake\ORM\{closure}(Object(Cake\Database\Connection))
+#7 /var/www/hertscubs/vendor/cakephp/cakephp/src/ORM/Table.php(1314): Cake\Database\Connection->transactional(Object(Closure))
+#8 /var/www/hertscubs/src/Controller/UsersController.php(51): Cake\ORM\Table->save(Object(App\Model\Entity\User))
+#9 [internal function]: App\Controller\UsersController->add()
+#10 /var/www/hertscubs/vendor/cakephp/cakephp/src/Controller/Controller.php(410): call_user_func_array(Array, Array)
+#11 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(114): Cake\Controller\Controller->invokeAction()
+#12 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(87): Cake\Routing\Dispatcher->_invoke(Object(App\Controller\UsersController))
+#13 /var/www/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#14 {main}
+
+
+2015-06-10 19:37:49 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:37:50 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:37:50 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:37:51 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:37:54 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:37:54 Error: [Cake\Routing\Exception\MissingControllerException] Controller class District could not be found.
+Exception Attributes: array (
+  'class' => 'District',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /district
+Stack Trace:
+#0 /var/www/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-06-10 19:38:04 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:38:09 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:38:23 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:38:24 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:38:29 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:38:30 Error: [Cake\Datasource\Exception\InvalidPrimaryKeyException] Record not found in table "districts" with primary key [NULL]
+Request URL: /districts/edit
+Stack Trace:
+#0 /var/www/hertscubs/src/Controller/DistrictsController.php(73): Cake\ORM\Table->get(NULL, Array)
+#1 [internal function]: App\Controller\DistrictsController->edit()
+#2 /var/www/hertscubs/vendor/cakephp/cakephp/src/Controller/Controller.php(410): call_user_func_array(Array, Array)
+#3 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(114): Cake\Controller\Controller->invokeAction()
+#4 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(87): Cake\Routing\Dispatcher->_invoke(Object(App\Controller\DistrictsController))
+#5 /var/www/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#6 {main}
+
+
+2015-06-10 19:39:24 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:39:24 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:39:25 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:39:26 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:39:26 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:39:26 Error: [Cake\Datasource\Exception\InvalidPrimaryKeyException] Record not found in table "districts" with primary key [NULL]
+Request URL: /districts/edit
+Stack Trace:
+#0 /var/www/hertscubs/src/Controller/DistrictsController.php(73): Cake\ORM\Table->get(NULL, Array)
+#1 [internal function]: App\Controller\DistrictsController->edit()
+#2 /var/www/hertscubs/vendor/cakephp/cakephp/src/Controller/Controller.php(410): call_user_func_array(Array, Array)
+#3 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(114): Cake\Controller\Controller->invokeAction()
+#4 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(87): Cake\Routing\Dispatcher->_invoke(Object(App\Controller\DistrictsController))
+#5 /var/www/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#6 {main}
+
+
+2015-06-10 19:39:27 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:39:31 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:39:35 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:56:20 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:56:29 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:56:31 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:56:35 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:57:03 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:57:10 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:58:23 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:59:03 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:59:09 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:59:18 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:59:21 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:59:26 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 19:59:29 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:15:42 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:15:47 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:16:01 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:16:01 Error: [Cake\Datasource\Exception\InvalidPrimaryKeyException] Record not found in table "districts" with primary key [NULL]
+Request URL: /districts/edit
+Stack Trace:
+#0 /var/www/hertscubs/src/Controller/DistrictsController.php(73): Cake\ORM\Table->get(NULL, Array)
+#1 [internal function]: App\Controller\DistrictsController->edit()
+#2 /var/www/hertscubs/vendor/cakephp/cakephp/src/Controller/Controller.php(410): call_user_func_array(Array, Array)
+#3 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(114): Cake\Controller\Controller->invokeAction()
+#4 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(87): Cake\Routing\Dispatcher->_invoke(Object(App\Controller\DistrictsController))
+#5 /var/www/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#6 {main}
+
+
+2015-06-10 20:16:03 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:16:04 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:16:17 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:16:23 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:16:24 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:16:26 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:16:42 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:17:45 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:17:45 Error: [PDOException] SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`hertscubs`.`users`, CONSTRAINT `district_key` FOREIGN KEY (`district`) REFERENCES `districts` (`district`) ON UPDATE CASCADE)
+Request URL: /users/add
+Stack Trace:
+#0 /var/www/hertscubs/vendor/cakephp/cakephp/src/Database/Statement/MysqlStatement.php(36): PDOStatement->execute(NULL)
+#1 /var/www/hertscubs/vendor/cakephp/cakephp/src/Database/Connection.php(274): Cake\Database\Statement\MysqlStatement->execute()
+#2 /var/www/hertscubs/vendor/cakephp/cakephp/src/Database/Query.php(175): Cake\Database\Connection->run(Object(Cake\ORM\Query))
+#3 /var/www/hertscubs/vendor/cakephp/cakephp/src/ORM/Table.php(1462): Cake\Database\Query->execute()
+#4 /var/www/hertscubs/vendor/cakephp/cakephp/src/ORM/Table.php(1382): Cake\ORM\Table->_insert(Object(App\Model\Entity\User), Array)
+#5 /var/www/hertscubs/vendor/cakephp/cakephp/src/ORM/Table.php(1313): Cake\ORM\Table->_processSave(Object(App\Model\Entity\User), Object(ArrayObject))
+#6 /var/www/hertscubs/vendor/cakephp/cakephp/src/Database/Connection.php(561): Cake\ORM\Table->Cake\ORM\{closure}(Object(Cake\Database\Connection))
+#7 /var/www/hertscubs/vendor/cakephp/cakephp/src/ORM/Table.php(1314): Cake\Database\Connection->transactional(Object(Closure))
+#8 /var/www/hertscubs/src/Controller/UsersController.php(51): Cake\ORM\Table->save(Object(App\Model\Entity\User))
+#9 [internal function]: App\Controller\UsersController->add()
+#10 /var/www/hertscubs/vendor/cakephp/cakephp/src/Controller/Controller.php(410): call_user_func_array(Array, Array)
+#11 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(114): Cake\Controller\Controller->invokeAction()
+#12 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(87): Cake\Routing\Dispatcher->_invoke(Object(App\Controller\UsersController))
+#13 /var/www/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#14 {main}
+
+
+2015-06-10 20:19:39 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:19:54 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:19:55 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:21:27 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 20:21:35 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 21:04:57 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 21:05:07 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-10 21:05:07 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:36:56 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:36:58 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:37:07 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:37:08 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:41:10 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:41:11 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:41:11 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:41:14 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:50:50 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:50:51 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:50:51 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:50:52 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:51:13 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:51:14 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:51:28 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:51:40 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:51:43 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:51:48 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 21:52:18 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:05:40 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:05:44 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:05:44 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:05:45 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:05:45 Error: [Cake\Controller\Exception\MissingActionException] Action UsersController::login() could not be found, or is not accessible.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'login',
+  'prefix' => '',
+  'plugin' => NULL,
+)
+Request URL: /users/login
+Stack Trace:
+#0 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(114): Cake\Controller\Controller->invokeAction()
+#1 /var/www/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(87): Cake\Routing\Dispatcher->_invoke(Object(App\Controller\UsersController))
+#2 /var/www/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#3 {main}
+
+
+2015-06-24 22:11:41 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:11:41 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 31
+include - APP/Template/Layout/default.ctp, line 31
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:11:41 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 32
+include - APP/Template/Layout/default.ctp, line 32
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:15:57 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:15:58 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:15:58 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:15:59 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 31
+include - APP/Template/Layout/default.ctp, line 31
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:15:59 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 32
+include - APP/Template/Layout/default.ctp, line 32
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:16:07 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:16:07 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:16:07 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:16:08 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 31
+include - APP/Template/Layout/default.ctp, line 31
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:16:08 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 32
+include - APP/Template/Layout/default.ctp, line 32
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:20:41 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:20:41 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:20:41 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:23:40 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:23:40 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:23:40 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:23:40 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:24:27 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:24:27 Error: Fatal Error (4): syntax error, unexpected 'public' (T_PUBLIC) in [/var/www/hertscubs/src/Controller/UsersController.php, line 117]
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE/src/Error/BaseErrorHandler.php, line 191
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE/src/Error/BaseErrorHandler.php, line 90
+[main] - [internal], line ??
+
+
+
+2015-06-24 22:24:27 Error: [Cake\Error\FatalErrorException] syntax error, unexpected 'public' (T_PUBLIC)
+Request URL: /users/login
+Stack Trace:
+#0 /var/www/hertscubs/vendor/cakephp/cakephp/src/Error/BaseErrorHandler.php(90): Cake\Error\BaseErrorHandler->handleFatalError(4, 'syntax error, u...', '/var/www/hertsc...', 117)
+#1 [internal function]: Cake\Error\BaseErrorHandler->Cake\Error\{closure}()
+#2 {main}
+
+
+2015-06-24 22:26:53 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:26:53 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:26:53 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:27:00 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:27:00 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:27:00 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:34:02 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:34:03 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:34:03 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:34:12 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:34:13 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:34:13 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:34:14 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:34:15 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:34:15 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:34:15 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:34:21 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:34:21 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:34:21 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-24 22:42:26 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-24 22:42:35 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 18:28:28 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 18:38:59 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 18:39:00 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 18:39:00 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:15:37 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:15:38 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:15:38 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:15:39 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:15:40 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:15:40 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:15:40 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:15:41 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:15:41 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:15:42 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:15:42 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:25:44 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:25:44 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:25:44 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:10 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:26:10 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:10 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:11 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:26:12 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:12 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:12 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:26:13 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:13 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:32 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:26:32 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:26:32 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:32 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:44 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:26:45 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:45 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:53 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:26:54 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:26:54 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:26:54 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:27:09 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:27:10 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:27:10 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:27:10 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:27:10 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:27:10 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:27:10 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:27:11 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:27:11 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:27:11 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:27:11 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:27:11 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:27:12 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:27:12 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 29
+include - APP/Template/Layout/default.ctp, line 29
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:27:12 Warning: Warning (512): Method Cake\View\Helper\HtmlHelper::javascript does not exist in [/var/www/hertscubs-hold/vendor/cakephp/cakephp/src/View/Helper.php, line 138]
+Trace:
+Cake\Error\BaseErrorHandler::handleError() - CORE/src/Error/BaseErrorHandler.php, line 138
+Cake\View\Helper::__call() - CORE/src/View/Helper.php, line 138
+Cake\View\Helper\HtmlHelper::javascript() - APP/Template/Layout/default.ctp, line 30
+include - APP/Template/Layout/default.ctp, line 30
+Cake\View\View::_evaluate() - CORE/src/View/View.php, line 815
+Cake\View\View::_render() - CORE/src/View/View.php, line 775
+Cake\View\View::renderLayout() - CORE/src/View/View.php, line 509
+Cake\View\View::render() - CORE/src/View/View.php, line 471
+Cake\Controller\Controller::render() - CORE/src/Controller/Controller.php, line 581
+Cake\Routing\Dispatcher::_invoke() - CORE/src/Routing/Dispatcher.php, line 120
+Cake\Routing\Dispatcher::dispatch() - CORE/src/Routing/Dispatcher.php, line 87
+[main] - ROOT/webroot/index.php, line 37
+
+
+
+2015-06-25 19:28:16 Warning: DebugKit not enabled. You need to either install pdo_sqlite, or define the "debug_kit" connection name.
+2015-06-25 19:28:17 Error: [PDOException] SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`hertscubs`.`users`, CONSTRAINT `scoutgroup_key` FOREIGN KEY (`scoutgroup_id`) REFERENCES `scoutgroups` (`id`))
+Request URL: /users/add
+Stack Trace:
+#0 /var/www/hertscubs-hold/vendor/cakephp/cakephp/src/Database/Statement/MysqlStatement.php(36): PDOStatement->execute(NULL)
+#1 /var/www/hertscubs-hold/vendor/cakephp/cakephp/src/Database/Connection.php(274): Cake\Database\Statement\MysqlStatement->execute()
+#2 /var/www/hertscubs-hold/vendor/cakephp/cakephp/src/Database/Query.php(175): Cake\Database\Connection->run(Object(Cake\ORM\Query))
+#3 /var/www/hertscubs-hold/vendor/cakephp/cakephp/src/ORM/Table.php(1462): Cake\Database\Query->execute()
+#4 /var/www/hertscubs-hold/vendor/cakephp/cakephp/src/ORM/Table.php(1382): Cake\ORM\Table->_insert(Object(App\Model\Entity\User), Array)
+#5 /var/www/hertscubs-hold/vendor/cakephp/cakephp/src/ORM/Table.php(1313): Cake\ORM\Table->_processSave(Object(App\Model\Entity\User), Object(ArrayObject))
+#6 /var/www/hertscubs-hold/vendor/cakephp/cakephp/src/Database/Connection.php(561): Cake\ORM\Table->Cake\ORM\{closure}(Object(Cake\Database\Connection))
+#7 /var/www/hertscubs-hold/vendor/cakephp/cakephp/src/ORM/Table.php(1314): Cake\Database\Connection->transactional(Object(Closure))
+#8 /var/www/hertscubs-hold/src/Controller/UsersController.php(54): Cake\ORM\Table->save(Object(App\Model\Entity\User))
+#9 [internal function]: App\Controller\UsersController->add()
+#10 /var/www/hertscubs-hold/vendor/cakephp/cakephp/src/Controller/Controller.php(410): call_user_func_array(Array, Array)
+#11 /var/www/hertscubs-hold/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(114): Cake\Controller\Controller->invokeAction()
+#12 /var/www/hertscubs-hold/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(87): Cake\Routing\Dispatcher->_invoke(Object(App\Controller\UsersController))
+#13 /var/www/hertscubs-hold/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#14 {main}
+
+
