@@ -110,7 +110,7 @@ class UsersController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-        public function login()
+    public function login()
     {
     if ($this->request->is('post')) {
         $user = $this->Auth->identify();
