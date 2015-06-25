@@ -8,6 +8,10 @@
             )
         ?></li>
         <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('List Roles'), ['controller' => 'Roles', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Role'), ['controller' => 'Roles', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Scoutgroups'), ['controller' => 'Scoutgroups', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Scoutgroup'), ['controller' => 'Scoutgroups', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Applications'), ['controller' => 'Applications', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Application'), ['controller' => 'Applications', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Attendees'), ['controller' => 'Attendees', 'action' => 'index']) ?></li>
@@ -19,8 +23,8 @@
     <fieldset>
         <legend><?= __('Edit User') ?></legend>
         <?php
-            echo $this->Form->input('role_id');
-            echo $this->Form->input('scoutgroup_id');
+            echo $this->Form->input('role_id', ['options' => $roles]);
+            echo $this->Form->input('scoutgroup_id', ['options' => $scoutgroups]);
             echo $this->Form->input('admin');
             echo $this->Form->input('firstname');
             echo $this->Form->input('lastname');
@@ -33,6 +37,7 @@
             echo $this->Form->input('county');
             echo $this->Form->input('postcode');
             echo $this->Form->input('section');
+            echo $this->Form->input('username');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

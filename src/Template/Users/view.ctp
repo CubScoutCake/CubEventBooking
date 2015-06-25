@@ -5,6 +5,10 @@
         <li><?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Roles'), ['controller' => 'Roles', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Role'), ['controller' => 'Roles', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Scoutgroups'), ['controller' => 'Scoutgroups', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Scoutgroup'), ['controller' => 'Scoutgroups', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Applications'), ['controller' => 'Applications', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Application'), ['controller' => 'Applications', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Attendees'), ['controller' => 'Attendees', 'action' => 'index']) ?> </li>
@@ -15,6 +19,10 @@
     <h2><?= h($user->id) ?></h2>
     <div class="row">
         <div class="large-5 columns strings">
+            <h6 class="subheader"><?= __('Role') ?></h6>
+            <p><?= $user->has('role') ? $this->Html->link($user->role->id, ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></p>
+            <h6 class="subheader"><?= __('Scoutgroup') ?></h6>
+            <p><?= $user->has('scoutgroup') ? $this->Html->link($user->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $user->scoutgroup->scoutgroup]) : '' ?></p>
             <h6 class="subheader"><?= __('Firstname') ?></h6>
             <p><?= h($user->firstname) ?></p>
             <h6 class="subheader"><?= __('Lastname') ?></h6>
@@ -37,14 +45,12 @@
             <p><?= h($user->postcode) ?></p>
             <h6 class="subheader"><?= __('Section') ?></h6>
             <p><?= h($user->section) ?></p>
+            <h6 class="subheader"><?= __('Username') ?></h6>
+            <p><?= h($user->username) ?></p>
         </div>
         <div class="large-2 columns numbers end">
             <h6 class="subheader"><?= __('Id') ?></h6>
             <p><?= $this->Number->format($user->id) ?></p>
-            <h6 class="subheader"><?= __('Role Id') ?></h6>
-            <p><?= $this->Number->format($user->role_id) ?></p>
-            <h6 class="subheader"><?= __('Scoutgroup Id') ?></h6>
-            <p><?= $this->Number->format($user->scoutgroup_id) ?></p>
         </div>
         <div class="large-2 columns dates end">
             <h6 class="subheader"><?= __('Created') ?></h6>

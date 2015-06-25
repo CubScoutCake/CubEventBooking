@@ -2,6 +2,10 @@
     <h3><?= __('Actions') ?></h3>
     <ul class="side-nav">
         <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Roles'), ['controller' => 'Roles', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Role'), ['controller' => 'Roles', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Scoutgroups'), ['controller' => 'Scoutgroups', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Scoutgroup'), ['controller' => 'Scoutgroups', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Applications'), ['controller' => 'Applications', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Application'), ['controller' => 'Applications', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Attendees'), ['controller' => 'Attendees', 'action' => 'index']) ?></li>
@@ -26,8 +30,12 @@
     <?php foreach ($users as $user): ?>
         <tr>
             <td><?= $this->Number->format($user->id) ?></td>
-            <td><?= $this->Number->format($user->role_id) ?></td>
-            <td><?= $this->Number->format($user->scoutgroup_id) ?></td>
+            <td>
+                <?= $user->has('role') ? $this->Html->link($user->role->id, ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?>
+            </td>
+            <td>
+                <?= $user->has('scoutgroup') ? $this->Html->link($user->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $user->scoutgroup->scoutgroup]) : '' ?>
+            </td>
             <td><?= h($user->admin) ?></td>
             <td><?= h($user->firstname) ?></td>
             <td><?= h($user->lastname) ?></td>
