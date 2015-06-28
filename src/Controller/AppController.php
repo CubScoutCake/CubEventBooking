@@ -31,6 +31,7 @@ class AppController extends Controller
     {
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
+            'authorize'=> 'Controller',
             'authenticate' => [
                 'Form' => [
                     'fields' => [
@@ -49,4 +50,28 @@ class AppController extends Controller
         // continues to work.
         $this->Auth->allow(['display']);
     }
+
+    public function isAuthorized($user)
+    {
+        $action = $this->request->params['action'];
+
+        // The add and index actions are always allowed.
+        if (in_array($action, ['edit', 'add', 'view'])) {
+            return true;
+        }
+        // All other actions require an id.
+        if (empty($this->request->params['pass'][0])) {
+            return true;
+        }
+
+        // Check that the application belongs to the current user.
+        //$id = $this->request->params['pass'][0];
+        //$application = $this->Applications->get($id);
+        //if ($application->user_id == $user['id']) {
+        //    return true;
+        //}
+    return parent::isAuthorized($user);
+    }
 }
+
+

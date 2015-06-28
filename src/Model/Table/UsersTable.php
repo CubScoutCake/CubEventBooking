@@ -27,7 +27,7 @@ class UsersTable extends Table
     public function initialize(array $config)
     {
         $this->table('users');
-        $this->displayField('id');
+        $this->displayField('username');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
         $this->belongsTo('Roles', [
