@@ -51,6 +51,9 @@ class ApplicationsController extends AppController
         $application = $this->Applications->newEntity();
         if ($this->request->is('post')) {
             $application = $this->Applications->patchEntity($application, $this->request->data);
+            
+            $application->user_id = $this->Auth->user('id');
+
             if ($this->Applications->save($application)) {
                 $this->Flash->success(__('The application has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -109,4 +112,27 @@ class ApplicationsController extends AppController
         }
         return $this->redirect(['action' => 'index']);
     }
+
+    public function isAuthorized($user)
+    {
+
+        if ($this->request->action === 'add') {
+                return true;
+            }
+
+        if (in_array($this->request->action, ['edit', 'delete'])) {
+
+            //if ($this->applications->isOwnedBy($application['user_id'], $user['id'])) {
+            //    return true;
+            //    }
+
+            // Check that the application belongs to the current user.
+            $application = $this->Applications->get($id);
+            
+            if ($application->user_id == $user['id']) {
+                return true;
+            }
+        }
+    }
+
 }

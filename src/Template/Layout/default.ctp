@@ -18,18 +18,16 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <!DOCTYPE html>
 <html>
 <head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Bootstrap Implementation -->
-
-<!-- Implement this later
+    <!-- Bootstrap Implementation -->
 
     <?php echo $this->Html->css('bootstrap.min.css');?>
-    <?php echo $this->Html->javascript('jquery.js');?>
-    <?php echo $this->Html->javascript('bootstrap.min.js');?>
+    <?php echo $this->Html->script('jquery.js');?>
+    <?php echo $this->Html->script('bootstrap.min.js');?>
 
--->
+
+    <?= $this->Html->charset() ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
         <?= $cakeDescription ?>:
@@ -43,6 +41,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+
 </head>
 <body>
     <header>
@@ -50,7 +49,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <span><?= $this->fetch('title') ?></span>
         </div>
         <div class="header-help">
-            <span><a target="_blank" href="http://book.cakephp.org/3.0/">Documentation</a></span>
+            <?= $this->Form->button(__('Logout')) ?>
             <span><a target="_blank" href="http://api.cakephp.org/3.0/">API</a></span>
         </div>
     </header>
@@ -65,6 +64,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             </div>
         </div>
         <footer>
+            <div class="footer-title">
+                <Span><a target="JacobAGTyler" href="http://jacobagtyler.com/hertscubs">Designed &amp Developed by Jacob Tyler</a></span>
+            </div>
         </footer>
     </div>
 </body>

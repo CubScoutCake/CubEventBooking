@@ -89,4 +89,9 @@ class ApplicationsTable extends Table
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
         return $rules;
     }
+
+    public function isOwnedBy($applicatonId, $userId)
+    {
+        return $this->exists(['id' => $applicationId, 'user_id' => $userId]);
+    }
 }

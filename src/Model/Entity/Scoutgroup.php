@@ -15,7 +15,8 @@ class Scoutgroup extends Entity
      * @var array
      */
     protected $_accessible = [
-        'id' => true,
-        'district_id' => true,
+    	'id' => true,
+        'scoutgroup' => true,
+        'district_id' => true
     ];
 }

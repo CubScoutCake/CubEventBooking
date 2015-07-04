@@ -102,4 +102,25 @@ class DistrictsController extends AppController
         }
         return $this->redirect(['action' => 'index']);
     }
+
+    public function isAuthorized($user)
+    {
+
+        if ($this->request->action === 'add') {
+                return true;
+            }
+
+        if (in_array($this->request->action, ['view', 'edit', 'delete'])) {
+
+            if ($this->Articles->isOwnedBy($applicationId, $user['id'])) {
+                    return true;
+                }
+            }
+
+        // Check that the application belongs to the current user.
+        //$application = $this->Applications->get($id);
+        //if ($application->user_id == $user['id']) {
+        //    return true;
+        //}
+    }
 }

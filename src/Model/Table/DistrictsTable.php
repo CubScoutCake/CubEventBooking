@@ -25,7 +25,7 @@ class DistrictsTable extends Table
     {
         $this->table('districts');
         $this->displayField('district');
-        $this->primaryKey('district');
+        $this->primaryKey('id');
         $this->hasMany('Scoutgroups', [
             'foreignKey' => 'district_id'
         ]);

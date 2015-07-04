@@ -32,18 +32,22 @@ class AppController extends Controller
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
             'authorize'=> 'Controller',
+            'loginRedirect' => [
+                'controller' => 'applications',
+                'action' => 'view'
+                ],
             'authenticate' => [
                 'Form' => [
                     'fields' => [
                         'username' => 'username',
                         'password' => 'password'
+                        ]
                     ]
-                ]
-            ],
+                ],
             'loginAction' => [
                 'controller' => 'Users',
                 'action' => 'login'
-            ]
+                ]
         ]);
 
         // Allow the display action so our pages controller
@@ -51,26 +55,52 @@ class AppController extends Controller
         $this->Auth->allow(['display']);
     }
 
+/**
+*    public function initialize()
+*{
+*    $this->loadComponent('Flash');
+*    $this->loadComponent('Auth', [
+*        'authorize' => ['Controller'], // Added this line
+*        'loginRedirect' => [
+*            'controller' => 'Articles',
+*            'action' => 'index'
+*        ],
+*        'logoutRedirect' => [
+*            'controller' => 'Pages',
+*            'action' => 'display',
+*            'home'
+*        ]
+*    ]);
+*}
+**/
+
     public function isAuthorized($user)
     {
+        // Admin can access every action
+        if (isset($user['admin']) && $user['admin'] === 1) {
+            return true;
+        }
+
         $action = $this->request->params['action'];
 
         // The add and index actions are always allowed.
-        if (in_array($action, ['edit', 'add', 'view'])) {
-            return true;
-        }
+        //if (in_array($action, ['add'])) {
+        //    return true;
+        //}
+
+        //Alternate Method
+        //if ($this->request->action === 'add') {
+        //        return true;
+        //    }
+
         // All other actions require an id.
         if (empty($this->request->params['pass'][0])) {
             return true;
         }
 
-        // Check that the application belongs to the current user.
-        //$id = $this->request->params['pass'][0];
-        //$application = $this->Applications->get($id);
-        //if ($application->user_id == $user['id']) {
-        //    return true;
-        //}
-    return parent::isAuthorized($user);
+        //return parent::isAuthorized($user);
+
+        return false;
     }
 }
 
