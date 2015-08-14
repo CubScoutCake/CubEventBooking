@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="unknown">UNKNOWN</h1>
+
+<ul>
+<li>help</li>
+<li>list</li>
+</ul>
+
+<h2 id="help">help</h2>
+
+<ul>
+<li>Description: Displays help for a command</li>
+<li>Usage: <code>help [--xml] [--format=&quot;...&quot;] [--raw] [command_name]</code></li>
+<li>Aliases: <none></li>
+</ul>
+
+<p>The <info>help</info> command displays help for a given command:</p>
+
+<p><info>php app/console help list</info></p>
+
+<p>You can also output the help in other formats by using the <comment>&#8211;format</comment> option:</p>
+
+<p><info>php app/console help &#8211;format=xml list</info></p>
+
+<p>To display the list of available commands, please use the <info>list</info> command.</p>
+
+<h3 id="arguments:">Arguments:</h3>
+
+<p><strong>command_name:</strong></p>
+
+<ul>
+<li>Name: command_name</li>
+<li>Is required: no</li>
+<li>Is array: no</li>
+<li>Description: The command name</li>
+<li>Default: <code>'help'</code></li>
+</ul>
+
+<h3 id="options:">Options:</h3>
+
+<p><strong>xml:</strong></p>
+
+<ul>
+<li>Name: <code>--xml</code></li>
+<li>Shortcut: <none></li>
+<li>Accept value: no</li>
+<li>Is value required: no</li>
+<li>Is multiple: no</li>
+<li>Description: To output help as XML</li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p><strong>format:</strong></p>
+
+<ul>
+<li>Name: <code>--format</code></li>
+<li>Shortcut: <none></li>
+<li>Accept value: yes</li>
+<li>Is value required: yes</li>
+<li>Is multiple: no</li>
+<li>Description: To output help in other formats</li>
+<li>Default: <code>'txt'</code></li>
+</ul>
+
+<p><strong>raw:</strong></p>
+
+<ul>
+<li>Name: <code>--raw</code></li>
+<li>Shortcut: <none></li>
+<li>Accept value: no</li>
+<li>Is value required: no</li>
+<li>Is multiple: no</li>
+<li>Description: To output raw command help</li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p><strong>help:</strong></p>
+
+<ul>
+<li>Name: <code>--help</code></li>
+<li>Shortcut: <code>-h</code></li>
+<li>Accept value: no</li>
+<li>Is value required: no</li>
+<li>Is multiple: no</li>
+<li>Description: Display this help message</li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p><strong>quiet:</strong></p>
+
+<ul>
+<li>Name: <code>--quiet</code></li>
+<li>Shortcut: <code>-q</code></li>
+<li>Accept value: no</li>
+<li>Is value required: no</li>
+<li>Is multiple: no</li>
+<li>Description: Do not output any message</li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p><strong>verbose:</strong></p>
+
+<ul>
+<li>Name: <code>--verbose</code></li>
+<li>Shortcut: <code>-v|-vv|-vvv</code></li>
+<li>Accept value: no</li>
+<li>Is value required: no</li>
+<li>Is multiple: no</li>
+<li>Description: Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p><strong>version:</strong></p>
+
+<ul>
+<li>Name: <code>--version</code></li>
+<li>Shortcut: <code>-V</code></li>
+<li>Accept value: no</li>
+<li>Is value required: no</li>
+<li>Is multiple: no</li>
+<li>Description: Display this application version</li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p><strong>ansi:</strong></p>
+
+<ul>
+<li>Name: <code>--ansi</code></li>
+<li>Shortcut: <none></li>
+<li>Accept value: no</li>
+<li>Is value required: no</li>
+<li>Is multiple: no</li>
+<li>Description: Force ANSI output</li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p><strong>no-ansi:</strong></p>
+
+<ul>
+<li>Name: <code>--no-ansi</code></li>
+<li>Shortcut: <none></li>
+<li>Accept value: no</li>
+<li>Is value required: no</li>
+<li>Is multiple: no</li>
+<li>Description: Disable ANSI output</li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p><strong>no-interaction:</strong></p>
+
+<ul>
+<li>Name: <code>--no-interaction</code></li>
+<li>Shortcut: <code>-n</code></li>
+<li>Accept value: no</li>
+<li>Is value required: no</li>
+<li>Is multiple: no</li>
+<li>Description: Do not ask any interactive question</li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<h2 id="list">list</h2>
+
+<ul>
+<li>Description: Lists commands</li>
+<li>Usage: <code>list [--xml] [--raw] [--format=&quot;...&quot;] [namespace]</code></li>
+<li>Aliases: <none></li>
+</ul>
+
+<p>The <info>list</info> command lists all commands:</p>
+
+<p><info>php app/console list</info></p>
+
+<p>You can also display the commands for a specific namespace:</p>
+
+<p><info>php app/console list test</info></p>
+
+<p>You can also output the information in other formats by using the <comment>&#8211;format</comment> option:</p>
+
+<p><info>php app/console list &#8211;format=xml</info></p>
+
+<p>It&#8217;s also possible to get raw list of commands (useful for embedding command runner):</p>
+
+<p><info>php app/console list &#8211;raw</info></p>
+
+<h3 id="arguments:">Arguments:</h3>
+
+<p><strong>namespace:</strong></p>
+
+<ul>
+<li>Name: namespace</li>
+<li>Is required: no</li>
+<li>Is array: no</li>
+<li>Description: The namespace name</li>
+<li>Default: <code>NULL</code></li>
+</ul>
+
+<h3 id="options:">Options:</h3>
+
+<p><strong>xml:</strong></p>
+
+<ul>
+<li>Name: <code>--xml</code></li>
+<li>Shortcut: <none></li>
+<li>Accept value: no</li>
+<li>Is value required: no</li>
+<li>Is multiple: no</li>
+<li>Description: To output list as XML</li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p><strong>raw:</strong></p>
+
+<ul>
+<li>Name: <code>--raw</code></li>
+<li>Shortcut: <none></li>
+<li>Accept value: no</li>
+<li>Is value required: no</li>
+<li>Is multiple: no</li>
+<li>Description: To output raw command list</li>
+<li>Default: <code>false</code></li>
+</ul>
+
+<p><strong>format:</strong></p>
+
+<ul>
+<li>Name: <code>--format</code></li>
+<li>Shortcut: <none></li>
+<li>Accept value: yes</li>
+<li>Is value required: yes</li>
+<li>Is multiple: no</li>
+<li>Description: To output list in other formats</li>
+<li>Default: <code>'txt'</code></li>
+</ul>
+
+</body>
+</html>

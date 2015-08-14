@@ -13098,6 +13098,15 @@
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1
 		},
+	"\/vendor\/robmorgan\/phinx\/CONTRIBUTING.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/robmorgan\/phinx\/CONTRIBUTING.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/vendor\/robmorgan\/phinx\/CONTRIBUTING.md": {
 		"criticStyle": 0,
 		"enableFootnotes": 1,
@@ -13118,6 +13127,15 @@
 		"processHTML": 0,
 		"randomFootnoteNumbers": 0,
 		"useCompatibilityMode": 0
+		},
+	"\/vendor\/robmorgan\/phinx\/README.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/robmorgan\/phinx\/README.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
 		},
 	"\/vendor\/robmorgan\/phinx\/README.md": {
 		"criticStyle": 0,
@@ -13897,6 +13915,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/vendor\/symfony\/config\/Symfony\/Component\/Config\/CHANGELOG.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/symfony\/config\/Symfony\/Component\/Config\/CHANGELOG.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/vendor\/symfony\/config\/Symfony\/Component\/Config\/CHANGELOG.md": {
 		"criticStyle": 0,
 		"enableFootnotes": 1,
@@ -14397,6 +14424,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/vendor\/symfony\/config\/Symfony\/Component\/Config\/README.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/symfony\/config\/Symfony\/Component\/Config\/README.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/vendor\/symfony\/config\/Symfony\/Component\/Config\/README.md": {
 		"criticStyle": 0,
 		"enableFootnotes": 1,
@@ -14747,6 +14783,15 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Application.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/vendor\/symfony\/console\/Symfony\/Component\/Console\/CHANGELOG.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/symfony\/console\/Symfony\/Component\/Console\/CHANGELOG.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -15287,6 +15332,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/vendor\/symfony\/console\/Symfony\/Component\/Console\/README.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/symfony\/console\/Symfony\/Component\/Console\/README.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/vendor\/symfony\/console\/Symfony\/Component\/Console\/README.md": {
 		"criticStyle": 0,
 		"enableFootnotes": 1,
@@ -15425,6 +15479,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/application_1.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/application_1.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/application_1.json": {
 		"fileType": 524288,
 		"ignore": 1,
@@ -15494,6 +15557,15 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/BarBucCommand.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/command_1.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/command_1.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -15688,6 +15760,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/input_argument_1.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/input_argument_1.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/input_argument_1.json": {
 		"fileType": 524288,
 		"ignore": 1,
@@ -15847,6 +15928,15 @@
 		"processHTML": 0,
 		"randomFootnoteNumbers": 0,
 		"useCompatibilityMode": 0
+		},
+	"\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/input_definition_3.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/input_definition_3.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
 		},
 	"\/vendor\/symfony\/console\/Symfony\/Component\/Console\/Tests\/Fixtures\/input_definition_3.json": {
 		"fileType": 524288,
@@ -16283,6 +16373,15 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/vendor\/symfony\/filesystem\/CHANGELOG.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/symfony\/filesystem\/CHANGELOG.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/vendor\/symfony\/filesystem\/CHANGELOG.md": {
 		"criticStyle": 0,
 		"enableFootnotes": 1,
@@ -16422,6 +16521,15 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/vendor\/symfony\/filesystem\/Tests\/LockHandlerTest.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/vendor\/symfony\/yaml\/Symfony\/Component\/Yaml\/CHANGELOG.html": {
+		"fileType": 8192,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/vendor\/symfony\/yaml\/Symfony\/Component\/Yaml\/CHANGELOG.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0

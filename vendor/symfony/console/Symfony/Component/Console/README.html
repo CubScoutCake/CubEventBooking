@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="consolecomponent">Console Component</h1>
+
+<p>Console eases the creation of beautiful and testable command line interfaces.</p>
+
+<p>The Application object manages the CLI application:</p>
+
+<pre><code class="php">use Symfony\Component\Console\Application;
+
+$console = new Application();
+$console-&gt;run();
+</code></pre>
+
+<p>The <code>run()</code> method parses the arguments and options passed on the command
+line and executes the right command.</p>
+
+<p>Registering a new command can easily be done via the <code>register()</code> method,
+which returns a <code>Command</code> instance:</p>
+
+<pre><code class="php">use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
+$console
+    -&gt;register('ls')
+    -&gt;setDefinition(array(
+        new InputArgument('dir', InputArgument::REQUIRED, 'Directory name'),
+    ))
+    -&gt;setDescription('Displays the files in the given directory')
+    -&gt;setCode(function (InputInterface $input, OutputInterface $output) {
+        $dir = $input-&gt;getArgument('dir');
+
+        $output-&gt;writeln(sprintf('Dir listing for &lt;info&gt;%s&lt;/info&gt;', $dir));
+    })
+;
+</code></pre>
+
+<p>You can also register new commands via classes.</p>
+
+<p>The component provides a lot of features like output coloring, input and
+output abstractions (so that you can easily unit-test your commands),
+validation, automatic help messages, &#8230;</p>
+
+<h2 id="tests">Tests</h2>
+
+<p>You can run the unit tests with the following command:</p>
+
+<pre><code>$ cd path/to/Symfony/Component/Console/
+$ composer install
+$ phpunit
+</code></pre>
+
+<h2 id="thirdparty">Third Party</h2>
+
+<p><code>Resources/bin/hiddeninput.exe</code> is a third party binary provided within this
+component. Find sources and license at https://github.com/Seldaek/hidden-input.</p>
+
+<h2 id="resources">Resources</h2>
+
+<p><a href="https://symfony.com/doc/current/components/console.html">The Console Component</a></p>
+
+<p><a href="https://symfony.com/doc/current/cookbook/console/console_command.html">How to create a Console Command</a></p>
+
+</body>
+</html>

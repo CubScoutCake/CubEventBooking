@@ -1,5 +1,35 @@
+
+AddType x-httpd-php54 .php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    #RewriteBase /var/sites/h/hertscubs100.uk/public_html/hertscubs
+    RewriteBase /hertscubs
     RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_URI} !^/(webroot/)?(img|css|js)/(.*)$
     RewriteRule ^ index.php [L]
 </IfModule>
+
+<IfModule mod_php5.c>
+	php_extension mbstring.so
+	php_extension intl.so
+</IfModule>
+
+#RewriteEngine on
+#RewriteCond %{HTTP_HOST} ^hertscubs100.uk$ [NC,OR]
+#RewriteCond %{HTTP_HOST} ^www.hertscubs100.uk$
+#RewriteCond %{REQUEST_URI} !hertscubs/webroot/
+#RewriteRule (.*) /hertscubs/webroot/ [L]
+#RewriteBase /hertscubs/webroot/
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^ index.php [L]
+
+#DocumentRoot /hertscubs/webroot
+
+#RewriteEngine On
+#RewriteCond %{HTTP_HOST} ^hertscubs100.uk$ [NC,OR]
+#RewriteCond %{HTTP_HOST} ^www.hertscubs100.uk$
+#
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_URI} !hertscubs/webroot/?(img|css|js)/(.*)$
+#RewriteRule ^ index.php [L]
