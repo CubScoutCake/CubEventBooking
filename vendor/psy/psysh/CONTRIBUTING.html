@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h2 id="codestyle">Code style</h2>
+
+<p>Please make your code look like the other code in the project. PsySH follows <a href="http://php-fig.org/psr/psr-1/">PSR&#8211;1</a> and <a href="http://php-fig.org/psr/psr-2/">PSR&#8211;2</a>. The easiest way to do make sure you&#8217;re following the coding standard is to run <code>vendor/bin/php-cs-fixer fix</code> before committing.</p>
+
+<h2 id="buildingthemanual">Building the manual</h2>
+
+<pre><code class="sh">svn co https://svn.php.net/repository/phpdoc/en/trunk/reference/ php_manual
+bin/build_manual phpdoc_manual ~/.psysh/php_manual.sqlite
+</code></pre>
+
+<p>To build the manual for another language, switch out <code>en</code> above for <code>de</code>, <code>es</code>, or any of the other languages listed in the README.</p>
+
+<p><a href="http://www.php.net/manual/help-translate.php">Partial or outdated documentation is available for other languages</a> but these translations are outdated, so their content may be completely wrong or insecure!</p>
+
+</body>
+</html>
