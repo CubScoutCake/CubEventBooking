@@ -90,8 +90,10 @@ class ApplicationsTable extends Table
         return $rules;
     }
 
-    public function isOwnedBy($applicatonId, $userId)
-    {
-        return $this->exists(['id' => $applicationId, 'user_id' => $userId]);
-    }
+    /**
+    * public function isOwnedBy($applicatonId, $userId)
+    * {
+    *     return $this->exists(['id' => $applicationId, 'user_id' => $userId]);
+    * }
+    **/
 }

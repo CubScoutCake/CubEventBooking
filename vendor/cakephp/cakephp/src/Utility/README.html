@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="cakephputilityclasses">CakePHP Utility Classes</h1>
+
+<p>This library provides a range of utility classes that are used throughout the CakePHP framework</p>
+
+<h2 id="whatsinthetoolbox">What&#8217;s in the toolbox?</h2>
+
+<h3 id="hash">Hash</h3>
+
+<p>A <code>Hash</code> (as in PHP arrays) class, capable of extracting data using an intuitive DSL:</p>
+
+<pre><code class="php">$things = [
+    ['name' =&gt; 'Mark', 'age' =&gt; 15],
+    ['name' =&gt; 'Susan', 'age' =&gt; 30],
+    ['name' =&gt; 'Lucy', 'age' =&gt; 25]
+];
+
+$bigPeople = Hash::extract($things, '{n}[age&gt;21].name');
+
+// $bigPeople will contain ['Susan', 'Lucy']
+</code></pre>
+
+<p>Check the <a href="http://book.cakephp.org/3.0/en/core-libraries/hash.html">official Hash class documentation</a></p>
+
+<h3 id="inflector">Inflector</h3>
+
+<p>The Inflector class takes a string and can manipulate it to handle word variations
+such as pluralizations or camelizing.</p>
+
+<pre><code class="php">echo Inflector::pluralize('Apple'); // echoes Apples
+
+echo Inflector::singularize('People'); // echoes Person
+</code></pre>
+
+<p>Check the <a href="http://book.cakephp.org/3.0/en/core-libraries/inflector.html">official Inflector class documentation</a></p>
+
+<h3 id="text">Text</h3>
+
+<p>The Text class includes convenience methods for creating and manipulating strings.</p>
+
+<pre><code class="php">Text::insert(
+    'My name is :name and I am :age years old.',
+    ['name' =&gt; 'Bob', 'age' =&gt; '65']
+);
+// Returns: &quot;My name is Bob and I am 65 years old.&quot;
+
+$text = 'This is the song that never ends.';
+$result = Text::wrap($text, 22);
+
+// Returns
+This is the song
+that never ends.
+</code></pre>
+
+<p>Check the <a href="http://book.cakephp.org/3.0/en/core-libraries/text.html">official Text class documentation</a></p>
+
+<h3 id="security">Security</h3>
+
+<p>The security library handles basic security measures such as providing methods for hashing and encrypting data.</p>
+
+<pre><code class="php">$key = 'wt1U5MACWJFTXGenFoZoiLwQGrLgdbHA';
+$result = Security::encrypt($value, $key);
+
+Security::decrypt($result, $key);
+</code></pre>
+
+<p>Check the <a href="http://book.cakephp.org/3.0/en/core-libraries/security.html">official Security class documentation</a></p>
+
+<h3 id="xml">Xml</h3>
+
+<p>The Xml class allows you to easily transform arrays into SimpleXMLElement or DOMDocument objects
+and back into arrays again</p>
+
+<pre><code class="php">$data = [
+    'post' =&gt; [
+        'id' =&gt; 1,
+        'title' =&gt; 'Best post',
+        'body' =&gt; ' ... '
+    ]
+];
+$xml = Xml::build($data);
+</code></pre>
+
+<p>Check the <a href="http://book.cakephp.org/3.0/en/core-libraries/xml.html">official Xml class documentation</a></p>
+
+</body>
+</html>

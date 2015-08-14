@@ -212,16 +212,16 @@ return [
             'className' => 'Cake\Database\Connection',
             'driver' => 'Cake\Database\Driver\Mysql',
             'persistent' => false,
-            'host' => 'localhost',
+            'host' => '91.208.99.2',
             /**
              * CakePHP will use the default DB port based on the driver selected
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
              * the following line and set the port accordingly
              */
-            //'port' => 'nonstandard_port_number',
-            'username' => 'herts',
+            'port' => '3332',
+            'username' => 'hertscub_site',
             'password' => 'IHateKids989',
-            'database' => 'hertscubs',
+            'database' => 'hertscub_live',
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'cacheMetadata' => true,
@@ -253,11 +253,11 @@ return [
             'className' => 'Cake\Database\Connection',
             'driver' => 'Cake\Database\Driver\Mysql',
             'persistent' => false,
-            'host' => 'localhost',
-            //'port' => 'nonstandard_port_number',
-            'username' => 'herts',
+            'host' => '91.208.99.2',
+            'port' => '3332',
+            'username' => 'hertscub_cake',
             'password' => 'IHateKids989',
-            'database' => 'hertscubs',
+            'database' => 'hertscub_live',
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'cacheMetadata' => true,

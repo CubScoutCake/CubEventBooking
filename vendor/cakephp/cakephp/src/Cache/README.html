@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="cakephpcachinglibrary">CakePHP Caching Library</h1>
+
+<p>The Cache library provides a <code>Cache</code> service locator for interfacing with multiple caching backends using
+a simple to use interface.</p>
+
+<p>The caching backends supported are:</p>
+
+<ul>
+<li>Files</li>
+<li>APC</li>
+<li>Memcached</li>
+<li>Redis</li>
+<li>Wincache</li>
+<li>Xcache</li>
+</ul>
+
+<h2 id="usage">Usage</h2>
+
+<p>Caching engines need to be configured with the <code>Cache::config()</code> method.</p>
+
+<pre><code class="php">use Cake\Cache\Cache;
+
+// Using a short name
+Cache::config('default', [
+    'className' =&gt; 'File',
+    'duration' =&gt; '+1 hours',
+    'path' =&gt; sys_get_tmp_dir(),
+    'prefix' =&gt; 'my_app_'
+]);
+
+// Using a fully namespaced name.
+Cache::config('long', [
+    'className' =&gt; 'Cake\Cache\Engine\ApcEngine',
+    'duration' =&gt; '+1 week',
+    'prefix' =&gt; 'my_app_'
+]);
+
+// Using a constructed object.
+$object = new FileEngine($config);
+Cache::config('other', $object);
+</code></pre>
+
+<p>You can now read a write from the cache:</p>
+
+<pre><code class="php">$data = Cache::remember('my_cache_key', function () {
+    return Service::expensiveCall();
+});
+</code></pre>
+
+<p>The code above will try to look for data stored in cache under the <code>my_cache_key</code>, if not found
+the callback will be executed and the returned data will be cached for future calls.</p>
+
+<h2 id="documentation">Documentation</h2>
+
+<p>Please make sure you check the <a href="http://book.cakephp.org/3.0/en/core-libraries/caching.html">official documentation</a></p>
+
+</body>
+</html>

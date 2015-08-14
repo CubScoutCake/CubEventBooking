@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h2 id="version1.3.1-dev">Version 1.3.1-dev</h2>
+
+<p>Nothing yet.</p>
+
+<h2 id="version1.3.02015-05-02">Version 1.3.0 (2015&#8211;05&#8211;02)</h2>
+
+<h3 id="added">Added</h3>
+
+<ul>
+<li>Errors can now store the attributes of the node/token where the error occurred. Previously only the start line was
+ stored.</li>
+<li>If file positions are enabled in the lexer, errors can now provide column information if it is available. See
+ <a href="https://github.com/nikic/PHP-Parser/blob/master/doc/component/Error.markdown#column-information">documentation</a>.</li>
+<li>The parser now provides an experimental error recovery mode, which can be enabled by disabling the <code>throwOnError</code>
+ parser option. In this mode the parser will try to construct a partial AST even if the code is not valid PHP. See
+ <a href="https://github.com/nikic/PHP-Parser/blob/master/doc/component/Error.markdown#error-recovery">documentation</a>.</li>
+<li>Added support for PHP 7 <code>yield from</code> expression. It is represented by <code>Expr\YieldFrom</code>.</li>
+<li>Added support for PHP 7 anonymous classes. These are represented by ordinary <code>Stmt\Class_</code> nodes with the name set to
+ <code>null</code>. Furthermore this implies that <code>Expr\New_</code> can now contain a <code>Stmt\Class_</code> in its <code>class</code> subnode.</li>
+</ul>
+
+<h3 id="fixed">Fixed</h3>
+
+<ul>
+<li>Fixed registration of PHP 7 aliases, for the case where the old name was used before the new name.</li>
+<li>Fixed handling of precedence when pretty-printing <code>print</code> expressions.</li>
+<li>Floating point numbers are now pretty-printed with a higher precision.</li>
+<li>Checks for special class names like <code>self</code> are now case-insensitive.</li>
+</ul>
+
+<h2 id="version1.2.22015-04-03">Version 1.2.2 (2015&#8211;04&#8211;03)</h2>
+
+<ul>
+<li>The <code>NameResolver</code> now resolves parameter type hints when entering the function/method/closure node. As such other
+ visitors running after it will be able to make use of the resolved names at that point already.</li>
+<li>The autoloader no longer sets the <code>unserialize_callback_func</code> ini option on registration - this is not necessary and
+ may cause issues when running PhpUnit tests with process isolation.</li>
+</ul>
+
+<h2 id="version1.2.12015-03-24">Version 1.2.1 (2015&#8211;03&#8211;24)</h2>
+
+<ul>
+<li>Fixed registration of the aliases introduced in 1.2.0. Previously the old class names could not be used in
+ <code>instanceof</code> checks under some circumstances.</li>
+</ul>
+
+<h2 id="version1.2.02015-03-22">Version 1.2.0 (2015&#8211;03&#8211;22)</h2>
+
+<h3 id="changed">Changed</h3>
+
+<ul>
+<li><p>To ensure compatibility with PHP 7, the following node classes have been renamed:</p>
+
+<pre><code>OLD                             =&gt; NEW
+PhpParser\Node\Expr\Cast\Bool   =&gt; PhpParser\Node\Expr\Cast\Bool_
+PhpParser\Node\Expr\Cast\Int    =&gt; PhpParser\Node\Expr\Cast\Int_
+PhpParser\Node\Expr\Cast\Object =&gt; PhpParser\Node\Expr\Cast\Object_
+PhpParser\Node\Expr\Cast\String =&gt; PhpParser\Node\Expr\Cast\String_
+PhpParser\Node\Scalar\String    =&gt; PhpParser\Node\Scalar\String_
+</code></pre></li>
+</ul>
+
+<p><strong>The previous class names are still supported as aliases.</strong> However it is strongly encouraged to use the new names
+ in order to make your code compatible with PHP 7.</p>
+
+<ul>
+<li><p>Subnodes are now stored using real properties instead of an array. This improves performance and memory usage of the
+ initial parse and subsequent node tree operations. The <code>NodeAbstract</code> class still supports the old way of specifying
+ subnodes, however this is <em>deprecated</em>. In any case properties that are assigned to a node after creation will no
+ longer be considered as subnodes.</p></li>
+<li><p>Methods and property declarations will no longer set the <code>Stmt\Class_::MODIFIER_PUBLIC</code> flag if no visibility is
+ explicitly given. However the <code>isPublic()</code> method will continue to return true. This allows you to distinguish whether
+ a method/property is explicitly or implicitly public and control the pretty printer output more precisely.</p></li>
+<li><p>The <code>Stmt\Class_</code>, <code>Stmt\Interface_</code> and <code>Stmt\Trait_</code> nodes now inherit from <code>Stmt\ClassLike</code>, which provides a
+ <code>getMethods()</code> method. Previously this method was only available on <code>Stmt\Class_</code>.</p></li>
+<li><p>Support including the <code>bootstrap.php</code> file multiple times.</p></li>
+<li><p>Make documentation and tests part of the release tarball again.</p></li>
+<li><p>Improve support for HHVM and PHP 7.</p></li>
+</ul>
+
+<h3 id="added">Added</h3>
+
+<ul>
+<li><p>Added support for PHP 7 return type declarations. This adds an additional <code>returnType</code> subnode to <code>Stmt\Function_</code>,
+ <code>Stmt\ClassMethod</code> and <code>Expr\Closure</code>.</p></li>
+<li><p>Added support for the PHP 7 null coalesce operator <code>??</code>. The operator is represented by <code>Expr\BinaryOp\Coalesce</code>.</p></li>
+<li><p>Added support for the PHP 7 spaceship operator <code>&lt;=&gt;</code>. The operator is represented by <code>Expr\BinaryOp\Spaceship</code>.</p></li>
+<li><p>Added use builder.</p></li>
+<li><p>Added global namespace support to the namespace builder.</p></li>
+<li><p>Added a constructor flag to <code>NodeTraverser</code>, which disables cloning of nodes.</p></li>
+</ul>
+
+<h2 id="version1.1.02015-01-18">Version 1.1.0 (2015&#8211;01&#8211;18)</h2>
+
+<ul>
+<li><p>Methods that do not specify an explicit visibility (e.g. <code>function method()</code>) will now have the <code>MODIFIER_PUBLIC</code>
+ flag set. This also means that their <code>isPublic()</code> method will return true.</p></li>
+<li><p>Declaring a property as abstract or final is now an error.</p></li>
+<li><p>The <code>Lexer</code> and <code>Lexer\Emulative</code> classes now accept an <code>$options</code> array in their constructors. Currently only the
+ <code>usedAttributes</code> option is supported, which determines which attributes will be added to AST nodes. In particular
+ it is now possible to add information on the token and file positions corresponding to a node. For more details see
+ the <a href="https://github.com/nikic/PHP-Parser/blob/master/doc/component/Lexer.markdown">Lexer component</a> documentation.</p></li>
+<li><p>Node visitors can now return <code>NodeTraverser::DONT_TRAVERSE_CHILDREN</code> from <code>enterNode()</code> in order to skip all children
+ of the current node, for all visitors.</p></li>
+<li><p>Added builders for traits and namespaces.</p></li>
+<li><p>The class, interface, trait, function, method and property builders now support adding doc comments using the
+ <code>setDocComment()</code> method.</p></li>
+<li><p>Added support for fully-qualified and namespace-relative names in builders. No longer allow use of name component
+ arrays.</p></li>
+<li><p>Do not add documentation and tests to distribution archive files.</p></li>
+</ul>
+
+<h2 id="version1.0.22014-11-04">Version 1.0.2 (2014&#8211;11&#8211;04)</h2>
+
+<ul>
+<li><p>The <code>NameResolver</code> visitor now also resolves names in trait adaptations (aliases and precedence declarations).</p></li>
+<li><p>Remove stray whitespace when pretty-printing trait adaptations that only change visibility.</p></li>
+</ul>
+
+<h2 id="version1.0.12014-10-14">Version 1.0.1 (2014&#8211;10&#8211;14)</h2>
+
+<ul>
+<li><p>Disallow <code>new</code> expressions without a class name. Previously <code>new;</code> was accidentally considered to be valid code.</p></li>
+<li><p>Support T_ONUMBER token used by HHVM.</p></li>
+<li><p>Add ability to directly pass code to the <code>php-parse.php</code> script.</p></li>
+<li><p>Prevent truncation of <code>var_dump()</code> output in the <code>php-parse.php</code> script if XDebug is used.</p></li>
+</ul>
+
+<h2 id="version1.0.02014-09-12">Version 1.0.0 (2014&#8211;09&#8211;12)</h2>
+
+<ul>
+<li><p>[BC] Removed deprecated <code>Template</code> and <code>TemplateLoader</code> classes.</p></li>
+<li><p>Fixed XML unserializer to properly work with new namespaced node names.</p></li>
+</ul>
+
+<h2 id="version1.0.0-beta22014-08-31">Version 1.0.0-beta2 (2014&#8211;08&#8211;31)</h2>
+
+<ul>
+<li><p>[PHP 5.6] Updated support for constant scalar expressions to comply with latest changes. This means that arrays
+ and array dimension fetches are now supported as well.</p></li>
+<li><p>[PHP 5.6] Direct array dereferencing of constants is supported now, i.e. both <code>FOO[0]</code> and <code>Foo::BAR[0]</code> are valid
+ now.</p></li>
+<li><p>Fixed handling of special class names (<code>self</code>, <code>parent</code> and <code>static</code>) in the name resolver to be case insensitive.
+ Additionally the name resolver now enforces that special class names are only used as unqualified names, e.g. <code>\self</code>
+ is considered invalid.</p></li>
+<li><p>The case of references to the <code>static</code> class name is now preserved. Previously <code>static</code> was always lowercased,
+ regardless of the case used in the source code.</p></li>
+<li><p>The autoloader now only requires a file if it exists. This allows usages like
+ <code>class_exists('PhpParser\NotExistingClass')</code>.</p></li>
+<li><p>Added experimental <code>bin/php-parse.php</code> script, which is intended to help exploring and debugging the node tree.</p></li>
+<li><p>Separated the parser implemention (in <code>lib/PhpParser/ParserAbstract.php</code>) and the generated data (in
+ <code>lib/PhpParser/Parser.php</code>). Furthermore the parser now uses meaningful variable names and contains comments
+ explaining their usage.</p></li>
+</ul>
+
+<h2 id="version1.0.0-beta12014-03-27">Version 1.0.0-beta1 (2014&#8211;03&#8211;27)</h2>
+
+<ul>
+<li><p>[BC] PHP-Parser now requires PHP 5.3 or newer to run. It is however still possible to <em>parse</em> PHP 5.2 source code,
+ while running on a newer version.</p></li>
+<li><p>[BC] The library has been moved to use namespaces with the <code>PhpParser</code> vendor prefix. However, the old names using
+ underscores are still available as aliases, as such most code should continue running on the new version without
+ further changes.</p></li>
+</ul>
+
+<p>However, code performing dispatch operations on <code>Node::getType()</code> may be affected by some of the name changes. For
+ example a <code>+</code> node will now return type <code>Expr_BinaryOp_Plus</code> instead of <code>Expr_Plus</code>. In particular this may affect
+ custom pretty printers.</p>
+
+<p>Due to conflicts with reserved keywords, some class names now end with an underscore, e.g. <code>PHPParser_Node_Stmt_Class</code>
+ is now <code>PhpParser\Node\Stmt\Class_</code>. (But as usual, the old name is still available)</p>
+
+<ul>
+<li><p>[PHP 5.6] Added support for the power operator <code>**</code> (node <code>Expr\BinaryOp\Pow</code>) and the compound power assignment
+ operator <code>**=</code> (node <code>Expr\AssignOp\Pow</code>).</p></li>
+<li><p>[PHP 5.6] Added support for variadic functions: <code>Param</code> nodes now have <code>variadic</code> as a boolean subnode.</p></li>
+<li><p>[PHP 5.6] Added support for argument unpacking: <code>Arg</code> nodes now have <code>unpack</code> as a boolean subnode.</p></li>
+<li><p>[PHP 5.6] Added support for aliasing of functions and constants. <code>Stmt\Use_</code> nodes now have an integral <code>type</code>
+ subnode, which is one of <code>Stmt\Use_::TYPE_NORMAL</code> (<code>use</code>), <code>Stmt\Use_::TYPE_FUNCTION</code> (<code>use function</code>) or
+ <code>Stmt\Use_::TYPE_CONSTANT</code> (<code>use const</code>).</p></li>
+</ul>
+
+<p>The <code>NameResolver</code> now also supports resolution of such aliases.</p>
+
+<ul>
+<li><p>[PHP 5.6] Added support for constant scalar expressions. This means that certain expressions are now allowed as the
+ initializer for constants, properties, parameters, static variables, etc.</p></li>
+<li><p>[BC] Improved pretty printing of empty statements lists, which are now printed as <code>{\n}</code> instead of <code>{\n    \n}</code>.
+ This changes the behavior of the protected <code>PrettyPrinterAbstract::pStmts()</code> method, so custom pretty printing code
+ making use it of may need to be adjusted.</p></li>
+<li><p>Changed the order of some subnodes to be consistent with their order in the sour code. For example <code>Stmt\If-&gt;cond</code>
+ will now appear before <code>Stmt\If-&gt;stmts</code> etc.</p></li>
+<li><p>Added <code>Scalar\MagicConstant-&gt;getName()</code>, which returns the name of the magic constant (e.g. <code>__CLASS__</code>).</p></li>
+</ul>
+
+<p><strong>The following changes are also included in 0.9.5</strong>:</p>
+
+<ul>
+<li><p>[BC] Deprecated <code>PHPParser_Template</code> and <code>PHPParser_TemplateLoader</code>. This functionality does not belong in the main project
+ and - as far as I know - nobody is using it.</p></li>
+<li><p>Add <code>NodeTraverser::removeVisitor()</code> method, which removes a visitor from the node traverser. This also modifies the
+ corresponding <code>NodeTraverserInterface</code>.</p></li>
+<li><p>Fix alias resolution in <code>NameResolver</code>: Class names are now correctly handled as case-insensitive.</p></li>
+<li><p>The undefined variable error, which is used to the lexer to reset the error state, will no longer interfere with
+ custom error handlers.</p></li>
+</ul>
+
+<hr />
+
+<p><strong>This changelog only includes changes from the 1.0 series. For older changes see the <a href="https://github.com/nikic/PHP-Parser/blob/0.9/CHANGELOG.md">0.9 series changelog</a>.</strong></p>
+
+</body>
+</html>

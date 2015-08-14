@@ -59,10 +59,6 @@ class UsersTable extends Table
             ->allowEmpty('id', 'create');
             
         $validator
-            ->add('admin', 'valid', ['rule' => 'boolean'])
-            ->allowEmpty('admin');
-            
-        $validator
             ->requirePresence('firstname', 'create')
             ->notEmpty('firstname');
             
@@ -103,10 +99,19 @@ class UsersTable extends Table
             ->notEmpty('postcode');
             
         $validator
-            ->allowEmpty('section');
+            ->requirePresence('section', 'create')
+            ->notEmpty('section');
             
         $validator
-            ->allowEmpty('username');
+            ->requirePresence('username', 'create')
+            ->notEmpty('username');
+
+        $validator
+            ->notEmpty('authrole', 'A role is required')
+            ->add('authrole', 'inList', [
+                'rule' => ['inList', ['admin', 'author','user']],
+                'message' => 'Please enter a valid role'
+            ]);
 
         return $validator;
     }

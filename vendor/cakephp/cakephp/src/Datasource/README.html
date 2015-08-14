@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="cakephpdatasourcelibrary">CakePHP Datasource Library</h1>
+
+<p>This library contains interfaces for implementing Repositories and Entities using any data source,
+a class for managing connections to datasources and traits to help you quickly implement the
+interfaces provided by this package.</p>
+
+<h2 id="repositories">Repositories</h2>
+
+<p>A repository is a class capable of interfacing with a data source using operations such as
+<code>find</code>, <code>save</code> and <code>delete</code> by using intermediate query objects for expressing commands to
+the data store and returning Entities as the single result unit of such system.</p>
+
+<p>In the case of a Relational database, a Repository would be a <code>Table</code>, which can be return single
+or multiple <code>Entity</code> objects by using a <code>Query</code>.</p>
+
+<p>This library exposes the following interfaces for creating a system that implements the
+repository pattern and is compatible with the CakePHP framework:</p>
+
+<ul>
+<li><code>RepositoryInterface</code> - Describes the methods for a base repository class.</li>
+<li><code>EntityInterface</code> - Describes the methods for a single result object.</li>
+<li><code>ResultSetInterface</code> - Represents the idea of a collection of Entities as a result of a query.</li>
+</ul>
+
+<p>Additionally, this package provides a few traits and classes you can use in your own implementations:</p>
+
+<ul>
+<li><code>EntityTrait</code> - Contains the default implementation for the <code>EntityInterface</code>.</li>
+<li><code>QueryTrait</code> - Exposes the methods for creating a query object capable of returning decoratable collections.</li>
+<li><code>ResultSetDecorator</code> - Decorates any traversable object so it complies with <code>ResultSetInterface</code>.</li>
+</ul>
+
+<h2 id="connections">Connections</h2>
+
+<p>This library contains a couple of utility classes meant to create and manage
+connection objects. Connections are typically used in repositories for
+interfacing with the actual data source system.</p>
+
+<p>The <code>ConnectionManager</code> class acts as a registry to access database connections
+your application has. It provides a place that other objects can get references
+to existing connections. Creating connections with the <code>ConnectionManager</code> is
+easy:</p>
+
+<pre><code class="php">use Cake\Datasource\ConnectionManager;
+
+ConnectionManager::config('master', [
+    'className' =&gt; 'MyApp\Connections\CustomConnection',
+    'param1' =&gt; 'value',
+    'param2' =&gt; 'another value'
+]);
+
+ConnectionManager::config('slave', [
+    'className' =&gt; 'MyApp\Connections\CustomConnection',
+    'param1' =&gt; 'different value',
+    'param2' =&gt; 'another value'
+]);
+</code></pre>
+
+<p>When requested, the <code>ConnectionManager</code> will instantiate
+<code>MyApp\Connections\CustomConnection</code> by passing <code>param1</code> and <code>param2</code> inside an
+array as the first argument of the constructor.</p>
+
+<p>Once configured connections can be fetched using <code>ConnectionManager::get()</code>.
+This method will construct and load a connection if it has not been built
+before, or return the existing known connection:</p>
+
+<pre><code class="php">use Cake\Datasource\ConnectionManager;
+$conn = ConnectionManager::get('master');
+</code></pre>
+
+<p>It is also possible to store connection objects by passing the instance directly to the manager:</p>
+
+<pre><code class="php">use Cake\Datasource\ConnectionManager;
+$conn = ConnectionManager::config('other', $connectionInstance);
+</code></pre>
+
+<h2 id="documentation">Documentation</h2>
+
+<p>Please make sure you check the <a href="http://api.cakephp.org/3.0/namespace-Cake.Datasource.html">official API documentation</a></p>
+
+</body>
+</html>

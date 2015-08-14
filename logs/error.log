@@ -1241,3 +1241,305 @@ Stack Trace:
 #14 {main}
 
 
+2015-07-28 20:03:48 Error: Fatal Error (1): Class 'IntlDateFormatter' not found in [/var/sites/h/hertscubs100.uk/public_html/hertscubs/vendor/cakephp/cakephp/src/Database/Type/DateTimeType.php, line 76]
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE/src/Error/BaseErrorHandler.php, line 191
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE/src/Error/BaseErrorHandler.php, line 90
+[main] - [internal], line ??
+
+
+
+2015-07-28 20:03:48 Error: Fatal Error (1): Class 'IntlDateFormatter' not found in [/var/sites/h/hertscubs100.uk/public_html/hertscubs/vendor/cakephp/cakephp/src/Database/Type/DateTimeType.php, line 76]
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE/src/Error/BaseErrorHandler.php, line 191
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE/src/Error/BaseErrorHandler.php, line 90
+[main] - [internal], line ??
+
+
+
+2015-07-28 20:38:50 Error: Fatal Error (1): Class 'IntlDateFormatter' not found in [/var/sites/h/hertscubs100.uk/public_html/hertscubs/vendor/cakephp/cakephp/src/Database/Type/DateTimeType.php, line 76]
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE/src/Error/BaseErrorHandler.php, line 191
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE/src/Error/BaseErrorHandler.php, line 90
+[main] - [internal], line ??
+
+
+
+2015-07-28 20:39:01 Error: Fatal Error (1): Class 'IntlDateFormatter' not found in [/var/sites/h/hertscubs100.uk/public_html/hertscubs/vendor/cakephp/cakephp/src/Database/Type/DateTimeType.php, line 76]
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE/src/Error/BaseErrorHandler.php, line 191
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE/src/Error/BaseErrorHandler.php, line 90
+[main] - [internal], line ??
+
+
+
+2015-07-28 21:58:40 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Logout could not be found.
+Exception Attributes: array (
+  'class' => 'Logout',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/logout
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-07-28 21:59:19 Error: Fatal Error (1): Call to undefined method Cake\Validation\Validator::edit() in [/var/sites/h/hertscubs100.uk/public_html/hertscubs/src/Model/Table/UsersTable.php, line 111]
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE/src/Error/BaseErrorHandler.php, line 191
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE/src/Error/BaseErrorHandler.php, line 90
+[main] - [internal], line ??
+
+
+
+2015-07-28 21:59:19 Error: [Cake\Error\FatalErrorException] Call to undefined method Cake\Validation\Validator::edit()
+Request URL: /hertscubs/users/add
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/vendor/cakephp/cakephp/src/Error/BaseErrorHandler.php(90): Cake\Error\BaseErrorHandler->handleFatalError(1, 'Call to undefin...', '/var/sites/h/he...', 111)
+#1 [internal function]: Cake\Error\BaseErrorHandler->Cake\Error\{closure}()
+#2 {main}
+
+
+2015-07-28 21:59:21 Error: Fatal Error (1): Call to undefined method Cake\Validation\Validator::edit() in [/var/sites/h/hertscubs100.uk/public_html/hertscubs/src/Model/Table/UsersTable.php, line 111]
+Trace:
+Cake\Error\BaseErrorHandler::handleFatalError() - CORE/src/Error/BaseErrorHandler.php, line 191
+Cake\Error\BaseErrorHandler::Cake\Error\{closure}() - CORE/src/Error/BaseErrorHandler.php, line 90
+[main] - [internal], line ??
+
+
+
+2015-07-28 21:59:21 Error: [Cake\Error\FatalErrorException] Call to undefined method Cake\Validation\Validator::edit()
+Request URL: /hertscubs/users/add
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/vendor/cakephp/cakephp/src/Error/BaseErrorHandler.php(90): Cake\Error\BaseErrorHandler->handleFatalError(1, 'Call to undefin...', '/var/sites/h/he...', 111)
+#1 [internal function]: Cake\Error\BaseErrorHandler->Cake\Error\{closure}()
+#2 {main}
+
+
+2015-07-28 22:00:14 Error: [Cake\Controller\Exception\MissingActionException] Action UsersController::app() could not be found, or is not accessible.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'app',
+  'prefix' => '',
+  'plugin' => NULL,
+)
+Request URL: /hertscubs/users/app
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(114): Cake\Controller\Controller->invokeAction()
+#1 /var/sites/h/hertscubs100.uk/public_html/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(87): Cake\Routing\Dispatcher->_invoke(Object(App\Controller\UsersController))
+#2 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#3 {main}
+
+
+2015-07-28 22:00:28 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Hertscubs could not be found.
+Exception Attributes: array (
+  'class' => 'Hertscubs',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/hertscubs/applications/view
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-07-28 22:00:28 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Hertscubs could not be found.
+Exception Attributes: array (
+  'class' => 'Hertscubs',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/hertscubs/applications/view
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-07-28 22:00:42 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Hertscubs could not be found.
+Exception Attributes: array (
+  'class' => 'Hertscubs',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/hertscubs/applications/view
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-07-28 22:00:47 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Hertscubs could not be found.
+Exception Attributes: array (
+  'class' => 'Hertscubs',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/hertscubs/applications/view
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-07-29 00:17:53 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Webroot could not be found.
+Exception Attributes: array (
+  'class' => 'Webroot',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/webroot/
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-07-29 02:24:14 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Hertscubs could not be found.
+Exception Attributes: array (
+  'class' => 'Hertscubs',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/hertscubs/applications/view
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-07-29 02:39:16 Error: [Cake\Controller\Exception\MissingActionException] Action UsersController::app() could not be found, or is not accessible.
+Exception Attributes: array (
+  'controller' => 'UsersController',
+  'action' => 'app',
+  'prefix' => '',
+  'plugin' => NULL,
+)
+Request URL: /hertscubs/users/app
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(114): Cake\Controller\Controller->invokeAction()
+#1 /var/sites/h/hertscubs100.uk/public_html/hertscubs/vendor/cakephp/cakephp/src/Routing/Dispatcher.php(87): Cake\Routing\Dispatcher->_invoke(Object(App\Controller\UsersController))
+#2 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#3 {main}
+
+
+2015-08-07 05:13:23 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Robots.txt could not be found.
+Exception Attributes: array (
+  'class' => 'Robots.txt',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/robots.txt
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-08-14 19:23:52 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Apple-touch-icon-precomposed.png could not be found.
+Exception Attributes: array (
+  'class' => 'Apple-touch-icon-precomposed.png',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/apple-touch-icon-precomposed.png
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-08-14 19:23:57 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Apple-touch-icon-precomposed.png could not be found.
+Exception Attributes: array (
+  'class' => 'Apple-touch-icon-precomposed.png',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/apple-touch-icon-precomposed.png
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-08-14 19:24:08 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Apple-touch-icon.png could not be found.
+Exception Attributes: array (
+  'class' => 'Apple-touch-icon.png',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/apple-touch-icon.png
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-08-14 19:24:09 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Apple-touch-icon.png could not be found.
+Exception Attributes: array (
+  'class' => 'Apple-touch-icon.png',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/apple-touch-icon.png
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-08-14 19:24:09 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Apple-touch-icon-precomposed.png could not be found.
+Exception Attributes: array (
+  'class' => 'Apple-touch-icon-precomposed.png',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/apple-touch-icon-precomposed.png
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-08-14 19:24:10 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Apple-touch-icon.png could not be found.
+Exception Attributes: array (
+  'class' => 'Apple-touch-icon.png',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/apple-touch-icon.png
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-08-14 19:46:20 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Apple-touch-icon-precomposed.png could not be found.
+Exception Attributes: array (
+  'class' => 'Apple-touch-icon-precomposed.png',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/apple-touch-icon-precomposed.png
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+
+2015-08-14 19:46:20 Error: [Cake\Routing\Exception\MissingControllerException] Controller class Apple-touch-icon.png could not be found.
+Exception Attributes: array (
+  'class' => 'Apple-touch-icon.png',
+  'plugin' => NULL,
+  'prefix' => NULL,
+  '_ext' => NULL,
+)
+Request URL: /hertscubs/apple-touch-icon.png
+Stack Trace:
+#0 /var/sites/h/hertscubs100.uk/public_html/hertscubs/webroot/index.php(37): Cake\Routing\Dispatcher->dispatch(Object(Cake\Network\Request), Object(Cake\Network\Response))
+#1 {main}
+
+

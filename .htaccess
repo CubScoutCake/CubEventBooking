@@ -1,5 +1,21 @@
+#AddType x-httpd-php54 .php
+
 <IfModule mod_rewrite.c>
-    RewriteEngine on
-    RewriteRule    ^$    webroot/    [L]
-    RewriteRule    (.*) webroot/$1    [L]
+   RewriteEngine on
+   RewriteRule    ^$    webroot/    [L]
+   RewriteRule    (.*) webroot/$1    [L]
 </IfModule>
+
+#RewriteEngine on
+#RewriteCond %{HTTP_HOST} ^hertscubs100.uk$ [NC,OR]
+#RewriteCond %{HTTP_HOST} ^www.hertscubs100.uk$
+
+#RewriteCond %{REQUEST_URI} !hertscubs/webroot/
+#RewriteRule (.*) /hertscubs/webroot/ [L]
+#RewriteBase /hertscubs/webroot/
+
+#RewriteCond %{REQUEST_URI} !public_html/hertscubs/webroot/
+#RewriteRule (.*) /public_html/hertscubs/webroot/ [L]
+#RewriteBase /public_html/hertscubs/webroot/
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]

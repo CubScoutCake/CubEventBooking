@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="aflexibleandlightweightdatabaselibraryforphp">A flexible and lightweight Database Library for PHP</h1>
+
+<p>This library abstracts and provides help with most aspects of dealing with relational
+databases such as keeping connections to the server, building queries,
+preventing SQL injections, inspecting and altering schemas, and with debugging and
+profiling queries sent to the database.</p>
+
+<p>It adopts the API from the native PDO extension in PHP for familiarity, but solves many of the
+inconsistencies PDO has, while also providing several features that extend PDO&#8217;s capabilities.</p>
+
+<p>A distinguishing factor of this library when compared to similar database connection packages,
+is that it takes the concept of &#8220;data types&#8221; to its core. It lets you work with complex PHP objects
+or structures that can be passed as query conditions or to be inserted in the database.</p>
+
+<p>The typing system will intelligently convert the PHP structures when passing them to the database, and
+convert them back when retrieving.</p>
+
+<h2 id="connectingtothedatabase">Connecting to the database</h2>
+
+<p>This library is able to work with the following databases:</p>
+
+<ul>
+<li>MySQL</li>
+<li>Postges</li>
+<li>SQLite</li>
+<li>Microsoft SQL Server (2008 and above)</li>
+</ul>
+
+<p>The first thing you need to do when using this library is create a connection object.
+Before performing any operations with the connection, you need to specify a driver
+to use:</p>
+
+<pre><code class="php">use Cake\Database\Connection;
+use Cake\Database\Driver\Mysql;
+
+$driver = new Mysql([
+    'database' =&gt; 'test',
+    'username' =&gt; 'root',
+    'password' =&gt; 'secret'
+]);
+$connection = new Connection([
+    'driver' =&gt; $driver
+]);
+</code></pre>
+
+<p>Drivers are classes responsible for actually executing the commands to the database and
+correctly building the SQL according to the database specific dialect. Drivers can also
+be specified by passing a class name. In that case, include all the connection details
+directly in the options array:</p>
+
+<pre><code class="php">use Cake\Database\Connection;
+
+$connection = new Connection([
+    'driver' =&gt; 'Cake\Database\Driver\Sqlite'
+    'database' =&gt; '/path/to/file.db'
+]);
+</code></pre>
+
+<h3 id="connectionoptions">Connection options</h3>
+
+<p>This is a list of possible options that can be passed when creating a connection:</p>
+
+<ul>
+<li><code>persistent</code>: Creates a persistent connection</li>
+<li><code>host</code>: The server host</li>
+<li><code>database</code>: The database name</li>
+<li><code>username</code>: Login credential</li>
+<li><code>password</code>: Connection secret</li>
+<li><code>encoding</code>: The connection encoding (or charset)</li>
+<li><code>timezone</code>: The connection timezone or time offset</li>
+</ul>
+
+<h2 id="usingconnections">Using connections</h2>
+
+<p>After creating a connection, you can immediately interact with the database. You can choose
+either to use the shorthand methods <code>execute()</code>, <code>insert()</code>, <code>update()</code>, <code>delete()</code> or use the
+<code>newQuery()</code> for using a query builder.</p>
+
+<p>The easiest way of executing queries is by using the <code>execute()</code> method, it will return a
+<code>Cake\Database\StatementInterface</code> that you can use to get the data back:</p>
+
+<pre><code class="php">$statement = $connection-&gt;execute('SELECT * FROM articles');
+
+while($row = $statement-&gt;fetch('assoc')) {
+    echo $row['title'] . PHP_EOL;
+}
+</code></pre>
+
+<p>Binding values to parametrized arguments is also possible with the execute function:</p>
+
+<pre><code class="php">$statement = $connection-&gt;execute('SELECT * FROM articles WHERE id = :id', ['id' =&gt; 1], ['id' =&gt; 'integer']);
+$results = $statement-&gt;fetch('assoc');
+</code></pre>
+
+<p>The third parameter is the types the passed values should be converted to when passed to the database. If
+no types are passed, all arguments will be interpreted as a string.</p>
+
+<p>Alternatively you can construct a statement manually and then fetch rows from it:</p>
+
+<pre><code class="php">$statement = $connection-&gt;prepare('SELECT * from articles WHERE id != :id');
+$statement-&gt;bind(['id' =&gt; 1], ['id' =&gt; 'integer']);
+$results = $statement-&gt;fetchAll('assoc');
+</code></pre>
+
+<p>The default types that are understood by this library and can be passed to the <code>bind()</code> function or to <code>execute()</code>
+are:</p>
+
+<ul>
+<li>biginteger</li>
+<li>binary</li>
+<li>date</li>
+<li>float</li>
+<li>decimal</li>
+<li>integer</li>
+<li>time</li>
+<li>datetime</li>
+<li>timestamp</li>
+<li>uuid</li>
+</ul>
+
+<p>More types can be added dynamically in a bit.</p>
+
+<p>Statements can be reused by binding new values to the parameters in the query:</p>
+
+<pre><code class="php">$statement = $connection-&gt;prepare('SELECT * from articles WHERE id = :id');
+$statement-&gt;bind(['id' =&gt; 1], ['id' =&gt; 'integer']);
+$results = $statement-&gt;fetchAll('assoc');
+
+$statement-&gt;bind(['id' =&gt; 1], ['id' =&gt; 'integer']);
+$results = $statement-&gt;fetchAll('assoc');
+</code></pre>
+
+<h3 id="updatingrows">Updating Rows</h3>
+
+<p>Updating can be done using the <code>update()</code> function in the connection object. In the following
+example we will update the title of the article with id = 1:</p>
+
+<pre><code class="php">$connection-&gt;update('articles', ['title' =&gt; 'New title'], ['id' =&gt; 1]);
+</code></pre>
+
+<p>The concept of data types is central to this library, so you can use the last parameter of the function
+to specify what types should be used:</p>
+
+<pre><code class="php">$connection-&gt;update(
+    'articles',
+    ['title' =&gt; 'New title'],
+    ['created &gt;=' =&gt; new DateTime('-3 day'), 'created &lt;' =&gt; new DateTime('now')],
+    ['created' =&gt; 'datetime']
+);
+</code></pre>
+
+<p>The example above will execute the following SQL:</p>
+
+<pre><code class="sql">UPDATE articles SET title = 'New Title' WHERE created &gt;= '2014-10-10 00:00:00' AND created &lt; '2014-10-13 00:00:00';
+</code></pre>
+
+<p>More on creating complex where conditions or more complex update queries later.</p>
+
+<h3 id="deletingrows">Deleting Rows</h3>
+
+<p>Similarly, the <code>delete()</code> method is used to delete rows from the database:</p>
+
+<pre><code class="php">$connection-&gt;delete('articles', ['created &lt;' =&gt; DateTime('now')], ['created' =&gt; 'date']);
+</code></pre>
+
+<p>Will generate the following SQL</p>
+
+<pre><code class="sql">DELETE FROM articles where created &lt; '2014-10-10'
+</code></pre>
+
+<h3 id="insertingrows">Inserting Rows</h3>
+
+<p>Rows can be inserted using the <code>insert()</code> method:</p>
+
+<pre><code class="php">$connection-&gt;insert(
+    'articles',
+    ['title' =&gt; 'My Title', 'body' =&gt; 'Some paragraph', 'created' =&gt; new DateTime()],
+    ['created' =&gt; 'datetime']
+);
+</code></pre>
+
+<p>More complex updates, deletes and insert queries can be generated using the <code>Query</code> class.</p>
+
+<h2 id="querybuilder">Query Builder</h2>
+
+<p>One of the goals of this library is to allow the generation of both simple and complex queries with
+ease. The query builder can be accessed by getting a new instance of a query:</p>
+
+<pre><code class="php">$query = $connection-&gt;newQuery();
+</code></pre>
+
+<h3 id="selectingfields">Selecting Fields</h3>
+
+<p>Adding fields to the <code>SELECT</code> clause:</p>
+
+<pre><code class="php">$query-&gt;select(['id', 'title', 'body']);
+
+// Results in SELECT id AS pk, title AS aliased_title, body ...
+$query-&gt;select(['pk' =&gt; 'id', 'aliased_title' =&gt; 'title', 'body']);
+
+// Use a closure
+$query-&gt;select(function ($query) {
+    return ['id', 'title', 'body'];
+});
+</code></pre>
+
+<h3 id="whereconditions">Where Conditions</h3>
+
+<p>Generating conditions:</p>
+
+<pre><code class="php">// WHERE id = 1
+$query-&gt;where(['id' =&gt; 1]);
+
+// WHERE id &gt; 2
+$query-&gt;where(['id &gt;' =&gt; 1]);
+</code></pre>
+
+<p>As you can see you can use any operator by placing it with a space after the field name.
+Adding multiple conditions is easy as well:</p>
+
+<pre><code class="php">$query-&gt;where(['id &gt;' =&gt; 1])-&gt;andWhere(['title' =&gt; 'My Title']);
+
+// Equivalent to
+$query-&gt;where(['id &gt;' =&gt; 1, 'title' =&gt; 'My title']);
+</code></pre>
+
+<p>It is possible to generate <code>OR</code> conditions as well</p>
+
+<pre><code class="php">$query-&gt;where(['id &gt;' =&gt; 1])-&gt;orWhere(['title' =&gt; 'My Title']);
+
+// Equivalent to
+$query-&gt;where(['OR' =&gt; ['id &gt;' =&gt; 1, 'title' =&gt; 'My title']]);
+</code></pre>
+
+<p>For even more complex conditions you can use closures and expression objects:</p>
+
+<pre><code class="php">$query-&gt;where(function ($exp) {
+        return $exp
+            -&gt;eq('author_id', 2)
+            -&gt;eq('published', true)
+            -&gt;notEq('spam', true)
+            -&gt;gt('view_count', 10);
+    });
+</code></pre>
+
+<p>Which results in:</p>
+
+<pre><code class="sql">SELECT * FROM articles
+WHERE
+    author_id = 2
+    AND published = 1
+    AND spam != 1
+    AND view_count &gt; 10
+</code></pre>
+
+<p>Combining expressions is also possible:</p>
+
+<pre><code class="php">$query-&gt;where(function ($exp) {
+        $orConditions = $exp-&gt;or_(['author_id' =&gt; 2])
+            -&gt;eq('author_id', 5);
+        return $exp
+            -&gt;not($orConditions)
+            -&gt;lte('view_count', 10);
+    });
+</code></pre>
+
+<p>That generates:</p>
+
+<pre><code class="sql">SELECT *
+FROM articles
+WHERE
+    NOT (author_id = 2 OR author_id = 5)
+    AND view_count &lt;= 10
+</code></pre>
+
+<p>When using the expression objects you can use the following methods to create conditions:</p>
+
+<ul>
+<li><code>eq()</code> Creates an equality condition.</li>
+<li><code>notEq()</code> Create an inequality condition</li>
+<li><code>like()</code> Create a condition using the LIKE operator.</li>
+<li><code>notLike()</code> Create a negated LIKE condition.</li>
+<li><code>in()</code> Create a condition using IN.</li>
+<li><code>notIn()</code> Create a negated condition using IN.</li>
+<li><code>gt()</code> Create a &gt; condition.</li>
+<li><code>gte()</code> Create a &gt;= condition.</li>
+<li><code>lt()</code> Create a &lt; condition.</li>
+<li><code>lte()</code> Create a &lt;= condition.</li>
+<li><code>isNull()</code> Create an IS NULL condition.</li>
+<li><code>isNotNull()</code> Create a negated IS NULL condition.</li>
+</ul>
+
+<h3 id="aggregatesandsqlfunctions">Aggregates and SQL Functions</h3>
+
+<pre><code class="php">// Results in SELECT COUNT(*) count FROM ...
+$query-&gt;select(['count' =&gt; $query-&gt;func()-&gt;count('*')]);
+</code></pre>
+
+<p>A number of commonly used functions can be created with the func() method:</p>
+
+<ul>
+<li><code>sum()</code> Calculate a sum. The arguments will be treated as literal values.</li>
+<li><code>avg()</code> Calculate an average. The arguments will be treated as literal values.</li>
+<li><code>min()</code> Calculate the min of a column. The arguments will be treated as literal values.</li>
+<li><code>max()</code> Calculate the max of a column. The arguments will be treated as literal values.</li>
+<li><code>count()</code> Calculate the count. The arguments will be treated as literal values.</li>
+<li><code>concat()</code> Concatenate two values together. The arguments are treated as bound parameters unless marked as literal.</li>
+<li><code>coalesce()</code> Coalesce values. The arguments are treated as bound parameters unless marked as literal.</li>
+<li><code>dateDiff()</code> Get the difference between two dates/times. The arguments are treated as bound parameters unless marked as literal.</li>
+<li><code>now()</code> Take either &#8216;time&#8217; or &#8216;date&#8217; as an argument allowing you to get either the current time, or current date.</li>
+</ul>
+
+<p>When providing arguments for SQL functions, there are two kinds of parameters you can use, literal arguments and bound parameters. Literal
+parameters allow you to reference columns or other SQL literals. Bound parameters can be used to safely add user data to SQL functions.
+For example:</p>
+
+<pre><code class="php">$concat = $query-&gt;func()-&gt;concat([
+    'title' =&gt; 'literal',
+    ' NEW'
+]);
+$query-&gt;select(['title' =&gt; $concat]);
+</code></pre>
+
+<p>The above generates:</p>
+
+<pre><code class="sql">SELECT CONCAT(title, :c0) ...;
+</code></pre>
+
+<h3 id="othersqlclauses">Other SQL Clauses</h3>
+
+<p>Read of all other SQL clases that the builder is capable of generating in the <a href="http://api.cakephp.org/3.0/class-Cake.Database.Query.html">official API docs</a></p>
+
+<h3 id="gettingresultsoutofaquery">Getting Results out of a Query</h3>
+
+<p>Once you’ve made your query, you’ll want to retrieve rows from it. There are a few ways of doing this:</p>
+
+<pre><code class="php">// Iterate the query
+foreach ($query as $row) {
+    // Do stuff.
+}
+
+// Get the statement and fetch all results
+$results = $query-&gt;execute()-&gt;fetchAll('assoc');
+</code></pre>
+
+<h2 id="officialapi">Official API</h2>
+
+<p>You can read the official <a href="http://api.cakephp.org/3.0/namespace-Cake.Database.html">official API docs</a> to learn more of what this library
+has to offer.</p>
+
+</body>
+</html>

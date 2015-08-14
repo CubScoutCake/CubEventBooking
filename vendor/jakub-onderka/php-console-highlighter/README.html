@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="phpconsolehighlighter">PHP Console Highlighter</h1>
+
+<p>Highlight PHP code in console (terminal).</p>
+
+<h2 id="example">Example</h2>
+
+<figure>
+<img src="http://jakubonderka.github.io/php-console-highlight-example.png" alt="Example" />
+<figcaption>Example</figcaption>
+</figure>
+
+<h2 id="install">Install</h2>
+
+<p>Just create a <code>composer.json</code> file and run the <code>php composer.phar install</code> command to install it:</p>
+
+<pre><code class="json">{
+    &quot;require-dev&quot;: {
+        &quot;jakub-onderka/php-console-highlighter&quot;: &quot;0.*&quot;
+    }
+}
+</code></pre>
+
+<h2 id="usage">Usage</h2>
+
+<pre><code class="php">&lt;?php
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
+use JakubOnderka\PhpConsoleHighlighter\Highlighter;
+
+require __DIR__ . '/vendor/autoload.php';
+
+$highlighter = new Highlighter(new ConsoleColor());
+
+$fileContent = file_get_contents(__FILE__);
+echo $highlighter-&gt;getWholeFile($fileContent);
+</code></pre>
+
+</body>
+</html>

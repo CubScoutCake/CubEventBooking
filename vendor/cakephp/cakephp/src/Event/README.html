@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="cakephpeventlibrary">CakePHP Event Library</h1>
+
+<p>This library emulates several aspects of how events are triggered and managed in popular JavaScript
+libraries such as jQuery: An event object is dispatched to all listeners. The event object holds information
+about the event, and provides the ability to stop event propagation at any point.
+Listeners can register themselves or can delegate this task to other objects and have the chance to alter the
+state and the event itself for the rest of the callbacks.</p>
+
+<h2 id="usage">Usage</h2>
+
+<p>Listeners need to be registered into a manager and events can then be triggered so that listeners can be informed
+of the action.</p>
+
+<pre><code class="php">use Cake\Event\Event;
+use Cake\Event\EventManagerTrait;
+
+class Orders
+{
+
+    use EventManagerTrait;
+
+    public function placeOrder($order)
+    {
+        $this-&gt;doStuff();
+        $event = new Event('Orders.afterPlace', $this, [
+            'order' =&gt; $order
+        ]);
+        $this-&gt;eventManager()-&gt;dispatch($event);
+    }
+}
+
+$orders = new Orders();
+$orders-&gt;eventManager()-&gt;on(function ($event) {
+    // Do something after the order was placed
+    ...
+}, 'Orders.afterPlace');
+
+$orders-&gt;placeOrder($order);
+</code></pre>
+
+<p>The above code allows you to easily notify the other parts of the application that an order has been created.
+You can then do tasks like send email notifications, update stock, log relevant statistics and other tasks
+in separate objects that focus on those concerns.</p>
+
+<h2 id="documentation">Documentation</h2>
+
+<p>Please make sure you check the <a href="http://book.cakephp.org/3.0/en/core-libraries/events.html">official documentation</a></p>
+
+</body>
+</html>

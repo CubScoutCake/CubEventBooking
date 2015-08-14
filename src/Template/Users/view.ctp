@@ -43,8 +43,8 @@
             <p><?= h($user->county) ?></p>
             <h6 class="subheader"><?= __('Postcode') ?></h6>
             <p><?= h($user->postcode) ?></p>
-            <h6 class="subheader"><?= __('Section') ?></h6>
-            <p><?= h($user->section) ?></p>
+            <!--<h6 class="subheader"><?= __('Section') ?></h6>
+            <p><?= h($user->section) ?></p>-->
             <h6 class="subheader"><?= __('Username') ?></h6>
             <p><?= h($user->username) ?></p>
         </div>

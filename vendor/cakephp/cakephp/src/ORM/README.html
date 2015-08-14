@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="cakephporm">CakePHP ORM</h1>
+
+<p>The CakePHP ORM provides a powerful and flexible way to work with relational
+databases. Using a datamapper pattern the ORM allows you to manipulate data as
+entities allowing you to create expressive domain layers in your applications.</p>
+
+<h2 id="connectingtothedatabase">Connecting to the Database</h2>
+
+<p>The CakePHP ORM is compatible with:</p>
+
+<ul>
+<li>MySQL 5.1+</li>
+<li>Postgres 8+</li>
+<li>SQLite3</li>
+<li>SQLServer 2008+</li>
+</ul>
+
+<p>The first thing you need to do when using this library is register a connection
+object. Before performing any operations with the connection, you need to
+specify a driver to use:</p>
+
+<pre><code class="php">use Cake\Datasource\ConnectionManager;
+
+ConnectionManager::config('default', [
+    'className' =&gt; 'Cake\Database\Connection',
+    'driver' =&gt; 'Cake\Database\Driver\Mysql',
+    'database' =&gt; 'test',
+    'username' =&gt; 'root',
+    'password' =&gt; 'secret'
+]);
+</code></pre>
+
+<p>Once a &#8216;default&#8217; connection is registered, it will be used by all the Table
+mappers if no explicit connection is defined.</p>
+
+<h2 id="creatingassociations">Creating Associations</h2>
+
+<p>In your table classes you can define the relations between your tables. CakePHP
+supports 4 association types out of the box:</p>
+
+<ul>
+<li>belongsTo - E.g. Many articles belong to a user.</li>
+<li>hasOne - E.g. A user has one profile</li>
+<li>hasMany - E.g. A user has many articles</li>
+<li>belongsToMany - E.g. An article belongsToMany tags.</li>
+</ul>
+
+<p>You define associations in your table&#8217;s <code>initialize()</code> method. See the
+<a href="http://book.cakephp.org/3.0/en/orm/associations.html">documentation</a> for
+complete examples.</p>
+
+<h2 id="readingdata">Reading Data</h2>
+
+<p>Once you&#8217;ve defined some table classes you can read existing data in your tables:</p>
+
+<pre><code class="php">use Cake\ORM\TableRegistry;
+
+$articles = TableRegistry::get('Articles');
+foreach ($articles-&gt;find() as $article) {
+    echo $article-&gt;title;
+}
+</code></pre>
+
+<p>You can use the <a href="http://book.cakephp.org/3.0/en/orm/query-builder.html">query builder</a> to create
+complex queries, and a <a href="http://book.cakephp.org/3.0/en/orm/retrieving-data-and-resultsets.html">variety of methods</a>
+to access your data.</p>
+
+<h2 id="savingdata">Saving Data</h2>
+
+<p>Table objects provide ways to convert request data into entities, and then persist
+those entities to the database:</p>
+
+<pre><code class="php">use Cake\ORM\TableRegistry;
+
+$data = [
+    'title' =&gt; 'My first article',
+    'body' =&gt; 'It is a great article',
+    'user_id' =&gt; 1,
+    'tags' =&gt; [
+        '_ids' =&gt; [1, 2, 3]
+    ],
+    'comments' =&gt; [
+        ['comment' =&gt; 'Good job'],
+        ['comment' =&gt; 'Awesome work'],
+    ]
+];
+
+$articles = TableRegistry::get('Articles');
+$article = $articles-&gt;newEnitity($data, [
+    'associated' =&gt; ['Tags', 'Comments']
+]);
+$articles-&gt;save($article, [
+    'associated' =&gt; ['Tags', 'Comments']
+])
+</code></pre>
+
+<p>The above shows how you can easily marshal and save an entity and its
+associations in a simple &amp; powerful way. Consult the <a href="http://book.cakephp.org/3.0/en/orm/saving-data.html">ORM documentation</a>
+for more in-depth examples.</p>
+
+<h2 id="deletingdata">Deleting Data</h2>
+
+<p>Once you have a reference to an entity, you can use it to delete data:</p>
+
+<pre><code class="php">$articles = TableRegistry::get('Articles');
+$article = $articles-&gt;get(2);
+$articles-&gt;delete($article);
+</code></pre>
+
+<h2 id="additionaldocumentation">Additional Documentation</h2>
+
+<p>Consult <a href="http://book.cakephp.org/3.0/en/orm.html">the CakePHP documentation</a>
+for more in-depth documentation.</p>
+
+</body>
+</html>

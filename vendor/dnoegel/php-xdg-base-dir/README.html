@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+<h1 id="xdgbasedirectory">XDG Base Directory</h1>
+
+<p><a href="LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="Software License" /></a></p>
+
+<p>Implementation of XDG Base Directory specification for php</p>
+
+<h2 id="install">Install</h2>
+
+<p>Via Composer</p>
+
+<pre><code class="bash">$ composer require dnoegel/php-xdg-base-dir
+</code></pre>
+
+<h2 id="usage">Usage</h2>
+
+<pre><code class="php">$xdg = \XdgBaseDir\Xdg();
+
+echo $xdg-&gt;getHomeDir();
+echo $xdg-&gt;getHomeConfigDir()
+echo $xdg-&gt;getHomeDataDir()
+echo $xdg-&gt;getHomeCacheDir()
+echo $xdg-&gt;getRuntimeDir()
+
+$xdg-&gt;getDataDirs() // returns array
+$xdg-&gt;getConfigDirs() // returns array
+</code></pre>
+
+<h2 id="testing">Testing</h2>
+
+<pre><code class="bash">$ phpunit
+</code></pre>
+
+<h2 id="license">License</h2>
+
+<p>The MIT License (MIT). Please see <a href="https://github.com/dnoegel/php-xdg-base-dir/blob/master/LICENSE">License File</a> for more information.</p>
+
+</body>
+</html>
