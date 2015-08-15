@@ -106,12 +106,12 @@ class UsersTable extends Table
             ->requirePresence('username', 'create')
             ->notEmpty('username');
 
-        $validator
-            ->notEmpty('authrole', 'A role is required')
-            ->add('authrole', 'inList', [
-                'rule' => ['inList', ['admin', 'author','user']],
-                'message' => 'Please enter a valid role'
-            ]);
+        //$validator
+        //    ->notEmpty('authrole', 'A role is required')
+        //    ->add('authrole', 'inList', [
+        //        'rule' => ['inList', ['admin', 'author','user']],
+        //        'message' => 'Please enter a valid role'
+        //    ]);
 
         return $validator;
     }

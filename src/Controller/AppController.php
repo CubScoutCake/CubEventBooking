@@ -77,7 +77,7 @@ class AppController extends Controller
     public function isAuthorized($user)
     {
         // Admin can access every action
-        if (isset($user['admin']) && $user['admin'] === 1) {
+        if (isset($user['authrole']) && $user['authrole'] === 'admin') {
             return true;
         }
 
@@ -94,9 +94,9 @@ class AppController extends Controller
         //    }
 
         // All other actions require an id.
-        if (empty($this->request->params['pass'][0])) {
-            return true;
-        }
+        //if (empty($this->request->params['pass'][0])) {
+        //    return true;
+        //}
 
         //return parent::isAuthorized($user);
 
