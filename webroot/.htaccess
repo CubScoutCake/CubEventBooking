@@ -1,18 +1,28 @@
 
-AddType x-httpd-php54 .php
+AddType x-httpd-php56 .php
 
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    #RewriteBase /var/sites/h/hertscubs100.uk/public_html/hertscubs
-    RewriteBase /hertscubs
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_URI} !^/(webroot/)?(img|css|js)/(.*)$
-    RewriteRule ^ index.php [L]
-</IfModule>
+#<IfModule mod_rewrite.c>
+#    RewriteEngine On
+#    #RewriteBase /var/sites/h/hertscubs100.uk/public_html/hertscubs
+#    RewriteBase /subdomains/hertscubs
+#    RewriteCond %{REQUEST_FILENAME} !-f
+#    RewriteCond %{REQUEST_URI} !^/(webroot/)?(img|css|js)/(.*)$
+#    RewriteRule ^ index.php [L]
+#</IfModule>
 
 <IfModule mod_php5.c>
 	php_extension mbstring.so
 	php_extension intl.so
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+    RewriteCond %{HTTP_HOST} ^hertcubdev.uk
+    RewriteCond %{REQUEST_URI} !^/(webroot/)?(img|css|js)/(.*)$
+#RewriteRule ^(.*)$ http://hertscubs100.uk/booking/$1 [P,L,NC]
 </IfModule>
 
 #RewriteEngine on

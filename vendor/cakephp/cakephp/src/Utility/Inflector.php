@@ -46,7 +46,7 @@ class Inflector
         '/(?<!u)(m)an$/i' => '\1en',
         '/(c)hild$/i' => '\1hildren',
         '/(buffal|tomat)o$/i' => '\1\2oes',
-        '/(alumn|bacill|cact|foc|fung|nucle|radi|stimul|syllab|termin|vir)us$/i' => '\1i',
+        '/(alumn|bacill|cact|foc|fung|nucle|radi|stimul|syllab|termin)us$/i' => '\1i',
         '/us$/i' => 'uses',
         '/(alias)$/i' => '\1es',
         '/(ax|cris|test)is$/i' => '\1es',
@@ -181,11 +181,9 @@ class Inflector
         'Å' => 'A',
         'Ǻ' => 'A',
         'Ā' => 'A',
-        'Å' => 'A',
         'Ă' => 'A',
         'Ą' => 'A',
         'Ǎ' => 'A',
-        'Ä' => 'Ae',
         'à' => 'a',
         'á' => 'a',
         'â' => 'a',
@@ -222,7 +220,6 @@ class Inflector
         'Ė' => 'E',
         'Ę' => 'E',
         'Ě' => 'E',
-        'Ë' => 'E',
         'è' => 'e',
         'é' => 'e',
         'ê' => 'e',
@@ -304,7 +301,6 @@ class Inflector
         'Ơ' => 'O',
         'Ø' => 'O',
         'Ǿ' => 'O',
-        'Ö' => 'Oe',
         'ò' => 'o',
         'ó' => 'o',
         'ô' => 'o',
@@ -358,7 +354,6 @@ class Inflector
         'Ǘ' => 'U',
         'Ǚ' => 'U',
         'Ǜ' => 'U',
-        'Ü' => 'Ue',
         'ù' => 'u',
         'ú' => 'u',
         'û' => 'u',
@@ -511,7 +506,7 @@ class Inflector
             static::$_cache['irregular']['pluralize'] = '(?:' . implode('|', array_keys(static::$_irregular)) . ')';
         }
 
-        if (preg_match('/(.*(?:\\b|_))(' . static::$_cache['irregular']['pluralize'] . ')$/i', $word, $regs)) {
+        if (preg_match('/(.*?(?:\\b|_))(' . static::$_cache['irregular']['pluralize'] . ')$/i', $word, $regs)) {
             static::$_cache['pluralize'][$word] = $regs[1] . substr($regs[2], 0, 1) .
                 substr(static::$_irregular[strtolower($regs[2])], 1);
             return static::$_cache['pluralize'][$word];
@@ -551,7 +546,7 @@ class Inflector
             static::$_cache['irregular']['singular'] = '(?:' . implode('|', static::$_irregular) . ')';
         }
 
-        if (preg_match('/(.*(?:\\b|_))(' . static::$_cache['irregular']['singular'] . ')$/i', $word, $regs)) {
+        if (preg_match('/(.*?(?:\\b|_))(' . static::$_cache['irregular']['singular'] . ')$/i', $word, $regs)) {
             static::$_cache['singularize'][$word] = $regs[1] . substr($regs[2], 0, 1) .
                 substr(array_search(strtolower($regs[2]), static::$_irregular), 1);
             return static::$_cache['singularize'][$word];
@@ -592,7 +587,7 @@ class Inflector
 
         if ($result === false) {
             $result = str_replace(' ', '', static::humanize($string, $delimiter));
-            static::_cache(__FUNCTION__, $string, $result);
+            static::_cache($cacheKey, $string, $result);
         }
 
         return $result;
@@ -725,7 +720,7 @@ class Inflector
         if ($result === false) {
             $camelized = static::camelize(static::underscore($string));
             $replace = strtolower(substr($camelized, 0, 1));
-            $result = preg_replace('/\\w/', $replace, $camelized, 1);
+            $result = $replace . substr($camelized, 1);
             static::_cache(__FUNCTION__, $string, $result);
         }
 

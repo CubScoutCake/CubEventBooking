@@ -16,7 +16,6 @@ namespace Cake\Collection;
 
 use AppendIterator;
 use ArrayIterator;
-use Cake\Collection\Collection;
 use Cake\Collection\Iterator\BufferedIterator;
 use Cake\Collection\Iterator\ExtractIterator;
 use Cake\Collection\Iterator\FilterIterator;
@@ -29,9 +28,10 @@ use Cake\Collection\Iterator\StoppableIterator;
 use Cake\Collection\Iterator\TreeIterator;
 use Cake\Collection\Iterator\UnfoldIterator;
 use Cake\Collection\Iterator\ZipIterator;
-use Iterator;
+use Countable;
 use LimitIterator;
 use RecursiveIteratorIterator;
+use Traversable;
 
 /**
  * Offers a handful of method to manipulate iterators
@@ -158,11 +158,19 @@ trait CollectionTrait
     /**
      * {@inheritDoc}
      *
-     * @return \Cake\Collection\Iterator\ExtractIterator
      */
     public function extract($matcher)
     {
-        return new ExtractIterator($this->unwrap(), $matcher);
+        $extractor = new ExtractIterator($this->unwrap(), $matcher);
+        if (is_string($matcher) && strpos($matcher, '{*}') !== false) {
+            $extractor = $extractor
+                ->filter(function ($data) {
+                    return $data !== null && ($data instanceof Traversable || is_array($data));
+                })
+                ->unfold();
+        }
+
+        return $extractor;
     }
 
     /**
@@ -242,8 +250,12 @@ trait CollectionTrait
      * {@inheritDoc}
      *
      */
-    public function sumOf($matcher)
+    public function sumOf($matcher = null)
     {
+        if ($matcher === null) {
+            return array_sum($this->toList());
+        }
+
         $callback = $this->_propertyExtractor($matcher);
         $sum = 0;
         foreach ($this as $k => $v) {
@@ -330,6 +342,11 @@ trait CollectionTrait
         $count = $iterator instanceof Countable ?
             count($iterator) :
             iterator_count($iterator);
+
+        if ($count === 0) {
+            return null;
+        }
+
         foreach ($this->take(1, $count - 1) as $last) {
             return $last;
         }
@@ -365,7 +382,7 @@ trait CollectionTrait
 
             if (!($options['groupPath'])) {
                 $mapReduce->emit($rowVal($value, $key), $rowKey($value, $key));
-                return;
+                return null;
             }
 
             $key = $options['groupPath']($value, $key);
@@ -416,7 +433,7 @@ trait CollectionTrait
                     $parents[$id] = $isObject ? $parents[$id] : new ArrayIterator($parents[$id], 1);
                     $mapReduce->emit($parents[$id]);
                 }
-                return;
+                return null;
             }
 
             $children = [];
@@ -452,6 +469,11 @@ trait CollectionTrait
         if ($iterator instanceof ArrayIterator) {
             $items = $iterator->getArrayCopy();
             return $preserveKeys ? $items : array_values($items);
+        }
+        // RecursiveIteratorIterator can return duplicate key values causing
+        // data loss when converted into an array
+        if ($preserveKeys && get_class($iterator) === 'RecursiveIteratorIterator') {
+            $preserveKeys = false;
         }
         return iterator_to_array($this, $preserveKeys);
     }
@@ -570,10 +592,11 @@ trait CollectionTrait
      */
     public function zipWith($items, $callable)
     {
-        $items = [$items];
         if (func_num_args() > 2) {
             $items = func_get_args();
             $callable = array_pop($items);
+        } else {
+            $items = [$items];
         }
         return new ZipIterator(array_merge([$this], $items), $callable);
     }
@@ -582,9 +605,32 @@ trait CollectionTrait
      * {@inheritDoc}
      *
      */
+    public function chunk($chunkSize)
+    {
+        return $this->map(function ($v, $k, $iterator) use ($chunkSize) {
+            $values = [$v];
+            for ($i = 1; $i < $chunkSize; $i++) {
+                $iterator->next();
+                if (!$iterator->valid()) {
+                    break;
+                }
+                $values[] = $iterator->current();
+            }
+
+            return $values;
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     */
     public function isEmpty()
     {
-        return iterator_count($this->take(1)) === 0;
+        foreach ($this->unwrap() as $el) {
+            return false;
+        }
+        return true;
     }
 
     /**

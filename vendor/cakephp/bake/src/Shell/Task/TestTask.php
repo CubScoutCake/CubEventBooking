@@ -54,8 +54,10 @@ class TestTask extends BakeTask
         'Behavior' => 'Model\Behavior',
         'Helper' => 'View\Helper',
         'Shell' => 'Shell',
+        'Shell_helper' => 'Shell\Helper',
         'Cell' => 'View\Cell',
-        'Form' => 'Form'
+        'Form' => 'Form',
+        'Mailer' => 'Mailer',
     ];
 
     /**
@@ -71,8 +73,10 @@ class TestTask extends BakeTask
         'behavior' => 'Behavior',
         'helper' => 'Helper',
         'shell' => 'Shell',
+        'shell_helper' => 'Helper',
         'cell' => 'Cell',
-        'form' => 'Form'
+        'form' => 'Form',
+        'mailer' => 'Mailer',
     ];
 
     /**
@@ -203,6 +207,10 @@ class TestTask extends BakeTask
      */
     public function bake($type, $className)
     {
+        if (!isset($this->classSuffixes[strtolower($type)]) || !isset($this->classTypes[ucfirst($type)])) {
+            return false;
+        }
+
         $fullClassName = $this->getRealClassName($type, $className);
 
         if (!empty($this->params['fixtures'])) {
@@ -231,6 +239,8 @@ class TestTask extends BakeTask
         }
         $subNamespace = substr($namespace, strlen($baseNamespace) + 1);
 
+        $properties = $this->generateProperties($type, $subject, $fullClassName);
+
         $this->out("\n" . sprintf('Baking test case for %s ...', $fullClassName), 1, Shell::QUIET);
 
         $this->BakeTemplate->set('fixtures', $this->_fixtures);
@@ -238,11 +248,12 @@ class TestTask extends BakeTask
         $this->BakeTemplate->set(compact(
             'subject',
             'className',
+            'properties',
             'methods',
             'type',
             'fullClassName',
             'mock',
-            'realType',
+            'type',
             'preConstruct',
             'postConstruct',
             'construction',
@@ -330,7 +341,6 @@ class TestTask extends BakeTask
      */
     public function getSubspacePath($type)
     {
-        $suffix = $this->classSuffixes[strtolower($type)];
         $subspace = $this->mapType($type);
         return str_replace('\\', DS, $subspace);
     }
@@ -363,7 +373,7 @@ class TestTask extends BakeTask
         $class = new ReflectionClass($className);
         $out = [];
         foreach ($class->getMethods() as $method) {
-            if ($method->getDeclaringClass()->getName() != $className) {
+            if ($method->getDeclaringClass()->getName() !== $className) {
                 continue;
             }
             if (!$method->isPublic()) {
@@ -508,7 +518,79 @@ class TestTask extends BakeTask
             $pre .= "        \$this->response = \$this->getMock('Cake\Network\Response');";
             $construct = "new {$className}(\$this->request, \$this->response);";
         }
+        if ($type === 'shell_helper') {
+            $pre = "\$this->stub = new ConsoleOutput();\n";
+            $pre .= "        \$this->io = new ConsoleIo(\$this->stub);";
+            $construct = "new {$className}(\$this->io);";
+        }
         return [$pre, $construct, $post];
+    }
+
+    /**
+     * Generate property info for the type and class name
+     *
+     * The generated property info consists of a set of arrays that hold the following keys:
+     *
+     * - `description` (the property description)
+     * - `type` (the property docblock type)
+     * - `name` (the property name)
+     * - `value` (optional - the properties initial value)
+     *
+     * @param string $type The Type of object you are generating tests for eg. controller
+     * @param string $subject The name of the test subject.
+     * @param string $fullClassName The Classname of the class the test is being generated for.
+     * @return array An array containing property info
+     */
+    public function generateProperties($type, $subject, $fullClassName)
+    {
+        $type = strtolower($type);
+
+        $properties = [];
+        switch (strtolower($type)) {
+            case 'cell':
+                $properties[] = [
+                    'description' => 'Request mock',
+                    'type' => '\Cake\Network\Request|\PHPUnit_Framework_MockObject_MockObject',
+                    'name' => 'request'
+                ];
+                $properties[] = [
+                    'description' => 'Response mock',
+                    'type' => '\Cake\Network\Response|\PHPUnit_Framework_MockObject_MockObject',
+                    'name' => 'response'
+                ];
+                break;
+
+            case 'shell':
+                $properties[] = [
+                    'description' => 'ConsoleIo mock',
+                    'type' => '\Cake\Console\ConsoleIo|\PHPUnit_Framework_MockObject_MockObject',
+                    'name' => 'io'
+                ];
+                break;
+
+            case 'shell_helper':
+                $properties[] = [
+                    'description' => 'ConsoleOutput stub',
+                    'type' => '\Cake\TestSuite\Stub\ConsoleOutput',
+                    'name' => 'stub'
+                ];
+                $properties[] = [
+                    'description' => 'ConsoleIo mock',
+                    'type' => '\Cake\Console\ConsoleIo',
+                    'name' => 'io'
+                ];
+                break;
+        }
+
+        if ($type !== 'controller') {
+            $properties[] = [
+                'description' => 'Test subject',
+                'type' => '\\' . $fullClassName,
+                'name' => $subject
+            ];
+        }
+
+        return $properties;
     }
 
     /**
@@ -531,6 +613,10 @@ class TestTask extends BakeTask
         if ($type === 'helper') {
             $uses[] = 'Cake\View\View';
         }
+        if ($type === 'shell_helper') {
+            $uses[] = 'Cake\TestSuite\Stub\ConsoleOutput';
+            $uses[] = 'Cake\Console\ConsoleIo';
+        }
         $uses[] = $fullClassName;
         return $uses;
     }
@@ -543,7 +629,7 @@ class TestTask extends BakeTask
     public function getPath()
     {
         $dir = 'TestCase/';
-        $path = ROOT . DS . 'tests' . DS . $dir;
+        $path = defined('TESTS') ? TESTS . $dir : ROOT . DS . 'tests' . DS . $dir;
         if (isset($this->plugin)) {
             $path = $this->_pluginPath($this->plugin) . 'tests/' . $dir;
         }
@@ -592,8 +678,10 @@ class TestTask extends BakeTask
                 'Component', 'component',
                 'Behavior', 'behavior',
                 'Shell', 'shell',
+                'shell_helper',
                 'Cell', 'cell',
-                'Form', 'form'
+                'Form', 'form',
+                'Mailer', 'mailer',
             ]
         ])->addArgument('name', [
             'help' => 'An existing class to bake tests for.'

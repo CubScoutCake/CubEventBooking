@@ -25,7 +25,7 @@ class AllergiesTable extends Table
     {
         $this->table('allergies');
         $this->displayField('allergy');
-        $this->primaryKey('allergy');
+        $this->primaryKey('id');
         $this->belongsToMany('Attendees', [
             'foreignKey' => 'allergy_id',
             'targetForeignKey' => 'attendee_id',
@@ -53,5 +53,11 @@ class AllergiesTable extends Table
             ->allowEmpty('description');
 
         return $validator;
+    }
+
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['allergy']));
+        return $rules;
     }
 }

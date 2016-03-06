@@ -15,7 +15,7 @@
 namespace Cake\Database\Type;
 
 use Cake\Database\Driver;
-use Cake\Database\Type\DateTimeType;
+use DateTime;
 
 class DateType extends DateTimeType
 {
@@ -36,7 +36,7 @@ class DateType extends DateTimeType
     public function marshal($value)
     {
         $date = parent::marshal($value);
-        if ($date instanceof \DateTime) {
+        if ($date instanceof DateTime) {
             $date->setTime(0, 0, 0);
         }
         return $date;
@@ -46,13 +46,13 @@ class DateType extends DateTimeType
      * Convert strings into Date instances.
      *
      * @param string $value The value to convert.
-     * @param Driver $driver The driver instance to convert with.
+     * @param \Cake\Database\Driver $driver The driver instance to convert with.
      * @return \Carbon\Carbon
      */
     public function toPHP($value, Driver $driver)
     {
         $date = parent::toPHP($value, $driver);
-        if ($date instanceof \DateTime) {
+        if ($date instanceof DateTime) {
             $date->setTime(0, 0, 0);
         }
         return $date;

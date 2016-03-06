@@ -1,0 +1,25 @@
+@media print { 
+ /* All your print styles go here */
+ #header, #footer, #nav { 
+ 	display: none !important;
+ 	width: 0%;
+ 	height: 0%;
+ 	z-index: -999;
+ } 
+
+ #page-wrapper {
+    padding: 5%,5%,5%,5%;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    position: absolute;
+    position: center, center;	
+ }
+
+ header, footer, nav {
+ 	display: none !important;
+ 	width: 0%;
+ 	height: 0%;
+ 	z-index: -999;
+ }
+}	

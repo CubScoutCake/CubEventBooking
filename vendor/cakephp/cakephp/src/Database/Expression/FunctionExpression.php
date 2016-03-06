@@ -45,13 +45,13 @@ class FunctionExpression extends QueryExpression
      *
      * ### Examples:
      *
-     *  ``$f = new FunctionExpression('CONCAT', ['CakePHP', ' rules']);``
+     *  `$f = new FunctionExpression('CONCAT', ['CakePHP', ' rules']);`
      *
-     * Previous line will generate ``CONCAT('CakePHP', ' rules')``
+     * Previous line will generate `CONCAT('CakePHP', ' rules')`
      *
-     * ``$f = new FunctionExpression('CONCAT', ['name' => 'literal', ' rules']);``
+     * `$f = new FunctionExpression('CONCAT', ['name' => 'literal', ' rules']);`
      *
-     * Will produce ``CONCAT(name, ' rules')``
+     * Will produce `CONCAT(name, ' rules')`
      *
      * @param string $name the name of the function to be constructed
      * @param array $params list of arguments to be passed to the function
@@ -95,6 +95,7 @@ class FunctionExpression extends QueryExpression
     public function add($params, $types = [], $prepend = false)
     {
         $put = $prepend ? 'array_unshift' : 'array_push';
+        $typeMap = $this->typeMap()->types($types);
         foreach ($params as $k => $p) {
             if ($p === 'literal') {
                 $put($this->_conditions, $k);
@@ -105,9 +106,7 @@ class FunctionExpression extends QueryExpression
                 $put($this->_conditions, $p);
                 continue;
             }
-
-            $type = isset($types[$k]) ? $types[$k] : null;
-            $put($this->_conditions, ['value' => $p, 'type' => $type]);
+            $put($this->_conditions, ['value' => $p, 'type' => $typeMap->type($k)]);
         }
 
         return $this;
@@ -127,7 +126,7 @@ class FunctionExpression extends QueryExpression
         $parts = [];
         foreach ($this->_conditions as $condition) {
             if ($condition instanceof ExpressionInterface) {
-                $condition = $condition->sql($generator);
+                $condition = sprintf('(%s)', $condition->sql($generator));
             } elseif (is_array($condition)) {
                 $p = $generator->placeholder('param');
                 $generator->bind($p, $condition['value'], $condition['type']);
@@ -139,5 +138,16 @@ class FunctionExpression extends QueryExpression
             $this->_conjunction . ' ',
             $parts
         ));
+    }
+
+    /**
+     * The name of the function is in itself an expression to generate, thus
+     * always adding 1 to the amount of expressions stored in this object.
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return 1 + count($this->_conditions);
     }
 }

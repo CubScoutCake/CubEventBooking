@@ -14,7 +14,6 @@
  */
 namespace Cake\Database;
 
-use Cake\Database\ExpressionInterface;
 use Cake\Database\Expression\FieldInterface;
 use Cake\Database\Expression\IdentifierExpression;
 use Cake\Database\Expression\OrderByExpression;
@@ -58,6 +57,8 @@ class IdentifierQuoter
 
         if ($query->type() === 'insert') {
             $this->_quoteInsert($query);
+        } elseif ($query->type() === 'update') {
+            $this->_quoteUpdate($query);
         } else {
             $this->_quoteParts($query);
         }
@@ -107,7 +108,7 @@ class IdentifierQuoter
             }
 
             $result = $this->_basicQuoter($contents);
-            if ($result) {
+            if (!empty($result)) {
                 $query->{$part}($result, true);
             }
         }
@@ -182,6 +183,21 @@ class IdentifierQuoter
     }
 
     /**
+     * Quotes the table name for an update query
+     *
+     * @param \Cake\Database\Query $query The update query to quote.
+     * @return void
+     */
+    protected function _quoteUpdate($query)
+    {
+        $table = $query->clause('update')[0];
+        
+        if (is_string($table)) {
+            $query->update($this->_driver->quoteIdentifier($table));
+        }
+    }
+
+    /**
      * Quotes identifiers in expression objects implementing the field interface
      *
      * @param \Cake\Database\Expression\FieldInterface $expression The expression to quote.
@@ -206,6 +222,9 @@ class IdentifierQuoter
     /**
      * Quotes identifiers in "order by" expression objects
      *
+     * Strings with spaces are treated as literal expressions
+     * and will not have identifiers quoted.
+     *
      * @param \Cake\Database\Expression\OrderByExpression $expression The expression to quote.
      * @return void
      */
@@ -214,6 +233,10 @@ class IdentifierQuoter
         $expression->iterateParts(function ($part, &$field) {
             if (is_string($field)) {
                 $field = $this->_driver->quoteIdentifier($field);
+                return $part;
+            }
+            if (is_string($part) && strpos($part, ' ') === false) {
+                return $this->_driver->quoteIdentifier($part);
             }
             return $part;
         });

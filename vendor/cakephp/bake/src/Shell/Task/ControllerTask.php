@@ -72,7 +72,8 @@ class ControllerTask extends BakeTask
      */
     public function all()
     {
-        foreach ($this->listAll() as $table) {
+        $tables = $this->listAll();
+        foreach ($tables as $table) {
             TableRegistry::clear();
             $this->main($table);
         }
@@ -89,16 +90,20 @@ class ControllerTask extends BakeTask
         $this->out("\n" . sprintf('Baking controller class for %s...', $controllerName), 1, Shell::QUIET);
 
         $actions = [];
-        if (empty($this->params['no-actions'])) {
+        if (!$this->param('no-actions') && !$this->param('actions')) {
             $actions = ['index', 'view', 'add', 'edit', 'delete'];
+        }
+        if ($this->param('actions')) {
+            $actions = array_map('trim', explode(',', $this->param('actions')));
+            $actions = array_filter($actions);
         }
 
         $helpers = $this->getHelpers();
         $components = $this->getComponents();
 
-        $prefix = '';
-        if (isset($this->params['prefix'])) {
-            $prefix = '\\' . $this->_camelize($this->params['prefix']);
+        $prefix = $this->_getPrefix();
+        if ($prefix) {
+            $prefix = '\\' . str_replace('/', '\\', $prefix);
         }
 
         $namespace = Configure::read('App.namespace');
@@ -172,21 +177,6 @@ class ControllerTask extends BakeTask
     }
 
     /**
-     * Gets the path for output. Checks the plugin property
-     * and returns the correct path.
-     *
-     * @return string Path to output.
-     */
-    public function getPath()
-    {
-        $path = parent::getPath();
-        if (!empty($this->params['prefix'])) {
-            $path .= $this->_camelize($this->params['prefix']) . DS;
-        }
-        return $path;
-    }
-
-    /**
      * Assembles and writes a unit test file
      *
      * @param string $className Controller class name
@@ -199,8 +189,9 @@ class ControllerTask extends BakeTask
         }
         $this->Test->plugin = $this->plugin;
         $this->Test->connection = $this->connection;
-        if (!empty($this->params['prefix'])) {
-            $className = $this->_camelize($this->params['prefix']) . '\\' . $className;
+        $prefix = $this->_getPrefix();
+        if ($prefix) {
+            $className = str_replace('/', '\\', $prefix) . '\\' . $className;
         }
         return $this->Test->bake('Controller', $className);
     }
@@ -243,7 +234,7 @@ class ControllerTask extends BakeTask
     public function listAll()
     {
         $this->Model->connection = $this->connection;
-        return $this->Model->listAll();
+        return $this->Model->listUnskipped();
     }
 
     /**
@@ -264,6 +255,9 @@ class ControllerTask extends BakeTask
             'help' => 'The comma separated list of helpers to use.'
         ])->addOption('prefix', [
             'help' => 'The namespace/routing prefix to use.'
+        ])->addOption('actions', [
+            'help' => 'The comma separated list of actions to generate. ' .
+                      'You can include custom methods provided by your template set here.'
         ])->addOption('no-test', [
             'boolean' => true,
             'help' => 'Do not generate a test skeleton.'

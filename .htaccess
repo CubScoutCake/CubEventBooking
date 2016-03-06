@@ -1,14 +1,14 @@
-#AddType x-httpd-php54 .php
+#AddType x-httpd-php56 .php
 
 <IfModule mod_rewrite.c>
-   RewriteEngine on
-   RewriteRule    ^$    webroot/    [L]
-   RewriteRule    (.*) webroot/$1    [L]
+RewriteEngine on
+RewriteRule    ^$    webroot/    [L]
+RewriteRule    (.*) webroot/$1    [L]
+RewriteCond %{HTTP_HOST} ^hertcubdev.uk$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^hertcubdev.uk$
+RewriteCond %{HTTP_HOST} ^(.*)\hertcubdev.uk
+RewriteRule ^(.*)$ http://hertcubdev[L,NC,QSA]
 </IfModule>
-
-#RewriteEngine on
-#RewriteCond %{HTTP_HOST} ^hertscubs100.uk$ [NC,OR]
-#RewriteCond %{HTTP_HOST} ^www.hertscubs100.uk$
 
 #RewriteCond %{REQUEST_URI} !hertscubs/webroot/
 #RewriteRule (.*) /hertscubs/webroot/ [L]
@@ -19,3 +19,5 @@
 #RewriteBase /public_html/hertscubs/webroot/
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+# Added automatically by Gridhost panel Monday 19th of October 2015 07:05:23 PM
+Options -Indexes

@@ -167,7 +167,9 @@ trait EntityTrait
      *
      * ### Example:
      *
-     * ``$entity->set('name', 'Andrew');``
+     * ```
+     * $entity->set('name', 'Andrew');
+     * ```
      *
      * It is also possible to mass-assign multiple properties to this entity
      * with one call by passing a hashed array as properties in the form of
@@ -423,10 +425,14 @@ trait EntityTrait
         $result = [];
         foreach ($this->visibleProperties() as $property) {
             $value = $this->get($property);
-            if (is_array($value) && isset($value[0]) && $value[0] instanceof EntityInterface) {
+            if (is_array($value)) {
                 $result[$property] = [];
                 foreach ($value as $k => $entity) {
-                    $result[$property][$k] = $entity->toArray();
+                    if ($entity instanceof EntityInterface) {
+                        $result[$property][$k] = $entity->toArray();
+                    } else {
+                        $result[$property][$k] = $entity;
+                    }
                 }
             } elseif ($value instanceof EntityInterface) {
                 $result[$property] = $value->toArray();
@@ -559,7 +565,7 @@ trait EntityTrait
         $result = [];
         foreach ($properties as $property) {
             $original = $this->getOriginal($property);
-            if ($original !== null && $original !== $this->get($property)) {
+            if ($original !== $this->get($property)) {
                 $result[$property] = $original;
             }
         }
@@ -578,7 +584,7 @@ trait EntityTrait
      * @param null|bool $isDirty true means the property was changed, false means
      * it was not changed and null will make the function return current state
      * for that property
-     * @return bool whether the property was changed or not
+     * @return bool Whether the property was changed or not
      */
     public function dirty($property = null, $isDirty = null)
     {
@@ -840,7 +846,7 @@ trait EntityTrait
      * this entity came from if it is known.
      *
      * @param string $alias the alias of the repository
-     * @return string
+     * @return string|$this
      */
     public function source($alias = null)
     {
@@ -848,6 +854,8 @@ trait EntityTrait
             return $this->_registryAlias;
         }
         $this->_registryAlias = $alias;
+
+        return $this;
     }
 
     /**

@@ -78,8 +78,8 @@ try {
 // for a very very long time, as we don't want
 // to refresh the cache while users are doing requests.
 if (!Configure::read('debug')) {
-    Configure::write('Cache._cake_model_.duration', '+1 years');
-    Configure::write('Cache._cake_core_.duration', '+1 years');
+    Configure::write('Cache._cake_model_.duration', '+1 months');
+    Configure::write('Cache._cake_core_.duration', '+1 months');
 }
 
 /**
@@ -97,7 +97,7 @@ mb_internal_encoding(Configure::read('App.encoding'));
  * Set the default locale. This controls how dates, number and currency is
  * formatted and sets the default language to use for translations.
  */
-ini_set('intl.default_locale', 'en_US');
+ini_set('intl.default_locale', 'en_GB');
 
 /**
  * Register application error and exception handlers.
@@ -180,7 +180,51 @@ Request::addDetector('tablet', function ($request) {
  *
  */
 
+Plugin::load('DataTables', ['bootstrap' => false, 'routes' => false]);
+
 Plugin::load('Migrations');
+Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);
+\Cake\Core\Plugin::load('BootstrapUI');
+//Plugin::loadAll();
+//Plugin::load('dompdf');
+//Plugin::load('mpdf', ['bootstrap' => true]);
+//Plugin::load('tcpdf', ['bootstrap' => true]);
+
+/*Configure::write('CakePdf', [
+        'engine' => [
+            'className' => 'CakePdf.DomPdf',
+            // Mac OS X / Linux is usually like:
+            //'binary' => __DIR__ . '/vendor/dompdf/dompdf/dompdf.php',
+            // On Windows environmnent you NEED to use the path like
+            // old fashioned MS-DOS Paths, otherwise you will keep getting:
+            // WKHTMLTOPDF didn't return any data
+            // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+        ],
+        // 'margin' => [
+        //     'bottom' => 15,
+        //     'left' => 50,
+        //     'right' => 30,
+        //     'top' => 45
+        // ],
+        'orientation' => 'portrait',
+        'download' => true
+    ]);*/
+ Configure::write('CakePdf', [
+        'engine' => [
+            'className' => 'CakePdf.WkHtmlToPdf',
+            // Mac OS X / Linux is usually like:
+            'binary' => '/usr/local/bin/wkhtmltopdf',
+            // On Windows environmnent you NEED to use the path like
+            // old fashioned MS-DOS Paths, otherwise you will keep getting:
+            // WKHTMLTOPDF didn't return any data
+            // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+            'options' => [
+                'print-media-type' => false,
+                'outline' => true,
+                'dpi' => 96
+            ],
+        ],
+    ]);
 
 // Only try to load DebugKit in development mode
 // Debug Kit should not be installed on a production system

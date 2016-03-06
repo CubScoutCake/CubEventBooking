@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of Psy Shell
+ * This file is part of Psy Shell.
  *
- * (c) 2012-2014 Justin Hileman
+ * (c) 2012-2015 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,6 +21,8 @@ use Psy\Shell;
  */
 class Loop
 {
+    const NOOP_INPUT = 'return null;';
+
     /**
      * Loop constructor.
      *
@@ -73,7 +75,7 @@ class Loop
                     );
 
                     set_error_handler(array($__psysh__, 'handleError'));
-                    $_ = eval($__psysh__->flushCode());
+                    $_ = eval($__psysh__->flushCode() ?: Loop::NOOP_INPUT);
                     restore_error_handler();
 
                     ob_end_flush();
@@ -103,8 +105,6 @@ class Loop
                     $__psysh__->writeException($_e);
                 }
 
-                // a bit of housekeeping
-                unset($__psysh_out__);
                 $__psysh__->afterLoop();
             } while (true);
         };
@@ -153,7 +153,7 @@ class Loop
     /**
      * Decide whether to bind the execution loop.
      *
-     * @return boolean
+     * @return bool
      */
     protected static function bindLoop()
     {

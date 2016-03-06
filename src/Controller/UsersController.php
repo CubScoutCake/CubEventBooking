@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Form\ResetForm;
+//use Cake\Mailer\MailerAwareTrait;
 
 /**
  * Users Controller
@@ -21,6 +23,9 @@ class UsersController extends AppController
         $this->paginate = [
             'contain' => ['Roles', 'Scoutgroups']
         ];
+        $this->paginate['conditions'] = array(
+            'scoutgroup_id' => $this->Auth->user('scoutgroup_id')
+        );
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
     }
@@ -35,34 +40,35 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => ['Roles', 'Scoutgroups', 'Applications', 'Attendees']
+            'contain' => ['Roles', 'Scoutgroups'
+            ,'Applications' => ['conditions' => ['user_id' => $this->Auth->user('id')]]
+            ,'Attendees' => [/*'contain' => 'Scoutgroups',*/ 'conditions' => ['user_id' => $this->Auth->user('id')]]]
         ]);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
     }
 
-    /**
-     * Add method
-     *
-     * @return void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
+    //use MailerAwareTrait;
+
+    /*public function register()
     {
-        $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->data);
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The user could not be saved. Please, try again.'));
-            }
+        $user = $this->Users->newEntity($this->request->data);
+
+        $usrData = ['section' => 'Cubs', 'authrole' => 'user'];
+        $user = $this->Users->patchEntity($user, $usrData);
+
+        if ($this->Users->save($user)) {
+            $this->Flash->success(__('You have sucesfully registered!'));
+            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+        } else {
+            $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));
         }
+
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200]);
+        $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200])->order(['district_id' => 'ASC']);
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
-    }
+    }*/
 
     /**
      * Edit method
@@ -98,28 +104,103 @@ class UsersController extends AppController
      * @return void Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+
+    public function login($eventId = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
-        if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
-        } else {
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
+        // Set the layout.
+        $this->viewBuilder()->layout('outside');
+
+        $session = $this->request->session();
+
+        if ($session->check('Reset.lgtries')) {
+            $tries = $session->read('Reset.lgtries');
         }
-        return $this->redirect(['action' => 'index']);
+
+        if (!isset($tries)) {
+            $tries = 0;
+        }
+
+        if (isset($tries) && $tries < 11) {
+
+            if ($this->request->is('post')) {
+                $user = $this->Auth->identify();
+                if ($user) {
+                    $this->Auth->setUser($user);
+                    if (isset($eventId) && $eventId >= 0) {
+                        $session->delete('Reset.lgtries');
+                        $session->delete('Reset.rstries');
+                        return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
+                    } else {
+                        $session->delete('Reset.lgtries');
+                        $session->delete('Reset.rstries');
+                        return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
+                    }  
+                }
+                $tries = $tries + 1;
+                $this->Flash->error('Your username or password is incorrect. Please try again.');
+                $session->write('Reset.lgtries', $tries);                
+            }
+
+            $this->set(compact('eventId'));
+        } else {
+            $this->Flash->error('You have failed entry too many times. Please try again later.');
+            return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'reset']);     
+        }
+
+
+        
     }
 
-    public function login()
+    public function reset()
     {
+        $this->viewBuilder()->layout('outside');
+
+        $resForm = new ResetForm();
+        $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200]);
+        $session = $this->request->session();
+
+        $this->set(compact('scoutgroups','resForm'));
+
         if ($this->request->is('post')) {
-            $user = $this->Auth->identify();
-            if ($user) {
-                $this->Auth->setUser($user);
-                return $this->redirect($this->Auth->redirectUrl());
+
+            if ($session->check('Reset.rstries')) {
+                $tries = $session->read('Reset.rstries');
             }
-            $this->Flash->error('Your username or password is incorrect. Please try again.');
+
+            if (!isset($tries)) {
+                $tries = 0;
+            }
+
+            if (isset($tries) && $tries < 6) {
+                // Extract Form Info
+                $fmGroup = $this->request->data['scoutgroup'];
+                $fmEmail = $this->request->data['email'];
+
+                $found = $this->Users->find('all')
+                    ->where(['email' => $fmEmail, 'scoutgroup_id' => $fmGroup]);
+
+                $count = $found->count('*');
+                $user = $found->first();
+
+                $tries = $tries + 1;
+                $session->write('Reset.rstries', $tries);
+
+                if ($count == 1) {
+                    // Success in Resetting Triggering Reset - Bouncing to Reset.
+                    $session->delete('Reset.lgtries');
+                    $session->delete('Reset.rstries');
+                    return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']); 
+                } else {
+                    $this->Flash->error('This user was not found in the system.');
+                }
+            } else {
+                $this->Flash->error('You have failed entry too many times. Please try again later.');
+                return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
+            }
         }
+
+
+
     }
 
     public function logout()
@@ -130,7 +211,29 @@ class UsersController extends AppController
 
     public function beforeFilter(\Cake\Event\Event $event)
     {
-        $this->Auth->allow(['add']);
+        $this->Auth->allow(['register']);
+        $this->Auth->allow(['login']);
+        $this->Auth->allow(['reset']);
     }
     
+    
+    public function isAuthorized($user)
+    {
+        // All registered users can add articles
+        if (in_array($this->request->action, ['logout'])) {
+            return true;
+        }
+
+        // The owner of an application can edit and delete it
+        if (in_array($this->request->action, ['view', 'edit'])) {
+            $editingId = (int)$this->request->params['pass'][0];
+            if ($editingId == $user['id']) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return parent::isAuthorized($user);
+    }
 }
