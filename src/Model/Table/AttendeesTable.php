@@ -27,10 +27,21 @@ class AttendeesTable extends Table
      */
     public function initialize(array $config)
     {
+        parent::initialize($config);
+
         $this->table('attendees');
-        $this->displayField('id');
+        $this->displayField('full_name');
         $this->primaryKey('id');
-        $this->addBehavior('Timestamp');
+
+        $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created' => 'new',
+                    'modified' => 'always',
+                    ]
+                ]
+            ]);
+
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
@@ -66,50 +77,52 @@ class AttendeesTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create');
-            
+
         $validator
             ->requirePresence('firstname', 'create')
             ->notEmpty('firstname');
-            
+
         $validator
             ->requirePresence('lastname', 'create')
             ->notEmpty('lastname');
-            
+
         $validator
             ->add('dateofbirth', 'valid', ['rule' => 'date'])
             ->requirePresence('dateofbirth', 'create')
             ->notEmpty('dateofbirth');
-            
+
         $validator
-            ->requirePresence('phone', 'create')
-            ->notEmpty('phone');
-            
+            ->allowEmpty('phone');
+
         $validator
-            ->requirePresence('phone2', 'create')
-            ->notEmpty('phone2');
-            
+            ->allowEmpty('phone2');
+
         $validator
-            ->requirePresence('address_1', 'create')
-            ->notEmpty('address_1');
-            
+            ->allowEmpty('address_1');
+
         $validator
             ->allowEmpty('address_2');
-            
+
         $validator
-            ->requirePresence('city', 'create')
-            ->notEmpty('city');
-            
+            ->allowEmpty('city');
+
         $validator
-            ->requirePresence('county', 'create')
-            ->notEmpty('county');
-            
+            ->allowEmpty('county');
+
         $validator
-            ->requirePresence('postcode', 'create')
-            ->notEmpty('postcode');
-            
+            ->allowEmpty('postcode');
+
         $validator
             ->add('nightsawaypermit', 'valid', ['rule' => 'boolean'])
             ->allowEmpty('nightsawaypermit');
+
+        $validator
+            ->add('osm_generated', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('osm_generated');
+
+        $validator
+            ->add('osm_id', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('osm_id');
 
         return $validator;
     }
@@ -126,6 +139,12 @@ class AttendeesTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
+        $rules->add($rules->isUnique(['osm_id']));
         return $rules;
+    }
+
+    public function isOwnedBy($attendeeId, $userId)
+    {
+        return $this->exists(['id' => $attendeeId, 'user_id' => $userId]);
     }
 }

@@ -6,12 +6,15 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\ORM\TableRegistry;
 
 /**
  * Applications Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Users
  * @property \Cake\ORM\Association\BelongsTo $Scoutgroups
+ * @property \Cake\ORM\Association\BelongsTo $Events
+ * @property \Cake\ORM\Association\HasMany $Invoices
  * @property \Cake\ORM\Association\BelongsToMany $Attendees
  */
 class ApplicationsTable extends Table
@@ -25,10 +28,21 @@ class ApplicationsTable extends Table
      */
     public function initialize(array $config)
     {
+        parent::initialize($config);
+
         $this->table('applications');
-        $this->displayField('id');
+        $this->displayField('display_code');
         $this->primaryKey('id');
-        $this->addBehavior('Timestamp');
+
+        $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created' => 'new',
+                    'modified' => 'always',
+                    ]
+                ]
+            ]);
+
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
@@ -36,6 +50,12 @@ class ApplicationsTable extends Table
         $this->belongsTo('Scoutgroups', [
             'foreignKey' => 'scoutgroup_id',
             'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Events', [
+            'foreignKey' => 'event_id'
+        ]);
+        $this->hasMany('Invoices', [
+            'foreignKey' => 'application_id'
         ]);
         $this->belongsToMany('Attendees', [
             'foreignKey' => 'application_id',
@@ -55,24 +75,17 @@ class ApplicationsTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create');
-            
+
         $validator
             ->allowEmpty('section');
-            
+
         $validator
-            ->add('permitholder', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('modification');
+
+        $validator
             ->requirePresence('permitholder', 'create')
             ->notEmpty('permitholder');
             
-        $validator
-            ->add('modification', 'valid', ['rule' => 'numeric'])
-            ->requirePresence('modification', 'create')
-            ->notEmpty('modification');
-            
-        $validator
-            ->requirePresence('eventname', 'create')
-            ->notEmpty('eventname');
-
         return $validator;
     }
 
@@ -87,13 +100,23 @@ class ApplicationsTable extends Table
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
+        $rules->add($rules->existsIn(['event_id'], 'Events'));
         return $rules;
     }
 
-    /**
-    * public function isOwnedBy($applicatonId, $userId)
-    * {
-    *     return $this->exists(['id' => $applicationId, 'user_id' => $userId]);
-    * }
-    **/
+    public function isOwnedBy($applicationId, $userId)
+    {
+        return $this->exists(['id' => $applicationId, 'user_id' => $userId]);
+    }
+
+    /*public function isChampedBy($applicationId, $userId)
+    {
+        $scoutgroups = TableRegistry::get('Scoutgroups');
+        $users = TableRegistry::get('Users');
+
+        $user = $users->get($userId, ['contain' => 'Scoutgroups'])->Scoutgroup->district_id;
+        $groups = $scoutgroups->find('list', ['conditions' => ['district' => $user]]);
+
+        return $this->existsIn(['id' => $applicationId, 'Scoutgroup' => $userId]);
+    }*/
 }

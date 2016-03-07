@@ -1,18 +1,18 @@
 <div class="actions columns large-2 medium-3">
-    <h3><?= __('Actions') ?></h3>
-    <ul class="side-nav">
-        <li><?= $this->Html->link(__('New Role'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Attendees'), ['controller' => 'Attendees', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Attendee'), ['controller' => 'Attendees', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-    </ul>
+    
+    <?= $this->start('Sidebar');
+    echo $this->element('Sidebar/user');
+    $this->end(); ?>
+    
+    <?= $this->fetch('Sidebar') ?>
+    
 </div>
 <div class="roles index large-10 medium-9 columns">
     <table cellpadding="0" cellspacing="0">
     <thead>
         <tr>
             <th><?= $this->Paginator->sort('id') ?></th>
+            <th><?= $this->Paginator->sort('role') ?></th>
             <th><?= $this->Paginator->sort('description') ?></th>
             <th><?= $this->Paginator->sort('invested') ?></th>
             <th><?= $this->Paginator->sort('minor') ?></th>
@@ -23,9 +23,10 @@
     <?php foreach ($roles as $role): ?>
         <tr>
             <td><?= $this->Number->format($role->id) ?></td>
+            <td><?= h($role->role) ?></td>
             <td><?= h($role->description) ?></td>
-            <td><?= h($role->invested) ?></td>
-            <td><?= h($role->minor) ?></td>
+            <td><?= h($role->invested == 1 ? __('Yes') : __('')) ?></td>
+            <td><?= h($role->minor == 1 ? __('Yes') : __('')) ?></td>
             <td class="actions">
                 <?= $this->Html->link(__('View'), ['action' => 'view', $role->id]) ?>
                 <?= $this->Html->link(__('Edit'), ['action' => 'edit', $role->id]) ?>

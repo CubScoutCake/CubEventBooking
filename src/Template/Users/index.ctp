@@ -1,50 +1,36 @@
 <div class="actions columns large-2 medium-3">
-    <h3><?= __('Actions') ?></h3>
-    <ul class="side-nav">
-        <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Roles'), ['controller' => 'Roles', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Role'), ['controller' => 'Roles', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Scoutgroups'), ['controller' => 'Scoutgroups', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Scoutgroup'), ['controller' => 'Scoutgroups', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Applications'), ['controller' => 'Applications', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Application'), ['controller' => 'Applications', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Attendees'), ['controller' => 'Attendees', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Attendee'), ['controller' => 'Attendees', 'action' => 'add']) ?></li>
-    </ul>
+    
+    <?= $this->start('Sidebar');
+    echo $this->element('Sidebar/user');
+    $this->end(); ?>
+    
+    <?= $this->fetch('Sidebar') ?>
+    
+</div>
+
+<div class="users index large-10 medium-9 columns">
+</br>
+    <h3>Users in your Scout Group</h3>
 </div>
 <div class="users index large-10 medium-9 columns">
     <table cellpadding="0" cellspacing="0">
     <thead>
         <tr>
-            <th><?= $this->Paginator->sort('id') ?></th>
-            <th><?= $this->Paginator->sort('role_id') ?></th>
-            <th><?= $this->Paginator->sort('scoutgroup_id') ?></th>
-            <th><?= $this->Paginator->sort('admin') ?></th>
+            <th><?= $this->Paginator->sort('username') ?></th>
             <th><?= $this->Paginator->sort('firstname') ?></th>
             <th><?= $this->Paginator->sort('lastname') ?></th>
-            <th><?= $this->Paginator->sort('email') ?></th>
-            <th class="actions"><?= __('Actions') ?></th>
+            <th><?= $this->Paginator->sort('scoutgroup_id') ?></th>
+            <th><?= $this->Paginator->sort('role_id') ?></th>
         </tr>
     </thead>
     <tbody>
     <?php foreach ($users as $user): ?>
         <tr>
-            <td><?= $this->Number->format($user->id) ?></td>
-            <td>
-                <?= $user->has('role') ? $this->Html->link($user->role->id, ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?>
-            </td>
-            <td>
-                <?= $user->has('scoutgroup') ? $this->Html->link($user->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $user->scoutgroup->scoutgroup]) : '' ?>
-            </td>
-            <td><?= h($user->admin) ?></td>
+            <td><?= h($user->username) ?></td>
             <td><?= h($user->firstname) ?></td>
             <td><?= h($user->lastname) ?></td>
-            <td><?= h($user->email) ?></td>
-            <td class="actions">
-                <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
-                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
-                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
-            </td>
+            <td><?= $user->has('scoutgroup') ? $this->Html->link($user->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $user->scoutgroup->id]) : '' ?></td>
+            <td><?= $user->has('role') ? $this->Html->link($user->role->role, ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></td>
         </tr>
 
     <?php endforeach; ?>

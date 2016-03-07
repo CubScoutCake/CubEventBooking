@@ -1,31 +1,22 @@
-<div class="actions columns large-2 medium-3">
-    <h3><?= __('Actions') ?></h3>
-    <ul class="side-nav">
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $application->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $application->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Applications'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Attendees'), ['controller' => 'Attendees', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Attendee'), ['controller' => 'Attendees', 'action' => 'add']) ?></li>
-    </ul>
-</div>
-<div class="applications form large-10 medium-9 columns">
+<nav class="actions large-2 medium-3 columns" id="actions-sidebar">
+    
+    <?= $this->start('Sidebar');
+    echo $this->element('Sidebar/user');
+    $this->end(); ?>
+    
+    <?= $this->fetch('Sidebar') ?>
+    
+</nav>
+<div class="applications form large-9 medium-8 columns content">
     <?= $this->Form->create($application) ?>
     <fieldset>
         <legend><?= __('Edit Application') ?></legend>
         <?php
-            echo $this->Form->input('user_id', ['options' => $users]);
-            echo $this->Form->input('scoutgroup_id');
-            echo $this->Form->input('section');
+            echo $this->Form->input('scoutgroup_id', ['options' => $scoutgroups]);
+            echo $this->Form->input('section', ['label' => 'Any Specific Section Name e.g. Wednesdays - Leave this blank if you are the only Cub Section in the Scout Group.']);
+            echo $this->Form->input('event_id', ['options' => $events]);
             echo $this->Form->input('permitholder');
-            echo $this->Form->input('modification');
-            echo $this->Form->input('eventname');
-            echo $this->Form->input('attendees._ids', ['options' => $attendees]);
+            echo $this->Form->input('attendees._ids', ['options' => $attendees, 'label' => 'Associate Attendees - This will be blank if you have not created any attendees.']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

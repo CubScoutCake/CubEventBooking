@@ -15,6 +15,8 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\ORM\TableRegistry;
+use Cake\View\CellTrait;
 
 /**
  * Application Controller
@@ -26,6 +28,7 @@ use Cake\Controller\Controller;
  */
 class AppController extends Controller
 {
+    use CellTrait;
 
     public function initialize()
     {
@@ -33,46 +36,57 @@ class AppController extends Controller
         $this->loadComponent('Auth', [
             'authorize'=> 'Controller',
             'loginRedirect' => [
-                'controller' => 'applications',
-                'action' => 'view'
+                'controller' => 'Landing',
+                'action' => 'user_home'
                 ],
-            'authenticate' => [
-                'Form' => [
-                    'fields' => [
-                        'username' => 'username',
-                        'password' => 'password'
-                        ]
-                    ]
+            'logoutRedirect' => [
+                'controller' => 'Landing',
+                'action' => 'welcome'
                 ],
+            //'authenticate' => [
+            //    'Form' => [
+            //        'fields' => [
+            //            'username' => 'username',
+            //            'password' => 'password'
+            //            ]
+            //        ]
+            //    ],
             'loginAction' => [
                 'controller' => 'Users',
                 'action' => 'login'
                 ]
         ]);
 
+        // Use HTTP Strict Transport Security to force client to use secure connections only
+        /*if (env('SERVER_NAME') == 'booking.hertscubs.uk')
+        {
+            $use_sts = true;
+        } else {
+            $use_sts = false;
+        }
+
+        // iis sets HTTPS to 'off' for non-SSL requests
+        if ($use_sts && $_SERVER['HTTPS'] != 'off') {
+            header('Strict-Transport-Security: max-age=31536000');
+        }*/
+
+        $this->loadComponent('Security');
+        $this->loadComponent('Csrf');
+        $this->loadComponent('RequestHandler');
+
+        if (env('SERVER_NAME') !== 'dev.hertscubs100.uk')
+        {
+            //$this->Security->requiresecure();
+        }
+
         // Allow the display action so our pages controller
         // continues to work.
-        $this->Auth->allow(['display']);
+        //$this->Auth->allow(['display']);
+        //$this->Auth->allow(['index']);
+        if ($this->RequestHandler->isMobile())
+        { $mobile = 1; } else { $mobile = 0; }
+        $this->set(compact('mobile'));
     }
-
-/**
-*    public function initialize()
-*{
-*    $this->loadComponent('Flash');
-*    $this->loadComponent('Auth', [
-*        'authorize' => ['Controller'], // Added this line
-*        'loginRedirect' => [
-*            'controller' => 'Articles',
-*            'action' => 'index'
-*        ],
-*        'logoutRedirect' => [
-*            'controller' => 'Pages',
-*            'action' => 'display',
-*            'home'
-*        ]
-*    ]);
-*}
-**/
 
     public function isAuthorized($user)
     {
@@ -81,12 +95,24 @@ class AppController extends Controller
             return true;
         }
 
-        $action = $this->request->params['action'];
+        if (isset($user['id'])) {
+            if (isset($this->request->params['prefix']) && $this->request->params['prefix'] === 'admin') {
+                return false;
+            } else {
+                return true;
+            }
+        }
 
-        // The add and index actions are always allowed.
-        //if (in_array($action, ['add'])) {
-        //    return true;
-        //}
+
+        //The add and index actions are always allowed.
+        if (isset($user['id']) && in_array($this->request->params['action'], ['index','add','admin-home'])) {
+            return true;
+        }
+
+        // Only admins can access admin functions
+        //if ($this->request->params['prefix'] === 'admin') {
+        //    return (bool)($user['authrole'] === 'admin');
+        //  }
 
         //Alternate Method
         //if ($this->request->action === 'add') {

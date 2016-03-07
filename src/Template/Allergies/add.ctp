@@ -1,19 +1,18 @@
 <div class="actions columns large-2 medium-3">
-    <h3><?= __('Actions') ?></h3>
-    <ul class="side-nav">
-        <li><?= $this->Html->link(__('List Allergies'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Attendees'), ['controller' => 'Attendees', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Attendee'), ['controller' => 'Attendees', 'action' => 'add']) ?></li>
-    </ul>
+    <?= $this->start('Sidebar');
+    echo $this->element('Sidebar/locked');
+    echo $this->element('Sidebar/user');
+    $this->end(); ?>
+
+    <?= $this->fetch('Sidebar') ?>
 </div>
 <div class="allergies form large-10 medium-9 columns">
     <?= $this->Form->create($allergy) ?>
     <fieldset>
         <legend><?= __('Add Allergy') ?></legend>
         <?php
-            echo $this->Form->input('id');
+            echo $this->Form->input('allergy');
             echo $this->Form->input('description');
-            echo $this->Form->input('attendees._ids', ['options' => $attendees]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

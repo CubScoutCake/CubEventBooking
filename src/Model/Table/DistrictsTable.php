@@ -29,6 +29,9 @@ class DistrictsTable extends Table
         $this->hasMany('Scoutgroups', [
             'foreignKey' => 'district_id'
         ]);
+        $this->hasMany('Champions', [
+            'foreignKey' => 'district_id'
+        ]);
     }
 
     /**

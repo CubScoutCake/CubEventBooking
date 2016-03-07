@@ -16,7 +16,7 @@ class Allergy extends Entity
      */
     protected $_accessible = [
         'id' => true,
+        'allergy' => true,
         'description' => true,
-        'attendees' => true,
     ];
 }

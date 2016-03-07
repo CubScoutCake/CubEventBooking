@@ -78,8 +78,8 @@ try {
 // for a very very long time, as we don't want
 // to refresh the cache while users are doing requests.
 if (!Configure::read('debug')) {
-    Configure::write('Cache._cake_model_.duration', '+1 years');
-    Configure::write('Cache._cake_core_.duration', '+1 years');
+    Configure::write('Cache._cake_model_.duration', '+1 months');
+    Configure::write('Cache._cake_core_.duration', '+1 months');
 }
 
 /**
@@ -97,7 +97,7 @@ mb_internal_encoding(Configure::read('App.encoding'));
  * Set the default locale. This controls how dates, number and currency is
  * formatted and sets the default language to use for translations.
  */
-ini_set('intl.default_locale', 'en_US');
+ini_set('intl.default_locale', 'en_GB');
 
 /**
  * Register application error and exception handlers.
