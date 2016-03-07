@@ -6,6 +6,7 @@ use Cake\Mailer\Email;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Mailer\MailerAwareTrait;
+use Cake\Network\Http\Client;
 
 /**
  * Notifications Controller
@@ -63,6 +64,40 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $nowData);
 
             if ($this->Notifications->save($notification)) {
+
+                $viewEnt = [
+                    'Entity Id' => $notification->id,
+                    'Controller' => 'Notifications',
+                    'Action' => 'View',
+                    'User Id' => $this->Auth->user('id'),
+                    'Creation Date' => $notification->created,
+                    'Modified' => $notification->read_date,
+                    'Notification' => [
+                        'Type' => $notification->notificationtype_id,
+                        'Ref Id' => $notification->link_id,
+                        'Action' => $notification->link_action,
+                        'Controller' => $notification->link_controller,
+                        'Source' => $notification->notification_source,
+                        'Header' => $notification->notification_header
+                        ]
+                    ];
+
+                $sets = TableRegistry::get('Settings');
+                
+                $jsonView = json_encode($viewEnt);
+                $api_key = $sets->get(13)->text;
+                $projectId = $sets->get(14)->text;
+                $eventType = 'Action';
+                
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+                
+                $http = new Client();
+                $response = $http->post(
+                  $keenURL,
+                  $jsonView,
+                  ['type' => 'json']
+                );
+
                 $this->Flash->success(__('The notification has been marked as viewed.'));
             } else {
                 $this->Flash->error(__('The notification could not be marked as viewed. Please, try again.'));
@@ -143,29 +178,32 @@ class NotificationsController extends AppController
 
                 $this->getMailer('User')->send('welcome', [$user, $group, $notification]);
 
-                /*$email = new Email('default');
-                $email->template('welcome', 'default')
-                    ->emailFormat('html')
-                    ->to([$user->email => $user->full_name])
-                    ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
-                    ->subject('Welcome to the Hertfordshire Cubs Booking System')
-                    ->setHeaders(['X-MC-Tags' => 'WelcomeEmail,Type1,Notification'
-                        , 'X-MC-AutoText' => true
-                        , 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk'
-                        , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
-                        , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
-                    ->viewVars(['username' => $user->username
-                        , 'date_created' => $user->created
-                        , 'full_name' => $user->full_name
-                        , 'scoutgroup' => $group->scoutgroup
-                        , 'link_controller' => $notification->link_controller
-                        , 'link_action' => $notification->link_action
-                        , 'link_id' => $notification->link_id
-                        , 'link_prefix' => $notification->link_prefix
-                        , 'notification_id' => $notification->id
-                        ])
-                    ->helpers(['Html', 'Text', 'Time'])
-                    ->send();*/
+                $sets = TableRegistry::get('Settings');
+
+                $jsonWelcome = json_encode($welcomeData);
+                $api_key = $sets->get(13)->text;
+                $projectId = $sets->get(14)->text;
+                $eventType = 'UserWelcome';
+
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenURL,
+                  $jsonWelcome,
+                  ['type' => 'json']
+                );
+
+                $genericType = 'Notification';
+
+                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $w_api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenGenURL,
+                  $jsonWelcome,
+                  ['type' => 'json']
+                );
 
                 return $this->redirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, $userId]);
             } else {
@@ -240,6 +278,40 @@ class NotificationsController extends AppController
         $notification = $this->Notifications->get($id);
         if ($notification->user_id == $this->Auth->user('id')) {
             if ($this->Notifications->delete($notification)) {
+
+                $deleteEnt = [
+                    'Entity Id' => $notification->id,
+                    'Controller' => 'Notifications',
+                    'Action' => 'Delete',
+                    'User Id' => $this->Auth->user('id'),
+                    'Creation Date' => $notification->created,
+                    'Modified' => $notification->read_date,
+                    'Notification' => [
+                        'Type' => $notification->notificationtype_id,
+                        'Ref Id' => $notification->link_id,
+                        'Action' => $notification->link_action,
+                        'Controller' => $notification->link_controller,
+                        'Source' => $notification->notification_source,
+                        'Header' => $notification->notification_header
+                        ]
+                    ];
+
+                $sets = TableRegistry::get('Settings');
+                
+                $jsonDelete = json_encode($deleteEnt);
+                $api_key = $sets->get(13)->text;
+                $projectId = $sets->get(14)->text;
+                $eventType = 'Action';
+                
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+                
+                $http = new Client();
+                $response = $http->post(
+                  $keenURL,
+                  $jsonDelete,
+                  ['type' => 'json']
+                );
+
                 $this->Flash->success(__('The notification has been deleted.'));
             } else {
                 $this->Flash->error(__('The notification could not be deleted. Please, try again.'));

@@ -1,22 +1,70 @@
-<div class="actions columns large-2 medium-3">
-    
-    <h3><?= __('Actions') ?></h3>
-    <ul class="side-nav">
-        <li><?= $this->Html->link(__('Index'), ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Application'), ['prefix' => 'admin', 'controller' => 'Applications', 'action' => 'add', $user->id]) ?></li>
-        <li><?= $this->Html->link(__('New Invoice'), ['prefix' => 'admin', 'controller' => 'Invoices', 'action' => 'add', $user->id]) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'add']) ?></li>
-        <li><?= $this->Form->postLink(__('Delete'), ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?></li>
-        <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'edit', $user->id]) ?></li>
-    </ul>
-
-    <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/admin');
-    $this->end(); ?>
-    
-    <?= $this->fetch('Sidebar') ?>
-    
+<div class="row">
+    <div class="col-lg-6 col-md-6">
+        <h3><i class="fa fa-user fa-fw"></i> View User: <?= h($user->full_name); ?></h3>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        </br>
+        <div class="pull-right">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-envelope-o fa-fw"></i>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a href="<?php echo $this->Url->build([
+                        'controller' => 'Notifications',
+                        'action' => 'welcome',
+                        'prefix' => 'admin',
+                        $user->id],['_full']); ?>">Send Welcome Email</a>
+                    </li>
+                    <li><a href="<?php echo $this->Url->build([
+                        'controller' => 'Applications',
+                        'action' => 'index',
+                        'prefix' => false],['_full']); ?>">++ Trigger Password Reset</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </br>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        </br>
+        <div class="pull-right">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown">
+                    Actions
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a href="<?php echo $this->Url->build([
+                        'controller' => 'Applications',
+                        'action' => 'index',
+                        'prefix' => false],['_full']); ?>">Action</a>
+                    </li>
+                    <li><a href="<?php echo $this->Url->build([
+                        'controller' => 'Applications',
+                        'action' => 'index',
+                        'prefix' => false],['_full']); ?>">Another action</a>
+                    </li>
+                    <li><a href="<?php echo $this->Url->build([
+                        'controller' => 'Applications',
+                        'action' => 'index',
+                        'prefix' => false],['_full']); ?>">Something else here</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="<?php echo $this->Url->build([
+                        'controller' => 'Applications',
+                        'action' => 'index',
+                        'prefix' => false],['_full']); ?>">Separated link</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </br>
+    </div>
 </div>
+
+
 <div class="users view large-10 medium-9 columns">
     <h2><?= h($user->full_name) ?></h2>
     <div class="row">
