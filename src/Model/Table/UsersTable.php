@@ -14,6 +14,7 @@ use Cake\Validation\Validator;
  * @property \Cake\ORM\Association\BelongsTo $Scoutgroups
  * @property \Cake\ORM\Association\HasMany $Applications
  * @property \Cake\ORM\Association\HasMany $Attendees
+ * @property \Cake\ORM\Association\HasMany $Invoices
  */
 class UsersTable extends Table
 {
@@ -26,10 +27,21 @@ class UsersTable extends Table
      */
     public function initialize(array $config)
     {
+        parent::initialize($config);
+
         $this->table('users');
-        $this->displayField('username');
+        $this->displayField('full_name');
         $this->primaryKey('id');
-        $this->addBehavior('Timestamp');
+
+        $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created' => 'new',
+                    'modified' => 'always',
+                    ]
+                ]
+            ]);
+
         $this->belongsTo('Roles', [
             'foreignKey' => 'role_id',
             'joinType' => 'INNER'
@@ -42,6 +54,9 @@ class UsersTable extends Table
             'foreignKey' => 'user_id'
         ]);
         $this->hasMany('Attendees', [
+            'foreignKey' => 'user_id'
+        ]);
+        $this->hasMany('Invoices', [
             'foreignKey' => 'user_id'
         ]);
     }
@@ -57,61 +72,66 @@ class UsersTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create');
-            
+
+        $validator
+            ->allowEmpty('authrole');
+
         $validator
             ->requirePresence('firstname', 'create')
             ->notEmpty('firstname');
-            
+
         $validator
             ->requirePresence('lastname', 'create')
             ->notEmpty('lastname');
-            
+
         $validator
             ->add('email', 'valid', ['rule' => 'email'])
             ->requirePresence('email', 'create')
             ->notEmpty('email');
-            
+
         $validator
             ->requirePresence('password', 'create')
             ->notEmpty('password');
-            
+
         $validator
             ->requirePresence('phone', 'create')
             ->notEmpty('phone');
-            
+
         $validator
             ->requirePresence('address_1', 'create')
             ->notEmpty('address_1');
-            
+
         $validator
             ->allowEmpty('address_2');
-            
+
         $validator
             ->requirePresence('city', 'create')
             ->notEmpty('city');
-            
+
         $validator
             ->requirePresence('county', 'create')
             ->notEmpty('county');
-            
+
         $validator
             ->requirePresence('postcode', 'create')
             ->notEmpty('postcode');
-            
+
         $validator
-            ->requirePresence('section', 'create')
-            ->notEmpty('section');
-            
+            ->allowEmpty('section');
+
         $validator
             ->requirePresence('username', 'create')
-            ->notEmpty('username');
+            ->notEmpty('username')
+            ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
-        //$validator
-        //    ->notEmpty('authrole', 'A role is required')
-        //    ->add('authrole', 'inList', [
-        //        'rule' => ['inList', ['admin', 'author','user']],
-        //        'message' => 'Please enter a valid role'
-        //    ]);
+        $validator
+            ->allowEmpty('osm_user_id');
+
+        $validator
+            ->allowEmpty('osm_secret');
+
+        $validator
+            ->allowEmpty('osm_section_id');
 
         return $validator;
     }

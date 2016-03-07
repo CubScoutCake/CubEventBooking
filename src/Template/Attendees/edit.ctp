@@ -1,32 +1,28 @@
 <div class="actions columns large-2 medium-3">
-    <h3><?= __('Actions') ?></h3>
-    <ul class="side-nav">
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $attendee->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $attendee->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Attendees'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Applications'), ['controller' => 'Applications', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Application'), ['controller' => 'Applications', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Allergies'), ['controller' => 'Allergies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Allergy'), ['controller' => 'Allergies', 'action' => 'add']) ?></li>
-    </ul>
+    
+    <?= $this->start('Sidebar');
+    echo $this->element('Sidebar/user');
+    $this->end(); ?>
+    
+    <?= $this->fetch('Sidebar') ?>
+    
 </div>
 <div class="attendees form large-10 medium-9 columns">
     <?= $this->Form->create($attendee) ?>
     <fieldset>
         <legend><?= __('Edit Attendee') ?></legend>
         <?php
-            echo $this->Form->input('user_id', ['options' => $users]);
             echo $this->Form->input('scoutgroup_id');
             echo $this->Form->input('role_id');
             echo $this->Form->input('firstname');
             echo $this->Form->input('lastname');
-            echo $this->Form->input('dateofbirth');
+            echo $this->Form->label('dateofbirth', 'Date of Birth');
+            echo $this->Form->day('dateofbirth');
+            echo $this->Form->month('dateofbirth');
+            echo $this->Form->year('dateofbirth', [
+                'minYear' => 1950,
+                'maxYear' => date('Y')
+            ]);
             echo $this->Form->input('phone');
             echo $this->Form->input('phone2');
             echo $this->Form->input('address_1');

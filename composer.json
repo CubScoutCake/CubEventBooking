@@ -9,7 +9,12 @@
         "cakephp/cakephp": "~3.0",
         "mobiledetect/mobiledetectlib": "2.*",
         "cakephp/migrations": "~1.0",
-        "cakephp/plugin-installer": "*"
+        "cakephp/plugin-installer": "*",
+        "dompdf/dompdf": "*",
+        "friendsofcake/cakepdf": "3.*",
+        "tecnickcom/tcpdf" : "@stable",
+        "mpdf/mpdf" : "@stable",
+        "friendsofcake/bootstrap-ui": "~0.3"
     },
     "require-dev": {
         "psy/psysh": "@stable",

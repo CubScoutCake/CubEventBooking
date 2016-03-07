@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+//use Cake\Mailer\MailerAwareTrait;
 
 /**
  * Users Controller
@@ -21,6 +22,9 @@ class UsersController extends AppController
         $this->paginate = [
             'contain' => ['Roles', 'Scoutgroups']
         ];
+        $this->paginate['conditions'] = array(
+            'scoutgroup_id' => $this->Auth->user('scoutgroup_id')
+        );
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
     }
@@ -35,29 +39,30 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => ['Roles', 'Scoutgroups', 'Applications', 'Attendees']
+            'contain' => ['Roles', 'Scoutgroups'
+            ,'Applications' => ['conditions' => ['user_id' => $this->Auth->user('id')]]
+            ,'Attendees' => [/*'contain' => 'Scoutgroups',*/ 'conditions' => ['user_id' => $this->Auth->user('id')]]]
         ]);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
     }
 
-    /**
-     * Add method
-     *
-     * @return void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
+    //use MailerAwareTrait;
+
+    public function register()
     {
-        $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->data);
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The user could not be saved. Please, try again.'));
-            }
+        $user = $this->Users->newEntity($this->request->data);
+
+        $usrData = ['section' => 'Cubs', 'authrole' => 'user'];
+        $user = $this->Users->patchEntity($user, $usrData);
+
+        if ($this->Users->save($user)) {
+            $this->Flash->success(__('You have sucesfully registered!'));
+            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+        } else {
+            $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));
         }
+
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
         $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200]);
         $this->set(compact('user', 'roles', 'scoutgroups'));
@@ -98,28 +103,23 @@ class UsersController extends AppController
      * @return void Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
-        if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
-        } else {
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
-        }
-        return $this->redirect(['action' => 'index']);
-    }
 
-    public function login()
+    public function login($eventId = null)
     {
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
             if ($user) {
                 $this->Auth->setUser($user);
-                return $this->redirect($this->Auth->redirectUrl());
+                if (isset($eventId) && $eventId >= 0) {
+                    return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
+                } else {
+                    return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
+                }  
             }
             $this->Flash->error('Your username or password is incorrect. Please try again.');
         }
+
+        $this->set(compact('eventId'));
     }
 
     public function logout()
@@ -130,7 +130,28 @@ class UsersController extends AppController
 
     public function beforeFilter(\Cake\Event\Event $event)
     {
-        $this->Auth->allow(['add']);
+        $this->Auth->allow(['register']);
+        $this->Auth->allow(['login']);
     }
     
+    
+    public function isAuthorized($user)
+    {
+        // All registered users can add articles
+        if (in_array($this->request->action, ['logout'])) {
+            return true;
+        }
+
+        // The owner of an application can edit and delete it
+        if (in_array($this->request->action, ['view', 'edit'])) {
+            $editingId = (int)$this->request->params['pass'][0];
+            if ($editingId == $user['id']) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return parent::isAuthorized($user);
+    }
 }

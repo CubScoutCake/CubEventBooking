@@ -39,20 +39,23 @@ use Cake\Routing\Router;
  * `:action` markers.
  *
  */
-Router::defaultRouteClass('Route');
 
 Router::scope('/', function ($routes) {
+
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-    $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+
+    //$routes->connect('/', ['controller' => 'Maintainance', 'action' => 'display', 'home']);
+
+    $routes->connect('/', ['controller' => 'Landing', 'action' => 'welcome']);
 
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
-    $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
+    //$routes->connect('/Landing/*', ['controller' => 'Maintainance', 'action' => 'display']);
 
     /**
      * Connect catchall routes for all controllers.
@@ -70,11 +73,57 @@ Router::scope('/', function ($routes) {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
-    $routes->fallbacks('InflectedRoute');
+    $routes->fallbacks('DashedRoute');
 });
+
+Router::prefix('admin', function ($routes) {
+    // Because you are in the admin scope,
+    // you do not need to include the /admin prefix
+    // or the admin route element.
+    $routes->connect('/', ['controller' => 'Landing', 'action' => 'adminHome', 'admin_home']);
+
+    $routes->fallbacks('DashedRoute');
+});
+
+Router::prefix('champion', function ($routes) {
+    // Because you are in the admin scope,
+    // you do not need to include the /admin prefix
+    // or the admin route element.
+    $routes->connect('/', ['controller' => 'Landing', 'action' => 'championHome', 'champion_home']);
+
+    $routes->fallbacks('DashedRoute');  
+});
+
+Router::prefix('register', function ($routes) {
+    // Because you are in the admin scope,
+    // you do not need to include the /admin prefix
+    // or the admin route element.
+    $routes->connect('/', ['controller' => 'Users', 'action' => 'register']);
+
+    $routes->fallbacks('DashedRoute');
+});
+
+Router::connect('/login', ['controller' => 'Users', 'action' => 'login']);
+
+Router::connect('/register', ['controller' => 'Users', 'action' => 'register', 'prefix' => 'register']);
+
+Router::connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
+
+//Router::scope('/info', function ($routes) {
+//    $routes->connect('/info', ['controller' => 'Users', 'action' => 'view']);
+//});
 
 /**
  * Load all plugin routes.  See the Plugin documentation on
  * how to customize the loading of plugin routes.
  */
+
+/**
+* <--- Jacob's Route's --->
+*/
+
+Router::extensions(['pdf']);
+
+Router::defaultRouteClass('DashedRoute');
+
 Plugin::routes();
