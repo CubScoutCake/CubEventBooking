@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Network\Http\Client;
 
 /**
  * Attendees Controller
@@ -61,6 +62,42 @@ class AttendeesController extends AppController
 
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The Adult has been saved.'));
+
+                $adult = $this->Attendees->get($attendee->id,['contain' => ['Roles','Scoutgroups.Districts']]);
+
+                $adultEnt = [
+                    'Entity Id' => $adult->id,
+                    'Controller' => 'Attendees',
+                    'Action' => 'Add',
+                    'User Id' => $this->Auth->user('id'),
+                    'Creation Date' => $adult->created,
+                    'Modified' => $adult->modified,
+                    'Attendee' => [
+                        'Role' => $adult->role->role,
+                        'Invested' => $adult->role->invested,
+                        'Minor' => $adult->role->minor,
+                        'Last Name' => $adult->lastname,
+                        'Scoutgroup' => $adult->scoutgroup->scoutgroup,
+                        'District' => $adult->scoutgroup->district->district
+                        ]
+                    ];
+
+                $sets = TableRegistry::get('Settings');
+                
+                $jsonAdd = json_encode($adultEnt);
+                $api_key = $sets->get(13)->text;
+                $projectId = $sets->get(14)->text;
+                $eventType = 'Action';
+                
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+                
+                $http = new Client();
+                $response = $http->post(
+                  $keenURL,
+                  $jsonAdd,
+                  ['type' => 'json']
+                );
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The Adult could not be saved. Please, try again.'));
@@ -94,6 +131,42 @@ class AttendeesController extends AppController
 
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The Cub has been saved.'));
+
+                $cub = $this->Attendees->get($attendee->id,['contain' => ['Roles','Scoutgroups.Districts']]);
+
+                $cubEnt = [
+                    'Entity Id' => $cub->id,
+                    'Controller' => 'Attendees',
+                    'Action' => 'Add',
+                    'User Id' => $this->Auth->user('id'),
+                    'Creation Date' => $cub->created,
+                    'Modified' => $cub->modified,
+                    'Attendee' => [
+                        'Role' => $cub->role->role,
+                        'Invested' => $cub->role->invested,
+                        'Minor' => $cub->role->minor,
+                        'Last Name' => $cub->lastname,
+                        'Scoutgroup' => $cub->scoutgroup->scoutgroup,
+                        'District' => $cub->scoutgroup->district->district
+                        ]
+                    ];
+
+                $sets = TableRegistry::get('Settings');
+                
+                $jsonAdd = json_encode($cubEnt);
+                $api_key = $sets->get(13)->text;
+                $projectId = $sets->get(14)->text;
+                $eventType = 'Action';
+                
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+                
+                $http = new Client();
+                $response = $http->post(
+                  $keenURL,
+                  $jsonAdd,
+                  ['type' => 'json']
+                );
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The Cub could not be saved. Please, try again.'));
@@ -154,8 +227,43 @@ class AttendeesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $attendee = $this->Attendees->get($id);
+        $attendee = $this->Attendees->get($id, ['contain' => ['Roles','Scoutgroups.Districts']]);
         if ($this->Attendees->delete($attendee)) {
+
+            $deleteEnt = [
+                'Entity Id' => $id,
+                'Controller' => 'Attendees',
+                'Action' => 'Delete',
+                'User Id' => $this->Auth->user('id'),
+                'Creation Date' => $attendee->created,
+                'Modified' => $attendee->modified,
+                'Attendee' => [
+                    'Role' => $attendee->role->role,
+                    'Invested' => $attendee->role->invested,
+                    'Minor' => $attendee->role->minor,
+                    'Last Name' => $attendee->lastname,
+                    'Scoutgroup' => $attendee->scoutgroup->scoutgroup,
+                    'District' => $attendee->scoutgroup->district->district
+                    ]
+                ];
+
+            $sets = TableRegistry::get('Settings');
+            
+            $jsonDelete = json_encode($deleteEnt);
+            $api_key = $sets->get(13)->text;
+            $projectId = $sets->get(14)->text;
+            $eventType = 'Action';
+            
+            $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+            
+            $http = new Client();
+            $response = $http->post(
+              $keenURL,
+              $jsonDelete,
+              ['type' => 'json']
+            );
+
+
             $this->Flash->success(__('The attendee has been deleted.'));
         } else {
             $this->Flash->error(__('The attendee could not be deleted. Please, try again.'));
