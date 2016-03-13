@@ -92,7 +92,13 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200]);
+        $scoutgroups = $this->Users->Scoutgroups->find('list', 
+            [
+                'keyField' => 'id',
+                'valueField' => 'scoutgroup',
+                'groupField' => 'district.district'
+            ])
+            ->contain(['Districts']);
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
     }
@@ -112,8 +118,8 @@ class UsersController extends AppController
 
         $session = $this->request->session();
 
-        if ($session->check('Reset.lgtries')) {
-            $tries = $session->read('Reset.lgtries');
+        if ($session->check('Reset.lgTries')) {
+            $tries = $session->read('Reset.lgTries');
         }
 
         if (!isset($tries)) {
@@ -127,18 +133,18 @@ class UsersController extends AppController
                 if ($user) {
                     $this->Auth->setUser($user);
                     if (isset($eventId) && $eventId >= 0) {
-                        $session->delete('Reset.lgtries');
-                        $session->delete('Reset.rstries');
+                        $session->delete('Reset.lgTries');
+                        $session->delete('Reset.rsTries');
                         return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
                     } else {
-                        $session->delete('Reset.lgtries');
-                        $session->delete('Reset.rstries');
+                        $session->delete('Reset.lgTries');
+                        $session->delete('Reset.rsTries');
                         return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
                     }  
                 }
                 $tries = $tries + 1;
                 $this->Flash->error('Your username or password is incorrect. Please try again.');
-                $session->write('Reset.lgtries', $tries);                
+                $session->write('Reset.lgTries', $tries);                
             }
 
             $this->set(compact('eventId'));
@@ -156,15 +162,22 @@ class UsersController extends AppController
         $this->viewBuilder()->layout('outside');
 
         $resForm = new ResetForm();
-        $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200]);
+
+        $scoutgroups = $this->Users->Scoutgroups->find('list', 
+            [
+                'keyField' => 'id',
+                'valueField' => 'scoutgroup',
+                'groupField' => 'district.district'
+            ])
+            ->contain(['Districts']);
         $session = $this->request->session();
 
         $this->set(compact('scoutgroups','resForm'));
 
         if ($this->request->is('post')) {
 
-            if ($session->check('Reset.rstries')) {
-                $tries = $session->read('Reset.rstries');
+            if ($session->check('Reset.rsTries')) {
+                $tries = $session->read('Reset.rsTries');
             }
 
             if (!isset($tries)) {
@@ -183,12 +196,12 @@ class UsersController extends AppController
                 $user = $found->first();
 
                 $tries = $tries + 1;
-                $session->write('Reset.rstries', $tries);
+                $session->write('Reset.rsTries', $tries);
 
                 if ($count == 1) {
                     // Success in Resetting Triggering Reset - Bouncing to Reset.
-                    $session->delete('Reset.lgtries');
-                    $session->delete('Reset.rstries');
+                    $session->delete('Reset.lgTries');
+                    $session->delete('Reset.rsTries');
                     return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']); 
                 } else {
                     $this->Flash->error('This user was not found in the system.');

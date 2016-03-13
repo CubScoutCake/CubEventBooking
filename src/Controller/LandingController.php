@@ -76,19 +76,19 @@ class LandingController extends AppController
     public function welcome($eventId = null)
     {
         // Set the layout.
-        $this->viewBuilder()->layout('outside');
+        $this->viewBuilder()->layout('start');
 
         if ($this->request->is('get'))
         {
             $usr = $this->Auth->user('id');
             if (isset($usr))
             {
-                if ($this->Auth->user('authrole') === 'admin')
-                { return $this->redirect(['controller' => 'Landing', 'prefix' => 'admin', 'action' => 'admin_home']);
-                } elseif ($this->Auth->user('authrole') === 'champion')
-                { return $this->redirect(['controller' => 'Landing', 'prefix' => 'champion', 'action' => 'champion_home']);
-                } else
-                { return $this->redirect(['controller' => 'Landing', 'prefix' => false, 'action' => 'user_home']);
+                if ($this->Auth->user('authrole') === 'admin') { 
+                    return $this->redirect(['controller' => 'Landing', 'prefix' => 'admin', 'action' => 'admin_home']);
+                } elseif ($this->Auth->user('authrole') === 'champion') {
+                    return $this->redirect(['controller' => 'Landing', 'prefix' => 'champion', 'action' => 'champion_home']);
+                } else { 
+                    return $this->redirect(['controller' => 'Landing', 'prefix' => false, 'action' => 'user_home']);
                 }
             }
         }
