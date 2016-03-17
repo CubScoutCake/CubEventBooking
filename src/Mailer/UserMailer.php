@@ -32,7 +32,7 @@ class UserMailer extends Mailer
             //->send();                          
     }
 
-    public function resetPassword($user,$notification) {
+    public function passres($user, $random) {
         $this->template('pwreset', 'default')
             ->emailFormat('html')
             ->to([$user->email => $user->full_name])
@@ -44,23 +44,12 @@ class UserMailer extends Mailer
                     , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
                     , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
             ->viewVars(['username' => $user->username
-                    , 'date_created' => $notification->created
+                    , 'date_created' => $user->created
                     , 'full_name' => $user->full_name
+                    , 'token' => $random
+                    , 'uid' => $user->id
                     ])
-            ->helpers(['Html', 'Text', 'Time'])
-            ->set(['token' => $user->token]);
+            ->helpers(['Html', 'Text', 'Time']);
             //->send();
     }
-
-    /*public function implementedEvents() {
-        return [
-            'Model.afterSave' => 'onRegistration'
-        ];
-    }
-
-    public function onRegistration(Event $event, Entity $entity, ArrayObject $options) {
-        if ($entity->isNew()) {
-            $this->send('welcome', [$entity]);
-        }
-    }*/
 }

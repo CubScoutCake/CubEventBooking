@@ -1,11 +1,3 @@
-<div class="actions columns large-2 medium-3">
-    <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/mod');
-    echo $this->element('Sidebar/user');
-    $this->end(); ?>
-
-    <?= $this->fetch('Sidebar') ?>
-</div>
 <div class="users form large-10 medium-9 columns">
     <?= $this->Form->create($user) ?>
     <fieldset>

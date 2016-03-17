@@ -3,7 +3,13 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use App\Form\ResetForm;
-//use Cake\Mailer\MailerAwareTrait;
+use App\Form\PasswordForm;
+
+use Cake\I18n\Time;
+use Cake\Mailer\MailerAwareTrait;
+// use Cake\Utility\Hash;
+use Cake\Utility\Security;
+use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
@@ -12,6 +18,7 @@ use App\Form\ResetForm;
  */
 class UsersController extends AppController
 {
+    use MailerAwareTrait;
 
     /**
      * Index method
@@ -40,9 +47,9 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => ['Roles', 'Scoutgroups'
-            ,'Applications' => ['conditions' => ['user_id' => $this->Auth->user('id')]]
-            ,'Attendees' => [/*'contain' => 'Scoutgroups',*/ 'conditions' => ['user_id' => $this->Auth->user('id')]]]
+            'contain' => ['Roles', 'Scoutgroups','Invoices.Applications'
+            ,'Applications.Scoutgroups','Applications.Events'
+            ,'Attendees.Scoutgroups' ]
         ]);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
@@ -84,6 +91,18 @@ class UsersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
+
+            $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
+                ,'lastname' => ucwords(strtolower($user->lastname))
+                ,'address_1' => ucwords(strtolower($user->address_1))
+                ,'address_2' => ucwords(strtolower($user->address_2))
+                ,'city' => ucwords(strtolower($user->city))
+                ,'county' => ucwords(strtolower($user->county))
+                ,'postcode' => strtoupper($user->postcode)
+                ,'section' => ucwords(strtolower($user->section))];
+
+            $user = $this->Users->patchEntity($user, $upperUser);
+            
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -162,6 +181,7 @@ class UsersController extends AppController
         $this->viewBuilder()->layout('outside');
 
         $resForm = new ResetForm();
+        $sets = TableRegistry::get('Settings');
 
         $scoutgroups = $this->Users->Scoutgroups->find('list', 
             [
@@ -202,7 +222,65 @@ class UsersController extends AppController
                     // Success in Resetting Triggering Reset - Bouncing to Reset.
                     $session->delete('Reset.lgTries');
                     $session->delete('Reset.rsTries');
-                    return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']); 
+
+                    $user = $this->Users->get($user->id);
+
+                    $now = Time::now();
+
+                    $rMax = $sets->get(16)->text;
+                    $rMin = $sets->get(17)->text;
+
+                    $random = rand($rMin,$rMax);
+
+                    $string = 'Reset Success' . ( $user->id * $now->day ) . $random . $now->year . $now->month;
+
+                    $token = Security::hash($string);
+
+                    $newToken = ['reset' => $token];
+
+                    $user = $this->Users->patchEntity($user, $newToken);
+
+                    if ($this->Users->save($user)) {
+
+                        $this->getMailer('User')->send('passres', [$user, $random]);
+
+                    /*$deleteEnt = [
+                        'Entity Id' => $notification->id,
+                        'Controller' => 'Notifications',
+                        'Action' => 'Delete',
+                        'User Id' => $this->Auth->user('id'),
+                        'Creation Date' => $notification->created,
+                        'Modified' => $notification->read_date,
+                        'Notification' => [
+                            'Type' => $notification->notificationtype_id,
+                            'Ref Id' => $notification->link_id,
+                            'Action' => $notification->link_action,
+                            'Controller' => $notification->link_controller,
+                            'Source' => $notification->notification_source,
+                            'Header' => $notification->notification_header
+                            ]
+                        ]
+                    
+                    $jsonWelcome = json_encode($welcomeData);
+                    $api_key = $sets->get(13)->text;
+                    $projectId = $sets->get(14)->text;
+                    $eventType = 'UserWelcome';
+                    
+                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+                    
+                    $http = new Client();
+                    $response = $http->post(
+                      $keenURL,
+                      $jsonWelcome,
+                      ['type' => 'json']
+                    );*/
+
+
+
+                        return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
+                    } else {
+                        $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                    }
                 } else {
                     $this->Flash->error('This user was not found in the system.');
                 }
@@ -211,8 +289,64 @@ class UsersController extends AppController
                 return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
             }
         }
+    }
 
+    public function token($userid = null, $decryptor = null) {
 
+        $resettor = $this->Users->get($userid);
+
+        $cipher = $resettor->reset;
+
+        $now = Time::now();
+
+        $string = 'Reset Success' . ( $resettor->id * $now->day ) . $decryptor . $now->year . $now->month;
+
+        $test = Security::hash($string);
+
+        if ($cipher == $test) {
+
+            $PasswordForm = new PasswordForm();
+            $this->set(compact('PasswordForm'));
+
+            if ($this->request->is('post')) {
+
+                $fmPassword = $this->request->data['newpw'];
+                $fmConfirm = $this->request->data['confirm'];
+
+                if ($fmConfirm == $fmPassword) {
+
+                    $fmPostcode = $this->request->data['postcode'];
+                    $fmPostcode = str_replace(" ","",strtoupper($fmPostcode));
+
+                    $usPostcode = $resettor->postcode;
+                    $usPostcode = str_replace(" ","",strtoupper($usPostcode));
+
+                    if ($usPostcode == $fmPostcode) {
+
+                        $newPw = ['password' => $fmPassword
+                            ,'reset' => 'No Longer Active'];
+
+                        $resettor = $this->Users->patchEntity($resettor, $newPw);
+
+                        if ($this->Users->save($resettor)) {
+
+                            return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'login']);
+                        } else {
+                            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                        }
+                    } else {
+                        $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                    }
+                } else {
+                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                }
+            } else {
+                $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            }
+        } else {
+            $this->Flash->success(__('The user has been saved.'));
+            return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
+        }
 
     }
 
@@ -227,6 +361,7 @@ class UsersController extends AppController
         $this->Auth->allow(['register']);
         $this->Auth->allow(['login']);
         $this->Auth->allow(['reset']);
+        $this->Auth->allow(['token']);
     }
     
     

@@ -181,6 +181,7 @@ Request::addDetector('tablet', function ($request) {
  */
 
 Plugin::load('DataTables', ['bootstrap' => false, 'routes' => false]);
+Plugin::load('CsvView');
 
 Plugin::load('Migrations');
 Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);

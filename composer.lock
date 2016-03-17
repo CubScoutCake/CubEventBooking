@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "90b205b9b0b050ec20dbfaf06fc64a41",
-    "content-hash": "c2ed1160d9157f2a9937c38e00a55378",
+    "hash": "404ce358aa4f57082a10b1d388e98116",
+    "content-hash": "ee9a0965e6918d945e1ccfd8ea4d56c6",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -128,16 +128,16 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "3.1.11",
+            "version": "3.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "4f8d53c09919bd1f7108050138047f61cf1fb31e"
+                "reference": "707d50b962c72656abcc46ddaa9538d2d708e483"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/4f8d53c09919bd1f7108050138047f61cf1fb31e",
-                "reference": "4f8d53c09919bd1f7108050138047f61cf1fb31e",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/707d50b962c72656abcc46ddaa9538d2d708e483",
+                "reference": "707d50b962c72656abcc46ddaa9538d2d708e483",
                 "shasum": ""
             },
             "require": {
@@ -194,7 +194,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-02-21 19:43:30"
+            "time": "2016-03-14 03:14:44"
         },
         {
             "name": "cakephp/migrations",
@@ -376,16 +376,16 @@
         },
         {
             "name": "friendsofcake/bootstrap-ui",
-            "version": "v0.4.0",
+            "version": "v0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfCake/bootstrap-ui.git",
-                "reference": "a696d5acaa2f3fc8bc2c8b77ef429791081be926"
+                "reference": "1030a62bd8c04aece85824ffc8cc97703403995c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfCake/bootstrap-ui/zipball/a696d5acaa2f3fc8bc2c8b77ef429791081be926",
-                "reference": "a696d5acaa2f3fc8bc2c8b77ef429791081be926",
+                "url": "https://api.github.com/repos/FriendsOfCake/bootstrap-ui/zipball/1030a62bd8c04aece85824ffc8cc97703403995c",
+                "reference": "1030a62bd8c04aece85824ffc8cc97703403995c",
                 "shasum": ""
             },
             "require": {
@@ -422,7 +422,7 @@
                 "cakephp",
                 "twitter"
             ],
-            "time": "2016-02-13 07:09:35"
+            "time": "2016-03-13 10:32:02"
         },
         {
             "name": "friendsofcake/cakepdf",
@@ -467,6 +467,77 @@
             "description": "CakePHP plugin for creating and/or rendering Pdfs, several Pdf engines supported.",
             "homepage": "http://github.com/friendsofcake/CakePdf",
             "time": "2015-11-02 12:01:45"
+        },
+        {
+            "name": "friendsofcake/cakephp-csvview",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfCake/cakephp-csvview.git",
+                "reference": "ef829a095991d777f3b04c4cb0ae0be7b5257f19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfCake/cakephp-csvview/zipball/ef829a095991d777f3b04c4cb0ae0be7b5257f19",
+                "reference": "ef829a095991d777f3b04c4cb0ae0be7b5257f19",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "php": ">=5.4.16"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "CsvView\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ADmad",
+                    "homepage": "https://github.com/admad",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Mark Scherer",
+                    "homepage": "https://github.com/dereuromark",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Joshua Paling",
+                    "homepage": "https://github.com/joshuapaling",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Gaurish Sharma",
+                    "homepage": "https://github.com/gaurish",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Gregory Gaskill",
+                    "homepage": "https://github.com/chronon",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Jose Diaz-Gonzalez",
+                    "email": "email@josediazgonzalez.com",
+                    "homepage": "http://josediazgonzalez.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A CSV View class for CakePHP 3.x",
+            "homepage": "http://github.com/friendsofcake/cakephp-csvview",
+            "keywords": [
+                "cakephp",
+                "csv",
+                "export",
+                "view"
+            ],
+            "time": "2016-01-20 20:59:55"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -950,7 +1021,7 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
@@ -1446,16 +1517,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.7.1",
+            "version": "v0.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "5e8cedbe0a3681f18782594eefc78423f8401fc8"
+                "reference": "e64e10b20f8d229cac76399e1f3edddb57a0f280"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/5e8cedbe0a3681f18782594eefc78423f8401fc8",
-                "reference": "5e8cedbe0a3681f18782594eefc78423f8401fc8",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/e64e10b20f8d229cac76399e1f3edddb57a0f280",
+                "reference": "e64e10b20f8d229cac76399e1f3edddb57a0f280",
                 "shasum": ""
             },
             "require": {
@@ -1514,7 +1585,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2016-02-27 18:59:18"
+            "time": "2016-03-09 05:03:14"
         },
         {
             "name": "symfony/var-dumper",

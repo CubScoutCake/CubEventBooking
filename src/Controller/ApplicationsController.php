@@ -415,6 +415,9 @@ class ApplicationsController extends AppController
      */
     public function edit($id = null)
     {
+        $evts = TableRegistry::get('Events');
+
+
         $application = $this->Applications->get($id, [
             'contain' => ['Attendees']
         ]);

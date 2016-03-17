@@ -15,7 +15,8 @@
         "tecnickcom/tcpdf" : "@stable",
         "mpdf/mpdf" : "@stable",
         "friendsofcake/bootstrap-ui": "~0.3",
-        "fheider/cakephp-datatables": "dev-master"
+        "fheider/cakephp-datatables": "dev-master",
+        "friendsofcake/cakephp-csvview": "~2.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",

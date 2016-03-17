@@ -31,8 +31,8 @@
             echo $this->Form->input('county');
             echo $this->Form->input('postcode');
             echo $this->Form->input('nightsawaypermit');
-            echo $this->Form->input('applications._ids', ['options' => $applications]);
-            echo $this->Form->input('allergies._ids', ['options' => $allergies]);
+            echo $this->Form->input('applications._ids', ['options' => $applications, 'multiple' => 'checkbox']);
+            echo $this->Form->input('allergies._ids', ['options' => $allergies, 'multiple' => 'checkbox']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

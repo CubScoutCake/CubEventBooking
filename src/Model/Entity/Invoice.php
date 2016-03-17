@@ -40,7 +40,7 @@ class Invoice extends Entity
 
     protected function _getDisplayCode()
     {
-        return 'Invoice ' . $this->_properties['id'];
+        return 'INV #' . $this->_properties['id'];
     }
 
     protected $_virtual = ['balance','display_code'];

@@ -14,8 +14,8 @@
                     'maxYear' => date('Y') - 5,
                 ]);
                 echo $this->Form->input('phone', ['label' =>'Emergency Contact Number']);
-                echo $this->Form->input('applications._ids', ['options' => $applications]);
-                echo $this->Form->input('allergies._ids', ['options' => $allergies, 'label' => 'Allergies (hold CTRL to select or deselect multiple)']);
+                echo $this->Form->input('applications._ids', ['options' => $applications, 'multiple' => 'checkbox']);
+                echo $this->Form->input('allergies._ids', ['options' => $allergies, 'multiple' => 'checkbox']);
             ?>
         </fieldset>
         <?= $this->Form->button(__('Submit'),['class' => 'btn-success']) ?>

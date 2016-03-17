@@ -7,7 +7,7 @@ RewriteRule    (.*) webroot/$1    [L]
 RewriteCond %{HTTP_HOST} ^hertcubdev.uk$ [NC,OR]
 RewriteCond %{HTTP_HOST} ^hertcubdev.uk$
 RewriteCond %{HTTP_HOST} ^(.*)\hertcubdev.uk
-RewriteRule ^(.*)$ http://hertcubdev[L,NC,QSA]
+RewriteRule ^(.*)$ https://hertcubdev[L,NC,QSA]
 </IfModule>
 
 #RewriteCond %{REQUEST_URI} !hertscubs/webroot/

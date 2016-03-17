@@ -121,7 +121,7 @@ Router::connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
 /**
 * <--- Jacob's Route's --->
 */
-
+Router::extensions('csv');
 //Router::extensions(['pdf']);
 Plugin::routes();
 Router::defaultRouteClass('DashedRoute');

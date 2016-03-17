@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-lg-6 col-md-6">
-        <h3><i class="fa fa-calendar-o fa-fw"></i> <?= h($event->name) ?></h3>
+    <div class="col-lg-10 col-md-10">
+        <h1 class="page-header"><i class="fa fa-calendar-o fa-fw"></i> <?= h($event->name) ?></h1>
     </div>
-    <div class="col-lg-6 col-md-6">
+    <div class="col-lg-2 col-md-2">
         </br>
         <div class="pull-right">
             <div class="btn-group">
@@ -26,7 +26,10 @@
 
 <div class="row">
     <div class="col-lg-6 col-md-6">
-        <div class="panel panel-primary">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-key fa-fw"></i> Key Event Information
+            </div>
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -38,9 +41,45 @@
                             <th><?= __('Location') ?></th>
                             <td><?= h($event->location) ?></td>
                         </tr>
+                    </table>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
                         <tr>
-                            <th><?= __('Tagline Text') ?></th>
-                            <td></td>
+                            <th><?= __('Event Start') ?></th>
+                            <th><?= __('Event End') ?></th>
+                        </tr>
+                        <tr>
+                            <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-yy HH:mm') ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-envelope-o fa-fw"></i> Event Organiser Contact
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tr>
+                            <th><?= __('Contact Person') ?></th>
+                            <td><?= h($event->admin_full_name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Contact Email') ?></th>
+                            <td><?= $this->Text->autoLink($event->admin_email) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Address') ?></th>
+                            <td><?= h($event->address) ?> </br>
+                                <?= h($event->city) ?> </br>
+                                <?= h($event->county) ?> </br>
+                                <?= h($event->postcode) ?></td>
                         </tr>
                     </table>
                 </div>
@@ -49,80 +88,22 @@
     </div>
 </div>
 
-
-<div class="events view large-10 medium-9 columns content">
-    <h3></h3>
-    <table class="goat">
-        <tr>
-            <th><?= __('Full Name') ?></th>
-            <td><?= h($event->full_name) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Location') ?></th>
-            <td><?= h($event->location) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Tagline Text') ?></th>
-            <td></td>
-        </tr>
-    </table>
-
-    <table class="goat">
-        <tr>
-            <th><?= __('Contact Person') ?></th>
-            <td><?= h($event->admin_full_name) ?></td>
-            <td><?= $this->Text->autoLink($event->admin_email) ?></td>
-        </tr>
-    </table>
-
-    <table class="goat">
-        <tr>
-            <th><?= __('Address') ?></th>
-            <td><?= h($event->admin_full_name) ?></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><?= h($event->address) ?></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><?= h($event->city) ?></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><?= h($event->county) ?></td>
-        </tr>
-        <tr>
-            <th></th>
-            <td><?= h($event->postcode) ?></td>
-            
-        </tr>
-        <tr>
-            <th><?= __('Event Start') ?></th>
-            <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-yy HH:mm') ?></td>
-            <th><?= __('Date Created') ?></th>
-            <td><?= $this->Time->i18nFormat($event->created, 'dd-MMM-yy HH:mm') ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Event End') ?></th>
-            <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-yy HH:mm') ?></td>
-            <th><?= __('Date Modified') ?></th>
-            <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
-        </tr>
-    </table>
-
-    <p><strong><?= h($event->tagline_text) ?></strong></p>
-
-    <table class="goat">
-        <tr>
-            <th><?= $this->Html->image($event->logo, ['alt' => $event->alt_text, 'height' => $logoHeight, 'width' => $logoWidth]); ?></th>
-            <td><p><?= h($event->intro_text) ?></p></td>
-        </tr>
-    </table>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+            <?= $this->Html->image($event->logo, ['alt' => $event->alt_text, 'height' => $logoHeight, 'width' => $logoWidth]); ?>
+            </div>
+            <div class="panel-footer">
+                <p><?= h($event->intro_text) ?></p>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-primary">
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="fa fa-gbp fa-fw"></i> Prices
             </div>

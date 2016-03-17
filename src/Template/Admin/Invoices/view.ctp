@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-6 col-md-6">
-        <h3><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h3>
+        <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
     <div class="col-lg-6 col-md-6">
         </br>
@@ -14,7 +14,7 @@
                     <li><a href="<?php echo $this->Url->build([
                         'controller' => 'Invoices',
                         'action' => 'regenerate',
-                        'prefix' => false,
+                        'prefix' => 'admin',
                         $invoice->id],['_full']); ?>">Update Invoice</a>
                     </li>
                 </ul>

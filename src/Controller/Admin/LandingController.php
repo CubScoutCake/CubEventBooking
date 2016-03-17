@@ -46,16 +46,18 @@ class LandingController extends AppController
         $invs = TableRegistry::get('Invoices');
         $usrs = TableRegistry::get('Users');
         $pays = TableRegistry::get('Payments');
+        $sets = TableRegistry::get('Settings');
+        $atts = TableRegistry::get('Attendees');
 
         $now = Time::now();
         $userId = $this->Auth->user('id');
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users','Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(5);
+        $applications = $apps->find()->contain(['Users','Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(10);
         $events = $evs->find()->where(['end >' => $now])->contain(['Settings'])->order(['Events.start' => 'ASC']);
-        $invoices = $invs->find()->contain(['Users','Applications'])->order(['Invoices.modified' => 'DESC'])->limit(5);
-        $users = $usrs->find()->contain(['Roles','Scoutgroups'])->order(['Users.modified' => 'DESC'])->limit(5);
-        $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(5);
+        $invoices = $invs->find()->contain(['Users','Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
+        $users = $usrs->find()->contain(['Roles','Scoutgroups'])->order(['Users.modified' => 'DESC'])->limit(10);
+        $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
 
         // Pass to View
         $this->set(compact('applications', 'events','invoices','users','payments'));
@@ -66,9 +68,15 @@ class LandingController extends AppController
         $cntInvoices = $invs->find('all')->count('*');
         $cntUsers = $usrs->find('all')->count('*');
         $cntPayments = $pays->find('all')->count('*');
+        $cntAttendees = $atts->find('all')->count('*');
 
         // Pass to View
-        $this->set(compact('cntApplications', 'cntEvents','cntInvoices','cntUsers','cntPayments','userId'));
+        $this->set(compact('cntApplications', 'cntEvents','cntInvoices','cntUsers','cntPayments','cntAttendees','userId'));
+
+        $keenRead = $sets->get(15)->text;
+        $keenProject = $sets->get(14)->text;
+
+        $this->set(compact('keenRead', 'keenProject'));
 
     }
 }

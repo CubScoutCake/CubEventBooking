@@ -151,13 +151,13 @@ class NotificationsController extends AppController
                   ['type' => 'json']
                 );
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['prefix' => 'admin', 'controller' => 'Users',  'action' => 'view', $userId]);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['prefix' => 'admin',  'controller' => 'Landing', 'action' => 'admin_home']);
         }
     }
 

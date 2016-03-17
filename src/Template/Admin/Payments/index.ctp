@@ -6,6 +6,7 @@
                 <thead>
                     <tr>
                         <th><?= $this->Paginator->sort('id', 'Payment Id') ?></th>
+                        <th class="actions"><?= __('Actions') ?></th>
                         <th><?= $this->Paginator->sort('value', 'Payment Value') ?></th>
                         <th><?= $this->Paginator->sort('created', 'Date Recorded') ?></th>
                         <th><?= $this->Paginator->sort('paid', 'Date Paid') ?></th>
@@ -16,6 +17,20 @@
                     <?php foreach ($payments as $payment): ?>
                     <tr>
                         <td><?= $this->Number->format($payment->id) ?></td>
+                        <td class="actions">
+                            <div class="dropdown btn-group">
+                                <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu " role="menu">
+                                    <li><?= $this->Html->link(__('View'), ['action' => 'view', $payment->id]) ?></li>
+                                    <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $payment->id]) ?></li>
+                                    <li><?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $payment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $payment->id)]) ?></li>
+                                    <li class="divider"></li>
+                                    <li><?= $this->Html->link(__('Notify'), ['controller' => 'Notifications', 'action' => 'notify_payment', $payment->id]) ?></li>
+                                </ul>
+                            </div>
+                        </td>
                         <td><?= $this->Number->currency($payment->value,'GBP') ?></td>
                         <td><?= $this->Time->i18nFormat($payment->created, 'dd-MMM-yy HH:mm') ?></td>
                         <td><?= $this->Time->i18nFormat($payment->paid, 'dd-MMM-yy') ?></td>

@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-lg-6 col-md-6">
-        <h3><i class="fa fa-tasks fa-fw"></i> Application <?= h($application->display_code) ?></h3>
+    <div class="col-lg-10 col-md-10">
+        <h1 class="page-header"><i class="fa fa-tasks fa-fw"></i> Application <?= h($application->display_code) ?></h1>
     </div>
-    <div class="col-lg-6 col-md-6">
+    <div class="col-lg-2 col-md-2">
         </br>
         <div class="pull-right">
             <div class="btn-group">

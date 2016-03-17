@@ -337,7 +337,7 @@ $cakeDescription = 'HertsCubs Booking System';
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
+                        <!--<li class="sidebar-search">
                             <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
@@ -345,9 +345,8 @@ $cakeDescription = 'HertsCubs Booking System';
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
+                            </div> 
+                        </li>-->
                         <?php if ($this->request->session()->read('Auth.User.authrole') === 'admin'): ?>
                         <li>
                             <a href="<?php echo $this->Url->build([
@@ -420,6 +419,23 @@ $cakeDescription = 'HertsCubs Booking System';
                                 'controller' => 'Attendees',
                                 'action' => 'adult',
                                 'prefix' => false]); ?>">Add New Adult</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-exclamation fa-fw"></i> Allergies <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Allergies',
+                                        'action' => 'index',
+                                        'prefix' => false]); ?>">View Allergies</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Allergies',
+                                        'action' => 'add',
+                                        'prefix' => false]); ?>">Add an Allergy</a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

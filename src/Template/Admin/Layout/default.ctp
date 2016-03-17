@@ -46,6 +46,7 @@ $cakeDescription = 'HertsCubs Booking System';
     <?php echo $this->Html->css('font-awesome.css'); ?>
     <?php echo $this->Html->css('print.css'); ?>
     <?php echo $this->Html->css('https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css'); ?>
+    <?php echo $this->Html->css('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'); ?>
 
 
     <!-- Old Style CSS -->
@@ -374,7 +375,7 @@ $cakeDescription = 'HertsCubs Booking System';
                                 'prefix' => false]); ?>"><i class="fa fa-dashboard fa-fw"></i> User Home</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-calendar-o fa-fw"></i> Events<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-calendar-o fa-fw"></i> Events <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="<?php echo $this->Url->build([
@@ -382,16 +383,62 @@ $cakeDescription = 'HertsCubs Booking System';
                                 'action' => 'index',
                                 'prefix' => 'admin']); ?>">View Events</a>
                                 </li>
+                                <li>
+                                    <a href="<?php echo $this->Url->build([
+                                'controller' => 'Events',
+                                'action' => 'add',
+                                'prefix' => 'admin']); ?>">Add a New Event</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-chevron-circle-down fa-fw"></i> Discounts <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Discounts',
+                                        'action' => 'index',
+                                        'prefix' => 'admin']); ?>">View Discounts</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Discounts',
+                                        'action' => 'add',
+                                        'prefix' => 'admin']); ?>">Add a Discount</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-user fa-fw"></i> Users<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-user fa-fw"></i> Users <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="<?php echo $this->Url->build([
                                 'controller' => 'Users',
                                 'action' => 'index',
                                 'prefix' => 'admin']); ?>">View Users</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $this->Url->build([
+                                'controller' => 'Users',
+                                'action' => 'add',
+                                'prefix' => 'admin']); ?>">Add User</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-terminal fa-fw"></i> Roles <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Roles',
+                                        'action' => 'index',
+                                        'prefix' => 'admin']); ?>">View Roles</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Roles',
+                                        'action' => 'add',
+                                        'prefix' => 'admin']); ?>">Add a Role</a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>
@@ -425,14 +472,25 @@ $cakeDescription = 'HertsCubs Booking System';
                                 <li>
                                     <a href="<?php echo $this->Url->build([
                                 'controller' => 'Attendees',
-                                'action' => 'cub',
-                                'prefix' => 'admin']); ?>">Add New Young Person</a>
+                                'action' => 'add',
+                                'prefix' => 'admin']); ?>">Add New Attendee</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo $this->Url->build([
-                                'controller' => 'Attendees',
-                                'action' => 'adult',
-                                'prefix' => 'admin']); ?>">Add New Adult</a>
+                                    <a href="#"><i class="fa fa-exclamation fa-fw"></i> Allergies <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Allergies',
+                                        'action' => 'index',
+                                        'prefix' => 'admin']); ?>">View Allergies</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Allergies',
+                                        'action' => 'add',
+                                        'prefix' => 'admin']); ?>">Add an Allergy</a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -473,48 +531,89 @@ $cakeDescription = 'HertsCubs Booking System';
                             </ul>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> More<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Districts <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
-                                'controller' => 'Scoutgroups',
-                                'action' => 'index',
-                                'prefix' => 'admin']); ?>">View Scout Groups</a>
-                                </li>
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
-                                'controller' => 'Champions',
-                                'action' => 'index',
-                                'prefix' => 'admin']); ?>">View Champions</a>
-                                </li>
                                 <li>
                                     <a href="<?php echo $this->Url->build([
                                 'controller' => 'Districts',
                                 'action' => 'index',
                                 'prefix' => 'admin']); ?>">View Districts</a>
                                 </li>
-                                <!--<li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
+                                <li>
+                                    <a href="<?php echo $this->Url->build([
+                                'controller' => 'Districts',
+                                'action' => 'add',
+                                'prefix' => 'admin']); ?>">Add a District</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-paw fa-fw"></i> Scout Groups <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="#">Third Level Item</a>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Scoutgroups',
+                                        'action' => 'index',
+                                        'prefix' => 'admin']); ?>">View Scout Groups</a>
                                         </li>
                                         <li>
-                                            <a href="#">Third Level Item</a>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Scoutgroups',
+                                        'action' => 'add',
+                                        'prefix' => 'admin']); ?>">Add a Scout Group</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-life-ring fa-fw"></i> Champions <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Champions',
+                                        'action' => 'index',
+                                        'prefix' => 'admin']); ?>">View Champions</a>
                                         </li>
                                         <li>
-                                            <a href="#">Third Level Item</a>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Champions',
+                                        'action' => 'add',
+                                        'prefix' => 'admin']); ?>">Add a Champion</a>
+                                        </li>
+                                    </ul>
+                                </li>                                
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-gear fa-fw"></i> Settings <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="<?php echo $this->Url->build([
+                                'controller' => 'Settings',
+                                'action' => 'index',
+                                'prefix' => 'admin']); ?>">View Settings</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $this->Url->build([
+                                'controller' => 'Settings',
+                                'action' => 'add',
+                                'prefix' => 'admin']); ?>">Add a Setting</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-gears fa-fw"></i> Setting Types <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Settingtypes',
+                                        'action' => 'index',
+                                        'prefix' => 'admin']); ?>">View Setting Types</a>
                                         </li>
                                         <li>
-                                            <a href="#">Third Level Item</a>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Settingtypes',
+                                        'action' => 'add',
+                                        'prefix' => 'admin']); ?>">Add a Setting Type</a>
                                         </li>
-                                    </ul> -->
-                                    <!-- /.nav-third-level -->
+                                    </ul>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                            <!-- /.nav-second-level -->
                         </li>
                     </ul>
                 </div>

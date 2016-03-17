@@ -377,108 +377,108 @@ class OsmController extends AppController
 		}
 	}
 
-		public function sync()
+	public function sync()
+	{
+		$settings = TableRegistry::get('Settings');
+		$users = TableRegistry::get('Users');
+		$atts = TableRegistry::get('Attendees');
+
+		$session = $this->request->session();
+
+		$user = $users->get($this->Auth->user('id'));
+
+		$now = Time::now();
+
+		$api_id = $settings->get('10')->text;
+		$api_token = $settings->get('11')->text;
+		$api_base = $settings->get('12')->text;
+
+		$user_osm_id = $user->osm_user_id;
+		$user_osm_secret = $user->osm_secret;
+		$user_osm_section = $user->osm_section_id;
+		$user_osm_term = $user->osm_current_term;
+
+		if (is_null($user_osm_secret)) {
+			$this->Flash->error(__('Please link your account first'));
+			return $this->redirect(['action' => 'link']);
+		} /*elseif (!$session->check('OSM.PWHash')) {
+			$this->Flash->error(__('Please enter your password again as it is not stored.'));
+			return $this->redirect(['action' => 'link']);
+		} else {
+
+			// Receive Password to Decrypt Secret
+		    $pwHash = $session->read('OSM.PWHash');
+		    $pw = Security::decrypt($pwHash, $api_token);
+
+		    // Use Password to Decrypt Secret
+		    $decr_osm_secret = Security::decrypt($user_osm_secret, $pwHash);
+		    if ($decr_osm_secret != false) {
+		    	$secret = $decr_osm_secret;
+		    } else {
+		    	$this->Flash->error(__('There was a magic error.'));
+		    }
+		}*/
+
+		$http = new Client([
+		  'host' => $api_base,
+		  'scheme' => 'https'
+		]);
+
+		$url = '/ext/members/contact/grid/'
+			. '?action=getMembers';
+
+		$response = $http->post($url, [
+			'userid' => $user_osm_id, 
+			'secret' => '94c6d3ddc024c456005348db40136783', //$user_osm_secret, 
+			'token' => $api_token, 
+			'apiid' => $api_id,
+			'section_id' => $user_osm_section,
+			'term_id' => $user_osm_term
+		]);
+
+		if ($response->isOk())
 		{
-			$settings = TableRegistry::get('Settings');
-			$users = TableRegistry::get('Users');
-			$atts = TableRegistry::get('Attendees');
+			$body = $response->json;
+			
+			//$cubs = Hash::extract($body, 'items');
+			//$cubs = Hash::normalize($cubs);
 
-			$session = $this->request->session();
+			$cubs = $body->data;
 
-			$user = $users->get($this->Auth->user('id'));
+			foreach ($cubs as $cub) {
 
-			$now = Time::now();
+				if ($cub->active == true) {
+					$cub_data = [
+						'firstname' => $cub->first_name,
+						'lastname' => $cub->last_name,
+						'osm_id' => $cub->member_id,
+						'user_id' => $user->id,
+						'scoutgroup_id' => $user->scoutgroup_id,
+						'dateofbirth' => $cub->date_of_birth,
+						'osm_generated' => true];
 
-			$api_id = $settings->get('10')->text;
-			$api_token = $settings->get('11')->text;
-			$api_base = $settings->get('12')->text;
+					$atts->newEntity($att, $cub_data);
 
-			$user_osm_id = $user->osm_user_id;
-			$user_osm_secret = $user->osm_secret;
-			$user_osm_section = $user->osm_section_id;
-			$user_osm_term = $user->osm_current_term;
-
-			if (is_null($user_osm_secret)) {
-				$this->Flash->error(__('Please link your account first'));
-				return $this->redirect(['action' => 'link']);
-			} /*elseif (!$session->check('OSM.PWHash')) {
-				$this->Flash->error(__('Please enter your password again as it is not stored.'));
-				return $this->redirect(['action' => 'link']);
-			} else {
-
-				// Receive Password to Decrypt Secret
-			    $pwHash = $session->read('OSM.PWHash');
-			    $pw = Security::decrypt($pwHash, $api_token);
-
-			    // Use Password to Decrypt Secret
-			    $decr_osm_secret = Security::decrypt($user_osm_secret, $pwHash);
-			    if ($decr_osm_secret != false) {
-			    	$secret = $decr_osm_secret;
-			    } else {
-			    	$this->Flash->error(__('There was a magic error.'));
-			    }
-			}*/
-
-			$http = new Client([
-			  'host' => $api_base,
-			  'scheme' => 'https'
-			]);
-
-			$url = '/ext/members/contact/'
-				. '?action=getListOfMembers&sort=lastname' 
-				. '&sectionid=' . $user_osm_section 
-				. '&termid=' . $user_osm_term
-				. '&section=cubs';
-
-			$response = $http->post($url, [
-				'userid' => $user_osm_id, 
-				'secret' => $user_osm_secret, 
-				'token' => $api_token, 
-				'apiid' => $api_id
-			]);
-
-
-			if ($response->isOk())
-			{
-				$body = $response->json;
-				
-				$cubs = Hash::extract($body, 'items');
-				$cubs = Hash::normalize($cubs);
-
-				foreach ($cubs as $cub) {
-
-					if ($cub->active == true) {
-						$cub_data = [
-							'firstname' => $cub->firstname,
-							'lastname' => $cub->lastname,
-							'osm_id' => $cub->scoutid,
-							'user_id' => $user->id,
-							'scoutgroup_id' => $user->scoutgroup_id,
-							'dateofbirth' => '01/01/2016',
-							'osm_generated' => true];
-
-						$atts->newEntity($att, $cub_data);
-
-			            if ($atts->save($att)) {
-			                $successCnt = $successCnt + 1;
-			            } else {
-			                $errCnt = $errCnt + 1;
-			            }
-					}					
-				}
-
-				if (isset($errCnt) && $errCnt > 0) {
-					$this->Flash->error(__('There were ' . $errCnt . ' records which did not sync, please try again.'));
-				}
-
-				if (isset($successCnt) && $successCnt > 0) {
-					$this->Flash->success(__('Synced ' . $successCnt . ' records sucessfully.'));
-				}
-
-				return $this->redirect(['action' => 'home']);
-			} else {
-				$this->Flash->error(__('There was a request error, please try again.'));
-				return $this->redirect(['action' => 'home']);
+		            if ($atts->save($att)) {
+		                $successCnt = $successCnt + 1;
+		            } else {
+		                $errCnt = $errCnt + 1;
+		            }
+				}					
 			}
+
+			if (isset($errCnt) && $errCnt > 0) {
+				$this->Flash->error(__('There were ' . $errCnt . ' records which did not sync, please try again.'));
+			}
+
+			if (isset($successCnt) && $successCnt > 0) {
+				$this->Flash->success(__('Synced ' . $successCnt . ' records sucessfully.'));
+			}
+
+			return $this->redirect(['action' => 'home']);
+		} else {
+			$this->Flash->error(__('There was a request error, please try again.'));
+			return $this->redirect(['action' => 'home']);
 		}
+	}
 }
