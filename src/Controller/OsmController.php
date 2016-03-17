@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-<<<<<<< HEAD
 use App\Form\LinkForm;
 use App\Form\SectionForm;
 
@@ -11,14 +10,6 @@ use Cake\Network\Http\Client;
 use Cake\I18n\Time;
 use Cake\Utility\Hash;
 use Cake\Utility\Security;
-=======
-use Cake\ORM\TableRegistry;
-use App\Form\LinkForm;
-use App\Form\SectionForm;
-use Cake\Network\Http\Client;
-use Cake\I18n\Time;
-use Cake\Utility\Hash;
->>>>>>> master
 
 
 class OsmController extends AppController
@@ -66,14 +57,8 @@ class OsmController extends AppController
 		$users = TableRegistry::get('Users');
 		
 		$linkForm = new LinkForm();
-<<<<<<< HEAD
 		$session = $this->request->session();
 		
-=======
-		//$http = new Client();
-		
-
->>>>>>> master
 		$user = $users->get($this->Auth->user('id'));
 
 		if ($this->request->is('post'))
@@ -86,17 +71,12 @@ class OsmController extends AppController
 
 			$user_email = $this->request->data['osm_email'];//'jacob%404thletchworth.com';
 			$user_password = $this->request->data['osm_password'];//'Rho9Sigma';
-<<<<<<< HEAD
 
 			/*$hashed = Security::hash('$user_password', 'sha256', true);
 			//$hashed = substr($hashed,5 , 32);
 			$encrypted = Security::encrypt($hashed, $api_token);
 
 			$session->write('OSM.PWHash', $encrypted);*/
-=======
-			// $user_osm_id = ;
-			// $user_osm_secret = '';
->>>>>>> master
 
 			$http = new Client([
 			  'host' => $api_base,
@@ -119,7 +99,6 @@ class OsmController extends AppController
 				if ($body == '{"error":"Incorrect password - you have 5 more attempts before your account is locked for 15 minutes."}')
 				{
 					$this->Flash->error(__('Incorrect password - OSM will lock your account after 5 attempts.'));
-<<<<<<< HEAD
 
 					// KEEN IO REPORTING ENTRY
 
@@ -171,14 +150,6 @@ class OsmController extends AppController
 					    }					    
 					}*/
 
-=======
-					return $this->redirect(['action' => 'link']);
-				} else {
-
-					$user_osm_secret = str_replace("\"", "", substr($body, 10, 34));
-					$user_osm_id = str_replace("\"", "", substr($body, -8, 7));
-
->>>>>>> master
 					if (isset($user->osm_linked))
 					{
 						$osmLink = ['osm_user_id' => $user_osm_id, 'osm_secret' => $user_osm_secret, 'osm_linkdate' => $now];
@@ -188,7 +159,6 @@ class OsmController extends AppController
 
 					$users->patchEntity($user, $osmLink);
 
-<<<<<<< HEAD
 					// SAVE ENTITY
 
 		            if ($users->save($user)) {
@@ -224,10 +194,6 @@ class OsmController extends AppController
 		                  ['type' => 'json']
 		                );
 
-=======
-		            if ($users->save($user)) {
-		                $this->Flash->success(__('You have linked your OSM account.'));
->>>>>>> master
 		                return $this->redirect(['action' => 'section']);
 		            } else {
 		                $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -248,11 +214,8 @@ class OsmController extends AppController
 		$users = TableRegistry::get('Users');
 
 		$sectionForm = new SectionForm();
-<<<<<<< HEAD
 		$session = $this->request->session();
 
-=======
->>>>>>> master
 
 		$user = $users->get($this->Auth->user('id'));
 
@@ -270,7 +233,6 @@ class OsmController extends AppController
 			if (is_null($user_osm_secret)) {
 				$this->Flash->error(__('Please link your account first'));
 				return $this->redirect(['action' => 'link']);
-<<<<<<< HEAD
 			} /*elseif (!$session->check('OSM.PWHash')) {
 				$this->Flash->error(__('Please enter your password again as it is not stored.'));
 				return $this->redirect(['action' => 'link']);
@@ -288,9 +250,6 @@ class OsmController extends AppController
 			    	$this->Flash->error(__('There was a magic error.'));
 			    }
 			}*/
-=======
-			}
->>>>>>> master
 
 			$http = new Client([
 			  'host' => $api_base,
@@ -310,11 +269,8 @@ class OsmController extends AppController
 			if ($response->isOk())
 			{
 				$body = $response->json;
-<<<<<<< HEAD
 
 				$this->set(compact('body'));
-=======
->>>>>>> master
 				
 				$body = Hash::remove($body, '{n}.sectionConfig');
 				$body = Hash::remove($body, '{n}.permissions');
@@ -363,10 +319,7 @@ class OsmController extends AppController
 
 		$user_osm_id = $user->osm_user_id;
 		$user_osm_secret = $user->osm_secret;
-<<<<<<< HEAD
 		$user_osm_section = $user->osm_section_id;
-=======
->>>>>>> master
 
 		if (is_null($user_osm_secret)) {
 			$this->Flash->error(__('Please link your account first'));
@@ -404,39 +357,24 @@ class OsmController extends AppController
 
 			$term = Hash::extract($terms, '{n}.[past=/false/');
 		
-<<<<<<< HEAD
 			$term_end = 12; //$term->enddate;
 			$term_start = 12; //$term->startdate;
 
 			$usr_data = ['osm_current_term' => $term, 'osm_term_end' => $term_end, 'osm_linked' => 3];
-=======
-			$term_end = $term->enddate;
-			$term_start = $term->startdate;
-
-
-			$usr_data = ['osm_current_term' => $osm_section, 'osm_term_end' => $term_end, 'osm_linked' => 3];
->>>>>>> master
 
 			$users->patchEntity($user, $usr_data);
 
 	        if ($users->save($user)) {
 	            $this->Flash->success(__('Your OSM Term has been set.'));
-<<<<<<< HEAD
 	            return $this->redirect(['action' => 'home']);
 	        } else {
 	            $this->Flash->error(__('The user could not be saved. Please, try again.'));
 	            return $this->redirect(['action' => 'home']);
-=======
-	            return $this->redirect(['action' => 'term']);
-	        } else {
-	            $this->Flash->error(__('The user could not be saved. Please, try again.'));
->>>>>>> master
 	        }
         } else {
 			$this->Flash->error(__('There was a request error, please try again.'));
 			return $this->redirect(['action' => 'home']);
 		}
-<<<<<<< HEAD
 	}
 
 	public function sync()
@@ -543,7 +481,4 @@ class OsmController extends AppController
 			return $this->redirect(['action' => 'home']);
 		}
 	}
-=======
-	} 
->>>>>>> master
 }

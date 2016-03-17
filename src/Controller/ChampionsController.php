@@ -19,13 +19,9 @@ class ChampionsController extends AppController
     public function index()
     {
         $this->paginate = [
-<<<<<<< HEAD
             'contain' => ['Districts'],
             'limit' => 50,
             'order' => ['Champions.email' => 'asc']
-=======
-            'contain' => ['Districts']
->>>>>>> master
         ];
         $this->set('champions', $this->paginate($this->Champions));
         $this->set('_serialize', ['champions']);

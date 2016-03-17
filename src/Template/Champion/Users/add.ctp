@@ -15,10 +15,7 @@
         <?php
             echo $this->Form->input('role_id', ['options' => $roles]);
             echo $this->Form->input('scoutgroup_id', ['options' => $scoutgroups]);
-<<<<<<< HEAD
             echo $this->Form->input('authrole');
-=======
->>>>>>> master
             echo $this->Form->input('section');
             echo $this->Form->input('firstname');
             echo $this->Form->input('lastname');
