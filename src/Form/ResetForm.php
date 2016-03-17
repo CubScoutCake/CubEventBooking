@@ -16,9 +16,17 @@ class ResetForm extends Form
 
     protected function _buildValidator(Validator $validator)
     {
+<<<<<<< HEAD
+        $validator->requirePresence('scoutgroup');
+
+        $validator->add('email', 'valid', ['rule' => 'email'])
+            ->requirePresence('email')
+            ->notEmpty('email');
+=======
         $validator->requirePresence('cubs');
 
         $validator->allowEmpty('yls');;
+>>>>>>> master
 
         return $validator;
 

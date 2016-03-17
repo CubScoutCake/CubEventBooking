@@ -27,6 +27,13 @@ use Cake\Controller\Controller;
 class AppController extends Controller
 {
 
+
+    public $helpers = [
+        'DataTables' => [
+            'className' => 'DataTables.DataTables'
+        ]
+    ];
+
     public function initialize()
     {
         $this->loadComponent('Flash');
@@ -53,6 +60,8 @@ class AppController extends Controller
 
         $this->loadComponent('Security');
         $this->loadComponent('Csrf');
+        $this->loadComponent('RequestHandler');
+        $this->loadComponent('DataTables.DataTables');
 
         // Allow the display action so our pages controller
         // continues to work.
@@ -92,6 +101,14 @@ class AppController extends Controller
         //return parent::isAuthorized($user);
 
         return false;
+    }
+
+    public function forceSSL()
+    {
+        if (env('SERVER_NAME') == 'booking.hertscubs.uk')
+        {
+            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->here);
+        }
     }
 }
 

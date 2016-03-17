@@ -20,6 +20,7 @@ use Cake\View\View;
  */
 class AppView extends View
 {
+    //public $layout = 'BootstrapUI.default';
 
     //public $layout = 'BootstrapUI.default';
 
@@ -33,9 +34,16 @@ class AppView extends View
      */
     public function initialize()
     {
+<<<<<<< HEAD
+        $this->loadHelper('Html', ['className' => 'BootstrapUI.Html']);
+        $this->loadHelper('Form', ['className' => 'BootstrapUI.Form']);
+        $this->loadHelper('Flash', ['className' => 'BootstrapUI.Flash']);
+        $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
+=======
         // $this->loadHelper('Html', ['className' => 'BootstrapUI.Html']);
         // $this->loadHelper('Form', ['className' => 'BootstrapUI.Form']);
         // $this->loadHelper('Flash', ['className' => 'BootstrapUI.Flash']);
         // $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
+>>>>>>> master
     }
 }

@@ -1,4 +1,6 @@
 <?php
+<<<<<<< HEAD
+=======
     Configure::write('CakePdf', [
         'engine' => 'CakePdf.mpdf',
         'margin' => [
@@ -10,4 +12,5 @@
         'orientation' => 'portrait',
         'download' => true
     ]);
+>>>>>>> master
 ?>

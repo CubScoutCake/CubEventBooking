@@ -32,12 +32,20 @@ class UserMailer extends Mailer
             //->send();                          
     }
 
+<<<<<<< HEAD
+    public function passres($user, $random) {
+        $this->template('pwreset', 'default')
+            ->emailFormat('html')
+            ->to([$user->email => $user->full_name])
+            ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
+=======
     public function resetPassword($user,$notification) {
         $this
             ->to([$user->email => $user->full_name])
             ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
             ->emailFormat('html')
             ->template('pwreset', 'default')
+>>>>>>> master
             ->subject('Reset password')
             ->setHeaders(['X-MC-Tags' => 'PasswordReset,Type2,Request'
                     , 'X-MC-AutoText' => true
@@ -45,6 +53,16 @@ class UserMailer extends Mailer
                     , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
                     , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
             ->viewVars(['username' => $user->username
+<<<<<<< HEAD
+                    , 'date_created' => $user->created
+                    , 'full_name' => $user->full_name
+                    , 'token' => $random
+                    , 'uid' => $user->id
+                    ])
+            ->helpers(['Html', 'Text', 'Time']);
+            //->send();
+    }
+=======
                     , 'date_created' => $notification->created
                     , 'full_name' => $user->full_name
                     ])
@@ -64,4 +82,5 @@ class UserMailer extends Mailer
             $this->send('welcome', [$entity]);
         }
     }*/
+>>>>>>> master
 }

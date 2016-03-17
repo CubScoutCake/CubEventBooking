@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+<div class="invoiceItems form large-10 medium-9 columns content">
+    <?= $this->Form->create($invPop); ?>
+    <fieldset>
+        <legend><?= __('Number of Attendees Being Registered') ?></legend>
+=======
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     
     <?= $this->start('Sidebar');
@@ -13,6 +19,7 @@
     <?= $this->Form->create($invPop); ?>
     <fieldset>
         <legend><?= __('Number of Leaders & DBS Adults') ?></legend>
+>>>>>>> master
         <?php
             if ($CubsVis == 1) { 
                 echo $this->Form->input('cubs'); 

@@ -222,7 +222,11 @@ class InvoiceItemsController extends AppController
             }
 
             // Compare Form Info - Cubs
+<<<<<<< HEAD
+            if ($event->max && $formNumCubs > $event->max_cubs) {
+=======
             if ($event->max && $formNumCubs >= $event->max_cubs) {
+>>>>>>> master
                 $numCubs = $event->max_cubs;
                 $this->Flash->error(__($limitTextCubs));
             } else {
@@ -231,7 +235,11 @@ class InvoiceItemsController extends AppController
 
 
             // Compare Form Info - YLs
+<<<<<<< HEAD
+            if ($event->max && $formNumYls > $event->max_yls) {
+=======
             if ($event->max && $formNumYls >= $event->max_yls) {
+>>>>>>> master
                 $numYls = $event->max_yls;
                 $this->Flash->error(__($limitTextYls));
             } else {
@@ -240,7 +248,11 @@ class InvoiceItemsController extends AppController
 
 
             // Compare Form Info - Leaders
+<<<<<<< HEAD
+            if ($event->max && $formNumLeaders > $event->max_leaders) {
+=======
             if ($event->max && $formNumLeaders >= $event->max_leaders) {
+>>>>>>> master
                 $numLeaders = $event->max_leaders;
                 $this->Flash->error(__($limitTextLeaders));
             } else {
@@ -322,7 +334,11 @@ class InvoiceItemsController extends AppController
 
             // Compare & Allow Save
 
+<<<<<<< HEAD
+            if (isset($event->available_cubs) && $event->available_cubs > 0 && $totalEventCubs >= $event->available_cubs) {
+=======
             if ($event->available_cubs > 0 && $totalEventCubs >= $event->available_cubs) {
+>>>>>>> master
                 $this->Flash->error(__('The Maximum Number of Cubs for this event is reached. The event is full.'));
             } else {
                 if ($this->InvoiceItems->save($depCubItem) && $this->InvoiceItems->save($cubItem) && $this->InvoiceItems->save($yLItem) && $this->InvoiceItems->save($leaderItem) && $this->InvoiceItems->save($disItem)) {
@@ -598,7 +614,11 @@ class InvoiceItemsController extends AppController
 
             // Compare & Allow Save
 
+<<<<<<< HEAD
+            if (isset($event->available_cubs) && $event->available_cubs > 0 && $totalEventCubs >= $event->available_cubs) {
+=======
             if ($event->available_cubs > 0 && $totalEventCubs >= $event->available_cubs) {
+>>>>>>> master
                 $this->Flash->error(__('The Maximum Number of Cubs for this event is reached. The event is full.'));
             } else {
                 if ($this->InvoiceItems->save($existingCubDepItem) && $this->InvoiceItems->save($existingCubItem) && $this->InvoiceItems->save($existingYlItem) && $this->InvoiceItems->save($existingLeaderItem) && $this->InvoiceItems->save($disItem) && $this->InvoiceItems->delete($existingDiscountItem)) {

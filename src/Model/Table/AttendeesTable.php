@@ -64,6 +64,12 @@ class AttendeesTable extends Table
             'targetForeignKey' => 'allergy_id',
             'joinTable' => 'attendees_allergies'
         ]);
+
+        // Adding Counter Caches
+
+        /*$this->addBehavior('CounterCache', [
+            'Applications' => ['cc_att_total']
+        ]);*/
     }
 
     /**
@@ -92,7 +98,12 @@ class AttendeesTable extends Table
             ->notEmpty('dateofbirth');
 
         $validator
+<<<<<<< HEAD
+            ->requirePresence('phone', 'create')
+            ->notEmpty('phone');;
+=======
             ->allowEmpty('phone');
+>>>>>>> master
 
         $validator
             ->allowEmpty('phone2');

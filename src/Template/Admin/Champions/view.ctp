@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+<nav class="large-2 medium-3 columns" id="actions-sidebar">
+=======
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
+>>>>>>> master
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('Edit Champion'), ['action' => 'edit', $champion->id]) ?> </li>
@@ -9,7 +13,11 @@
         <li><?= $this->Html->link(__('New District'), ['controller' => 'Districts', 'action' => 'add']) ?> </li>
     </ul>
 </nav>
+<<<<<<< HEAD
+<div class="champions view large-10 medium-9 columns content">
+=======
 <div class="champions view large-9 medium-8 columns content">
+>>>>>>> master
     <h3><?= h($champion->firstname) ?></h3>
     <table class="vertical-table">
         <tr>

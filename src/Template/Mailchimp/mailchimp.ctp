@@ -1,5 +1,7 @@
 <?= $this->assign('title', 'Hertfordshire Cubs Mailing List'); ?>
 
+<<<<<<< HEAD
+=======
 <div class="landing actions columns large-2 medium-3">
 
 	<?= $this->start('Sidebar');
@@ -10,6 +12,7 @@
 	
 </div>
 
+>>>>>>> master
 <div class="landing user_home large-10 medium-9 columns signup">
 </br>
     

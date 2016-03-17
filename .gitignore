@@ -2,3 +2,9 @@
 /config/app.php
 /tmp/*
 /logs/*
+.htaccess
+.htaccess
+
+*.phar
+
+*.lock

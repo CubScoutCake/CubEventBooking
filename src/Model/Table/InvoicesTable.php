@@ -55,6 +55,15 @@ class InvoicesTable extends Table
             'targetForeignKey' => 'payment_id',
             'joinTable' => 'invoices_payments'
         ]);
+<<<<<<< HEAD
+
+        // Adding Counter Caches
+
+        $this->addBehavior('CounterCache', [
+            'Applications' => ['cc_inv_count']
+        ]);
+=======
+>>>>>>> master
     }
 
     /**

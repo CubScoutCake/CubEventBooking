@@ -37,6 +37,11 @@ class MailchimpController extends AppController
      */
     public function mailchimp()
     {
+<<<<<<< HEAD
+        // Set the layout.
+        $this->viewBuilder()->layout('outside');
+=======
+>>>>>>> master
 
     }
 

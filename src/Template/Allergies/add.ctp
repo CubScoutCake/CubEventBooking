@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 <div class="actions columns large-2 medium-3">
     <?= $this->start('Sidebar');
     echo $this->element('Sidebar/locked');
@@ -6,6 +8,7 @@
 
     <?= $this->fetch('Sidebar') ?>
 </div>
+>>>>>>> master
 <div class="allergies form large-10 medium-9 columns">
     <?= $this->Form->create($allergy) ?>
     <fieldset>

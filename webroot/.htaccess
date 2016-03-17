@@ -1,5 +1,5 @@
 
-AddType x-httpd-php54 .php
+AddType x-httpd-php56 .php
 
 #<IfModule mod_rewrite.c>
 #    RewriteEngine On
@@ -20,8 +20,13 @@ AddType x-httpd-php54 .php
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+<<<<<<< HEAD
+    RewriteCond %{HTTP_HOST} ^hertcubdev.uk
+    RewriteCond %{REQUEST_URI} !^/(webroot/)?(img|css|js)/(.*)$
+=======
     RewriteCond %{HTTP_HOST} ^hcbooking.uk
     RewriteCond %{REQUEST_URI} !^/(webroot/)?(img|css|js|files|favicon)/(.*)$
+>>>>>>> master
 #RewriteRule ^(.*)$ http://hertscubs100.uk/booking/$1 [P,L,NC]
 </IfModule>
 

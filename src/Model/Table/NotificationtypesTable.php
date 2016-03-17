@@ -26,7 +26,11 @@ class NotificationtypesTable extends Table
         parent::initialize($config);
 
         $this->table('notificationtypes');
+<<<<<<< HEAD
+        $this->displayField('id');
+=======
         $this->displayField('notification_type');
+>>>>>>> master
         $this->primaryKey('id');
 
         $this->hasMany('Notifications', [
@@ -52,6 +56,12 @@ class NotificationtypesTable extends Table
         $validator
             ->allowEmpty('notification_description');
 
+<<<<<<< HEAD
+        $validator
+            ->allowEmpty('icon');
+
+=======
+>>>>>>> master
         return $validator;
     }
 }

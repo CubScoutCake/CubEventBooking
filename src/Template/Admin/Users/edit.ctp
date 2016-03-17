@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 <div class="actions columns large-2 medium-3">
     
     <?= $this->start('Sidebar');
@@ -8,6 +10,7 @@
     <?= $this->fetch('Sidebar') ?>
     
 </div>
+>>>>>>> master
 <div class="users form large-10 medium-9 columns">
     <?= $this->Form->create($user) ?>
     <fieldset>
@@ -16,7 +19,11 @@
             echo $this->Form->input('role_id', ['options' => $roles]);
             echo $this->Form->input('scoutgroup_id', ['options' => $scoutgroups]);
             echo $this->Form->input('username');
+<<<<<<< HEAD
+            echo $this->Form->input('authrole',['options' => ['user' => 'USER','admin' => 'ADMIN','champion' => 'CHAMPION']]);
+=======
             echo $this->Form->input('authrole');
+>>>>>>> master
             echo $this->Form->input('firstname');
             echo $this->Form->input('lastname');
             echo $this->Form->input('email');

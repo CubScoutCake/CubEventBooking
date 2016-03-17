@@ -3,6 +3,10 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use Cake\Mailer\MailerAwareTrait;
+<<<<<<< HEAD
+//use DataTables\Controller\Component;
+=======
+>>>>>>> master
 
 /**
  * Users Controller
@@ -58,6 +62,21 @@ class UsersController extends AppController
         
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->data);
+<<<<<<< HEAD
+
+            $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
+                ,'lastname' => ucwords(strtolower($user->lastname))
+                ,'address_1' => ucwords(strtolower($user->address_1))
+                ,'address_2' => ucwords(strtolower($user->address_2))
+                ,'city' => ucwords(strtolower($user->city))
+                ,'county' => ucwords(strtolower($user->county))
+                ,'postcode' => strtoupper($user->postcode)
+                ,'section' => ucwords(strtolower($user->section))];
+
+            $user = $this->Users->patchEntity($user, $upperUser);
+            
+=======
+>>>>>>> master
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -112,6 +131,21 @@ class UsersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
+<<<<<<< HEAD
+
+            $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
+                ,'lastname' => ucwords(strtolower($user->lastname))
+                ,'address_1' => ucwords(strtolower($user->address_1))
+                ,'address_2' => ucwords(strtolower($user->address_2))
+                ,'city' => ucwords(strtolower($user->city))
+                ,'county' => ucwords(strtolower($user->county))
+                ,'postcode' => strtoupper($user->postcode)
+                ,'section' => ucwords(strtolower($user->section))];
+
+            $user = $this->Users->patchEntity($user, $upperUser);
+
+=======
+>>>>>>> master
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -125,6 +159,33 @@ class UsersController extends AppController
         $this->set('_serialize', ['user']);
     }
 
+<<<<<<< HEAD
+    public function update($id = null)
+    {
+        $user = $this->Users->get($id);
+
+        $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
+            ,'lastname' => ucwords(strtolower($user->lastname))
+            ,'address_1' => ucwords(strtolower($user->address_1))
+            ,'address_2' => ucwords(strtolower($user->address_2))
+            ,'city' => ucwords(strtolower($user->city))
+            ,'county' => ucwords(strtolower($user->county))
+            ,'postcode' => strtoupper($user->postcode)
+            ,'section' => ucwords(strtolower($user->section))];
+
+        $user = $this->Users->patchEntity($user, $upperUser);
+
+        if ($this->Users->save($user)) {
+            $this->Flash->success(__('The user has been updated.'));
+            return $this->redirect(['action' => 'view', $user->id]);
+        } else {
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            return $this->redirect(['action' => 'view', $user->id]);
+        }
+    }
+
+=======
+>>>>>>> master
     /**
      * Delete method
      *

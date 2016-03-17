@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 <div class="actions columns large-2 medium-3">
     
     <?= $this->start('Sidebar');
@@ -8,6 +10,7 @@
     <?= $this->fetch('Sidebar') ?>
     
 </div>
+>>>>>>> master
 <div class="applications form large-10 medium-9 columns">
     <?= $this->Form->create($application) ?>
     <fieldset>
@@ -18,7 +21,11 @@
             echo $this->Form->input('event_id', ['options' => $events]);
             echo $this->Form->input('section');
             echo $this->Form->input('permitholder');
+<<<<<<< HEAD
+            echo $this->Form->input('attendees._ids', ['options' => $attendees, 'multiple' => 'checkbox']);
+=======
             echo $this->Form->input('attendees._ids', ['options' => $attendees]);
+>>>>>>> master
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

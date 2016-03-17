@@ -6,6 +6,10 @@ use Cake\Mailer\Email;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Mailer\MailerAwareTrait;
+<<<<<<< HEAD
+use Cake\Network\Http\Client;
+=======
+>>>>>>> master
 
 /**
  * Notifications Controller
@@ -56,7 +60,11 @@ class NotificationsController extends AppController
         $this->set('notification', $notification);
         $this->set('_serialize', ['notification']);
 
+<<<<<<< HEAD
+        /*$now = Time::now();
+=======
         $now = Time::now();
+>>>>>>> master
         $nowData = ['new' => 0, 'read_date' => $now];
 
         if ($notification->new == 1) {
@@ -67,6 +75,11 @@ class NotificationsController extends AppController
             } else {
                 $this->Flash->error(__('The notification could not be marked as viewed. Please, try again.'));
             }
+<<<<<<< HEAD
+        }*/        
+    }
+
+=======
         }        
     }
 
@@ -91,6 +104,7 @@ class NotificationsController extends AppController
         
     }*/
 
+>>>>>>> master
     /**
      * Add method
      *
@@ -117,6 +131,413 @@ class NotificationsController extends AppController
     public function welcome($userId = null)
     {
         if(isset($userId)) {
+
+            $users = TableRegistry::get('Users');
+            $groups = TableRegistry::get('Scoutgroups');
+
+            $user = $users->get($userId, ['contain' => ['Scoutgroups']]);
+            $group = $groups->get($user->scoutgroup_id);
+
+            $welcomeData = [     'link_id' => $userId
+                                , 'link_controller' => 'Users'
+                                , 'link_action' => 'view'
+                                , 'link_prefix' => false
+                                , 'notificationtype_id' => 1
+                                , 'user_id' => $userId
+                                , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
+                                , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
+<<<<<<< HEAD
+                                , 'notification_source' => 'Admin Triggered'
+=======
+                                , 'notification_source' => 'System Generated'
+>>>>>>> master
+                                , 'new' => 1];
+
+            $notification = $this->Notifications->newEntity();
+
+            $notification = $this->Notifications->patchEntity($notification, $welcomeData);
+
+            if ($this->Notifications->save($notification)) {
+                $this->Flash->success(__('Welcome to the Booking System. We have sent a welcome email.'));
+
+                $this->getMailer('User')->send('welcome', [$user, $group, $notification]);
+
+<<<<<<< HEAD
+                $sets = TableRegistry::get('Settings');
+
+                $jsonWelcome = json_encode($welcomeData);
+                $w_api_key = $sets->get(13)->text;
+                $projectId = $sets->get(14)->text;
+                $eventType = 'UserWelcome';
+
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $w_api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenURL,
+                  $jsonWelcome,
+                  ['type' => 'json']
+                );
+
+                $genericType = 'Notification';
+
+                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $w_api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenGenURL,
+                  $jsonWelcome,
+                  ['type' => 'json']
+                );
+
+                return $this->redirect(['prefix' => 'admin', 'controller' => 'Users',  'action' => 'view', $userId]);
+=======
+                /*$email = new Email('default');
+                $email->template('welcome', 'default')
+                    ->emailFormat('html')
+                    ->to([$user->email => $user->full_name])
+                    ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
+                    ->subject('Welcome to the Hertfordshire Cubs Booking System')
+                    ->setHeaders(['X-MC-Tags' => 'WelcomeEmail,Type1,Notification'
+                        , 'X-MC-AutoText' => true
+                        , 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk'
+                        , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
+                        , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
+                    ->viewVars(['username' => $user->username
+                        , 'date_created' => $user->created
+                        , 'full_name' => $user->full_name
+                        , 'scoutgroup' => $group->scoutgroup
+                        , 'link_controller' => $notification->link_controller
+                        , 'link_action' => $notification->link_action
+                        , 'link_id' => $notification->link_id
+                        , 'link_prefix' => $notification->link_prefix
+                        , 'notification_id' => $notification->id
+                        ])
+                    ->helpers(['Html', 'Text', 'Time'])
+                    ->send();*/
+
+                return $this->redirect(['action' => 'index']);
+>>>>>>> master
+            } else {
+                $this->Flash->error(__('The notification could not be saved. Please, try again.'));
+            }
+        } else {
+            $this->Flash->error(__('Parameters were not set!'));
+<<<<<<< HEAD
+            return $this->redirect(['prefix' => 'admin',  'controller' => 'Landing', 'action' => 'admin_home']);
+=======
+            return $this->redirect(['action' => 'index']);
+>>>>>>> master
+        }
+    }
+
+    public function newPayment($payId = null)
+    {
+        if(isset($payId)) {
+
+            $users = TableRegistry::get('Users');
+            $groups = TableRegistry::get('Scoutgroups');
+            $invoices = TableRegistry::get('Invoices');
+            $payments = TableRegistry::get('Payments');
+
+            $payment = $payments->get($payId);
+
+            $invoice_sel = $invoices->find('all')
+            ->hydrate(true)
+            ->join([
+                'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id',],
+                't' => ['table' => 'payments','type' => 'INNER','conditions' => 't.id = x.payment_id',]
+            ])
+            ->where(['t.id' => $payId])
+            ->first();
+
+            $invoice_id = $invoice_sel->id;
+
+            $invoice = $invoices->get($invoice_id);
+
+            $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
+            $group = $groups->get($user->scoutgroup_id);
+
+            $paymentData = [     'link_id' => $invoice->id
+                                , 'link_controller' => 'Invoices'
+                                , 'link_action' => 'view'
+                                , 'notificationtype_id' => 2
+                                , 'user_id' => $invoice->user_id
+                                , 'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.'
+                                , 'notification_header' => 'A payment has been recorded.'
+                                , 'notification_source' => 'System Generated'
+                                , 'new' => 1];
+
+            $notification = $this->Notifications->newEntity();
+
+            $notification = $this->Notifications->patchEntity($notification, $paymentData);
+
+            if ($this->Notifications->save($notification)) {
+                $this->Flash->success(__('Payment Notification Sent.'));
+
+                $this->getMailer('Payment')->send('payment', [$user, $group, $notification, $invoice, $payment]);
+
+<<<<<<< HEAD
+                $jsonPayment = json_encode($paymentData);
+                $p_api_key = $sets->get(13)->text;
+                $projectId = $sets->get(14)->text;
+                $eventType = 'NewPayment';
+
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenURL,
+                  $jsonPayment,
+                  ['type' => 'json']
+                );
+
+                $genericType = 'Notification';
+
+                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenGenURL,
+                  $jsonPayment,
+                  ['type' => 'json']
+                );
+=======
+                /*$email = new Email('default');
+                $email->template('welcome', 'default')
+                    ->emailFormat('html')
+                    ->to([$user->email => $user->full_name])
+                    ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
+                    ->subject('Welcome to the Hertfordshire Cubs Booking System')
+                    ->setHeaders(['X-MC-Tags' => 'WelcomeEmail,Type1,Notification'
+                        , 'X-MC-AutoText' => true
+                        , 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk'
+                        , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
+                        , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
+                    ->viewVars(['username' => $user->username
+                        , 'date_created' => $user->created
+                        , 'full_name' => $user->full_name
+                        , 'scoutgroup' => $group->scoutgroup
+                        , 'link_controller' => $notification->link_controller
+                        , 'link_action' => $notification->link_action
+                        , 'link_id' => $notification->link_id
+                        , 'link_prefix' => $notification->link_prefix
+                        , 'notification_id' => $notification->id
+                        ])
+                    ->helpers(['Html', 'Text', 'Time'])
+                    ->send();*/
+>>>>>>> master
+
+                return $this->redirect(['controller' => 'Payments', 'action' => 'add', 'prefix' => 'admin']);
+            } else {
+                $this->Flash->error(__('The notification could not be saved. Please, try again.'));
+            }
+        } //else {
+        //     $this->Flash->error(__('Parameters were not set!'));
+        //     return $this->redirect(['action' => 'index']);
+        // }
+    }
+
+    public function notifyPayment($payId = null)
+    {
+        if(isset($payId)) {
+
+            $users = TableRegistry::get('Users');
+            $groups = TableRegistry::get('Scoutgroups');
+            $invoices = TableRegistry::get('Invoices');
+            $payments = TableRegistry::get('Payments');
+
+            $payment = $payments->get($payId);
+
+            $invoice_sel = $invoices->find('all')
+            ->hydrate(true)
+            ->join([
+                'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id',],
+                't' => ['table' => 'payments','type' => 'INNER','conditions' => 't.id = x.payment_id',]
+            ])
+            ->where(['t.id' => $payId])
+            ->first();
+
+            $invoice_id = $invoice_sel->id;
+
+            $invoice = $invoices->get($invoice_id);
+
+            $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
+            $group = $groups->get($user->scoutgroup_id);
+
+            $paymentData = [     'link_id' => $invoice->id
+                                , 'link_controller' => 'Invoices'
+                                , 'link_action' => 'view'
+                                , 'notificationtype_id' => 2
+                                , 'user_id' => $invoice->user_id
+                                , 'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.'
+                                , 'notification_header' => 'A payment has been recorded.'
+<<<<<<< HEAD
+                                , 'notification_source' => 'Admin Triggered'
+=======
+                                , 'notification_source' => 'System Generated'
+>>>>>>> master
+                                , 'new' => 1];
+
+            $notification = $this->Notifications->newEntity();
+
+            $notification = $this->Notifications->patchEntity($notification, $paymentData);
+
+            if ($this->Notifications->save($notification)) {
+                $this->Flash->success(__('Payment Notification Sent.'));
+
+                $this->getMailer('Payment')->send('payment', [$user, $group, $notification, $invoice, $payment]);
+
+<<<<<<< HEAD
+                $sets = TableRegistry::get('Settings');
+
+                $jsonPayment = json_encode($paymentData);
+                $p_api_key = $sets->get(13)->text;
+                $projectId = $sets->get(14)->text;
+                $eventType = 'NewPayment';
+
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenURL,
+                  $jsonPayment,
+                  ['type' => 'json']
+                );
+
+                $genericType = 'Notification';
+
+                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenGenURL,
+                  $jsonPayment,
+                  ['type' => 'json']
+                );
+
+                return $this->redirect(['controller' => 'Payments', 'action' => 'index', 'prefix' => 'admin']);
+            } else {
+                $this->Flash->error(__('The notification could not be saved. Please, try again.'));
+            }
+        } //else {
+        //     $this->Flash->error(__('Parameters were not set!'));
+        //     return $this->redirect(['action' => 'index']);
+        // }
+    }
+
+    public function deposit_query($invoiceId = null)
+    {
+        if(isset($invoiceId)) {
+
+            $invs = TableRegistry::get('Invoices');
+            $users = TableRegistry::get('Users');
+            $groups = TableRegistry::get('Scoutgroups');
+
+            $invoice = $invs->get($invoiceId,['contain' => ['Users']]);
+
+            $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
+            $group = $groups->get($user->scoutgroup_id);
+
+            $invQueryData = [     'link_id' => $user->id
+                                , 'link_controller' => 'Users'
+                                , 'link_action' => 'view'
+                                , 'notificationtype_id' => 1
+                                , 'user_id' => $user->id
+                                , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
+                                , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
+                                , 'notification_source' => 'System Generated'
+                                , 'new' => 1];
+
+            $notification = $this->Notifications->newEntity();
+
+            $notification = $this->Notifications->patchEntity($notification, $welcomeData);
+
+            if ($this->Notifications->save($notification)) {
+                $this->Flash->success(__('Welcome to the Booking System. We have sent a welcome email.'));
+
+                $this->getMailer('User')->send('welcome', [$user, $group, $notification]);
+
+                return $this->redirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, $userId]);
+            } else {
+                $this->Flash->error(__('The notification could not be saved. Please, try again.'));
+            }
+        } //else {
+        //     $this->Flash->error(__('Parameters were not set!'));
+        //     return $this->redirect(['action' => 'index']);
+        // }
+    }
+
+    public function noInv($appId = null)
+    {
+        if(isset($appId)) {
+
+            $users = TableRegistry::get('Users');
+            $groups = TableRegistry::get('Scoutgroups');
+
+            $user = $users->get($userId, ['contain' => ['Scoutgroups']]);
+            $group = $groups->get($user->scoutgroup_id);
+
+            $welcomeData = [     'link_id' => $userId
+                                , 'link_controller' => 'Users'
+                                , 'link_action' => 'view'
+                                , 'link_prefix' => false
+                                , 'notificationtype_id' => 1
+                                , 'user_id' => $userId
+                                , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
+                                , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
+                                , 'notification_source' => 'System Generated'
+                                , 'new' => 1];
+
+            $notification = $this->Notifications->newEntity();
+
+            $notification = $this->Notifications->patchEntity($notification, $welcomeData);
+
+            if ($this->Notifications->save($notification)) {
+                $this->Flash->success(__('Welcome to the Booking System. We have sent a welcome email.'));
+
+                $this->getMailer('User')->send('welcome', [$user, $group, $notification]);
+
+=======
+>>>>>>> master
+                /*$email = new Email('default');
+                $email->template('welcome', 'default')
+                    ->emailFormat('html')
+                    ->to([$user->email => $user->full_name])
+                    ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
+                    ->subject('Welcome to the Hertfordshire Cubs Booking System')
+                    ->setHeaders(['X-MC-Tags' => 'WelcomeEmail,Type1,Notification'
+                        , 'X-MC-AutoText' => true
+                        , 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk'
+                        , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
+                        , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
+                    ->viewVars(['username' => $user->username
+                        , 'date_created' => $user->created
+                        , 'full_name' => $user->full_name
+                        , 'scoutgroup' => $group->scoutgroup
+                        , 'link_controller' => $notification->link_controller
+                        , 'link_action' => $notification->link_action
+                        , 'link_id' => $notification->link_id
+                        , 'link_prefix' => $notification->link_prefix
+                        , 'notification_id' => $notification->id
+                        ])
+                    ->helpers(['Html', 'Text', 'Time'])
+                    ->send();*/
+
+<<<<<<< HEAD
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The notification could not be saved. Please, try again.'));
+            }
+        } else {
+            $this->Flash->error(__('Parameters were not set!'));
+            return $this->redirect(['action' => 'index']);
+        }
+    }
+
+    public function multipleInv($appId = null)
+    {
+        if(isset($appId)) {
 
             $users = TableRegistry::get('Users');
             $groups = TableRegistry::get('Scoutgroups');
@@ -176,158 +597,7 @@ class NotificationsController extends AppController
             $this->Flash->error(__('Parameters were not set!'));
             return $this->redirect(['action' => 'index']);
         }
-    }
-
-    public function newPayment($payId = null)
-    {
-        if(isset($payId)) {
-
-            $users = TableRegistry::get('Users');
-            $groups = TableRegistry::get('Scoutgroups');
-            $invoices = TableRegistry::get('Invoices');
-            $payments = TableRegistry::get('Payments');
-
-            $payment = $payments->get($payId);
-
-            $invoice_sel = $invoices->find('all')
-            ->hydrate(true)
-            ->join([
-                'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id',],
-                't' => ['table' => 'payments','type' => 'INNER','conditions' => 't.id = x.payment_id',]
-            ])
-            ->where(['t.id' => $payId])
-            ->first();
-
-            $invoice_id = $invoice_sel->id;
-
-            $invoice = $invoices->get($invoice_id);
-
-            $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
-            $group = $groups->get($user->scoutgroup_id);
-
-            $paymentData = [     'link_id' => $invoice->id
-                                , 'link_controller' => 'Invoices'
-                                , 'link_action' => 'view'
-                                , 'notificationtype_id' => 2
-                                , 'user_id' => $invoice->user_id
-                                , 'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.'
-                                , 'notification_header' => 'A payment has been recorded.'
-                                , 'notification_source' => 'System Generated'
-                                , 'new' => 1];
-
-            $notification = $this->Notifications->newEntity();
-
-            $notification = $this->Notifications->patchEntity($notification, $paymentData);
-
-            if ($this->Notifications->save($notification)) {
-                $this->Flash->success(__('Payment Notification Sent.'));
-
-                $this->getMailer('Payment')->send('payment', [$user, $group, $notification, $invoice, $payment]);
-
-                /*$email = new Email('default');
-                $email->template('welcome', 'default')
-                    ->emailFormat('html')
-                    ->to([$user->email => $user->full_name])
-                    ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
-                    ->subject('Welcome to the Hertfordshire Cubs Booking System')
-                    ->setHeaders(['X-MC-Tags' => 'WelcomeEmail,Type1,Notification'
-                        , 'X-MC-AutoText' => true
-                        , 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk'
-                        , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
-                        , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
-                    ->viewVars(['username' => $user->username
-                        , 'date_created' => $user->created
-                        , 'full_name' => $user->full_name
-                        , 'scoutgroup' => $group->scoutgroup
-                        , 'link_controller' => $notification->link_controller
-                        , 'link_action' => $notification->link_action
-                        , 'link_id' => $notification->link_id
-                        , 'link_prefix' => $notification->link_prefix
-                        , 'notification_id' => $notification->id
-                        ])
-                    ->helpers(['Html', 'Text', 'Time'])
-                    ->send();*/
-
-                return $this->redirect(['controller' => 'Payments', 'action' => 'add', 'prefix' => 'admin']);
-            } else {
-                $this->Flash->error(__('The notification could not be saved. Please, try again.'));
-            }
-        } //else {
-        //     $this->Flash->error(__('Parameters were not set!'));
-        //     return $this->redirect(['action' => 'index']);
-        // }
-    }
-
-    public function notifyPayment($payId = null)
-    {
-        if(isset($payId)) {
-
-            $users = TableRegistry::get('Users');
-            $groups = TableRegistry::get('Scoutgroups');
-            $invoices = TableRegistry::get('Invoices');
-            $payments = TableRegistry::get('Payments');
-
-            $payment = $payments->get($payId);
-
-            $invoice_sel = $invoices->find('all')
-            ->hydrate(true)
-            ->join([
-                'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id',],
-                't' => ['table' => 'payments','type' => 'INNER','conditions' => 't.id = x.payment_id',]
-            ])
-            ->where(['t.id' => $payId])
-            ->first();
-
-            $invoice_id = $invoice_sel->id;
-
-            $invoice = $invoices->get($invoice_id);
-
-            $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
-            $group = $groups->get($user->scoutgroup_id);
-
-            $paymentData = [     'link_id' => $invoice->id
-                                , 'link_controller' => 'Invoices'
-                                , 'link_action' => 'view'
-                                , 'notificationtype_id' => 2
-                                , 'user_id' => $invoice->user_id
-                                , 'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.'
-                                , 'notification_header' => 'A payment has been recorded.'
-                                , 'notification_source' => 'System Generated'
-                                , 'new' => 1];
-
-            $notification = $this->Notifications->newEntity();
-
-            $notification = $this->Notifications->patchEntity($notification, $paymentData);
-
-            if ($this->Notifications->save($notification)) {
-                $this->Flash->success(__('Payment Notification Sent.'));
-
-                $this->getMailer('Payment')->send('payment', [$user, $group, $notification, $invoice, $payment]);
-
-                /*$email = new Email('default');
-                $email->template('welcome', 'default')
-                    ->emailFormat('html')
-                    ->to([$user->email => $user->full_name])
-                    ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
-                    ->subject('Welcome to the Hertfordshire Cubs Booking System')
-                    ->setHeaders(['X-MC-Tags' => 'WelcomeEmail,Type1,Notification'
-                        , 'X-MC-AutoText' => true
-                        , 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk'
-                        , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
-                        , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
-                    ->viewVars(['username' => $user->username
-                        , 'date_created' => $user->created
-                        , 'full_name' => $user->full_name
-                        , 'scoutgroup' => $group->scoutgroup
-                        , 'link_controller' => $notification->link_controller
-                        , 'link_action' => $notification->link_action
-                        , 'link_id' => $notification->link_id
-                        , 'link_prefix' => $notification->link_prefix
-                        , 'notification_id' => $notification->id
-                        ])
-                    ->helpers(['Html', 'Text', 'Time'])
-                    ->send();*/
-
+=======
                 return $this->redirect(['controller' => 'Payments', 'action' => 'index', 'prefix' => 'admin']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
@@ -336,6 +606,7 @@ class NotificationsController extends AppController
         //     $this->Flash->error(__('Parameters were not set!'));
         //     return $this->redirect(['action' => 'index']);
         // }
+>>>>>>> master
     }
 
     public function newLogistic()

@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+<div class="notificationtypes view large-10 medium-9 columns content">
+=======
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -10,6 +13,7 @@
     </ul>
 </nav>
 <div class="notificationtypes view large-9 medium-8 columns content">
+>>>>>>> master
     <h3><?= h($notificationtype->id) ?></h3>
     <table class="vertical-table">
         <tr>

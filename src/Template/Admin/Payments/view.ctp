@@ -5,6 +5,10 @@
         <li><?= $this->Html->link(__('Notify'), ['prefix' => 'admin', 'controller' => 'Notifications', 'action' => 'notify_payment', $payment->id]) ?></li>
         <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin', 'controller' => 'Payments', 'action' => 'edit', $payment->id]) ?></li>
         <li><?= $this->Html->link(__('New'), ['prefix' => 'admin', 'controller' => 'Payments', 'action' => 'add']) ?></li>
+<<<<<<< HEAD
+        <li><?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $payment->id], ['confirm' => __('Are you sure you want to delete # {0}?', $payment->id)]) ?></li>
+=======
+>>>>>>> master
     </ul>
 
     <?= $this->start('Sidebar');
@@ -70,8 +74,11 @@
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?>
 
+<<<<<<< HEAD
+=======
                     <?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete', $invoices->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoices->id)]) ?>
 
+>>>>>>> master
                 </td>
             </tr>
             <?php endforeach; ?>

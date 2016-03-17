@@ -3,7 +3,11 @@
     <table class="vertical-table">
         <tr>
             <th><?= __('User') ?></th>
+<<<<<<< HEAD
+            
+=======
             <td><?= $invoice->has('user') ? $this->Html->link($invoice->user->full_name, ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></td>
+>>>>>>> master
         </tr>
         <tr>
             <th><?= __('Invoice ID Number') ?></th>
@@ -11,7 +15,11 @@
         </tr>
         <tr>
             <th><?= __('Application') ?></th>
+<<<<<<< HEAD
+            
+=======
             <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
+>>>>>>> master
         </tr>
         <tr>
             <th><?= __('Initial Value') ?></th>
@@ -34,6 +42,9 @@
             <td><?= h($this->Time->i18nFormat($invoice->modified,'dd-MMM-YYYY HH:mm')) ?></tr>
         </tr>
     </table>
+<<<<<<< HEAD
+    
+=======
     <div class="related">
         <h4><?= __('Invoice Line Items') ?></h4>
         <?php if (!empty($invoice->invoice_items)): ?>
@@ -83,4 +94,5 @@
         </table>
     <?php endif; ?>
     </div>
+>>>>>>> master
 </div>

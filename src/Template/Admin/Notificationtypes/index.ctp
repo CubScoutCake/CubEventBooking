@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+<div class="notificationtypes index large-10 medium-9 columns content">
+=======
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -7,6 +10,7 @@
     </ul>
 </nav>
 <div class="notificationtypes index large-9 medium-8 columns content">
+>>>>>>> master
     <h3><?= __('Notificationtypes') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
