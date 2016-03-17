@@ -3,3 +3,8 @@
 /tmp/*
 /logs/*
 .htaccess
+.htaccess
+
+*.phar
+
+*.lock

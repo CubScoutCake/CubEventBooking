@@ -29,12 +29,15 @@ use Cake\View\CellTrait;
 class AppController extends Controller
 {
     use CellTrait;
+<<<<<<< HEAD
 
     public $helpers = [
         'DataTables' => [
             'className' => 'DataTables.DataTables'
         ]
     ];
+=======
+>>>>>>> master
 
     public function initialize()
     {
@@ -64,7 +67,11 @@ class AppController extends Controller
         ]);
 
         // Use HTTP Strict Transport Security to force client to use secure connections only
+<<<<<<< HEAD
         if (env('SERVER_NAME') == 'booking.hertscubs.uk')
+=======
+        /*if (env('SERVER_NAME') == 'booking.hertscubs.uk')
+>>>>>>> master
         {
             $use_sts = true;
         } else {
@@ -74,12 +81,19 @@ class AppController extends Controller
         // iis sets HTTPS to 'off' for non-SSL requests
         if ($use_sts && $_SERVER['HTTPS'] != 'off') {
             header('Strict-Transport-Security: max-age=31536000');
+<<<<<<< HEAD
         }
+=======
+        }*/
+>>>>>>> master
 
         $this->loadComponent('Security');
         $this->loadComponent('Csrf');
         $this->loadComponent('RequestHandler');
+<<<<<<< HEAD
         $this->loadComponent('DataTables.DataTables');
+=======
+>>>>>>> master
 
         if (env('SERVER_NAME') !== 'dev.hertscubs100.uk')
         {

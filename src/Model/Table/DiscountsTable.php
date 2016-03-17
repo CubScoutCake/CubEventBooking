@@ -69,10 +69,13 @@ class DiscountsTable extends Table
 
         return $validator;
     }
+<<<<<<< HEAD
 
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['code']));
         return $rules;
     }
+=======
+>>>>>>> master
 }

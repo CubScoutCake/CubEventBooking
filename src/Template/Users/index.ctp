@@ -1,3 +1,16 @@
+<<<<<<< HEAD
+=======
+<div class="actions columns large-2 medium-3">
+    
+    <?= $this->start('Sidebar');
+    echo $this->element('Sidebar/user');
+    $this->end(); ?>
+    
+    <?= $this->fetch('Sidebar') ?>
+    
+</div>
+
+>>>>>>> master
 <div class="users index large-10 medium-9 columns">
 </br>
     <h3>Users in your Scout Group</h3>

@@ -203,7 +203,12 @@ class EventsTable extends Table
 
         $validator
             ->add('logo_ratio', 'valid', ['rule' => 'numeric'])
+<<<<<<< HEAD
             ->allowEmpty('logo_ratio');
+=======
+            ->requirePresence('logo_ratio', 'create')
+            ->notEmpty('logo_ratio');
+>>>>>>> master
 
         $validator
             ->add('invoices_locked', 'valid', ['rule' => 'boolean'])
@@ -222,6 +227,7 @@ class EventsTable extends Table
             ->requirePresence('admin_email', 'create')
             ->notEmpty('admin_email');
 
+<<<<<<< HEAD
         $validator
             ->add('parent_applications', 'valid', ['rule' => 'boolean'])
             ->allowEmpty('parent_applications');
@@ -234,6 +240,8 @@ class EventsTable extends Table
             ->add('available_cubs', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('available_cubs');
 
+=======
+>>>>>>> master
         return $validator;
     }
 

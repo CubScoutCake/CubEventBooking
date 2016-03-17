@@ -27,6 +27,7 @@ use Cake\Controller\Controller;
 class AppController extends Controller
 {
 
+
     public $helpers = [
         'DataTables' => [
             'className' => 'DataTables.DataTables'

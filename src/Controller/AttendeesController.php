@@ -3,7 +3,10 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+<<<<<<< HEAD
 use Cake\Network\Http\Client;
+=======
+>>>>>>> master
 
 /**
  * Attendees Controller
@@ -39,7 +42,13 @@ class AttendeesController extends AppController
     public function view($id = null)
     {
         $attendee = $this->Attendees->get($id, [
+<<<<<<< HEAD
             'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
+=======
+            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications' => [
+            'conditions' => ['user_id' => $this->Auth->user('id')]
+            ], 'Allergies']
+>>>>>>> master
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);
@@ -60,6 +69,7 @@ class AttendeesController extends AppController
 
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The Adult has been saved.'));
+<<<<<<< HEAD
 
                 $adult = $this->Attendees->get($attendee->id,['contain' => ['Roles','Scoutgroups.Districts']]);
 
@@ -96,6 +106,8 @@ class AttendeesController extends AppController
                   ['type' => 'json']
                 );
 
+=======
+>>>>>>> master
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The Adult could not be saved. Please, try again.'));
@@ -129,6 +141,7 @@ class AttendeesController extends AppController
 
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The Cub has been saved.'));
+<<<<<<< HEAD
 
                 $cub = $this->Attendees->get($attendee->id,['contain' => ['Roles','Scoutgroups.Districts']]);
 
@@ -165,6 +178,8 @@ class AttendeesController extends AppController
                   ['type' => 'json']
                 );
 
+=======
+>>>>>>> master
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The Cub could not be saved. Please, try again.'));

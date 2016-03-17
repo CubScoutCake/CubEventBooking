@@ -50,7 +50,10 @@ Router::scope('/', function ($routes) {
 
     //$routes->connect('/', ['controller' => 'Maintainance', 'action' => 'display', 'home']);
 
+
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'welcome', '_ssl' => true]);
+
+    $routes->connect('/', ['controller' => 'Landing', 'action' => 'welcome']);
 
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
@@ -121,8 +124,12 @@ Router::connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
 /**
 * <--- Jacob's Route's --->
 */
+
 Router::extensions('csv');
 //Router::extensions(['pdf']);
+
+Router::extensions(['pdf']);
+
 Plugin::routes();
 Router::defaultRouteClass('DashedRoute');
 

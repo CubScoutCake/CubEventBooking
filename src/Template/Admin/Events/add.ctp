@@ -1,3 +1,20 @@
+<<<<<<< HEAD
+=======
+<nav class="actions large-2 medium-3 columns" id="actions-sidebar">
+    <ul class="side-nav">
+        <h3 class="heading"><?= __('Actions') ?></h3>
+        <li><?= $this->Html->link(__('New Setting'), ['controller' => 'Settings', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('New Discount'), ['controller' => 'Discounts', 'action' => 'add']) ?></li>
+    </ul>
+
+    <?= $this->start('Sidebar');
+    echo $this->element('Sidebar/admin');
+    $this->end(); ?>
+    
+    <?= $this->fetch('Sidebar') ?>
+    
+</nav>
+>>>>>>> master
 <div class="events form large-10 medium-9 columns content">
     <?= $this->Form->create($event) ?>
     <fieldset>
@@ -8,6 +25,7 @@
             echo $this->Form->input('start');
             echo $this->Form->input('end');
             echo $this->Form->input('live', ['label' => 'Live (will show up on the site)']);
+<<<<<<< HEAD
             echo $this->Form->input('new_apps', ['label' => 'Accepting New Applications']);
             echo $this->Form->input('max', ['label' => 'Limit Numbers (will enforce max numbers)']);
             echo $this->Form->input('allow_reductions', ['label' => 'Allow invoices to be reduced']);
@@ -15,6 +33,11 @@
             echo $this->Form->input('parent_applications', ['label' => 'Allow parent applications']);
             echo $this->Form->input('available_apps', ['label' => 'Maximum Applications Available (Leave Blank for Infinite)']);
             echo $this->Form->input('available_cubs', ['label' => 'Maximum Cub Spaces Available (Leave Blank for Infinite)']);
+=======
+            echo $this->Form->input('max', ['label' => 'Limit Numbers (will enforce max numbers)']);
+            echo $this->Form->input('allow_reductions', ['label' => 'Allow invoices to be reduced']);
+            echo $this->Form->input('invoices_locked', ['label' => 'Lock Invoices (will prevent updates by users)']);
+>>>>>>> master
 
             echo $this->Form->input('location');
             echo $this->Form->label('Descriptive Text for the Event');

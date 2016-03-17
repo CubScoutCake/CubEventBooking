@@ -1,12 +1,6 @@
-<nav class="actions large-2 medium-3 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Champions'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Districts'), ['controller' => 'Districts', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New District'), ['controller' => 'Districts', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="champions form large-10 medium-9 columns content">
+
+
+<div class="champions form large-9 medium-8 columns content">
     <?= $this->Form->create($champion) ?>
     <fieldset>
         <legend><?= __('Add Champion') ?></legend>

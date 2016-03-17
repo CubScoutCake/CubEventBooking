@@ -25,8 +25,14 @@ $cakeDescription = 'HertsCubs Booking System';
 
     <!-- Bootstrap Implementation -->
 
+<<<<<<< HEAD
     <?php echo $this->Html->css('bootstrap.min.css');?>
     <?php //echo $this->Html->script('jquery.js');?>
+=======
+    <?php //echo $this->Html->css('bootstrap.min.css');?>
+    <?php //echo $this->Html->script('jquery.js');?>
+    <?php //echo $this->Html->script('bootstrap.min.js');?>
+>>>>>>> master
     <?php //echo $this->Html->script('analytics.js');?>
 
     <?= $this->Html->charset() ?>
@@ -38,6 +44,7 @@ $cakeDescription = 'HertsCubs Booking System';
     </title>
     <?= $this->Html->meta('icon') ?>
 
+<<<<<<< HEAD
     <!-- Jan16 Admin Theme Scripts -->
 
     <?php echo $this->Html->css('metisMenu.min.css');?>
@@ -290,6 +297,93 @@ $cakeDescription = 'HertsCubs Booking System';
                             echo $this->Url->build(['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')]);
 
                         } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
+=======
+    <?= $this->Html->css('base.css') ?>
+    <?= $this->Html->css('cake.css') ?>
+    <?= $this->Html->css('hertscubs100.css') ?>
+
+    <?= $this->fetch('meta') ?>
+    <?= $this->fetch('css') ?>
+    <?= $this->fetch('script') ?>   
+
+
+
+</head>
+<body>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];
+    a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    <?php
+    // New Google Analytics code to set User ID.
+    // $userId is a unique, persistent, and non-personally identifiable string ID.
+    if (!is_null($this->request->session()->read('Auth.User.id'))) {
+      $gaucode = "ga('create', 'UA-71500319-2', 'auto', {'userId': 'HERTS-USR:" . $this->request->session()->read('Auth.User.id') . "'});";
+      echo sprintf($gaucode);
+    } else {
+      $gacode = "ga('create', 'UA-71500319-2', 'auto');";
+      echo sprintf($gacode);
+    }?>
+
+    ga('require', 'linkid');
+
+    ga('send', 'pageview');
+    </script>
+
+    <header>
+        <div id="logo" class="header-logo">
+            <?= $this->Html->image('icons/CampfireHomeSmall.png', ['alt' => 'Admin Home', 'url' => ['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']]) ?>
+        </div>
+
+        <div class="header-title">
+            <span><?= $this->fetch('title') ?></span>
+        </div>
+        <div class="header-help">
+            <?= $this->fetch('Menu');
+
+            $this->start('Menu');
+            $this->end();
+
+            if (is_null($this->request->session()->read('Auth.User.username'))) {
+
+                echo "Not Logged In ";
+
+                echo $this->element('Menu/outside');
+
+            } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
+
+                echo $this->element('Menu/user');
+                echo $this->element('Menu/admin');
+
+                $AText = "Admin: " . $this->request->session()->read('Auth.User.username');
+
+                echo $this->Html->link($AText, ['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')], ['class' => 'button']);
+
+            } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
+
+                echo $this->element('Menu/user');
+                echo $this->element('Menu/champion');
+
+                $CText = "Champion: " . $this->request->session()->read('Auth.User.username');
+
+                echo $this->Html->link($CText, ['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')], ['class' => 'button']);
+
+            } else {
+
+                echo $this->element('Menu/user');
+
+                $UText = "User: " . $this->request->session()->read('Auth.User.username');
+
+                echo $this->Html->link($UText, ['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')], ['class' => 'button']);
+
+            } ?>
+        </div>
+    </header>
+    <div id="container">
+>>>>>>> master
 
                             echo $this->Url->build(['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')]);
 
@@ -535,12 +629,22 @@ $cakeDescription = 'HertsCubs Booking System';
                  
             <?= $this->fetch('content') ?>    
 
+<<<<<<< HEAD
         </div>
         <footer>
             <div class="navbar navbar-static-bottom">
                 <ul class="nav navbar-top-links navbar-right">
                     <li><a target="JacobAGTyler" href="http://bit.ly/1EOXzYQ">Designed &amp Developed by Jacob Tyler</a></li>
                 </ul>
+=======
+            <div class="row">              
+                <?= $this->fetch('content') ?>
+            </div>
+        </div>
+        <footer>
+            <div class="footer-title">
+                <Span><a target="JacobAGTyler" href="http://bit.ly/1EOXzYQ">Designed &amp Developed by Jacob Tyler</a></span>
+>>>>>>> master
             </div>
         </footer>
     </div>

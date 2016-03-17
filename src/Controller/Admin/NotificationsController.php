@@ -6,7 +6,10 @@ use Cake\Mailer\Email;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Mailer\MailerAwareTrait;
+<<<<<<< HEAD
 use Cake\Network\Http\Client;
+=======
+>>>>>>> master
 
 /**
  * Notifications Controller
@@ -57,7 +60,11 @@ class NotificationsController extends AppController
         $this->set('notification', $notification);
         $this->set('_serialize', ['notification']);
 
+<<<<<<< HEAD
         /*$now = Time::now();
+=======
+        $now = Time::now();
+>>>>>>> master
         $nowData = ['new' => 0, 'read_date' => $now];
 
         if ($notification->new == 1) {
@@ -68,9 +75,36 @@ class NotificationsController extends AppController
             } else {
                 $this->Flash->error(__('The notification could not be marked as viewed. Please, try again.'));
             }
+<<<<<<< HEAD
         }*/        
     }
 
+=======
+        }        
+    }
+
+    /*public function clean($userId = null)
+    {
+        $this->request->allowMethod('delete');
+        
+        $notifications = $this->Notifications->find('all')->where(['user_id' => $userId]);
+
+        $count = 0;
+
+        foreach ($notifications as $notification) {
+            if ($this->Notifications->delete($notification)) {
+                $count = $count + 1;
+            } else {
+                $this->Flash->error(__('There was an error.'));
+            }
+        }
+
+        $this->Flash->success(__($count . ' notifications were cleaned.'));
+        return $this->redirect(['action' => 'index']);
+        
+    }*/
+
+>>>>>>> master
     /**
      * Add method
      *
@@ -112,7 +146,11 @@ class NotificationsController extends AppController
                                 , 'user_id' => $userId
                                 , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
                                 , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
+<<<<<<< HEAD
                                 , 'notification_source' => 'Admin Triggered'
+=======
+                                , 'notification_source' => 'System Generated'
+>>>>>>> master
                                 , 'new' => 1];
 
             $notification = $this->Notifications->newEntity();
@@ -124,6 +162,7 @@ class NotificationsController extends AppController
 
                 $this->getMailer('User')->send('welcome', [$user, $group, $notification]);
 
+<<<<<<< HEAD
                 $sets = TableRegistry::get('Settings');
 
                 $jsonWelcome = json_encode($welcomeData);
@@ -152,12 +191,43 @@ class NotificationsController extends AppController
                 );
 
                 return $this->redirect(['prefix' => 'admin', 'controller' => 'Users',  'action' => 'view', $userId]);
+=======
+                /*$email = new Email('default');
+                $email->template('welcome', 'default')
+                    ->emailFormat('html')
+                    ->to([$user->email => $user->full_name])
+                    ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
+                    ->subject('Welcome to the Hertfordshire Cubs Booking System')
+                    ->setHeaders(['X-MC-Tags' => 'WelcomeEmail,Type1,Notification'
+                        , 'X-MC-AutoText' => true
+                        , 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk'
+                        , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
+                        , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
+                    ->viewVars(['username' => $user->username
+                        , 'date_created' => $user->created
+                        , 'full_name' => $user->full_name
+                        , 'scoutgroup' => $group->scoutgroup
+                        , 'link_controller' => $notification->link_controller
+                        , 'link_action' => $notification->link_action
+                        , 'link_id' => $notification->link_id
+                        , 'link_prefix' => $notification->link_prefix
+                        , 'notification_id' => $notification->id
+                        ])
+                    ->helpers(['Html', 'Text', 'Time'])
+                    ->send();*/
+
+                return $this->redirect(['action' => 'index']);
+>>>>>>> master
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+<<<<<<< HEAD
             return $this->redirect(['prefix' => 'admin',  'controller' => 'Landing', 'action' => 'admin_home']);
+=======
+            return $this->redirect(['action' => 'index']);
+>>>>>>> master
         }
     }
 
@@ -207,6 +277,7 @@ class NotificationsController extends AppController
 
                 $this->getMailer('Payment')->send('payment', [$user, $group, $notification, $invoice, $payment]);
 
+<<<<<<< HEAD
                 $jsonPayment = json_encode($paymentData);
                 $p_api_key = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
@@ -231,6 +302,31 @@ class NotificationsController extends AppController
                   $jsonPayment,
                   ['type' => 'json']
                 );
+=======
+                /*$email = new Email('default');
+                $email->template('welcome', 'default')
+                    ->emailFormat('html')
+                    ->to([$user->email => $user->full_name])
+                    ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
+                    ->subject('Welcome to the Hertfordshire Cubs Booking System')
+                    ->setHeaders(['X-MC-Tags' => 'WelcomeEmail,Type1,Notification'
+                        , 'X-MC-AutoText' => true
+                        , 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk'
+                        , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
+                        , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
+                    ->viewVars(['username' => $user->username
+                        , 'date_created' => $user->created
+                        , 'full_name' => $user->full_name
+                        , 'scoutgroup' => $group->scoutgroup
+                        , 'link_controller' => $notification->link_controller
+                        , 'link_action' => $notification->link_action
+                        , 'link_id' => $notification->link_id
+                        , 'link_prefix' => $notification->link_prefix
+                        , 'notification_id' => $notification->id
+                        ])
+                    ->helpers(['Html', 'Text', 'Time'])
+                    ->send();*/
+>>>>>>> master
 
                 return $this->redirect(['controller' => 'Payments', 'action' => 'add', 'prefix' => 'admin']);
             } else {
@@ -276,7 +372,11 @@ class NotificationsController extends AppController
                                 , 'user_id' => $invoice->user_id
                                 , 'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.'
                                 , 'notification_header' => 'A payment has been recorded.'
+<<<<<<< HEAD
                                 , 'notification_source' => 'Admin Triggered'
+=======
+                                , 'notification_source' => 'System Generated'
+>>>>>>> master
                                 , 'new' => 1];
 
             $notification = $this->Notifications->newEntity();
@@ -288,6 +388,7 @@ class NotificationsController extends AppController
 
                 $this->getMailer('Payment')->send('payment', [$user, $group, $notification, $invoice, $payment]);
 
+<<<<<<< HEAD
                 $sets = TableRegistry::get('Settings');
 
                 $jsonPayment = json_encode($paymentData);
@@ -397,6 +498,8 @@ class NotificationsController extends AppController
 
                 $this->getMailer('User')->send('welcome', [$user, $group, $notification]);
 
+=======
+>>>>>>> master
                 /*$email = new Email('default');
                 $email->template('welcome', 'default')
                     ->emailFormat('html')
@@ -421,6 +524,7 @@ class NotificationsController extends AppController
                     ->helpers(['Html', 'Text', 'Time'])
                     ->send();*/
 
+<<<<<<< HEAD
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
@@ -493,6 +597,16 @@ class NotificationsController extends AppController
             $this->Flash->error(__('Parameters were not set!'));
             return $this->redirect(['action' => 'index']);
         }
+=======
+                return $this->redirect(['controller' => 'Payments', 'action' => 'index', 'prefix' => 'admin']);
+            } else {
+                $this->Flash->error(__('The notification could not be saved. Please, try again.'));
+            }
+        } //else {
+        //     $this->Flash->error(__('Parameters were not set!'));
+        //     return $this->redirect(['action' => 'index']);
+        // }
+>>>>>>> master
     }
 
     public function newLogistic()

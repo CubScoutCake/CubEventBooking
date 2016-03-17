@@ -29,7 +29,11 @@ class ApplicationsController extends AppController
     public function bookings($eventID = null)
     {
         $this->paginate = [
+<<<<<<< HEAD
             'contain' => ['Users', 'Scoutgroups', 'Events','Attendees','Invoices'],
+=======
+            'contain' => ['Users', 'Scoutgroups', 'Events'],
+>>>>>>> master
             'conditions' => ['event_id' => $eventID]
         ];
         $this->set('applications', $this->paginate($this->Applications));
@@ -46,6 +50,7 @@ class ApplicationsController extends AppController
     public function view($id = null)
     {
         $application = $this->Applications->get($id, [
+<<<<<<< HEAD
             'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['conditions' => ['user_id' => $this->Auth->user('id')]]]
         ]);
         $this->set('application', $application);
@@ -216,6 +221,12 @@ class ApplicationsController extends AppController
         } else {
             return $this->redirect(['controller' => 'Notifications', 'action' => 'multipleInv', 'prefix' => 'admin', $id]);
         }
+=======
+            'contain' => ['Users', 'Attendees', 'Events', 'Invoices', 'Scoutgroups']
+        ]);
+        $this->set('application', $application);
+        $this->set('_serialize', ['application']);
+>>>>>>> master
     }
 
     /**
@@ -302,7 +313,11 @@ class ApplicationsController extends AppController
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
             }
         }
+<<<<<<< HEAD
         $users = $this->Applications->Users->find('list', ['limit' => 200]);
+=======
+        $users = $this->Applications->Users->find('list', ['limit' => 200, 'conditions' => ['id' => $application->user_id]]);
+>>>>>>> master
         $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $application->user_id]]);
         $events = $this->Applications->Events->find('list', ['limit' => 200]);
         $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $user->scoutgroup_id]]);

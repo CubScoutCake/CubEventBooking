@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+<<<<<<< HEAD
 use App\Form\ResetForm;
 use App\Form\PasswordForm;
 
@@ -10,6 +11,9 @@ use Cake\Mailer\MailerAwareTrait;
 // use Cake\Utility\Hash;
 use Cake\Utility\Security;
 use Cake\ORM\TableRegistry;
+=======
+//use Cake\Mailer\MailerAwareTrait;
+>>>>>>> master
 
 /**
  * Users Controller
@@ -47,9 +51,15 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
+<<<<<<< HEAD
             'contain' => ['Roles', 'Scoutgroups','Invoices.Applications'
             ,'Applications.Scoutgroups','Applications.Events'
             ,'Attendees.Scoutgroups' ]
+=======
+            'contain' => ['Roles', 'Scoutgroups'
+            ,'Applications' => ['conditions' => ['user_id' => $this->Auth->user('id')]]
+            ,'Attendees' => [/*'contain' => 'Scoutgroups',*/ 'conditions' => ['user_id' => $this->Auth->user('id')]]]
+>>>>>>> master
         ]);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
@@ -57,7 +67,11 @@ class UsersController extends AppController
 
     //use MailerAwareTrait;
 
+<<<<<<< HEAD
     /*public function register()
+=======
+    public function register()
+>>>>>>> master
     {
         $user = $this->Users->newEntity($this->request->data);
 
@@ -129,6 +143,7 @@ class UsersController extends AppController
      * @return void Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
+<<<<<<< HEAD
 
     public function login($eventId = null)
     {
@@ -177,6 +192,10 @@ class UsersController extends AppController
     }
 
     public function reset()
+=======
+
+    public function login($eventId = null)
+>>>>>>> master
     {
         $this->viewBuilder()->layout('outside');
 
@@ -195,6 +214,7 @@ class UsersController extends AppController
         $this->set(compact('scoutgroups','resForm'));
 
         if ($this->request->is('post')) {
+<<<<<<< HEAD
 
             if ($session->check('Reset.rsTries')) {
                 $tries = $session->read('Reset.rsTries');
@@ -287,8 +307,20 @@ class UsersController extends AppController
             } else {
                 $this->Flash->error('You have failed entry too many times. Please try again later.');
                 return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
+=======
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+                if (isset($eventId) && $eventId >= 0) {
+                    return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
+                } else {
+                    return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
+                }  
+>>>>>>> master
             }
         }
+
+        $this->set(compact('eventId'));
     }
 
     public function token($userid = null, $decryptor = null) {
@@ -360,8 +392,11 @@ class UsersController extends AppController
     {
         $this->Auth->allow(['register']);
         $this->Auth->allow(['login']);
+<<<<<<< HEAD
         $this->Auth->allow(['reset']);
         $this->Auth->allow(['token']);
+=======
+>>>>>>> master
     }
     
     

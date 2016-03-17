@@ -6,7 +6,10 @@ use Cake\Mailer\Email;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Mailer\MailerAwareTrait;
+<<<<<<< HEAD
 use Cake\Network\Http\Client;
+=======
+>>>>>>> master
 
 /**
  * Notifications Controller
@@ -64,6 +67,7 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $nowData);
 
             if ($this->Notifications->save($notification)) {
+<<<<<<< HEAD
 
                 $viewEnt = [
                     'Entity Id' => $notification->id,
@@ -98,6 +102,8 @@ class NotificationsController extends AppController
                   ['type' => 'json']
                 );
 
+=======
+>>>>>>> master
                 $this->Flash->success(__('The notification has been marked as viewed.'));
             } else {
                 $this->Flash->error(__('The notification could not be marked as viewed. Please, try again.'));
@@ -178,6 +184,7 @@ class NotificationsController extends AppController
 
                 $this->getMailer('User')->send('welcome', [$user, $group, $notification]);
 
+<<<<<<< HEAD
                 $sets = TableRegistry::get('Settings');
 
                 $jsonWelcome = json_encode($welcomeData);
@@ -204,6 +211,31 @@ class NotificationsController extends AppController
                   $jsonWelcome,
                   ['type' => 'json']
                 );
+=======
+                /*$email = new Email('default');
+                $email->template('welcome', 'default')
+                    ->emailFormat('html')
+                    ->to([$user->email => $user->full_name])
+                    ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
+                    ->subject('Welcome to the Hertfordshire Cubs Booking System')
+                    ->setHeaders(['X-MC-Tags' => 'WelcomeEmail,Type1,Notification'
+                        , 'X-MC-AutoText' => true
+                        , 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk'
+                        , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
+                        , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
+                    ->viewVars(['username' => $user->username
+                        , 'date_created' => $user->created
+                        , 'full_name' => $user->full_name
+                        , 'scoutgroup' => $group->scoutgroup
+                        , 'link_controller' => $notification->link_controller
+                        , 'link_action' => $notification->link_action
+                        , 'link_id' => $notification->link_id
+                        , 'link_prefix' => $notification->link_prefix
+                        , 'notification_id' => $notification->id
+                        ])
+                    ->helpers(['Html', 'Text', 'Time'])
+                    ->send();*/
+>>>>>>> master
 
                 return $this->redirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, $userId]);
             } else {
@@ -278,6 +310,7 @@ class NotificationsController extends AppController
         $notification = $this->Notifications->get($id);
         if ($notification->user_id == $this->Auth->user('id')) {
             if ($this->Notifications->delete($notification)) {
+<<<<<<< HEAD
 
                 $deleteEnt = [
                     'Entity Id' => $notification->id,
@@ -312,6 +345,8 @@ class NotificationsController extends AppController
                   ['type' => 'json']
                 );
 
+=======
+>>>>>>> master
                 $this->Flash->success(__('The notification has been deleted.'));
             } else {
                 $this->Flash->error(__('The notification could not be deleted. Please, try again.'));

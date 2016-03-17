@@ -16,7 +16,11 @@
             echo $this->Form->input('section', ['label' => 'Any Specific Section Name e.g. Wednesdays - Leave this blank if you are the only Cub Section in the Scout Group.']);
             echo $this->Form->input('event_id', ['options' => $events]);
             echo $this->Form->input('permitholder');
+<<<<<<< HEAD
             echo $this->Form->input('attendees._ids', ['options' => $attendees, 'label' => 'Associate Attendees - This will be blank if you have not created any attendees.', 'multiple' => 'checkbox']);
+=======
+            echo $this->Form->input('attendees._ids', ['options' => $attendees, 'label' => 'Associate Attendees - This will be blank if you have not created any attendees.']);
+>>>>>>> master
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
