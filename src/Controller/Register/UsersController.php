@@ -23,7 +23,6 @@ class UsersController extends AppController
 
             $user = $this->Users->patchEntity($user, $this->request->data);
 
-<<<<<<< HEAD
             $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
                 ,'lastname' => ucwords(strtolower($user->lastname))
                 ,'address_1' => ucwords(strtolower($user->address_1))
@@ -35,8 +34,6 @@ class UsersController extends AppController
 
             $user = $this->Users->patchEntity($user, $upperUser);
 
-=======
->>>>>>> master
             if ($this->Users->save($user)) {
 
                 $redir = $user->get('id');
@@ -50,7 +47,6 @@ class UsersController extends AppController
         }
 
         $roles = $this->Users->Roles->find('list', ['limit' => 200, 'conditions' => ['minor' => 0, 'invested' => 1]]);
-<<<<<<< HEAD
         $scoutgroups = $this->Users->Scoutgroups->find('list', 
             [
                 'keyField' => 'id',
@@ -58,9 +54,6 @@ class UsersController extends AppController
                 'groupField' => 'district.district'
             ])
             ->contain(['Districts']);
-=======
-        $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200]);
->>>>>>> master
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
     }

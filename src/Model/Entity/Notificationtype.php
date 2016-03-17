@@ -9,10 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $notification_type
  * @property string $notification_description
-<<<<<<< HEAD
  * @property string $icon
-=======
->>>>>>> master
  * @property \App\Model\Entity\Notification[] $notifications
  */
 class Notificationtype extends Entity

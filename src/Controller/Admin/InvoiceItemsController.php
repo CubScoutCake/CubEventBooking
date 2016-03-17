@@ -440,11 +440,7 @@ class InvoiceItemsController extends AppController
         
     }*/
 
-<<<<<<< HEAD
     public function populate($invID = null)
-=======
-        public function populate($invID = null)
->>>>>>> master
     {
         // Connect Registry
         $settings = TableRegistry::get('Settings');
@@ -788,10 +784,6 @@ class InvoiceItemsController extends AppController
             }
 
             $cubDeposit = ['invoice_id' => $invID, 'Value' => $depValue, 'Description' => $depDescription, 'Quantity' => $depNum, 'itemtype_id' => 1, 'visible' => $event->deposit];
-<<<<<<< HEAD
-=======
-            
->>>>>>> master
             $existingCubDepItem = $this->InvoiceItems->patchEntity($existingCubDepItem, $cubDeposit);
 
             // Patch Items with Standard Info
@@ -891,10 +883,6 @@ class InvoiceItemsController extends AppController
         }
         
     }
-<<<<<<< HEAD
 }
 
 
-=======
-}
->>>>>>> master

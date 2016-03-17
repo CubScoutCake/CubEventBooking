@@ -19,11 +19,7 @@ class AttendeesController extends AppController
     public function index()
     {
         $this->paginate = [
-<<<<<<< HEAD
             'contain' => ['Users','Scoutgroups','Roles']
-=======
-            'contain' => ['Users']
->>>>>>> master
         ];
         $this->set('attendees', $this->paginate($this->Attendees));
         $this->set('_serialize', ['attendees']);

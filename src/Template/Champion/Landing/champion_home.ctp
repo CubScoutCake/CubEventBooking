@@ -134,21 +134,12 @@
 	    <table cellpadding="0" cellspacing="0">
 	    <thead>
 	        <tr>
-<<<<<<< HEAD
 	            <th><?= h('Username') ?></th>
 	            <th><?= h('Scout Group') ?></th>
 	            <th><?= h('Role') ?></th>
 	            <th><?= h('First Name') ?></th>
 	            <th><?= h('Last Name') ?></th>
 	            <th><?= h('Auth Role') ?></th>
-=======
-	            <th><?= $this->Paginator->sort('username') ?></th>
-	            <th><?= $this->Paginator->sort('scoutgroup_id') ?></th>
-	            <th><?= $this->Paginator->sort('role_id') ?></th>
-	            <th><?= $this->Paginator->sort('firstname') ?></th>
-	            <th><?= $this->Paginator->sort('lastname') ?></th>
-	            <th><?= $this->Paginator->sort('authrole') ?></th>
->>>>>>> master
 	            <th class="actions"><?= __('Actions') ?></th>
 	        </tr>
 	    </thead>

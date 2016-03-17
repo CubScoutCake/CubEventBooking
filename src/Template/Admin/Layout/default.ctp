@@ -1,11 +1,8 @@
 <?php
-<<<<<<< HEAD
 
 use Cake\Core\Configure;
 
 
-=======
->>>>>>> master
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -23,7 +20,6 @@ use Cake\Core\Configure;
 $cakeDescription = 'HertsCubs Booking System';
 ?>
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html lang="en">
 <head>
 
@@ -32,17 +28,6 @@ $cakeDescription = 'HertsCubs Booking System';
     <?php echo $this->Html->css('bootstrap.min.css');?>
     <?php //echo $this->Html->script('jquery.js');?>
     <?php //echo $this->Html->script('analytics.js');?>
-=======
-<html>
-<head>
-
-    <!-- Bootstrap Implementation 
-
-    <?php //echo $this->Html->css('bootstrap.min.css');?>
-    <?php //echo $this->Html->script('jquery.js');?>
-    <?php //echo $this->Html->script('bootstrap.min.js');?>
-    -->
->>>>>>> master
 
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,7 +38,6 @@ $cakeDescription = 'HertsCubs Booking System';
     </title>
     <?= $this->Html->meta('icon') ?>
 
-<<<<<<< HEAD
     <!-- Jan16 Admin Theme Scripts -->
 
     <?php echo $this->Html->css('metisMenu.min.css'); ?>
@@ -659,75 +643,10 @@ $cakeDescription = 'HertsCubs Booking System';
                 <ul class="nav navbar-top-links navbar-right">
                     <li><a target="JacobAGTyler" href="http://bit.ly/1EOXzYQ">Designed &amp Developed by Jacob Tyler</a></li>
                 </ul>
-=======
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
-    <?= $this->Html->css('hertscubs100.css') ?>
-
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>   
-
-
-
-</head>
-<body>
-
-    <header>
-        <div class="header-title">
-            <span><?= $this->fetch('title') ?></span>
-        </div>
-        <div class="header-help">
-            <?= $this->fetch('Menu');
-
-            $this->start('Menu');
-            $this->end();
-
-            if (is_null($this->request->session()->read('Auth.User.username'))) {
-
-                echo "Not Logged In ";
-
-                echo $this->element('Menu/outside');
-
-            } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
-
-                echo $this->element('Menu/user');
-                echo $this->element('Menu/admin');
-
-                $AText = "Admin: " . $this->request->session()->read('Auth.User.username');
-
-                echo $this->Html->link($AText, ['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')], ['class' => 'button']);
-
-            } else {
-
-                echo $this->element('Menu/user');
-
-                $UText = "User: " . $this->request->session()->read('Auth.User.username');
-
-                echo $this->Html->link($UText, ['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')], ['class' => 'button']);
-
-            } ?>
-        </div>
-    </header>
-    <div id="container">
-
-        <div id="content">
-            <?= $this->Flash->render() ?>
-            <?= $this->Flash->render('auth') ?>
-
-            <div class="row">
-                <?= $this->fetch('content') ?>
-            </div>
-        </div>
-        <footer>
-            <div class="footer-title">
-                <Span><a target="JacobAGTyler" href="http://bit.ly/1EOXzYQ">Designed &amp Developed by Jacob Tyler</a></span>
->>>>>>> master
             </div>
         </footer>
     </div>
 </body>
-<<<<<<< HEAD
 
 <!-- jQuery -->
 <?php echo $this->Html->script('jquery.min.js');?>
@@ -759,6 +678,4 @@ $cakeDescription = 'HertsCubs Booking System';
 <!-- Actual Script Fetch -->
 <?= $this->fetch('script') ?>
 
-=======
->>>>>>> master
 </html>

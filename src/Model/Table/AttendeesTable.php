@@ -98,12 +98,8 @@ class AttendeesTable extends Table
             ->notEmpty('dateofbirth');
 
         $validator
-<<<<<<< HEAD
             ->requirePresence('phone', 'create')
             ->notEmpty('phone');;
-=======
-            ->allowEmpty('phone');
->>>>>>> master
 
         $validator
             ->allowEmpty('phone2');

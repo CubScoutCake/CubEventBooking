@@ -3,10 +3,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use Cake\Mailer\MailerAwareTrait;
-<<<<<<< HEAD
 //use DataTables\Controller\Component;
-=======
->>>>>>> master
 
 /**
  * Users Controller
@@ -62,7 +59,6 @@ class UsersController extends AppController
         
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->data);
-<<<<<<< HEAD
 
             $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
                 ,'lastname' => ucwords(strtolower($user->lastname))
@@ -75,8 +71,6 @@ class UsersController extends AppController
 
             $user = $this->Users->patchEntity($user, $upperUser);
             
-=======
->>>>>>> master
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -131,7 +125,6 @@ class UsersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
-<<<<<<< HEAD
 
             $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
                 ,'lastname' => ucwords(strtolower($user->lastname))
@@ -144,8 +137,6 @@ class UsersController extends AppController
 
             $user = $this->Users->patchEntity($user, $upperUser);
 
-=======
->>>>>>> master
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -159,7 +150,6 @@ class UsersController extends AppController
         $this->set('_serialize', ['user']);
     }
 
-<<<<<<< HEAD
     public function update($id = null)
     {
         $user = $this->Users->get($id);
@@ -184,8 +174,6 @@ class UsersController extends AppController
         }
     }
 
-=======
->>>>>>> master
     /**
      * Delete method
      *

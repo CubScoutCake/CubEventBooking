@@ -126,21 +126,14 @@ class UsersController extends AppController
             'contain' => []
         ]);
 
-<<<<<<< HEAD
         $usrRole = $user->authrole;
 
         if ( $usrRole !== 'user' && $user->id !== $this->Auth->user('id'))
-=======
-        if ($user->authrole !=== 'user' && $user->id !=== $this->Auth->user('id'))
->>>>>>> master
         {
             $this->Flash->error(__('The user could not be edited.'));
             return $this->redirect(['action' => 'index']);
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> master
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {

@@ -143,7 +143,6 @@ class InvoicesController extends AppController
         }
         $users = $this->Invoices->Users->find('list', ['limit' => 200]);
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
-<<<<<<< HEAD
         
         // If User Set or Not - Limit the list.
         if (isset($userId)) {
@@ -152,9 +151,6 @@ class InvoicesController extends AppController
             $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
         }
         
-=======
-        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userThis]]);
->>>>>>> master
 
         $this->set(compact('invoice', 'users', 'payments', 'applications'));
         $this->set('_serialize', ['invoice']);
@@ -192,7 +188,7 @@ class InvoicesController extends AppController
 
         $users = $this->Invoices->Users->find('list', ['limit' => 200]);
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
-        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userThis]]);
+        $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
 
         $this->set(compact('invoice', 'users', 'payments', 'applications'));
         $this->set('_serialize', ['invoice']);
@@ -214,7 +210,7 @@ class InvoicesController extends AppController
         } else {
             $this->Flash->error(__('The invoice could not be deleted. Please, try again.'));
         }
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'view',$id]);
     }
 
 
@@ -222,16 +218,6 @@ class InvoicesController extends AppController
     {
         $apps = TableRegistry::get('Applications');
 
-<<<<<<< HEAD
-=======
-        $appCount = $apps->find('all')->where(['user_id' => $userId])->count('*');
-
-        if ($appCount < 1) {
-            return $this->redirect(['controller' => 'Applications', 'action' => 'newApp', $userId]);
-            $this->Flash->error(__('The Invoice cannot be generated without an Application. You have been redirected to create one first.'));
-        }
-
->>>>>>> master
         //Create Entities
 
         $invoice = $this->Invoices->newEntity();
