@@ -210,7 +210,7 @@ class InvoicesController extends AppController
         } else {
             $this->Flash->error(__('The invoice could not be deleted. Please, try again.'));
         }
-        return $this->redirect(['action' => 'view',$id]);
+        return $this->redirect(['action' => 'index']);
     }
 
 

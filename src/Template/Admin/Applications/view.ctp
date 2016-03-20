@@ -23,6 +23,7 @@
                         'prefix' => 'admin',
                         $application->id],['_full']); ?>">Add an Invoice</a>
                     </li>
+                    <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Applications', 'action' => 'delete', $application->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $application->id)]) ?></li>
                 </ul>
             </div>
         </div>
@@ -247,7 +248,7 @@
                                             <ul class="dropdown-menu " role="menu">
                                                 <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
                                                 <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
-
+                                                <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Attendees', 'action' => 'delete', $attendees->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $attendees->id)]) ?></li>
                                             </ul>
                                         </div>
                                     </td>
@@ -296,6 +297,7 @@
                                             <ul class="dropdown-menu " role="menu">
                                                 <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?></li>
                                                 <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoices->id]) ?></li>
+                                                <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete', $invoices->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $invoices->id)]) ?></li>
                                             </ul>
                                         </div>
                                     </td>
