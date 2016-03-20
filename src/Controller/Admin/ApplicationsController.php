@@ -20,7 +20,7 @@ class ApplicationsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users','Scoutgroups', 'Events']
+            'contain' => ['Users','Scoutgroups', 'Events','Attendees']
         ];  
         $this->set('applications', $this->paginate($this->Applications));
         $this->set('_serialize', ['applications']);
@@ -46,7 +46,7 @@ class ApplicationsController extends AppController
     public function view($id = null)
     {
         $application = $this->Applications->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['conditions' => ['user_id' => $this->Auth->user('id')]]]
+            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees']
         ]);
         $this->set('application', $application);
         $this->set('_serialize', ['application']);

@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-lg-6 col-md-6">
+    <div class="col-lg-10 col-md-10">
         <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
-    <div class="col-lg-6 col-md-6">
+    <div class="col-lg-2 col-md-2">
         </br>
         <div class="pull-right pull-down">
             <div class="btn-group">
@@ -23,6 +23,7 @@
                         'prefix' => 'admin',
                         $invoice->id],['_full']); ?>">Edit Invoice</a>
                     </li>
+                    <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete','prefix' => 'admin', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?></li>
                 </ul>
             </div>
         </div>
@@ -128,6 +129,7 @@
                         <table class="table table-hover">
                             <tr>
                                 <th><?= __('Id') ?></th>
+                                <th><?= __('Actions') ?></th>
                                 <th><?= __('Value') ?></th>
                                 <th><?= __('Created') ?></th>
                                 <th><?= __('Paid') ?></th>
@@ -136,6 +138,20 @@
                             <?php foreach ($invoice->payments as $payments): ?>
                                 <tr>
                                     <td><?= h($payments->id) ?></td>
+                                    <td class="actions">
+                                        <div class="dropdown btn-group">
+                                            <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu " role="menu">
+                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Payments', 'prefix' => 'admin', 'action' => 'view', $payments->id]) ?></li>
+                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Payments', 'prefix' => 'admin', 'action' => 'edit', $payments->id]) ?></li>
+                                                <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Payments', 'prefix' => 'admin', 'action' => 'delete', $payments->id], ['confirm' => __('Are you sure you want to delete # {0}?', $payments->id)]) ?></li>
+                                                <li class="divider"></li>
+                                                <li><?= $this->Html->link(__('Notify'), ['controller' => 'Notifications', 'action' => 'notify_payment', $payments->id]) ?></li>
+                                            </ul>
+                                        </div>
+                                    </td>
                                     <td><?= $this->Number->currency($payments->value,'GBP') ?></td>
                                     <td><?= $this->Time->i18nformat($payments->created,'dd-MMM-yy HH:mm') ?></td>
                                     <td><?= $this->Time->i18nformat($payments->paid,'dd-MMM-yy HH:mm') ?></td>

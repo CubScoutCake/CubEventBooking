@@ -88,7 +88,7 @@ class PaymentsController extends AppController
                 $this->Flash->error(__('The payment could not be saved. Please, try again.'));
             }
         }
-        $invoices = $this->Payments->Invoices->find('list', ['limit' => 200]);
+        $invoices = $this->Payments->Invoices->find('list', ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]);
         $this->set(compact('payment', 'invoices'));
         $this->set('_serialize', ['payment']);
     }

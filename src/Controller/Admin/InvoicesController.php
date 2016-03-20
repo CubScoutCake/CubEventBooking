@@ -247,8 +247,13 @@ class InvoicesController extends AppController
 
         }
 
-        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
-        $this->set(compact('invoice', 'applications'));
+        if (isset($userId)) {
+            $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
+        } else {
+            $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
+        }
+
+        $this->set(compact('applications'));    
         $this->set('_serialize', ['invoice']);
 
         if ($this->request->is('get')) {
@@ -295,10 +300,14 @@ class InvoicesController extends AppController
         $invoiceItems = TableRegistry::get('InvoiceItems');
 
         //Get Entity
-
         $invoice = $this->Invoices->get($InvId, [
             'contain' => ['Users', 'Payments', 'InvoiceItems', 'Applications']
         ]);
+
+        if (!isset($userId)) {
+            $userId = $invoice->user_id;
+        }
+
 
         $itemCount = $invoiceItems->find()->where(['invoice_id' => $InvId])->count(['id']);
         // $itemCount->count(['id']);

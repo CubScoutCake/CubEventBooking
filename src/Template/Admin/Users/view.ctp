@@ -139,67 +139,79 @@
                                 <thead>
                                     <tr>
                                         <th><?= __('Id') ?></th>
+                                        <th class="actions"><?= __('Actions') ?></th>
                                         <th><?= __('Scoutgroup') ?></th>
                                         <th><?= __('Event') ?></th>
                                         <th><?= __('Section') ?></th>
                                         <th><?= __('Permitholder') ?></th>
                                         <th><?= __('Created') ?></th>
                                         <th><?= __('Modified') ?></th>
-                                        <th class="actions"><?= __('Actions') ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($user->applications as $applications): ?>
                                         <tr>
                                             <td><?= h($applications->display_code) ?></td>
+                                            <td class="actions">
+                                                <div class="dropdown btn-group">
+                                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu " role="menu">
+                                                        <li><?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $applications->id]) ?></li>
+                                                        <li><?= $this->Html->link(__('Edit'), ['controller' => 'Applications', 'action' => 'edit', $applications->id]) ?></li>
+                                                        <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Applications', 'action' => 'delete', $applications->id], ['confirm' => __('Are you sure you want to delete # {0}?', $applications->id)]) ?></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
                                             <td><?= $applications->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->scoutgroup->scoutgroup,18), ['controller' => 'Scoutgroups', 'action' => 'view', $applications->scoutgroup->id]) : '' ?></td>
                                             <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['controller' => 'Events', 'action' => 'view', $applications->event->id]) : '' ?></td>
                                             <td><?= h($applications->section) ?></td>
                                             <td><?= h($applications->permitholder) ?></td>
                                             <td><?= h($applications->created) ?></td>
                                             <td><?= h($applications->modified) ?></td>
-                                            <td class="actions">
-                                                <?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $applications->id]) ?>
-
-                                                <?= $this->Html->link(__('Edit'), ['controller' => 'Applications', 'action' => 'edit', $applications->id]) ?>
-
-                                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Applications', 'action' => 'delete', $applications->id], ['confirm' => __('Are you sure you want to delete # {0}?', $applications->id)]) ?>
-                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <?php if (!empty($user->attendees)): ?>
+                    <?php if (!empty($user->invoices)): ?>
                         <div class="tab-pane fade" id="invo-pills">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th><?= __('Id') ?></th>
+                                            <th class="actions"><?= __('Actions') ?></th>
                                             <th><?= __('Application') ?></th>
                                             <th><?= __('Sum Value') ?></th>
                                             <th><?= __('Received') ?></th>
                                             <th><?= __('Balance') ?></th>
                                             <th><?= __('Date Created') ?></th>
-                                            <th class="actions"><?= __('Actions') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($user->invoices as $invoices): ?>
                                             <tr>
                                                 <td><?= h($invoices->id) ?></td>
+                                                <td class="actions">
+                                                    <div class="dropdown btn-group">
+                                                        <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu " role="menu">
+                                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?></li>
+                                                            <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoices->id]) ?></li>
+                                                            <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete', $invoices->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoices->id)]) ?></li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
                                                 <td><?= $invoices->has('application') ? $this->Html->link($invoices->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoices->application->id]) : '' ?></td>
                                                 <td><?= $this->Number->currency($invoices->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoices->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoices->balance,'GBP') ?></td>
                                                 <td><?= $this->Time->i18nformat($invoices->created,'dd-MMM-yy HH:mm') ?></td>
-                                                <td class="actions">
-                                                    <?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?>
-                                                    <?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoices->id]) ?>
-                                                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete', $invoices->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoices->id)]) ?>
-                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -214,6 +226,7 @@
                                     <thead>
                                         <tr>
                                             <th><?= __('Id') ?></th>
+                                            <th class="actions"><?= __('Actions') ?></th>
                                             <th><?= __('Scoutgroup') ?></th>
                                             <th><?= __('Role') ?></th>
                                             <th><?= __('Firstname') ?></th>
@@ -222,13 +235,24 @@
                                             <th><?= __('N.A.P.') ?></th>
                                             <th><?= __('Created') ?></th>
                                             <th><?= __('Modified') ?></th>
-                                            <th class="actions"><?= __('Actions') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($user->attendees as $attendees): ?>
                                             <tr>
                                                 <td><?= h($attendees->id) ?></td>
+                                                <td class="actions">
+                                                    <div class="dropdown btn-group">
+                                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu " role="menu">
+                                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
+                                                            <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
+                                                            <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Attendees', 'action' => 'delete', $attendees->id], ['confirm' => __('Are you sure you want to delete # {0}?', $attendees->id)]) ?></li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
                                                 <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,12), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
                                                 <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
                                                 <td><?= h($attendees->firstname) ?></td>    
@@ -237,15 +261,6 @@
                                                 <td><?= h($attendees->nightsawaypermit) ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->created, 'dd-MMM-yy HH:mm') ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
-
-                                                <td class="actions">
-                                                    <?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?>
-
-                                                    <?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?>
-
-                                                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Attendees', 'action' => 'delete', $attendees->id], ['confirm' => __('Are you sure you want to delete # {0}?', $attendees->id)]) ?>
-
-                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
