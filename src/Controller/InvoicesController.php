@@ -271,7 +271,7 @@ class InvoicesController extends AppController
 
         if ($invCount > 0) {
             $this->Flash->error(__('There is already an Invoice for this Application.'));
-            return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $exist->id]);
+            return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'repopulate', $exist->id]);
         }
         
         //Create Entities
@@ -285,40 +285,51 @@ class InvoicesController extends AppController
             // Max Invoices on Event
             if (!isset($appId)) {
                 $appId = $this->request->data['application_id'];
-            }         
+            }
 
-            $existingApp = $apps->get($appId);
+            // Only 1 Invoice to an App
+            $existingInvs = $this->Invoices->find('all')->where(['application_id' => $appId]);
+            $invCount = $existingInvs->count('*');
+            $exist = $existingInvs->first();
 
-            $eventInvs = $invs->find('all')->contain('Applications')->where(['Applications.event_id' => $existingApp->event_id]);
-            $eventInvsCount = $eventInvs->count('*');
+            if ($invCount > 0) {
+                $this->Flash->error(__('There is already an Invoice for this Application.'));
+                return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'repopulate', $exist->id]);
+            } else {  
 
-            $event = $evts->get($existingApp->event_id);
-            $errorMsg = 'This event has been LOCKED to prevent updates to invoices. Please contact ' . $event->admin_full_name . '.';
+                $existingApp = $apps->get($appId);
 
-            if ($eventInvsCount >= $event->available_apps && isset($event->available_apps) && $event->available_apps > 0) {
-                $this->Flash->error(__('The Maximum Number of Teams for this Event has been reached. The Event is Full.'));
-                return $this->redirect(['controller' => 'Events', 'action' => 'view', $event->id]);
-            } elseif ($event->invoices_locked) {
-                $this->Flash->error(__($errorMsg));
-                return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => false, $InvId]);
-            } else {
-                $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+                $eventInvs = $invs->find('all')->contain('Applications')->where(['Applications.event_id' => $existingApp->event_id]);
+                $eventInvsCount = $eventInvs->count('*');
 
-                $invoice = $this->Invoices->patchEntity($invoice, $newData);
+                $event = $evts->get($existingApp->event_id);
+                $errorMsg = 'This event has been LOCKED to prevent updates to invoices. Please contact ' . $event->admin_full_name . '.';
 
-                if ($this->Invoices->save($invoice)) {
-
-                    $redir = $invoice->get('id');
-
-                    $this->Flash->success(__('An invoice has been generated. Please enter the number of Attendees you are bringing.'));
-
-                    return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'populate', $redir]);
-
+                if ($eventInvsCount >= $event->available_apps && isset($event->available_apps) && $event->available_apps > 0) {
+                    $this->Flash->error(__('The Maximum Number of Teams for this Event has been reached. The Event is Full.'));
+                    return $this->redirect(['controller' => 'Events', 'action' => 'view', $event->id]);
+                } elseif ($event->invoices_locked) {
+                    $this->Flash->error(__($errorMsg));
+                    return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => false, $InvId]);
                 } else {
+                    $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 
-                    $this->Flash->error(__('The invoice could not be generated. Please, try again.'));
+                    $invoice = $this->Invoices->patchEntity($invoice, $newData);
 
-                    return $this->redirect(['action' => 'index']);
+                    if ($this->Invoices->save($invoice)) {
+
+                        $redir = $invoice->get('id');
+
+                        $this->Flash->success(__('An invoice has been generated. Please enter the number of Attendees you are bringing.'));
+
+                        return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'populate', $redir]);
+
+                    } else {
+
+                        $this->Flash->error(__('The invoice could not be generated. Please, try again.'));
+
+                        return $this->redirect(['action' => 'index']);
+                    }
                 }
             }
         }

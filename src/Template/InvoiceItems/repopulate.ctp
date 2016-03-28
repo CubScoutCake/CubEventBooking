@@ -2,6 +2,7 @@
     <?= $this->Form->create($invPop); ?>
     <fieldset>
         <legend><?= __('Number of Attendees Being Registered') ?></legend>
+        <p>Please enter the total amount of Attendees (i.e. existing + new).</p>
         <?php
             if ($CubsVis == 1) { 
                 echo $this->Form->input('cubs'); 
