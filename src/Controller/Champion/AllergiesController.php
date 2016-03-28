@@ -31,8 +31,13 @@ class AllergiesController extends AppController
      */
     public function view($id = null)
     {
+        $scoutgroups = TableRegistry::get('Scoutgroups');
+
+        $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
+        
         $allergy = $this->Allergies->get($id, [
-            'contain' => ['Attendees']
+            'contain' => ['Attendees.Users','Attendees.Scoutgroups','Attendees.Roles']
+            ,'conditions' => ['Scoutgroups.district_id' => $champD->district_id]
         ]);
         $this->set('allergy', $allergy);
         $this->set('_serialize', ['allergy']);

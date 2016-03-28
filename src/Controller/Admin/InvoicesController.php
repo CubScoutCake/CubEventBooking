@@ -26,6 +26,37 @@ class InvoicesController extends AppController
         $this->set('_serialize', ['invoices']);
     }
 
+    public function unpaid($eventId = null)
+    {
+        if (isset($eventId)) {
+            $evts = TableRegistry::get('Events');
+
+            $event = $evts->get($eventId);
+            $eventName = $event->name;
+
+            $this->set(compact('eventName'));
+
+            $this->paginate = [
+                'contain' => ['Users','Applications','Payments','InvoiceItems']
+                ,'conditions' => ['Applications.event_id' => $eventId, 'value IS' => null]
+            ];
+            $this->set('invoices', $this->paginate($this->Invoices));
+            $this->set('_serialize', ['invoices']);
+        } else {
+            $eventName = 'All Events';
+
+            $this->set(compact('eventName'));
+
+            $this->paginate = [
+                'contain' => ['Users','Applications','Payments','InvoiceItems']
+                ,'conditions' => ['value IS' => null]
+            ];
+            $this->set('invoices', $this->paginate($this->Invoices));
+            $this->set('_serialize', ['invoices']);
+        }
+        
+    }
+
     /**
      * View method
      *

@@ -10,10 +10,11 @@
                 echo $this->Form->input('lastname');
                 echo $this->Form->input('dateofbirth', [
                     'label' => 'Date of birth',
-                    'minYear' => date('Y') - 85,
+                    'minYear' => date('Y') - 20,
                     'maxYear' => date('Y') - 5,
                 ]);
                 echo $this->Form->input('phone', ['label' =>'Emergency Contact Number']);
+                echo $this->Form->input('vegetarian');
                 echo $this->Form->input('applications._ids', ['options' => $applications, 'multiple' => 'checkbox']);
                 echo $this->Form->input('allergies._ids', ['options' => $allergies, 'multiple' => 'checkbox']);
             ?>

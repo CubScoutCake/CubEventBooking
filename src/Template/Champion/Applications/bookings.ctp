@@ -1,23 +1,13 @@
-<div class="actions columns large-2 medium-3">
-    
-    <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/champion');
-    $this->end(); ?>
-    
-    <?= $this->fetch('Sidebar') ?>
-    
-</div>
 <div class="applications index large-10 medium-9 columns">
     <table cellpadding="0" cellspacing="0">
     <thead>
         <tr>
-            <th><?= $this->Paginator->sort('Application') ?></th>
-            <th><?= $this->Paginator->sort('User') ?></th>
-            <th><?= $this->Paginator->sort('Scoutgroup') ?></th>
-            <th><?= $this->Paginator->sort('Section') ?></th>
-            <th><?= $this->Paginator->sort('permitholder') ?></th>
-            <th><?= $this->Paginator->sort('modified') ?></th>
-            <th class="actions"><?= __('Actions') ?></th>
+            <th><?= __('Application') ?></th>
+            <th><?= __('User') ?></th>
+            <th><?= __('Scoutgroup') ?></th>
+            <th><?= __('Section') ?></th>
+            <th><?= __('permitholder') ?></th>
+            <th><?= __('modified') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -36,15 +26,13 @@
             </td>
         </tr>
 
+        <?php foreach ($applications->has('invoices') as $invoice): ?>
+            <tr>
+                <td><?= h($invoice->balance) ?></td>
+            </tr>
+
+        <?php endforeach; ?>
     <?php endforeach; ?>
     </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-        </ul>
-        <p><?= $this->Paginator->counter() ?></p>
-    </div>
 </div>

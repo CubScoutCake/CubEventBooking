@@ -12,7 +12,7 @@
                 echo $this->Form->day('dateofbirth');
                 echo $this->Form->month('dateofbirth');
                 echo $this->Form->year('dateofbirth', [
-                    'minYear' => 1950,
+                    'minYear' => 1930,
                     'maxYear' => date('Y')
                 ]);
                 echo $this->Form->input('phone');
@@ -22,6 +22,7 @@
                 echo $this->Form->input('city');
                 echo $this->Form->input('county');
                 echo $this->Form->input('postcode');
+                echo $this->Form->input('vegetarian');
                 echo $this->Form->input('nightsawaypermit');
                 echo $this->Form->input('applications._ids', ['options' => $applications, 'multiple' => 'checkbox']);
                 echo $this->Form->input('allergies._ids', ['options' => $allergies, 'multiple' => 'checkbox']);

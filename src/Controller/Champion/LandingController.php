@@ -48,22 +48,23 @@ class LandingController extends AppController
         $usrs = TableRegistry::get('Users');
         $pays = TableRegistry::get('Payments');
         $grps = TableRegistry::get('Scoutgroups');
+        $atts = TableRegistry::get('Attendees');
 
         $now = Time::now();
         $userId = $this->Auth->user('id');
         $champD = $grps->get($this->Auth->user('scoutgroup_id'));
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users','Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Applications.modified' => 'DESC'])->limit(5);
+        $applications = $apps->find()->contain(['Users','Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Applications.modified' => 'DESC'])->limit(15);
         $events = $evs->find()->where(['end >' => $now])->contain(['Settings'])->order(['Events.start' => 'ASC']);
-        $invoices = $invs->find()->contain(['Users','Applications','Applications.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Invoices.modified' => 'DESC'])->limit(5);
-        $users = $usrs->find()->contain(['Roles','Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Users.modified' => 'DESC'])->limit(5);
-        $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(5);
+        $invoices = $invs->find()->contain(['Users','Applications','Applications.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Invoices.modified' => 'DESC'])->limit(15);
+        $users = $usrs->find()->contain(['Roles','Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Users.modified' => 'DESC'])->limit(15);
+        $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(15);
 
         // Pass to View
         $this->set(compact('applications', 'events','invoices','users','payments'));
 
-        // Counts of Entities
+        /*// Counts of Entities
         $cntApplications = $apps->find('all')->count('*');
         $cntEvents = $evs->find('all')->count('*');
         $cntInvoices = $invs->find('all')->count('*');
@@ -71,17 +72,18 @@ class LandingController extends AppController
         $cntPayments = $pays->find('all')->count('*');
 
         // Pass to View
-        $this->set(compact('cntApplications', 'cntEvents','cntInvoices','cntUsers','cntPayments','userId'));
+        $this->set(compact('cntApplications', 'cntEvents','cntInvoices','cntUsers','cntPayments','userId'));*/
 
         // Counts of Entities
-        $cntdApplications = $apps->find('all')->contain(['Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
-        $cntdEvents = $evs->find('all')->count('*');
-        $cntdInvoices = $invs->find('all')->contain(['Applications.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
-        $cntdUsers = $usrs->find('all')->contain(['Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
-        $cntdPayments = $pays->find('all')->count('*');
+        $cntApplications = $apps->find('all')->contain(['Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntEvents = $evs->find('all')->count('*');
+        $cntInvoices = $invs->find('all')->contain(['Applications.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntUsers = $usrs->find('all')->contain(['Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntPayments = $pays->find('all')->count('*');
+        $cntAttendees = $atts->find('all')->contain(['Users.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
 
         // Pass to View
-        $this->set(compact('cntdApplications', 'cntdEvents','cntdInvoices','cntdUsers','cntdPayments'));
+        $this->set(compact('cntApplications', 'cntEvents','cntInvoices','cntUsers','cntPayments','cntAttendees'));
 
     }
 }

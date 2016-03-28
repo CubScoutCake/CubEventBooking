@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-files-o fa-fw"></i> Your Invoices</h3>
+        <h3><i class="fa fa-files-o fa-fw"></i> Unpaid Invoices for Event: <?php echo $eventName ?></h3>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -8,6 +8,7 @@
                         <th><?= $this->Paginator->sort('id','Invoice Number') ?></th>
                         <th class="actions"><?= __('Actions') ?></th>
                         <th><?= $this->Paginator->sort('user_id', 'User ID') ?></th>
+                        <th><?= $this->Paginator->sort('application_id', 'App ID') ?></th>
                         <th><?= $this->Paginator->sort('initialvalue', 'Total Invoice Value') ?></th>
                         <th><?= $this->Paginator->sort('value', 'Payments Received') ?></th>
                         <th><?= $this->Paginator->sort('Balance') ?></th>
@@ -30,6 +31,7 @@
                             </div>
                         </td>
                         <td><?= $invoice->has('user') ? $this->Html->link($this->Text->truncate($invoice->user->username,18), ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></td>
+                        <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
                         <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                         <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                         <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>

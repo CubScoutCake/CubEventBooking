@@ -27,6 +27,7 @@
                                     <ul class="dropdown-menu " role="menu">
                                         <li><?= $this->Html->link(__('View'), ['action' => 'view', $attendee->id]) ?></li>
                                         <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $attendee->id]) ?></li>
+                                        <li><?= $this->Html->link(__('Update Caps'), ['action' => 'update', $attendee->id]) ?></li>
                                         <li><?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $attendee->id], ['confirm' => __('Are you sure you want to delete # {0}?', $attendee->id)]) ?></li>
                                     </ul>
                                 </div>

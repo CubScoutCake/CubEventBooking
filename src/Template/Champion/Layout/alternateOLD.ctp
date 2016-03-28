@@ -13,18 +13,18 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = 'CakePHP: the rapid development php framework';
+$cakeDescription = 'HertsCubs Booking System';
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 
-    <!-- Bootstrap Implementation -->
+    <!-- Bootstrap Implementation 
 
-    <?php echo $this->Html->css('bootstrap.min.css');?>
-    <?php echo $this->Html->script('jquery.js');?>
-    <?php echo $this->Html->script('bootstrap.min.js');?>
-
+    <?php //echo $this->Html->css('bootstrap.min.css');?>
+    <?php //echo $this->Html->script('jquery.js');?>
+    <?php //echo $this->Html->script('bootstrap.min.js');?>
+    -->
 
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,20 +37,32 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('cake.css') ?>
+    <?= $this->Html->css('hertscubs100.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
+    <?= $this->fetch('script') ?>   
+
+
 
 </head>
 <body>
+
     <header>
         <div class="header-title">
             <span><?= $this->fetch('title') ?></span>
         </div>
         <div class="header-help">
-            <?= $this->Form->button(__('Logout')) ?>
-            <span><a target="_blank" href="http://api.cakephp.org/3.0/">API</a></span>
+            <?= $this->fetch('Menu');
+
+            $this->start('Menu');
+            $this->end();
+
+            echo "Not Logged In ";
+
+            echo $this->element('Menu/outside');
+
+            ?>
         </div>
     </header>
     <div id="container">
@@ -65,7 +77,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </div>
         <footer>
             <div class="footer-title">
-                <Span><a target="JacobAGTyler" href="http://jacobagtyler.com/hertscubs">Designed &amp Developed by Jacob Tyler</a></span>
+                <Span><a target="JacobAGTyler" href="http://bit.ly/1EOXzYQ">Designed &amp Developed by Jacob Tyler</a></span>
             </div>
         </footer>
     </div>

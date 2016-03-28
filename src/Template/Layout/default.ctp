@@ -521,7 +521,7 @@ $cakeDescription = 'HertsCubs Booking System';
         </nav>
         <div id="page-wrapper">
 
-            <?php /*if (!$this->fetch('tb_flash')) {
+            <?php if (!$this->fetch('tb_flash')) {
                 $this->start('tb_flash');
 
                 if (isset($this->Flash)) {
@@ -529,7 +529,7 @@ $cakeDescription = 'HertsCubs Booking System';
                 }
                 $this->end();
             }
-            echo $this->fetch('tb_flash'); */?>
+            echo $this->fetch('tb_flash'); ?>
             <?= $this->Flash->render() ?>
             <?= $this->Flash->render('auth') ?>
                  

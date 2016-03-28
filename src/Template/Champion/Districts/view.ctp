@@ -1,8 +1,8 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     
     <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/champion_view');
-    echo $this->element('Sidebar/champion');
+    echo $this->element('Sidebar/admin_view');
+    echo $this->element('Sidebar/admin');
     $this->end(); ?>
     
     <?= $this->fetch('Sidebar') ?>

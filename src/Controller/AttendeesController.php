@@ -56,6 +56,16 @@ class AttendeesController extends AppController
         if ($this->request->is('post')) {
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
 
+            $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
+                ,'lastname' => ucwords(strtolower($attendee->lastname))
+                ,'address_1' => ucwords(strtolower($attendee->address_1))
+                ,'address_2' => ucwords(strtolower($attendee->address_2))
+                ,'city' => ucwords(strtolower($attendee->city))
+                ,'county' => ucwords(strtolower($attendee->county))
+                ,'postcode' => strtoupper($attendee->postcode)];
+
+            $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
+
             $attendee->user_id = $this->Auth->user('id');
 
             if ($this->Attendees->save($attendee)) {
@@ -126,6 +136,16 @@ class AttendeesController extends AppController
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
 
             $attendee->user_id = $this->Auth->user('id');
+
+            $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
+                ,'lastname' => ucwords(strtolower($attendee->lastname))
+                ,'address_1' => ucwords(strtolower($attendee->address_1))
+                ,'address_2' => ucwords(strtolower($attendee->address_2))
+                ,'city' => ucwords(strtolower($attendee->city))
+                ,'county' => ucwords(strtolower($attendee->county))
+                ,'postcode' => strtoupper($attendee->postcode)];
+
+            $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The Cub has been saved.'));
@@ -200,6 +220,17 @@ class AttendeesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
+
+            $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
+                ,'lastname' => ucwords(strtolower($attendee->lastname))
+                ,'address_1' => ucwords(strtolower($attendee->address_1))
+                ,'address_2' => ucwords(strtolower($attendee->address_2))
+                ,'city' => ucwords(strtolower($attendee->city))
+                ,'county' => ucwords(strtolower($attendee->county))
+                ,'postcode' => strtoupper($attendee->postcode)];
+
+            $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
+            
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
                 return $this->redirect(['action' => 'index']);

@@ -24,8 +24,8 @@ class ApplicationsController extends AppController
         $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
 
         $this->paginate = [
-            'contain' => ['Users','Scoutgroups', 'Events'], 'conditions' => [   
-                'Scoutgroups.district_id' => $champD->district_id]
+            'contain' => ['Users','Scoutgroups', 'Events']
+            ,'conditions' => ['Scoutgroups.district_id' => $champD->district_id]
         ];  
         $this->set('applications', $this->paginate($this->Applications));
         $this->set('_serialize', ['applications']);
@@ -55,10 +55,158 @@ class ApplicationsController extends AppController
     public function view($id = null)
     {
         $application = $this->Applications->get($id, [
-            'contain' => ['Users', 'Attendees', 'Events', 'Invoices', 'Scoutgroups']
+            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees']
         ]);
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
+
+        $invs = TableRegistry::get('Invoices');
+        $atts = TableRegistry::get('Attendees');
+        $itms = TableRegistry::get('InvoiceItems');
+
+        $invoices = $invs->find('all')->where(['application_id' => $id]);
+        $invCount = $invoices->count('*');
+        $this->set(compact('invCount'));
+
+        $attendeeCubCount = $this->Applications->find()
+            ->hydrate(false)
+            ->join([
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
+                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
+                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $id]);
+
+        $attendeeYlCount = $this->Applications->find()
+            ->hydrate(false)
+            ->join([
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
+                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
+                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $id]);
+
+        $attendeeLeaderCount = $this->Applications->find()
+            ->hydrate(false)
+            ->join([
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
+                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
+                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 0, 'Applications.id' => $id]);
+
+        $attCubs = $attendeeCubCount->count(['t.id']);
+        $attYls = $attendeeYlCount->count(['t.id']);
+        $attLeaders = $attendeeLeaderCount->count(['t.id']);
+
+        $attNotCubs = $attYls + $attLeaders;
+        $this->set(compact('attCubs','attYls','attLeaders','attNotCubs'));
+
+        if ($invCount > 0) {
+            $invItemCount = $itms->find('all')
+                ->contain(['Invoices.Applications'])
+                ->where(['Applications.id' => $id])
+                ->count('*');
+
+            if ($invItemCount > 0) {
+                $invItemCounts = $itms->find('all')
+                    ->contain(['Invoices.Applications'])
+                    ->where(['Applications.id' => $id])
+                    ->select(['sum' => $invoices->func()->sum('Quantity')])
+                    ->group('itemtype_id')->toArray();
+
+                $invCubs = $invItemCounts[1]->sum;
+                $invYls = $invItemCounts[2]->sum;
+                $invLeaders = $invItemCounts[3]->sum;
+            } else {
+               $invCubs = 0;
+               $invYls = 0;
+               $invLeaders = 0; 
+           }
+        } else {
+            $invCubs = 0;
+            $invYls = 0;
+            $invLeaders = 0;
+        }
+        
+
+        $invNotCubs = $invYls + $invLeaders;
+        $this->set(compact('invCubs','invYls','invLeaders','invNotCubs'));
+
+        if ($invCount > 0) {
+            $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->first();
+            $sumPaymentItem = $invoices->select(['sum' => $invoices->func()->sum('value')])->first();
+
+            $sumValues = $sumValueItem->sum;
+            $sumPayments = $sumPaymentItem->sum;
+        } else {
+            $sumValues = 0;
+            $sumPayments = 0;
+        }
+
+        $sumBalances = $sumValues - $sumPayments;
+        $this->set(compact('sumBalances','sumPayments','sumValues'));
+
+        $appDone = 1; // Set at 100% because an application has been created.
+
+        if ($invCount > 1) {
+            $this->Flash->error(__('There are Multiple Invoices on one Application.'));
+            $invDone = 0;
+        } elseif ($invCount == 1) {
+            $invDone = 1;
+        } else {
+            $invDone = 0;
+        }
+
+        if ($attCubs > 0 && $invCubs > 0 && $invCubs >= $attCubs)  {
+            $addCubs = $invCubs - $attCubs;
+            $cubsDone = $attCubs / $invCubs;
+
+            $this->set(compact('addCubs'));
+
+        } elseif ($attCubs > 0 && $invCubs < $attCubs) {
+            $this->Flash->error(__('Your Invoice is not Reflective of Your Number of Cubs.'));
+            $invDone = 0.5;
+            $cubsDone = 1;
+        } else {
+            $cubsDone = 0;
+        }
+
+        if ($attNotCubs > 0 && $invNotCubs > 0 && $invNotCubs >= $attNotCubs)  {
+            $addNotCubs = $invNotCubs - $attNotCubs;
+            $cubsNotDone = $attNotCubs / $invNotCubs;
+
+            $this->set(compact('addNotCubs'));
+
+        } elseif ($attNotCubs > 0 && $invNotCubs < $attNotCubs) {
+            $this->Flash->error(__('Your Invoice is not Reflective of Your Number of Leaders & Young Leaders.'));
+            $invDone = 0.5;
+            $cubsNotDone = 1;
+        } else {
+            $cubsNotDone = 0;
+        }
+
+        if ($sumPayments > 0 && $sumBalances == 0) {
+            $payDone = 1;
+        } elseif ($sumValues > 0) {
+            $payDone = $sumPayments / $sumValues;
+        } else {
+            $payDone = 0;
+        }
+        
+
+        $this->set(compact('appDone','invDone','cubsDone','cubsNotDone','payDone'));
+
+        $done = ($appDone + $invDone + $cubsDone + $cubsNotDone + $payDone) / 5;
+
+        if ($done >= 1) {
+            $status = 'success';
+        } elseif ($cubsDone >= 1 && $cubsNotDone >= 1) {
+            $status = 'info';
+        } elseif ($appDone >= 1 && $invDone >= 1) {
+            $status = 'warning';
+        } else {
+            $status = 'danger';
+        }
+
+        $this->set(compact('done','status'));
     }
 
     /**

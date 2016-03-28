@@ -131,6 +131,10 @@ class AttendeesTable extends Table
             ->add('osm_id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('osm_id');
 
+        $validator
+            ->add('vegetarian', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('vegetarian');
+
         return $validator;
     }
 

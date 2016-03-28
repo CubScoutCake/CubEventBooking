@@ -105,7 +105,7 @@
                 <a href="<?php echo $this->Url->build([
                     'controller' => 'Invoices',
                     'action' => 'generate',
-                    'prefix' => false,
+                    'prefix' => 'admin',
                     $application->id],['_full']); ?>">
                     <div class="panel-footer">
                         <span class="pull-left">Generate a New Invoice</span>
@@ -139,7 +139,7 @@
                 <a href="<?php echo $this->Url->build([
                     'controller' => 'Attendees',
                     'action' => 'cub',
-                    'prefix' => false],['_full']); ?>">
+                    'prefix' => 'admin'],['_full']); ?>">
                     <div class="panel-footer">
                         <span class="pull-left">Add a Cub</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -172,7 +172,7 @@
                 <a href="<?php echo $this->Url->build([
                     'controller' => 'Attendees',
                     'action' => 'adult',
-                    'prefix' => false],['_full']); ?>">
+                    'prefix' => 'admin'],['_full']); ?>">
                     <div class="panel-footer">
                         <span class="pull-left">Add an Adult</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -205,7 +205,7 @@
                 <a href="<?php echo $this->Url->build([
                     'controller' => 'Payments',
                     'action' => 'index',
-                    'prefix' => false],['_full']); ?>">
+                    'prefix' => 'admin'],['_full']); ?>">
                     <div class="panel-footer">
                         <span class="pull-left">View Your Payments</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -248,6 +248,7 @@
                                             <ul class="dropdown-menu " role="menu">
                                                 <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
                                                 <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
+                                                <li><?= $this->Html->link(__('Update Caps'), ['controller' => 'Attendees', 'action' => 'update', $attendees->id]) ?></li>
                                                 <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Attendees', 'action' => 'delete', $attendees->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $attendees->id)]) ?></li>
                                             </ul>
                                         </div>

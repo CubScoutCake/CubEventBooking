@@ -32,7 +32,7 @@ class AllergiesController extends AppController
     public function view($id = null)
     {
         $allergy = $this->Allergies->get($id, [
-            'contain' => ['Attendees']
+            'contain' => ['Attendees.Users','Attendees.Scoutgroups','Attendees.Roles']
         ]);
         $this->set('allergy', $allergy);
         $this->set('_serialize', ['allergy']);

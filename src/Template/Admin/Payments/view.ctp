@@ -106,19 +106,19 @@
                     <table class="table table-hover">
                         <tr>
                             <th><?= __('Id') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
                             <th><?= __('User') ?></th>
                             <th><?= __('Sum Value') ?></th>
                             <th><?= __('Received') ?></th>
                             <th><?= __('Balance') ?></th>
                             <th><?= __('Date Created') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($payment->invoices as $invoices): ?>
                             <tr>
                                 <td><?= $this->Html->link($invoices->display_code, ['controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?></td>
                                 <td class="actions">
                                     <div class="dropdown btn-group">
-                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                        <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
                                             <i class="fa fa-gear"></i>  <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu " role="menu">

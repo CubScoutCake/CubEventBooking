@@ -1,14 +1,14 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
+<nav class="actions large-2 medium-3 columns" id="actions-sidebar">
     
     <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/champion_index');
-    echo $this->element('Sidebar/champion');
+    echo $this->element('Sidebar/admin_index');
+    echo $this->element('Sidebar/admin');
     $this->end(); ?>
     
     <?= $this->fetch('Sidebar') ?>
     
 </nav>
-<div class="invoiceItems index large-9 medium-8 columns content">
+<div class="invoiceItems index large-10 medium-9 columns content">
     <h3><?= __('Invoice Items') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>

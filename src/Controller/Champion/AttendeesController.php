@@ -2,6 +2,7 @@
 namespace App\Controller\Champion;
 
 use App\Controller\Champion\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Attendees Controller
@@ -18,8 +19,13 @@ class AttendeesController extends AppController
      */
     public function index()
     {
+        $scoutgroups = TableRegistry::get('Scoutgroups');
+
+        $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
+
         $this->paginate = [
-            'contain' => ['Users']
+            'contain' => ['Users','Applications.Events','Scoutgroups']
+            ,'conditions' => ['Scoutgroups.district_id' => $champD->district_id]
         ];
         $this->set('attendees', $this->paginate($this->Attendees));
         $this->set('_serialize', ['attendees']);
@@ -35,7 +41,7 @@ class AttendeesController extends AppController
     public function view($id = null)
     {
         $attendee = $this->Attendees->get($id, [
-            'contain' => ['Users', 'Applications', 'Allergies']
+            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);
@@ -91,6 +97,29 @@ class AttendeesController extends AppController
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
         $this->set(compact('attendee', 'users', 'applications', 'allergies'));
         $this->set('_serialize', ['attendee']);
+    }
+
+    public function update($id = null)
+    {
+        $attendee = $this->Attendees->get($id);
+
+        $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
+            ,'lastname' => ucwords(strtolower($attendee->lastname))
+            ,'address_1' => ucwords(strtolower($attendee->address_1))
+            ,'address_2' => ucwords(strtolower($attendee->address_2))
+            ,'city' => ucwords(strtolower($attendee->city))
+            ,'county' => ucwords(strtolower($attendee->county))
+            ,'postcode' => strtoupper($attendee->postcode)];
+
+        $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
+
+        if ($this->Attendees->save($attendee)) {
+            $this->Flash->success(__('The attendee has been updated.'));
+            return $this->redirect(['action' => 'view', $attendee->id]);
+        } else {
+            $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
+            return $this->redirect(['action' => 'view', $attendee->id]);
+        }
     }
 
     /**

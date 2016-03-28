@@ -10,6 +10,7 @@ use Cake\Mailer\MailerAwareTrait;
 // use Cake\Utility\Hash;
 use Cake\Utility\Security;
 use Cake\ORM\TableRegistry;
+use Cake\Network\Http\Client;
 
 /**
  * Users Controller
@@ -151,29 +152,83 @@ class UsersController extends AppController
                 $user = $this->Auth->identify();
                 if ($user) {
                     $this->Auth->setUser($user);
-                    if (isset($eventId) && $eventId >= 0) {
-                        $session->delete('Reset.lgTries');
-                        $session->delete('Reset.rsTries');
-                        return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
+
+                    $userId = $this->Auth->user('id');
+
+                    $loggedInUser = $this->Users->get($userId);
+
+                    $now = Time::now();
+                    if (isset($user->logins)) {
+                        $logins = $loggedInUser->logins + 1;
+                        $previousLogin = $loggedInUser->last_login;
                     } else {
-                        $session->delete('Reset.lgTries');
-                        $session->delete('Reset.rsTries');
-                        return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
-                    }  
+                        $logins = 1;
+                        $previousLogin = $now;
+                    }
+
+                    $loginPass = ['last_login' => $now, 'logins' => $logins];
+
+                    $loginEnt = [
+                        'Entity Id' => $loggedInUser->id,
+                        'Controller' => 'Users',
+                        'Action' => 'Login',
+                        'User Id' => $loggedInUser->id,
+                        'Creation Date' => $loggedInUser->created,
+                        'Modified' => $loggedInUser->modified,
+                        'User' => [
+                            'Type' => $loggedInUser->authrole,
+                            'Username' => $loggedInUser->username,
+                            'First Name' => $loggedInUser->firstname,
+                            'Last Name' => $loggedInUser->lastname,  
+                            'Number of Logins' => $logins,
+                            'Previous Login' => $previousLogin,
+                            'This Login' => $now
+                            ]
+                        ];
+
+                    $loggedInUser = $this->Users->patchEntity($loggedInUser, $loginPass);
+
+                    if ($this->Users->save($loggedInUser)) {
+
+                        $sets = TableRegistry::get('Settings');
+                        
+                        $jsonLogin = json_encode($loginEnt);
+                        $api_key = $sets->get(13)->text;
+                        $projectId = $sets->get(14)->text;
+                        $eventType = 'Login';
+                        
+                        $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+                        
+                        $http = new Client();
+                        $response = $http->post(
+                          $keenURL,
+                          $jsonLogin,
+                          ['type' => 'json']
+                        );
+
+
+                        if (isset($eventId) && $eventId >= 0) {
+                            $session->delete('Reset.lgTries');
+                            $session->delete('Reset.rsTries');
+                            return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
+                        } else {
+                            $session->delete('Reset.lgTries');
+                            $session->delete('Reset.rsTries');
+                            return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
+                        }
+                    } else {
+                        $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                    }                     
                 }
                 $tries = $tries + 1;
                 $this->Flash->error('Your username or password is incorrect. Please try again.');
                 $session->write('Reset.lgTries', $tries);                
             }
-
             $this->set(compact('eventId'));
         } else {
             $this->Flash->error('You have failed entry too many times. Please try again later.');
             return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'reset']);     
-        }
-
-
-        
+        }        
     }
 
     public function reset()

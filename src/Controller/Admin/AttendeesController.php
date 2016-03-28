@@ -19,7 +19,7 @@ class AttendeesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users','Scoutgroups','Roles']
+            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
         ];
         $this->set('attendees', $this->paginate($this->Attendees));
         $this->set('_serialize', ['attendees']);
@@ -35,7 +35,7 @@ class AttendeesController extends AppController
     public function view($id = null)
     {
         $attendee = $this->Attendees->get($id, [
-            'contain' => ['Users', 'Applications', 'Allergies']
+            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);
@@ -59,9 +59,12 @@ class AttendeesController extends AppController
             }
         }
         $users = $this->Attendees->Users->find('list', ['limit' => 200]);
-        $applications = $this->Attendees->Applications->find('list', ['limit' => 200]);
+        $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'order' => ['id' => DESC]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
-        $this->set(compact('attendee', 'users', 'applications', 'allergies'));
+        $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200]);
+        $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
+
+        $this->set(compact('attendee', 'users', 'applications', 'allergies','scoutgroups','roles'));
         $this->set('_serialize', ['attendee']);
     }
 
@@ -87,10 +90,36 @@ class AttendeesController extends AppController
             }
         }
         $users = $this->Attendees->Users->find('list', ['limit' => 200]);
-        $applications = $this->Attendees->Applications->find('list', ['limit' => 200]);
+        $applications = $this->Attendees->Applications->find('list', ['limit' => 200,'conditions' => ['user_id' => $attendee->user_id]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
-        $this->set(compact('attendee', 'users', 'applications', 'allergies'));
+        $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200]);
+        $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
+
+        $this->set(compact('attendee', 'users', 'applications', 'allergies','scoutgroups','roles'));
         $this->set('_serialize', ['attendee']);
+    }
+
+    public function update($id = null)
+    {
+        $attendee = $this->Attendees->get($id);
+
+        $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
+            ,'lastname' => ucwords(strtolower($attendee->lastname))
+            ,'address_1' => ucwords(strtolower($attendee->address_1))
+            ,'address_2' => ucwords(strtolower($attendee->address_2))
+            ,'city' => ucwords(strtolower($attendee->city))
+            ,'county' => ucwords(strtolower($attendee->county))
+            ,'postcode' => strtoupper($attendee->postcode)];
+
+        $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
+
+        if ($this->Attendees->save($attendee)) {
+            $this->Flash->success(__('The attendee has been updated.'));
+            return $this->redirect(['action' => 'view', $attendee->id]);
+        } else {
+            $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
+            return $this->redirect(['action' => 'view', $attendee->id]);
+        }
     }
 
     /**
