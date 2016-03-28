@@ -37,6 +37,7 @@
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('View Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
                 </ul>

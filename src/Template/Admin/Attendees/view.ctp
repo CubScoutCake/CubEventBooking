@@ -145,7 +145,7 @@
                                             </div>
                                         </td>
                                         <td><?= $applications->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->scoutgroup->scoutgroup,18), ['controller' => 'Scoutgroups', 'action' => 'view', $applications->scoutgroup->id]) : '' ?></td>
-                                        <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['controller' => 'Events', 'action' => 'view', $applications->event->id]) : '' ?></td>
+                                        <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['controller' => 'Events', 'action' => 'full_view', $applications->event->id]) : '' ?></td>
                                         <td><?= h($applications->permitholder) ?></td>
                                         <td><?= h($applications->created) ?></td>
                                         <td><?= h($applications->modified) ?></td>

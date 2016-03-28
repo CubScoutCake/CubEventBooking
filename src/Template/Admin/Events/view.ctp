@@ -36,12 +36,10 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Applications',
-                        'action' => 'book',
-                        'prefix' => false,
-                        $event->id],['_full']); ?>">Book onto Event</a>
-                    </li>
+                    <li><?= $this->Html->link(__('Full View - Inc Bookings'), ['action' => 'full_view', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('View Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
+                    <li class="divider"></li>
+                    <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
                 </ul>
             </div>
         </div>

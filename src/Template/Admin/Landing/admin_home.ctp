@@ -323,8 +323,12 @@
                                                     <i class="fa fa-gear"></i>  <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu " role="menu">
-                                                    <li><?= $this->Html->link(__('Book onto Event'), ['controller' => 'Applications', 'action' => 'book', $event->id]) ?></li>
-                                                    <li><?= $this->Html->link(__('View Details'), ['controller' => 'Events', 'action' => 'view', $event->id]) ?></li>
+                                                    <li><?= $this->Html->link(__('Preview - User View'), ['controller' => 'Events', 'action' => 'view', $event->id]) ?></li>
+                                                    <li><?= $this->Html->link(__('Full View - Inc Bookings'), ['controller' => 'Events', 'action' => 'full_view', $event->id]) ?></li>
+                                                    <li><?= $this->Html->link(__('View Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
+                                                    <li class="divider"></li>
+                                                    <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
+                                                    
                                                 </ul>
                                             </div>
                                         </td>

@@ -20,7 +20,7 @@
             echo $this->Form->day('dateofbirth');
             echo $this->Form->month('dateofbirth');
             echo $this->Form->year('dateofbirth', [
-                'minYear' => 1950,
+                'minYear' => 1930,
                 'maxYear' => date('Y')
             ]);
             echo $this->Form->input('phone');

@@ -48,7 +48,7 @@
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-green">
             <div class="panel-body">
-                <span><?= __('Event') ?>: <?= $application->has('event') ? $this->Html->link($application->event->full_name, ['controller' => 'Events', 'action' => 'view', $application->event->id]) : '' ?></span>
+                <span><?= __('Event') ?>: <?= $application->has('event') ? $this->Html->link($application->event->full_name, ['controller' => 'Events', 'action' => 'full_view', $application->event->id]) : '' ?></span>
                 </br>
                 <span><?= __('App Number') ?>: <?= $this->Number->format($application->id) ?></span>
                 </br>
