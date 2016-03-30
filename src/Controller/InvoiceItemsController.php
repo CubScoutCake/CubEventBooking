@@ -131,6 +131,12 @@ class InvoiceItemsController extends AppController
 
         $event = $events->get($application->event_id, ['contain' => ['Applications', 'Settings', 'Discounts', 'Users']]);
 
+        $errorMsg = 'This event has been LOCKED to prevent updates to invoices. Please contact ' . $event->admin_full_name . '.';
+
+        if ($event->invoices_locked) {
+            $this->Flash->error(__($errorMsg));
+            return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
+        }
 
         // Set Values for Options
         $CubsVis = $event->cubs;
@@ -405,6 +411,14 @@ class InvoiceItemsController extends AppController
         ]);
 
         $event = $events->get($application->event_id, ['contain' => ['Applications', 'Settings']]);
+
+        $errorMsg = 'This event has been LOCKED to prevent updates to invoices. Please contact ' . $event->admin_full_name . '.';
+
+        if ($event->invoices_locked) {
+            $this->Flash->error(__($errorMsg));
+            return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
+        }
+
         if (isset($event->discount_id)) {
             $discount = $discounts->get($event->discount_id);
         }
