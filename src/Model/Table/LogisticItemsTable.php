@@ -1,19 +1,20 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Payment;
+use App\Model\Entity\LogisticItem;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Payments Model
+ * LogisticItems Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsToMany $Invoices
+ * @property \Cake\ORM\Association\BelongsTo $Applications
+ * @property \Cake\ORM\Association\BelongsTo $Logistics
+ * @property \Cake\ORM\Association\BelongsTo $Params
  */
-class PaymentsTable extends Table
+class LogisticItemsTable extends Table
 {
 
     /**
@@ -26,19 +27,18 @@ class PaymentsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('payments');
+        $this->table('logistic_items');
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->addBehavior('Timestamp');
-
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id'
+        $this->belongsTo('Applications', [
+            'foreignKey' => 'application_id'
         ]);
-        $this->belongsToMany('Invoices', [
-            'foreignKey' => 'payment_id',
-            'targetForeignKey' => 'invoice_id',
-            'joinTable' => 'invoices_payments'
+        $this->belongsTo('Logistics', [
+            'foreignKey' => 'logistic_id'
+        ]);
+        $this->belongsTo('Params', [
+            'foreignKey' => 'param_id'
         ]);
     }
 
@@ -54,23 +54,6 @@ class PaymentsTable extends Table
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->add('value', 'valid', ['rule' => 'numeric'])
-            ->requirePresence('value');
-
-        $validator
-            ->add('paid', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('paid');
-
-        $validator
-            ->allowEmpty('cheque_number');
-
-        $validator
-            ->allowEmpty('payment_notes');
-
-        $validator
-            ->allowEmpty('name_on_cheque');
-
         return $validator;
     }
 
@@ -83,7 +66,9 @@ class PaymentsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->existsIn(['application_id'], 'Applications'));
+        $rules->add($rules->existsIn(['logistic_id'], 'Logistics'));
+        $rules->add($rules->existsIn(['param_id'], 'Params'));
         return $rules;
     }
 }

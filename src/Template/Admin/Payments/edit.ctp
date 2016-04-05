@@ -7,6 +7,7 @@
             echo $this->Form->input('paid');
             echo $this->Form->input('cheque_number');
             echo $this->Form->input('name_on_cheque');
+            echo $this->Form->input('payment_notes');
             echo $this->Form->input('invoices._ids', ['options' => $invoices, /*'multiple' => false, 'type' => 'select',*/ 'label' => 'Invoice Associated']);
         ?>
     </fieldset>

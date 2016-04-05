@@ -18,7 +18,8 @@
         <legend><?= __('Edit Parameter') ?></legend>
         <?php
             echo $this->Form->input('parameter');
-            echo $this->Form->input('parameter_text');
+            echo $this->Form->input('constant');
+            echo $this->Form->input('set_id');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

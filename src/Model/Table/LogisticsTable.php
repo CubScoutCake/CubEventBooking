@@ -10,9 +10,9 @@ use Cake\Validation\Validator;
 /**
  * Logistics Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Applications
- * @property \Cake\ORM\Association\BelongsTo $Logisticstypes
  * @property \Cake\ORM\Association\BelongsTo $Parameters
+ * @property \Cake\ORM\Association\BelongsTo $Events
+ * @property \Cake\ORM\Association\HasMany $LogisticItems
  */
 class LogisticsTable extends Table
 {
@@ -31,14 +31,14 @@ class LogisticsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->belongsTo('Applications', [
-            'foreignKey' => 'application_id'
-        ]);
-        $this->belongsTo('Logisticstypes', [
-            'foreignKey' => 'logisticstype_id'
-        ]);
         $this->belongsTo('Parameters', [
             'foreignKey' => 'parameter_id'
+        ]);
+        $this->belongsTo('Events', [
+            'foreignKey' => 'event_id'
+        ]);
+        $this->hasMany('LogisticItems', [
+            'foreignKey' => 'logistic_id'
         ]);
     }
 
@@ -72,9 +72,8 @@ class LogisticsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['application_id'], 'Applications'));
-        $rules->add($rules->existsIn(['logisticstype_id'], 'Logisticstypes'));
         $rules->add($rules->existsIn(['parameter_id'], 'Parameters'));
+        $rules->add($rules->existsIn(['event_id'], 'Events'));
         return $rules;
     }
 }

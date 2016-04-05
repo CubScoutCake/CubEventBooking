@@ -4,18 +4,17 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Logistic Entity.
+ * LogisticItem Entity.
  *
  * @property int $id
- * @property int $parameter_id
- * @property \App\Model\Entity\Parameter $parameter
- * @property int $event_id
- * @property string $header
- * @property string $text
+ * @property int $application_id
  * @property \App\Model\Entity\Application $application
- * @property \App\Model\Entity\Logisticstype $logisticstype
+ * @property int $logistic_id
+ * @property \App\Model\Entity\Logistic $logistic
+ * @property int $param_id
+ * @property \App\Model\Entity\Param $param
  */
-class Logistic extends Entity
+class LogisticItem extends Entity
 {
 
     /**

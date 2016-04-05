@@ -99,7 +99,7 @@ class AttendeesTable extends Table
 
         $validator
             ->requirePresence('phone', 'create')
-            ->notEmpty('phone');;
+            ->notEmpty('phone');
 
         $validator
             ->allowEmpty('phone2');

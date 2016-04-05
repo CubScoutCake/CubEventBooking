@@ -84,6 +84,10 @@
                             <td><?= h($payment->name_on_cheque) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Notes') ?></th>
+                            <td><?= h($payment->payment_notes) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Recorded By') ?></th>
                             <td><?= $payment->has('user') ? $this->Html->link($this->Text->truncate($payment->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $payment->user->id]) : '' ?></td>
                         </tr>

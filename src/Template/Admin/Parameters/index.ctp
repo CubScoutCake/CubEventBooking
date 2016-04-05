@@ -13,7 +13,8 @@
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('parameter') ?></th>
-                <th><?= $this->Paginator->sort('parameter_text') ?></th>
+                <th><?= $this->Paginator->sort('constant') ?></th>
+                <th><?= $this->Paginator->sort('set_id') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -22,7 +23,8 @@
             <tr>
                 <td><?= $this->Number->format($parameter->id) ?></td>
                 <td><?= h($parameter->parameter) ?></td>
-                <td><?= h($parameter->parameter_text) ?></td>
+                <td><?= h($parameter->constant) ?></td>
+                <td><?= $this->Number->format($parameter->set_id) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $parameter->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $parameter->id]) ?>

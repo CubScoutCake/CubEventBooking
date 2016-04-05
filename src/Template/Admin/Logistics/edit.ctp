@@ -10,8 +10,6 @@
         <li><?= $this->Html->link(__('List Logistics'), ['action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('List Applications'), ['controller' => 'Applications', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Application'), ['controller' => 'Applications', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Logisticstypes'), ['controller' => 'Logisticstypes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Logisticstype'), ['controller' => 'Logisticstypes', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Parameters'), ['controller' => 'Parameters', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Parameter'), ['controller' => 'Parameters', 'action' => 'add']) ?></li>
     </ul>
@@ -21,11 +19,10 @@
     <fieldset>
         <legend><?= __('Edit Logistic') ?></legend>
         <?php
-            echo $this->Form->input('application_id', ['options' => $applications, 'empty' => true]);
-            echo $this->Form->input('logisticstype_id', ['options' => $logisticstypes, 'empty' => true]);
+            echo $this->Form->input('parameter_id', ['options' => $parameters, 'empty' => true]);
+            echo $this->Form->input('event_id');
             echo $this->Form->input('header');
             echo $this->Form->input('text');
-            echo $this->Form->input('parameter_id', ['options' => $parameters, 'empty' => true]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

@@ -10,7 +10,9 @@ use Cake\Validation\Validator;
 /**
  * Parameters Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $ParameterSets
  * @property \Cake\ORM\Association\HasMany $Logistics
+ * @property \Cake\ORM\Association\HasMany $Params
  */
 class ParametersTable extends Table
 {
@@ -29,7 +31,13 @@ class ParametersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+        $this->belongsTo('ParameterSets', [
+            'foreignKey' => 'set_id'
+        ]);
         $this->hasMany('Logistics', [
+            'foreignKey' => 'parameter_id'
+        ]);
+        $this->hasMany('Params', [
             'foreignKey' => 'parameter_id'
         ]);
     }
@@ -50,8 +58,21 @@ class ParametersTable extends Table
             ->allowEmpty('parameter');
 
         $validator
-            ->allowEmpty('parameter_text');
+            ->allowEmpty('constant');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['set_id'], 'ParameterSets'));
+        return $rules;
     }
 }

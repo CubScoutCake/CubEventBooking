@@ -50,6 +50,9 @@ class InvoicesTable extends Table
         $this->hasMany('InvoiceItems', [
             'foreignKey' => 'invoice_id'
         ]);
+        $this->hasMany('Notes', [
+            'foreignKey' => 'invoice_id'
+        ]);
         $this->belongsToMany('Payments', [
             'foreignKey' => 'invoice_id',
             'targetForeignKey' => 'payment_id',

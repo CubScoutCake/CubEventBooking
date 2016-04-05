@@ -77,7 +77,6 @@
                             <th><?= __('Quantity') ?></th>
                             <th><?= __('Value') ?></th>
                             <th><?= __('Sum Price') ?></th>
-                            <th><?= __('Visible') ?></th>
                         </tr>
                         <?php foreach ($invoice->invoice_items as $invoiceItems): ?>
                         <tr>
@@ -85,7 +84,6 @@
                             <td><?= h($invoiceItems->Quantity) ?></td>
                             <td><?= h($this->number->currency($invoiceItems->Value,'GBP')) ?></td>
                             <td><?= h($this->number->currency($invoiceItems->quantity_price,'GBP')) ?></td>
-                            <td><?= $invoiceItems->visible ? __('Yes') : __('No'); ?>
                         </tr>
                         <?php endforeach; ?>
                     </table>

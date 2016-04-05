@@ -8,7 +8,8 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $parameter
- * @property string $parameter_text
+ * @property string $constant
+ * @property int $set_id
  * @property \App\Model\Entity\Logistic[] $logistics
  */
 class Parameter extends Entity

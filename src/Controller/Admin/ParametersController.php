@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller\Admin;
+namespace App\Controller;
 
-use App\Controller\Admin\AppController;
+use App\Controller\AppController;
 
 /**
  * Parameters Controller
@@ -14,11 +14,13 @@ class ParametersController extends AppController
     /**
      * Index method
      *
-     * @return void
+     * @return \Cake\Network\Response|null
      */
     public function index()
     {
-        $this->set('parameters', $this->paginate($this->Parameters));
+        $parameters = $this->paginate($this->Parameters);
+
+        $this->set(compact('parameters'));
         $this->set('_serialize', ['parameters']);
     }
 
@@ -26,14 +28,15 @@ class ParametersController extends AppController
      * View method
      *
      * @param string|null $id Parameter id.
-     * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @return \Cake\Network\Response|null
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
         $parameter = $this->Parameters->get($id, [
             'contain' => ['Logistics']
         ]);
+
         $this->set('parameter', $parameter);
         $this->set('_serialize', ['parameter']);
     }
@@ -41,7 +44,7 @@ class ParametersController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -63,7 +66,7 @@ class ParametersController extends AppController
      * Edit method
      *
      * @param string|null $id Parameter id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
@@ -88,8 +91,8 @@ class ParametersController extends AppController
      * Delete method
      *
      * @param string|null $id Parameter id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @return \Cake\Network\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
     {

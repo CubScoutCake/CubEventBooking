@@ -1,18 +1,19 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Logisticstype;
+use App\Model\Entity\Param;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Logisticstypes Model
+ * Params Model
  *
- * @property \Cake\ORM\Association\HasMany $Logistics
+ * @property \Cake\ORM\Association\BelongsTo $Parameters
+ * @property \Cake\ORM\Association\HasMany $LogisticItems
  */
-class LogisticstypesTable extends Table
+class ParamsTable extends Table
 {
 
     /**
@@ -25,12 +26,15 @@ class LogisticstypesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('logisticstypes');
+        $this->table('params');
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->hasMany('Logistics', [
-            'foreignKey' => 'logisticstype_id'
+        $this->belongsTo('Parameters', [
+            'foreignKey' => 'parameter_id'
+        ]);
+        $this->hasMany('LogisticItems', [
+            'foreignKey' => 'param_id'
         ]);
     }
 
@@ -47,11 +51,21 @@ class LogisticstypesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->allowEmpty('logistics_type');
-
-        $validator
-            ->allowEmpty('type_description');
+            ->allowEmpty('constant');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['parameter_id'], 'Parameters'));
+        return $rules;
     }
 }

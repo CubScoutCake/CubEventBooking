@@ -17,12 +17,16 @@
             <td><?= h($parameter->parameter) ?></td>
         </tr>
         <tr>
-            <th><?= __('Parameter Text') ?></th>
-            <td><?= h($parameter->parameter_text) ?></td>
+            <th><?= __('Constant') ?></th>
+            <td><?= h($parameter->constant) ?></td>
         </tr>
         <tr>
             <th><?= __('Id') ?></th>
             <td><?= $this->Number->format($parameter->id) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Set Id') ?></th>
+            <td><?= $this->Number->format($parameter->set_id) ?></td>
         </tr>
     </table>
     <div class="related">
@@ -31,21 +35,19 @@
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th><?= __('Id') ?></th>
-                <th><?= __('Application Id') ?></th>
-                <th><?= __('Logisticstype Id') ?></th>
+                <th><?= __('Parameter Id') ?></th>
+                <th><?= __('Event Id') ?></th>
                 <th><?= __('Header') ?></th>
                 <th><?= __('Text') ?></th>
-                <th><?= __('Parameter Id') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($parameter->logistics as $logistics): ?>
             <tr>
                 <td><?= h($logistics->id) ?></td>
-                <td><?= h($logistics->application_id) ?></td>
-                <td><?= h($logistics->logisticstype_id) ?></td>
+                <td><?= h($logistics->parameter_id) ?></td>
+                <td><?= h($logistics->event_id) ?></td>
                 <td><?= h($logistics->header) ?></td>
                 <td><?= h($logistics->text) ?></td>
-                <td><?= h($logistics->parameter_id) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Logistics', 'action' => 'view', $logistics->id]) ?>
 
