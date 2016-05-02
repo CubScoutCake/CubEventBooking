@@ -63,6 +63,9 @@ class EventsTable extends Table
         $this->hasMany('Settings', [
             'foreignKey' => 'event_id'
         ]);
+        $this->hasMany('Logistics', [
+            'foreignKey' => 'event_id'
+        ]);
     }
 
     /**

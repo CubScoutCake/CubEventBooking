@@ -21,6 +21,8 @@ class ApplicationsController extends AppController
     {
         $this->paginate = [
             'contain' => ['Users','Scoutgroups', 'Events','Attendees']
+            ,'conditions' => ['Events.live' => true]
+            ,'order' => ['modified' => 'DESC']
         ];  
         $this->set('applications', $this->paginate($this->Applications));
         $this->set('_serialize', ['applications']);

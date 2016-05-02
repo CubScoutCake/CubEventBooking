@@ -23,6 +23,7 @@ class UsersController extends AppController
     {
         $this->paginate = [
             'contain' => ['Roles', 'Scoutgroups']
+            ,'order' => ['modified' => 'DESC']
         ];
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);

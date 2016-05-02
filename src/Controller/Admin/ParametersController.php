@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Admin;
 
-use App\Controller\AppController;
+use App\Controller\Admin\AppController;
 
 /**
  * Parameters Controller
@@ -58,7 +58,8 @@ class ParametersController extends AppController
                 $this->Flash->error(__('The parameter could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('parameter'));
+        $sets = $this->Parameters->ParameterSets->find('list', ['limit' => 200]);
+        $this->set(compact('parameter','sets'));
         $this->set('_serialize', ['parameter']);
     }
 

@@ -20,6 +20,7 @@ class AttendeesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
+            ,'order' => ['modified' => 'DESC']
         ];
         $this->set('attendees', $this->paginate($this->Attendees));
         $this->set('_serialize', ['attendees']);

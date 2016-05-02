@@ -327,7 +327,7 @@
                                                     <li><?= $this->Html->link(__('Full View - Inc Bookings'), ['controller' => 'Events', 'action' => 'full_view', $event->id]) ?></li>
                                                     <li><?= $this->Html->link(__('View Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
                                                     <li class="divider"></li>
-                                                    <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
+                                                    <li><?= $this->Html->link(__('Edit'), ['controller' => 'Events', 'action' => 'edit', $event->id]) ?></li>
                                                     
                                                 </ul>
                                             </div>

@@ -508,6 +508,8 @@ class InvoiceItemsController extends AppController
             } elseif (!$event->allow_reductions && $event->cubs && $formNumCubs < $existingCubQty) {
                 $numCubs = $existingCubQty;
                 $this->Flash->error(__('You cannot reduce the number of Cubs.'));
+            } elseif (!$event->cubs) {
+                $numCubs = $existingCubQty;
             } else {
                 $numCubs = $formNumCubs;
             }
@@ -520,6 +522,8 @@ class InvoiceItemsController extends AppController
             } elseif (!$event->allow_reductions && $event->yls && $formNumYls < $existingYlQty) {
                 $numYls = $existingYlQty;
                 $this->Flash->error(__('You cannot reduce the number of Young Leaders.'));
+            } elseif (!$event->yls) {
+                $numYls = $existingYlQty;
             } else {
                 $numYls = $formNumYls;
             }
@@ -532,6 +536,8 @@ class InvoiceItemsController extends AppController
             } elseif (!$event->allow_reductions && $event->leaders && $formNumLeaders < $existingLeaderQty) {
                 $numLeaders = $existingLeaderQty;
                 $this->Flash->error(__('You cannot reduce the number of Leaders.'));
+            } elseif (!$event->leaders) {
+                $numLeaders = $existingLeaderQty;
             } else {
                 $numLeaders = $formNumLeaders;
             }
@@ -556,9 +562,27 @@ class InvoiceItemsController extends AppController
 
             // Patch Items with Standard Info
 
-            $cubStandard = ['invoice_id' => $invID, 'Value' => $cubsEventPrice, 'Description' => $cubsDescription, 'Quantity' => $numCubs, 'itemtype_id' => 2, 'visible' => $event->cubs];
-            $ylStandard = ['invoice_id' => $invID, 'Value' => $ylsEventPrice, 'Description' => $ylsDescription, 'Quantity' => $numYls, 'itemtype_id' => 3, 'visible' => $event->yls];
-            $leaderStandard = ['invoice_id' => $invID, 'Value' => $leadersEventPrice, 'Description' => $leadersDescription, 'Quantity' => $numLeaders, 'itemtype_id' => 4, 'visible' => $event->leaders];
+            if (!$event->cubs && $numCubs > 0) {
+                $cubVisiblity = true;
+            } else {
+                $cubVisiblity = $event->cubs;
+            }
+
+            if (!$event->yls && $numYls > 0) {
+                $ylVisiblity = true;
+            } else {
+                $ylVisiblity = $event->yls;
+            }
+
+            if (!$event->leaders && $numLeaders > 0) {
+                $leaderVisiblity = true;
+            } else {
+                $leaderVisiblity = $event->leaders;
+            }
+
+            $cubStandard = ['invoice_id' => $invID, 'Value' => $cubsEventPrice, 'Description' => $cubsDescription, 'Quantity' => $numCubs, 'itemtype_id' => 2, 'visible' => $cubVisiblity];
+            $ylStandard = ['invoice_id' => $invID, 'Value' => $ylsEventPrice, 'Description' => $ylsDescription, 'Quantity' => $numYls, 'itemtype_id' => 3, 'visible' => $ylVisiblity];
+            $leaderStandard = ['invoice_id' => $invID, 'Value' => $leadersEventPrice, 'Description' => $leadersDescription, 'Quantity' => $numLeaders, 'itemtype_id' => 4, 'visible' => $leaderVisiblity];
 
             $existingCubItem = $this->InvoiceItems->patchEntity($existingCubItem, $cubStandard);
             $existingYlItem = $this->InvoiceItems->patchEntity($existingYlItem, $ylStandard);

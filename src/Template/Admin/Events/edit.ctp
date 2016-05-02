@@ -1,19 +1,3 @@
-<nav class="actions large-2 medium-2 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <h3 class="heading"><?= __('Actions') ?></h3>
-        <li><?= $this->Html->link(__('Cancel & View'), ['controller' => 'Events', 'action' => 'full_view', $event->id]) ?></li>
-        <li><?= $this->Html->link(__('New Setting'), ['controller' => 'Settings', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('New Discount'), ['controller' => 'Discounts', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Event Applications'), ['controller' => 'Applications', 'action' => 'bookings', $event->id]) ?></li>
-        <li><?= $this->Html->link(__('New Application'), ['controller' => 'Applications', 'action' => 'book', $event->id]) ?></li>
-    </ul>
-
-    <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/admin');
-    $this->end(); ?>
-    
-    <?= $this->fetch('Sidebar') ?>
-</nav>
 <div class="events form large-10 medium-10 columns content">
     <?= $this->Form->create($event) ?>
     <fieldset>

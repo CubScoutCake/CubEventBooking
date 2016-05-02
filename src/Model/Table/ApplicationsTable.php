@@ -54,13 +54,16 @@ class ApplicationsTable extends Table
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id'
         ]);
+        $this->belongsTo('OsmEvents', [
+            'foreignKey' => 'osm_event_id'
+        ]);
         $this->hasMany('Invoices', [
             'foreignKey' => 'application_id'
         ]);
         $this->belongsTo('OsmEvents', [
             'foreignKey' => 'osm_event_id'
         ]);
-        $this->hasMany('Logistics', [
+        $this->hasMany('LogisticItems', [
             'foreignKey' => 'application_id'
         ]);
         $this->hasMany('Notes', [

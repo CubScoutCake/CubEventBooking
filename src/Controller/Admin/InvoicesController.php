@@ -20,7 +20,9 @@ class InvoicesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users','Applications']
+            'contain' => ['Users','Applications.Events']
+            ,'conditions' => ['Events.Live' => true]
+            ,'order' => ['modified' => 'DESC']
         ];
         $this->set('invoices', $this->paginate($this->Invoices));
         $this->set('_serialize', ['invoices']);

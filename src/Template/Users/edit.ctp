@@ -17,7 +17,6 @@
             echo $this->Form->input('city');
             echo $this->Form->input('county');
             echo $this->Form->input('postcode');
-            echo $this->Form->input('section');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

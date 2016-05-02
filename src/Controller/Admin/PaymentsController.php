@@ -18,6 +18,9 @@ class PaymentsController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'order' => ['Payments.created' => 'DESC']
+        ];
         $this->set('payments', $this->paginate($this->Payments));
         $this->set('_serialize', ['payments']);
     }
