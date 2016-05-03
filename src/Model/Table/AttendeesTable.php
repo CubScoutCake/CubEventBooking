@@ -94,11 +94,9 @@ class AttendeesTable extends Table
 
         $validator
             ->add('dateofbirth', 'valid', ['rule' => 'date'])
-            ->requirePresence('dateofbirth', 'create')
             ->notEmpty('dateofbirth');
 
         $validator
-            ->requirePresence('phone', 'create')
             ->notEmpty('phone');
 
         $validator
