@@ -54,9 +54,24 @@ class AttendeesController extends AppController
      */
     public function add()
     {
+        $scoutgroups = TableRegistry::get('Scoutgroups');
+
+        $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
+
         $attendee = $this->Attendees->newEntity();
         if ($this->request->is('post')) {
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
+
+            $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
+                ,'lastname' => ucwords(strtolower($attendee->lastname))
+                ,'address_1' => ucwords(strtolower($attendee->address_1))
+                ,'address_2' => ucwords(strtolower($attendee->address_2))
+                ,'city' => ucwords(strtolower($attendee->city))
+                ,'county' => ucwords(strtolower($attendee->county))
+                ,'postcode' => strtoupper($attendee->postcode)];
+
+            $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
+
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -64,10 +79,19 @@ class AttendeesController extends AppController
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
             }
         }
-        $users = $this->Attendees->Users->find('list', ['limit' => 200]);
-        $applications = $this->Attendees->Applications->find('list', ['limit' => 200]);
+        $users = $this->Attendees->Users->find('list', ['limit' => 200, 'contain' => ['Roles', 'Scoutgroups'],
+            'conditions' => [   
+                'Scoutgroups.district_id' => $champD->district_id]]);
+
+        $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'contain' => ['Users.Scoutgroups'],
+            'conditions' => [   
+                'Scoutgroups.district_id' => $champD->district_id]]);
+
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
-        $this->set(compact('attendee', 'users', 'applications', 'allergies'));
+        $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
+        $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
+
+        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'scoutgroups','roles'));
         $this->set('_serialize', ['attendee']);
     }
 
@@ -81,10 +105,26 @@ class AttendeesController extends AppController
     public function edit($id = null)
     {
         $attendee = $this->Attendees->get($id, [
-            'contain' => ['Applications', 'Allergies']
+            'contain' => ['Applications', 'Allergies', 'Roles', 'Users', 'Scoutgroups']
         ]);
+
+        $scoutgroups = TableRegistry::get('Scoutgroups');
+
+        $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
+
+            $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
+                ,'lastname' => ucwords(strtolower($attendee->lastname))
+                ,'address_1' => ucwords(strtolower($attendee->address_1))
+                ,'address_2' => ucwords(strtolower($attendee->address_2))
+                ,'city' => ucwords(strtolower($attendee->city))
+                ,'county' => ucwords(strtolower($attendee->county))
+                ,'postcode' => strtoupper($attendee->postcode)];
+
+            $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
+            
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -92,10 +132,19 @@ class AttendeesController extends AppController
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
             }
         }
-        $users = $this->Attendees->Users->find('list', ['limit' => 200]);
-        $applications = $this->Attendees->Applications->find('list', ['limit' => 200]);
+        $users = $this->Attendees->Users->find('list', ['limit' => 200, 'contain' => ['Roles', 'Scoutgroups'],
+            'conditions' => [   
+                'Scoutgroups.district_id' => $champD->district_id]]);
+
+        $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'contain' => ['Users.Scoutgroups'],
+            'conditions' => [   
+                'Scoutgroups.district_id' => $champD->district_id]]);
+
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
-        $this->set(compact('attendee', 'users', 'applications', 'allergies'));
+        $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
+        $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
+
+        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'scoutgroups','roles'));
         $this->set('_serialize', ['attendee']);
     }
 

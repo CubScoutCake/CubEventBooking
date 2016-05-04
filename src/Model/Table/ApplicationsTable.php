@@ -54,14 +54,8 @@ class ApplicationsTable extends Table
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id'
         ]);
-        $this->belongsTo('OsmEvents', [
-            'foreignKey' => 'osm_event_id'
-        ]);
         $this->hasMany('Invoices', [
             'foreignKey' => 'application_id'
-        ]);
-        $this->belongsTo('OsmEvents', [
-            'foreignKey' => 'osm_event_id'
         ]);
         $this->hasMany('LogisticItems', [
             'foreignKey' => 'application_id'
@@ -113,7 +107,6 @@ class ApplicationsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
         $rules->add($rules->existsIn(['event_id'], 'Events'));
-        $rules->add($rules->existsIn(['osm_event_id'], 'OsmEvents'));
         return $rules;
     }
 

@@ -25,8 +25,6 @@
                                 <ul class="dropdown-menu " role="menu">
                                     <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>
                                     <li><?= $this->Html->link(__('Full View - inc Bookings'), ['action' => 'full_view', $event->id]) ?></li>
-                                    <li class="divider"></li>
-                                    <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
                                 </ul>
                             </div>
                         </td>

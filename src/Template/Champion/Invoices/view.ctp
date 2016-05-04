@@ -14,16 +14,16 @@
                     <li><a href="<?php echo $this->Url->build([
                         'controller' => 'Invoices',
                         'action' => 'regenerate',
-                        'prefix' => 'admin',
+                        'prefix' => 'champion',
                         $invoice->id],['_full']); ?>">Update Invoice</a>
                     </li>
                     <li><a href="<?php echo $this->Url->build([
                         'controller' => 'Invoices',
                         'action' => 'edit',
-                        'prefix' => 'admin',
+                        'prefix' => 'champion',
                         $invoice->id],['_full']); ?>">Edit Invoice</a>
                     </li>
-                    <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete','prefix' => 'admin', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?></li>
+                    <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete','prefix' => 'champion', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?></li>
                 </ul>
             </div>
         </div>
@@ -144,9 +144,9 @@
                                                 <i class="fa fa-gear"></i>  <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu " role="menu">
-                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Payments', 'prefix' => 'admin', 'action' => 'view', $payments->id]) ?></li>
-                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Payments', 'prefix' => 'admin', 'action' => 'edit', $payments->id]) ?></li>
-                                                <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Payments', 'prefix' => 'admin', 'action' => 'delete', $payments->id], ['confirm' => __('Are you sure you want to delete # {0}?', $payments->id)]) ?></li>
+                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Payments', 'prefix' => 'champion', 'action' => 'view', $payments->id]) ?></li>
+                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Payments', 'prefix' => 'champion', 'action' => 'edit', $payments->id]) ?></li>
+                                                <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Payments', 'prefix' => 'champion', 'action' => 'delete', $payments->id], ['confirm' => __('Are you sure you want to delete # {0}?', $payments->id)]) ?></li>
                                                 <li class="divider"></li>
                                                 <li><?= $this->Html->link(__('Notify'), ['controller' => 'Notifications', 'action' => 'notify_payment', $payments->id]) ?></li>
                                             </ul>

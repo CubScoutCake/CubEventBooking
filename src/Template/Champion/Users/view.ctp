@@ -14,13 +14,13 @@
                     <li><a href="<?php echo $this->Url->build([
                         'controller' => 'Notifications',
                         'action' => 'welcome',
-                        'prefix' => 'admin',
+                        'prefix' => 'champion',
                         $user->id],['_full']); ?>">Send Welcome Email</a>
                     </li>
                     <li><a href="<?php echo $this->Url->build([
                         'controller' => 'Users',
                         'action' => 'reset',
-                        'prefix' => 'admin'],['_full']); ?>">++ Trigger Password Reset</a>
+                        'prefix' => 'champion'],['_full']); ?>">++ Trigger Password Reset</a>
                     </li>
                 </ul>
             </div>
@@ -39,7 +39,7 @@
                     <li><a href="<?php echo $this->Url->build([
                         'controller' => 'Users',
                         'action' => 'edit',
-                        'prefix' => 'admin',
+                        'prefix' => 'champion',
                         $user->id],['_full']); ?>">Edit User</a>
                     </li>
                     <li><?= $this->Html->link(__('Update Capitalisation'), ['controller' => 'Users', 'action' => 'update', $user->id]) ?></li>

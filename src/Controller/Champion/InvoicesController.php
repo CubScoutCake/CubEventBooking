@@ -111,50 +111,13 @@ class InvoicesController extends AppController
 
     }
 
-    /**
-     * Add method
-     *
-     * @return void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $scoutgroups = TableRegistry::get('Scoutgroups');
-
-        $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
-
-        $invoice = $this->Invoices->newEntity();
-        if ($this->request->is('post')) {
-            $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
-            if ($this->Invoices->save($invoice)) {
-                $this->Flash->success(__('The invoice has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
-            }
-        }
-        $users = $this->Invoices->Users->find('list', ['limit' => 200, 'contain' => 'Scoutgroups', 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]]);
-        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'contain' => ['Users','Users.Scoutgroups'], 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]]);
-        $payments = $this->Invoices->Payments->find('list', ['limit' => 200, 'contain' => ['Users.Scoutgroups'], 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]]);
-        $this->set(compact('invoice', 'users', 'payments', 'applications'));
-        $this->set('_serialize', ['invoice']);
-    }
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Invoice id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
     public function edit($id = null)
     {
-        $scoutgroups = TableRegistry::get('Scoutgroups');
-
-        $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
-
         $invoice = $this->Invoices->get($id, [
             'contain' => ['Payments']
         ]);
+
+        $userThis = $invoice->user_id;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
             if ($this->Invoices->save($invoice)) {
@@ -164,29 +127,131 @@ class InvoicesController extends AppController
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }
-        $users = $this->Invoices->Users->find('list', ['limit' => 200, 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]]);
-        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['Users.Scoutgroups.district_id' => $champD->district_id]]);
-        $payments = $this->Invoices->Payments->find('list', ['limit' => 200, 'conditions' => ['Users.Scoutgroups.district_id' => $champD->district_id]]);
-        $this->set(compact('invoice', 'users', 'payments', 'applications'));
+
+        $users = $this->Invoices->Users->find('list', ['limit' => 200, 'conditions' => ['id' => $userThis]]);
+        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userThis]]);
+
+        $this->set(compact('invoice', 'users', 'applications'));
         $this->set('_serialize', ['invoice']);
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Invoice id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function delete($id = null)
+    public function generate($appId = null, $userId = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $invoice = $this->Invoices->get($id);
-        if ($this->Invoices->delete($invoice)) {
-            $this->Flash->success(__('The invoice has been deleted.'));
-        } else {
-            $this->Flash->error(__('The invoice could not be deleted. Please, try again.'));
+        $apps = TableRegistry::get('Applications');
+
+        //Create Entities
+
+        $invoice = $this->Invoices->newEntity();
+
+        $newData = ['user_id' => $userId];
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+
+            $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+
+            $invoice = $this->Invoices->patchEntity($invoice, $newData);
+
+            if ($this->Invoices->save($invoice)) {
+
+                $redir = $invoice->get('id');
+
+                $this->Flash->success(__('An invoice has been generated. Please enter the number of Attendees you are bringing.'));
+
+                return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'populate', $redir]);
+
+            } else {
+
+                $this->Flash->error(__('The invoice could not be generated. Please, try again.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+
         }
-        return $this->redirect(['action' => 'index']);
+
+        if (isset($userId)) {
+            $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
+        } else {
+            $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
+        }
+
+        $this->set(compact('applications'));    
+        $this->set('_serialize', ['invoice']);
+
+        if ($this->request->is('get')) {
+            
+            // Values from the Model e.g.
+            $this->request->data['application_id'] = $appId;
+        }
+              
+
+
+
+            //$this->set(compact('application', 'attendees', 'invoice', 'invoiceitems','payments'));
+            //$this->set('_serialize', ['invoice', 'invoiceItem']);
+        //}     else {
+        //    return $this->redirect(['action' => 'index']);
+        //}
+
+
+
+        //if ($this->request->is('post')) {
+        //    $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+        //    if ($this->Invoices->save($invoice)) {
+        //        $this->Flash->success(__('The invoice has been saved.'));
+        //        return $this->redirect(['action' => 'index']);
+        //    } else {
+        //        $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
+        //    }
+        //}
+
+        /*
+
+        $users = $this->Invoices->Users->find('list', ['limit' => 200]);
+        $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
+        
+        $this->set(compact('invoice', 'users', 'payments'));
+        
+        $this->set('_serialize', ['invoice']);*/
+
+
+    }
+
+    public function regenerate($InvId = null, $userId = null)
+    {
+        $invoiceItems = TableRegistry::get('InvoiceItems');
+
+        //Get Entity
+        $invoice = $this->Invoices->get($InvId, [
+            'contain' => ['Users', 'Payments', 'InvoiceItems', 'Applications']
+        ]);
+
+        if (!isset($userId)) {
+            $userId = $invoice->user_id;
+        }
+
+
+        $itemCount = $invoiceItems->find()->where(['invoice_id' => $InvId])->count(['id']);
+        // $itemCount->count(['id']);
+        // $itemCount->first();
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+            if ($this->Invoices->save($invoice)) {
+                if ($itemCount == 5) {
+                    $this->Flash->success(__('The invoice has been regenerated. Please enter the number of Attendees you are bringing.'));
+                    return $this->redirect(['prefix' => 'champion', 'controller' => 'InvoiceItems', 'action' => 'repopulate', $InvId]);
+                } else {
+                    $this->Flash->success(__('An invoice has been generated. Please enter the number of Attendees you are bringing.'));
+                    return $this->redirect(['prefix' => 'champion', 'controller' => 'InvoiceItems', 'action' => 'populate', $InvId]);
+                }
+            } else {
+                $this->Flash->error(__('The invoice could not be regenerated. Please, try again.'));
+                return $this->redirect(['Controller' => 'Invoices', 'action' => 'view', $InvId]);
+            }
+        }
+
+        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
+        $this->set(compact('invoice', 'applications'));
+        $this->set('_serialize', ['invoice']);
     }
 }
