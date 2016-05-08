@@ -531,6 +531,69 @@ class NotificationsController extends AppController
         $this->set('_serialize', ['notification']);
     }
 
+    public function invoice($invoiceId = null)
+    {
+        if(isset($invoiceId)) {
+
+            $users = TableRegistry::get('Users');
+            $groups = TableRegistry::get('Scoutgroups');
+            $invoices = TableRegistry::get('Invoices');
+            $payments = TableRegistry::get('Payments');
+
+            $invoice = $invoices->get($invoiceId);
+
+            $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
+            $group = $groups->get($user->scoutgroup_id);
+
+            $invoiceData = [     'link_id' => $invoice->id
+                                , 'link_controller' => 'Invoices'
+                                , 'link_action' => 'view'
+                                , 'notificationtype_id' => 6
+                                , 'user_id' => $invoice->user_id
+                                , 'text' => 'Please see the attached invoice'
+                                , 'notification_header' => 'Invoice attached'
+                                , 'notification_source' => 'Admin Triggered'
+                                , 'new' => 1];
+
+            $notification = $invoiceData;
+
+            $this->getMailer('Invoice')->send('invoice', [$user, $group, $invoice, $notification]);
+
+            $sets = TableRegistry::get('Settings');
+
+            $jsonInv = json_encode($invoiceData);
+            $p_api_key = $sets->get(13)->text;
+            $projectId = $sets->get(14)->text;
+            $eventType = 'NewPayment';
+
+            $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
+
+            $http = new Client();
+            $response = $http->post(
+              $keenURL,
+              $jsonInv,
+              ['type' => 'json']
+            );
+
+            $genericType = 'Notification';
+
+            $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+
+            $http = new Client();
+            $response = $http->post(
+              $keenGenURL,
+              $jsonInv,
+              ['type' => 'json']
+            );
+
+            $this->Flash->success(__('Invoice Delivered.'));
+
+        } else {
+            $this->Flash->error(__('Parameters were not set!'));
+            return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
+        }
+    }
+
     /**
      * Edit method
      *

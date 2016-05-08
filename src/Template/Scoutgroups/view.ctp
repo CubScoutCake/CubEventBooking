@@ -1,31 +1,25 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    
-    <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/locked');
-    echo $this->element('Sidebar/user');
-    $this->end(); ?>
-    
-    <?= $this->fetch('Sidebar') ?>
-    
-</nav>
-<div class="scoutgroups view large-9 medium-8 columns content">
-    <h3><?= h($scoutgroup->scoutgroup) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th><?= __('Scoutgroup') ?></th>
-            <td><?= h($scoutgroup->scoutgroup) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('District') ?></th>
-            <td><?= $scoutgroup->has('district') ? $this->Html->link($scoutgroup->district->district, ['controller' => 'Districts', 'action' => 'view', $scoutgroup->district->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Id') ?></th>
-            <td><?= $this->Number->format($scoutgroup->id) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('The Scout Group Number (without the text i.e. 4th --> 4)') ?></th>
-            <td><?= $this->Number->format($scoutgroup->number_stripped) ?></td>
-        </tr>
-    </table>    
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <h1 class="page-header"><i class="fa fa-paw fa-fw"></i> <?= h($scoutgroup->scoutgroup); ?></h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <i class="fa fa-key fa-fw"></i> Scout Group Info
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <h5 class="subheader"><?= __('Scout Group') ?></h5>
+                <p><?= h($scoutgroup->scoutgroup) ?></p>
+                <h5 class="subheader"><?= __('District') ?></h5>
+                <p><?= $scoutgroup->has('district') ? $this->Html->link($scoutgroup->district->district, ['controller' => 'Districts', 'action' => 'view', $scoutgroup->district->id]) : '' ?></p>               
+            </div>
+            <div class="panel-footer">          
+                <h5 class="subheader"><?= __('Id') ?></h5>
+                <p><?= $this->Number->format($scoutgroup->id) ?></p>
+            </div>
+        </div>
+    </div>
 </div>

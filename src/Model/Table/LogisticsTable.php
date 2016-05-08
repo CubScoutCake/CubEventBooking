@@ -31,6 +31,10 @@ class LogisticsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
+
         $this->belongsTo('Parameters', [
             'foreignKey' => 'parameter_id'
         ]);

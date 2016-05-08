@@ -287,19 +287,37 @@ $cakeDescription = 'HertsCubs Booking System';
 
                         if (is_null($this->request->session()->read('Auth.User.username'))) {
 
-                            echo $this->Url->build(['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')]);
+                            echo $this->Url->build([
+                                'controller' => 'Landing', 
+                                'action' => 'welcome'
+                            ]);
 
                         } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
 
-                            echo $this->Url->build(['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')]);
+                            echo $this->Url->build([
+                                'controller' => 'Users', 
+                                'action' => 'view',
+                                'prefix' => 'admin',
+                                $this->request->session()->read('Auth.User.id'
+                            )]);
 
                         } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
 
-                            echo $this->Url->build(['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')]);
+                            echo $this->Url->build([
+                                'controller' => 'Users', 
+                                'action' => 'view',
+                                'prefix' => 'champion',
+                                $this->request->session()->read('Auth.User.id'
+                            )]);
 
                         } else {
 
-                            echo $this->Url->build(['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')]);
+                            echo $this->Url->build([
+                                'controller' => 'Users', 
+                                'action' => 'view',
+                                'prefix' => false,
+                                $this->request->session()->read('Auth.User.id'
+                            )]);
 
                         } ?>"><i class="fa fa-user fa-fw"></i> <?php
 
@@ -347,6 +365,16 @@ $cakeDescription = 'HertsCubs Booking System';
                             </span>
                             </div> 
                         </li>-->
+                        <!-- <?php
+                            echo $this->Html->getCrumbList(
+                                [
+                                    'firstClass' => false,
+                                    'lastClass' => 'active',
+                                    'class' => 'breadcrumb'
+                                ],
+                                'Home'
+                            );
+                        ?> -->
                         <?php if ($this->request->session()->read('Auth.User.authrole') === 'admin'): ?>
                         <li>
                             <a href="<?php echo $this->Url->build([
@@ -434,6 +462,17 @@ $cakeDescription = 'HertsCubs Booking System';
                                         'controller' => 'Allergies',
                                         'action' => 'add',
                                         'prefix' => false]); ?>">Add an Allergy</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-child fa-fw"></i> Roles <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Roles',
+                                        'action' => 'index',
+                                        'prefix' => false]); ?>">View Roles</a>
                                         </li>
                                     </ul>
                                 </li>

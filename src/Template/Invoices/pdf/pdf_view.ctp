@@ -1,15 +1,3 @@
-<nav class="actions large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-
-        <?= $this->start('Sidebar');
-        echo $this->element('Sidebar/invoice_view_regenerate');
-        echo $this->element('Sidebar/user');
-        $this->end(); ?>
-        
-        <?= $this->fetch('Sidebar') ?>
-        
-    </ul>
-</nav>
 <div class="invoices view large-9 medium-8 columns content">
     <h3>Payment Invoice</h3>
     <table class="vertical-table">

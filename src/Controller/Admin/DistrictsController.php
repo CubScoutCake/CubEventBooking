@@ -32,7 +32,7 @@ class DistrictsController extends AppController
     public function view($id = null)
     {
         $district = $this->Districts->get($id, [
-            'contain' => ['Champions', 'Scoutgroups']
+            'contain' => ['Champions.Users', 'Scoutgroups']
         ]);
         $this->set('district', $district);
         $this->set('_serialize', ['district']);

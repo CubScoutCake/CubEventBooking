@@ -13,10 +13,14 @@
         "dompdf/dompdf": "*",
         "friendsofcake/cakepdf": "3.*",
         "tecnickcom/tcpdf" : "@stable",
-        "mpdf/mpdf" : "@stable",
-        "friendsofcake/bootstrap-ui": "~0.3",
+        "mpdf/mpdf" : "^6.1",
+        "friendsofcake/bootstrap-ui": "^0.5.0",
         "fheider/cakephp-datatables": "dev-master",
-        "friendsofcake/cakephp-csvview": "~2.0"
+        "friendsofcake/cakephp-csvview": "~2.0",
+        "muffin/trash": "dev-master",
+        "friendsofcake/CakePdf": "^3.2",
+        "friendsofcake/search": "^1.2",
+        "dereuromark/cakephp-ajax": "dev-master"
     },
     "require-dev": {
         "psy/psysh": "@stable",

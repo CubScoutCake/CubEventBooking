@@ -42,7 +42,8 @@ class UsersController extends AppController
             'contain' => ['Roles'
                 , 'Scoutgroups'
                 , 'Applications.Scoutgroups', 'Applications.Events'
-                , 'Attendees.Scoutgroups', 'Attendees.Roles'
+                , 'Attendees.Scoutgroups' => ['sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']]
+                , 'Attendees.Roles'
                 , 'Invoices.Applications.Events']
         ]);
         $this->set('user', $user);

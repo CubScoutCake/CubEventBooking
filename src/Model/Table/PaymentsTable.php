@@ -31,6 +31,9 @@ class PaymentsTable extends Table
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id'

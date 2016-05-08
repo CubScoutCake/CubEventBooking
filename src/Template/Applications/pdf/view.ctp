@@ -232,7 +232,6 @@
                                     <th><?= __('First Name') ?></th>
                                     <th><?= __('Last Name') ?></th>
                                     <th class="actions"><?= __('Actions') ?></th>
-                                    <th><?= __('Role') ?></th>
                                     <th><?= __('Created') ?></th>
                                     <th><?= __('Modified') ?></th>
                                 </tr>
@@ -248,10 +247,10 @@
                                             <ul class="dropdown-menu " role="menu">
                                                 <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
                                                 <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
+
                                             </ul>
                                         </div>
                                     </td>
-                                    <td><?= $attendees->has('role') ? $this->Html->link($attendees->role->role, ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
                                     <td><?= $this->Time->i18nFormat($attendees->created, 'dd-MMM-yy HH:mm') ?></td>
                                     <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
                                 </tr>

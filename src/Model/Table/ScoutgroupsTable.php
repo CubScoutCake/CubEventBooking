@@ -29,6 +29,11 @@ class ScoutgroupsTable extends Table
         $this->table('scoutgroups');
         $this->displayField('scoutgroup');
         $this->primaryKey('id');
+
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
+        
         $this->belongsTo('Districts', [
             'foreignKey' => 'district_id',
             'joinType' => 'INNER'

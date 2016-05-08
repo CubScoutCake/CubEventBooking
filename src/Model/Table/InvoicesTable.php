@@ -39,6 +39,9 @@ class InvoicesTable extends Table
                     ]
                 ]
             ]);
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',

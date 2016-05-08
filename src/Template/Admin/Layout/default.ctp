@@ -423,23 +423,6 @@ $cakeDescription = 'HertsCubs Booking System';
                                 'action' => 'add',
                                 'prefix' => 'admin']); ?>">Add User</a>
                                 </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-terminal fa-fw"></i> Roles <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="<?php echo $this->Url->build([
-                                        'controller' => 'Roles',
-                                        'action' => 'index',
-                                        'prefix' => 'admin']); ?>">View Roles</a>
-                                        </li>
-                                        <li>
-                                            <a href="<?php echo $this->Url->build([
-                                        'controller' => 'Roles',
-                                        'action' => 'add',
-                                        'prefix' => 'admin']); ?>">Add a Role</a>
-                                        </li>
-                                    </ul>
-                                </li>
                             </ul>
                         </li>
                         <li>
@@ -489,6 +472,23 @@ $cakeDescription = 'HertsCubs Booking System';
                                         'controller' => 'Allergies',
                                         'action' => 'add',
                                         'prefix' => 'admin']); ?>">Add an Allergy</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-child fa-fw"></i> Roles <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Roles',
+                                        'action' => 'index',
+                                        'prefix' => 'admin']); ?>">View Roles</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Roles',
+                                        'action' => 'add',
+                                        'prefix' => 'admin']); ?>">Add a Role</a>
                                         </li>
                                     </ul>
                                 </li>

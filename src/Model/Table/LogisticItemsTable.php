@@ -31,6 +31,10 @@ class LogisticItemsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
+
         $this->belongsTo('Applications', [
             'foreignKey' => 'application_id'
         ]);

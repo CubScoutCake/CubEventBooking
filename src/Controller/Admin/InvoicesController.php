@@ -141,20 +141,58 @@ class InvoicesController extends AppController
 
     public function pdfView($id = null)
     {
-        
-
-        $this->viewBuilder()->layout('pdf/default');
-
+        // Insantiate Objects
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['Users', 'Payments', 'InvoiceItems']
+            'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
         ]);
-        //if (!$this->Post->exists()) {
-        //    throw new NotFoundException(__('Invalid post'));
-        //}
-        // increase memory limit in PHP 
-        //ini_set('memory_limit', '512M');
-        $this->set('invoice', $invoice);
+
+        $this->viewBuilder()->options([
+               'pdfConfig' => [
+                   'orientation' => 'portrait',
+                   'filename' => 'Invoice_' . $id
+               ]
+           ]);
+        
+        // Connect Registry
+        $settings = TableRegistry::get('Settings');
+        $events = TableRegistry::get('Events');
+        $applications = TableRegistry::get('Applications');
+
+        $application = $applications->get($invoice->application_id);
+
+        $event = $events->get($application->event_id, ['contain' => ['Applications', 'Settings']]);
+
+        // Set Address Variables
+        $eventName = $event->full_name;
+        $invAddress = $event->address;
+        $invCity = $event->city;
+        $invPostcode = $event->postcode;
+
+        $this->set(compact('eventName', 'invAddress', 'invCity', 'invPostcode'));
+
+        // Set Deadline Variable
+        $invDeadline = $event->deposit_date;
+
+        // Set Prefix Variable
+        $invSetPre = $event->invtext_id;
+        $invSetting = $settings->get($invSetPre);
+        $invPrefix = $invSetting->text;
+
+        // Set Payable Variable
+        $invPayable = $settings->get(4)->text;
+
+        $this->set(compact('invoice', 'invPayable', 'invPrefix', 'invDeadline'));
         $this->set('_serialize', ['invoice']);
+
+        $CakePdf = new \CakePdf\Pdf\CakePdf();
+        $CakePdf->template('invoice', 'default');
+        $CakePdf->viewVars($this->viewVars);
+        // Get the PDF string returned
+        $pdf = $CakePdf->output();
+        // Or write it to file directly
+        $pdf = $CakePdf->write(FILES . 'invoice' . $id . '.pdf');
+
+        $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invoice->id]);
     }
 
     /**

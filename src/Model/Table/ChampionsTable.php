@@ -27,6 +27,10 @@ class ChampionsTable extends Table
         $this->displayField('firstname');
         $this->primaryKey('id');
 
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
+
         $this->belongsTo('Districts', [
             'foreignKey' => 'district_id',
             'joinType' => 'INNER'

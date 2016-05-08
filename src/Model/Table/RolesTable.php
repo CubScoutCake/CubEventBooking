@@ -27,6 +27,11 @@ class RolesTable extends Table
         $this->table('roles');
         $this->displayField('role');
         $this->primaryKey('id');
+
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
+        
         $this->hasMany('Attendees', [
             'foreignKey' => 'role_id'
         ]);

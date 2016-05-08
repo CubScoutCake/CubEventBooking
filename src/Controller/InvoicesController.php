@@ -48,6 +48,13 @@ class InvoicesController extends AppController
         $events = TableRegistry::get('Events');
         $applications = TableRegistry::get('Applications');
 
+        $this->viewBuilder()->options([
+               'pdfConfig' => [
+                   'orientation' => 'portrait',
+                   'filename' => 'Invoice_' . $id
+               ]
+           ]);
+        
         // Insantiate Objects
         $invoice = $this->Invoices->get($id, [
             'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
@@ -63,69 +70,34 @@ class InvoicesController extends AppController
         $invCity = $event->city;
         $invPostcode = $event->postcode;
 
-        $this->set('eventName', $eventName);
-        $this->set('invAddress', $invAddress);
-        $this->set('invCity', $invCity);
-        $this->set('invPostcode', $invPostcode);
+        $this->set(compact('eventName', 'invAddress', 'invCity', 'invPostcode'));
 
         // Set Deadline Variable
         $invDeadline = $event->deposit_date;
-        $this->set('invDeadline', $invDeadline);
 
         // Set Prefix Variable
         $invSetPre = $event->invtext_id;
         $invSetting = $settings->get($invSetPre);
         $invPrefix = $invSetting->text;
-        //$invPrefix = $invSetPre;
-
-        $this->set('invPrefix', $invPrefix);
 
         // Set Payable Variable
-        $payableSetting = $settings->get(4);
-        $invPayable = $payableSetting->text;
+        $invPayable = $settings->get(4)->text;
 
-        $this->set('invPayable', $invPayable);
-
-        //if($count) {
-        //    return $this->redirect(['action' => 'index'])
-        //}
-
-
-        //Generate Cubs Line Items
-
-        //$invoiceCubs = $this->InvoiceItems->newEntity();
-
-        //$newCubs = ['user_id' => $this->Auth->user('id'), 'modification' => 0, 'eventname' => 'HertsCubs100'];
-        //$invoiceCubs = $this->InvoiceItems->patchEntity($invoiceCubs, $newCubs);
-
-        //$this->Invoices->save($invoiceCubs);
-
-
-        /*$applications = TableRegistry::get('applications');
-
-        $query = $this->Attendees->find();
-
-        $query->innerJoinWith('Tags', function ($q) {
-            return $q->where(['Tags.name' => 'CakePHP']);
-        }); */        
-
-        
-        $this->set('invoice', $invoice);
+        $this->set(compact('invoice', 'invPayable', 'invPrefix', 'invDeadline'));
         $this->set('_serialize', ['invoice']);
     }
 
     public function pdfView($id = null)
     {
-
+        // Insantiate Objects
+        $invoice = $this->Invoices->get($id, [
+            'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
+        ]); 
+        
         // Connect Registry
         $settings = TableRegistry::get('Settings');
         $events = TableRegistry::get('Events');
         $applications = TableRegistry::get('Applications');
-
-        // Insantiate Objects
-        $invoice = $this->Invoices->get($id, [
-            'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
-        ]);
 
         $application = $applications->get($invoice->application_id);
 
@@ -137,48 +109,31 @@ class InvoicesController extends AppController
         $invCity = $event->city;
         $invPostcode = $event->postcode;
 
-        $this->set('eventName', $eventName);
-        $this->set('invAddress', $invAddress);
-        $this->set('invCity', $invCity);
-        $this->set('invPostcode', $invPostcode);
+        $this->set(compact('eventName', 'invAddress', 'invCity', 'invPostcode'));
 
         // Set Deadline Variable
         $invDeadline = $event->deposit_date;
-        $this->set('invDeadline', $invDeadline);
 
         // Set Prefix Variable
         $invSetPre = $event->invtext_id;
         $invSetting = $settings->get($invSetPre);
         $invPrefix = $invSetting->text;
-        //$invPrefix = $invSetPre;
-
-        $this->set('invPrefix', $invPrefix);
 
         // Set Payable Variable
-        $payableSetting = $settings->get(4);
-        $invPayable = $payableSetting->text;
+        $invPayable = $settings->get(4)->text;
 
-        $this->set('invPayable', $invPayable);
-        $this->set('invoice', $invoice);
+        $this->set(compact('invoice', 'invPayable', 'invPrefix', 'invDeadline'));
         $this->set('_serialize', ['invoice']);
 
-        $pdfConfig = [
-             'filename' => 'Invoice_' . $id
-            ,'orientation' => 'portrait'
-            ,'download' => (bool)$this->request->query('download')
-        ];
-
-
-        $this->pdfConfig = $pdfConfig; 
-
-        $this->viewBuilder()->options(['pdfConfig' => $pdfConfig]);
-        
         $CakePdf = new \CakePdf\Pdf\CakePdf();
-        //$CakePdf->template('invoice', 'default');
-        // //get the pdf string returned
-        //$pdf = $CakePdf->output();
-        // //or write it to file directly
-        $pdf = $CakePdf->write(WWW_ROOT . DS . 'files' . DS . 'invoice.pdf');
+        $CakePdf->template('invoice', 'default');
+        $CakePdf->viewVars($this->viewVars);
+        // Get the PDF string returned
+        $pdf = $CakePdf->output();
+        // Or write it to file directly
+        $pdf = $CakePdf->write(FILES . 'invoice' . $id . '.pdf');
+
+        $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invoice->id, '_ext' => 'pdf']);
     }
 
     /**

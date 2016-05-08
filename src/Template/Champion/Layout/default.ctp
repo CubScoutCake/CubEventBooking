@@ -469,6 +469,23 @@ $cakeDescription = 'HertsCubs Booking System';
                                         </li>
                                     </ul>
                                 </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-child fa-fw"></i> Roles <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Roles',
+                                        'action' => 'index',
+                                        'prefix' => 'champion']); ?>">View Roles</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Roles',
+                                        'action' => 'add',
+                                        'prefix' => 'champion']); ?>">Add a Role</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>

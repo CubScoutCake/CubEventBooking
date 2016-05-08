@@ -41,6 +41,9 @@ class EventsTable extends Table
                     ]
                 ]
             ]);
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
 
         $this->belongsTo('Settings', [
             'foreignKey' => 'invtext_id'

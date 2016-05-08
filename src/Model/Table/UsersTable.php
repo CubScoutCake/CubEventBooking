@@ -41,6 +41,9 @@ class UsersTable extends Table
                     ]
                 ]
             ]);
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
 
         $this->belongsTo('Roles', [
             'foreignKey' => 'role_id',

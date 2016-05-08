@@ -1,12 +1,27 @@
 <div class="row">
     <div class="col-lg-10 col-md-10">
-        <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
+        <h1 class="page-header"><i class="fa fa-file-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
-    <div class="col-lg-2 col-md-2">
+    <div class="col-lg-1 col-md-1">
         </br>
         <div class="pull-right pull-down">
             <div class="btn-group">
-                <button type="button" class="btn btn-default btn-warning dropdown-toggle" data-toggle="dropdown">
+                <button type="button" class="btn btn-warning">
+                    <a href="<?php echo $this->Url->build([
+                        'controller' => 'Invoices',
+                        'action' => 'pdfView',
+                        'prefix' => false,
+                        $invoice->id]); ?>"><i class="fa fa-file-pdf-o fa-fw"></i> Download</a></span>
+                </button>
+            </div>
+        </div>
+        </br>
+    </div>
+    <div class="col-lg-1 col-md-1">
+        </br>
+        <div class="pull-right pull-down">
+            <div class="btn-group">
+                <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
                     Actions
                     <span class="caret"></span>
                 </button>

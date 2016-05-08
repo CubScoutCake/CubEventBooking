@@ -39,6 +39,8 @@ use Cake\Routing\Router;
  * `:action` markers.
  *
  */
+Router::extensions(['pdf']);
+Router::extensions(['csv']);
 
 Router::scope('/', function ($routes) {
 
@@ -125,10 +127,6 @@ Router::connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
 * <--- Jacob's Route's --->
 */
 
-Router::extensions('csv');
-//Router::extensions(['pdf']);
-
-Router::extensions(['pdf']);
 
 Plugin::routes();
 Router::defaultRouteClass('DashedRoute');

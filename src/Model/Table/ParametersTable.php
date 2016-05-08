@@ -31,6 +31,10 @@ class ParametersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
+
         $this->belongsTo('ParameterSets', [
             'foreignKey' => 'set_id'
         ]);

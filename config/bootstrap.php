@@ -180,37 +180,23 @@ Request::addDetector('tablet', function ($request) {
  *
  */
 
-Plugin::load('DataTables', ['bootstrap' => false, 'routes' => false]);
+Plugin::load('Muffin/Trash');
 Plugin::load('CsvView');
-
 Plugin::load('Migrations');
+Plugin::load('BootstrapUI');
+Plugin::load('Search');
+
+Plugin::load('Ajax', ['bootstrap' => true]);
 Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);
-\Cake\Core\Plugin::load('BootstrapUI');
+// Plugin::load('CakePdf', ['bootstrap' => true]);
+Plugin::load('DataTables', ['bootstrap' => false, 'routes' => false]);
+
 //Plugin::loadAll();
 //Plugin::load('dompdf');
 //Plugin::load('mpdf', ['bootstrap' => true]);
 //Plugin::load('tcpdf', ['bootstrap' => true]);
 
-/*Configure::write('CakePdf', [
-        'engine' => [
-            'className' => 'CakePdf.DomPdf',
-            // Mac OS X / Linux is usually like:
-            //'binary' => __DIR__ . '/vendor/dompdf/dompdf/dompdf.php',
-            // On Windows environmnent you NEED to use the path like
-            // old fashioned MS-DOS Paths, otherwise you will keep getting:
-            // WKHTMLTOPDF didn't return any data
-            // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
-        ],
-        // 'margin' => [
-        //     'bottom' => 15,
-        //     'left' => 50,
-        //     'right' => 30,
-        //     'top' => 45
-        // ],
-        'orientation' => 'portrait',
-        'download' => true
-    ]);*/
- Configure::write('CakePdf', [
+Configure::write('CakePdf', [
         'engine' => [
             'className' => 'CakePdf.WkHtmlToPdf',
             // Mac OS X / Linux is usually like:
@@ -222,9 +208,17 @@ Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);
             'options' => [
                 'print-media-type' => false,
                 'outline' => true,
-                'dpi' => 96
+                'dpi' => 128
             ],
         ],
+        'margin' => [
+            'bottom' => 15,
+            'left' => 15,
+            'right' => 15,
+            'top' => 15
+        ],
+        'orientation' => 'portrait',
+        'download' => true
     ]);
 
 // Only try to load DebugKit in development mode
@@ -245,3 +239,5 @@ DispatcherFactory::add('ControllerFactory');
  * This is needed for matching the auto-localized string output of Time() class when parsing dates.
  */
 Type::build('datetime')->useLocaleParser();
+
+

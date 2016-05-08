@@ -47,9 +47,17 @@ class ApplicationsController extends AppController
      */
     public function view($id = null)
     {
+        $this->viewBuilder()->options([
+               'pdfConfig' => [
+                   'orientation' => 'portrait',
+                   'filename' => 'Application_' . $id
+               ]
+           ]);
+
         $application = $this->Applications->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['conditions' => ['user_id' => $this->Auth->user('id')]]]
+            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC']], 'Attendees.Roles' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]]]
         ]);
+
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
 
