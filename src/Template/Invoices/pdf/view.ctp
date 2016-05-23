@@ -12,6 +12,8 @@
                 </br>
                 <span><strong><?= __('Application') ?>:</strong> <?= $invoice->has('application') ? $invoice->application->display_code : '' ?></span>
                 </br>
+                <span><strong><?= __('Event') ?>:</strong> <?= h($eventName) ?></span>
+                </br>
                 <span><strong><?= __('Date Created') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YYYY HH:mm')) ?></span>
                 </br>
                 <span><strong><?= __('Date Last Modified') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->modified,'dd-MMM-YYYY HH:mm')) ?></span>

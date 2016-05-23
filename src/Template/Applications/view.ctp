@@ -142,7 +142,7 @@
                     <h2><?= $this->Number->toPercentage($cubsDone,1,['multiply' => true]); ?></h2>
                 </div>
                 <a href="<?php 
-                    if ($attCubs < 1 && $cubsDone < 1) :
+                    if ($cubsDone < 1) :
                         echo $this->Url->build([
                         'controller' => 'Applications',
                         'action' => 'Link',
@@ -188,7 +188,7 @@
                     <h2><?= $this->Number->toPercentage($cubsNotDone,1,['multiply' => true]); ?></h2>
                 </div>
                 <a href="<?php 
-                    if ($attNotCubs > 1 && $cubsNotDone < 1) :
+                    if ($cubsNotDone < 1) :
                         echo $this->Url->build([
                         'controller' => 'Applications',
                         'action' => 'Link',
