@@ -57,7 +57,7 @@ class InvoicesController extends AppController
         
         // Insantiate Objects
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
+            'contain' => ['Users', 'Payments', 'Events', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
         ]);
 
         $application = $applications->get($invoice->application_id);
@@ -91,7 +91,7 @@ class InvoicesController extends AppController
     {
         // Insantiate Objects
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
+            'contain' => ['Users', 'Payments', 'Events', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
         ]); 
         
         // Connect Registry

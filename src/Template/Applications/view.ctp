@@ -141,12 +141,25 @@
                     </div>
                     <h2><?= $this->Number->toPercentage($cubsDone,1,['multiply' => true]); ?></h2>
                 </div>
-                <a href="<?php echo $this->Url->build([
-                    'controller' => 'Attendees',
-                    'action' => 'cub',
-                    'prefix' => false],['_full']); ?>">
-                    <div class="panel-footer">
-                        <span class="pull-left">Add a Cub</span>
+                <a href="<?php 
+                    if ($attCubs < 1 && $cubsDone < 1) :
+                        echo $this->Url->build([
+                        'controller' => 'Applications',
+                        'action' => 'Link',
+                        'prefix' => false,
+                        $application->id],['_full']); ?>">
+                        <div class="panel-footer">
+                            <span class="pull-left">Link Attendees</span>
+
+                    <?php else : 
+                        echo $this->Url->build([
+                        'controller' => 'Attendees',
+                        'action' => 'cub',
+                        'prefix' => false],['_full']); ?>">
+                        <div class="panel-footer">
+                            <span class="pull-left">Add a Cub</span>
+                    <?php endif ?>
+
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -174,12 +187,25 @@
                     </div>
                     <h2><?= $this->Number->toPercentage($cubsNotDone,1,['multiply' => true]); ?></h2>
                 </div>
-                <a href="<?php echo $this->Url->build([
-                    'controller' => 'Attendees',
-                    'action' => 'adult',
-                    'prefix' => false],['_full']); ?>">
-                    <div class="panel-footer">
-                        <span class="pull-left">Add an Adult</span>
+                <a href="<?php 
+                    if ($attNotCubs > 1 && $cubsNotDone < 1) :
+                        echo $this->Url->build([
+                        'controller' => 'Applications',
+                        'action' => 'Link',
+                        'prefix' => false,
+                        $application->id],['_full']); ?>">
+                        <div class="panel-footer">
+                            <span class="pull-left">Link Attendees</span>
+
+                    <?php else : 
+                        echo $this->Url->build([
+                        'controller' => 'Attendees',
+                        'action' => 'adult',
+                        'prefix' => false],['_full']); ?>">
+                        <div class="panel-footer">
+                            <span class="pull-left">Add an Adult</span>
+                    <?php endif ?>
+                    
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
