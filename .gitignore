@@ -10,6 +10,3 @@
 *.lock
 *.lock
 
-composer.lock
-
-*.phar

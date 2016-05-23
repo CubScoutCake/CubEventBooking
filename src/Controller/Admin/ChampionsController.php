@@ -52,8 +52,10 @@ class ChampionsController extends AppController
         if ($this->request->is('post')) {
             $champion = $this->Champions->patchEntity($champion, $this->request->data);
             if ($this->Champions->save($champion)) {
+                $redir = $champion->get('id');
+
                 $this->Flash->success(__('The champion has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $redir]);
             } else {
                 $this->Flash->error(__('The champion could not be saved. Please, try again.'));
             }
@@ -80,7 +82,7 @@ class ChampionsController extends AppController
             $champion = $this->Champions->patchEntity($champion, $this->request->data);
             if ($this->Champions->save($champion)) {
                 $this->Flash->success(__('The champion has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'index', $champion->id]);
             } else {
                 $this->Flash->error(__('The champion could not be saved. Please, try again.'));
             }

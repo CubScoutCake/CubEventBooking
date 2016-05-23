@@ -47,6 +47,7 @@
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('New App'), ['controller' => 'Applications', 'action' => 'add', $user->id]) ?></li>
                     <li><?= $this->Html->link(__('New Inv'), ['controller' => 'Invoices', 'action' => 'add', $user->id]) ?></li>
+                    <li><?= $this->Html->link(__('New Att'), ['controller' => 'Attendees', 'action' => 'add', $user->id]) ?></li>
                 </ul>
             </div>
         </div>

@@ -8,7 +8,11 @@
             echo $this->Form->input('role_id', ['options' => $roles]);
             echo $this->Form->input('firstname');
             echo $this->Form->input('lastname');
-            echo $this->Form->input('dateofbirth');
+            echo $this->Form->input('dateofbirth', [
+                    'label' => 'Date of birth',
+                    'minYear' => date('Y') - 80,
+                    'maxYear' => date('Y') - 5,
+                ]);
             echo $this->Form->input('phone');
             echo $this->Form->input('phone2');
             echo $this->Form->input('address_1');

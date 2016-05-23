@@ -1,12 +1,3 @@
-<?= $this->start('Sidebar');
-echo $this->element('Sidebar/start');
-echo $this->element('Sidebar/locked');
-echo $this->element('Sidebar/user');
-echo $this->element('Sidebar/end');
-$this->end(); ?>
-
-<?= $this->fetch('Sidebar') ?>
-
 <div class="champions view large-9 medium-8 columns content">
     <h3><?= h($champion->firstname) ?></h3>
     <table class="vertical-table">

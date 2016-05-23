@@ -22,13 +22,16 @@
                                     <i class="fa fa-gear"></i>  <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu " role="menu">
-                                    <li><?= $this->Html->link(__('View'), ['action' => 'view', $champion->id]) ?></li>
+                                    <li><?= $this->Html->link(__('View Champion'), ['action' => 'view', $champion->id]) ?></li>
+                                    <li class="divider"></li>
+                                    <li><?= $this->Html->link(__('View User'), ['controller' => 'Users', 'action' => 'view', $champion->user_id]) ?></li>
                                 </ul>
                             </div>
                         </td>
                         <td><?= h($champion->firstname) ?></td>
                         <td><?= h($champion->lastname) ?></td>
                         <td><a href="mailto:<?= h($champion->email) ?>" target="_top"><?= h($champion->email) ?></a></td>
+                        <td><?= $champion->has('user') ? $this->Html->link($this->Text->truncate($champion->user->full_name,12), ['controller' => 'Users', 'action' => 'view', $champion->user->id]) : '' ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

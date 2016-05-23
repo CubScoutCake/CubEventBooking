@@ -117,11 +117,13 @@
                                             <th><?= __('Id') ?></th>
                                             <th class="actions"><?= __('Actions') ?></th>
                                             <th><?= __('Scout Group') ?></th>
+                                            <th><?= __('') ?></th>
+                                            <th><?= __('') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($district->scoutgroups as $scoutgroups): ?>
-                                            <tr>
+                                            <tr class="info">
                                                 <td><?= h($scoutgroups->id) ?></td>
                                                 <td class="actions">
                                                     <div class="dropdown btn-group">
@@ -136,6 +138,86 @@
                                                     </div>
                                                 </td>
                                                 <td><?= h($scoutgroups->scoutgroup) ?></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <?php if (!empty($scoutgroups->applications)): ?>
+                                                <thead>
+                                                    <tr>
+                                                        <th><?= __('') ?></th>
+                                                        <th><?= __('App') ?></th>
+                                                        <th class="actions"><?= __('Actions') ?></th>
+                                                        <th><?= __('User') ?></th>
+                                                        <th><?= __('Event') ?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($scoutgroups->applications as $applications): ?>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td><?= h($applications->display_code) ?></td>
+                                                            <td class="actions">
+                                                                <div class="dropdown btn-group">
+                                                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu " role="menu">
+                                                                        <li><?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $applications->id]) ?></li>
+                                                                        <li><?= $this->Html->link(__('Edit'), ['controller' => 'Applications', 'action' => 'edit', $applications->id]) ?></li>
+                                                                        <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Applications', 'action' => 'delete', $applications->id], ['confirm' => __('Are you sure you want to delete # {0}?', $applications->id)]) ?></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                            <td><?= $applications->has('user') ? $this->Html->link($this->Text->truncate($applications->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $applications->user->id]) : '' ?></td>
+                                                            <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['controller' => 'Events', 'action' => 'view', $applications->event->id]) : '' ?></td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($scoutgroups->applications)): ?>
+                        <div class="tab-pane fade" id="appl-pills">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><?= __('Id') ?></th>
+                                            <th class="actions"><?= __('Actions') ?></th>
+                                            <th><?= __('User') ?></th>
+                                            <th><?= __('Event') ?></th>
+                                            <th><?= __('Section') ?></th>
+                                            <th><?= __('Permitholder') ?></th>
+                                            <th><?= __('Created') ?></th>
+                                            <th><?= __('Modified') ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($scoutgroups->applications as $applications): ?>
+                                            <tr>
+                                                <td><?= h($applications->display_code) ?></td>
+                                                <td class="actions">
+                                                    <div class="dropdown btn-group">
+                                                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu " role="menu">
+                                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $applications->id]) ?></li>
+                                                            <li><?= $this->Html->link(__('Edit'), ['controller' => 'Applications', 'action' => 'edit', $applications->id]) ?></li>
+                                                            <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Applications', 'action' => 'delete', $applications->id], ['confirm' => __('Are you sure you want to delete # {0}?', $applications->id)]) ?></li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td><?= $applications->has('user') ? $this->Html->link($this->Text->truncate($applications->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $applications->user->id]) : '' ?></td>
+                                                <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['controller' => 'Events', 'action' => 'view', $applications->event->id]) : '' ?></td>
+                                                <td><?= h($applications->section) ?></td>
+                                                <td><?= h($applications->permitholder) ?></td>
+                                                <td><?= h($applications->created) ?></td>
+                                                <td><?= h($applications->modified) ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

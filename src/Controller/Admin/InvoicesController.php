@@ -207,7 +207,7 @@ class InvoicesController extends AppController
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
             if ($this->Invoices->save($invoice)) {
                 $this->Flash->success(__('The invoice has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $invoice->id]);
             } else {
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
@@ -251,7 +251,7 @@ class InvoicesController extends AppController
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
             if ($this->Invoices->save($invoice)) {
                 $this->Flash->success(__('The invoice has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $invoice->id]);
             } else {
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }

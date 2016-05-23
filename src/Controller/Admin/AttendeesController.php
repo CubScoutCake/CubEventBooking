@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Attendees Controller
@@ -47,7 +48,7 @@ class AttendeesController extends AppController
      *
      * @return void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($userId = null)
     {
         $attendee = $this->Attendees->newEntity();
         if ($this->request->is('post')) {
@@ -59,10 +60,37 @@ class AttendeesController extends AppController
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
             }
         }
-        $users = $this->Attendees->Users->find('list', ['limit' => 200]);
-        $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'order' => ['id' => DESC]]);
+        if (is_null($userId)) {
+            $users = $this->Attendees->Users->find('list', ['limit' => 200]);
+            $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'order' => ['id' => 'DESC']]);
+            $scoutgroups = $this->Attendees->Scoutgroups->find('list', 
+                [
+                    'keyField' => 'id',
+                    'valueField' => 'scoutgroup',
+                    'groupField' => 'district.district'
+                ])
+                ->contain(['Districts']);
+        } else {
+
+            $usrs = TableRegistry::get('Users');
+
+            $user = $usrs->get($userId);
+            $grpId = $user->scoutgroup_id;
+
+
+            $users = $this->Attendees->Users->find('list', ['limit' => 200, 'conditions' => ['id' => $userId]]);
+            $applications = $this->Attendees->Applications->find('list', [
+                'limit' => 200, 
+                'conditions' => [
+                    'user_id' => $userId
+                ], 
+                'order' => [
+                    'id' => 'DESC'
+                ]]);
+            $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $grpId]]);
+        }
+
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200]);
         $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
 
         $this->set(compact('attendee', 'users', 'applications', 'allergies','scoutgroups','roles'));
@@ -93,7 +121,13 @@ class AttendeesController extends AppController
         $users = $this->Attendees->Users->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200,'conditions' => ['user_id' => $attendee->user_id]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200]);
+        $scoutgroups = $this->Attendees->Scoutgroups->find('list', 
+                [
+                    'keyField' => 'id',
+                    'valueField' => 'scoutgroup',
+                    'groupField' => 'district.district'
+                ])
+                ->contain(['Districts']);
         $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
 
         $this->set(compact('attendee', 'users', 'applications', 'allergies','scoutgroups','roles'));

@@ -55,7 +55,7 @@ class ApplicationsController extends AppController
            ]);
 
         $application = $this->Applications->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC']], 'Attendees.Roles' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]]]
+            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC']], 'Attendees.Roles' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]],'Attendees.Scoutgroups' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]]]
         ]);
 
         $this->set('application', $application);
@@ -269,7 +269,9 @@ class ApplicationsController extends AppController
 
         // Get Options Lists
         $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('scoutgroup_id')]]);
-        $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
+        $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')], 'order' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'keyField' => 'id',
+                'valueField' => 'full_name',
+                'groupField' => 'role.role']);
         $events = $this->Applications->Events->find('list', ['limit' => 200, 'conditions' => ['end >' => $now, 'live' => 1]]);
 
         // Pass Variables
@@ -427,7 +429,7 @@ class ApplicationsController extends AppController
 
 
         $application = $this->Applications->get($id, [
-            'contain' => ['Attendees']
+            'contain' => ['Attendees','Scoutgroups']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
 
@@ -460,6 +462,46 @@ class ApplicationsController extends AppController
         $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $events = $this->Applications->Events->find('list', ['limit' => 200]);
         $this->set(compact('application', 'users', 'scoutgroups', 'events', 'attendees'));
+        $this->set('_serialize', ['application']);
+    }
+
+    public function link($id = null)
+    {
+        // $evts = TableRegistry::get('Events');
+
+        $application = $this->Applications->get($id, [
+            'contain' => ['Attendees','Scoutgroups']
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+
+            // Check Max Applications
+
+            /*$evtID = $this->request->data['event_id'];
+
+            $appCount = $this->Applications->find('all')->where(['event_id' => $evtID])->count('*');
+            $event = $evts->get($evtID);*/
+
+            /*if ($event->invoices_locked) {
+                $this->Flash->error(__('Apologies this Event is Currently Locked.'));
+                return $this->redirect(['controller' => 'Applications'
+                    , 'action' => 'view'
+                    , 'prefix' => false
+                    , $id]);
+            } else {*/
+                $newData = ['user_id' => $this->Auth->user('id'), 'modification' => 'modification' + 1];
+                $application = $this->Applications->patchEntity($application, $newData);
+                $application = $this->Applications->patchEntity($application, $this->request->data);
+                if ($this->Applications->save($application)) {
+                    $this->Flash->success(__('The application has been saved.'));
+                    return $this->redirect(['action' => 'view',$id]);
+                } else {
+                    $this->Flash->error(__('The application could not be saved. Please, try again.'));
+                }
+            // }
+        }
+        $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
+
+        $this->set(compact('application', 'attendees'));
         $this->set('_serialize', ['application']);
     }
 

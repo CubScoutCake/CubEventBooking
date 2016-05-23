@@ -34,7 +34,7 @@
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-green">
             <div class="panel-body">
-                <span><?= __('User') ?>: <?= $application->has('user') ? $this->Html->link($application->user->username, ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></span>
+                <span><?= __('User') ?>: <?= $application->has('user') ? $this->Html->link($application->user->full_name, ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></span>
                 </br>
                 <span><?= __('Scoutgroup') ?>: <?= $application->has('scoutgroup') ? $this->Html->link($application->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $application->scoutgroup->id]) : '' ?></span>
                 </br>
@@ -220,55 +220,6 @@
 <div class="row">
     <div class="panel-group">
         <div class="col-lg-12">
-            <?php if (!empty($application->attendees)): ?>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-group fa-fw"></i> Attendees on this Application
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <tr>
-                                    <th><?= __('First Name') ?></th>
-                                    <th><?= __('Last Name') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
-                                    <th><?= __('Created') ?></th>
-                                    <th><?= __('Modified') ?></th>
-                                </tr>
-                                <?php foreach ($application->attendees as $attendees): ?>
-                                <tr>
-                                    <td><?= h($attendees->firstname) ?></td>
-                                    <td><?= h($attendees->lastname) ?></td>
-                                    <td class="actions">
-                                        <div class="dropdown btn-group">
-                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu " role="menu">
-                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
-                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
-                                                <li><?= $this->Html->link(__('Update Caps'), ['controller' => 'Attendees', 'action' => 'update', $attendees->id]) ?></li>
-                                                <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Attendees', 'action' => 'delete', $attendees->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $attendees->id)]) ?></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    <td><?= $this->Time->i18nFormat($attendees->created, 'dd-MMM-yy HH:mm') ?></td>
-                                    <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </table>
-                        </div>
-                    </div>
-                </div>   
-            <?php endif; ?>
-        </div>
-    </div>
-</div>
-<hr>
-<div class="row">
-    <div class="panel-group">
-        <div class="col-lg-12">
             <?php if (!empty($application->invoices)): ?>
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -313,6 +264,71 @@
                         </div>
                     </div>
                 </div>      
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="panel-group">
+        <div class="col-lg-12">
+            <?php if (!empty($application->attendees)): ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-group fa-fw"></i> Attendees on this Application
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    Attendee Actions
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu pull-right" role="menu">
+                                    <li><?= $this->Html->link(__('Link Attendees'), ['controller' => 'Applications', 'action' => 'link', $application->id]) ?></li>
+                                    <li class="divider"></li>
+                                    <li><?= $this->Html->link(__('Add Young Person'), ['controller' => 'Attendees', 'action' => 'cub']) ?></li>
+                                    <li><?= $this->Html->link(__('Add Adult'), ['controller' => 'Attendees', 'action' => 'adult']) ?></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th><?= __('First Name') ?></th>
+                                    <th><?= __('Last Name') ?></th>
+                                    <th class="actions"><?= __('Actions') ?></th>
+                                    <th><?= __('Role') ?></th>
+                                    <th><?= __('Group') ?></th>
+                                    <th><?= __('Modified') ?></th>
+                                </tr>
+                                <?php foreach ($application->attendees as $attendees): ?>
+                                <tr>
+                                    <td><?= h($attendees->firstname) ?></td>
+                                    <td><?= h($attendees->lastname) ?></td>
+                                    <td class="actions">
+                                        <div class="dropdown btn-group">
+                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu " role="menu">
+                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
+                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
+                                                <li><?= $this->Html->link(__('Update Caps'), ['controller' => 'Attendees', 'action' => 'update', $attendees->id]) ?></li>
+                                                <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Attendees', 'action' => 'delete', $attendees->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $attendees->id)]) ?></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
+                                    <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,10), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
+                                    <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                    </div>
+                </div>   
             <?php endif; ?>
         </div>
     </div>

@@ -48,7 +48,7 @@ class ApplicationsController extends AppController
     public function view($id = null)
     {
         $application = $this->Applications->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC']], 'Attendees.Roles' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]]]
+            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC']], 'Attendees.Roles', 'Attendees.Scoutgroups']
         ]);
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
@@ -245,7 +245,7 @@ class ApplicationsController extends AppController
 
             if ($this->Applications->save($application)) {
                 $this->Flash->success(__('The application has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $application->id]);
             } else {
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
             }
@@ -299,7 +299,7 @@ class ApplicationsController extends AppController
             $application = $this->Applications->patchEntity($application, $this->request->data);
             if ($this->Applications->save($application)) {
                 $this->Flash->success(__('The application has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $application->id]);
             } else {
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
             }
@@ -309,6 +309,26 @@ class ApplicationsController extends AppController
         $events = $this->Applications->Events->find('list', ['limit' => 200]);
         $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $user->scoutgroup_id]]);
         $this->set(compact('application', 'users', 'attendees','events','scoutgroups'));
+        $this->set('_serialize', ['application']);
+    }
+
+    public function link($id = null)
+    {
+        $application = $this->Applications->get($id, [
+            'contain' => ['Attendees','Events', 'Scoutgroups','Users']
+        ]);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $application = $this->Applications->patchEntity($application, $this->request->data);
+            if ($this->Applications->save($application)) {
+                $this->Flash->success(__('The application has been saved.'));
+                return $this->redirect(['action' => 'view', $application->id]);
+            } else {
+                $this->Flash->error(__('The application could not be saved. Please, try again.'));
+            }
+        }
+        $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $application->user_id]]);
+        $this->set(compact('application', 'attendees'));
         $this->set('_serialize', ['application']);
     }
 

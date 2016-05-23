@@ -219,54 +219,6 @@
 <div class="row">
     <div class="panel-group">
         <div class="col-lg-12">
-            <?php if (!empty($application->attendees)): ?>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-group fa-fw"></i> Attendees on this Application
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <tr>
-                                    <th><?= __('First Name') ?></th>
-                                    <th><?= __('Last Name') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
-                                    <th><?= __('Created') ?></th>
-                                    <th><?= __('Modified') ?></th>
-                                </tr>
-                                <?php foreach ($application->attendees as $attendees): ?>
-                                <tr>
-                                    <td><?= h($attendees->firstname) ?></td>
-                                    <td><?= h($attendees->lastname) ?></td>
-                                    <td class="actions">
-                                        <div class="dropdown btn-group">
-                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu " role="menu">
-                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
-                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
-
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    <td><?= $this->Time->i18nFormat($attendees->created, 'dd-MMM-yy HH:mm') ?></td>
-                                    <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </table>
-                        </div>
-                    </div>
-                </div>   
-            <?php endif; ?>
-        </div>
-    </div>
-</div>
-<hr>
-<div class="row">
-    <div class="panel-group">
-        <div class="col-lg-12">
             <?php if (!empty($application->invoices)): ?>
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -310,6 +262,55 @@
                         </div>
                     </div>
                 </div>      
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="panel-group">
+        <div class="col-lg-12">
+            <?php if (!empty($application->attendees)): ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-group fa-fw"></i> Attendees on this Application
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th><?= __('First Name') ?></th>
+                                    <th><?= __('Last Name') ?></th>
+                                    <th class="actions"><?= __('Actions') ?></th>
+                                    <th><?= __('Role') ?></th>
+                                    <th><?= __('Created') ?></th>
+                                    <th><?= __('Modified') ?></th>
+                                </tr>
+                                <?php foreach ($application->attendees as $attendees): ?>
+                                <tr>
+                                    <td><?= h($attendees->firstname) ?></td>
+                                    <td><?= h($attendees->lastname) ?></td>
+                                    <td class="actions">
+                                        <div class="dropdown btn-group">
+                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu " role="menu">
+                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
+                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
+                                    <td><?= $this->Time->i18nFormat($attendees->created, 'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                    </div>
+                </div>   
             <?php endif; ?>
         </div>
     </div>
