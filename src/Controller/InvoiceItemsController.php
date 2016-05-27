@@ -167,7 +167,7 @@ class InvoiceItemsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID]);
+            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
 
         $attendeeYlCount = $applications->find()
             ->hydrate(false)
@@ -175,7 +175,7 @@ class InvoiceItemsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID]);
+            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
 
         $attendeeLeaderCount = $applications->find()
             ->hydrate(false)
@@ -183,7 +183,7 @@ class InvoiceItemsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $appID]);
+            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
 
         // Load into Variables
         $predictedCubs = $attendeeCubCount->count(['t.id']);
@@ -453,7 +453,7 @@ class InvoiceItemsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID]);
+            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
 
         $attendeeYlCount = $applications->find()
             ->hydrate(false)
@@ -461,7 +461,7 @@ class InvoiceItemsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID]);
+            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
 
         $attendeeLeaderCount = $applications->find()
             ->hydrate(false)
@@ -469,7 +469,7 @@ class InvoiceItemsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $appID]);
+            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
 
         // Load into Variables
         $predictedAttCubs = $attendeeCubCount->count(['t.id']);

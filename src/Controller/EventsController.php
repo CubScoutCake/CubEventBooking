@@ -163,7 +163,7 @@ class EventsController extends AppController
 	                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
 	                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
 	                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-	            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.event_id' => $id]);
+	            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.event_id' => $id, 't.deleted IS' => NULL]);
 
 	        $attendeeYlCount = $apps->find('all')
 	            ->hydrate(false)
@@ -171,7 +171,7 @@ class EventsController extends AppController
 	                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
 	                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
 	                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-	            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.event_id' => $id]);
+	            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.event_id' => $id, 't.deleted IS' => NULL]);
 
 	        $attendeeLeaderCount = $apps->find('all')
 	            ->hydrate(false)
@@ -179,7 +179,7 @@ class EventsController extends AppController
 	                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
 	                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
 	                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-	            ])->where(['r.minor' => 0, 'Applications.event_id' => $id]);
+	            ])->where(['r.minor' => 0, 'Applications.event_id' => $id, 't.deleted IS' => NULL]);
 
 	        // Count of Attendees
 	        $appCubs = $attendeeCubCount->count('*');

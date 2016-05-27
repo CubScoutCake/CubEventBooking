@@ -17,12 +17,22 @@
                         'prefix' => 'champion',
                         $application->id],['_full']); ?>">Edit Application</a>
                     </li>
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Invoices',
-                        'action' => 'generate',
-                        'prefix' => 'champion',
-                        $application->id],['_full']); ?>">Add an Invoice</a>
-                    </li>
+                    <li><a href="<?php 
+                        if ($invDone < 0.5) :
+                            echo $this->Url->build([
+                            'controller' => 'Invoices',
+                            'action' => 'generate',
+                            'prefix' => 'champion',
+                            $application->id],['_full']); ?>">Add an Invoice
+
+                        <?php else : 
+                            echo $this->Url->build([
+                            'controller' => 'Invoices',
+                            'action' => 'regenerate',
+                            'prefix' => 'champion',
+                            $invFirst->id],['_full']); ?>">Update Invoice
+
+                        <?php endif ?></a></li>
                 </ul>
             </div>
         </div>
@@ -101,13 +111,26 @@
                     </div>
                     <h2><?= $this->Number->toPercentage($invDone,1,['multiply' => true]); ?></h2>
                 </div>
-                <a href="<?php echo $this->Url->build([
-                    'controller' => 'Invoices',
-                    'action' => 'generate',
-                    'prefix' => false,
-                    $application->id],['_full']); ?>">
-                    <div class="panel-footer">
-                        <span class="pull-left">Generate a New Invoice</span>
+                <a href="<?php 
+                    if ($invDone < 0.5) :
+                        echo $this->Url->build([
+                        'controller' => 'Invoices',
+                        'action' => 'generate',
+                        'prefix' => 'champion',
+                        $application->id],['_full']); ?>">
+                        <div class="panel-footer">
+                            <span class="pull-left">Generate a New Invoice</span>
+
+                    <?php else : 
+                        echo $this->Url->build([
+                        'controller' => 'Invoices',
+                        'action' => 'regenerate',
+                        'prefix' => 'champion',
+                        $invFirst->id],['_full']); ?>">
+                        <div class="panel-footer">
+                            <span class="pull-left">Update Existing Invoice</span>
+                    <?php endif ?>
+                    
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>

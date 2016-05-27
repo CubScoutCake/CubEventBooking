@@ -17,12 +17,22 @@
                         'prefix' => 'admin',
                         $application->id],['_full']); ?>">Edit Application</a>
                     </li>
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Invoices',
-                        'action' => 'generate',
-                        'prefix' => 'admin',
-                        $application->id],['_full']); ?>">Add an Invoice</a>
-                    </li>
+                    <li><a href="<?php 
+                        if ($invDone < 0.5) :
+                            echo $this->Url->build([
+                            'controller' => 'Invoices',
+                            'action' => 'generate',
+                            'prefix' => 'admin',
+                            $application->id],['_full']); ?>">Add an Invoice
+
+                        <?php else : 
+                            echo $this->Url->build([
+                            'controller' => 'Invoices',
+                            'action' => 'regenerate',
+                            'prefix' => 'admin',
+                            $invFirst->id],['_full']); ?>">Update Invoice
+
+                        <?php endif ?></a></li>
                     <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Applications', 'action' => 'delete', $application->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $application->id)]) ?></li>
                 </ul>
             </div>
@@ -102,13 +112,26 @@
                     </div>
                     <h2><?= $this->Number->toPercentage($invDone,1,['multiply' => true]); ?></h2>
                 </div>
-                <a href="<?php echo $this->Url->build([
-                    'controller' => 'Invoices',
-                    'action' => 'generate',
-                    'prefix' => 'admin',
-                    $application->id],['_full']); ?>">
-                    <div class="panel-footer">
-                        <span class="pull-left">Generate a New Invoice</span>
+                <a href="<?php 
+                    if ($invDone < 0.5) :
+                        echo $this->Url->build([
+                        'controller' => 'Invoices',
+                        'action' => 'generate',
+                        'prefix' => 'admin',
+                        $application->id],['_full']); ?>">
+                        <div class="panel-footer">
+                            <span class="pull-left">Generate a New Invoice</span>
+
+                    <?php else : 
+                        echo $this->Url->build([
+                        'controller' => 'Invoices',
+                        'action' => 'regenerate',
+                        'prefix' => 'admin',
+                        $invFirst->id],['_full']); ?>">
+                        <div class="panel-footer">
+                            <span class="pull-left">Update Existing Invoice</span>
+                    <?php endif ?>
+                    
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -138,7 +161,7 @@
                 </div>
                 <a href="<?php echo $this->Url->build([
                     'controller' => 'Attendees',
-                    'action' => 'cub',
+                    'action' => 'add',
                     'prefix' => 'admin'],['_full']); ?>">
                     <div class="panel-footer">
                         <span class="pull-left">Add a Cub</span>
@@ -171,7 +194,7 @@
                 </div>
                 <a href="<?php echo $this->Url->build([
                     'controller' => 'Attendees',
-                    'action' => 'adult',
+                    'action' => 'add',
                     'prefix' => 'admin'],['_full']); ?>">
                     <div class="panel-footer">
                         <span class="pull-left">Add an Adult</span>

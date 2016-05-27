@@ -67,7 +67,8 @@ class ApplicationsController extends AppController
 
         $invoices = $invs->find('all')->where(['application_id' => $id]);
         $invCount = $invoices->count('*');
-        $this->set(compact('invCount'));
+        $invFirst = $invs->find('all')->where(['application_id' => $id])->first();
+        $this->set(compact('invCount','invFirst'));
 
         $attendeeCubCount = $this->Applications->find()
             ->hydrate(false)
@@ -75,7 +76,7 @@ class ApplicationsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $id]);
+            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $id, 't.deleted IS' => NULL]);
 
         $attendeeYlCount = $this->Applications->find()
             ->hydrate(false)
@@ -83,7 +84,7 @@ class ApplicationsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $id]);
+            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $id, 't.deleted IS' => NULL]);
 
         $attendeeLeaderCount = $this->Applications->find()
             ->hydrate(false)
@@ -91,7 +92,7 @@ class ApplicationsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $id]);
+            ])->where(['r.minor' => 0, 'Applications.id' => $id, 't.deleted IS' => NULL]);
 
         $attCubs = $attendeeCubCount->count(['t.id']);
         $attYls = $attendeeYlCount->count(['t.id']);

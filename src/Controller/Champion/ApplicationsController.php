@@ -55,7 +55,7 @@ class ApplicationsController extends AppController
     public function view($id = null)
     {
         $application = $this->Applications->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC']], 'Attendees.Roles' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]]]
+            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC']], 'Attendees.Roles']
         ]);
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
@@ -74,7 +74,7 @@ class ApplicationsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $id]);
+            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $id, 't.deleted IS' => NULL]);
 
         $attendeeYlCount = $this->Applications->find()
             ->hydrate(false)
@@ -82,7 +82,7 @@ class ApplicationsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $id]);
+            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $id, 't.deleted IS' => NULL]);
 
         $attendeeLeaderCount = $this->Applications->find()
             ->hydrate(false)
@@ -90,7 +90,7 @@ class ApplicationsController extends AppController
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
                 't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
                 'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $id]);
+            ])->where(['r.minor' => 0, 'Applications.id' => $id, 't.deleted IS' => NULL]);
 
         $attCubs = $attendeeCubCount->count(['t.id']);
         $attYls = $attendeeYlCount->count(['t.id']);
