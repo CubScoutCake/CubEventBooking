@@ -348,34 +348,20 @@ class InvoicesController extends AppController
         $application = $applications->get($invoice->application_id);
         $event = $events->get($application->event_id);
 
-        // $admin = $event->admin
-
         $errorMsg = 'This event has been LOCKED to prevent updates to invoices. Please contact ' . $event->admin_full_name . '.';
 
         if ($event->invoices_locked) {
             $this->Flash->error(__($errorMsg));
             return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => false, $InvId]);
         } else {
-            if ($this->request->is(['patch', 'post', 'put'])) {
-                $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
-                if ($this->Invoices->save($invoice)) {
-                    if ($itemCount >= 5) {
-                        $this->Flash->success(__('The invoice has been regenerated. Please enter the number of attendees you are bringing.'));
-                        return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'repopulate', $InvId]);
-                    } else {
-                        $this->Flash->success(__('An invoice has been generated. Please enter the number of attendees you are bringing.'));
-                        return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'populate', $InvId]);
-                    }
-                } else {
-                    $this->Flash->error(__('The invoice could not be regenerated. Please, try again.'));
-                    return $this->redirect(['Controller' => 'Invoices', 'action' => 'view', $InvId]);
-                }
+            if ($itemCount >= 5) {
+                $this->Flash->success(__('The invoice is valid. Please enter the number of attendees you are bringing.'));
+                return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'repopulate', $InvId]);
+            } else {
+                $this->Flash->success(__('An invoice has been generated. Please enter the number of attendees you are bringing.'));
+                return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'populate', $InvId]);
             }
         }
-
-        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
-        $this->set(compact('invoice', 'applications'));
-        $this->set('_serialize', ['invoice']);
     }
 
     public function discount($invId = null)
