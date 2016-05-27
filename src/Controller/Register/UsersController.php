@@ -18,10 +18,11 @@ class UsersController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
 
-            $usrData = ['section' => 'Cubs', 'authrole' => 'user'];
-            $user = $this->Users->patchEntity($user, $usrData);
+            $usrData = ['authrole' => 'user'];
 
             $user = $this->Users->patchEntity($user, $this->request->data);
+
+            $user = $this->Users->patchEntity($user, $usrData);
 
             $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
                 ,'lastname' => ucwords(strtolower($user->lastname))

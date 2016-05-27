@@ -89,15 +89,13 @@ class UsersTable extends Table
 
         $validator
             ->add('email', 'valid', ['rule' => 'email'])
-            ->requirePresence('email', 'create')
+            ->add('email', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
             ->notEmpty('email');
 
         $validator
-            ->requirePresence('password', 'create')
             ->notEmpty('password');
 
         $validator
-            ->requirePresence('phone', 'create')
             ->notEmpty('phone');
 
         $validator
@@ -123,9 +121,8 @@ class UsersTable extends Table
             ->allowEmpty('section');
 
         $validator
-            ->requirePresence('username', 'create')
-            ->notEmpty('username')
-            ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
+            ->notEmpty('username');
 
         $validator
             ->allowEmpty('osm_user_id');

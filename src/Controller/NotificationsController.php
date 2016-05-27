@@ -196,7 +196,7 @@ class NotificationsController extends AppController
 
                 $genericType = 'Notification';
 
-                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $w_api_key;
+                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $api_key;
 
                 $http = new Client();
                 $response = $http->post(
