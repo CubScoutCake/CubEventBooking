@@ -80,11 +80,9 @@ class UsersTable extends Table
             ->allowEmpty('authrole');
 
         $validator
-            ->requirePresence('firstname', 'create')
             ->notEmpty('firstname');
 
         $validator
-            ->requirePresence('lastname', 'create')
             ->notEmpty('lastname');
 
         $validator
@@ -99,22 +97,18 @@ class UsersTable extends Table
             ->notEmpty('phone');
 
         $validator
-            ->requirePresence('address_1', 'create')
             ->notEmpty('address_1');
 
         $validator
             ->allowEmpty('address_2');
 
         $validator
-            ->requirePresence('city', 'create')
             ->notEmpty('city');
 
         $validator
-            ->requirePresence('county', 'create')
             ->notEmpty('county');
 
         $validator
-            ->requirePresence('postcode', 'create')
             ->notEmpty('postcode');
 
         $validator
