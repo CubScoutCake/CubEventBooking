@@ -554,7 +554,7 @@ class InvoiceItemsController extends AppController
             $existingCubItem = $this->InvoiceItems->patchEntity($existingCubItem, $cubStandard);
             $existingYlItem = $this->InvoiceItems->patchEntity($existingYlItem, $ylStandard);
             $existingLeaderItem = $this->InvoiceItems->patchEntity($existingLeaderItem, $leaderStandard);
-            $existingLeaderItem = $this->InvoiceItems->patchEntity($existingDiscountItem, $disStandard);
+            $existingDiscountItem = $this->InvoiceItems->patchEntity($existingDiscountItem, $disStandard);
 
             // REPEAT FOR CANCELLED
 

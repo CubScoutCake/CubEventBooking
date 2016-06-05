@@ -5,12 +5,10 @@
         <?php
             echo $this->Form->input('role_id', ['options' => $roles]);
             echo $this->Form->input('scoutgroup_id', ['options' => $scoutgroups]);
-            echo $this->Form->input('username');
             echo $this->Form->input('authrole',['options' => ['user' => 'USER','admin' => 'ADMIN','champion' => 'CHAMPION']]);
             echo $this->Form->input('firstname');
             echo $this->Form->input('lastname');
             echo $this->Form->input('email');
-            echo $this->Form->input('password');
             echo $this->Form->input('phone');
             echo $this->Form->input('address_1');
             echo $this->Form->input('address_2');

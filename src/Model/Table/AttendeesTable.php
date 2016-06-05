@@ -159,4 +159,33 @@ class AttendeesTable extends Table
     {
         return $this->exists(['id' => $attendeeId, 'user_id' => $userId]);
     }
+
+    public function findCountIncluded($query)
+    {
+        return $query->select(['total_applications' => $query->func()->count('x.application_id')])
+            ->join([
+                'x' => [
+                    'table' => 'applications_attendees',
+                    'type' => 'LEFT',
+                    'conditions' => 'x.attendee_id = Attendees.id',
+                ]
+            ])
+            ->group(['Attendees.id'])
+            ->autoFields(true);
+    }
+
+    public function findUnattached($query)
+    {
+        return $query->select(['total_applications' => $query->func()->count('x.application_id')])
+            ->join([
+                'x' => [
+                    'table' => 'applications_attendees',
+                    'type' => 'LEFT',
+                    'conditions' => 'x.attendee_id = Attendees.id',
+                ]
+            ])
+            ->group(['Attendees.id'])
+            ->having(['total_applications <' => 1])
+            ->autoFields(true);
+    }
 }

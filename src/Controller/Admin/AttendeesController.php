@@ -23,10 +23,19 @@ class AttendeesController extends AppController
             'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
             ,'order' => ['modified' => 'DESC']
         ];
-        $this->set('attendees', $this->paginate($this->Attendees));
+        $this->set('attendees', $this->paginate($this->Attendees->find('countIncluded')));
         $this->set('_serialize', ['attendees']);
     }
 
+    public function unattached()
+    {
+        $this->paginate = [
+            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
+            ,'order' => ['modified' => 'DESC']
+        ];
+        $this->set('attendees', $this->paginate($this->Attendees->find('unattached')));
+        $this->set('_serialize', ['attendees']);
+    }
     /**
      * View method
      *

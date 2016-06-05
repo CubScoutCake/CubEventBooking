@@ -446,14 +446,17 @@ $cakeDescription = 'HertsCubs Booking System';
                         <li>
                             <a href="#"><i class="fa fa-group fa-fw"></i> Attendees<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
+                                <li><a href="<?php echo $this->Url->build([
                                 'controller' => 'Attendees',
                                 'action' => 'index',
                                 'prefix' => 'admin']); ?>">View Attendees</a>
                                 </li>
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
+                                <li><a href="<?php echo $this->Url->build([
+                                'controller' => 'Attendees',
+                                'action' => 'unattached',
+                                'prefix' => 'admin']); ?>">Unattached Attendees</a>
+                                </li>
+                                <li><a href="<?php echo $this->Url->build([
                                 'controller' => 'Attendees',
                                 'action' => 'add',
                                 'prefix' => 'admin']); ?>">Add New Attendee</a>
@@ -498,11 +501,20 @@ $cakeDescription = 'HertsCubs Booking System';
                         <li>
                             <a href="#"><i class="fa fa-files-o fa-fw"></i> Invoices<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
+                                <li><a href="<?php echo $this->Url->build([
                                 'controller' => 'Invoices',
                                 'action' => 'index',
                                 'prefix' => 'admin']); ?>">View Invoices</a>
+                                </li>
+                                <li><a href="<?php echo $this->Url->build([
+                                'controller' => 'Invoices',
+                                'action' => 'unpaid',
+                                'prefix' => 'admin']); ?>">Unpaid Invoices</a>
+                                </li>
+                                <li><a href="<?php echo $this->Url->build([
+                                'controller' => 'Invoices',
+                                'action' => 'outstanding',
+                                'prefix' => 'admin']); ?>">Outstanding Invoices</a>
                                 </li>
                                 <li>
                                     <a href="<?php echo $this->Url->build([

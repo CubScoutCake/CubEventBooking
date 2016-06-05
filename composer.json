@@ -20,7 +20,9 @@
         "muffin/trash": "dev-master",
         "friendsofcake/CakePdf": "^3.2",
         "friendsofcake/search": "^1.2",
-        "dereuromark/cakephp-ajax": "dev-master"
+        "dereuromark/cakephp-ajax": "dev-master",
+        "syntaxera/cakephp-sparkpost-plugin": "^0.4.5",
+        "php-http/httplug": "^1.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",

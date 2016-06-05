@@ -118,6 +118,12 @@ class ApplicationsTable extends Table
         return $this->exists(['id' => $applicationId, 'user_id' => $userId]);
     }
 
+    public function findOwnedBy($query, $options)
+    {
+        $userId = $options['userId'];
+        return $query->where(['Applications.user_id' => $userId]);
+    }
+
     /*public function isChampedBy($applicationId, $userId)
     {
         $scoutgroups = TableRegistry::get('Scoutgroups');

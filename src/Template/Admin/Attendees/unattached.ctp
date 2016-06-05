@@ -8,7 +8,6 @@
                         <th><?= $this->Paginator->sort('id') ?></th>
                         <th class="actions"><?= __('Actions') ?></th>
                         <th><?= $this->Paginator->sort('full_name') ?></th>
-                        <th><?= $this->Paginator->sort('total_applications') ?></th>
                         <th><?= $this->Paginator->sort('user_id') ?></th>
                         <th><?= $this->Paginator->sort('scoutgroup_id') ?></th>
                         <th><?= $this->Paginator->sort('role_id') ?></th>                       
@@ -34,7 +33,6 @@
                                 </div>
                             </td>
                             <td><?= h($attendee->full_name) ?></td>
-                            <td><?= $this->Number->format($attendee->total_applications) ?></td>
                             <td><?= $attendee->has('user') ? $this->Html->link($attendee->user->full_name, ['controller' => 'Users', 'action' => 'view', $attendee->user->id]) : '' ?></td>
                             <td><?= $attendee->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendee->scoutgroup->scoutgroup,12), ['controller' => 'Scoutgroups', 'action' => 'view', $attendee->scoutgroup->id]) : '' ?></td>
                             <td><?= $attendee->has('role') ? $this->Html->link($this->Text->truncate($attendee->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendee->role->id]) : '' ?></td>

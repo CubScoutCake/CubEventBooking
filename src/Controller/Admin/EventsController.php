@@ -128,6 +128,8 @@ class EventsController extends AppController
         	$invCubs = 0;
         	$invYls = 0;
         	$invLeaders = 0;
+
+            $outstanding = 0;
         } else {
         	// Sum Values & Calculate Balances
         	$sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->group('Applications.event_id')->first();
@@ -143,10 +145,24 @@ class EventsController extends AppController
 
         	$invCubs = $invItemCounts[1]->sum;
         	$invYls = $invItemCounts[2]->sum;
-        	$invLeaders = $invItemCounts[3]->sum;  
+        	$invLeaders = $invItemCounts[3]->sum;
+
+            //Find all Outstanding Invoices
+            $outstanding = $invs
+                ->find('outstanding')
+                ->contain(['Applications'])
+                ->where(['Applications.event_id' => $event->id])
+                ->count();
+
+            $unpaid = $invs
+                ->find('outstanding')
+                ->find('unpaid')
+                ->contain(['Applications'])
+                ->where(['Applications.event_id' => $event->id])
+                ->count();
         }
 
-        $this->set(compact('sumValues', 'sumBalances', 'sumPayments'));
+        $this->set(compact('sumValues', 'sumBalances', 'sumPayments','outstanding', 'unpaid'));
         $this->set(compact('invCubs', 'invYls', 'invLeaders'));
 
         if ($cntApplications < 1)

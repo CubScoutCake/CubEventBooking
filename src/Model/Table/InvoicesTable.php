@@ -114,4 +114,20 @@ class InvoicesTable extends Table
     {
         return $this->exists(['id' => $invoiceId, 'user_id' => $userId]);
     }
+
+    public function findOwnedBy($query, $options)
+    {
+        $user = $options['user'];
+        return $query->where(['Invoices.user_id' => $user->id]);
+    }
+
+    public function findOutstanding($query)
+    {
+        return $query->where(['Invoices.value < Invoices.initialvalue'])->orWhere(['Invoices.value IS' => null]);
+    }
+
+    public function findUnpaid($query)
+    {
+        return $query->where(['Invoices.value IS' => 0])->orWhere(['Invoices.value IS' => null]);
+    }
 }

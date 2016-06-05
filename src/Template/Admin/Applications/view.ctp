@@ -17,6 +17,12 @@
                         'prefix' => 'admin',
                         $application->id],['_full']); ?>">Edit Application</a>
                     </li>
+                    <li><a href="<?php echo $this->Url->build([
+                        'controller' => 'Applications',
+                        'action' => 'link',
+                        'prefix' => 'admin',
+                        $application->id],['_full']); ?>">Link Attendees</a>
+                    </li>
                     <li><a href="<?php 
                         if ($invDone < 0.5) :
                             echo $this->Url->build([

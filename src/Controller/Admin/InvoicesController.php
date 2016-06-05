@@ -40,9 +40,9 @@ class InvoicesController extends AppController
 
             $this->paginate = [
                 'contain' => ['Users','Applications','Payments','InvoiceItems']
-                ,'conditions' => ['Applications.event_id' => $eventId, 'value IS' => null]
+                ,'conditions' => ['Applications.event_id' => $eventId]
             ];
-            $this->set('invoices', $this->paginate($this->Invoices));
+            $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')->find('unpaid')));
             $this->set('_serialize', ['invoices']);
         } else {
             $eventName = 'All Events';
@@ -51,12 +51,41 @@ class InvoicesController extends AppController
 
             $this->paginate = [
                 'contain' => ['Users','Applications','Payments','InvoiceItems']
-                ,'conditions' => ['value IS' => null]
             ];
-            $this->set('invoices', $this->paginate($this->Invoices));
+            $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')->find('unpaid')));
             $this->set('_serialize', ['invoices']);
-        }
-        
+        } 
+    }
+
+    public function outstanding($eventId = null)
+    {
+        if (isset($eventId)) {
+            $evts = TableRegistry::get('Events');
+            $usrs = TableRegistry::get('Users');
+
+            $event = $evts->get($eventId);
+            $eventName = $event->name;
+            $user = $usrs->get($this->Auth->user('id'));
+
+            $this->set(compact('eventName'));
+
+            $this->paginate = [
+                'contain' => ['Users','Applications','Payments','InvoiceItems']
+                ,'conditions' => ['Applications.event_id' => $eventId]
+            ];
+            $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')));
+            $this->set('_serialize', ['invoices']);
+        } else {
+            $eventName = 'All Events';
+
+            $this->set(compact('eventName'));
+
+            $this->paginate = [
+                'contain' => ['Users','Applications','Payments','InvoiceItems']
+            ];
+            $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')));
+            $this->set('_serialize', ['invoices']);
+        } 
     }
 
     /**

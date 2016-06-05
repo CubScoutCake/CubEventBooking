@@ -37,7 +37,8 @@
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>
-                    <li><?= $this->Html->link(__('View Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
                 </ul>
@@ -327,6 +328,16 @@
 	                            	        <td><?= $this->Number->format($appLeaders) ?></td>
 	                            	        <td><?= $this->Number->format($invLeaders) ?></td>
 	                            	    </tr>
+                                        <tr>
+                                            <th><?= __('Total Unpaid') ?></th>
+                                            <td></td>
+                                            <td><?= $this->Html->link($this->Number->format($unpaid),['controller' => 'Invoices', 'action' => 'unpaid', $event->id]) ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th><?= __('Total Outstanding') ?></th>
+                                            <td></td>
+                                            <td><?= $this->Html->link($this->Number->format($outstanding),['controller' => 'Invoices', 'action' => 'outstanding', $event->id]) ?></td>
+                                        </tr>
 	                            	<?php endif; ?>
 	                            </tbody>
 	                        </table>

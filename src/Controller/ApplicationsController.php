@@ -21,10 +21,9 @@ class ApplicationsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Events'],
-            'conditions' => ['user_id' => $this->Auth->user('id')]
+            'contain' => ['Users', 'Scoutgroups', 'Events']
         ];
-        $this->set('applications', $this->paginate($this->Applications));
+        $this->set('applications', $this->paginate($this->Applications->find('ownedBy', ['userId' => $this->Auth->user('id')])));
         $this->set('_serialize', ['applications']);
     }
 
@@ -32,9 +31,9 @@ class ApplicationsController extends AppController
     {
         $this->paginate = [
             'contain' => ['Users', 'Scoutgroups', 'Events'],
-            'conditions' => ['user_id' => $this->Auth->user('id'), 'event_id' => $eventID]
+            'conditions' => ['event_id' => $eventID]
         ];
-        $this->set('applications', $this->paginate($this->Applications));
+        $this->set('applications', $this->paginate($this->Applications->find('ownedBy', ['userId' => $this->Auth->user('id')])));
         $this->set('_serialize', ['applications']);
     }
 
