@@ -342,7 +342,7 @@ class NotificationsController extends AppController
             $invoiceData = [     'link_id' => $invoice->id
                                 , 'link_controller' => 'Invoices'
                                 , 'link_action' => 'view'
-                                , 'notificationtype_id' => 2
+                                , 'notificationtype_id' => 8
                                 , 'user_id' => $invoice->user_id
                                 , 'text' => 'There is a balance outstanding on this Invoice.'
                                 , 'notification_header' => 'Balance Outstanding'
