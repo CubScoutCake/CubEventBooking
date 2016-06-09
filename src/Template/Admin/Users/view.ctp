@@ -20,7 +20,8 @@
                     <li><a href="<?php echo $this->Url->build([
                         'controller' => 'Users',
                         'action' => 'reset',
-                        'prefix' => 'admin'],['_full']); ?>">++ Trigger Password Reset</a>
+                        'prefix' => 'admin',
+                        $user->id],['_full']); ?>">Trigger Password Reset</a>
                     </li>
                 </ul>
             </div>

@@ -137,6 +137,10 @@ Cache::config(Configure::consume('Cache'));
 ConnectionManager::config(Configure::consume('Datasources'));
 Email::configTransport(Configure::consume('EmailTransport'));
 Email::config(Configure::consume('Email'));
+Email::configTransport('sparkpost', [
+    'className' => 'SparkPost.SparkPost',
+    'apiKey' => Configure::read('SparkPost.Api.key')
+]);
 Log::config(Configure::consume('Log'));
 Security::salt(Configure::consume('Security.salt'));
 
@@ -185,6 +189,7 @@ Plugin::load('CsvView');
 Plugin::load('Migrations');
 Plugin::load('BootstrapUI');
 Plugin::load('Search');
+Plugin::load('SparkPost');
 
 Plugin::load('Ajax', ['bootstrap' => true]);
 Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);

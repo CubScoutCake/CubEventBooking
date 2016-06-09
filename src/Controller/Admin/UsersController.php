@@ -3,6 +3,9 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use Cake\Mailer\MailerAwareTrait;
+use Cake\I18n\Time;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Security;
 //use DataTables\Controller\Component;
 
 /**
@@ -185,6 +188,39 @@ class UsersController extends AppController
         } else {
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
             return $this->redirect(['action' => 'view', $user->id]);
+        }
+    }
+
+    public function reset($userId)
+    {
+        $sets = TableRegistry::get('Settings');
+
+        $user = $this->Users->get($userId);
+
+        $now = Time::now();
+
+        $rMax = $sets->get(16)->text;
+        $rMin = $sets->get(17)->text;
+
+        $random = rand($rMin,$rMax);
+
+        $string = 'Reset Success' . ( $user->id * $now->day ) . $random . $now->year . $now->month;
+
+        $token = Security::hash($string);
+
+        $newToken = ['reset' => $token];
+
+        $user = $this->Users->patchEntity($user, $newToken);
+
+        if ($this->Users->save($user)) {
+
+            $this->getMailer('User')->send('passres', [$user, $random]);
+
+            $this->Flash->success(__('A Password Reset was generated.'));
+
+            return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $userId]);
+        } else {
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
     }
 

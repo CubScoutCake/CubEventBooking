@@ -325,6 +325,76 @@ class NotificationsController extends AppController
         // }
     }
 
+    public function outstanding($invoiceId = null)
+    {
+        if(isset($invoiceId)) {
+
+            $users = TableRegistry::get('Users');
+            $groups = TableRegistry::get('Scoutgroups');
+            $invoices = TableRegistry::get('Invoices');
+            $applications = TableRegistry::get('Applications');
+
+            $invoice = $invoices->get($invoiceId);
+            $user = $users->get($invoice->user_id);
+            $group = $groups->get($user->scoutgroup_id);
+            $app = $applications->get($invoice->application_id);
+
+            $invoiceData = [     'link_id' => $invoice->id
+                                , 'link_controller' => 'Invoices'
+                                , 'link_action' => 'view'
+                                , 'notificationtype_id' => 2
+                                , 'user_id' => $invoice->user_id
+                                , 'text' => 'There is a balance outstanding on this Invoice.'
+                                , 'notification_header' => 'Balance Outstanding'
+                                , 'notification_source' => 'Admin Triggered'
+                                , 'new' => 1];
+
+            $notification = $this->Notifications->newEntity();
+
+            $notification = $this->Notifications->patchEntity($notification, $invoiceData);
+
+            if ($this->Notifications->save($notification)) {
+                $this->Flash->success(__('Outstanding Balance Prompt Sent.'));
+
+                $this->getMailer('Payment')->send('outstanding', [$user, $group, $notification, $invoice, $app]);
+
+                $sets = TableRegistry::get('Settings');
+
+                $jsonInvoice = json_encode($invoiceData);
+                $p_api_key = $sets->get(13)->text;
+                $projectId = $sets->get(14)->text;
+                $eventType = 'OutstandingPayment';
+
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenURL,
+                  $jsonInvoice,
+                  ['type' => 'json']
+                );
+
+                $genericType = 'Notification';
+
+                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenGenURL,
+                  $jsonInvoice,
+                  ['type' => 'json']
+                );
+
+                return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => 'admin', $invoiceId]);
+            } else {
+                $this->Flash->error(__('The notification could not be saved. Please, try again.'));
+            }
+        } else {
+            $this->Flash->error(__('Parameters were not set!'));
+            return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']);
+        }
+    }
+
     public function deposit_query($invoiceId = null)
     {
         if(isset($invoiceId)) {

@@ -8,7 +8,8 @@ class UserMailer extends Mailer
 {
     public function welcome($user,$group,$notification) {
         // $email = new Email('default');
-        $this->template('welcome', 'default')
+        $this->transport('sparkpost')
+            ->template('welcome', 'default')
             ->emailFormat('html')
             ->to([$user->email => $user->full_name])
             ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
@@ -33,7 +34,8 @@ class UserMailer extends Mailer
     }
 
     public function passres($user, $random) {
-        $this->template('pwreset', 'default')
+        $this->transport('sparkpost')
+            ->template('pwreset', 'default')
             ->emailFormat('html')
             ->to([$user->email => $user->full_name])
             ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])

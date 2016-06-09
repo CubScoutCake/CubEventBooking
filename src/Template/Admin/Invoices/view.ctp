@@ -1,8 +1,34 @@
 <div class="row">
-    <div class="col-lg-10 col-md-10">
+    <div class="col-lg-10 col-md-9">
         <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
-    <div class="col-lg-2 col-md-2">
+    <div class="col-lg-1 col-md-1">
+        </br>
+        <div class="pull-right">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-warning dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-envelope-o fa-fw"></i>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a href="<?php echo $this->Url->build([
+                        'controller' => 'Notifications',
+                        'action' => 'outstanding',
+                        'prefix' => 'admin',
+                        $invoice->id],['_full']); ?>">Outstanding Payment</a>
+                    </li>
+                    <li><a href="<?php echo $this->Url->build([
+                        'controller' => 'Notifications',
+                        'action' => 'invdownload',
+                        'prefix' => 'admin',
+                        $invoice->id],['_full']); ?>">++ Send User Invoice PDF</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </br>
+    </div>
+    <div class="col-lg-1 col-md-2">
         </br>
         <div class="pull-right pull-down">
             <div class="btn-group">

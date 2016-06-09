@@ -39,7 +39,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Notificationtype') ?></th>
-                            <td><?= $notification->has('notificationtype') ? $this->Html->link($notification->notificationtype->notification_type, ['controller' => 'Notificationtypes', 'action' => 'view', $notification->notificationtype->id]) : '' ?></td>
+                            <td><?= $notification->has('notificationtype') ? $notification->notificationtype->notification_type : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Notification Source') ?></th>

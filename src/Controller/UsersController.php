@@ -395,8 +395,6 @@ class UsersController extends AppController
                 } else {
                     $this->Flash->error(__('The user could not be saved. Please, try again.'));
                 }
-            } else {
-                $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
         } else {
             $this->Flash->success(__('The user has been saved.'));
