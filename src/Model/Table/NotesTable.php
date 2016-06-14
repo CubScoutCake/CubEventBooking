@@ -31,6 +31,14 @@ class NotesTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+        $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created' => 'new',
+                    'modified' => 'always',
+                    ]
+                ]
+            ]);
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);

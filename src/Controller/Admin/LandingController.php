@@ -48,6 +48,8 @@ class LandingController extends AppController
         $pays = TableRegistry::get('Payments');
         $sets = TableRegistry::get('Settings');
         $atts = TableRegistry::get('Attendees');
+        $nts = TableRegistry::get('Notes');
+        $notifs = TableRegistry::get('Notifications');
 
         $now = Time::now();
         $userId = $this->Auth->user('id');
@@ -58,9 +60,11 @@ class LandingController extends AppController
         $invoices = $invs->find()->contain(['Users','Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
         $users = $usrs->find()->contain(['Roles','Scoutgroups'])->order(['Users.modified' => 'DESC'])->limit(10);
         $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
+        $notes = $nts->find()->contain(['Invoices','Applications','Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
+        $notifications = $notifs->find()->contain(['Notificationtypes','Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
 
         // Pass to View
-        $this->set(compact('applications', 'events','invoices','users','payments'));
+        $this->set(compact('applications', 'events','invoices','users','payments','notes','notifications'));
 
         // Counts of Entities
         $cntApplications = $apps->find('all')->count('*');

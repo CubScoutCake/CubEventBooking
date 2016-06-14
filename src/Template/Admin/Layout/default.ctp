@@ -543,6 +543,46 @@ $cakeDescription = 'HertsCubs Booking System';
                             </ul>
                         </li>
                         <li>
+                            <a href="#"><i class="fa fa-comments-o fa-fw"></i> Communications<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="#"><i class="fa fa-pencil-square-o fa-fw"></i> Notes <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Notes',
+                                        'action' => 'index',
+                                        'prefix' => 'admin']); ?>">View All</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Notes',
+                                        'action' => 'add',
+                                        'prefix' => 'admin']); ?>">New Note</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-bell fa-fw"></i> Notifications <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Notifications',
+                                        'action' => 'index',
+                                        'prefix' => 'admin']); ?>">View All</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Notifications',
+                                        'action' => 'unread',
+                                        'prefix' => 'admin']); ?>">View Unread</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> Districts <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>

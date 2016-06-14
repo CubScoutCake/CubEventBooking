@@ -104,7 +104,7 @@ class InvoicesController extends AppController
 
         // Insantiate Objects
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['Users', 'Payments', 'InvoiceItems', 'Applications']
+            'contain' => ['Users', 'Payments', 'InvoiceItems', 'Applications', 'Notes']
         ]);
 
         $application = $applications->get($invoice->application_id);

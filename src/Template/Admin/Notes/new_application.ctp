@@ -8,13 +8,10 @@
         <div class="panel-body">
             <?= $this->Form->create($note) ?>
             <fieldset>
-                <legend><?= __('Add Multilink Note') ?></legend>
+                <legend><?= __('Add Invoice Note') ?></legend>
                 <?php
                     echo $this->Form->input('note_text');
                     echo $this->Form->input('visible');
-                    echo $this->Form->input('application_id', ['options' => $applications, 'empty' => true]);
-                    echo $this->Form->input('invoice_id', ['options' => $invoices, 'empty' => true]);
-                    echo $this->Form->input('user_id', ['options' => $users, 'empty' => true]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

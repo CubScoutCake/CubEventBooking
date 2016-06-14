@@ -145,7 +145,7 @@
 <div class="row">
     <div class="col-lg-12">
         <?php if (!empty($invoice->payments)): ?>
-            <div class="panel panel-default">
+            <div class="panel panel-yellow">
                 <div class="panel-heading">
                     <i class="fa fa-gbp fa-fw"></i> Payments Recieved
                 </div>
@@ -190,7 +190,7 @@
             </div>
         <?php endif; ?>
         <?php if (empty($invoice->payments)): ?>
-            <div class="panel panel-default">
+            <div class="panel panel-yellow">
                 <div class="panel-heading">
                     <i class="fa fa-gbp fa-fw"></i> Payments received will be listed here.
                 </div>
@@ -198,3 +198,47 @@
         <?php endif; ?>
     </div>
 </div>
+</div>    
+
+<div class="row">
+    <div class="col-lg-12">
+        <?php if (!empty($invoice->notes)) : ?>
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <i class="fa fa-pencil-square-o fa-fw"></i> Invoice Notes
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tr>
+                                <th><?= __('Id') ?></th>
+                                <th><?= __('Actions') ?></th>
+                                <th><?= __('Note') ?></th>
+                            </tr>
+                            <?php foreach ($invoice->notes as $notes): ?>
+                                <tr>
+                                    <td><?= h($notes->id) ?></td>
+                                    <td class="actions">
+                                        <div class="dropdown btn-group">
+                                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu " role="menu">
+                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Notes', 'prefix' => 'admin', 'action' => 'view', $notes->id]) ?></li>
+                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Notes', 'prefix' => 'admin', 'action' => 'edit', $notes->id]) ?></li>
+                                                <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Notes', 'prefix' => 'admin', 'action' => 'delete', $notes->id], ['confirm' => __('Are you sure you want to delete note # {0}?', $notes->id)]) ?></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td><?= h($notes->note_text) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+

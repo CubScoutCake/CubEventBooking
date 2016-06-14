@@ -216,6 +216,12 @@
                     <li>
                         <a href="#paym-pills" data-toggle="tab"><i class="fa fa-gbp fa-fw"></i> Recent Payments</a>
                     </li>
+                    <li>
+                        <a href="#note-pills" data-toggle="tab"><i class="fa fa-pencil-square-o fa-fw"></i> Recent Notes</a>
+                    </li>
+                    <li>
+                        <a href="#notif-pills" data-toggle="tab"><i class="fa fa-bell fa-fw"></i> Recent Notifications</a>
+                    </li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -326,6 +332,7 @@
                                                     <li><?= $this->Html->link(__('Preview - User View'), ['controller' => 'Events', 'action' => 'view', $event->id]) ?></li>
                                                     <li><?= $this->Html->link(__('Full View - Inc Bookings'), ['controller' => 'Events', 'action' => 'full_view', $event->id]) ?></li>
                                                     <li><?= $this->Html->link(__('View Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
+                                                    <li><?= $this->Html->link(__('View Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>
                                                     <li class="divider"></li>
                                                     <li><?= $this->Html->link(__('Edit'), ['controller' => 'Events', 'action' => 'edit', $event->id]) ?></li>
                                                     
@@ -414,6 +421,87 @@
                                             <td><?= $this->Number->currency($payment->value,'GBP') ?></td>
                                             <td><?= $this->Time->i18nformat($payment->created,'dd-MMM-yy HH:mm') ?></td>
                                             <td><?= $this->Time->i18nformat($payment->paid,'dd-MMM-yy HH:mm') ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="note-pills">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><?= h('Note ID') ?></th>
+                                        <th class="actions"><?= __('Actions') ?></th>
+                                        <th><?= h('Note Text') ?></th>
+                                        <th><?= h('User') ?></th>
+                                        <th><?= h('Application') ?></th>
+                                        <th><?= h('Invoice') ?></th>
+                                        <th><?= h('Modified') ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($notes as $note): ?>
+                                        <tr>
+                                            <td><?= h($note->id) ?></td>
+                                            <td class="actions">
+                                                <div class="dropdown btn-group">
+                                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu " role="menu">
+                                                        <li><?= $this->Html->link(__('View'), ['prefix' => 'admin','controller' => 'Notes','action' => 'view', $note->id]) ?></li>
+                                                        <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Notes','action' => 'edit', $note->id]) ?></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td><?= $this->Text->truncate($note->note_text,50) ?></td>
+                                            <td><?= $note->has('user') ? $this->Html->link($this->Text->truncate($note->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $note->user->id]) : '' ?></td>
+                                            <td><?= $note->has('application') ? $this->Html->link($note->application->display_code, ['controller' => 'Applications', 'action' => 'view', $note->application->id]) : '' ?></td>
+                                            <td><?= $note->has('invoice') ? $this->Html->link($note->invoice->display_code, ['controller' => 'Invoices', 'action' => 'view', $note->invoice->id]) : '' ?></td>
+                                            <td><?= $this->Time->i18nformat($note->modified,'dd-MMM-yy HH:mm') ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="notif-pills">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><?= h('Notification ID') ?></th>
+                                        <th class="actions"><?= __('Actions') ?></th>
+                                        <th><?= h('User') ?></th>
+                                        <th><?= h('Notification Type') ?></th>
+                                        <th><?= h('Source') ?></th>
+                                        <th><?= h('Read') ?></th>
+                                        <th><?= h('Created') ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($notifications as $notification): ?>
+                                        <tr>
+                                            <td><?= $this->Number->format($notification->id) ?></td>
+                                            <td class="actions">
+                                                <div class="dropdown btn-group">
+                                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu " role="menu">
+                                                        <li><?= $this->Html->link(__('View Notification'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'view', $notification->id]) ?></li>
+                                                        <li><?= $this->Html->link(__('View Subject'), ['prefix' => $notification->link_prefix,'controller' => $notification->link_controller,'action' => $notification->link_action, $notification->link_id]) ?></li>
+                                                        <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'edit', $notification->id]) ?></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td><?= $notification->has('user') ? $this->Html->link($this->Text->truncate($notification->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $notification->user->id]) : '' ?></td>
+                                            <td><?= $notification->has('notificationtype') ? $notification->notificationtype->notification_type : '' ?></td>
+                                            <td><?= h($notification->notification_source) ?></td>
+                                            <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
+                                            <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-yy HH:mm') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

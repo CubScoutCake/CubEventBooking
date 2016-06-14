@@ -26,7 +26,8 @@ class NotificationsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Notificationtypes']
+            'contain' => ['Users', 'Notificationtypes'],
+            'order' => ['created' => 'DESC']
         ];
         $this->set('notifications', $this->paginate($this->Notifications));
         $this->set('_serialize', ['notifications']);
@@ -36,7 +37,8 @@ class NotificationsController extends AppController
     {
         $this->paginate = [
             'contain' => ['Users', 'Notificationtypes'],
-            'conditions' => ['user_id' => $this->Auth->user('id'), 'new' => 1]
+            'conditions' => ['new' => 1],
+            'order' => ['created' => 'DESC']
         ];
         $this->set('notifications', $this->paginate($this->Notifications));
         $this->set('_serialize', ['notifications']);
@@ -55,20 +57,7 @@ class NotificationsController extends AppController
             'contain' => ['Users', 'Notificationtypes']
         ]);
         $this->set('notification', $notification);
-        $this->set('_serialize', ['notification']);
-
-        /*$now = Time::now();
-        $nowData = ['new' => 0, 'read_date' => $now];
-
-        if ($notification->new == 1) {
-            $notification = $this->Notifications->patchEntity($notification, $nowData);
-
-            if ($this->Notifications->save($notification)) {
-                $this->Flash->success(__('The notification has been marked as viewed.'));
-            } else {
-                $this->Flash->error(__('The notification could not be marked as viewed. Please, try again.'));
-            }
-        }*/        
+        $this->set('_serialize', ['notification']);    
     }
 
     /**

@@ -41,13 +41,19 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
+        if ($id == $this->Auth->user('id')) {
+            return $this->redirect(['controller' => 'Users', 'action' => 'view', 'prefix' => false, $id]);
+        }
+        
         $user = $this->Users->get($id, [
             'contain' => ['Roles'
                 , 'Scoutgroups'
-                , 'Applications.Scoutgroups', 'Applications.Events'
-                , 'Attendees.Scoutgroups' => ['sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']]
-                , 'Attendees.Roles'
-                , 'Invoices.Applications.Events']
+                , 'Applications' => ['Scoutgroups', 'Events']
+                , 'Attendees' => ['Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']]
+                , 'Invoices.Applications.Events'
+                , 'Notes' => ['Invoices' , 'Applications']
+                , 'Notifications' => ['Notificationtypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']]
+            ]
         ]);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
