@@ -28,7 +28,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <p><?= h($note->note_text) ?></p>
+                <p><?= $this->Text->autoParagraph($note->note_text) ?></p>
             </div>
         </div>
     </div>

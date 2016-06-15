@@ -10,7 +10,7 @@
             <fieldset>
                 <legend><?= __('Add Multilink Note') ?></legend>
                 <?php
-                    echo $this->Form->input('note_text');
+                    echo $this->Form->input('note_text', ['type' => 'textarea', 'escape' => false]);
                     echo $this->Form->input('visible');
                     echo $this->Form->input('application_id', ['options' => $applications, 'empty' => true]);
                     echo $this->Form->input('invoice_id', ['options' => $invoices, 'empty' => true]);

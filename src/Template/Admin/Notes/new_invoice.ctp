@@ -10,7 +10,7 @@
             <fieldset>
                 <legend><?= __('Add Invoice Note') ?></legend>
                 <?php
-                    echo $this->Form->input('note_text');
+                    echo $this->Form->input('note_text', ['type' => 'textarea', 'escape' => false]);
                     echo $this->Form->input('visible');
                 ?>
             </fieldset>

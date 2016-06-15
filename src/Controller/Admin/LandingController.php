@@ -83,4 +83,47 @@ class LandingController extends AppController
         $this->set(compact('keenRead', 'keenProject'));
 
     }
+
+    public function link($ent = null)
+    {
+        $ent = $this->request->data['link'];
+
+
+        if (is_null($ent)) {
+            return $this->redirect(['action' => 'admin_home']);
+        } else {
+            $entStr = strtoupper($ent);
+
+            $cont = substr($entStr, 0, 1);
+
+            $len = strlen($entStr);
+            $numLen = $len - 1;
+
+            $id = substr($entStr, 1);
+            $idNum = intval($id);
+
+            if (is_int($idNum) && $idNum != 0) {
+
+                switch ($cont) {
+                    case "U":
+                        return $this->redirect(['controller' => 'Users', 'action' => 'view', $idNum]);
+                        break;
+                    case "I":
+                        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $idNum]);
+                        break;
+                    case "A":
+                        return $this->redirect(['controller' => 'Applications', 'action' => 'view', $idNum]);
+                        break;
+                    case "N":
+                        return $this->redirect(['controller' => 'Notes', 'action' => 'view', $idNum]);
+                        break;
+                    case "P":
+                        return $this->redirect(['controller' => 'Payments', 'action' => 'view', $idNum]);
+                        break;
+                    default:
+                        return $this->redirect(['action' => 'admin_home']);
+                }
+            }           
+        }
+    }
 }

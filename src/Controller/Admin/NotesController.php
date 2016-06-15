@@ -57,7 +57,8 @@ class NotesController extends AppController
             $note = $this->Notes->patchEntity($note, $this->request->data);
             if ($this->Notes->save($note)) {
                 $this->Flash->success(__('The note has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                $redir = $note->get('id');
+                return $this->redirect(['action' => 'view', $redir]);
             } else {
                 $this->Flash->error(__('The note could not be saved. Please, try again.'));
             }
@@ -103,7 +104,7 @@ class NotesController extends AppController
     		    $note = $this->Notes->patchEntity($note, $invoiceLink);
     		    if ($this->Notes->save($note)) {
     		        $this->Flash->success(__('The note has been saved.'));
-    		        return $this->redirect(['action' => 'index']);
+    		        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invId]);
     		    } else {
     		        $this->Flash->error(__('The note could not be saved. Please, try again.'));
     		    }
@@ -137,7 +138,7 @@ class NotesController extends AppController
     		    $note = $this->Notes->patchEntity($note, $applicationLink);
     		    if ($this->Notes->save($note)) {
     		        $this->Flash->success(__('The note has been saved.'));
-    		        return $this->redirect(['controller' => 'Applications', 'action' => 'view', '$appId']);
+    		        return $this->redirect(['controller' => 'Applications', 'action' => 'view', $appId]);
     		    } else {
     		        $this->Flash->error(__('The note could not be saved. Please, try again.'));
     		    }
@@ -161,7 +162,7 @@ class NotesController extends AppController
     		    $note = $this->Notes->patchEntity($note, $userLink);
     		    if ($this->Notes->save($note)) {
     		        $this->Flash->success(__('The note has been saved.'));
-    		        return $this->redirect(['action' => 'index']);
+    		        return $this->redirect(['controller' => 'Users', 'action' => 'view', $userId]);
     		    } else {
     		        $this->Flash->error(__('The note could not be saved. Please, try again.'));
     		    }
@@ -188,7 +189,8 @@ class NotesController extends AppController
             $note = $this->Notes->patchEntity($note, $this->request->data);
             if ($this->Notes->save($note)) {
                 $this->Flash->success(__('The note has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                $redir = $note->get('id');
+                return $this->redirect(['action' => 'view', $redir]);
             } else {
                 $this->Flash->error(__('The note could not be saved. Please, try again.'));
             }

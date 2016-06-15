@@ -231,7 +231,7 @@
                                             </ul>
                                         </div>
                                     </td>
-                                    <td><?= h($notes->note_text) ?></td>
+                                    <td><?= $this->Text->autoParagraph($notes->note_text) ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>

@@ -9,7 +9,7 @@
             <?= $this->Form->create($note) ?>
             <fieldset>
                 <?php
-                    echo $this->Form->input('note_text');
+                    echo $this->Form->input('note_text', ['type' => 'textarea']);
                     echo $this->Form->input('visible');
                     echo $this->Form->input('application_id', ['options' => $applications, 'empty' => true]);
                     echo $this->Form->input('invoice_id', ['options' => $invoices, 'empty' => true]);

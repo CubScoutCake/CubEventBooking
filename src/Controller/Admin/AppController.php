@@ -15,6 +15,7 @@
 namespace App\Controller\Admin;
 
 use Cake\Controller\Controller;
+use App\Form\AdminForm;
 
 /**
  * Application Controller
@@ -66,6 +67,10 @@ class AppController extends Controller
         // continues to work.
         //$this->Auth->allow(['display']);
         //$this->Auth->allow(['index']);
+
+        $adminFormLink = new AdminForm();
+        $this->set(compact('adminFormLink'));
+
     }
 
     public function isAuthorized($user)

@@ -308,7 +308,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $this->Text->truncate($notes->note_text,100) ?></td>
+                                                <td><?= $this->Text->autoParagraph($notes->note_text) ?></td>
                                                 <td><?= $notes->visible ? __('Yes') : __('No'); ?></td>
                                                 <td><?= $notes->has('application') ? $this->Html->link($notes->application->display_code, ['controller' => 'Applications', 'action' => 'view', $notes->application->id]) : '' ?></td>
                                                 <td><?= $notes->has('invoice') ? $this->Html->link($notes->invoice->display_code, ['controller' => 'Invoices', 'action' => 'view', $notes->invoice->id]) : '' ?></td>
