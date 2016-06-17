@@ -21,6 +21,20 @@ class NotesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Applications', 'Invoices', 'Users']
+            ,'order' => ['created' => 'DESC']
+        ];
+        $notes = $this->paginate($this->Notes);
+
+        $this->set(compact('notes'));
+        $this->set('_serialize', ['notes']);
+    }
+
+    public function visible()
+    {
+        $this->paginate = [
+            'contain' => ['Applications', 'Invoices', 'Users']
+            ,'order' => ['created' => 'DESC']
+            ,'conditions' => ['visible' => true]
         ];
         $notes = $this->paginate($this->Notes);
 
@@ -127,8 +141,8 @@ class NotesController extends AppController
                 $apps = TableRegistry::get('Applications');
                 $invs = TableRegistry::get('Invoices');
 
-                $application = $apps->find('all')->where(['id' => $appId]);
-                $invFirst = $invs->find('all')->where(['application_id' => $id])->first();
+                $application = $apps->get($appId);
+                $invFirst = $invs->find('all')->where(['application_id' => $appId])->first();
 
     		    $applicationLink = [
                     'application_id' => $application->id,

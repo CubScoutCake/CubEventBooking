@@ -63,6 +63,14 @@
                             <th><?= __('Visible') ?></th>
                             <td><?= $note->visible ? __('Yes') : __('No'); ?></td>
                          </tr>
+                         <tr>
+                            <th><?= __('Date Created') ?></th>
+                            <td><?= $this->Time->i18nformat($note->created,'dd-MMM-yy HH:mm') ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Last Modified') ?></th>
+                            <td><?= $this->Time->i18nformat($note->modified,'dd-MMM-yy HH:mm') ?></td>
+                        </tr>
                     </table>
                 </div>
             </div>

@@ -251,6 +251,8 @@
                                                     <ul class="dropdown-menu " role="menu">
                                                         <li><?= $this->Html->link(__('View User'), ['prefix' => 'admin','controller' => 'Users','action' => 'view', $user->id]) ?></li>
                                                         <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Users','action' => 'edit', $user->id]) ?></li>
+                                                        <li class="divider"></li>
+                                                        <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'action' => 'new_user', $user->id]) ?></li>
                                                     </ul>
                                                 </div>
                                             </td>
@@ -291,7 +293,9 @@
                                                     <ul class="dropdown-menu " role="menu">
                                                         <li><?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $application->id]) ?></li>
                                                         <li><?= $this->Html->link(__('Edit'), ['controller' => 'Applications', 'action' => 'edit', $application->id]) ?></li>
-                                                        <li><?= $this->Form->postLink(__('Query'), ['controller' => 'Applications','action' => 'query', $application->id], ['confirm' => __('Are you sure you want to query the user of application # {0}?', $application->id)]) ?></li>
+                                                        <li class="divider"></li>
+                                                        <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'action' => 'new_application', $application->id]) ?></li>
+                                                        <li><?= $this->Form->postLink(__('++ Query'), ['controller' => 'Applications','action' => 'query', $application->id], ['confirm' => __('Are you sure you want to query the user of application # {0}?', $application->id)]) ?></li>
                                                     </ul>
                                                 </div>
                                             </td>
@@ -376,6 +380,8 @@
                                                     <ul class="dropdown-menu " role="menu">
                                                         <li><?= $this->Html->link(__('View'), ['prefix' => 'admin','controller' => 'Invoices','action' => 'view', $invoice->id]) ?></li>
                                                         <li><?= $this->Html->link(__('Update'), ['prefix' => 'admin','controller' => 'Invoices','action' => 'regenerate', $invoice->id]) ?></li>
+                                                        <li class="divider"></li>
+                                                        <li><?= $this->Html->link(__('Add Note'), ['prefix' => 'admin','controller' => 'Notes','action' => 'new_invoice', $invoice->id]) ?></li>
                                                     </ul>
                                                 </div>
                                             </td>

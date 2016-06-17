@@ -27,7 +27,7 @@ class InvoicesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users'],
+            'contain' => ['Users', 'Notes' => ['conditions' => ['Notes.visible' => true]]],
             'conditions' => ['user_id' => $this->Auth->user('id')]
         ];
         $this->set('invoices', $this->paginate($this->Invoices));

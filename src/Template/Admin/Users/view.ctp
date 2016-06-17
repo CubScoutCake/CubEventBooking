@@ -43,13 +43,13 @@
                         'prefix' => 'admin',
                         $user->id],['_full']); ?>">Edit User</a>
                     </li>
-                    <li><?= $this->Html->link(__('Update Capitalisation'), ['controller' => 'Users', 'action' => 'update', $user->id]) ?></li>
-                    <li><?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?></li>
+                    <li><?= $this->Html->link(__('Update Capitalisation'), ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'update', $user->id]) ?></li>
+                    <li><?= $this->Form->postLink(__('Delete'), ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?></li>
                     <li class="divider"></li>
-                    <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'action' => 'new_user', $user->id]) ?></li>
-                    <li><?= $this->Html->link(__('New App'), ['controller' => 'Applications', 'action' => 'add', $user->id]) ?></li>
-                    <li><?= $this->Html->link(__('New Inv'), ['controller' => 'Invoices', 'action' => 'add', $user->id]) ?></li>
-                    <li><?= $this->Html->link(__('New Att'), ['controller' => 'Attendees', 'action' => 'add', $user->id]) ?></li>
+                    <li><?= $this->Html->link(__('Add Note'), ['prefix' => 'admin', 'controller' => 'Notes', 'action' => 'new_user', $user->id]) ?></li>
+                    <li><?= $this->Html->link(__('New App'), ['prefix' => 'admin', 'controller' => 'Applications', 'action' => 'add', $user->id]) ?></li>
+                    <li><?= $this->Html->link(__('New Inv'), ['prefix' => 'admin', 'controller' => 'Invoices', 'action' => 'add', $user->id]) ?></li>
+                    <li><?= $this->Html->link(__('New Att'), ['prefix' => 'admin', 'controller' => 'Attendees', 'action' => 'add', $user->id]) ?></li>
                 </ul>
             </div>
         </div>
@@ -67,9 +67,9 @@
                 <h5 class="subheader"><?= __('Username') ?></h5>
                 <p><?= h($user->username) ?></p>
                 <h5 class="subheader"><?= __('Role') ?></h5>
-                <p><?= $user->has('role') ? $this->Html->link($user->role->role, ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></p>
+                <p><?= $user->has('role') ? $this->Html->link($user->role->role, ['prefix' => 'admin', 'controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></p>
                 <h5 class="subheader"><?= __('Scoutgroup') ?></h5>
-                <p><?= $user->has('scoutgroup') ? $this->Html->link($user->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $user->scoutgroup->id]) : '' ?></p>                
+                <p><?= $user->has('scoutgroup') ? $this->Html->link($user->scoutgroup->scoutgroup, ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $user->scoutgroup->id]) : '' ?></p>                
             </div>
             <div class="panel-footer">
                 <div class="row">
@@ -167,14 +167,16 @@
                                                         <i class="fa fa-gear"></i>  <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu " role="menu">
-                                                        <li><?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $applications->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('Edit'), ['controller' => 'Applications', 'action' => 'edit', $applications->id]) ?></li>
-                                                        <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Applications', 'action' => 'delete', $applications->id], ['confirm' => __('Are you sure you want to delete # {0}?', $applications->id)]) ?></li>
+                                                        <li><?= $this->Html->link(__('View'), ['prefix' => 'admin', 'controller' => 'Applications', 'action' => 'view', $applications->id]) ?></li>
+                                                        <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin', 'controller' => 'Applications', 'action' => 'edit', $applications->id]) ?></li>
+                                                        <li><?= $this->Form->postLink(__('Delete'), ['prefix' => 'admin', 'controller' => 'Applications', 'action' => 'delete', $applications->id], ['confirm' => __('Are you sure you want to delete # {0}?', $applications->id)]) ?></li>
+                                                        <li class="divider"></li>
+                                                        <li><?= $this->Html->link(__('Add Note'), ['prefix' => 'admin', 'controller' => 'Notes', 'action' => 'new_application', $applications->id]) ?></li>
                                                     </ul>
                                                 </div>
                                             </td>
-                                            <td><?= $applications->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->scoutgroup->scoutgroup,18), ['controller' => 'Scoutgroups', 'action' => 'view', $applications->scoutgroup->id]) : '' ?></td>
-                                            <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['controller' => 'Events', 'action' => 'view', $applications->event->id]) : '' ?></td>
+                                            <td><?= $applications->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->scoutgroup->scoutgroup,18), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $applications->scoutgroup->id]) : '' ?></td>
+                                            <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['prefix' => 'admin', 'controller' => 'Events', 'action' => 'view', $applications->event->id]) : '' ?></td>
                                             <td><?= h($applications->section) ?></td>
                                             <td><?= h($applications->permitholder) ?></td>
                                             <td><?= h($applications->created) ?></td>
@@ -210,13 +212,15 @@
                                                             <i class="fa fa-gear"></i>  <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
-                                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?></li>
-                                                            <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoices->id]) ?></li>
-                                                            <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete', $invoices->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoices->id)]) ?></li>
+                                                            <li><?= $this->Html->link(__('View'), ['prefix' => 'admin', 'controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?></li>
+                                                            <li><?= $this->Html->link(__('Update'), ['prefix' => 'admin', 'controller' => 'Invoices', 'action' => 'regenerate', $invoices->id]) ?></li>
+                                                            <li><?= $this->Form->postLink(__('Delete'), ['prefix' => 'admin', 'controller' => 'Invoices', 'action' => 'delete', $invoices->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoices->id)]) ?></li>
+                                                            <li class="divider"></li>
+                                                            <li><?= $this->Html->link(__('Add Note'), ['prefix' => 'admin', 'controller' => 'Notes', 'action' => 'new_invoice', $invoices->id]) ?></li>
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $invoices->has('application') ? $this->Html->link($invoices->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoices->application->id]) : '' ?></td>
+                                                <td><?= $invoices->has('application') ? $this->Html->link($invoices->application->display_code, ['prefix' => 'admin', 'controller' => 'Applications', 'action' => 'view', $invoices->application->id]) : '' ?></td>
                                                 <td><?= $this->Number->currency($invoices->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoices->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoices->balance,'GBP') ?></td>
@@ -256,14 +260,14 @@
                                                             <i class="fa fa-gear"></i>  <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
-                                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
-                                                            <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
-                                                            <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Attendees', 'action' => 'delete', $attendees->id], ['confirm' => __('Are you sure you want to delete # {0}?', $attendees->id)]) ?></li>
+                                                            <li><?= $this->Html->link(__('View'), ['prefix' => 'admin', 'controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
+                                                            <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin', 'controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
+                                                            <li><?= $this->Form->postLink(__('Delete'), ['prefix' => 'admin', 'controller' => 'Attendees', 'action' => 'delete', $attendees->id], ['confirm' => __('Are you sure you want to delete # {0}?', $attendees->id)]) ?></li>
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,12), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
-                                                <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
+                                                <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,12), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
+                                                <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['prefix' => 'admin', 'controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
                                                 <td><?= h($attendees->firstname) ?></td>    
                                                 <td><?= h($attendees->lastname) ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->dateofbirth, 'dd-MMM-yy') ?></td>
@@ -302,9 +306,9 @@
                                                             <i class="fa fa-gear"></i>  <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
-                                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Notes', 'action' => 'view', $notes->id]) ?></li>
-                                                            <li><?= $this->Html->link(__('Edit'), ['controller' => 'Notes', 'action' => 'edit', $notes->id]) ?></li>
-                                                            <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Notes', 'action' => 'delete', $notes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $notes->id)]) ?></li>
+                                                            <li><?= $this->Html->link(__('View'), ['prefix' => 'admin', 'controller' => 'Notes', 'action' => 'view', $notes->id]) ?></li>
+                                                            <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin', 'controller' => 'Notes', 'action' => 'edit', $notes->id]) ?></li>
+                                                            <li><?= $this->Form->postLink(__('Delete'), ['prefix' => 'admin', 'controller' => 'Notes', 'action' => 'delete', $notes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $notes->id)]) ?></li>
                                                         </ul>
                                                     </div>
                                                 </td>

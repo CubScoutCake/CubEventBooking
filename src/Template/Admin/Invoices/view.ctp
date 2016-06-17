@@ -11,18 +11,8 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Notifications',
-                        'action' => 'outstanding',
-                        'prefix' => 'admin',
-                        $invoice->id],['_full']); ?>">Outstanding Payment</a>
-                    </li>
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Notifications',
-                        'action' => 'invdownload',
-                        'prefix' => 'admin',
-                        $invoice->id],['_full']); ?>">++ Send User Invoice PDF</a>
-                    </li>
+                    <li><?= $this->Html->link(__('Outstanding Payment'), ['controller' => 'Notifications', 'action' => 'outstanding', 'prefix' => 'admin', $invoice->id]) ?></li>
+                    <li><?= $this->Html->link(__('++ Send User Invoice PDF'), ['controller' => 'Notifications', 'action' => 'invdownload', 'prefix' => 'admin', $invoice->id]) ?></li>
                 </ul>
             </div>
         </div>
@@ -50,6 +40,8 @@
                         $invoice->id],['_full']); ?>">Edit Invoice</a>
                     </li>
                     <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete','prefix' => 'admin', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?></li>
+                    <li class="divider"></li>
+                    <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'action' => 'new_invoice', 'prefix' => 'admin', $invoice->id]) ?></li>
                 </ul>
             </div>
         </div>
@@ -215,6 +207,7 @@
                                 <th><?= __('Id') ?></th>
                                 <th><?= __('Actions') ?></th>
                                 <th><?= __('Note') ?></th>
+                                <th><?= __('Last Modified') ?></th>
                             </tr>
                             <?php foreach ($invoice->notes as $notes): ?>
                                 <tr>
@@ -232,6 +225,7 @@
                                         </div>
                                     </td>
                                     <td><?= $this->Text->autoParagraph($notes->note_text) ?></td>
+                                    <td><?= $this->Time->i18nformat($notes->modified,'dd-MMM-yy HH:mm') ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>

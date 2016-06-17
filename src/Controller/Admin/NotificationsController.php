@@ -322,6 +322,7 @@ class NotificationsController extends AppController
             $groups = TableRegistry::get('Scoutgroups');
             $invoices = TableRegistry::get('Invoices');
             $applications = TableRegistry::get('Applications');
+            $notes = TableRegistry::get('Notes');
 
             $invoice = $invoices->get($invoiceId);
             $user = $users->get($invoice->user_id);
@@ -343,38 +344,55 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $invoiceData);
 
             if ($this->Notifications->save($notification)) {
-                $this->Flash->success(__('Outstanding Balance Prompt Sent.'));
+                $notificationId = $notification->get('id');
 
-                $this->getMailer('Payment')->send('outstanding', [$user, $group, $notification, $invoice, $app]);
+                $noteData = [
+                    'note_text' => 'A Balance Outstanding Prompt Email was Sent with Notification id #' . $notificationId,
+                    'visible' => false,
+                    'user_id' => $user->id,
+                    'invoice_id' => $invoice->id,
+                    'application_id' => $app->id
+                ];
 
-                $sets = TableRegistry::get('Settings');
+                $note = $notes->newEntity();
+                $note = $notes->patchEntity($note, $noteData);
 
-                $jsonInvoice = json_encode($invoiceData);
-                $p_api_key = $sets->get(13)->text;
-                $projectId = $sets->get(14)->text;
-                $eventType = 'OutstandingPayment';
+                if ($notes->save($note)) {
+                    $this->Flash->success(__('Outstanding Balance Prompt Sent.'));
 
-                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
+                    $this->getMailer('Payment')->send('outstanding', [$user, $group, $notification, $invoice, $app]);
 
-                $http = new Client();
-                $response = $http->post(
-                  $keenURL,
-                  $jsonInvoice,
-                  ['type' => 'json']
-                );
+                    $sets = TableRegistry::get('Settings');
 
-                $genericType = 'Notification';
+                    $jsonInvoice = json_encode($invoiceData);
+                    $p_api_key = $sets->get(13)->text;
+                    $projectId = $sets->get(14)->text;
+                    $eventType = 'OutstandingPayment';
 
-                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
 
-                $http = new Client();
-                $response = $http->post(
-                  $keenGenURL,
-                  $jsonInvoice,
-                  ['type' => 'json']
-                );
+                    $http = new Client();
+                    $response = $http->post(
+                      $keenURL,
+                      $jsonInvoice,
+                      ['type' => 'json']
+                    );
 
-                return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => 'admin', $invoiceId]);
+                    $genericType = 'Notification';
+
+                    $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+
+                    $http = new Client();
+                    $response = $http->post(
+                      $keenGenURL,
+                      $jsonInvoice,
+                      ['type' => 'json']
+                    );
+
+                    return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => 'admin', $invoiceId]);
+                } else {
+                    $this->Flash->error(__('The note could not be saved. Please, try again.'));
+                }
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
             }

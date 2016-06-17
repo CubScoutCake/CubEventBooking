@@ -27,7 +27,7 @@
                                         <li><?= $this->Html->link(__('View'), ['action' => 'view', $application->id]) ?></li>
                                         <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $application->id]) ?></li>
                                         <li class="divider"></li>
-                                        <li><?= $this->Form->postLink(__('Query'), ['action' => 'query', $application->id], ['confirm' => __('Are you sure you want to query the user of application # {0}?', $application->id)]) ?></li>
+                                        <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'action' => 'new_application', $application->id]) ?></li>
                                     </ul>
                                 </div>
                             </td>
