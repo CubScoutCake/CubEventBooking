@@ -48,9 +48,15 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => ['Roles', 'Scoutgroups','Invoices.Applications'
-            ,'Applications.Scoutgroups','Applications.Events'
-            ,'Attendees.Scoutgroups' ]
+            'contain' => ['Roles', 
+                'Scoutgroups',
+                'Invoices.Applications',
+                'Applications.Scoutgroups',
+                'Applications.Events',
+                'Attendees.Scoutgroups',
+                'Notes' => ['conditions' => ['visible' => true]],
+                'Notifications.Notificationtypes'
+            ]
         ]);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);

@@ -272,115 +272,140 @@
 </div>
 <hr>
 <div class="row">
-    <div class="panel-group">
-        <div class="col-lg-12">
-            <?php if (!empty($application->invoices)): ?>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-files-o fa-fw"></i> Invoices on this Application
+    <div class="col-lg-12">
+        <?php if (!empty($application->invoices)): ?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-files-o fa-fw"></i> Invoices on this Application
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tr>
+                                <th><?= __('Id') ?></th>
+                                <th class="actions"><?= __('Actions') ?></th>
+                                <th><?= __('User Id') ?></th>
+                                <th><?= __('Sum Value') ?></th>
+                                <th><?= __('Received') ?></th>
+                                <th><?= __('Balance') ?></th>
+                                <th><?= __('Date Created') ?></th>
+                            </tr>
+                            <?php foreach ($application->invoices as $invoices): ?>
+                            <tr>
+                                <td><?= h($invoices->id) ?></td>
+                                <td class="actions">
+                                    <div class="dropdown btn-group">
+                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu " role="menu">
+                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?></li>
+                                            <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoices->id]) ?></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td><?= h($invoices->user_id) ?></td>
+                                <td><?= $this->Number->currency($invoices->initialvalue,'GBP') ?></td>
+                                <td><?= $this->Number->currency($invoices->value,'GBP') ?></td>
+                                <td><?= $this->Number->currency($invoices->balance,'GBP') ?></td>
+                                <td><?= $this->Time->i18nformat($invoices->created,'dd-MMM-yy HH:mm') ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </table>
                     </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <tr>
-                                    <th><?= __('Id') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
-                                    <th><?= __('User Id') ?></th>
-                                    <th><?= __('Sum Value') ?></th>
-                                    <th><?= __('Received') ?></th>
-                                    <th><?= __('Balance') ?></th>
-                                    <th><?= __('Date Created') ?></th>
-                                </tr>
-                                <?php foreach ($application->invoices as $invoices): ?>
-                                <tr>
-                                    <td><?= h($invoices->id) ?></td>
-                                    <td class="actions">
-                                        <div class="dropdown btn-group">
-                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu " role="menu">
-                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?></li>
-                                                <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoices->id]) ?></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    <td><?= h($invoices->user_id) ?></td>
-                                    <td><?= $this->Number->currency($invoices->initialvalue,'GBP') ?></td>
-                                    <td><?= $this->Number->currency($invoices->value,'GBP') ?></td>
-                                    <td><?= $this->Number->currency($invoices->balance,'GBP') ?></td>
-                                    <td><?= $this->Time->i18nformat($invoices->created,'dd-MMM-yy HH:mm') ?></td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </table>
-                        </div>
-                    </div>
-                </div>      
-            <?php endif; ?>
-        </div>
+                </div>
+            </div>      
+        <?php endif; ?>
     </div>
 </div>
-<hr>
 <div class="row">
-    <div class="panel-group">
-        <div class="col-lg-12">
-            <?php if (!empty($application->attendees)): ?>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-group fa-fw"></i> Attendees on this Application
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    Attendee Actions
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><?= $this->Html->link(__('Link Attendees'), ['controller' => 'Applications', 'action' => 'link', $application->id]) ?></li>
-                                    <li class="divider"></li>
-                                    <li><?= $this->Html->link(__('Add Young Person'), ['controller' => 'Attendees', 'action' => 'cub']) ?></li>
-                                    <li><?= $this->Html->link(__('Add Adult'), ['controller' => 'Attendees', 'action' => 'adult']) ?></li>
-                                </ul>
-                            </div>
+    <div class="col-lg-12">
+        <?php if (!empty($application->attendees)): ?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-group fa-fw"></i> Attendees on this Application
+                    <div class="pull-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                Attendee Actions
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu">
+                                <li><?= $this->Html->link(__('Link Attendees'), ['controller' => 'Applications', 'action' => 'link', $application->id]) ?></li>
+                                <li class="divider"></li>
+                                <li><?= $this->Html->link(__('Add Young Person'), ['controller' => 'Attendees', 'action' => 'cub']) ?></li>
+                                <li><?= $this->Html->link(__('Add Adult'), ['controller' => 'Attendees', 'action' => 'adult']) ?></li>
+                            </ul>
                         </div>
                     </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <tr>
-                                    <th><?= __('First Name') ?></th>
-                                    <th><?= __('Last Name') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
-                                    <th><?= __('Role') ?></th>
-                                    <th><?= __('Group') ?></th>
-                                    <th><?= __('Modified') ?></th>
-                                </tr>
-                                <?php foreach ($application->attendees as $attendees): ?>
-                                <tr>
-                                    <td><?= h($attendees->firstname) ?></td>
-                                    <td><?= h($attendees->lastname) ?></td>
-                                    <td class="actions">
-                                        <div class="dropdown btn-group">
-                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu " role="menu">
-                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
-                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
-                                    <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,10), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
-                                    <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </table>
-                        </div>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tr>
+                                <th><?= __('First Name') ?></th>
+                                <th><?= __('Last Name') ?></th>
+                                <th class="actions"><?= __('Actions') ?></th>
+                                <th><?= __('Role') ?></th>
+                                <th><?= __('Group') ?></th>
+                                <th><?= __('Modified') ?></th>
+                            </tr>
+                            <?php foreach ($application->attendees as $attendees): ?>
+                            <tr>
+                                <td><?= h($attendees->firstname) ?></td>
+                                <td><?= h($attendees->lastname) ?></td>
+                                <td class="actions">
+                                    <div class="dropdown btn-group">
+                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu " role="menu">
+                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
+                                            <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
+                                <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,10), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
+                                <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </table>
                     </div>
-                </div>   
-            <?php endif; ?>
-        </div>
+                </div>
+            </div>   
+        <?php endif; ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <?php if (!empty($application->notes)) : ?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-pencil-square-o fa-fw"></i> Application Notes
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tr>
+                                <th><?= __('Id') ?></th>
+                                <th><?= __('Note') ?></th>
+                                <th><?= __('Date Modified') ?></th>
+                            </tr>
+                            <?php foreach ($application->notes as $notes): ?>
+                                <tr>
+                                    <td><?= h($notes->id) ?></td>
+                                    <td><?= $this->Text->autoParagraph($notes->note_text) ?></td>
+                                    <td><?= $this->Time->i18nformat($notes->modified,'dd-MMM-yy HH:mm') ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
 </div>

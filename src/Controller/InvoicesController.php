@@ -27,7 +27,7 @@ class InvoicesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Notes' => ['conditions' => ['Notes.visible' => true]]],
+            'contain' => ['Users'],
             'conditions' => ['user_id' => $this->Auth->user('id')]
         ];
         $this->set('invoices', $this->paginate($this->Invoices));
@@ -57,7 +57,7 @@ class InvoicesController extends AppController
         
         // Insantiate Objects
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
+            'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications', 'Notes' => ['conditions' => ['visible' => true]]]
         ]);
 
         $application = $applications->get($invoice->application_id);

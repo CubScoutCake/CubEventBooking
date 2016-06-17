@@ -54,7 +54,13 @@ class ApplicationsController extends AppController
            ]);
 
         $application = $this->Applications->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC']], 'Attendees.Roles' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]],'Attendees.Scoutgroups' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]]]
+            'contain' => [
+                'Users', 
+                'Scoutgroups', 
+                'Events', 
+                'Invoices', 
+                'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC']], 'Attendees.Roles' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]],'Attendees.Scoutgroups' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]],
+                'Notes' => ['conditions' => ['visible' => true]]]
         ]);
 
         $this->set('application', $application);

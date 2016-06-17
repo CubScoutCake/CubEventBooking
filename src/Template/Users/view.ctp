@@ -81,7 +81,7 @@
         </div>
     </div>
 </div>
-<?php if (!empty($user->applications) || !empty($user->attendees) || !empty($user->invoices)): ?>
+<?php if (!empty($user->applications) || !empty($user->attendees) || !empty($user->invoices) || !empty($user->notes) || !empty($user->notifications)): ?>
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-primary">
@@ -100,6 +100,12 @@
                     <?php endif; ?>
                     <?php if (!empty($user->attendees)): ?>
                         <li><a href="#att-pills" data-toggle="tab"><i class="fa fa-group fa-fw"></i> User's Attendees</a></li>
+                    <?php endif; ?>
+                    <?php if (!empty($user->notes)): ?>
+                        <li><a href="#note-pills" data-toggle="tab"><i class="fa fa-pencil-square-o fa-fw"></i> User Notes</a></li>
+                    <?php endif; ?>
+                    <?php if (!empty($user->notifications)): ?>
+                        <li><a href="#notif-pills" data-toggle="tab"><i class="fa fa-bell fa-fw"></i> User's Notifications</a></li>
                     <?php endif; ?>
                 </ul>
 
@@ -231,6 +237,74 @@
                                                 <td><?= h($attendees->nightsawaypermit) ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->created, 'dd-MMM-yy HH:mm') ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($user->notes)): ?>
+                        <div class="tab-pane fade" id="note-pills">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><?= __('Id') ?></th>
+                                            <th><?= __('Note Text') ?></th>
+                                            <th><?= __('Invoice') ?></th>
+                                            <th><?= __('Application') ?></th>
+                                            <th><?= __('Date Modified') ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($user->notes as $notes): ?>
+                                            <tr>
+                                                <td><?= h($notes->id) ?></td>
+                                                <td><?= $this->Text->autoParagraph($notes->note_text) ?></td>
+                                                <td><?= $notes->has('application') ? $this->Html->link($notes->application->display_code, ['controller' => 'Applications', 'action' => 'view', $notes->application->id]) : '' ?></td>
+                                                <td><?= $notes->has('invoice') ? $this->Html->link($notes->invoice->display_code, ['controller' => 'Invoices', 'action' => 'view', $notes->invoice->id]) : '' ?></td>
+                                                <td><?= $this->Time->i18nFormat($notes->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($user->notifications)): ?>
+                        <div class="tab-pane fade" id="notif-pills">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><?= h('Notification ID') ?></th>
+                                            <th class="actions"><?= __('Actions') ?></th>
+                                            <th><?= h('Notification Type') ?></th>
+                                            <th><?= h('Source') ?></th>
+                                            <th><?= h('Read') ?></th>
+                                            <th><?= h('Created') ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($user->notifications as $notification): ?>
+                                            <tr>
+                                                <td><?= $this->Number->format($notification->id) ?></td>
+                                                <td class="actions">
+                                                    <div class="dropdown btn-group">
+                                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu " role="menu">
+                                                            <li><?= $this->Html->link(__('View Notification'), ['prefix' => false,'controller' => 'Notifications','action' => 'view', $notification->id]) ?></li>
+                                                            <li><?= $this->Html->link(__('View Subject'), ['prefix' => $notification->link_prefix,'controller' => $notification->link_controller,'action' => $notification->link_action, $notification->link_id]) ?></li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td><?= $notification->has('notificationtype') ? $notification->notificationtype->notification_type : '' ?></td>
+                                                <td><?= h($notification->notification_source) ?></td>
+                                                <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
+                                                <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-yy HH:mm') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

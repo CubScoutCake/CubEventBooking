@@ -26,6 +26,8 @@
                                 <ul class="dropdown-menu " role="menu">
                                     <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoice->id]) ?></li>
                                     <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoice->id]) ?></li>
+                                    <li class="divider"></li>
+                                    <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'action' => 'new_invoice', $invoice->id]) ?></li>
                                 </ul>
                             </div>
                         </td>
