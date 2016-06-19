@@ -22,8 +22,6 @@ $cakeDescription = 'HertsCubs Booking System';
 <html lang="en">
 <head>
 
-    <!-- Bootstrap Implementation -->
-
     <?php echo $this->Html->css('bootstrap.min.css');?>
     <?php //echo $this->Html->script('jquery.js');?>
     <?php //echo $this->Html->script('analytics.js');?>
@@ -42,7 +40,7 @@ $cakeDescription = 'HertsCubs Booking System';
     <?php echo $this->Html->css('metisMenu.min.css');?>
     <?php echo $this->Html->css('sb-admin-2.css');?>
     <?php echo $this->Html->css('timeline.css');?>
-    <?php echo $this->Html->css('font-awesome.css');?>
+    <?php echo $this->Html->css('print.css');?>
 
     <!-- Old Style CSS -->
 
@@ -54,6 +52,20 @@ $cakeDescription = 'HertsCubs Booking System';
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
+   
+    <?php 
+
+        $this->start('Style');
+            echo $this->element('Style/core');
+            echo $this->element('Style/meta');
+        $this->end();
+
+        $this->fetch('meta');
+        $this->fetch('Style');
+        $this->fetch('core');
+        $this->fetch('css');
+
+    ?>   
 
 </head>
 <body>
@@ -164,25 +176,47 @@ $cakeDescription = 'HertsCubs Booking System';
 
     </div>
 
-    <!-- jQuery -->
-    <?php echo $this->Html->script('jquery.min.js');?>
+    <!-- Script Fetch -->
+    <?php 
+        $this->start('Script');
+            echo $this->element('Script/core');
+        $this->end();
 
-    <!-- Bootstrap Core JavaScript -->
-    <?php echo $this->Html->script('bootstrap.min.js');?>
+        $this->fetch('Script');
+        $this->fetch('script');
+     ?>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <?php echo $this->Html->script('metisMenu.min.js');?>
+     <!-- jQuery -->
+     <?php echo $this->Html->script('jquery.min.js');?>
+     <?php echo $this->Html->script('jquery.min.js'); ?>
 
-    <!-- Morris Charts JavaScript -->
-    <?php echo $this->Html->script('raphael-min.js');?>
-    <?php echo $this->Html->script('morris.min.js');?>
-    <?php echo $this->Html->script('morris-data.js');?>
+     <!-- enquiry -->
+     <?php echo $this->Html->script('enquiry.js');?>
 
-    <!-- Custom Theme JavaScript -->
-    <?php echo $this->Html->script('sb-admin-2.js');?>
+     <!-- Bootstrap Core JavaScript -->
+     <?php echo $this->Html->script('bootstrap.min.js');?>
+     <?php echo $this->Html->script('DataTables.bootstrap.min.js'); ?>
 
-    <!-- Actual Script Fetch -->
-    <?= $this->fetch('script') ?>
+     <!-- Metis Menu Plugin JavaScript -->
+     <?php echo $this->Html->script('metisMenu.min.js');?>
+
+     <!-- DataTable Script -->
+     <?php echo $this->Html->script('DataTables.cakephp.dataTables.js'); ?>
+
+     <!-- Morris Charts JavaScript -->
+     <?php //echo $this->Html->script('raphael-min.js');?>
+     <?php //echo $this->Html->script('morris.min.js');?>
+     <?php //echo $this->Html->script('morris-data.js');?>
+
+     <?php echo $this->Html->script('https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js'); ?>
+
+     <?php echo $this->Html->script('https://use.fontawesome.com/687b7f2021.js'); ?>
+
+     <!-- Custom Theme JavaScript -->
+     <?php echo $this->Html->script('sb-admin-2.js');?>
+
+     <!-- Actual Script Fetch -->
+     <?= $this->fetch('script'); ?>
 
 </body>
 <footer>
