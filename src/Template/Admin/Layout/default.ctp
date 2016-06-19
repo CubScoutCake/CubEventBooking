@@ -43,10 +43,8 @@ $cakeDescription = 'HertsCubs Booking System';
     <?php echo $this->Html->css('metisMenu.min.css'); ?>
     <?php echo $this->Html->css('sb-admin-2.css'); ?>
     <?php echo $this->Html->css('timeline.css'); ?>
-    <?php echo $this->Html->css('font-awesome.css'); ?>
     <?php echo $this->Html->css('print.css'); ?>
     <?php echo $this->Html->css('https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css'); ?>
-    <?php echo $this->Html->css('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'); ?>
 
 
     <!-- Old Style CSS -->
@@ -678,8 +676,10 @@ $cakeDescription = 'HertsCubs Booking System';
             <!-- /.navbar-static-side -->
         </nav>
         <div id="page-wrapper">
+        
+            </br>
 
-            <?php /*if (!$this->fetch('tb_flash')) {
+            <?php if (!$this->fetch('tb_flash')) {
                 $this->start('tb_flash');
 
                 if (isset($this->Flash)) {
@@ -687,7 +687,7 @@ $cakeDescription = 'HertsCubs Booking System';
                 }
                 $this->end();
             }
-            echo $this->fetch('tb_flash'); */?>
+            echo $this->fetch('tb_flash'); ?>
             <?= $this->Flash->render() ?>
             <?= $this->Flash->render('auth') ?>
                  
@@ -727,6 +727,9 @@ $cakeDescription = 'HertsCubs Booking System';
 <?php //echo $this->Html->script('morris-data.js');?>
 
 <?php echo $this->Html->script('https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js'); ?>
+
+<!-- Font Awesome CDN -->
+<?php echo $this->Html->script('https://use.fontawesome.com/687b7f2021.js');?>
 
 <!-- Custom Theme JavaScript -->
 <?php echo $this->Html->script('sb-admin-2.js');?>

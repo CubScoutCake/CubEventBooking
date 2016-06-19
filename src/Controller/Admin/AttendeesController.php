@@ -157,6 +157,28 @@ class AttendeesController extends AppController
 
         $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 
+        $phone1 = $attendee->phone;
+        $phone2 = $attendee->phone2;
+
+        $phone1 = str_replace(' ','',$phone1);
+        $phone1 = str_replace('-','',$phone1);
+        $phone1 = str_replace('/','',$phone1);
+        $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
+
+        if (!empty($phone2)) {
+            $phone2 = str_replace(' ','',$phone2);
+            $phone2 = str_replace('-','',$phone2);
+            $phone2 = str_replace('/','',$phone2);
+            $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
+        }
+
+        $phoneAttendee = [
+            'phone' => $phone1,
+            'phone2' => $phone2
+            ];
+
+        $attendee = $this->Attendees->patchEntity($attendee, $phoneAttendee);
+
         if ($this->Attendees->save($attendee)) {
             $this->Flash->success(__('The attendee has been updated.'));
             return $this->redirect(['action' => 'view', $attendee->id]);

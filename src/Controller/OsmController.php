@@ -10,6 +10,7 @@ use Cake\Network\Http\Client;
 use Cake\I18n\Time;
 use Cake\Utility\Hash;
 use Cake\Utility\Security;
+use Cake\Error\Debugger;
 
 
 class OsmController extends AppController
@@ -24,31 +25,36 @@ class OsmController extends AppController
 	{
 		$now = Time::now();
 		$users = TableRegistry::get('Users');
+		$atts = TableRegistry::get('Attendees');
+
+		$session = $this->request->session();
 
 		$user = $users->get($this->Auth->user('id'));
 
-		if ($user->osm_user_id > 0)
+		if (!empty($user->osm_user_id) && $session->check('OSM.Secret'))
 		{
 			$linked = 1;
 		} else {
 			$linked = 0;
 		}
 
-		if ($user->osm_section_id > 0)
+		if (!empty($user->osm_section_id))
 		{
 			$sectionSet = 1;
 		} else {
 			$sectionSet = 0;
 		}
 
-		if ($user->osm_current_term > 0 && $user->osm_term_end > $now)
+		if (!empty($user->osm_current_term) && $user->osm_term_end > $now)
 		{
 			$termCurrent = 1;
 		} else {
 			$termCurrent = 0;
 		}
 
-		$this->set(compact('linked', 'sectionSet', 'termCurrent'));
+		$synced = $atts->find('osm')->where(['user_id' => $this->Auth->user('id')])->count();
+
+		$this->set(compact('linked', 'sectionSet', 'termCurrent', 'synced'));
 	}
 
 	public function link()
@@ -69,14 +75,8 @@ class OsmController extends AppController
 			$api_token = $settings->get('11')->text;
 			$api_base = $settings->get('12')->text;
 
-			$user_email = $this->request->data['osm_email'];//'jacob%404thletchworth.com';
-			$user_password = $this->request->data['osm_password'];//'Rho9Sigma';
-
-			/*$hashed = Security::hash('$user_password', 'sha256', true);
-			//$hashed = substr($hashed,5 , 32);
-			$encrypted = Security::encrypt($hashed, $api_token);
-
-			$session->write('OSM.PWHash', $encrypted);*/
+			$user_email = $this->request->data['osm_email'];
+			$user_password = $this->request->data['osm_password'];
 
 			$http = new Client([
 			  'host' => $api_base,
@@ -135,20 +135,10 @@ class OsmController extends AppController
 
 					$user_osm_id = str_replace("\"", "", substr($body, -8, 7));
 
-					/*if ($session->check('OSM.PWHash')) {
-
-						// Receive Password to Encrypt Secret
-					    $pwHash = $session->read('OSM.PWHash');
-					    $pw = Security::decrypt($pwHash, $api_token);
-
-					    if ($pw == false) {
-					    	$this->Flash->error(__('There was a magic error.'));
-					    } else {
-					    	// Use Password to Encrypt Secret*/
-					    	$user_osm_secret = str_replace("\"", "", substr($body, 10, 34));
-					    	/*$user_osm_secret = Security::encrypt($usr_osm_secret, $pwHash);
-					    }					    
-					}*/
+				   	// Store Secret in Session
+			    	$osm_secret = str_replace("\"", "", substr($body, 10, 34));
+			    	$user_osm_secret = substr($osm_secret, 0, 17);
+			    	$session_osm_secret = substr($osm_secret, 17);
 
 					if (isset($user->osm_linked))
 					{
@@ -156,6 +146,8 @@ class OsmController extends AppController
 					} else {
 						$osmLink = ['osm_user_id' => $user_osm_id, 'osm_secret' => $user_osm_secret, 'osm_linked' => 1, 'osm_linkdate' => $now];
 					}
+
+					$session->write('OSM.Secret', $session_osm_secret);
 
 					$users->patchEntity($user, $osmLink);
 
@@ -194,7 +186,11 @@ class OsmController extends AppController
 		                  ['type' => 'json']
 		                );
 
-		                return $this->redirect(['action' => 'section']);
+		                if (is_null($user->osm_section_id)) {
+		                	return $this->redirect(['action' => 'section']);
+		                } else {
+		                	return $this->redirect(['action' => 'home']);
+		                }
 		            } else {
 		                $this->Flash->error(__('The user could not be saved. Please, try again.'));
 		            }
@@ -216,40 +212,23 @@ class OsmController extends AppController
 		$sectionForm = new SectionForm();
 		$session = $this->request->session();
 
+		$now = Time::now();
 
 		$user = $users->get($this->Auth->user('id'));
 
 		if ($this->request->is('get'))
 		{
-			$now = Time::now();
-
 			$api_id = $settings->get('10')->text;
 			$api_token = $settings->get('11')->text;
 			$api_base = $settings->get('12')->text;
 
-			$user_osm_id = $user->osm_user_id;
-			$user_osm_secret = $user->osm_secret;
-
-			if (is_null($user_osm_secret)) {
+			if (empty($user->osm_secret) || !$session->check('OSM.Secret')) {
 				$this->Flash->error(__('Please link your account first'));
 				return $this->redirect(['action' => 'link']);
-			} /*elseif (!$session->check('OSM.PWHash')) {
-				$this->Flash->error(__('Please enter your password again as it is not stored.'));
-				return $this->redirect(['action' => 'link']);
 			} else {
-
-				// Receive Password to Decrypt Secret
-			    $pwHash = $session->read('OSM.PWHash');
-			    $pw = Security::decrypt($pwHash, $api_token);
-
-			    // Use Password to Decrypt Secret
-			    $decr_osm_secret = Security::decrypt($user_osm_secret, $pwHash);
-			    if ($decr_osm_secret != false) {
-			    	$secret = $decr_osm_secret;
-			    } else {
-			    	$this->Flash->error(__('There was a magic error.'));
-			    }
-			}*/
+				$user_osm_id = $user->osm_user_id;
+				$user_osm_secret = $user->osm_secret . $session->read('OSM.Secret');;
+			}
 
 			$http = new Client([
 			  'host' => $api_base,
@@ -295,7 +274,11 @@ class OsmController extends AppController
 
             if ($users->save($user)) {
                 $this->Flash->success(__('You have selected your OSM section.'));
-                return $this->redirect(['action' => 'term']);
+                if (!empty($user->osm_current_term) && $user->osm_term_end > $now) {
+                	return $this->redirect(['action' => 'home']);
+                } else {
+                	return $this->redirect(['action' => 'term']);
+                }
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
@@ -309,6 +292,8 @@ class OsmController extends AppController
 		$settings = TableRegistry::get('Settings');
 		$users = TableRegistry::get('Users');
 
+		$session = $this->request->session();
+
 		$user = $users->get($this->Auth->user('id'));
 
 		$now = Time::now();
@@ -317,17 +302,16 @@ class OsmController extends AppController
 		$api_token = $settings->get('11')->text;
 		$api_base = $settings->get('12')->text;
 
-		$user_osm_id = $user->osm_user_id;
-		$user_osm_secret = $user->osm_secret;
-		$user_osm_section = $user->osm_section_id;
-
-		if (is_null($user_osm_secret)) {
+		if (is_null($user->osm_secret) || !$session->check('OSM.Secret')) {
 			$this->Flash->error(__('Please link your account first'));
 			return $this->redirect(['action' => 'link']);
-		} elseif (is_null($user->osm_section_id))
-		{
+		} elseif (is_null($user->osm_section_id)) {
 			$this->Flash->error(__('Please set your section first'));
 			return $this->redirect(['action' => 'section']);
+		} else {
+			$user_osm_id = $user->osm_user_id;
+			$user_osm_secret = $user->osm_secret . $session->read('OSM.Secret');
+			$user_osm_section = $user->osm_section_id;
 		}
 
 		$http = new Client([
@@ -347,30 +331,57 @@ class OsmController extends AppController
 
 		if ($response->isOk())
 		{
-			$body = $response->json;
+			$preBody = $response->json;
+			// Debugger::dump($preBody);
 
-			$others = '[{n}!=' . $user->osm_section_id . ']';
+			$body = Hash::get($preBody, $user->osm_section_id);
+			// Debugger::dump($body);
 
-			$body = Hash::remove($body, $others);
+			$terms = Hash::combine($body, '{n}.termid', '{n}','{n}.past');
+			// Debugger::dump($terms);
 
-			$terms = Hash::combine($body, '{n}.termid', ['%s: %s: %s','{n}.past', '{n}.enddate', '{n}.startdate']);
+			$term = Hash::get($terms, 1);
+			//Debugger::dump($term);
 
-			$term = Hash::extract($terms, '{n}.[past=/false/');
-		
-			$term_end = 12; //$term->enddate;
-			$term_start = 12; //$term->startdate;
+			//$term_end = $term->enddate;
 
-			$usr_data = ['osm_current_term' => $term, 'osm_term_end' => $term_end, 'osm_linked' => 3];
+			foreach ($term as $term) {
 
-			$users->patchEntity($user, $usr_data);
+				$startdate = Hash::get($term, 'startdate');
+				$start = Time::parse($startdate);
 
-	        if ($users->save($user)) {
-	            $this->Flash->success(__('Your OSM Term has been set.'));
-	            return $this->redirect(['action' => 'home']);
-	        } else {
-	            $this->Flash->error(__('The user could not be saved. Please, try again.'));
-	            return $this->redirect(['action' => 'home']);
-	        }
+				$enddate = Hash::get($term, 'enddate');
+				$end = Time::parse($enddate);
+
+				$count = 0;
+
+				if ($start < $now && $end > $now) {
+					$count = $count + 1;
+					$termSel = $term;
+				}
+				
+			}
+			
+			if ($count == 1) {
+
+				$termId = Hash::get($termSel, 'termid');
+				$termEndDate = Hash::get($termSel, 'enddate');
+				$termEnd = Time::parse($termEndDate);
+
+				$usr_data = ['osm_current_term' => $termId, 'osm_term_end' => $termEnd, 'osm_linked' => 3];
+
+				$users->patchEntity($user, $usr_data);
+
+		        if ($users->save($user)) {
+		            $this->Flash->success(__('Your OSM Term has been set.'));
+		            return $this->redirect(['action' => 'home']);
+		        } else {
+		            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+		            return $this->redirect(['action' => 'home']);
+		        }
+			} else {
+				$this->Flash->error(__('More than 1 Term Applies.'));
+			}
         } else {
 			$this->Flash->error(__('There was a request error, please try again.'));
 			return $this->redirect(['action' => 'home']);
@@ -393,31 +404,29 @@ class OsmController extends AppController
 		$api_token = $settings->get('11')->text;
 		$api_base = $settings->get('12')->text;
 
-		$user_osm_id = $user->osm_user_id;
-		$user_osm_secret = $user->osm_secret;
-		$user_osm_section = $user->osm_section_id;
-		$user_osm_term = $user->osm_current_term;
-
-		if (is_null($user_osm_secret)) {
+		if (empty($user->osm_secret) || !$session->check('OSM.Secret')) {
 			$this->Flash->error(__('Please link your account first'));
 			return $this->redirect(['action' => 'link']);
-		} /*elseif (!$session->check('OSM.PWHash')) {
-			$this->Flash->error(__('Please enter your password again as it is not stored.'));
-			return $this->redirect(['action' => 'link']);
+		} elseif (empty($user->osm_section_id)) {
+			$this->Flash->error(__('Please select your section first'));
+			return $this->redirect(['action' => 'section']);
+		} elseif (empty($user->osm_current_term) && $user->osm_term_end > $now) {
+			$this->Flash->error(__('Please choose your Term first'));
+			return $this->redirect(['action' => 'term']);
 		} else {
+			$user_osm_id = $user->osm_user_id;
+			$user_osm_secret = $user->osm_secret . $session->read('OSM.Secret');;
+			$user_osm_section = $user->osm_section_id;
+			$user_osm_term = $user->osm_current_term;
+		}
 
-			// Receive Password to Decrypt Secret
-		    $pwHash = $session->read('OSM.PWHash');
-		    $pw = Security::decrypt($pwHash, $api_token);
+		if (!isset($successCnt)) {
+			$successCnt = 0;
+		}
 
-		    // Use Password to Decrypt Secret
-		    $decr_osm_secret = Security::decrypt($user_osm_secret, $pwHash);
-		    if ($decr_osm_secret != false) {
-		    	$secret = $decr_osm_secret;
-		    } else {
-		    	$this->Flash->error(__('There was a magic error.'));
-		    }
-		}*/
+		if (!isset($errCnt)) {
+			$errCnt = 0;
+		}
 
 		$http = new Client([
 		  'host' => $api_base,
@@ -429,7 +438,7 @@ class OsmController extends AppController
 
 		$response = $http->post($url, [
 			'userid' => $user_osm_id, 
-			'secret' => '94c6d3ddc024c456005348db40136783', //$user_osm_secret, 
+			'secret' => $user_osm_secret, //$user_osm_secret, 
 			'token' => $api_token, 
 			'apiid' => $api_id,
 			'section_id' => $user_osm_section,
@@ -438,26 +447,254 @@ class OsmController extends AppController
 
 		if ($response->isOk())
 		{
-			$body = $response->json;
+			$preBody = $response->json;
+			//Debugger::dump($preBody);
+
+			$status = Hash::get($preBody, 'status');
+
+			if ($status == false) {
+				$error = Hash::get($preBody, 'error');
+
+				$message = Hash::get($error, 'message');
+
+				$this->Flash->error(__($message . ' Please see instructions for granting access in OSM.'));
+				return $this->redirect(['action' => 'access']);
+			}
+
+			$cubs = Hash::get($preBody, 'data');
+			//Debugger::dump($cubs);
 			
 			//$cubs = Hash::extract($body, 'items');
 			//$cubs = Hash::normalize($cubs);
 
-			$cubs = $body->data;
-
 			foreach ($cubs as $cub) {
 
-				if ($cub->active == true) {
-					$cub_data = [
-						'firstname' => $cub->first_name,
-						'lastname' => $cub->last_name,
-						'osm_id' => $cub->member_id,
-						'user_id' => $user->id,
-						'scoutgroup_id' => $user->scoutgroup_id,
-						'dateofbirth' => $cub->date_of_birth,
-						'osm_generated' => true];
+				$active = Hash::get($cub, 'active');
 
-					$atts->newEntity($att, $cub_data);
+				if ($active == true) {
+
+					//Debugger::dump($cub);
+
+					$firstname = Hash::get($cub, 'first_name');
+					$lastname = Hash::get($cub, 'last_name');
+					$osm_id = Hash::get($cub, 'member_id');
+					$dateofbirth = Hash::get($cub, 'date_of_birth');
+					//$dateofbirth = Time::parse($dateofbirth);
+
+					$patrol = Hash::get($cub, 'patrol');
+
+					//Debugger::dump($patrol);
+
+					$customData = Hash::get($cub, 'custom_data');
+
+					if ($patrol == 'Leaders')
+					{
+						$role_id = 19;
+
+						$address = Hash::get($customData, 6);
+						$phoneAddress = Hash::get($customData, 6);
+					} else {
+						$role_id = 1;
+
+						$address = Hash::get($customData, 1);
+						$phoneAddress = Hash::get($customData, 1);
+					}
+
+					// Debugger::dump($customData);
+
+					$address1 = Hash::get($address, 7);
+					$address2 = Hash::get($address, 8);
+					$city = Hash::get($address, 9);
+					$county = Hash::get($address, 10);
+					$postcode = Hash::get($address, 11);
+
+					if (empty($address1) && empty($address2) && empty($city) && empty($county) && empty($postcode)) {
+						$address = Hash::get($customData, 1);
+
+						$address1 = Hash::get($address, 7);
+						$address2 = Hash::get($address, 8);
+						$city = Hash::get($address, 9);
+						$county = Hash::get($address, 10);
+						$postcode = Hash::get($address, 11);
+
+						if (empty($address1) && empty($address2) && empty($city) && empty($county) && empty($postcode)) {
+							$address = Hash::get($customData, 2);
+
+							$address1 = Hash::get($address, 7);
+							$address2 = Hash::get($address, 8);
+							$city = Hash::get($address, 9);
+							$county = Hash::get($address, 10);
+							$postcode = Hash::get($address, 11);
+
+							if (empty($address1) && empty($address2) && empty($city) && empty($county) && empty($postcode)) {
+								$address = Hash::get($customData, 3);
+
+								$address1 = Hash::get($address, 7);
+								$address2 = Hash::get($address, 8);
+								$city = Hash::get($address, 9);
+								$county = Hash::get($address, 10);
+								$postcode = Hash::get($address, 11);
+
+								if (empty($address1) && empty($address2) && empty($city) && empty($county) && empty($postcode)) {
+									$address = Hash::get($customData, 6);
+
+									$address1 = Hash::get($address, 7);
+									$address2 = Hash::get($address, 8);
+									$city = Hash::get($address, 9);
+									$county = Hash::get($address, 10);
+									$postcode = Hash::get($address, 11);
+								}
+							}
+						}
+					}
+
+					$address1 = trim($address1);
+					$address2 = trim($address2);
+					$city = trim($city);
+					$county = trim($county);
+					$postcode = trim($postcode);
+
+					if (empty($city)) {
+						$city = $address2;
+						$address2 = null;
+					}
+
+					if (strtoupper($city) == 'HERTS' || strtoupper($city) == 'HERTFORDSHIRE') {
+
+						$county = $city;
+						$city = $address2;
+						$address2 = null;
+					}
+
+					if (strtoupper($county) == 'HERTS') {
+						$county = ucwords(strtolower('HERTFORDSHIRE'));
+					}
+
+					if (empty($county)) {
+						$county = ucwords(strtolower('HERTFORDSHIRE'));
+					}
+
+					$postcode = str_replace(' ','',$postcode);
+					$postcode = str_replace('-','',$postcode);
+					$postcode = str_replace('/','',$postcode);
+					$postcode = str_replace('.','',$postcode);
+					$postcode = str_replace(',','',$postcode);
+					$postcode = substr($postcode, 0, -3) . ' ' . substr($postcode, -3);
+
+					// GET TELEPHONE VALUES
+
+					$phone1 = Hash::get($phoneAddress, 18);
+					$phone2 = Hash::get($phoneAddress, 20);
+
+					if (empty($phone1) && empty($phone2)) {
+						$phoneAddress = Hash::get($customData, 1);
+
+						$phone1 = Hash::get($phoneAddress, 18);
+						$phone2 = Hash::get($phoneAddress, 20);
+
+						if (empty($phone1) && empty($phone2)) {
+							$phoneAddress = Hash::get($customData, 2);
+
+							$phone1 = Hash::get($phoneAddress, 18);
+							$phone2 = Hash::get($phoneAddress, 20);
+
+							if (empty($phone1) && empty($phone2)) {
+								$phoneAddress = Hash::get($customData, 3);
+
+								$phone1 = Hash::get($phoneAddress, 18);
+								$phone2 = Hash::get($phoneAddress, 20);
+
+								if (empty($phone1) && empty($phone2)) {
+									$phoneAddress = Hash::get($customData, 6);
+
+									$phone1 = Hash::get($phoneAddress, 18);
+									$phone2 = Hash::get($phoneAddress, 20);
+								}
+							}
+						}
+					}
+
+					$phone1 = trim($phone1);
+					$phone2 = trim($phone2);			
+
+					if (empty($phone1) && empty($phone2)) {
+						$phone1 = 0700;
+					} elseif (empty($phone1)) {
+						$phone1 = $phone2;
+						$phone2 = null;
+					}
+
+					$phone1 = str_replace(' ','',$phone1);
+					$phone1 = str_replace('-','',$phone1);
+					$phone1 = str_replace('/','',$phone1);
+					$phone1 = str_replace('+44','0',$phone1);
+					$phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
+
+					if (!empty($phone2)) {
+						$phone2 = str_replace(' ','',$phone2);
+						$phone2 = str_replace('-','',$phone2);
+						$phone2 = str_replace('/','',$phone2);
+						$phone2 = str_replace('+44','0',$phone2);
+						$phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
+
+						if ($phone1 == $phone2) {
+							$phone2 = null;
+						}
+					}
+
+					//Debugger::dump($address);
+
+					$attsName = $atts->find('all')->where(['firstname' => $firstname, 'lastname' => $lastname, 'user_id' => $user->id]);
+
+					$attsID = $atts->find('all')->where(['osm_id' => $osm_id, 'user_id' => $user->id]);
+
+					$count = MAX($attsID->count(), $attsName->count());
+
+					if ($count == 1) {
+						if ($attsID->count() == 1) {
+							$att = $attsID->first();
+						} else {
+							$att = $attsName->first();
+						}
+
+						$cub_data = [
+							'osm_id' => $osm_id,
+							'dateofbirth' => $dateofbirth,
+							'address_1' => ucwords(strtolower($address1)),
+							'address_2' => ucwords(strtolower($address2)),
+							'city' => ucwords(strtolower($city)),
+							'county' => ucwords(strtolower($county)),
+							'postcode' => strtoupper($postcode),
+							'phone' => strtoupper($phone1),
+							'phone2' => strtoupper($phone2),
+							'osm_sync_date' => $now,
+							'deleted' => null
+						];
+
+					} else {
+						$att = $atts->newEntity();
+
+						$cub_data = [
+							'firstname' => ucwords(strtolower($firstname)),
+							'lastname' => ucwords(strtolower($lastname)),
+							'osm_id' => $osm_id,
+							'user_id' => $user->id,
+							'scoutgroup_id' => $user->scoutgroup_id,
+							'dateofbirth' => $dateofbirth,
+							'role_id' => $role_id,
+							'osm_generated' => true,
+							'address_1' => ucwords(strtolower($address1)),
+							'address_2' => ucwords(strtolower($address2)),
+							'city' => ucwords(strtolower($city)),
+							'county' => ucwords(strtolower($county)),
+							'postcode' => strtoupper($postcode),
+							'phone' => strtoupper($phone1),
+							'phone2' => strtoupper($phone2),
+							'osm_sync_date' => $now
+						];
+					}
+
+					$att = $atts->patchEntity($att, $cub_data);
 
 		            if ($atts->save($att)) {
 		                $successCnt = $successCnt + 1;
@@ -475,10 +712,43 @@ class OsmController extends AppController
 				$this->Flash->success(__('Synced ' . $successCnt . ' records sucessfully.'));
 			}
 
+			$osmEnt = [
+				'Entity Id' => null,
+				'Controller' => 'OSM',
+				'Action' => 'Sync',
+				'User Id' => $this->Auth->user('id'),
+				'Creation Date' => $now,
+				'Modified' => null,
+				'OSM' => [
+					'ErrorNumber' => $errCnt,
+					'SuccessNumber' => $successCnt
+					]
+				];
+
+			$sets = TableRegistry::get('Settings');
+			
+			$jsonOSM = json_encode($osmEnt);
+			$api_key = $sets->get(13)->text;
+			$projectId = $sets->get(14)->text;
+			$eventType = 'Action';
+			
+			$keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+			
+			$http = new Client();
+			$response = $http->post(
+			  $keenURL,
+			  $jsonOSM,
+			  ['type' => 'json']
+			);
+
 			return $this->redirect(['action' => 'home']);
 		} else {
 			$this->Flash->error(__('There was a request error, please try again.'));
 			return $this->redirect(['action' => 'home']);
 		}
+	}
+
+	public function access() {
+
 	}
 }

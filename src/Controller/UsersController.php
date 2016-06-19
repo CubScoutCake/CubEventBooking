@@ -112,12 +112,12 @@ class UsersController extends AppController
             
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'sync']);
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
         }
-        $roles = $this->Users->Roles->find('list', ['limit' => 200]);
+        $roles = $this->Users->Roles->find('nonAuto')->find('leaders')->find('list', ['limit' => 200]);
         $scoutgroups = $this->Users->Scoutgroups->find('list', 
             [
                 'keyField' => 'id',
@@ -127,6 +127,53 @@ class UsersController extends AppController
             ->contain(['Districts']);
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
+    }
+
+    public function sync() {
+
+        $user = $this->Users->get($this->Auth->user('id'));
+
+        $atts = TableRegistry::get('Attendees');
+
+        $attRef = $atts->find('all')->where(['user_attendee' => true, 'user_id' => $user->id]);
+        $attName = $atts->find('all')->where(['firstname' => $user->firstname, 'lastname' => $user->lastname, 'user_id' => $user->id]);
+
+        $count = MAX($attRef->count(), $attName->count());
+
+        if ($count == 1) {
+            if ($attRef->count() == 1) {
+                $att = $attRef->first();
+            } else {
+                $att = $attName->first();
+            }
+        } else {
+            $newAttendeeData = ['dateofbirth' => '01-01-1990'];
+            $att = $atts->newEntity($newAttendeeData);
+        }              
+
+        $attendeeData = [
+            'user_id' => $user->id,
+            'firstname' => $user->firstname,
+            'lastname' => $user->lastname,
+            'address_1' => $user->address_1,
+            'address_2' => $user->address_2,
+            'city' => $user->city,
+            'county' => $user->county,
+            'user_attendee' => true,
+            'postcode' => $user->postcode,
+            'role_id' => $user->role_id,
+            'scoutgroup_id' => $user->scoutgroup_id,
+            'phone' => $user->phone
+        ];
+
+        $att = $atts->patchEntity($att, $attendeeData);
+
+        if ($atts->save($att)) {
+            $this->Flash->success(__('An Attendee for your User has been Syncronised.'));
+        } else {
+            $this->Flash->error(__('An Attendee for your User could not be Syncronised. Please, try again.'));
+        }
+        return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
     }
 
     /**
@@ -410,7 +457,10 @@ class UsersController extends AppController
     }
 
     public function logout()
-    {
+    {  
+        $session = $this->request->session();
+        $session->delete('OSM.Secret');
+
         $this->Flash->success('You are now logged out.');
         return $this->redirect($this->Auth->logout());
     }

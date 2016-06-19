@@ -43,7 +43,6 @@ $cakeDescription = 'HertsCubs Booking System';
     <?php echo $this->Html->css('metisMenu.min.css');?>
     <?php echo $this->Html->css('sb-admin-2.css');?>
     <?php echo $this->Html->css('timeline.css');?>
-    <?php echo $this->Html->css('font-awesome.css');?>
     <?php echo $this->Html->css('print.css');?>
 
     <!-- Old Style CSS -->
@@ -480,6 +479,14 @@ $cakeDescription = 'HertsCubs Booking System';
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
+                            <a href="<?php echo $this->Url->build([
+                                'controller' => 'Osm',
+                                'action' => 'home',
+                                'prefix' => false]); ?>">
+                                <i class="fa fa-refresh fa-fw"></i> OSM Sync</a>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
                             <a href="#"><i class="fa fa-files-o fa-fw"></i> Invoices<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -560,6 +567,8 @@ $cakeDescription = 'HertsCubs Booking System';
         </nav>
         <div id="page-wrapper">
 
+            </br>
+
             <?php if (!$this->fetch('tb_flash')) {
                 $this->start('tb_flash');
 
@@ -586,16 +595,16 @@ $cakeDescription = 'HertsCubs Booking System';
 </body>
 
 <!-- jQuery -->
-<?php echo $this->Html->script('jquery.min.js');?>
+<?php echo $this->Html->script('jquery.min.js',['block' => true]);?>
 
 <!-- enquiry -->
-<?php echo $this->Html->script('enquiry.js');?>
+<?php echo $this->Html->script('enquiry.js',['block' => true]);?>
 
 <!-- Bootstrap Core JavaScript -->
-<?php echo $this->Html->script('bootstrap.min.js');?>
+<?php echo $this->Html->script('bootstrap.min.js',['block' => true]);?>
 
 <!-- Metis Menu Plugin JavaScript -->
-<?php echo $this->Html->script('metisMenu.min.js');?>
+<?php echo $this->Html->script('metisMenu.min.js',['block' => true]);?>
 
 <!-- Morris Charts JavaScript -->
 <?php //echo $this->Html->script('raphael-min.js');?>
@@ -603,7 +612,10 @@ $cakeDescription = 'HertsCubs Booking System';
 <?php //echo $this->Html->script('morris-data.js');?>
 
 <!-- Custom Theme JavaScript -->
-<?php echo $this->Html->script('sb-admin-2.js');?>
+<?php echo $this->Html->script('sb-admin-2.js',['block' => true]);?>
+
+<!-- Font Awesome CDN -->
+<?php echo $this->Html->script('https://use.fontawesome.com/687b7f2021.js',['block' => true]);?>
 
 <!-- Actual Script Fetch -->
 <?= $this->fetch('script') ?>

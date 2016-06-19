@@ -155,12 +155,22 @@ $cakeDescription = 'HertsCubs Booking System';
 
     </nav>
     <div id="page-wrapper">
-        
-        
+    
+        </br>
+
+        <?php if (!$this->fetch('tb_flash')) {
+            $this->start('tb_flash');
+
+            if (isset($this->Flash)) {
+                echo $this->Flash->render();
+            }
+            $this->end();
+        }
+        echo $this->fetch('tb_flash'); ?>
         <?= $this->Flash->render() ?>
         <?= $this->Flash->render('auth') ?>
-
-        <?= $this->fetch('content') ?>   
+             
+        <?= $this->fetch('content') ?>    
 
     </div>
 

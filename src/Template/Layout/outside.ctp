@@ -42,7 +42,6 @@ $cakeDescription = 'HertsCubs Booking System';
     <?php echo $this->Html->css('metisMenu.min.css');?>
     <?php echo $this->Html->css('sb-admin-2.css');?>
     <?php echo $this->Html->css('timeline.css');?>
-    <?php echo $this->Html->css('font-awesome.css');?>
 
     <!-- Old Style CSS -->
 
@@ -155,12 +154,22 @@ $cakeDescription = 'HertsCubs Booking System';
 
     </nav>
     <div id="page-wrapper">
-        
-        
+    
+        </br>
+
+        <?php if (!$this->fetch('tb_flash')) {
+            $this->start('tb_flash');
+
+            if (isset($this->Flash)) {
+                echo $this->Flash->render();
+            }
+            $this->end();
+        }
+        echo $this->fetch('tb_flash'); ?>
         <?= $this->Flash->render() ?>
         <?= $this->Flash->render('auth') ?>
-
-        <?= $this->fetch('content') ?>   
+             
+        <?= $this->fetch('content') ?>    
 
     </div>
 
@@ -175,6 +184,9 @@ $cakeDescription = 'HertsCubs Booking System';
 
     <!-- Custom Theme JavaScript -->
     <?php echo $this->Html->script('sb-admin-2.js');?>
+
+    <!-- Font Awesome CDN -->
+    <?php echo $this->Html->script('https://use.fontawesome.com/687b7f2021.js',['block' => true]);?>
 
     <!-- Actual Script Fetch -->
     <?= $this->fetch('script') ?>

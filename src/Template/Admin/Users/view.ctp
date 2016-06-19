@@ -37,12 +37,8 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Users',
-                        'action' => 'edit',
-                        'prefix' => 'admin',
-                        $user->id],['_full']); ?>">Edit User</a>
-                    </li>
+                    <li><?= $this->Html->link(__('Edit User'), ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'edit', $user->id]) ?></li>
+                    <li><?= $this->Html->link(__('Sync Attendee'), ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'sync', $user->id]) ?></li>
                     <li><?= $this->Html->link(__('Update Capitalisation'), ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'update', $user->id]) ?></li>
                     <li><?= $this->Form->postLink(__('Delete'), ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?></li>
                     <li class="divider"></li>
@@ -112,7 +108,7 @@
         </div>
     </div>
 </div>
-<?php if (!empty($user->applications) || !empty($user->attendees) || !empty($user->invoices)): ?>
+<?php if (!empty($user->applications) || !empty($user->attendees) || !empty($user->invoices) || !empty($user->notes) || !empty($user->notifications)): ?>
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-primary">
@@ -123,14 +119,16 @@
             <div class="panel-body">
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills">
-                    <li class="active">
-                        <a href="#appl-pills" data-toggle="tab"><i class="fa fa-tasks fa-fw"></i> User's Applications</a>
-                    </li>
+                    <?php if (!empty($user->applications)): ?>
+                        <li <?php if (!empty($user->applications)) { echo 'class="active"'; } ?>><a href="#appl-pills" data-toggle="tab"><i class="fa fa-tasks fa-fw"></i> User's Applications</a></li>
+                    <?php endif; ?>
                     <?php if (!empty($user->invoices)): ?>
                         <li><a href="#invo-pills" data-toggle="tab"><i class="fa fa-files-o fa-fw"></i> Users's Invoices</a></li>
                     <?php endif; ?>
                     <?php if (!empty($user->attendees)): ?>
-                        <li><a href="#att-pills" data-toggle="tab"><i class="fa fa-group fa-fw"></i> User's Attendees</a></li>
+                        <li <?php if (empty($user->applications)) { echo 'class="active"'; } ?>>
+                            <a href="#att-pills" data-toggle="tab"><i class="fa fa-group fa-fw"></i> User's Attendees</a>
+                        </li>
                     <?php endif; ?>
                     <?php if (!empty($user->notes)): ?>
                         <li><a href="#note-pills" data-toggle="tab"><i class="fa fa-pencil-square-o fa-fw"></i> User Notes</a></li>
@@ -142,7 +140,7 @@
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane fade in active" id="appl-pills">
+                    <div class="tab-pane fade <?php if (!empty($user->applications)) { echo 'in active'; } ?>" id="appl-pills">
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
@@ -233,7 +231,7 @@
                         </div>
                     <?php endif; ?>
                     <?php if (!empty($user->attendees)): ?>
-                        <div class="tab-pane fade" id="att-pills">
+                        <div class="tab-pane fade <?php if (empty($user->applications)) { echo 'in active'; } ?>" id="att-pills">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>

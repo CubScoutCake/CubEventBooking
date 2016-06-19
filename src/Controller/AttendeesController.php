@@ -52,8 +52,10 @@ class AttendeesController extends AppController
      */
     public function adult($appId = null)
     {
-        $attendee = $this->Attendees->newEntity();
         if ($this->request->is('post')) {
+
+            $attendee = $this->Attendees->newEntity();
+
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
 
             $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
@@ -65,6 +67,28 @@ class AttendeesController extends AppController
                 ,'postcode' => strtoupper($attendee->postcode)];
 
             $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
+
+            $phone1 = $attendee->phone;
+            $phone2 = $attendee->phone2;
+
+            $phone1 = str_replace(' ','',$phone1);
+            $phone1 = str_replace('-','',$phone1);
+            $phone1 = str_replace('/','',$phone1);
+            $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
+
+            if (!empty($phone2)) {
+                $phone2 = str_replace(' ','',$phone2);
+                $phone2 = str_replace('-','',$phone2);
+                $phone2 = str_replace('/','',$phone2);
+                $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
+            }
+
+            $phoneAttendee = [
+                'phone' => $phone1,
+                'phone2' => $phone2
+                ];
+
+            $attendee = $this->Attendees->patchEntity($attendee, $phoneAttendee);
 
             $attendee->user_id = $this->Auth->user('id');
 
@@ -113,7 +137,7 @@ class AttendeesController extends AppController
         }
 
         $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('scoutgroup_id')]]);
-        $roles = $this->Attendees->Roles->find('list', ['limit' => 200, 'conditions' => ['minor' => 0]]);        
+        $roles = $this->Attendees->Roles->find('nonAuto')->find('adults')->find('list', ['limit' => 200]);        
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
@@ -146,6 +170,28 @@ class AttendeesController extends AppController
                 ,'postcode' => strtoupper($attendee->postcode)];
 
             $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
+
+            $phone1 = $attendee->phone;
+            $phone2 = $attendee->phone2;
+
+            $phone1 = str_replace(' ','',$phone1);
+            $phone1 = str_replace('-','',$phone1);
+            $phone1 = str_replace('/','',$phone1);
+            $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
+
+            if (!empty($phone2)) {
+                $phone2 = str_replace(' ','',$phone2);
+                $phone2 = str_replace('-','',$phone2);
+                $phone2 = str_replace('/','',$phone2);
+                $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
+            }
+
+            $phoneAttendee = [
+                'phone' => $phone1,
+                'phone2' => $phone2
+                ];
+
+            $attendee = $this->Attendees->patchEntity($attendee, $phoneAttendee);
 
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The Cub has been saved.'));
@@ -192,7 +238,7 @@ class AttendeesController extends AppController
         }
 
         $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('scoutgroup_id')]]);
-        $roles = $this->Attendees->Roles->find('list', ['limit' => 200, 'conditions' => ['minor' => 1]]);         
+        $roles = $this->Attendees->Roles->find('nonAuto')->find('minors')->find('list', ['limit' => 200]);         
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
@@ -230,6 +276,28 @@ class AttendeesController extends AppController
                 ,'postcode' => strtoupper($attendee->postcode)];
 
             $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
+
+            $phone1 = $attendee->phone;
+            $phone2 = $attendee->phone2;
+
+            $phone1 = str_replace(' ','',$phone1);
+            $phone1 = str_replace('-','',$phone1);
+            $phone1 = str_replace('/','',$phone1);
+            $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
+
+            if (!empty($phone2)) {
+                $phone2 = str_replace(' ','',$phone2);
+                $phone2 = str_replace('-','',$phone2);
+                $phone2 = str_replace('/','',$phone2);
+                $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
+            }
+
+            $phoneAttendee = [
+                'phone' => $phone1,
+                'phone2' => $phone2
+                ];
+
+            $attendee = $this->Attendees->patchEntity($attendee, $phoneAttendee);
             
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
@@ -239,7 +307,7 @@ class AttendeesController extends AppController
             }
         }
         $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200]);
-        $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
+        $roles = $this->Attendees->Roles->find('nonAuto')->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200,'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
         $this->set(compact('attendee', 'users', 'scoutgroups', 'roles', 'applications', 'allergies'));
@@ -298,38 +366,6 @@ class AttendeesController extends AppController
             $this->Flash->error(__('The attendee could not be deleted. Please, try again.'));
         }
         return $this->redirect(['action' => 'index']);
-    }
-
-    public function locateCount($roleId = null, $appId = null)
-    {
-        $attendees = TableRegistry::get('Attendees');
-
-        $total = $attendees->find()->where(['role_id' => 1])->count(['id']);
-
-        //$results = $total->count(*);
-
-        $data = $total;
-
-        //$total = $attendees->find('all', ['conditions' => ['Attendees.role_id' => 2]]);
-
-        //$total = $attendees->find('list');
-
-        //$data = $total->count();
-
-        //$data = $total->fetchColumn(0);
-
-        $this->set('data',$data);
-
-        //$fish = $attendees->find();
-        //$fish->select([$fish->func()->count('Attendees.id')])
-        //->where()
-
-        //->contain(['Applications.Attendees'])
-        //->where(['role_id' => $roleId, 'Applications.id' => $appId])
-        //->group(['Applications.id']);
-
-        //$total = $fish;
-
     }
 
     public function isAuthorized($user)

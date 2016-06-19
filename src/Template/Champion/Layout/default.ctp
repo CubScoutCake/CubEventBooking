@@ -46,7 +46,6 @@ $cakeDescription = 'HertsCubs Booking System';
     <?php echo $this->Html->css('font-awesome.css'); ?>
     <?php echo $this->Html->css('print.css'); ?>
     <?php echo $this->Html->css('https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css'); ?>
-    <?php echo $this->Html->css('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'); ?>
 
 
     <!-- Old Style CSS -->
@@ -597,33 +596,35 @@ $cakeDescription = 'HertsCubs Booking System';
 </body>
 
 <!-- jQuery -->
-<?php echo $this->Html->script('jquery.min.js');?>
-<?php echo $this->Html->script('jquery.min.js'); ?>
+<?php echo $this->Html->script('jquery.min.js',['block' => true]);?>
+<?php echo $this->Html->script('jquery.min.js',['block' => true]); ?>
 
 <!-- enquiry -->
-<?php echo $this->Html->script('enquiry.js');?>
+<?php echo $this->Html->script('enquiry.js',['block' => true]);?>
 
 <!-- Bootstrap Core JavaScript -->
-<?php echo $this->Html->script('bootstrap.min.js');?>
-<?php echo $this->Html->script('DataTables.bootstrap.min.js'); ?>
+<?php echo $this->Html->script('bootstrap.min.js',['block' => true]);?>
+<?php echo $this->Html->script('DataTables.bootstrap.min.js',['block' => true]); ?>
 
 <!-- Metis Menu Plugin JavaScript -->
-<?php echo $this->Html->script('metisMenu.min.js');?>
+<?php echo $this->Html->script('metisMenu.min.js',['block' => true]);?>
 
 <!-- DataTable Script -->
-<?php echo $this->Html->script('DataTables.cakephp.dataTables.js'); ?>
+<?php echo $this->Html->script('DataTables.cakephp.dataTables.js',['block' => true]); ?>
 
 <!-- Morris Charts JavaScript -->
 <?php //echo $this->Html->script('raphael-min.js');?>
 <?php //echo $this->Html->script('morris.min.js');?>
 <?php //echo $this->Html->script('morris-data.js');?>
 
-<?php echo $this->Html->script('https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js'); ?>
+<?php echo $this->Html->script('https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js',['block' => true]); ?>
+
+<?php echo $this->Html->script('https://use.fontawesome.com/687b7f2021.js',['block' => true]); ?>
 
 <!-- Custom Theme JavaScript -->
-<?php echo $this->Html->script('sb-admin-2.js');?>
+<?php echo $this->Html->script('sb-admin-2.js',['block' => true]);?>
 
 <!-- Actual Script Fetch -->
-<?= $this->fetch('script') ?>
+<?= echo $this->fetch('script'); ?>
 
 </html>

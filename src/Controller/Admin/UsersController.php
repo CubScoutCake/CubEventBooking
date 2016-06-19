@@ -103,30 +103,52 @@ class UsersController extends AppController
 
     // use MailerAwareTrait;
 
-    /*public function register()
-    {
-        $user = $this->Users->newEntity();
+    public function sync($userId) {
 
-        if ($this->request->is('post')) {
+        $user = $this->Users->get($userId);
 
-            $user = $this->Users->patchEntity($user, $this->request->data);
+        $atts = TableRegistry::get('Attendees');
 
-            $newData = ['section' => 'Cubs', 'authrole' => 'user'];
-            $user = $this->Users->patchEntity($user, $newData);
+        $attRef = $atts->find('all')->where(['user_attendee' => true, 'user_id' => $user->id]);
+        $attName = $atts->find('all')->where(['firstname' => $user->firstname, 'lastname' => $user->lastname, 'user_id' => $user->id]);
 
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('You have sucesfully registered!'));
-                return $this->redirect(['controller' => 'Users', 'action' => 'login','prefix' => false]);
+        $count = MAX($attRef->count(), $attName->count());
+
+        if ($count == 1) {
+            if ($attRef->count() == 1) {
+                $att = $attRef->first();
             } else {
-                $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));
+                $att = $attName->first();
             }
-        }
-        $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200]);
-        $this->set(compact('user', 'roles', 'scoutgroups'));
-        $this->set('_serialize', ['user']);
+        } else {
+            $newAttendeeData = ['dateofbirth' => '1990-01-01'];
+            $att = $atts->newEntity($newAttendeeData);
+        }              
 
-    }*/
+        $attendeeData = [
+            'user_id' => $user->id,
+            'firstname' => $user->firstname,
+            'lastname' => $user->lastname,
+            'address_1' => $user->address_1,
+            'address_2' => $user->address_2,
+            'city' => $user->city,
+            'county' => $user->county,
+            'user_attendee' => true,
+            'postcode' => $user->postcode,
+            'role_id' => $user->role_id,
+            'scoutgroup_id' => $user->scoutgroup_id,
+            'phone' => $user->phone
+        ];
+
+        $att = $atts->patchEntity($att, $attendeeData);
+
+        if ($atts->save($att)) {
+            $this->Flash->success(__('An Attendee for the User has been Syncronised.'));
+        } else {
+            $this->Flash->error(__('An Attendee for the User could not be Syncronised. Please, try again.'));
+        }
+        return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $user->id]);
+    }
 
     /**
      * Edit method

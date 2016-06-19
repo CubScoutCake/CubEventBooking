@@ -66,4 +66,24 @@ class RolesTable extends Table
 
         return $validator;
     }
+
+    public function findNonAuto($query)
+    {
+        return $query->where(['Roles.automated' => false]);
+    }
+
+    public function findAdults($query)
+    {
+        return $query->where(['Roles.minor' => false]);
+    }
+
+    public function findLeaders($query)
+    {
+        return $query->where(['Roles.minor' => false, 'Roles.invested' => true]);
+    }
+
+    public function findMinors($query)
+    {
+        return $query->where(['Roles.minor' => true]);
+    }
 }

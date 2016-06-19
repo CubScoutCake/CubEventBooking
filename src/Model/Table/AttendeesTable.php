@@ -125,14 +125,6 @@ class AttendeesTable extends Table
             ->allowEmpty('nightsawaypermit');
 
         $validator
-            ->add('osm_generated', 'valid', ['rule' => 'boolean'])
-            ->allowEmpty('osm_generated');
-
-        $validator
-            ->add('osm_id', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('osm_id');
-
-        $validator
             ->add('vegetarian', 'valid', ['rule' => 'boolean'])
             ->allowEmpty('vegetarian');
 
@@ -151,7 +143,6 @@ class AttendeesTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
-        $rules->add($rules->isUnique(['osm_id']));
         return $rules;
     }
 
@@ -172,6 +163,11 @@ class AttendeesTable extends Table
             ])
             ->group(['Attendees.id'])
             ->autoFields(true);
+    }
+
+    public function findOsm($query)
+    {
+        return $query->where(['osm_id IS NOT' => false]);
     }
 
     public function findUnattached($query)

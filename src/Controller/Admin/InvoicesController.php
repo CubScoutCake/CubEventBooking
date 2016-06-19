@@ -241,7 +241,13 @@ class InvoicesController extends AppController
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }
-        $users = $this->Invoices->Users->find('list', ['limit' => 200]);
+        $users = $this->Invoices->Users->find('list', 
+                    [
+                        'keyField' => 'id',
+                        'valueField' => 'full_name',
+                        'groupField' => 'scoutgroup.district.district'
+                    ])
+                    ->contain(['Scoutgroups.Districts']);
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
         
         // If User Set or Not - Limit the list.
@@ -286,7 +292,13 @@ class InvoicesController extends AppController
             }
         }
 
-        $users = $this->Invoices->Users->find('list', ['limit' => 200]);
+        $users = $this->Invoices->Users->find('list', 
+            [
+                'keyField' => 'id',
+                'valueField' => 'full_name',
+                'groupField' => 'scoutgroup.district.district'
+            ])
+            ->contain(['Scoutgroups.Districts']);
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
         $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
 
