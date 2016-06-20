@@ -88,11 +88,9 @@ class AttendeesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('firstname', 'create')
             ->notEmpty('firstname');
 
         $validator
-            ->requirePresence('lastname', 'create')
             ->notEmpty('lastname');
 
         $validator

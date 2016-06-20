@@ -196,6 +196,8 @@ class NotificationsController extends AppController
 
                 $this->getMailer('Payment')->send('payment', [$user, $group, $notification, $invoice, $payment]);
 
+                $sets = TableRegistry::get('Settings');
+
                 $jsonPayment = json_encode($paymentData);
                 $p_api_key = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
