@@ -115,7 +115,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-            <?= $this->Html->image($event->logo, ['alt' => $event->alt_text, 'height' => $logoHeight, 'width' => $logoWidth]); ?>
+            <?= $this->Html->image($event->logo, ['alt' => $event->alt_text, 'height' => $logoHeight, 'width' => $logoWidth, 'class' => 'img-responsive']); ?>
             </div>
             <div class="panel-footer">
                 <p><?= h($event->intro_text) ?></p>
