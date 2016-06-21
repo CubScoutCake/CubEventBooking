@@ -211,12 +211,14 @@ class UsersController extends AppController
                     $loggedInUser = $this->Users->get($userId);
 
                     $now = Time::now();
-                    if (isset($user->logins)) {
+                    if (!empty($loggedInUser->logins)) {
                         $logins = $loggedInUser->logins + 1;
                         $previousLogin = $loggedInUser->last_login;
+                        $syncRedir = 0;
                     } else {
                         $logins = 1;
                         $previousLogin = $now;
+                        $syncRedir = 1;
                     }
 
                     $loginPass = ['last_login' => $now, 'logins' => $logins];
@@ -240,6 +242,7 @@ class UsersController extends AppController
                         ];
 
                     $loggedInUser = $this->Users->patchEntity($loggedInUser, $loginPass);
+                    $loggedInUser->dirty('modified',true);
 
                     if ($this->Users->save($loggedInUser)) {
 
@@ -267,7 +270,11 @@ class UsersController extends AppController
                         } else {
                             $session->delete('Reset.lgTries');
                             $session->delete('Reset.rsTries');
-                            return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
+                            if ($syncRedir == 1) {
+                                return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'sync']);
+                            } else {
+                                return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
+                            }      
                         }
                     } else {
                         $this->Flash->error(__('The user could not be saved. Please, try again.'));
