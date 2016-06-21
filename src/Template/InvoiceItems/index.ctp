@@ -1,12 +1,3 @@
-<nav class="actions large-2 medium-3 columns" id="actions-sidebar">
-    
-    <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/user');
-    $this->end(); ?>
-    
-    <?= $this->fetch('Sidebar') ?>
-    
-</nav>
 <div class="invoiceItems index large-10 medium-9 columns content">
     <h3><?= __('Invoice Items') ?></h3>
     <table cellpadding="0" cellspacing="0">

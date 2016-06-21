@@ -314,9 +314,15 @@ class InvoiceItemsController extends AppController
                     ->where(['Applications.event_id' => $event->id])
                     ->group('itemtype_id')->toArray();
 
-                $invCubs = $invItemCounts[1]->sum;
-                $invYls = $invItemCounts[2]->sum;
-                $invLeaders = $invItemCounts[3]->sum;
+                if (!empty($invItemCounts)) {
+                    $invCubs = $invItemCounts[1]->sum;
+                    $invYls = $invItemCounts[2]->sum;
+                    $invLeaders = $invItemCounts[3]->sum;
+                } else {
+                    $invCubs = 0;
+                    $invYls = 0;
+                    $invLeaders = 0;
+                }              
                 
             } else {
                 $invCubs = 0;

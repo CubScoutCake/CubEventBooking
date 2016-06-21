@@ -1,12 +1,3 @@
-<nav class="actions large-2 medium-3 columns" id="actions-sidebar">
-    
-    <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/champion');
-    $this->end(); ?>
-    
-    <?= $this->fetch('Sidebar') ?>
-    
-</nav>
 <div class="invoiceItems view large-10 medium-9 columns content">
     <h3><?= h($invoiceItem->id) ?></h3>
     <table class="vertical-table">

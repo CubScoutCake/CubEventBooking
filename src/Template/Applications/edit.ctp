@@ -1,12 +1,3 @@
-<nav class="actions large-2 medium-3 columns" id="actions-sidebar">
-    
-    <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/user');
-    $this->end(); ?>
-    
-    <?= $this->fetch('Sidebar') ?>
-    
-</nav>
 <div class="applications form large-9 medium-8 columns content">
     <?= $this->Form->create($application) ?>
     <fieldset>

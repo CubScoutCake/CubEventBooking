@@ -1,17 +1,4 @@
 <?= $this->assign('title', 'Your Unread Notifications'); ?>
-<nav class="actions notifications large-2 medium-3 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <h3 class="heading"><?= __('Actions') ?></h3>
-        <li><?= $this->Html->link(__('List All Your Notifications'), ['action' => 'index']) ?></li>
-    </ul>
-
-    <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/user');
-    $this->end(); ?>
-    
-    <?= $this->fetch('Sidebar') ?>
-    
-</nav>
 <div class="notifications index large-10 medium-9 columns content">
     <h3><?= __('Notifications') ?></h3>
     <table cellpadding="0" cellspacing="0">
