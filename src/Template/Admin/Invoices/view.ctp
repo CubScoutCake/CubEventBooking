@@ -39,6 +39,12 @@
                         'prefix' => 'admin',
                         $invoice->id],['_full']); ?>">Edit Invoice</a>
                     </li>
+                    <li><a href="<?php echo $this->Url->build([
+                        'controller' => 'Invoices',
+                        'action' => 'pdf_view',
+                        'prefix' => 'admin',
+                        $invoice->id],['_full']); ?>">Download Invoice</a>
+                    </li>
                     <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete','prefix' => 'admin', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'action' => 'new_invoice', 'prefix' => 'admin', $invoice->id]) ?></li>

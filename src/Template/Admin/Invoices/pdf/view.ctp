@@ -53,7 +53,7 @@
                     <i class="fa fa-gbp fa-fw"></i> Payments Recieved
                 </div>
                 <!-- /.panel-heading -->
-                <div class="panel-body"><div class="related">
+                <div class="panel-body">
                     <table class="table">
                         <tr class="active">
                             <th><?= __('Id') ?></th>

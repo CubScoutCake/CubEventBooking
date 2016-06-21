@@ -155,7 +155,7 @@ class ApplicationsController extends AppController
 
         if ($invCount > 1) {
             $this->Flash->error(__('There are Multiple Invoices on one Application.'));
-            $invDone = 0;
+            $invDone = 0.5;
         } elseif ($invCount == 1) {
             $invDone = 1;
         } else {
@@ -170,7 +170,13 @@ class ApplicationsController extends AppController
 
         } elseif ($attCubs > 0 && $invCubs < $attCubs) {
             $this->Flash->error(__('Your Invoice is not Reflective of Your Number of Cubs.'));
-            $invDone = 0.5;
+            if ($invCount > 1) {
+                $invDone = 0.5;
+            } elseif ($invCount == 1) {
+                $invDone = 0.5;
+            } else {
+                $invDone = 0;
+            }
             $cubsDone = 1;
         } else {
             $cubsDone = 0;
@@ -400,8 +406,8 @@ class ApplicationsController extends AppController
 
             	if ($this->Applications->save($application)) {
             	    $redir = $application->get('id');
-            	    $this->Flash->success(__('The application has been saved.'));
-            	    return $this->redirect(['controller' => 'Attendees', 'action' => 'cub', $redir]);
+                    $this->Flash->success(__('The application has been saved.'));
+                    return $this->redirect(['action' => 'view',$redir]);
             	} else {
             	    $this->Flash->error(__('The application could not be saved. Please, try again.'));
             	}

@@ -138,30 +138,7 @@ class InvoicesController extends AppController
         $payableSetting = $settings->get(4);
         $invPayable = $payableSetting->text;
 
-        $this->set('invPayable', $invPayable);
-
-        //if($count) {
-        //    return $this->redirect(['action' => 'index'])
-        //}
-
-
-        //Generate Cubs Line Items
-
-        //$invoiceCubs = $this->InvoiceItems->newEntity();
-
-        //$newCubs = ['user_id' => $this->Auth->user('id'), 'modification' => 0, 'eventname' => 'HertsCubs100'];
-        //$invoiceCubs = $this->InvoiceItems->patchEntity($invoiceCubs, $newCubs);
-
-        //$this->Invoices->save($invoiceCubs);
-
-
-        /*$applications = TableRegistry::get('applications');
-
-        $query = $this->Attendees->find();
-
-        $query->innerJoinWith('Tags', function ($q) {
-            return $q->where(['Tags.name' => 'CakePHP']);
-        }); */        
+        $this->set('invPayable', $invPayable);        
 
         $this->set('invoice', $invoice);
         $this->set('_serialize', ['invoice']);
@@ -219,9 +196,65 @@ class InvoicesController extends AppController
         // Get the PDF string returned
         $pdf = $CakePdf->output();
         // Or write it to file directly
-        $pdf = $CakePdf->write(FILES . 'invoice' . $id . '.pdf');
+        $pdf = $CakePdf->write(FILES . 'Invoice' . $id . '.pdf');
 
-        $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invoice->id]);
+        $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invoice->id, '_ext' => 'pdf']);
+    }
+
+    public function sendPdf($id = null)
+    {
+        // Insantiate Objects
+        $invoice = $this->Invoices->get($id, [
+            'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
+        ]);
+
+        $this->viewBuilder()->options([
+               'pdfConfig' => [
+                   'orientation' => 'portrait',
+                   'filename' => 'Invoice_' . $id
+               ]
+           ]);
+        
+        // Connect Registry
+        $settings = TableRegistry::get('Settings');
+        $events = TableRegistry::get('Events');
+        $applications = TableRegistry::get('Applications');
+
+        $application = $applications->get($invoice->application_id);
+
+        $event = $events->get($application->event_id, ['contain' => ['Applications', 'Settings']]);
+
+        // Set Address Variables
+        $eventName = $event->full_name;
+        $invAddress = $event->address;
+        $invCity = $event->city;
+        $invPostcode = $event->postcode;
+
+        $this->set(compact('eventName', 'invAddress', 'invCity', 'invPostcode'));
+
+        // Set Deadline Variable
+        $invDeadline = $event->deposit_date;
+
+        // Set Prefix Variable
+        $invSetPre = $event->invtext_id;
+        $invSetting = $settings->get($invSetPre);
+        $invPrefix = $invSetting->text;
+
+        // Set Payable Variable
+        $invPayable = $settings->get(4)->text;
+
+        $this->set(compact('invoice', 'invPayable', 'invPrefix', 'invDeadline'));
+        $this->set('_serialize', ['invoice']);
+
+        $CakePdf = new \CakePdf\Pdf\CakePdf();
+        $CakePdf->template('invoice', 'default');
+        $CakePdf->viewVars($this->viewVars);
+        // Get the PDF string returned
+        $pdf = $CakePdf->output();
+        // Or write it to file directly
+        $pdf = $CakePdf->write(FILES . 'Invoice' . $id . '.pdf');
+
+        $this->redirect(['controller' => 'Notifications', 'action' => 'sendPdf', $invoice->id]);
     }
 
     /**
@@ -373,38 +406,6 @@ class InvoicesController extends AppController
             // Values from the Model e.g.
             $this->request->data['application_id'] = $appId;
         }
-              
-
-
-
-            //$this->set(compact('application', 'attendees', 'invoice', 'invoiceitems','payments'));
-            //$this->set('_serialize', ['invoice', 'invoiceItem']);
-        //}     else {
-        //    return $this->redirect(['action' => 'index']);
-        //}
-
-
-
-        //if ($this->request->is('post')) {
-        //    $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
-        //    if ($this->Invoices->save($invoice)) {
-        //        $this->Flash->success(__('The invoice has been saved.'));
-        //        return $this->redirect(['action' => 'index']);
-        //    } else {
-        //        $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
-        //    }
-        //}
-
-        /*
-
-        $users = $this->Invoices->Users->find('list', ['limit' => 200]);
-        $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
-        
-        $this->set(compact('invoice', 'users', 'payments'));
-        
-        $this->set('_serialize', ['invoice']);*/
-
-
     }
 
     public function regenerate($InvId = null)
@@ -436,8 +437,7 @@ class InvoicesController extends AppController
     {
         $file = $this->Invoices->getFile($id);
         $this->response->file($file['path']);
-        // Return response object to prevent controller from trying to render
-        // a view.
+        // Return response object to prevent controller from trying to render a view.
         return $this->response;
     }
 
