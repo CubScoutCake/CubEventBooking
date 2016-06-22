@@ -118,6 +118,43 @@ class InvoiceItemsController extends AppController
         return $this->redirect(['action' => 'index']);
     }*/
 
+    public function overdue($invID = null, $percentage = 10)
+    {
+        if (isset($invID)) {
+            $invs = TableRegistry::get('Invoices');
+            $invoice = $invs->get($invID);
+
+            $feePercent = $percentage / 100;
+
+            $totalBalance = $invoice->initialvalue - $invoice->value;
+            $fee = $totalBalance * $feePercent;
+
+            $feeItem = $this->InvoiceItems->newEntity();
+
+            $feeData = [
+                'invoice_id' => $invID,
+                'Quantity' => 1,
+                'Value' => $fee,
+                'Description' => 'Late Payment Surcharge - 10% of Balance',
+                'itemtype_id' => 11,
+                'visible' => 1
+            ];
+
+            $feeItem = $this->InvoiceItems->patchEntity($feeItem, $feeData);
+
+            if ($this->InvoiceItems->save($feeItem)) {
+                $this->Flash->success('An Overdue Surcharge was added to the invoice.');
+                return $this->redirect(['controller' => 'Notifications', 'action' => 'surcharge', $invID, $percentage]);
+            } else {
+                $this->Flash->error('There was an error in adding a Surcharge.');
+                return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
+            }
+        } else {
+            $this->Flash->error('The Invoice ID was not set.');
+            return $this->redirect(['controller' => 'Invoices', 'action' => 'outstanding']);
+        }
+    }
+
     public function populate($invID = null)
     {
         // Connect Registry

@@ -215,6 +215,72 @@ class NotificationsController extends AppController
         // }
     }
 
+    public function validate($userId = null)
+    {
+        if(isset($userId)) {
+
+            $users = TableRegistry::get('Users');
+            $groups = TableRegistry::get('Scoutgroups');
+
+            $user = $users->get($userId, ['contain' => ['Scoutgroups']]);
+            $group = $groups->get($user->scoutgroup_id);
+
+            $welcomeData = [     'link_id' => $userId
+                                , 'link_controller' => 'Users'
+                                , 'link_action' => 'view'
+                                , 'notificationtype_id' => 1
+                                , 'user_id' => $userId
+                                , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
+                                , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
+                                , 'notification_source' => 'System Generated'
+                                , 'new' => 1];
+
+            $notification = $this->Notifications->newEntity();
+
+            $notification = $this->Notifications->patchEntity($notification, $welcomeData);
+
+            if ($this->Notifications->save($notification)) {
+                $this->Flash->success(__('Welcome to the Booking System. We have sent a welcome email.'));
+
+                $this->getMailer('User')->send('welcome', [$user, $group, $notification]);
+
+                $sets = TableRegistry::get('Settings');
+
+                $jsonWelcome = json_encode($welcomeData);
+                $api_key = $sets->get(13)->text;
+                $projectId = $sets->get(14)->text;
+                $eventType = 'UserWelcome';
+
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenURL,
+                  $jsonWelcome,
+                  ['type' => 'json']
+                );
+
+                $genericType = 'Notification';
+
+                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $api_key;
+
+                $http = new Client();
+                $response = $http->post(
+                  $keenGenURL,
+                  $jsonWelcome,
+                  ['type' => 'json']
+                );
+
+                return $this->redirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, $userId]);
+            } else {
+                $this->Flash->error(__('The notification could not be saved. Please, try again.'));
+            }
+        } //else {
+        //     $this->Flash->error(__('Parameters were not set!'));
+        //     return $this->redirect(['action' => 'index']);
+        // }
+    }
+
     public function new_logistic()
     {
         
@@ -238,40 +304,6 @@ class NotificationsController extends AppController
         $this->set('_serialize', ['notification']);
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Notification id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    // public function edit($id = null)
-    // {
-    //     $notification = $this->Notifications->get($id, [
-    //         'contain' => []
-    //     ]);
-    //     if ($this->request->is(['patch', 'post', 'put'])) {
-    //         $notification = $this->Notifications->patchEntity($notification, $this->request->data);
-    //         if ($this->Notifications->save($notification)) {
-    //             $this->Flash->success(__('The notification has been saved.'));
-    //             return $this->redirect(['action' => 'index']);
-    //         } else {
-    //             $this->Flash->error(__('The notification could not be saved. Please, try again.'));
-    //         }
-    //     }
-    //     $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-    //     $notificationtypes = $this->Notifications->Notificationtypes->find('list', ['limit' => 200]);
-    //     $this->set(compact('notification', 'users', 'notificationtypes'));
-    //     $this->set('_serialize', ['notification']);
-    // }
-
-    // /**
-    //  * Delete method
-    //  *
-    //  * @param string|null $id Notification id.
-    //  * @return void Redirects to index.
-    //  * @throws \Cake\Network\Exception\NotFoundException When record not found.
-    //  */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);

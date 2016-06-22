@@ -33,6 +33,28 @@ class UserMailer extends Mailer
             //->send();                          
     }
 
+    public function validate($user,$group,$notification) {
+        // $email = new Email('default');
+        $this->transport('sparkpost')
+            ->template('validate', 'default')
+            ->emailFormat('html')
+            ->to([$user->email => $user->full_name])
+            ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
+            ->subject('Hertfordshire Cubs Booking System - Please Validate your Email')
+            ->viewVars(['username' => $user->username
+                    , 'date_created' => $user->created
+                    , 'full_name' => $user->full_name
+                    , 'scoutgroup' => $group->scoutgroup
+                    , 'link_controller' => $notification->link_controller
+                    , 'link_action' => $notification->link_action
+                    , 'link_id' => $notification->link_id
+                    , 'link_prefix' => $notification->link_prefix
+                    , 'notification_id' => $notification->id
+                    ])
+            ->helpers(['Html', 'Text', 'Time']);
+            //->send();                          
+    }
+
     public function passres($user, $random) {
         $this->transport('sparkpost')
             ->template('pwreset', 'default')

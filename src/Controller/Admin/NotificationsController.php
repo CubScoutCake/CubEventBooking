@@ -404,6 +404,99 @@ class NotificationsController extends AppController
         }
     }
 
+    public function surcharge($invoiceId = null, $percentage = null)
+    {
+        if(isset($invoiceId) && isset($percentage)) {
+
+            $users = TableRegistry::get('Users');
+            $groups = TableRegistry::get('Scoutgroups');
+            $invoices = TableRegistry::get('Invoices');
+            $applications = TableRegistry::get('Applications');
+            $notes = TableRegistry::get('Notes');
+
+            $invoice = $invoices->get($invoiceId);
+            $user = $users->get($invoice->user_id);
+            $group = $groups->get($user->scoutgroup_id);
+            $app = $applications->get($invoice->application_id);
+
+            $feePercentage = $percentage / 100;
+
+            $invoiceData = [     'link_id' => $invoice->id
+                                , 'link_controller' => 'Invoices'
+                                , 'link_action' => 'view'
+                                , 'notificationtype_id' => 9
+                                , 'user_id' => $invoice->user_id
+                                , 'text' => 'A Balance Surcharge of ' . $percentage . '% of Balance was added.'
+                                , 'notification_header' => 'Late Payment Surcharge Added'
+                                , 'notification_source' => 'Admin Triggered'
+                                , 'new' => 1];
+
+            $notification = $this->Notifications->newEntity();
+
+            $notification = $this->Notifications->patchEntity($notification, $invoiceData);
+
+            if ($this->Notifications->save($notification)) {
+                $notificationId = $notification->get('id');
+
+                $noteData = [
+                    'note_text' => 'A Balance Surcharge of '. $percentage . '% was added to the Invoice. With notification #' . $notificationId,
+                    'visible' => false,
+                    'user_id' => $user->id,
+                    'invoice_id' => $invoice->id,
+                    'application_id' => $app->id
+                ];
+
+                $note = $notes->newEntity();
+                $note = $notes->patchEntity($note, $noteData);
+
+                $feeVal = $invoice->initialvalue - $invoice->value;
+                $fee = $feeVal * $feePercentage;
+
+                if ($notes->save($note)) {
+                    $this->Flash->success(__('Outstanding Balance Prompt Sent.'));
+
+                    $this->getMailer('Payment')->send('surcharge', [$user, $group, $notification, $invoice, $app, $percentage, $fee]);
+
+                    $sets = TableRegistry::get('Settings');
+
+                    $jsonInvoice = json_encode($invoiceData);
+                    $p_api_key = $sets->get(13)->text;
+                    $projectId = $sets->get(14)->text;
+                    $eventType = 'PaymentSurcharge';
+
+                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
+
+                    $http = new Client();
+                    $response = $http->post(
+                      $keenURL,
+                      $jsonInvoice,
+                      ['type' => 'json']
+                    );
+
+                    $genericType = 'Notification';
+
+                    $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+
+                    $http = new Client();
+                    $response = $http->post(
+                      $keenGenURL,
+                      $jsonInvoice,
+                      ['type' => 'json']
+                    );
+
+                    return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => 'admin', $invoiceId]);
+                } else {
+                    $this->Flash->error(__('The note could not be saved. Please, try again.'));
+                }
+            } else {
+                $this->Flash->error(__('The notification could not be saved. Please, try again.'));
+            }
+        } else {
+            $this->Flash->error(__('Parameters were not set!'));
+            return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']);
+        }
+    }
+
     public function deposit_query($invoiceId = null)
     {
         if(isset($invoiceId)) {

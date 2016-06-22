@@ -46,6 +46,7 @@
                         $invoice->id],['_full']); ?>">Download Invoice</a>
                     </li>
                     <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete','prefix' => 'admin', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?></li>
+                    <li><?= $this->Form->postLink(__('Add Surcharge'), ['controller' => 'InvoiceItems', 'action' => 'overdue','prefix' => 'admin', $invoice->id], ['confirm' => __('Are you sure you want to add a Surcharge to # {0}?', $invoice->id)]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'action' => 'new_invoice', 'prefix' => 'admin', $invoice->id]) ?></li>
                 </ul>
@@ -186,6 +187,7 @@
                     </div>
                 </div>
             </div>
+            </div> 
         <?php endif; ?>
         <?php if (empty($invoice->payments)): ?>
             <div class="panel panel-yellow">
@@ -196,7 +198,6 @@
         <?php endif; ?>
     </div>
 </div>
-</div>    
 
 <div class="row">
     <div class="col-lg-12">

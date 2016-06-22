@@ -463,6 +463,24 @@ class UsersController extends AppController
 
     }
 
+    public function validate($userId)
+    {
+        $this->viewBuilder()->layout('outside');
+
+        $user = $this->Users->get($userId);
+
+        $validation = ['validated' => 1];
+
+        $user = $this->Users->patchEntity($user, $validation);
+
+        if ($this->Users->save($user)) {
+            //$this->Flash->success();
+            return $this->redirect(['prefix' => false, 'controller' => 'Notifications', 'action' => 'validate']);
+        } else {
+            return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
+        }
+    }
+
     public function logout()
     {  
         $session = $this->request->session();
@@ -476,6 +494,7 @@ class UsersController extends AppController
     {
         $this->Auth->allow(['register']);
         $this->Auth->allow(['login']);
+        $this->Auth->allow(['validate']);
         $this->Auth->allow(['reset']);
         $this->Auth->allow(['token']);
     }
