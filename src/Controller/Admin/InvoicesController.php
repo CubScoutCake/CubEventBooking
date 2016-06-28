@@ -196,9 +196,72 @@ class InvoicesController extends AppController
         // Get the PDF string returned
         $pdf = $CakePdf->output();
         // Or write it to file directly
-        $pdf = $CakePdf->write(FILES . 'Invoice' . $id . '.pdf');
+        $pdf = $CakePdf->write(FILES . DS . 'Event ' . $event->id . DS . 'Invoices' . DS . 'Invoice #' . $id . '.pdf');
 
         $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invoice->id, '_ext' => 'pdf']);
+    }
+
+    public function eventPdf($eventId = null)
+    {
+        if (isset($eventId)) {
+            // Connect Registry
+            $settings = TableRegistry::get('Settings');
+            $events = TableRegistry::get('Events');
+            $applications = TableRegistry::get('Applications');
+
+            $event = $events->get($eventId, ['contain' => ['Applications.Invoices', 'Settings']]);
+
+            
+
+            foreach ($event->applications as $applications) {
+
+                $invoiceFirst = $this->Invoices->find('all')->where(['application_id' => $applications->id])->first();
+                
+                // Insantiate Objects
+                $invoice = $this->Invoices->get($invoiceFirst->id, [
+                    'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
+                ]);
+
+                $this->viewBuilder()->options([
+                       'pdfConfig' => [
+                           'orientation' => 'portrait',
+                           'filename' => 'Invoice #' . $invoice->id
+                       ]
+                   ]);
+
+                // Set Address Variables
+                $eventName = $event->full_name;
+                $invAddress = $event->address;
+                $invCity = $event->city;
+                $invPostcode = $event->postcode;
+
+                $this->set(compact('eventName', 'invAddress', 'invCity', 'invPostcode'));
+
+                // Set Deadline Variable
+                $invDeadline = $event->deposit_date;
+
+                // Set Prefix Variable
+                $invSetPre = $event->invtext_id;
+                $invSetting = $settings->get($invSetPre);
+                $invPrefix = $invSetting->text;
+
+                // Set Payable Variable
+                $invPayable = $settings->get(4)->text;
+
+                $this->set(compact('invoice', 'invPayable', 'invPrefix', 'invDeadline'));
+                $this->set('_serialize', ['invoice']);
+
+                $CakePdf = new \CakePdf\Pdf\CakePdf();
+                $CakePdf->template('invoice', 'default');
+                $CakePdf->viewVars($this->viewVars);
+                // Get the PDF string returned
+                $pdf = $CakePdf->output();
+                // Or write it to file directly
+                $pdf = $CakePdf->write(FILES . DS . 'Event ' . $event->id . DS . 'Invoices' . DS . 'Invoice #' . $invoice->id . '.pdf');
+            }
+        }
+
+        $this->redirect(['controller' => 'Events', 'action' => 'full_view', $event->id]);
     }
 
     public function sendPdf($id = null)
@@ -252,7 +315,7 @@ class InvoicesController extends AppController
         // Get the PDF string returned
         $pdf = $CakePdf->output();
         // Or write it to file directly
-        $pdf = $CakePdf->write(FILES . 'Invoice' . $id . '.pdf');
+        $pdf = $CakePdf->write(FILES . DS . 'Event ' . $event->id . DS . 'Invoices' . DS . 'Invoice #' . $id . '.pdf');
 
         $this->redirect(['controller' => 'Notifications', 'action' => 'sendPdf', $invoice->id]);
     }

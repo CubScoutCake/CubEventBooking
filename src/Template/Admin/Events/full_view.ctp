@@ -41,6 +41,9 @@
                     <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
+                    <li class="divider"></li>
+                    <li><?= $this->Html->link(__('Parse Invoices'), ['controller' => 'Invoices','action' => 'event_pdf', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Parse Applications'), ['controller' => 'Applications','action' => 'event_pdf', $event->id]) ?></li>
                 </ul>
             </div>
         </div>

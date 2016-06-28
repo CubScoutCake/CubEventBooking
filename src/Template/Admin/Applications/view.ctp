@@ -13,6 +13,7 @@
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><?= $this->Html->link(__('Edit Application'), ['controller' => 'Applications', 'action' => 'edit', 'prefix' => 'admin', $application->id]) ?></li>
                     <li><?= $this->Html->link(__('Link Attendees'), ['controller' => 'Applications', 'action' => 'link', 'prefix' => 'admin', $application->id]) ?></li>
+                    <li><?= $this->Html->link(__('Download Application'), ['controller' => 'Applications', 'action' => 'pdf_view', 'prefix' => 'admin', $application->id]) ?></li>
                     <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Applications', 'action' => 'delete', $application->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $application->id)]) ?></li>
                     <li class='divider'></li>
                     <li><a href="<?php 
@@ -321,26 +322,47 @@
                                 <th><?= __('Modified') ?></th>
                             </tr>
                             <?php foreach ($application->attendees as $attendees): ?>
-                            <tr>
-                                <td><?= h($attendees->firstname) ?></td>
-                                <td><?= h($attendees->lastname) ?></td>
-                                <td class="actions">
-                                    <div class="dropdown btn-group">
-                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu " role="menu">
-                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
-                                            <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
-                                            <li><?= $this->Html->link(__('Update Caps'), ['controller' => 'Attendees', 'action' => 'update', $attendees->id]) ?></li>
-                                            <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Attendees', 'action' => 'delete', $attendees->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $attendees->id)]) ?></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
-                                <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,10), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
-                                <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
-                            </tr>
+                                <tr>
+                                    <td><?= h($attendees->firstname) ?></td>
+                                    <td><?= h($attendees->lastname) ?></td>
+                                    <td class="actions">
+                                        <div class="dropdown btn-group">
+                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu " role="menu">
+                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
+                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
+                                                <li><?= $this->Html->link(__('Update Caps'), ['controller' => 'Attendees', 'action' => 'update', $attendees->id]) ?></li>
+                                                <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Attendees', 'action' => 'delete', $attendees->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $attendees->id)]) ?></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
+                                    <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,10), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
+                                    <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                </tr>
+                                <?php if (!empty($attendees->allergies)): ?>
+                                    <?php foreach ($attendees->allergies as $allergies): ?>
+                                        <tr class="danger">
+                                            <th></th>
+                                            <th><?= __('Allergy') ?></th>
+                                            <td>
+                                                <div class="dropdown btn-group">
+                                                    <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu " role="menu">
+                                                        <li><?= $this->Html->link(__('View'), ['controller' => 'Allergies', 'action' => 'view', $allergies->id]) ?></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td><?= h($allergies->allergy) ?></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </table>
                     </div>

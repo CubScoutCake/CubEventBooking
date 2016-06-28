@@ -17,6 +17,12 @@
                         'prefix' => false,
                         $application->id],['_full']); ?>">Edit Application</a>
                     </li>
+                    <li><a href="<?php echo $this->Url->build([
+                        'controller' => 'Applications',
+                        'action' => 'pdf_view',
+                        'prefix' => false,
+                        $application->id],['_full']); ?>">Download Application</a>
+                    </li>
                     <li><a href="<?php 
                         if ($invDone < 0.5) :
                             echo $this->Url->build([
@@ -353,24 +359,24 @@
                                 <th><?= __('Modified') ?></th>
                             </tr>
                             <?php foreach ($application->attendees as $attendees): ?>
-                            <tr>
-                                <td><?= h($attendees->firstname) ?></td>
-                                <td><?= h($attendees->lastname) ?></td>
-                                <td class="actions">
-                                    <div class="dropdown btn-group">
-                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu " role="menu">
-                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
-                                            <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
-                                <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,10), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
-                                <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
-                            </tr>
+                                <tr>
+                                    <td><?= h($attendees->firstname) ?></td>
+                                    <td><?= h($attendees->lastname) ?></td>
+                                    <td class="actions">
+                                        <div class="dropdown btn-group">
+                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu " role="menu">
+                                                <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
+                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Attendees', 'action' => 'edit', $attendees->id]) ?></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
+                                    <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,10), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
+                                    <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                </tr>
                             <?php endforeach; ?>
                         </table>
                     </div>

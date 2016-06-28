@@ -18,14 +18,14 @@ $cakeDescription = 'HertsCubs Booking System';
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
     <?php //echo $this->Html->css('metisMenu.min.css', ['fullBase' => true]);?>
-    <?php //echo $this->Html->css('sb-admin-2.css', ['fullBase' => true]);?>
+    <?php echo $this->Html->css('sb-admin-2.css', ['fullBase' => true]);?>
 
 </head>
 <body>
     <div id="wrapper">
-             
-        <?= $this->fetch('content') ?>    
-
+        <div id="page-wrapper">    
+            <?= $this->fetch('content') ?>    
+        </div>
     </div>
 </body>
 

@@ -1,11 +1,11 @@
 <div class="row">
-    <div class="col-lg-12 col-md-12">
+    <div class="col-xs-12">
         <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-lg-12 col-md-12">
+    <div class="col-xs-12">
         <div class="panel panel-warning">
             <div class="panel-body">
                 <span><strong><?= __('User') ?>:</strong> <?= $invoice->has('user') ? $invoice->user->full_name : '' ?></span>
@@ -25,7 +25,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-xs-12">
         <div class="panel panel-warning">
             <div class="panel-heading">
                 <i class="fa fa-files-o fa-fw"></i> Balance
@@ -49,7 +49,7 @@
 </div>
 <?php if (!empty($invoice->invoice_items)): ?>
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-xs-12">
         <div class="panel panel-warning">
             <div class="panel-heading">
                 <i class="fa fa-files-o fa-fw"></i> Invoice Line Items
@@ -77,7 +77,7 @@
 </div>
 <?php endif; ?>
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-xs-12">
         <?php if (!empty($invoice->payments)): ?>
             <div class="panel panel-warning">
                 <div class="panel-heading">

@@ -131,7 +131,7 @@ class InvoicesController extends AppController
         // Get the PDF string returned
         $pdf = $CakePdf->output();
         // Or write it to file directly
-        $pdf = $CakePdf->write(FILES . 'invoice' . $id . '.pdf');
+        $pdf = $CakePdf->write(FILES . DS . 'Event ' . $event->id . DS . 'Invoices' . DS . 'Invoice #' . $id . '.pdf');
 
         $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invoice->id, '_ext' => 'pdf']);
     }

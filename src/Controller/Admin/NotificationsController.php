@@ -440,7 +440,7 @@ class NotificationsController extends AppController
 
                 $noteData = [
                     'note_text' => 'A Balance Surcharge of '. $percentage . '% was added to the Invoice. With notification #' . $notificationId,
-                    'visible' => false,
+                    'visible' => true,
                     'user_id' => $user->id,
                     'invoice_id' => $invoice->id,
                     'application_id' => $app->id
