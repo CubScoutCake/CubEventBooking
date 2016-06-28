@@ -1,37 +1,40 @@
-{
-    "name": "cakephp/app",
-    "description": "CakePHP skeleton app",
-    "homepage": "http://cakephp.org",
+{   
+    "name": "JacobAGTyler/CubsBooking",
+    "description": "An app to manage booking for Cub Scouts by leaders.",
+    "homepage": "http://hertscubs.uk",
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": ">=5.4.16",
+
+        "php": ">=5.4.16 || ^7.0",
         "cakephp/cakephp": "~3.0",
         "mobiledetect/mobiledetectlib": "2.*",
-        "cakephp/migrations": "~1.0",
+        "cakephp/migrations": "*",
         "cakephp/plugin-installer": "*",
         "dompdf/dompdf": "*",
         "friendsofcake/cakepdf": "3.*",
         "tecnickcom/tcpdf" : "@stable",
         "mpdf/mpdf" : "^6.1",
-        "friendsofcake/bootstrap-ui": "^0.5.0",
+        "friendsofcake/bootstrap-ui": "*",
         "fheider/cakephp-datatables": "dev-master",
-        "friendsofcake/cakephp-csvview": "~2.0",
+        "friendsofcake/cakephp-csvview": "*",
         "muffin/trash": "dev-master",
-        "friendsofcake/CakePdf": "^3.2",
+        "friendsofcake/CakePdf": "*",
         "friendsofcake/search": "^1.2",
         "dereuromark/cakephp-ajax": "dev-master",
         "syntaxera/cakephp-sparkpost-plugin": "^0.4.5",
-        "php-http/httplug": "^1.0"
+        "php-http/httplug": "dev-master",
+        "php-http/client-common": "*",
+        "php-http/socket-client": "*",
+        "SparkPost/php-sparkpost": "*",
+        "SparkPost/SparkPost": "*"
     },
     "require-dev": {
         "psy/psysh": "@stable",
         "cakephp/debug_kit": "~3.0",
-        "cakephp/bake": "~1.0"
-    },
-    "suggest": {
-        "phpunit/phpunit": "Allows automated tests to be run without system-wide install.",
-        "cakephp/cakephp-codesniffer": "Allows to check the code against the coding standards used in CakePHP."
+        "cakephp/bake": "*",
+        "cakephp/cakephp-codesniffer": "2.*",
+        "phpunit/phpunit": "@stable"
     },
     "autoload": {
         "psr-4": {

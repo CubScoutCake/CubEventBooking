@@ -190,6 +190,7 @@ Plugin::load('Migrations');
 Plugin::load('BootstrapUI');
 Plugin::load('Search');
 Plugin::load('SparkPost');
+Plugin::loadAll();
 
 Plugin::load('Ajax', ['bootstrap' => true]);
 Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);
