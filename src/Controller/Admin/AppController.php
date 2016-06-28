@@ -38,7 +38,7 @@ class AppController extends Controller
     {
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
-            'authorize'=> 'Controller',
+            'authorize' => 'Controller',
             'loginRedirect' => [
                 'prefix' => false,
                 'controller' => 'Landing',
@@ -90,7 +90,7 @@ class AppController extends Controller
         // Only admins can access admin functions
         if ($this->request->params['prefix'] === 'admin') {
             return (bool)($user['authrole'] === 'admin');
-          }
+        }
 
         //Alternate Method
         //if ($this->request->action === 'add') {
@@ -109,11 +109,8 @@ class AppController extends Controller
 
     public function forceSSL()
     {
-        if (env('SERVER_NAME') == 'booking.hertscubs.uk')
-        {
+        if (env('SERVER_NAME') == 'booking.hertscubs.uk') {
             return $this->redirect('https://' . env('SERVER_NAME') . $this->request->here);
         }
     }
 }
-
-

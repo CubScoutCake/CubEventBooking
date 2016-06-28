@@ -32,7 +32,7 @@ class PaymentsController extends AppController
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)	
+    public function view($id = null)
     {
         $payment = $this->Payments->get($id, [
             'contain' => ['Invoices', 'Users', 'Invoices.Users']
@@ -56,7 +56,6 @@ class PaymentsController extends AppController
             $payment = $this->Payments->patchEntity($payment, $this->request->data);
 
             if ($this->Payments->save($payment)) {
-
                 $redir = $payment->get('id');
                 
                 $this->Flash->success(__('The payment has been saved.'));

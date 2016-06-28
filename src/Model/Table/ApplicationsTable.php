@@ -5,8 +5,9 @@ use App\Model\Entity\Application;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\Validation\Validator;
 use Cake\ORM\TableRegistry;
+use Cake\Validation\Validator;
+
 
 /**
  * Applications Model
@@ -112,7 +113,7 @@ class ApplicationsTable extends Table
         $rules->add($rules->existsIn(['event_id'], 'Events'));
         return $rules;
     }
-
+    
     public function isOwnedBy($applicationId, $userId)
     {
         return $this->exists(['id' => $applicationId, 'user_id' => $userId]);

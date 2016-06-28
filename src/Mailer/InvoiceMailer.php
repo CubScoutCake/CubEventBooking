@@ -6,10 +6,10 @@ use Cake\Mailer\Mailer;
 
 class InvoiceMailer extends Mailer
 {
-    public function invoice($user = null, $group = null, $notification = null, $invoice = null, $payment = null) {
+    public function invoice($user = null, $group = null, $notification = null, $invoice = null, $payment = null)
+    {
         // $email = new Email('default');
         if (isset($user) && isset($group) && isset($notification) && isset($invoice->id) && isset($invoice) && isset($group)) {
-
             $invoiceId = $invoice->id;
 
             $invoiceName = 'Invoice ' . strval($invoiceId) . '.pdf';
@@ -38,7 +38,7 @@ class InvoiceMailer extends Mailer
                         ])
                 ->helpers(['Html', 'Text', 'Time'])
                 ->attachments([$invoiceName => $invoiceLocation]);
-                //->send(); 
+                //->send();
         }
                                  
     }

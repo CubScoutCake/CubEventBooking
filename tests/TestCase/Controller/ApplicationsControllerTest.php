@@ -22,9 +22,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         'app.scoutgroups',
         'app.districts',
         'app.attendees',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies'
+        'app.allergies'
     ];
 
     /**

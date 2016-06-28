@@ -31,7 +31,7 @@ class AppController extends Controller
     {
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
-            'authorize'=> 'Controller',
+            'authorize' => 'Controller',
             'loginRedirect' => [
                 'controller' => 'Landing',
                 'action' => 'user_home'
@@ -78,7 +78,7 @@ class AppController extends Controller
 
 
         //The add and index actions are always allowed.
-        if (isset($user['id']) && in_array($this->request->params['action'], ['register', 'index','add','admin-home'])) {
+        if (isset($user['id']) && in_array($this->request->params['action'], ['register', 'index', 'add', 'admin-home'])) {
             return true;
         }
 
@@ -102,5 +102,3 @@ class AppController extends Controller
         return false;
     }
 }
-
-

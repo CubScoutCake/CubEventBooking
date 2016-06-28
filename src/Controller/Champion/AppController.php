@@ -31,7 +31,7 @@ class AppController extends Controller
     {
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
-            'authorize'=> 'Controller',
+            'authorize' => 'Controller',
             'loginRedirect' => [
                 'controller' => 'Landing',
                 'action' => 'champion_home',
@@ -81,7 +81,7 @@ class AppController extends Controller
         // Only admins can access admin functions
         if ($this->request->params['prefix'] === 'champion') {
             return (bool)($user['authrole'] === 'champion');
-          }
+        }
 
         //Alternate Method
         //if ($this->request->action === 'add') {
@@ -98,5 +98,3 @@ class AppController extends Controller
         return false;
     }
 }
-
-

@@ -34,7 +34,7 @@ class AppsCell extends Cell
             $taskArr = $apps->find('all')->where(['user_id' => $userId]);
 
             foreach ($taskArr as $app) {
-                $tasks = array();
+                $tasks = [];
                 array_push($tasks, [13 => ['done' => 1]], [14 => ['done' => 2]], [15 => ['done' => 3]]);
                 $app->done = 1;
                 $app->status = 'success';

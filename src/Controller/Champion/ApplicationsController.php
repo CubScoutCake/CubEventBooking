@@ -24,9 +24,9 @@ class ApplicationsController extends AppController
         $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
 
         $this->paginate = [
-            'contain' => ['Users','Scoutgroups', 'Events']
-            ,'conditions' => ['Scoutgroups.district_id' => $champD->district_id]
-        ];  
+            'contain' => ['Users', 'Scoutgroups', 'Events']
+            , 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]
+        ];
         $this->set('applications', $this->paginate($this->Applications));
         $this->set('_serialize', ['applications']);
     }
@@ -71,33 +71,33 @@ class ApplicationsController extends AppController
         $attendeeCubCount = $this->Applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $id, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $id, 't.deleted IS' => null]);
 
         $attendeeYlCount = $this->Applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $id, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $id, 't.deleted IS' => null]);
 
         $attendeeLeaderCount = $this->Applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $id, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 0, 'Applications.id' => $id, 't.deleted IS' => null]);
 
         $attCubs = $attendeeCubCount->count(['t.id']);
         $attYls = $attendeeYlCount->count(['t.id']);
         $attLeaders = $attendeeLeaderCount->count(['t.id']);
 
         $attNotCubs = $attYls + $attLeaders;
-        $this->set(compact('attCubs','attYls','attLeaders','attNotCubs'));
+        $this->set(compact('attCubs', 'attYls', 'attLeaders', 'attNotCubs'));
 
         if ($invCount > 0) {
             $invItemCount = $itms->find('all')
@@ -116,10 +116,10 @@ class ApplicationsController extends AppController
                 $invYls = $invItemCounts[2]->sum;
                 $invLeaders = $invItemCounts[3]->sum;
             } else {
-               $invCubs = 0;
-               $invYls = 0;
-               $invLeaders = 0; 
-           }
+                $invCubs = 0;
+                $invYls = 0;
+                $invLeaders = 0;
+            }
         } else {
             $invCubs = 0;
             $invYls = 0;
@@ -128,7 +128,7 @@ class ApplicationsController extends AppController
         
 
         $invNotCubs = $invYls + $invLeaders;
-        $this->set(compact('invCubs','invYls','invLeaders','invNotCubs'));
+        $this->set(compact('invCubs', 'invYls', 'invLeaders', 'invNotCubs'));
 
         if ($invCount > 0) {
             $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->first();
@@ -142,7 +142,7 @@ class ApplicationsController extends AppController
         }
 
         $sumBalances = $sumValues - $sumPayments;
-        $this->set(compact('sumBalances','sumPayments','sumValues'));
+        $this->set(compact('sumBalances', 'sumPayments', 'sumValues'));
 
         $appDone = 1; // Set at 100% because an application has been created.
 
@@ -155,12 +155,11 @@ class ApplicationsController extends AppController
             $invDone = 0;
         }
 
-        if ($attCubs > 0 && $invCubs > 0 && $invCubs >= $attCubs)  {
+        if ($attCubs > 0 && $invCubs > 0 && $invCubs >= $attCubs) {
             $addCubs = $invCubs - $attCubs;
             $cubsDone = $attCubs / $invCubs;
 
             $this->set(compact('addCubs'));
-
         } elseif ($attCubs > 0 && $invCubs < $attCubs) {
             $this->Flash->error(__('Your Invoice is not Reflective of Your Number of Cubs.'));
             $invDone = 0.5;
@@ -169,12 +168,11 @@ class ApplicationsController extends AppController
             $cubsDone = 0;
         }
 
-        if ($attNotCubs > 0 && $invNotCubs > 0 && $invNotCubs >= $attNotCubs)  {
+        if ($attNotCubs > 0 && $invNotCubs > 0 && $invNotCubs >= $attNotCubs) {
             $addNotCubs = $invNotCubs - $attNotCubs;
             $cubsNotDone = $attNotCubs / $invNotCubs;
 
             $this->set(compact('addNotCubs'));
-
         } elseif ($attNotCubs > 0 && $invNotCubs < $attNotCubs) {
             $this->Flash->error(__('Your Invoice is not Reflective of Your Number of Leaders & Young Leaders.'));
             $invDone = 0.5;
@@ -192,7 +190,7 @@ class ApplicationsController extends AppController
         }
         
 
-        $this->set(compact('appDone','invDone','cubsDone','cubsNotDone','payDone'));
+        $this->set(compact('appDone', 'invDone', 'cubsDone', 'cubsNotDone', 'payDone'));
 
         $done = ($appDone + $invDone + $cubsDone + $cubsNotDone + $payDone) / 5;
 
@@ -206,7 +204,7 @@ class ApplicationsController extends AppController
             $status = 'danger';
         }
 
-        $this->set(compact('done','status'));
+        $this->set(compact('done', 'status'));
     }
 
     /**
@@ -222,14 +220,12 @@ class ApplicationsController extends AppController
         $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
 
         if (isset($userId)) {
-
-            $user = $usrs->get($userId, ['contain' => ['Roles','Applications','Scoutgroups']]);
+            $user = $usrs->get($userId, ['contain' => ['Roles', 'Applications', 'Scoutgroups']]);
             $userScoutGroup = $user->scoutgroup_id;
         }
 
         $application = $this->Applications->newEntity();
         if ($this->request->is('post')) {
-            
             $newData = ['modification' => 0];
             $application = $this->Applications->patchEntity($application, $newData);
 
@@ -246,20 +242,19 @@ class ApplicationsController extends AppController
         if (isset($userId)) {
             $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
         } else {
-            $attendees = $this->Applications->Attendees->find('list', ['contain' => 'Scoutgroups', 'limit' => 200,'conditions' => ['Scoutgroups.district_id' => $champD->district_id]]);
+            $attendees = $this->Applications->Attendees->find('list', ['contain' => 'Scoutgroups', 'limit' => 200, 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]]);
         }
 
         $users = $this->Applications->Users->find('list', ['limit' => 200, 'contain' => 'Scoutgroups', 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]]);
         $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
         $events = $this->Applications->Events->find('list', ['limit' => 200, 'conditions' => ['live' => 1]]);
         
-        $this->set(compact('application', 'users', 'attendees', 'scoutgroups','events'));
+        $this->set(compact('application', 'users', 'attendees', 'scoutgroups', 'events'));
         $this->set('_serialize', ['application']);
 
         //$startuser = $this->Applications->Users->find('all',['conditions' => ['user_id' => $userId]])->first()->user_id;
 
         if ($this->request->is('get')) {
-            
             // Values from the Model e.g.
             $this->request->data['user_id'] = $userId;
             if (isset($userScoutGroup)) {
@@ -279,7 +274,7 @@ class ApplicationsController extends AppController
     public function edit($id = null)
     {
         $application = $this->Applications->get($id, [
-            'contain' => ['Attendees','Events', 'Scoutgroups','Users']
+            'contain' => ['Attendees', 'Events', 'Scoutgroups', 'Users']
         ]);
 
         $users = TableRegistry::get('Users');
@@ -305,7 +300,7 @@ class ApplicationsController extends AppController
         $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
         $events = $this->Applications->Events->find('list', ['limit' => 200, 'conditions' => ['live' => 1]]);
         
-        $this->set(compact('application', 'users', 'attendees', 'scoutgroups','events'));
+        $this->set(compact('application', 'users', 'attendees', 'scoutgroups', 'events'));
         $this->set('_serialize', ['application']);
     }
 
@@ -351,5 +346,4 @@ class ApplicationsController extends AppController
 
         return parent::isAuthorized($user);
     }
-
 }

@@ -31,9 +31,9 @@ class UsersController extends AppController
         $this->paginate = [
             'contain' => ['Roles', 'Scoutgroups']
         ];
-        $this->paginate['conditions'] = array(
+        $this->paginate['conditions'] = [
             'scoutgroup_id' => $this->Auth->user('scoutgroup_id')
-        );
+        ];
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
     }
@@ -48,7 +48,7 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => ['Roles', 
+            'contain' => ['Roles',
                 'Scoutgroups',
                 'Invoices.Applications',
                 'Applications.Scoutgroups',
@@ -100,13 +100,13 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->data);
 
             $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-                ,'lastname' => ucwords(strtolower($user->lastname))
-                ,'address_1' => ucwords(strtolower($user->address_1))
-                ,'address_2' => ucwords(strtolower($user->address_2))
-                ,'city' => ucwords(strtolower($user->city))
-                ,'county' => ucwords(strtolower($user->county))
-                ,'postcode' => strtoupper($user->postcode)
-                ,'section' => ucwords(strtolower($user->section))];
+                , 'lastname' => ucwords(strtolower($user->lastname))
+                , 'address_1' => ucwords(strtolower($user->address_1))
+                , 'address_2' => ucwords(strtolower($user->address_2))
+                , 'city' => ucwords(strtolower($user->city))
+                , 'county' => ucwords(strtolower($user->county))
+                , 'postcode' => strtoupper($user->postcode)
+                , 'section' => ucwords(strtolower($user->section))];
 
             $user = $this->Users->patchEntity($user, $upperUser);
             
@@ -118,18 +118,21 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('nonAuto')->find('leaders')->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find('list', 
+        $scoutgroups = $this->Users->Scoutgroups->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'scoutgroup',
                 'groupField' => 'district.district'
-            ])
+            ]
+        )
             ->contain(['Districts']);
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
     }
 
-    public function sync() {
+    public function sync()
+    {
 
         $user = $this->Users->get($this->Auth->user('id'));
 
@@ -149,7 +152,7 @@ class UsersController extends AppController
         } else {
             $newAttendeeData = ['dateofbirth' => '01-01-1990'];
             $att = $atts->newEntity($newAttendeeData);
-        }              
+        }
 
         $attendeeData = [
             'user_id' => $user->id,
@@ -179,7 +182,7 @@ class UsersController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id User id.
+     * @param null $eventId User id.
      * @return void Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -200,7 +203,6 @@ class UsersController extends AppController
         }
 
         if (isset($tries) && $tries < 11) {
-
             if ($this->request->is('post')) {
                 $user = $this->Auth->identify();
                 if ($user) {
@@ -234,7 +236,7 @@ class UsersController extends AppController
                             'Type' => $loggedInUser->authrole,
                             'Username' => $loggedInUser->username,
                             'First Name' => $loggedInUser->firstname,
-                            'Last Name' => $loggedInUser->lastname,  
+                            'Last Name' => $loggedInUser->lastname,
                             'Number of Logins' => $logins,
                             'Previous Login' => $previousLogin,
                             'This Login' => $now
@@ -242,24 +244,23 @@ class UsersController extends AppController
                         ];
 
                     $loggedInUser = $this->Users->patchEntity($loggedInUser, $loginPass);
-                    $loggedInUser->dirty('modified',true);
+                    $loggedInUser->dirty('modified', true);
 
                     if ($this->Users->save($loggedInUser)) {
-
                         $sets = TableRegistry::get('Settings');
                         
                         $jsonLogin = json_encode($loginEnt);
-                        $api_key = $sets->get(13)->text;
+                        $apiKey = $sets->get(13)->text;
                         $projectId = $sets->get(14)->text;
                         $eventType = 'Login';
                         
-                        $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+                        $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
                         
                         $http = new Client();
                         $response = $http->post(
-                          $keenURL,
-                          $jsonLogin,
-                          ['type' => 'json']
+                            $keenURL,
+                            $jsonLogin,
+                            ['type' => 'json']
                         );
 
 
@@ -274,21 +275,21 @@ class UsersController extends AppController
                                 return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'sync']);
                             } else {
                                 return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
-                            }      
+                            }
                         }
                     } else {
                         $this->Flash->error(__('The user could not be saved. Please, try again.'));
-                    }                     
+                    }
                 }
                 $tries = $tries + 1;
                 $this->Flash->error('Your username or password is incorrect. Please try again.');
-                $session->write('Reset.lgTries', $tries);                
+                $session->write('Reset.lgTries', $tries);
             }
             $this->set(compact('eventId'));
         } else {
             $this->Flash->error('You have failed entry too many times. Please try again later.');
-            return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'reset']);     
-        }        
+            return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'reset']);
+        }
     }
 
     public function reset()
@@ -298,19 +299,20 @@ class UsersController extends AppController
         $resForm = new ResetForm();
         $sets = TableRegistry::get('Settings');
 
-        $scoutgroups = $this->Users->Scoutgroups->find('list', 
+        $scoutgroups = $this->Users->Scoutgroups->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'scoutgroup',
                 'groupField' => 'district.district'
-            ])
+            ]
+        )
             ->contain(['Districts']);
         $session = $this->request->session();
 
-        $this->set(compact('scoutgroups','resForm'));
+        $this->set(compact('scoutgroups', 'resForm'));
 
         if ($this->request->is('post')) {
-
             if ($session->check('Reset.rsTries')) {
                 $tries = $session->read('Reset.rsTries');
             }
@@ -345,7 +347,7 @@ class UsersController extends AppController
                     $rMax = $sets->get(16)->text;
                     $rMin = $sets->get(17)->text;
 
-                    $random = rand($rMin,$rMax);
+                    $random = rand($rMin, $rMax);
 
                     $string = 'Reset Success' . ( $user->id * $now->day ) . $random . $now->year . $now->month;
 
@@ -356,7 +358,6 @@ class UsersController extends AppController
                     $user = $this->Users->patchEntity($user, $newToken);
 
                     if ($this->Users->save($user)) {
-
                         $this->getMailer('User')->send('passres', [$user, $random]);
 
                     /*$deleteEnt = [
@@ -406,7 +407,8 @@ class UsersController extends AppController
         }
     }
 
-    public function token($userid = null, $decryptor = null) {
+    public function token($userid = null, $decryptor = null)
+    {
 
         $resettor = $this->Users->get($userid);
 
@@ -419,32 +421,27 @@ class UsersController extends AppController
         $test = Security::hash($string);
 
         if ($cipher == $test) {
-
             $PasswordForm = new PasswordForm();
             $this->set(compact('PasswordForm'));
 
             if ($this->request->is('post')) {
-
                 $fmPassword = $this->request->data['newpw'];
                 $fmConfirm = $this->request->data['confirm'];
 
                 if ($fmConfirm == $fmPassword) {
-
                     $fmPostcode = $this->request->data['postcode'];
-                    $fmPostcode = str_replace(" ","",strtoupper($fmPostcode));
+                    $fmPostcode = str_replace(" ", "", strtoupper($fmPostcode));
 
                     $usPostcode = $resettor->postcode;
-                    $usPostcode = str_replace(" ","",strtoupper($usPostcode));
+                    $usPostcode = str_replace(" ", "", strtoupper($usPostcode));
 
                     if ($usPostcode == $fmPostcode) {
-
                         $newPw = ['password' => $fmPassword
-                            ,'reset' => 'No Longer Active'];
+                            , 'reset' => 'No Longer Active'];
 
                         $resettor = $this->Users->patchEntity($resettor, $newPw);
 
                         if ($this->Users->save($resettor)) {
-
                             return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'login']);
                         } else {
                             $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -482,7 +479,7 @@ class UsersController extends AppController
     }
 
     public function logout()
-    {  
+    {
         $session = $this->request->session();
         $session->delete('OSM.Secret');
 

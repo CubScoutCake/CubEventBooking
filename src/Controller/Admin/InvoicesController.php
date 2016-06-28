@@ -20,9 +20,9 @@ class InvoicesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users','Applications.Events']
-            ,'conditions' => ['Events.Live' => true]
-            ,'order' => ['modified' => 'DESC']
+            'contain' => ['Users', 'Applications.Events']
+            , 'conditions' => ['Events.Live' => true]
+            , 'order' => ['modified' => 'DESC']
         ];
         $this->set('invoices', $this->paginate($this->Invoices));
         $this->set('_serialize', ['invoices']);
@@ -39,8 +39,8 @@ class InvoicesController extends AppController
             $this->set(compact('eventName'));
 
             $this->paginate = [
-                'contain' => ['Users','Applications','Payments','InvoiceItems']
-                ,'conditions' => ['Applications.event_id' => $eventId]
+                'contain' => ['Users', 'Applications', 'Payments', 'InvoiceItems']
+                , 'conditions' => ['Applications.event_id' => $eventId]
             ];
             $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')->find('unpaid')));
             $this->set('_serialize', ['invoices']);
@@ -50,11 +50,11 @@ class InvoicesController extends AppController
             $this->set(compact('eventName'));
 
             $this->paginate = [
-                'contain' => ['Users','Applications','Payments','InvoiceItems']
+                'contain' => ['Users', 'Applications', 'Payments', 'InvoiceItems']
             ];
             $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')->find('unpaid')));
             $this->set('_serialize', ['invoices']);
-        } 
+        }
     }
 
     public function outstanding($eventId = null)
@@ -70,8 +70,8 @@ class InvoicesController extends AppController
             $this->set(compact('eventName'));
 
             $this->paginate = [
-                'contain' => ['Users','Applications','Payments','InvoiceItems']
-                ,'conditions' => ['Applications.event_id' => $eventId]
+                'contain' => ['Users', 'Applications', 'Payments', 'InvoiceItems']
+                , 'conditions' => ['Applications.event_id' => $eventId]
             ];
             $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')));
             $this->set('_serialize', ['invoices']);
@@ -81,11 +81,11 @@ class InvoicesController extends AppController
             $this->set(compact('eventName'));
 
             $this->paginate = [
-                'contain' => ['Users','Applications','Payments','InvoiceItems']
+                'contain' => ['Users', 'Applications', 'Payments', 'InvoiceItems']
             ];
             $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')));
             $this->set('_serialize', ['invoices']);
-        } 
+        }
     }
 
     /**
@@ -138,7 +138,7 @@ class InvoicesController extends AppController
         $payableSetting = $settings->get(4);
         $invPayable = $payableSetting->text;
 
-        $this->set('invPayable', $invPayable);        
+        $this->set('invPayable', $invPayable);
 
         $this->set('invoice', $invoice);
         $this->set('_serialize', ['invoice']);
@@ -214,7 +214,6 @@ class InvoicesController extends AppController
             
 
             foreach ($event->applications as $applications) {
-
                 $invoiceFirst = $this->Invoices->find('all')->where(['application_id' => $applications->id])->first();
                 
                 // Insantiate Objects
@@ -324,7 +323,7 @@ class InvoicesController extends AppController
      * Add method
      *
      * @return void Redirects on successful add, renders view otherwise.
-    */
+     */
     public function add($userId = null)
     {
         $invoice = $this->Invoices->newEntity();
@@ -337,12 +336,14 @@ class InvoicesController extends AppController
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }
-        $users = $this->Invoices->Users->find('list', 
-                    [
+        $users = $this->Invoices->Users->find(
+            'list',
+            [
                         'keyField' => 'id',
                         'valueField' => 'full_name',
                         'groupField' => 'scoutgroup.district.district'
-                    ])
+            ]
+        )
                     ->contain(['Scoutgroups.Districts']);
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
         
@@ -358,7 +359,6 @@ class InvoicesController extends AppController
         $this->set('_serialize', ['invoice']);
 
         if ($this->request->is('get')) {
-            
             // Values from the Model e.g.
             $this->request->data['user_id'] = $userId;
         }
@@ -388,12 +388,14 @@ class InvoicesController extends AppController
             }
         }
 
-        $users = $this->Invoices->Users->find('list', 
+        $users = $this->Invoices->Users->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'full_name',
                 'groupField' => 'scoutgroup.district.district'
-            ])
+            ]
+        )
             ->contain(['Scoutgroups.Districts']);
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
         $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
@@ -433,26 +435,21 @@ class InvoicesController extends AppController
         $newData = ['user_id' => $userId];
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 
             $invoice = $this->Invoices->patchEntity($invoice, $newData);
 
             if ($this->Invoices->save($invoice)) {
-
                 $redir = $invoice->get('id');
 
                 $this->Flash->success(__('An invoice has been generated. Please enter the number of Attendees you are bringing.'));
 
                 return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'populate', $redir]);
-
             } else {
-
                 $this->Flash->error(__('The invoice could not be generated. Please, try again.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-
         }
 
         if (isset($userId)) {
@@ -461,11 +458,10 @@ class InvoicesController extends AppController
             $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
         }
 
-        $this->set(compact('applications'));    
+        $this->set(compact('applications'));
         $this->set('_serialize', ['invoice']);
 
         if ($this->request->is('get')) {
-            
             // Values from the Model e.g.
             $this->request->data['application_id'] = $appId;
         }

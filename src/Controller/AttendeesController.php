@@ -39,7 +39,7 @@ class AttendeesController extends AppController
     public function view($id = null)
     {
         $attendee = $this->Attendees->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
+            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);
@@ -53,33 +53,32 @@ class AttendeesController extends AppController
     public function adult($appId = null)
     {
         if ($this->request->is('post')) {
-
             $attendee = $this->Attendees->newEntity();
 
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
 
             $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
-                ,'lastname' => ucwords(strtolower($attendee->lastname))
-                ,'address_1' => ucwords(strtolower($attendee->address_1))
-                ,'address_2' => ucwords(strtolower($attendee->address_2))
-                ,'city' => ucwords(strtolower($attendee->city))
-                ,'county' => ucwords(strtolower($attendee->county))
-                ,'postcode' => strtoupper($attendee->postcode)];
+                , 'lastname' => ucwords(strtolower($attendee->lastname))
+                , 'address_1' => ucwords(strtolower($attendee->address_1))
+                , 'address_2' => ucwords(strtolower($attendee->address_2))
+                , 'city' => ucwords(strtolower($attendee->city))
+                , 'county' => ucwords(strtolower($attendee->county))
+                , 'postcode' => strtoupper($attendee->postcode)];
 
             $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 
             $phone1 = $attendee->phone;
             $phone2 = $attendee->phone2;
 
-            $phone1 = str_replace(' ','',$phone1);
-            $phone1 = str_replace('-','',$phone1);
-            $phone1 = str_replace('/','',$phone1);
+            $phone1 = str_replace(' ', '', $phone1);
+            $phone1 = str_replace('-', '', $phone1);
+            $phone1 = str_replace('/', '', $phone1);
             $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
 
             if (!empty($phone2)) {
-                $phone2 = str_replace(' ','',$phone2);
-                $phone2 = str_replace('-','',$phone2);
-                $phone2 = str_replace('/','',$phone2);
+                $phone2 = str_replace(' ', '', $phone2);
+                $phone2 = str_replace('-', '', $phone2);
+                $phone2 = str_replace('/', '', $phone2);
                 $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
             }
 
@@ -95,7 +94,7 @@ class AttendeesController extends AppController
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The Adult has been saved.'));
 
-                $adult = $this->Attendees->get($attendee->id,['contain' => ['Roles','Scoutgroups.Districts']]);
+                $adult = $this->Attendees->get($attendee->id, ['contain' => ['Roles', 'Scoutgroups.Districts']]);
 
                 $adultEnt = [
                     'Entity Id' => $adult->id,
@@ -117,17 +116,17 @@ class AttendeesController extends AppController
                 $sets = TableRegistry::get('Settings');
                 
                 $jsonAdd = json_encode($adultEnt);
-                $api_key = $sets->get(13)->text;
+                $apiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'Action';
                 
-                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
                 
                 $http = new Client();
                 $response = $http->post(
-                  $keenURL,
-                  $jsonAdd,
-                  ['type' => 'json']
+                    $keenURL,
+                    $jsonAdd,
+                    ['type' => 'json']
                 );
 
                 return $this->redirect(['action' => 'index']);
@@ -137,7 +136,7 @@ class AttendeesController extends AppController
         }
 
         $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('scoutgroup_id')]]);
-        $roles = $this->Attendees->Roles->find('nonAuto')->find('adults')->find('list', ['limit' => 200]);        
+        $roles = $this->Attendees->Roles->find('nonAuto')->find('adults')->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
@@ -145,7 +144,6 @@ class AttendeesController extends AppController
         $this->set('_serialize', ['attendee']);
 
         if ($this->request->is('get')) {
-            
             // Values from the Model e.g.
             $this->request->data['application_id'] = $appId;
         }
@@ -162,27 +160,27 @@ class AttendeesController extends AppController
             $attendee->user_id = $this->Auth->user('id');
 
             $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
-                ,'lastname' => ucwords(strtolower($attendee->lastname))
-                ,'address_1' => ucwords(strtolower($attendee->address_1))
-                ,'address_2' => ucwords(strtolower($attendee->address_2))
-                ,'city' => ucwords(strtolower($attendee->city))
-                ,'county' => ucwords(strtolower($attendee->county))
-                ,'postcode' => strtoupper($attendee->postcode)];
+                , 'lastname' => ucwords(strtolower($attendee->lastname))
+                , 'address_1' => ucwords(strtolower($attendee->address_1))
+                , 'address_2' => ucwords(strtolower($attendee->address_2))
+                , 'city' => ucwords(strtolower($attendee->city))
+                , 'county' => ucwords(strtolower($attendee->county))
+                , 'postcode' => strtoupper($attendee->postcode)];
 
             $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 
             $phone1 = $attendee->phone;
             $phone2 = $attendee->phone2;
 
-            $phone1 = str_replace(' ','',$phone1);
-            $phone1 = str_replace('-','',$phone1);
-            $phone1 = str_replace('/','',$phone1);
+            $phone1 = str_replace(' ', '', $phone1);
+            $phone1 = str_replace('-', '', $phone1);
+            $phone1 = str_replace('/', '', $phone1);
             $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
 
             if (!empty($phone2)) {
-                $phone2 = str_replace(' ','',$phone2);
-                $phone2 = str_replace('-','',$phone2);
-                $phone2 = str_replace('/','',$phone2);
+                $phone2 = str_replace(' ', '', $phone2);
+                $phone2 = str_replace('-', '', $phone2);
+                $phone2 = str_replace('/', '', $phone2);
                 $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
             }
 
@@ -196,7 +194,7 @@ class AttendeesController extends AppController
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The Cub has been saved.'));
 
-                $cub = $this->Attendees->get($attendee->id,['contain' => ['Roles','Scoutgroups.Districts']]);
+                $cub = $this->Attendees->get($attendee->id, ['contain' => ['Roles', 'Scoutgroups.Districts']]);
 
                 $cubEnt = [
                     'Entity Id' => $cub->id,
@@ -218,17 +216,17 @@ class AttendeesController extends AppController
                 $sets = TableRegistry::get('Settings');
                 
                 $jsonAdd = json_encode($cubEnt);
-                $api_key = $sets->get(13)->text;
+                $apiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'Action';
                 
-                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
                 
                 $http = new Client();
                 $response = $http->post(
-                  $keenURL,
-                  $jsonAdd,
-                  ['type' => 'json']
+                    $keenURL,
+                    $jsonAdd,
+                    ['type' => 'json']
                 );
 
                 return $this->redirect(['action' => 'index']);
@@ -238,7 +236,7 @@ class AttendeesController extends AppController
         }
 
         $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('scoutgroup_id')]]);
-        $roles = $this->Attendees->Roles->find('nonAuto')->find('minors')->find('list', ['limit' => 200]);         
+        $roles = $this->Attendees->Roles->find('nonAuto')->find('minors')->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
@@ -246,7 +244,6 @@ class AttendeesController extends AppController
         $this->set('_serialize', ['attendee']);
 
         if ($this->request->is('get')) {
-            
             // Values from the Model e.g.
             $this->request->data['application_id'] = $appId;
         }
@@ -268,27 +265,27 @@ class AttendeesController extends AppController
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
 
             $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
-                ,'lastname' => ucwords(strtolower($attendee->lastname))
-                ,'address_1' => ucwords(strtolower($attendee->address_1))
-                ,'address_2' => ucwords(strtolower($attendee->address_2))
-                ,'city' => ucwords(strtolower($attendee->city))
-                ,'county' => ucwords(strtolower($attendee->county))
-                ,'postcode' => strtoupper($attendee->postcode)];
+                , 'lastname' => ucwords(strtolower($attendee->lastname))
+                , 'address_1' => ucwords(strtolower($attendee->address_1))
+                , 'address_2' => ucwords(strtolower($attendee->address_2))
+                , 'city' => ucwords(strtolower($attendee->city))
+                , 'county' => ucwords(strtolower($attendee->county))
+                , 'postcode' => strtoupper($attendee->postcode)];
 
             $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 
             $phone1 = $attendee->phone;
             $phone2 = $attendee->phone2;
 
-            $phone1 = str_replace(' ','',$phone1);
-            $phone1 = str_replace('-','',$phone1);
-            $phone1 = str_replace('/','',$phone1);
+            $phone1 = str_replace(' ', '', $phone1);
+            $phone1 = str_replace('-', '', $phone1);
+            $phone1 = str_replace('/', '', $phone1);
             $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
 
             if (!empty($phone2)) {
-                $phone2 = str_replace(' ','',$phone2);
-                $phone2 = str_replace('-','',$phone2);
-                $phone2 = str_replace('/','',$phone2);
+                $phone2 = str_replace(' ', '', $phone2);
+                $phone2 = str_replace('-', '', $phone2);
+                $phone2 = str_replace('/', '', $phone2);
                 $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
             }
 
@@ -308,7 +305,7 @@ class AttendeesController extends AppController
         }
         $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200]);
         $roles = $this->Attendees->Roles->find('nonAuto')->find('list', ['limit' => 200]);
-        $applications = $this->Attendees->Applications->find('list', ['limit' => 200,'conditions' => ['user_id' => $this->Auth->user('id')]]);
+        $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
         $this->set(compact('attendee', 'users', 'scoutgroups', 'roles', 'applications', 'allergies'));
         $this->set('_serialize', ['attendee']);
@@ -324,9 +321,8 @@ class AttendeesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $attendee = $this->Attendees->get($id, ['contain' => ['Roles','Scoutgroups.Districts']]);
+        $attendee = $this->Attendees->get($id, ['contain' => ['Roles', 'Scoutgroups.Districts']]);
         if ($this->Attendees->delete($attendee)) {
-
             $deleteEnt = [
                 'Entity Id' => $id,
                 'Controller' => 'Attendees',
@@ -347,17 +343,17 @@ class AttendeesController extends AppController
             $sets = TableRegistry::get('Settings');
             
             $jsonDelete = json_encode($deleteEnt);
-            $api_key = $sets->get(13)->text;
+            $apiKey = $sets->get(13)->text;
             $projectId = $sets->get(14)->text;
             $eventType = 'Action';
             
-            $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
+            $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
             
             $http = new Client();
             $response = $http->post(
-              $keenURL,
-              $jsonDelete,
-              ['type' => 'json']
+                $keenURL,
+                $jsonDelete,
+                ['type' => 'json']
             );
 
 
@@ -387,6 +383,4 @@ class AttendeesController extends AppController
 
         return parent::isAuthorized($user);
     }
-
-    
 }

@@ -80,7 +80,7 @@ class InvoiceItemsController extends AppController
 
         $invNum = $invoiceItem->invoice_id;
 
-        $permitted = [7,8,9,10];
+        $permitted = [7, 8, 9, 10];
         if (!in_array($invoiceItem->itemtype_id, $permitted)) {
             $this->Flash->error(__('You can only edit cancelled values.'));
             return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invNum]);
@@ -194,26 +194,26 @@ class InvoiceItemsController extends AppController
         $attendeeCubCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeYlCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeLeaderCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         // Load into Variables
         $predictedCubs = $attendeeCubCount->count(['t.id']);
@@ -235,7 +235,6 @@ class InvoiceItemsController extends AppController
         // $depLeaderItem = $this->InvoiceItems->newEntity();
 
         if ($this->request->is('post')) {
-
             // Extract Form Info
             $numCubs = $this->request->data['cubs'];
             $numYls = $this->request->data['yls'];
@@ -285,10 +284,10 @@ class InvoiceItemsController extends AppController
 
             $disItem = $this->InvoiceItems->newEntity($disStandard);
 
-            if ($this->InvoiceItems->save($depCubItem) 
-                && $this->InvoiceItems->save($cubItem) 
-                && $this->InvoiceItems->save($yLItem) 
-                && $this->InvoiceItems->save($leaderItem) 
+            if ($this->InvoiceItems->save($depCubItem)
+                && $this->InvoiceItems->save($cubItem)
+                && $this->InvoiceItems->save($yLItem)
+                && $this->InvoiceItems->save($leaderItem)
                 && $this->InvoiceItems->save($disItem)) {
                 $this->Flash->success(__('The invoice has been populated.'));
                 return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
@@ -302,7 +301,6 @@ class InvoiceItemsController extends AppController
         $this->set('invPop', $invPop);
         
         if ($this->request->is('get')) {
-
             // Values from the User Model e.g.
             $this->request->data['cubs'] = $predictedCubs;
             $this->request->data['yls'] = $predictedYls;
@@ -455,26 +453,26 @@ class InvoiceItemsController extends AppController
         $attendeeCubCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeYlCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeLeaderCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         // Load into Variables
         $predictedAttCubs = $attendeeCubCount->count(['t.id']);
@@ -484,7 +482,6 @@ class InvoiceItemsController extends AppController
         // Perform the Post
 
         if ($this->request->is('post')) {
-
             $numCubs = $this->request->data['cubs'];
             $numYls = $this->request->data['yls'];
             $numLeaders = $this->request->data['leaders'];
@@ -600,28 +597,28 @@ class InvoiceItemsController extends AppController
             $numCanLeaders = $this->request->data['cancelled_leaders'];
 
             $totalCancelled = $numCanCubs + $numCanLeaders + $numCanYls;
-            $cancelledEver = MAX( $totalCancelled, $totalExistingCancelled );
+            $cancelledEver = MAX($totalCancelled, $totalExistingCancelled);
 
             // SET CANCELLED VISIBLITY
-            if (MAX($existingCanCubDepQty,$cancelledEver) > 0) {
+            if (MAX($existingCanCubDepQty, $cancelledEver) > 0) {
                 $DepCanVis = 1;
             } else {
                 $DepCanVis = 0;
             }
             
-            if (MAX($existingCanCubQty,$numCanCubs) > 0) {
+            if (MAX($existingCanCubQty, $numCanCubs) > 0) {
                 $CubsCanVis = 1;
             } else {
                 $CubsCanVis = 0;
             }
 
-            if (MAX($existingCanYlQty,$numCanYls) > 0) {
+            if (MAX($existingCanYlQty, $numCanYls) > 0) {
                 $YlsCanVis = 1;
             } else {
                 $YlsCanVis = 0;
             }
             
-            if (MAX($existingCanLeaderQty,$numCanLeaders) > 0) {
+            if (MAX($existingCanLeaderQty, $numCanLeaders) > 0) {
                 $LeadersCanVis = 1;
             } else {
                 $LeadersCanVis = 0;
@@ -678,11 +675,10 @@ class InvoiceItemsController extends AppController
             // SAVE THE ENTITIES AND COMPLETE
 
             if ($this->InvoiceItems->save($existingCubDepItem)
-                    && $this->InvoiceItems->save($existingCubItem) 
-                    && $this->InvoiceItems->save($existingYlItem) 
-                    && $this->InvoiceItems->save($existingLeaderItem) 
+                    && $this->InvoiceItems->save($existingCubItem)
+                    && $this->InvoiceItems->save($existingYlItem)
+                    && $this->InvoiceItems->save($existingLeaderItem)
                     && $this->InvoiceItems->save($existingDiscountItem)) {
-
                 if ($cancelledEver > 0) {
                     if ($this->InvoiceItems->save($existingCanCubDepItem)
                         && $this->InvoiceItems->save($existingCanCubItem)
@@ -691,7 +687,6 @@ class InvoiceItemsController extends AppController
                         // SUCCESS
                         $this->Flash->success(__('The invoice has been repopulated with updated values.'));
                         return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
-
                     } else {
                         $this->Flash->error(__('There was an error with Cancellation.'));
                     }
@@ -699,8 +694,7 @@ class InvoiceItemsController extends AppController
                     // SUCCESS
                     $this->Flash->success(__('The invoice has been repopulated with updated values.'));
                     return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
-
-                }  
+                }
             } else {
                 $this->Flash->error(__('There was an error.'));
             }
@@ -711,7 +705,7 @@ class InvoiceItemsController extends AppController
         $this->set('invPop', $invPop);
 
         // Set Field Loader Variables (for Get)
-        if (ISSET($predictedAttCubs) && $predictedAttCubs > $existingCubQty) {
+        if (isset($predictedAttCubs) && $predictedAttCubs > $existingCubQty) {
             if ($event->max && $predictedAttCubs >= $event->max_cubs) {
                 $predictedCubs = $event->max_cubs;
                 $this->Flash->error(__($limitTextCubs));
@@ -725,7 +719,7 @@ class InvoiceItemsController extends AppController
             $predictedCubs = $existingCubQty;
         }
 
-        if (ISSET($predictedAttYls) && $predictedAttYls > $existingYlQty) {
+        if (isset($predictedAttYls) && $predictedAttYls > $existingYlQty) {
             if ($event->max && $predictedAttYls >= $event->max_yls) {
                 $predictedYls = $event->max_yls;
                 $this->Flash->error(__($limitTextYls));
@@ -739,7 +733,7 @@ class InvoiceItemsController extends AppController
             $predictedYls = $existingYlQty;
         }
 
-        if (ISSET($predictedAttLeaders) && $predictedAttLeaders > $existingLeaderQty) {
+        if (isset($predictedAttLeaders) && $predictedAttLeaders > $existingLeaderQty) {
             if ($event->max && $predictedAttLeaders >= $event->max_leaders) {
                 $predictedLeaders = $event->max_leaders;
                 $this->Flash->error(__($limitTextLeaders));
@@ -768,5 +762,3 @@ class InvoiceItemsController extends AppController
         
     }
 }
-
-

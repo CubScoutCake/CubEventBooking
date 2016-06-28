@@ -21,9 +21,7 @@ class AttendeesControllerTest extends IntegrationTestCase
         'app.roles',
         'app.scoutgroups',
         'app.applications',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies'
+        'app.allergies'
     ];
 
     /**

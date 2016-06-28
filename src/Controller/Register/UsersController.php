@@ -3,6 +3,7 @@ namespace App\Controller\Register;
 
 use App\Controller\Register\AppController;
 use Cake\ORM\TableRegistry;
+
 //use Cake\Mailer\MailerAwareTrait;
 
 /**
@@ -18,7 +19,6 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-
             $usrData = ['authrole' => 'user'];
 
             $user = $this->Users->patchEntity($user, $this->request->data);
@@ -26,18 +26,17 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $usrData);
 
             $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-                ,'lastname' => ucwords(strtolower($user->lastname))
-                ,'address_1' => ucwords(strtolower($user->address_1))
-                ,'address_2' => ucwords(strtolower($user->address_2))
-                ,'city' => ucwords(strtolower($user->city))
-                ,'county' => ucwords(strtolower($user->county))
-                ,'postcode' => strtoupper($user->postcode)
-                ,'section' => ucwords(strtolower($user->section))];
+                , 'lastname' => ucwords(strtolower($user->lastname))
+                , 'address_1' => ucwords(strtolower($user->address_1))
+                , 'address_2' => ucwords(strtolower($user->address_2))
+                , 'city' => ucwords(strtolower($user->city))
+                , 'county' => ucwords(strtolower($user->county))
+                , 'postcode' => strtoupper($user->postcode)
+                , 'section' => ucwords(strtolower($user->section))];
 
             $user = $this->Users->patchEntity($user, $upperUser);
 
             if ($this->Users->save($user)) {
-
                 $atts = TableRegistry::get('Attendees');
 
                 $att = $atts->newEntity();
@@ -71,16 +70,17 @@ class UsersController extends AppController
             } else {
                 $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));
             }
-
         }
 
         $roles = $this->Users->Roles->find('nonAuto')->find('leaders')->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find('list', 
+        $scoutgroups = $this->Users->Scoutgroups->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'scoutgroup',
                 'groupField' => 'district.district'
-            ])
+            ]
+        )
             ->contain(['Districts']);
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
@@ -90,5 +90,4 @@ class UsersController extends AppController
     {
         $this->Auth->allow(['register']);
     }
-    
 }

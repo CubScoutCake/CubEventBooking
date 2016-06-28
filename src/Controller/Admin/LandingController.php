@@ -55,16 +55,16 @@ class LandingController extends AppController
         $userId = $this->Auth->user('id');
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users','Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(10);
+        $applications = $apps->find()->contain(['Users', 'Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(10);
         $events = $evs->find()->where(['end >' => $now])->contain(['Settings'])->order(['Events.start' => 'ASC']);
-        $invoices = $invs->find()->contain(['Users','Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
-        $users = $usrs->find()->contain(['Roles','Scoutgroups'])->order(['Users.last_login' => 'DESC'])->limit(10);
+        $invoices = $invs->find()->contain(['Users', 'Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
+        $users = $usrs->find()->contain(['Roles', 'Scoutgroups'])->order(['Users.last_login' => 'DESC'])->limit(10);
         $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
-        $notes = $nts->find()->contain(['Invoices','Applications','Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
-        $notifications = $notifs->find()->contain(['Notificationtypes','Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
+        $notes = $nts->find()->contain(['Invoices', 'Applications', 'Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
+        $notifications = $notifs->find()->contain(['Notificationtypes', 'Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
 
         // Pass to View
-        $this->set(compact('applications', 'events','invoices','users','payments','notes','notifications'));
+        $this->set(compact('applications', 'events', 'invoices', 'users', 'payments', 'notes', 'notifications'));
 
         // Counts of Entities
         $cntApplications = $apps->find('all')->count('*');
@@ -75,7 +75,7 @@ class LandingController extends AppController
         $cntAttendees = $atts->find('all')->count('*');
 
         // Pass to View
-        $this->set(compact('cntApplications', 'cntEvents','cntInvoices','cntUsers','cntPayments','cntAttendees','userId'));
+        $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));
 
         $keenRead = $sets->get(15)->text;
         $keenProject = $sets->get(14)->text;
@@ -103,7 +103,6 @@ class LandingController extends AppController
             $idNum = intval($id);
 
             if (is_int($idNum) && $idNum != 0) {
-
                 switch ($cont) {
                     case "U":
                         return $this->redirect(['controller' => 'Users', 'action' => 'view', $idNum]);
@@ -123,7 +122,7 @@ class LandingController extends AppController
                     default:
                         return $this->redirect(['action' => 'admin_home']);
                 }
-            }           
+            }
         }
     }
 }

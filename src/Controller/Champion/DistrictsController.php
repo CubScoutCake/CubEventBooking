@@ -37,5 +37,4 @@ class DistrictsController extends AppController
         $this->set('district', $district);
         $this->set('_serialize', ['district']);
     }
-
 }

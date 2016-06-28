@@ -55,11 +55,11 @@ class ApplicationsController extends AppController
 
         $application = $this->Applications->get($id, [
             'contain' => [
-                'Users', 
-                'Scoutgroups', 
-                'Events', 
-                'Invoices', 
-                'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC']], 'Attendees.Roles' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]],'Attendees.Scoutgroups' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]],
+                'Users',
+                'Scoutgroups',
+                'Events',
+                'Invoices',
+                'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC']], 'Attendees.Roles' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]], 'Attendees.Scoutgroups' => ['conditions' => ['Attendees.user_id' => $this->Auth->user('id')]],
                 'Notes' => ['conditions' => ['visible' => true]]]
         ]);
 
@@ -73,38 +73,38 @@ class ApplicationsController extends AppController
         $invoices = $invs->find('all')->where(['application_id' => $id]);
         $invCount = $invoices->count('*');
         $invFirst = $invs->find('all')->where(['application_id' => $id])->first();
-        $this->set(compact('invCount','invFirst'));
+        $this->set(compact('invCount', 'invFirst'));
 
         $attendeeCubCount = $this->Applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $id, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $id, 't.deleted IS' => null]);
 
         $attendeeYlCount = $this->Applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $id, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $id, 't.deleted IS' => null]);
 
         $attendeeLeaderCount = $this->Applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $id, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 0, 'Applications.id' => $id, 't.deleted IS' => null]);
 
         $attCubs = $attendeeCubCount->count(['t.id']);
         $attYls = $attendeeYlCount->count(['t.id']);
         $attLeaders = $attendeeLeaderCount->count(['t.id']);
 
         $attNotCubs = $attYls + $attLeaders;
-        $this->set(compact('attCubs','attYls','attLeaders','attNotCubs'));
+        $this->set(compact('attCubs', 'attYls', 'attLeaders', 'attNotCubs'));
 
         if ($invCount > 0) {
             $invItemCount = $itms->find('all')
@@ -123,10 +123,10 @@ class ApplicationsController extends AppController
                 $invYls = $invItemCounts[2]->sum;
                 $invLeaders = $invItemCounts[3]->sum;
             } else {
-               $invCubs = 0;
-               $invYls = 0;
-               $invLeaders = 0; 
-           }
+                $invCubs = 0;
+                $invYls = 0;
+                $invLeaders = 0;
+            }
         } else {
             $invCubs = 0;
             $invYls = 0;
@@ -135,7 +135,7 @@ class ApplicationsController extends AppController
         
 
         $invNotCubs = $invYls + $invLeaders;
-        $this->set(compact('invCubs','invYls','invLeaders','invNotCubs'));
+        $this->set(compact('invCubs', 'invYls', 'invLeaders', 'invNotCubs'));
 
         if ($invCount > 0) {
             $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->first();
@@ -149,7 +149,7 @@ class ApplicationsController extends AppController
         }
 
         $sumBalances = $sumValues - $sumPayments;
-        $this->set(compact('sumBalances','sumPayments','sumValues'));
+        $this->set(compact('sumBalances', 'sumPayments', 'sumValues'));
 
         $appDone = 1; // Set at 100% because an application has been created.
 
@@ -162,12 +162,11 @@ class ApplicationsController extends AppController
             $invDone = 0;
         }
 
-        if ($attCubs > 0 && $invCubs > 0 && $invCubs >= $attCubs)  {
+        if ($attCubs > 0 && $invCubs > 0 && $invCubs >= $attCubs) {
             $addCubs = $invCubs - $attCubs;
             $cubsDone = $attCubs / $invCubs;
 
             $this->set(compact('addCubs'));
-
         } elseif ($attCubs > 0 && $invCubs < $attCubs) {
             $this->Flash->error(__('Your Invoice is not Reflective of Your Number of Cubs.'));
             if ($invCount > 1) {
@@ -182,12 +181,11 @@ class ApplicationsController extends AppController
             $cubsDone = 0;
         }
 
-        if ($attNotCubs > 0 && $invNotCubs > 0 && $invNotCubs >= $attNotCubs)  {
+        if ($attNotCubs > 0 && $invNotCubs > 0 && $invNotCubs >= $attNotCubs) {
             $addNotCubs = $invNotCubs - $attNotCubs;
             $cubsNotDone = $attNotCubs / $invNotCubs;
 
             $this->set(compact('addNotCubs'));
-
         } elseif ($attNotCubs > 0 && $invNotCubs < $attNotCubs) {
             $this->Flash->error(__('Your Invoice is not Reflective of Your Number of Leaders & Young Leaders.'));
             $invDone = 0.5;
@@ -205,7 +203,7 @@ class ApplicationsController extends AppController
         }
         
 
-        $this->set(compact('appDone','invDone','cubsDone','cubsNotDone','payDone'));
+        $this->set(compact('appDone', 'invDone', 'cubsDone', 'cubsNotDone', 'payDone'));
 
         $done = ($appDone + $invDone + $cubsDone + $cubsNotDone + $payDone) / 5;
 
@@ -219,7 +217,7 @@ class ApplicationsController extends AppController
             $status = 'danger';
         }
 
-        $this->set(compact('done','status'));
+        $this->set(compact('done', 'status'));
     }
 
     /**
@@ -248,34 +246,33 @@ class ApplicationsController extends AppController
         
         $application = $this->Applications->newEntity();
         if ($this->request->is('post')) {
+            // Check Max Applications
 
-        	// Check Max Applications
-
-        	$evtID = $this->request->data['event_id'];
+            $evtID = $this->request->data['event_id'];
 
             $appCount = $this->Applications->find('all')->where(['event_id' => $evtID])->count('*');
             $event = $evts->get($evtID);
 
             if ($appCount > $event->available_apps) {
-            	$this->Flash->error(__('Apologies this Event is Full.'));
+                $this->Flash->error(__('Apologies this Event is Full.'));
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
             } elseif (!$event->new_apps) {
-            	$this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
+                $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
             } else {
-            	// Patch Data
-            	$newData = ['modification' => 0, 'user_id' => $this->Auth->user('id')];
-            	$application = $this->Applications->patchEntity($application, $newData);
+                // Patch Data
+                $newData = ['modification' => 0, 'user_id' => $this->Auth->user('id')];
+                $application = $this->Applications->patchEntity($application, $newData);
 
-            	$application = $this->Applications->patchEntity($application, $this->request->data);
+                $application = $this->Applications->patchEntity($application, $this->request->data);
 
-            	if ($this->Applications->save($application)) {
-            	    $redir = $application->get('id');
-            	    $this->Flash->success(__('The application has been saved.'));
-            	    return $this->redirect(['action' => 'view',$redir]);
-            	} else {
-            	    $this->Flash->error(__('The application could not be saved. Please, try again.'));
-            	}
+                if ($this->Applications->save($application)) {
+                    $redir = $application->get('id');
+                    $this->Flash->success(__('The application has been saved.'));
+                    return $this->redirect(['action' => 'view', $redir]);
+                } else {
+                    $this->Flash->error(__('The application could not be saved. Please, try again.'));
+                }
             }
         }
 
@@ -317,35 +314,33 @@ class ApplicationsController extends AppController
         
         $application = $this->Applications->newEntity();
         if ($this->request->is('post')) {
+            // Check Max Applications
 
-        	// Check Max Applications
-
-        	$evtID = $this->request->data['event_id'];
+            $evtID = $this->request->data['event_id'];
 
             $appCount = $this->Applications->find('all')->where(['event_id' => $evtID])->count('*');
             $event = $evts->get($evtID);
 
             if ($appCount > $event->available_apps && isset($event->available_apps)) {
-            	$this->Flash->error(__('Apologies this Event is Full.'));
+                $this->Flash->error(__('Apologies this Event is Full.'));
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
             } elseif (!$event->new_apps) {
                 $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
             } else {
-            	// Patch Data
-            	$newData = ['modification' => 0, 'user_id' => $this->Auth->user('id')];
-            	$application = $this->Applications->patchEntity($application, $newData);
+                // Patch Data
+                $newData = ['modification' => 0, 'user_id' => $this->Auth->user('id')];
+                $application = $this->Applications->patchEntity($application, $newData);
 
-            	$application = $this->Applications->patchEntity($application, $this->request->data);
+                $application = $this->Applications->patchEntity($application, $this->request->data);
 
-            	if ($this->Applications->save($application)) {
-
-            	    $redir = $application->get('id');
-            	    $this->Flash->success(__('The application has been saved.'));
-            	    return $this->redirect(['controller' => 'Invoices', 'action' => 'generate', $redir]);
-            	} else {
-            	    $this->Flash->error(__('The application could not be saved. Please, try again.'));
-            	}
+                if ($this->Applications->save($application)) {
+                    $redir = $application->get('id');
+                    $this->Flash->success(__('The application has been saved.'));
+                    return $this->redirect(['controller' => 'Invoices', 'action' => 'generate', $redir]);
+                } else {
+                    $this->Flash->error(__('The application could not be saved. Please, try again.'));
+                }
             }
         }
         
@@ -383,34 +378,33 @@ class ApplicationsController extends AppController
         
         $application = $this->Applications->newEntity();
         if ($this->request->is('post')) {
+            // Check Max Applications
 
-        	// Check Max Applications
-
-        	$evtID = $this->request->data['event_id'];
+            $evtID = $this->request->data['event_id'];
 
             $appCount = $this->Applications->find('all')->where(['event_id' => $evtID])->count('*');
             $event = $evts->get($evtID);
 
             if ($appCount > $event->available_apps && isset($event->available_apps)) {
-            	$this->Flash->error(__('Apologies this Event is Full.'));
+                $this->Flash->error(__('Apologies this Event is Full.'));
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
             } elseif (!$event->new_apps) {
                 $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
             } else {
-            	// Patch Data
-            	$newData = ['modification' => 0, 'user_id' => $this->Auth->user('id')];
-            	$application = $this->Applications->patchEntity($application, $newData);
+                // Patch Data
+                $newData = ['modification' => 0, 'user_id' => $this->Auth->user('id')];
+                $application = $this->Applications->patchEntity($application, $newData);
 
-            	$application = $this->Applications->patchEntity($application, $this->request->data);
+                $application = $this->Applications->patchEntity($application, $this->request->data);
 
-            	if ($this->Applications->save($application)) {
-            	    $redir = $application->get('id');
+                if ($this->Applications->save($application)) {
+                    $redir = $application->get('id');
                     $this->Flash->success(__('The application has been saved.'));
-                    return $this->redirect(['action' => 'view',$redir]);
-            	} else {
-            	    $this->Flash->error(__('The application could not be saved. Please, try again.'));
-            	}
+                    return $this->redirect(['action' => 'view', $redir]);
+                } else {
+                    $this->Flash->error(__('The application could not be saved. Please, try again.'));
+                }
             }
         }
         
@@ -441,10 +435,9 @@ class ApplicationsController extends AppController
 
 
         $application = $this->Applications->get($id, [
-            'contain' => ['Attendees','Scoutgroups']
+            'contain' => ['Attendees', 'Scoutgroups']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-
             // Check Max Applications
 
             $evtID = $this->request->data['event_id'];
@@ -462,12 +455,12 @@ class ApplicationsController extends AppController
                 $newData = ['user_id' => $this->Auth->user('id'), 'modification' => 'modification' + 1];
                 $application = $this->Applications->patchEntity($application, $newData);
                 $application = $this->Applications->patchEntity($application, $this->request->data);
-                if ($this->Applications->save($application)) {
-                    $this->Flash->success(__('The application has been saved.'));
-                    return $this->redirect(['action' => 'view',$id]);
-                } else {
-                    $this->Flash->error(__('The application could not be saved. Please, try again.'));
-                }
+            if ($this->Applications->save($application)) {
+                $this->Flash->success(__('The application has been saved.'));
+                return $this->redirect(['action' => 'view', $id]);
+            } else {
+                $this->Flash->error(__('The application could not be saved. Please, try again.'));
+            }
             // }
         }
         $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200]);
@@ -482,10 +475,9 @@ class ApplicationsController extends AppController
         // $evts = TableRegistry::get('Events');
 
         $application = $this->Applications->get($id, [
-            'contain' => ['Attendees','Scoutgroups']
+            'contain' => ['Attendees', 'Scoutgroups']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-
             // Check Max Applications
 
             /*$evtID = $this->request->data['event_id'];
@@ -503,12 +495,12 @@ class ApplicationsController extends AppController
                 $newData = ['user_id' => $this->Auth->user('id'), 'modification' => 'modification' + 1];
                 $application = $this->Applications->patchEntity($application, $newData);
                 $application = $this->Applications->patchEntity($application, $this->request->data);
-                if ($this->Applications->save($application)) {
-                    $this->Flash->success(__('The application has been saved.'));
-                    return $this->redirect(['action' => 'view',$id]);
-                } else {
-                    $this->Flash->error(__('The application could not be saved. Please, try again.'));
-                }
+            if ($this->Applications->save($application)) {
+                $this->Flash->success(__('The application has been saved.'));
+                return $this->redirect(['action' => 'view', $id]);
+            } else {
+                $this->Flash->error(__('The application could not be saved. Please, try again.'));
+            }
             // }
         }
         $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);

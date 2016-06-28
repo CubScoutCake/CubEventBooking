@@ -28,7 +28,7 @@ class UsersController extends AppController
 
         $this->paginate = [
             'contain' => ['Roles', 'Scoutgroups'],
-            'conditions' => [   
+            'conditions' => [
                 'Scoutgroups.district_id' => $champD->district_id]];
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
@@ -89,7 +89,6 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
 
         if ($this->request->is('post')) {
-
             $user = $this->Users->patchEntity($user, $this->request->data);
 
             $newData = ['section' => 'Cubs', 'authrole' => 'user'];
@@ -97,7 +96,7 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('You have sucesfully registered!'));
-                return $this->redirect(['controller' => 'Users', 'action' => 'login','prefix' => false]);
+                return $this->redirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false]);
             } else {
                 $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));
             }
@@ -128,8 +127,7 @@ class UsersController extends AppController
 
         $usrRole = $user->authrole;
 
-        if ( $usrRole !== 'user' && $user->id !== $this->Auth->user('id'))
-        {
+        if ($usrRole !== 'user' && $user->id !== $this->Auth->user('id')) {
             $this->Flash->error(__('The user could not be edited.'));
             return $this->redirect(['action' => 'index']);
         }
@@ -154,13 +152,13 @@ class UsersController extends AppController
         $user = $this->Users->get($id);
 
         $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-            ,'lastname' => ucwords(strtolower($user->lastname))
-            ,'address_1' => ucwords(strtolower($user->address_1))
-            ,'address_2' => ucwords(strtolower($user->address_2))
-            ,'city' => ucwords(strtolower($user->city))
-            ,'county' => ucwords(strtolower($user->county))
-            ,'postcode' => strtoupper($user->postcode)
-            ,'section' => ucwords(strtolower($user->section))];
+            , 'lastname' => ucwords(strtolower($user->lastname))
+            , 'address_1' => ucwords(strtolower($user->address_1))
+            , 'address_2' => ucwords(strtolower($user->address_2))
+            , 'city' => ucwords(strtolower($user->city))
+            , 'county' => ucwords(strtolower($user->county))
+            , 'postcode' => strtoupper($user->postcode)
+            , 'section' => ucwords(strtolower($user->section))];
 
         $user = $this->Users->patchEntity($user, $upperUser);
 
@@ -198,7 +196,7 @@ class UsersController extends AppController
             'controller' => 'Users',
             'action' => 'login',
             'prefix' => false
-        ]);       
+        ]);
     }
 
     public function logout()
@@ -212,5 +210,4 @@ class UsersController extends AppController
         $this->Auth->allow(['register']);
         $this->Auth->allow(['login']);
     }
-    
 }

@@ -96,7 +96,7 @@ Router::prefix('champion', function ($routes) {
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'championHome', 'champion_home']);
 
-    $routes->fallbacks('DashedRoute');  
+    $routes->fallbacks('DashedRoute');
 });
 
 Router::prefix('register', function ($routes) {

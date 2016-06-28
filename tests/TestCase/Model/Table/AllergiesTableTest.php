@@ -23,9 +23,7 @@ class AllergiesTableTest extends TestCase
         'app.roles',
         'app.scoutgroups',
         'app.districts',
-        'app.applications',
-        'app.applications_attendees',
-        'app.attendees_allergies'
+        'app.applications'
     ];
 
     /**

@@ -59,7 +59,7 @@ class ParametersController extends AppController
             }
         }
         $sets = $this->Parameters->ParameterSets->find('list', ['limit' => 200]);
-        $this->set(compact('parameter','sets'));
+        $this->set(compact('parameter', 'sets'));
         $this->set('_serialize', ['parameter']);
     }
 

@@ -21,7 +21,7 @@ class PaymentsController extends AppController
         $payments = $this->Payments;
         $myPayments = $this->paginate($payments->find()->matching('Invoices', function ($q) {
                 return $q->where(['Invoices.user_id' => $this->Auth->user('id')]);
-            })->contain(['Invoices','Invoices.Users']));
+        })->contain(['Invoices', 'Invoices.Users']));
 
         $this->set('payments', $myPayments);
         $this->set('_serialize', ['payments']);

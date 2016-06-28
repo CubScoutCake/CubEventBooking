@@ -55,14 +55,14 @@ class LandingController extends AppController
         $champD = $grps->get($this->Auth->user('scoutgroup_id'));
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users','Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Applications.modified' => 'DESC'])->limit(15);
+        $applications = $apps->find()->contain(['Users', 'Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Applications.modified' => 'DESC'])->limit(15);
         $events = $evs->find()->where(['end >' => $now])->contain(['Settings'])->order(['Events.start' => 'ASC']);
-        $invoices = $invs->find()->contain(['Users','Applications','Applications.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Invoices.modified' => 'DESC'])->limit(15);
-        $users = $usrs->find()->contain(['Roles','Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Users.modified' => 'DESC'])->limit(15);
+        $invoices = $invs->find()->contain(['Users', 'Applications', 'Applications.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Invoices.modified' => 'DESC'])->limit(15);
+        $users = $usrs->find()->contain(['Roles', 'Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Users.modified' => 'DESC'])->limit(15);
         $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(15);
 
         // Pass to View
-        $this->set(compact('applications', 'events','invoices','users','payments'));
+        $this->set(compact('applications', 'events', 'invoices', 'users', 'payments'));
 
         /*// Counts of Entities
         $cntApplications = $apps->find('all')->count('*');
@@ -83,7 +83,7 @@ class LandingController extends AppController
         $cntAttendees = $atts->find('all')->contain(['Users.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
 
         // Pass to View
-        $this->set(compact('cntApplications', 'cntEvents','cntInvoices','cntUsers','cntPayments','cntAttendees'));
+        $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees'));
 
     }
 }

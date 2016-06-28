@@ -19,7 +19,7 @@ class ChampionsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Districts','Users']
+            'contain' => ['Districts', 'Users']
         ];
         $this->set('champions', $this->paginate($this->Champions));
         $this->set('_serialize', ['champions']);
@@ -35,7 +35,7 @@ class ChampionsController extends AppController
     public function view($id = null)
     {
         $champion = $this->Champions->get($id, [
-            'contain' => ['Districts','Users']
+            'contain' => ['Districts', 'Users']
         ]);
         $this->set('champion', $champion);
         $this->set('_serialize', ['champion']);

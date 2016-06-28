@@ -31,7 +31,7 @@ class RolesController extends AppController
      */
     public function view($id = null)
     {
-        $role = $this->Roles->get($id,[
+        $role = $this->Roles->get($id, [
             'contain' => [
                 'Attendees.Scoutgroups' => [
                     'conditions' => [
@@ -40,5 +40,4 @@ class RolesController extends AppController
         $this->set('role', $role);
         $this->set('_serialize', ['role']);
     }
-
 }

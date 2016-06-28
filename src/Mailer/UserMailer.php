@@ -6,7 +6,8 @@ use Cake\Mailer\Mailer;
 
 class UserMailer extends Mailer
 {
-    public function welcome($user,$group,$notification) {
+    public function welcome($user, $group, $notification)
+    {
         // $email = new Email('default');
         $this->transport('sparkpost')
             ->template('welcome', 'default')
@@ -30,10 +31,11 @@ class UserMailer extends Mailer
                     , 'notification_id' => $notification->id
                     ])
             ->helpers(['Html', 'Text', 'Time']);
-            //->send();                          
+            //->send();
     }
 
-    public function validate($user,$group,$notification) {
+    public function validate($user, $group, $notification)
+    {
         // $email = new Email('default');
         $this->transport('sparkpost')
             ->template('validate', 'default')
@@ -52,10 +54,11 @@ class UserMailer extends Mailer
                     , 'notification_id' => $notification->id
                     ])
             ->helpers(['Html', 'Text', 'Time']);
-            //->send();                          
+            //->send();
     }
 
-    public function passres($user, $random) {
+    public function passres($user, $random)
+    {
         $this->transport('sparkpost')
             ->template('pwreset', 'default')
             ->emailFormat('html')

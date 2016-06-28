@@ -21,7 +21,7 @@ class NotesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Applications', 'Invoices', 'Users']
-            ,'order' => ['created' => 'DESC']
+            , 'order' => ['created' => 'DESC']
         ];
         $notes = $this->paginate($this->Notes);
 
@@ -33,8 +33,8 @@ class NotesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Applications', 'Invoices', 'Users']
-            ,'order' => ['created' => 'DESC']
-            ,'conditions' => ['visible' => true]
+            , 'order' => ['created' => 'DESC']
+            , 'conditions' => ['visible' => true]
         ];
         $notes = $this->paginate($this->Notes);
 
@@ -77,24 +77,30 @@ class NotesController extends AppController
                 $this->Flash->error(__('The note could not be saved. Please, try again.'));
             }
         }
-        $applications = $this->Notes->Applications->find('list', 
+        $applications = $this->Notes->Applications->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'display_code',
                 'groupField' => 'event.name'
-            ])->contain('Events');
-        $invoices = $this->Notes->Invoices->find('list', 
+            ]
+        )->contain('Events');
+        $invoices = $this->Notes->Invoices->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'display_code',
                 'groupField' => 'application.event.name'
-            ])->contain('Applications.Events');
-        $users = $this->Notes->Users->find('list', 
+            ]
+        )->contain('Applications.Events');
+        $users = $this->Notes->Users->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'full_name',
                 'groupField' => 'scoutgroup.district.district'
-            ])
+            ]
+        )
             ->contain(['Scoutgroups.Districts']);
         $this->set(compact('note', 'applications', 'invoices', 'users'));
         $this->set('_serialize', ['note']);
@@ -102,41 +108,41 @@ class NotesController extends AppController
 
     public function newInvoice($invId)
     {
-    	if (!is_null($invId)) {
-    		$note = $this->Notes->newEntity();
-    		if ($this->request->is('post')) {
-    		    $note = $this->Notes->patchEntity($note, $this->request->data);
+        if (!is_null($invId)) {
+            $note = $this->Notes->newEntity();
+            if ($this->request->is('post')) {
+                $note = $this->Notes->patchEntity($note, $this->request->data);
 
                 $invs = TableRegistry::get('Invoices');
                 $invoice = $invs->get($invId);
 
-    		    $invoiceLink = [
-                    'invoice_id' => $invoice->id, 
-                    'user_id' => $invoice->user_id, 
+                $invoiceLink = [
+                    'invoice_id' => $invoice->id,
+                    'user_id' => $invoice->user_id,
                     'application_id' => $invoice->application_id
                 ];
-    		    $note = $this->Notes->patchEntity($note, $invoiceLink);
-    		    if ($this->Notes->save($note)) {
-    		        $this->Flash->success(__('The note has been saved.'));
-    		        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invId]);
-    		    } else {
-    		        $this->Flash->error(__('The note could not be saved. Please, try again.'));
-    		    }
-    		}
-    		$this->set(compact('note'));
-    		$this->set('_serialize', ['note']);
-    	} else {
-    		$this->Flash->error(__('No Invoice ID Specified.'));
-    		return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
-    	}
+                $note = $this->Notes->patchEntity($note, $invoiceLink);
+                if ($this->Notes->save($note)) {
+                    $this->Flash->success(__('The note has been saved.'));
+                    return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invId]);
+                } else {
+                    $this->Flash->error(__('The note could not be saved. Please, try again.'));
+                }
+            }
+            $this->set(compact('note'));
+            $this->set('_serialize', ['note']);
+        } else {
+            $this->Flash->error(__('No Invoice ID Specified.'));
+            return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
+        }
     }
 
     public function newApplication($appId)
     {
-    	if (!is_null($appId)) {
-    		$note = $this->Notes->newEntity();
-    		if ($this->request->is('post')) {
-    		    $note = $this->Notes->patchEntity($note, $this->request->data);
+        if (!is_null($appId)) {
+            $note = $this->Notes->newEntity();
+            if ($this->request->is('post')) {
+                $note = $this->Notes->patchEntity($note, $this->request->data);
 
                 $apps = TableRegistry::get('Applications');
                 $invs = TableRegistry::get('Invoices');
@@ -144,49 +150,49 @@ class NotesController extends AppController
                 $application = $apps->get($appId);
                 $invFirst = $invs->find('all')->where(['application_id' => $appId])->first();
 
-    		    $applicationLink = [
+                $applicationLink = [
                     'application_id' => $application->id,
                     'invoice_id' => $invFirst->id,
                     'user_id' => $application->user_id
                 ];
-    		    $note = $this->Notes->patchEntity($note, $applicationLink);
-    		    if ($this->Notes->save($note)) {
-    		        $this->Flash->success(__('The note has been saved.'));
-    		        return $this->redirect(['controller' => 'Applications', 'action' => 'view', $appId]);
-    		    } else {
-    		        $this->Flash->error(__('The note could not be saved. Please, try again.'));
-    		    }
-    		}
-    		$this->set(compact('note'));
-    		$this->set('_serialize', ['note']);
-    	} else {
-    		$this->Flash->error(__('No Application ID Specified.'));
-    		return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
-    	} 
+                $note = $this->Notes->patchEntity($note, $applicationLink);
+                if ($this->Notes->save($note)) {
+                    $this->Flash->success(__('The note has been saved.'));
+                    return $this->redirect(['controller' => 'Applications', 'action' => 'view', $appId]);
+                } else {
+                    $this->Flash->error(__('The note could not be saved. Please, try again.'));
+                }
+            }
+            $this->set(compact('note'));
+            $this->set('_serialize', ['note']);
+        } else {
+            $this->Flash->error(__('No Application ID Specified.'));
+            return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
+        }
     }
 
     public function newUser($userId)
     {
-    	if (!is_null($userId)) {
-    		$note = $this->Notes->newEntity();
-    		if ($this->request->is('post')) {
-    		    $note = $this->Notes->patchEntity($note, $this->request->data);
+        if (!is_null($userId)) {
+            $note = $this->Notes->newEntity();
+            if ($this->request->is('post')) {
+                $note = $this->Notes->patchEntity($note, $this->request->data);
 
-    		    $userLink = ['user_id' => $userId];
-    		    $note = $this->Notes->patchEntity($note, $userLink);
-    		    if ($this->Notes->save($note)) {
-    		        $this->Flash->success(__('The note has been saved.'));
-    		        return $this->redirect(['controller' => 'Users', 'action' => 'view', $userId]);
-    		    } else {
-    		        $this->Flash->error(__('The note could not be saved. Please, try again.'));
-    		    }
-    		}
-    		$this->set(compact('note'));
-    		$this->set('_serialize', ['note']);
-    	} else {
-    		$this->Flash->error(__('No User ID Specified.'));
-    		return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
-    	}  
+                $userLink = ['user_id' => $userId];
+                $note = $this->Notes->patchEntity($note, $userLink);
+                if ($this->Notes->save($note)) {
+                    $this->Flash->success(__('The note has been saved.'));
+                    return $this->redirect(['controller' => 'Users', 'action' => 'view', $userId]);
+                } else {
+                    $this->Flash->error(__('The note could not be saved. Please, try again.'));
+                }
+            }
+            $this->set(compact('note'));
+            $this->set('_serialize', ['note']);
+        } else {
+            $this->Flash->error(__('No User ID Specified.'));
+            return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
+        }
     }
 
     /**
@@ -209,24 +215,30 @@ class NotesController extends AppController
                 $this->Flash->error(__('The note could not be saved. Please, try again.'));
             }
         }
-        $applications = $this->Notes->Applications->find('list', 
+        $applications = $this->Notes->Applications->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'display_code',
                 'groupField' => 'event.name'
-            ])->contain('Events');
-        $invoices = $this->Notes->Invoices->find('list', 
+            ]
+        )->contain('Events');
+        $invoices = $this->Notes->Invoices->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'display_code',
                 'groupField' => 'application.event.name'
-            ])->contain('Applications.Events');
-        $users = $this->Notes->Users->find('list', 
+            ]
+        )->contain('Applications.Events');
+        $users = $this->Notes->Users->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'full_name',
                 'groupField' => 'scoutgroup.district.district'
-            ])
+            ]
+        )
             ->contain(['Scoutgroups.Districts']);
         $this->set(compact('note', 'applications', 'invoices', 'users'));
         $this->set('_serialize', ['note']);

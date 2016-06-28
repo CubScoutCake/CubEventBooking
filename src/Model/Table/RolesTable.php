@@ -67,21 +67,45 @@ class RolesTable extends Table
         return $validator;
     }
 
+    /**
+     * Process the function parameter comments.
+     *
+     * @param array $query    The query being modified.
+     * @return array
+     */
     public function findNonAuto($query)
     {
         return $query->where(['Roles.automated' => false]);
     }
 
+    /**
+     * Process the function parameter comments.
+     *
+     * @param array $query    The query being modified.
+     * @return array
+     */
     public function findAdults($query)
     {
         return $query->where(['Roles.minor' => false]);
     }
 
+    /**
+     * Process the function parameter comments.
+     *
+     * @param array $query    The query being modified.
+     * @return array
+     */
     public function findLeaders($query)
     {
         return $query->where(['Roles.minor' => false, 'Roles.invested' => true]);
     }
 
+    /**
+     * Process the function parameter comments.
+     *
+     * @param array $query    The query being modified.
+     * @return array
+     */
     public function findMinors($query)
     {
         return $query->where(['Roles.minor' => true]);

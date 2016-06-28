@@ -25,7 +25,7 @@ class InvoicesController extends AppController
         
         $this->paginate = [
             'contain' => ['Users', 'Applications', 'Applications.Scoutgroups']
-            ,'conditions' => ['Scoutgroups.district_id' => $champD->district_id]
+            , 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]
         ];
         $this->set('invoices', $this->paginate($this->Invoices));
         $this->set('_serialize', ['invoices']);
@@ -104,7 +104,7 @@ class InvoicesController extends AppController
 
         $query->innerJoinWith('Tags', function ($q) {
             return $q->where(['Tags.name' => 'CakePHP']);
-        }); */        
+        }); */
 
         $this->set('invoice', $invoice);
         $this->set('_serialize', ['invoice']);
@@ -146,26 +146,21 @@ class InvoicesController extends AppController
         $newData = ['user_id' => $userId];
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 
             $invoice = $this->Invoices->patchEntity($invoice, $newData);
 
             if ($this->Invoices->save($invoice)) {
-
                 $redir = $invoice->get('id');
 
                 $this->Flash->success(__('An invoice has been generated. Please enter the number of Attendees you are bringing.'));
 
                 return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'populate', $redir]);
-
             } else {
-
                 $this->Flash->error(__('The invoice could not be generated. Please, try again.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-
         }
 
         if (isset($userId)) {
@@ -174,11 +169,10 @@ class InvoicesController extends AppController
             $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
         }
 
-        $this->set(compact('applications'));    
+        $this->set(compact('applications'));
         $this->set('_serialize', ['invoice']);
 
         if ($this->request->is('get')) {
-            
             // Values from the Model e.g.
             $this->request->data['application_id'] = $appId;
         }

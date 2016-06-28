@@ -6,7 +6,8 @@ use Cake\Mailer\Mailer;
 
 class PaymentMailer extends Mailer
 {
-    public function payment($user = null, $group = null, $notification = null, $invoice = null, $payment = null) {
+    public function payment($user = null, $group = null, $notification = null, $invoice = null, $payment = null)
+    {
         // $email = new Email('default');
         if (isset($user) && isset($group) && isset($payment) && isset($notification) && isset($invoice) && isset($group)) {
             $this->transport('sparkpost')
@@ -37,12 +38,13 @@ class PaymentMailer extends Mailer
                         , 'balance' => $invoice->balance
                         ])
                 ->helpers(['Html', 'Text', 'Time']);
-                //->send(); 
+                //->send();
         }
                                  
     }
 
-    public function outstanding($user = null, $group = null, $notification = null, $invoice = null, $app = null) {
+    public function outstanding($user = null, $group = null, $notification = null, $invoice = null, $app = null)
+    {
         // $email = new Email('default');
         if (isset($user) && isset($group) && isset($app) && isset($notification) && isset($invoice) && isset($group)) {
             $this->transport('sparkpost')
@@ -71,11 +73,12 @@ class PaymentMailer extends Mailer
                         , 'balance' => $invoice->balance
                         ])
                 ->helpers(['Html', 'Text', 'Time']);
-                //->send(); 
-        }                            
+                //->send();
+        }
     }
 
-    public function surcharge($user = null, $group = null, $notification = null, $invoice = null, $app = null, $percentage = null, $fee = null) {
+    public function surcharge($user = null, $group = null, $notification = null, $invoice = null, $app = null, $percentage = null, $fee = null)
+    {
         // $email = new Email('default');
         if (isset($user) && isset($group) && isset($app) && isset($notification) && isset($invoice) && isset($fee) && isset($percentage) && isset($group)) {
             $this->transport('sparkpost')
@@ -106,7 +109,7 @@ class PaymentMailer extends Mailer
                         , 'fee' => $fee
                         ])
                 ->helpers(['Html', 'Text', 'Time']);
-                //->send(); 
+                //->send();
         }
                                  
     }

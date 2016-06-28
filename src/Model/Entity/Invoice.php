@@ -43,6 +43,5 @@ class Invoice extends Entity
         return 'INV #' . $this->_properties['id'];
     }
 
-    protected $_virtual = ['balance','display_code'];
-
+    protected $_virtual = ['balance', 'display_code'];
 }

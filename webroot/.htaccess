@@ -1,5 +1,5 @@
 
-AddType x-httpd-php54 .php
+AddType x-httpd-php7 .php
 
 <IfModule mod_php5.c>
 	php_extension mbstring.so

@@ -19,7 +19,6 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Network\Exception\InternalErrorException;
 use Cake\Utility\Inflector;
 
-
 class AnalyticsComponent extends Component
 {
 

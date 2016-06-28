@@ -20,8 +20,8 @@ class AttendeesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
-            ,'order' => ['modified' => 'DESC']
+            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
+            , 'order' => ['modified' => 'DESC']
         ];
         $this->set('attendees', $this->paginate($this->Attendees->find('countIncluded')));
         $this->set('_serialize', ['attendees']);
@@ -30,8 +30,8 @@ class AttendeesController extends AppController
     public function unattached()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
-            ,'order' => ['modified' => 'DESC']
+            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
+            , 'order' => ['modified' => 'DESC']
         ];
         $this->set('attendees', $this->paginate($this->Attendees->find('unattached')));
         $this->set('_serialize', ['attendees']);
@@ -46,7 +46,7 @@ class AttendeesController extends AppController
     public function view($id = null)
     {
         $attendee = $this->Attendees->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
+            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);
@@ -72,15 +72,16 @@ class AttendeesController extends AppController
         if (is_null($userId)) {
             $users = $this->Attendees->Users->find('list', ['limit' => 200]);
             $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'order' => ['id' => 'DESC']]);
-            $scoutgroups = $this->Attendees->Scoutgroups->find('list', 
+            $scoutgroups = $this->Attendees->Scoutgroups->find(
+                'list',
                 [
                     'keyField' => 'id',
                     'valueField' => 'scoutgroup',
                     'groupField' => 'district.district'
-                ])
+                ]
+            )
                 ->contain(['Districts']);
         } else {
-
             $usrs = TableRegistry::get('Users');
 
             $user = $usrs->get($userId);
@@ -89,10 +90,10 @@ class AttendeesController extends AppController
 
             $users = $this->Attendees->Users->find('list', ['limit' => 200, 'conditions' => ['id' => $userId]]);
             $applications = $this->Attendees->Applications->find('list', [
-                'limit' => 200, 
+                'limit' => 200,
                 'conditions' => [
                     'user_id' => $userId
-                ], 
+                ],
                 'order' => [
                     'id' => 'DESC'
                 ]]);
@@ -102,7 +103,7 @@ class AttendeesController extends AppController
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
         $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
 
-        $this->set(compact('attendee', 'users', 'applications', 'allergies','scoutgroups','roles'));
+        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'scoutgroups', 'roles'));
         $this->set('_serialize', ['attendee']);
     }
 
@@ -128,18 +129,20 @@ class AttendeesController extends AppController
             }
         }
         $users = $this->Attendees->Users->find('list', ['limit' => 200]);
-        $applications = $this->Attendees->Applications->find('list', ['limit' => 200,'conditions' => ['user_id' => $attendee->user_id]]);
+        $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $attendee->user_id]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Attendees->Scoutgroups->find('list', 
-                [
+        $scoutgroups = $this->Attendees->Scoutgroups->find(
+            'list',
+            [
                     'keyField' => 'id',
                     'valueField' => 'scoutgroup',
                     'groupField' => 'district.district'
-                ])
+            ]
+        )
                 ->contain(['Districts']);
         $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
 
-        $this->set(compact('attendee', 'users', 'applications', 'allergies','scoutgroups','roles'));
+        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'scoutgroups', 'roles'));
         $this->set('_serialize', ['attendee']);
     }
 
@@ -148,27 +151,27 @@ class AttendeesController extends AppController
         $attendee = $this->Attendees->get($id);
 
         $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
-            ,'lastname' => ucwords(strtolower($attendee->lastname))
-            ,'address_1' => ucwords(strtolower($attendee->address_1))
-            ,'address_2' => ucwords(strtolower($attendee->address_2))
-            ,'city' => ucwords(strtolower($attendee->city))
-            ,'county' => ucwords(strtolower($attendee->county))
-            ,'postcode' => strtoupper($attendee->postcode)];
+            , 'lastname' => ucwords(strtolower($attendee->lastname))
+            , 'address_1' => ucwords(strtolower($attendee->address_1))
+            , 'address_2' => ucwords(strtolower($attendee->address_2))
+            , 'city' => ucwords(strtolower($attendee->city))
+            , 'county' => ucwords(strtolower($attendee->county))
+            , 'postcode' => strtoupper($attendee->postcode)];
 
         $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 
         $phone1 = $attendee->phone;
         $phone2 = $attendee->phone2;
 
-        $phone1 = str_replace(' ','',$phone1);
-        $phone1 = str_replace('-','',$phone1);
-        $phone1 = str_replace('/','',$phone1);
+        $phone1 = str_replace(' ', '', $phone1);
+        $phone1 = str_replace('-', '', $phone1);
+        $phone1 = str_replace('/', '', $phone1);
         $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
 
         if (!empty($phone2)) {
-            $phone2 = str_replace(' ','',$phone2);
-            $phone2 = str_replace('-','',$phone2);
-            $phone2 = str_replace('/','',$phone2);
+            $phone2 = str_replace(' ', '', $phone2);
+            $phone2 = str_replace('-', '', $phone2);
+            $phone2 = str_replace('/', '', $phone2);
             $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
         }
 

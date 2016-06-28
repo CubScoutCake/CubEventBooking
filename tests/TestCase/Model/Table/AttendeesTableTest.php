@@ -22,9 +22,7 @@ class AttendeesTableTest extends TestCase
         'app.roles',
         'app.scoutgroups',
         'app.applications',
-        'app.applications_attendees',
         'app.allergies',
-        'app.attendees_allergies'
     ];
 
     /**

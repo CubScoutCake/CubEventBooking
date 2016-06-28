@@ -6,6 +6,7 @@ use Cake\Mailer\MailerAwareTrait;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
+
 //use DataTables\Controller\Component;
 
 /**
@@ -26,7 +27,7 @@ class UsersController extends AppController
     {
         $this->paginate = [
             'contain' => ['Roles', 'Scoutgroups']
-            ,'order' => ['modified' => 'DESC']
+            , 'order' => ['modified' => 'DESC']
         ];
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
@@ -77,13 +78,13 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->data);
 
             $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-                ,'lastname' => ucwords(strtolower($user->lastname))
-                ,'address_1' => ucwords(strtolower($user->address_1))
-                ,'address_2' => ucwords(strtolower($user->address_2))
-                ,'city' => ucwords(strtolower($user->city))
-                ,'county' => ucwords(strtolower($user->county))
-                ,'postcode' => strtoupper($user->postcode)
-                ,'section' => ucwords(strtolower($user->section))];
+                , 'lastname' => ucwords(strtolower($user->lastname))
+                , 'address_1' => ucwords(strtolower($user->address_1))
+                , 'address_2' => ucwords(strtolower($user->address_2))
+                , 'city' => ucwords(strtolower($user->city))
+                , 'county' => ucwords(strtolower($user->county))
+                , 'postcode' => strtoupper($user->postcode)
+                , 'section' => ucwords(strtolower($user->section))];
 
             $user = $this->Users->patchEntity($user, $upperUser);
             
@@ -95,12 +96,14 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find('list', 
+        $scoutgroups = $this->Users->Scoutgroups->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'scoutgroup',
                 'groupField' => 'district.district'
-            ])
+            ]
+        )
             ->contain(['Districts']);
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
@@ -108,7 +111,8 @@ class UsersController extends AppController
 
     // use MailerAwareTrait;
 
-    public function sync($userId) {
+    public function sync($userId)
+    {
 
         $user = $this->Users->get($userId);
 
@@ -128,7 +132,7 @@ class UsersController extends AppController
         } else {
             $newAttendeeData = ['dateofbirth' => '1990-01-01'];
             $att = $atts->newEntity($newAttendeeData);
-        }              
+        }
 
         $attendeeData = [
             'user_id' => $user->id,
@@ -155,7 +159,8 @@ class UsersController extends AppController
         return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $user->id]);
     }
 
-    public function syncAll() {
+    public function syncAll()
+    {
 
         $usrs = $this->Users->find('all');
 
@@ -181,7 +186,7 @@ class UsersController extends AppController
             } else {
                 $newAttendeeData = ['dateofbirth' => '1990-01-01'];
                 $att = $atts->newEntity($newAttendeeData);
-            }              
+            }
 
             $attendeeData = [
                 'user_id' => $user->id,
@@ -227,13 +232,13 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->data);
 
             $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-                ,'lastname' => ucwords(strtolower($user->lastname))
-                ,'address_1' => ucwords(strtolower($user->address_1))
-                ,'address_2' => ucwords(strtolower($user->address_2))
-                ,'city' => ucwords(strtolower($user->city))
-                ,'county' => ucwords(strtolower($user->county))
-                ,'postcode' => strtoupper($user->postcode)
-                ,'section' => ucwords(strtolower($user->section))];
+                , 'lastname' => ucwords(strtolower($user->lastname))
+                , 'address_1' => ucwords(strtolower($user->address_1))
+                , 'address_2' => ucwords(strtolower($user->address_2))
+                , 'city' => ucwords(strtolower($user->city))
+                , 'county' => ucwords(strtolower($user->county))
+                , 'postcode' => strtoupper($user->postcode)
+                , 'section' => ucwords(strtolower($user->section))];
 
             $user = $this->Users->patchEntity($user, $upperUser);
 
@@ -245,12 +250,14 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find('list', 
+        $scoutgroups = $this->Users->Scoutgroups->find(
+            'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'scoutgroup',
                 'groupField' => 'district.district'
-            ])
+            ]
+        )
             ->contain(['Districts']);
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
@@ -261,13 +268,13 @@ class UsersController extends AppController
         $user = $this->Users->get($id);
 
         $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-            ,'lastname' => ucwords(strtolower($user->lastname))
-            ,'address_1' => ucwords(strtolower($user->address_1))
-            ,'address_2' => ucwords(strtolower($user->address_2))
-            ,'city' => ucwords(strtolower($user->city))
-            ,'county' => ucwords(strtolower($user->county))
-            ,'postcode' => strtoupper($user->postcode)
-            ,'section' => ucwords(strtolower($user->section))];
+            , 'lastname' => ucwords(strtolower($user->lastname))
+            , 'address_1' => ucwords(strtolower($user->address_1))
+            , 'address_2' => ucwords(strtolower($user->address_2))
+            , 'city' => ucwords(strtolower($user->city))
+            , 'county' => ucwords(strtolower($user->county))
+            , 'postcode' => strtoupper($user->postcode)
+            , 'section' => ucwords(strtolower($user->section))];
 
         $user = $this->Users->patchEntity($user, $upperUser);
 
@@ -291,7 +298,7 @@ class UsersController extends AppController
         $rMax = $sets->get(16)->text;
         $rMin = $sets->get(17)->text;
 
-        $random = rand($rMin,$rMax);
+        $random = rand($rMin, $rMax);
 
         $string = 'Reset Success' . ( $user->id * $now->day ) . $random . $now->year . $now->month;
 
@@ -302,7 +309,6 @@ class UsersController extends AppController
         $user = $this->Users->patchEntity($user, $newToken);
 
         if ($this->Users->save($user)) {
-
             $this->getMailer('User')->send('passres', [$user, $random]);
 
             $this->Flash->success(__('A Password Reset was generated.'));
@@ -352,5 +358,4 @@ class UsersController extends AppController
         $this->Auth->allow(['register']);
         $this->Auth->allow(['login']);
     }
-    
 }

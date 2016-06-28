@@ -48,5 +48,4 @@ class ChampionsController extends AppController
         $this->Auth->allow(['index']);
         $this->Auth->allow(['view']);
     }
-
 }

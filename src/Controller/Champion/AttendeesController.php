@@ -24,8 +24,8 @@ class AttendeesController extends AppController
         $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
 
         $this->paginate = [
-            'contain' => ['Users','Applications.Events','Scoutgroups']
-            ,'conditions' => ['Scoutgroups.district_id' => $champD->district_id]
+            'contain' => ['Users', 'Applications.Events', 'Scoutgroups']
+            , 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]
         ];
         $this->set('attendees', $this->paginate($this->Attendees));
         $this->set('_serialize', ['attendees']);
@@ -41,7 +41,7 @@ class AttendeesController extends AppController
     public function view($id = null)
     {
         $attendee = $this->Attendees->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups','Applications.Events','Allergies']
+            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);
@@ -63,12 +63,12 @@ class AttendeesController extends AppController
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
 
             $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
-                ,'lastname' => ucwords(strtolower($attendee->lastname))
-                ,'address_1' => ucwords(strtolower($attendee->address_1))
-                ,'address_2' => ucwords(strtolower($attendee->address_2))
-                ,'city' => ucwords(strtolower($attendee->city))
-                ,'county' => ucwords(strtolower($attendee->county))
-                ,'postcode' => strtoupper($attendee->postcode)];
+                , 'lastname' => ucwords(strtolower($attendee->lastname))
+                , 'address_1' => ucwords(strtolower($attendee->address_1))
+                , 'address_2' => ucwords(strtolower($attendee->address_2))
+                , 'city' => ucwords(strtolower($attendee->city))
+                , 'county' => ucwords(strtolower($attendee->county))
+                , 'postcode' => strtoupper($attendee->postcode)];
 
             $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 
@@ -80,18 +80,18 @@ class AttendeesController extends AppController
             }
         }
         $users = $this->Attendees->Users->find('list', ['limit' => 200, 'contain' => ['Roles', 'Scoutgroups'],
-            'conditions' => [   
+            'conditions' => [
                 'Scoutgroups.district_id' => $champD->district_id]]);
 
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'contain' => ['Users.Scoutgroups'],
-            'conditions' => [   
+            'conditions' => [
                 'Scoutgroups.district_id' => $champD->district_id]]);
 
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
         $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
         $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
 
-        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'scoutgroups','roles'));
+        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'scoutgroups', 'roles'));
         $this->set('_serialize', ['attendee']);
     }
 
@@ -116,12 +116,12 @@ class AttendeesController extends AppController
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
 
             $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
-                ,'lastname' => ucwords(strtolower($attendee->lastname))
-                ,'address_1' => ucwords(strtolower($attendee->address_1))
-                ,'address_2' => ucwords(strtolower($attendee->address_2))
-                ,'city' => ucwords(strtolower($attendee->city))
-                ,'county' => ucwords(strtolower($attendee->county))
-                ,'postcode' => strtoupper($attendee->postcode)];
+                , 'lastname' => ucwords(strtolower($attendee->lastname))
+                , 'address_1' => ucwords(strtolower($attendee->address_1))
+                , 'address_2' => ucwords(strtolower($attendee->address_2))
+                , 'city' => ucwords(strtolower($attendee->city))
+                , 'county' => ucwords(strtolower($attendee->county))
+                , 'postcode' => strtoupper($attendee->postcode)];
 
             $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
             
@@ -133,18 +133,18 @@ class AttendeesController extends AppController
             }
         }
         $users = $this->Attendees->Users->find('list', ['limit' => 200, 'contain' => ['Roles', 'Scoutgroups'],
-            'conditions' => [   
+            'conditions' => [
                 'Scoutgroups.district_id' => $champD->district_id]]);
 
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'contain' => ['Users.Scoutgroups'],
-            'conditions' => [   
+            'conditions' => [
                 'Scoutgroups.district_id' => $champD->district_id]]);
 
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
         $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
         $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
 
-        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'scoutgroups','roles'));
+        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'scoutgroups', 'roles'));
         $this->set('_serialize', ['attendee']);
     }
 
@@ -153,12 +153,12 @@ class AttendeesController extends AppController
         $attendee = $this->Attendees->get($id);
 
         $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
-            ,'lastname' => ucwords(strtolower($attendee->lastname))
-            ,'address_1' => ucwords(strtolower($attendee->address_1))
-            ,'address_2' => ucwords(strtolower($attendee->address_2))
-            ,'city' => ucwords(strtolower($attendee->city))
-            ,'county' => ucwords(strtolower($attendee->county))
-            ,'postcode' => strtoupper($attendee->postcode)];
+            , 'lastname' => ucwords(strtolower($attendee->lastname))
+            , 'address_1' => ucwords(strtolower($attendee->address_1))
+            , 'address_2' => ucwords(strtolower($attendee->address_2))
+            , 'city' => ucwords(strtolower($attendee->city))
+            , 'county' => ucwords(strtolower($attendee->county))
+            , 'postcode' => strtoupper($attendee->postcode)];
 
         $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 

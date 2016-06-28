@@ -22,7 +22,7 @@ class EventsController extends AppController
     {
         $this->paginate = [
             'contain' => ['Settings', 'Discounts']
-            ,'order' => ['modified' => 'DESC']
+            , 'order' => ['modified' => 'DESC']
         ];
         $this->set('events', $this->paginate($this->Events));
         $this->set('_serialize', ['events']);
@@ -51,13 +51,13 @@ class EventsController extends AppController
         $userId = $this->Auth->user('id');
 
         // Table Entities
-        if(isset($event->discount_id)) {
+        if (isset($event->discount_id)) {
             $discount = $dscs->get($event->discount_id);
         }
-        if(isset($event->legaltext_id)) {
+        if (isset($event->legaltext_id)) {
             $legal = $sets->get($event->legaltext_id);
         }
-        if(isset($event->invtext_id)) {
+        if (isset($event->invtext_id)) {
             $invText = $sets->get($event->invtext_id);
         }
 
@@ -96,16 +96,16 @@ class EventsController extends AppController
         $applications = $apps->find('all')->where(['event_id' => $event->id]);
         $invoices = $invs->find('all')->contain(['Applications'])->where(['Applications.event_id' => $event->id]);
         $allInvoices = $invs->find('all')->contain(['Applications'])->where(['Applications.event_id' => $event->id]);
-        if(isset($event->discount_id)) {
+        if (isset($event->discount_id)) {
             $discount = $dscs->get($event->discount_id);
         }
-        if(isset($event->legaltext_id)) {
+        if (isset($event->legaltext_id)) {
             $legal = $sets->get($event->legaltext_id);
         }
-        if(isset($event->invtext_id)) {
+        if (isset($event->invtext_id)) {
             $invText = $sets->get($event->invtext_id);
         }
-        if(isset($event->admin_user_id)) {
+        if (isset($event->admin_user_id)) {
             $administrator = $usrs->get($event->admin_user_id);
         }
 
@@ -119,33 +119,32 @@ class EventsController extends AppController
 
         $this->set(compact('cntApplications', 'cntInvoices'));
 
-        if ($cntInvoices < 1)
-        {
-        	$sumValues = 0;
-        	$sumPayments = 0;
-        	$sumBalances = 0;
+        if ($cntInvoices < 1) {
+            $sumValues = 0;
+            $sumPayments = 0;
+            $sumBalances = 0;
 
-        	$invCubs = 0;
-        	$invYls = 0;
-        	$invLeaders = 0;
+            $invCubs = 0;
+            $invYls = 0;
+            $invLeaders = 0;
 
             $outstanding = 0;
         } else {
-        	// Sum Values & Calculate Balances
-        	$sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->group('Applications.event_id')->first();
-        	$sumPaymentItem = $invoices->select(['sum' => $invoices->func()->sum('value')])->group('Applications.event_id')->first();
+            // Sum Values & Calculate Balances
+            $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->group('Applications.event_id')->first();
+            $sumPaymentItem = $invoices->select(['sum' => $invoices->func()->sum('value')])->group('Applications.event_id')->first();
 
             $sumValues = $sumValueItem->sum;
             $sumPayments = $sumPaymentItem->sum;
 
-        	$sumBalances = $sumValues - $sumPayments;
+            $sumBalances = $sumValues - $sumPayments;
 
-        	// Count of Line Items
-        	$invItemCounts = $itms->find('all')->contain(['Invoices.Applications'])->where(['Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity')])->group('itemtype_id')->toArray();
+            // Count of Line Items
+            $invItemCounts = $itms->find('all')->contain(['Invoices.Applications'])->where(['Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity')])->group('itemtype_id')->toArray();
 
-        	$invCubs = $invItemCounts[1]->sum;
-        	$invYls = $invItemCounts[2]->sum;
-        	$invLeaders = $invItemCounts[3]->sum;
+            $invCubs = $invItemCounts[1]->sum;
+            $invYls = $invItemCounts[2]->sum;
+            $invLeaders = $invItemCounts[3]->sum;
 
             //Find all Outstanding Invoices
             $outstanding = $invs
@@ -162,46 +161,44 @@ class EventsController extends AppController
                 ->count();
         }
 
-        $this->set(compact('sumValues', 'sumBalances', 'sumPayments','outstanding', 'unpaid'));
+        $this->set(compact('sumValues', 'sumBalances', 'sumPayments', 'outstanding', 'unpaid'));
         $this->set(compact('invCubs', 'invYls', 'invLeaders'));
 
-        if ($cntApplications < 1)
-        {
-        	$appCubs = 0;
-        	$appYls = 0;
-        	$appLeaders = 0;
-        } else
-        {
-        	// Set Attendee Counts
-	        $attendeeCubCount = $apps->find('all')
-	            ->hydrate(false)
-	            ->join([
-	                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-	                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-	                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-	            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.event_id' => $id, 't.deleted IS' => NULL]);
+        if ($cntApplications < 1) {
+            $appCubs = 0;
+            $appYls = 0;
+            $appLeaders = 0;
+        } else {
+            // Set Attendee Counts
+            $attendeeCubCount = $apps->find('all')
+                ->hydrate(false)
+                ->join([
+                    'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                    't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                    'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+                ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.event_id' => $id, 't.deleted IS' => null]);
 
-	        $attendeeYlCount = $apps->find('all')
-	            ->hydrate(false)
-	            ->join([
-	                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-	                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-	                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-	            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.event_id' => $id, 't.deleted IS' => NULL]);
+            $attendeeYlCount = $apps->find('all')
+                ->hydrate(false)
+                ->join([
+                    'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                    't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                    'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+                ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.event_id' => $id, 't.deleted IS' => null]);
 
-	        $attendeeLeaderCount = $apps->find('all')
-	            ->hydrate(false)
-	            ->join([
-	                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-	                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-	                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-	            ])->where(['r.minor' => 0, 'Applications.event_id' => $id, 't.deleted IS' => NULL]);
+            $attendeeLeaderCount = $apps->find('all')
+                ->hydrate(false)
+                ->join([
+                    'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                    't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                    'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+                ])->where(['r.minor' => 0, 'Applications.event_id' => $id, 't.deleted IS' => null]);
 
-	        // Count of Attendees
-	        $appCubs = $attendeeCubCount->count('*');
-	        $appYls = $attendeeYlCount->count('*');
-	        $appLeaders = $attendeeLeaderCount->count('*');
-	    }
+            // Count of Attendees
+            $appCubs = $attendeeCubCount->count('*');
+            $appYls = $attendeeYlCount->count('*');
+            $appLeaders = $attendeeLeaderCount->count('*');
+        }
 
         $this->set(compact('appCubs', 'appYls', 'appLeaders'));
 
@@ -221,7 +218,7 @@ class EventsController extends AppController
             , 'Discounts'
             , 'Applications'
                 , 'Applications.Invoices'
-                ,'Applications.Attendees']
+                , 'Applications.Attendees']
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);
@@ -234,13 +231,13 @@ class EventsController extends AppController
         $userId = $this->Auth->user('id');
 
         // Table Entities
-        if(isset($event->discount_id)) {
+        if (isset($event->discount_id)) {
             $discount = $dscs->get($event->discount_id);
         }
-        if(isset($event->legaltext_id)) {
+        if (isset($event->legaltext_id)) {
             $legal = $sets->get($event->legaltext_id);
         }
-        if(isset($event->invtext_id)) {
+        if (isset($event->invtext_id)) {
             $invText = $sets->get($event->invtext_id);
         }
 

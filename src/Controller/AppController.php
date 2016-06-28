@@ -40,7 +40,7 @@ class AppController extends Controller
     {
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
-            'authorize'=> 'Controller',
+            'authorize' => 'Controller',
             'loginRedirect' => [
                 'controller' => 'Landing',
                 'action' => 'user_home'
@@ -81,17 +81,19 @@ class AppController extends Controller
         $this->loadComponent('RequestHandler');
         $this->loadComponent('DataTables.DataTables');
 
-        if (env('SERVER_NAME') !== 'dev.hertscubs100.uk')
-        {
-            //$this->Security->requiresecure();
+        if (env('SERVER_NAME') !== 'dev.hertscubs100.uk') {
+        //$this->Security->requiresecure();
         }
 
         // Allow the display action so our pages controller
         // continues to work.
         //$this->Auth->allow(['display']);
         //$this->Auth->allow(['index']);
-        if ($this->RequestHandler->isMobile())
-        { $mobile = 1; } else { $mobile = 0; }
+        if ($this->RequestHandler->isMobile()) {
+            $mobile = 1;
+        } else {
+            $mobile = 0;
+        }
         $this->set(compact('mobile'));
     }
 
@@ -112,7 +114,7 @@ class AppController extends Controller
 
 
         //The add and index actions are always allowed.
-        if (isset($user['id']) && in_array($this->request->params['action'], ['index','add','admin-home'])) {
+        if (isset($user['id']) && in_array($this->request->params['action'], ['index', 'add', 'admin-home'])) {
             return true;
         }
 
@@ -136,5 +138,3 @@ class AppController extends Controller
         return false;
     }
 }
-
-

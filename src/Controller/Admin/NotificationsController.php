@@ -57,7 +57,7 @@ class NotificationsController extends AppController
             'contain' => ['Users', 'Notificationtypes']
         ]);
         $this->set('notification', $notification);
-        $this->set('_serialize', ['notification']);    
+        $this->set('_serialize', ['notification']);
     }
 
     /**
@@ -85,8 +85,7 @@ class NotificationsController extends AppController
 
     public function welcome($userId = null)
     {
-        if(isset($userId)) {
-
+        if (isset($userId)) {
             $users = TableRegistry::get('Users');
             $groups = TableRegistry::get('Scoutgroups');
 
@@ -116,28 +115,28 @@ class NotificationsController extends AppController
                 $sets = TableRegistry::get('Settings');
 
                 $jsonWelcome = json_encode($welcomeData);
-                $w_api_key = $sets->get(13)->text;
+                $wApiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'UserWelcome';
 
-                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $w_api_key;
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $wApiKey;
 
                 $http = new Client();
                 $response = $http->post(
-                  $keenURL,
-                  $jsonWelcome,
-                  ['type' => 'json']
+                    $keenURL,
+                    $jsonWelcome,
+                    ['type' => 'json']
                 );
 
                 $genericType = 'Notification';
 
-                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $w_api_key;
+                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $wApiKey;
 
                 $http = new Client();
                 $response = $http->post(
-                  $keenGenURL,
-                  $jsonWelcome,
-                  ['type' => 'json']
+                    $keenGenURL,
+                    $jsonWelcome,
+                    ['type' => 'json']
                 );
 
                 return $this->redirect(['prefix' => 'admin', 'controller' => 'Users',  'action' => 'view', $userId]);
@@ -152,8 +151,7 @@ class NotificationsController extends AppController
 
     public function newPayment($payId = null)
     {
-        if(isset($payId)) {
-
+        if (isset($payId)) {
             $users = TableRegistry::get('Users');
             $groups = TableRegistry::get('Scoutgroups');
             $invoices = TableRegistry::get('Invoices');
@@ -161,18 +159,18 @@ class NotificationsController extends AppController
 
             $payment = $payments->get($payId);
 
-            $invoice_sel = $invoices->find('all')
+            $invoiceSel = $invoices->find('all')
             ->hydrate(true)
             ->join([
-                'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id',],
-                't' => ['table' => 'payments','type' => 'INNER','conditions' => 't.id = x.payment_id',]
+                'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id', ],
+                't' => ['table' => 'payments', 'type' => 'INNER', 'conditions' => 't.id = x.payment_id', ]
             ])
             ->where(['t.id' => $payId])
             ->first();
 
-            $invoice_id = $invoice_sel->id;
+            $invoiceId = $invoiceSel->id;
 
-            $invoice = $invoices->get($invoice_id);
+            $invoice = $invoices->get($invoiceId);
 
             $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
             $group = $groups->get($user->scoutgroup_id);
@@ -199,28 +197,28 @@ class NotificationsController extends AppController
                 $sets = TableRegistry::get('Settings');
 
                 $jsonPayment = json_encode($paymentData);
-                $p_api_key = $sets->get(13)->text;
+                $pApiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'NewPayment';
 
-                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $pApiKey;
 
                 $http = new Client();
                 $response = $http->post(
-                  $keenURL,
-                  $jsonPayment,
-                  ['type' => 'json']
+                    $keenURL,
+                    $jsonPayment,
+                    ['type' => 'json']
                 );
 
                 $genericType = 'Notification';
 
-                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $pApiKey;
 
                 $http = new Client();
                 $response = $http->post(
-                  $keenGenURL,
-                  $jsonPayment,
-                  ['type' => 'json']
+                    $keenGenURL,
+                    $jsonPayment,
+                    ['type' => 'json']
                 );
 
                 return $this->redirect(['controller' => 'Payments', 'action' => 'add', 'prefix' => 'admin']);
@@ -235,8 +233,7 @@ class NotificationsController extends AppController
 
     public function notifyPayment($payId = null)
     {
-        if(isset($payId)) {
-
+        if (isset($payId)) {
             $users = TableRegistry::get('Users');
             $groups = TableRegistry::get('Scoutgroups');
             $invoices = TableRegistry::get('Invoices');
@@ -244,18 +241,18 @@ class NotificationsController extends AppController
 
             $payment = $payments->get($payId);
 
-            $invoice_sel = $invoices->find('all')
+            $invoiceSel = $invoices->find('all')
             ->hydrate(true)
             ->join([
-                'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id',],
-                't' => ['table' => 'payments','type' => 'INNER','conditions' => 't.id = x.payment_id',]
+                'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id', ],
+                't' => ['table' => 'payments', 'type' => 'INNER', 'conditions' => 't.id = x.payment_id', ]
             ])
             ->where(['t.id' => $payId])
             ->first();
 
-            $invoice_id = $invoice_sel->id;
+            $invoiceId = $invoiceSel->id;
 
-            $invoice = $invoices->get($invoice_id);
+            $invoice = $invoices->get($invoiceId);
 
             $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
             $group = $groups->get($user->scoutgroup_id);
@@ -282,28 +279,28 @@ class NotificationsController extends AppController
                 $sets = TableRegistry::get('Settings');
 
                 $jsonPayment = json_encode($paymentData);
-                $p_api_key = $sets->get(13)->text;
+                $pApiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'NewPayment';
 
-                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $pApiKey;
 
                 $http = new Client();
                 $response = $http->post(
-                  $keenURL,
-                  $jsonPayment,
-                  ['type' => 'json']
+                    $keenURL,
+                    $jsonPayment,
+                    ['type' => 'json']
                 );
 
                 $genericType = 'Notification';
 
-                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $pApiKey;
 
                 $http = new Client();
                 $response = $http->post(
-                  $keenGenURL,
-                  $jsonPayment,
-                  ['type' => 'json']
+                    $keenGenURL,
+                    $jsonPayment,
+                    ['type' => 'json']
                 );
 
                 return $this->redirect(['controller' => 'Payments', 'action' => 'index', 'prefix' => 'admin']);
@@ -318,8 +315,7 @@ class NotificationsController extends AppController
 
     public function outstanding($invoiceId = null)
     {
-        if(isset($invoiceId)) {
-
+        if (isset($invoiceId)) {
             $users = TableRegistry::get('Users');
             $groups = TableRegistry::get('Scoutgroups');
             $invoices = TableRegistry::get('Invoices');
@@ -367,28 +363,28 @@ class NotificationsController extends AppController
                     $sets = TableRegistry::get('Settings');
 
                     $jsonInvoice = json_encode($invoiceData);
-                    $p_api_key = $sets->get(13)->text;
+                    $pApiKey = $sets->get(13)->text;
                     $projectId = $sets->get(14)->text;
                     $eventType = 'OutstandingPayment';
 
-                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
+                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $pApiKey;
 
                     $http = new Client();
                     $response = $http->post(
-                      $keenURL,
-                      $jsonInvoice,
-                      ['type' => 'json']
+                        $keenURL,
+                        $jsonInvoice,
+                        ['type' => 'json']
                     );
 
                     $genericType = 'Notification';
 
-                    $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+                    $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $pApiKey;
 
                     $http = new Client();
                     $response = $http->post(
-                      $keenGenURL,
-                      $jsonInvoice,
-                      ['type' => 'json']
+                        $keenGenURL,
+                        $jsonInvoice,
+                        ['type' => 'json']
                     );
 
                     return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => 'admin', $invoiceId]);
@@ -406,8 +402,7 @@ class NotificationsController extends AppController
 
     public function surcharge($invoiceId = null, $percentage = null)
     {
-        if(isset($invoiceId) && isset($percentage)) {
-
+        if (isset($invoiceId) && isset($percentage)) {
             $users = TableRegistry::get('Users');
             $groups = TableRegistry::get('Scoutgroups');
             $invoices = TableRegistry::get('Invoices');
@@ -460,28 +455,28 @@ class NotificationsController extends AppController
                     $sets = TableRegistry::get('Settings');
 
                     $jsonInvoice = json_encode($invoiceData);
-                    $p_api_key = $sets->get(13)->text;
+                    $pApiKey = $sets->get(13)->text;
                     $projectId = $sets->get(14)->text;
                     $eventType = 'PaymentSurcharge';
 
-                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
+                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $pApiKey;
 
                     $http = new Client();
                     $response = $http->post(
-                      $keenURL,
-                      $jsonInvoice,
-                      ['type' => 'json']
+                        $keenURL,
+                        $jsonInvoice,
+                        ['type' => 'json']
                     );
 
                     $genericType = 'Notification';
 
-                    $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+                    $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $pApiKey;
 
                     $http = new Client();
                     $response = $http->post(
-                      $keenGenURL,
-                      $jsonInvoice,
-                      ['type' => 'json']
+                        $keenGenURL,
+                        $jsonInvoice,
+                        ['type' => 'json']
                     );
 
                     return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => 'admin', $invoiceId]);
@@ -499,13 +494,12 @@ class NotificationsController extends AppController
 
     public function deposit_query($invoiceId = null)
     {
-        if(isset($invoiceId)) {
-
+        if (isset($invoiceId)) {
             $invs = TableRegistry::get('Invoices');
             $users = TableRegistry::get('Users');
             $groups = TableRegistry::get('Scoutgroups');
 
-            $invoice = $invs->get($invoiceId,['contain' => ['Users']]);
+            $invoice = $invs->get($invoiceId, ['contain' => ['Users']]);
 
             $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
             $group = $groups->get($user->scoutgroup_id);
@@ -541,8 +535,7 @@ class NotificationsController extends AppController
 
     public function noInv($appId = null)
     {
-        if(isset($appId)) {
-
+        if (isset($appId)) {
             $users = TableRegistry::get('Users');
             $groups = TableRegistry::get('Scoutgroups');
 
@@ -605,8 +598,7 @@ class NotificationsController extends AppController
 
     public function multipleInv($appId = null)
     {
-        if(isset($appId)) {
-
+        if (isset($appId)) {
             $users = TableRegistry::get('Users');
             $groups = TableRegistry::get('Scoutgroups');
 
@@ -705,8 +697,7 @@ class NotificationsController extends AppController
 
     public function invoice($invoiceId = null)
     {
-        if(isset($invoiceId)) {
-
+        if (isset($invoiceId)) {
             $users = TableRegistry::get('Users');
             $groups = TableRegistry::get('Scoutgroups');
             $invoices = TableRegistry::get('Invoices');
@@ -734,32 +725,31 @@ class NotificationsController extends AppController
             $sets = TableRegistry::get('Settings');
 
             $jsonInv = json_encode($invoiceData);
-            $p_api_key = $sets->get(13)->text;
+            $pApiKey = $sets->get(13)->text;
             $projectId = $sets->get(14)->text;
             $eventType = 'NewPayment';
 
-            $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $p_api_key;
+            $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $pApiKey;
 
             $http = new Client();
             $response = $http->post(
-              $keenURL,
-              $jsonInv,
-              ['type' => 'json']
+                $keenURL,
+                $jsonInv,
+                ['type' => 'json']
             );
 
             $genericType = 'Notification';
 
-            $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $p_api_key;
+            $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $pApiKey;
 
             $http = new Client();
             $response = $http->post(
-              $keenGenURL,
-              $jsonInv,
-              ['type' => 'json']
+                $keenGenURL,
+                $jsonInv,
+                ['type' => 'json']
             );
 
             $this->Flash->success(__('Invoice Delivered.'));
-
         } else {
             $this->Flash->error(__('Parameters were not set!'));
             return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);

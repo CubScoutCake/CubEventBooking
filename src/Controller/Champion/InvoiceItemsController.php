@@ -65,26 +65,26 @@ class InvoiceItemsController extends AppController
         $attendeeCubCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeYlCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeLeaderCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         // Load into Variables
         $predictedCubs = $attendeeCubCount->count(['t.id']);
@@ -109,7 +109,6 @@ class InvoiceItemsController extends AppController
         // $depLeaderItem = $this->InvoiceItems->newEntity();
 
         if ($this->request->is('post')) {
-
             // Extract Form Info
             if ($event->cubs) {
                 $formNumCubs = $this->request->data['cubs'];
@@ -207,7 +206,6 @@ class InvoiceItemsController extends AppController
                 ->count('*');
 
             if ($invItemCount > 0) {
-
                 $invItems = $this->InvoiceItems->find('all');
 
                 $invItemCounts = $invItems
@@ -219,14 +217,13 @@ class InvoiceItemsController extends AppController
                 $invCubs = $invItemCounts[1]->sum;
                 $invYls = $invItemCounts[2]->sum;
                 $invLeaders = $invItemCounts[3]->sum;
-                
             } else {
                 $invCubs = 0;
                 $invYls = 0;
                 $invLeaders = 0;
             }
 
-            $totalEventCubs = $invCubs + $numCubs;            
+            $totalEventCubs = $invCubs + $numCubs;
 
             // Compare & Allow Save
 
@@ -239,7 +236,7 @@ class InvoiceItemsController extends AppController
                 } else {
                     $this->Flash->error(__('There was an error.'));
                 }
-            }            
+            }
         }
 
         $this->set(compact('invoiceItem', 'invoices'));
@@ -247,12 +244,10 @@ class InvoiceItemsController extends AppController
         $this->set('invPop', $invPop);
         
         if ($this->request->is('get')) {
-
             // Values from the User Model e.g.
             $this->request->data['cubs'] = $predictedCubs;
             $this->request->data['yls'] = $predictedYls;
             $this->request->data['leaders'] = $predictedLeaders;
-
         }
         
     }
@@ -353,26 +348,26 @@ class InvoiceItemsController extends AppController
         $attendeeCubCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeYlCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeLeaderCount = $applications->find()
             ->hydrate(false)
             ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id',],
-                't' => ['table' => 'attendees','type' => 'INNER','conditions' => 't.id = x.attendee_id',],
-                'r' => ['table' => 'roles','type' => 'INNER','conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => NULL]);
+                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
+                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
+                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
+            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         // Load into Variables
         $predictedAttCubs = $attendeeCubCount->count(['t.id']);
@@ -382,7 +377,6 @@ class InvoiceItemsController extends AppController
         // Perform the Post
 
         if ($this->request->is('post')) {
-
             // Extract Form Info
             if ($event->cubs) {
                 $formNumCubs = $this->request->data['cubs'];
@@ -516,7 +510,6 @@ class InvoiceItemsController extends AppController
                 ->count('*');
 
             if ($invItemCount > 0) {
-
                 $invItems = $this->InvoiceItems->find('all');
 
                 $invItemCounts = $invItems
@@ -528,7 +521,6 @@ class InvoiceItemsController extends AppController
                 $invCubs = $invItemCounts[1]->sum;
                 $invYls = $invItemCounts[2]->sum;
                 $invLeaders = $invItemCounts[3]->sum;
-                
             } else {
                 $invCubs = 0;
                 $invYls = 0;
@@ -548,7 +540,7 @@ class InvoiceItemsController extends AppController
                 } else {
                     $this->Flash->error(__('There was an error.'));
                 }
-            }            
+            }
         }
 
         $this->set(compact('invoiceItem', 'invoices'));
@@ -556,7 +548,7 @@ class InvoiceItemsController extends AppController
         $this->set('invPop', $invPop);
 
         // Set Field Loader Variables (for Get)
-        if (ISSET($predictedAttCubs) && $predictedAttCubs > $existingCubQty) {
+        if (isset($predictedAttCubs) && $predictedAttCubs > $existingCubQty) {
             if ($event->max && $predictedAttCubs >= $event->max_cubs) {
                 $predictedCubs = $event->max_cubs;
                 $this->Flash->error(__($limitTextCubs));
@@ -570,7 +562,7 @@ class InvoiceItemsController extends AppController
             $predictedCubs = $existingCubQty;
         }
 
-        if (ISSET($predictedAttYls) && $predictedAttYls > $existingYlQty) {
+        if (isset($predictedAttYls) && $predictedAttYls > $existingYlQty) {
             if ($event->max && $predictedAttYls >= $event->max_yls) {
                 $predictedYls = $event->max_yls;
                 $this->Flash->error(__($limitTextYls));
@@ -584,7 +576,7 @@ class InvoiceItemsController extends AppController
             $predictedYls = $existingYlQty;
         }
 
-        if (ISSET($predictedAttLeaders) && $predictedAttLeaders > $existingLeaderQty) {
+        if (isset($predictedAttLeaders) && $predictedAttLeaders > $existingLeaderQty) {
             if ($event->max && $predictedAttLeaders >= $event->max_leaders) {
                 $predictedLeaders = $event->max_leaders;
                 $this->Flash->error(__($limitTextLeaders));
@@ -603,6 +595,6 @@ class InvoiceItemsController extends AppController
             $this->request->data['cubs'] = $predictedCubs;
             $this->request->data['yls'] = $predictedYls;
             $this->request->data['leaders'] = $predictedLeaders;
-        }   
+        }
     }
 }

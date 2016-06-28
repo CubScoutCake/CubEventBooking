@@ -52,25 +52,25 @@ class LandingController extends AppController
         $userId = $this->Auth->user('id');
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users','Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(5);
+        $applications = $apps->find()->contain(['Users', 'Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(5);
         $events = $evs->find()->where(['end >' => $now, 'live' => 1])->contain(['Settings'])->order(['Events.start' => 'ASC']);
-        $invoices = $invs->find()->contain(['Users','Applications'])->order(['Invoices.created' => 'DESC'])->limit(5);
-        $users = $usrs->find()->contain(['Roles','Scoutgroups'])->order(['Users.modified' => 'DESC'])->limit(5);
+        $invoices = $invs->find()->contain(['Users', 'Applications'])->order(['Invoices.created' => 'DESC'])->limit(5);
+        $users = $usrs->find()->contain(['Roles', 'Scoutgroups'])->order(['Users.modified' => 'DESC'])->limit(5);
         $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(5);
 
         // Pass to View
-        $this->set(compact('applications', 'events','invoices','users','payments'));
+        $this->set(compact('applications', 'events', 'invoices', 'users', 'payments'));
 
         // Counts of Entities
-        $countApplications = $apps->find('all',['conditions' => ['user_id' => $userId]])->count('*');
-        $countAttendees = $atts->find('all',['conditions' => ['user_id' => $userId]])->count('*');
-        $countInvoices = $invs->find('all',['conditions' => ['user_id' => $userId]])->count('*');
+        $countApplications = $apps->find('all', ['conditions' => ['user_id' => $userId]])->count('*');
+        $countAttendees = $atts->find('all', ['conditions' => ['user_id' => $userId]])->count('*');
+        $countInvoices = $invs->find('all', ['conditions' => ['user_id' => $userId]])->count('*');
         $countPayments = $pays->find('all')->matching('Invoices', function ($q) {
                 return $q->where(['Invoices.user_id' => $this->Auth->user('id')]);
-            })->count('*');
+        })->count('*');
 
         // Pass to View
-        $this->set(compact('countApplications', 'countAttendees','countInvoices','countPayments','userId'));
+        $this->set(compact('countApplications', 'countAttendees', 'countInvoices', 'countPayments', 'userId'));
     }
 
     public function welcome($eventId = null)
@@ -78,16 +78,14 @@ class LandingController extends AppController
         // Set the layout.
         $this->viewBuilder()->layout('start');
 
-        if ($this->request->is('get'))
-        {
+        if ($this->request->is('get')) {
             $usr = $this->Auth->user('id');
-            if (isset($usr))
-            {
-                if ($this->Auth->user('authrole') === 'admin') { 
+            if (isset($usr)) {
+                if ($this->Auth->user('authrole') === 'admin') {
                     return $this->redirect(['controller' => 'Landing', 'prefix' => 'admin', 'action' => 'admin_home']);
                 } elseif ($this->Auth->user('authrole') === 'champion') {
                     return $this->redirect(['controller' => 'Landing', 'prefix' => 'champion', 'action' => 'champion_home']);
-                } else { 
+                } else {
                     return $this->redirect(['controller' => 'Landing', 'prefix' => false, 'action' => 'user_home']);
                 }
             }

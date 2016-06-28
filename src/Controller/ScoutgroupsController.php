@@ -46,5 +46,4 @@ class ScoutgroupsController extends AppController
      *
      * @return void Redirects on successful add, renders view otherwise.
      */
-    
 }
