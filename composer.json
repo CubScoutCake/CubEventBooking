@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
 
-        "php": ">=5.4.16 || ^7.0",
+        "php": "^7.0",
         "cakephp/cakephp": "~3.0",
         "mobiledetect/mobiledetectlib": "2.*",
         "cakephp/migrations": "*",
@@ -34,7 +34,7 @@
         "cakephp/debug_kit": "~3.0",
         "cakephp/bake": "*",
         "cakephp/cakephp-codesniffer": "2.*",
-        "phpunit/phpunit": "@stable"
+        "phpunit/phpunit": "^5.4"
     },
     "autoload": {
         "psr-4": {
