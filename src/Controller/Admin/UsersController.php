@@ -55,7 +55,12 @@ class UsersController extends AppController
                 , 'Notifications' => ['Notificationtypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']]
             ]
         ]);
-        $this->set('user', $user);
+
+        $atts = TableRegistry::get('Attendees');
+
+        $numOSM = $atts->find('osm')->where(['user_id' => $user->id])->count();
+
+        $this->set(compact('user', 'numOSM'));
         $this->set('_serialize', ['user']);
     }
 
@@ -148,6 +153,62 @@ class UsersController extends AppController
             $this->Flash->error(__('An Attendee for the User could not be Syncronised. Please, try again.'));
         }
         return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $user->id]);
+    }
+
+    public function syncAll() {
+
+        $usrs = $this->Users->find('all');
+
+        $success = 0;
+        $error = 0;
+
+        foreach ($usrs as $userAll) {
+            $user = $this->Users->get($userAll->id);
+
+            $atts = TableRegistry::get('Attendees');
+
+            $attRef = $atts->find('all')->where(['user_attendee' => true, 'user_id' => $user->id]);
+            $attName = $atts->find('all')->where(['firstname' => $user->firstname, 'lastname' => $user->lastname, 'user_id' => $user->id]);
+
+            $count = MAX($attRef->count(), $attName->count());
+
+            if ($count == 1) {
+                if ($attRef->count() == 1) {
+                    $att = $attRef->first();
+                } else {
+                    $att = $attName->first();
+                }
+            } else {
+                $newAttendeeData = ['dateofbirth' => '1990-01-01'];
+                $att = $atts->newEntity($newAttendeeData);
+            }              
+
+            $attendeeData = [
+                'user_id' => $user->id,
+                'firstname' => $user->firstname,
+                'lastname' => $user->lastname,
+                'address_1' => $user->address_1,
+                'address_2' => $user->address_2,
+                'city' => $user->city,
+                'county' => $user->county,
+                'user_attendee' => true,
+                'postcode' => $user->postcode,
+                'role_id' => $user->role_id,
+                'scoutgroup_id' => $user->scoutgroup_id,
+                'phone' => $user->phone
+            ];
+
+            $att = $atts->patchEntity($att, $attendeeData);
+
+            if ($atts->save($att)) {
+                $success = $success + 1;
+            } else {
+                $error = $error + 1;
+            }
+        }
+        $this->Flash->error('There were ' . $error . ' Syncronisation Errors.');
+        $this->Flash->success($success . ' Users were Syncronised.');
+        return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'index']);
     }
 
     /**

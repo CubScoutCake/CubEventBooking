@@ -28,17 +28,21 @@
                 <i class="fa fa-key fa-fw"></i> Key Info
             </div>
             <div class="panel-body">
-                <h5 class="subheader"><?= __('Full Name') ?></h5>
+                <h5><?= __('Full Name') ?></h5>
                 <h3><?= h($attendee->full_name) ?></h3>
                 <hr>
-                <h5 class="subheader"><?= __('Date of Birth (D.O.B.)') ?></h5>
+                <h5><?= __('Date of Birth (D.O.B.)') ?></h5>
                 <p><?= $this->Time->i18nFormat($attendee->dateofbirth, 'dd-MMM-yyyy') ?></p>
-                <h5 class="subheader"><?= __('Scoutgroup') ?></h5>
+                <h5><?= __('Scoutgroup') ?></h5>
                 <p><?= $attendee->has('scoutgroup') ? $this->Html->link($attendee->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $attendee->scoutgroup->id]) : '' ?></p>
-                <h5 class="subheader"><?= __('Role') ?></h5>
+                <h5><?= __('Role') ?></h5>
                 <p><?= $attendee->has('role') ? $this->Html->link($attendee->role->role, ['controller' => 'Roles', 'action' => 'view', $attendee->role->id]) : '' ?></p>
-                <h5 class="subheader"><?= __('Holds a Nights Away Permit') ?></h5>
-                <p><?= $attendee->nightsawaypermit ? __('Yes') : __('No'); ?></p>       
+                <h5><?= __('Holds a Nights Away Permit') ?></h5>
+                <p><?= $attendee->nightsawaypermit ? __('Yes') : __('No'); ?></p>
+		        <h5><?= __('Is OSM Synced') ?></h5>
+                <p><?= $attendee->osm_generated ? __('Yes') : __('No'); ?></p>
+                <h5><?= __('Is User Synced') ?></h5>
+                <p><?= $attendee->user_attendee ? __('Yes') : __('No'); ?></p>     
             </div>
             <div class="panel-footer">
                 <div class="row">
@@ -159,4 +163,3 @@
         </div>
     </div>
 <?php endif; ?>
-

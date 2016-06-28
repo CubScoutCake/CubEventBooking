@@ -76,6 +76,8 @@
                         <p><?= $this->Time->i18nformat($user->modified,'dd-MMM-yy HH:mm') ?></p>
                         <h5 class="subheader"><?= __('Last Login') ?></h5>
                         <p><?= $this->Time->i18nformat($user->last_login,'dd-MMM-yy HH:mm') ?></p>
+                        <h5 class="subheader"><?= __('Number of OSM Attendees') ?></h5>
+                        <p><?= $this->Number->format($numOSM) ?></p>
                     </div>
                     <div class="col-lg-6">
                         <h5 class="subheader"><?= __('Id') ?></h5>
@@ -84,6 +86,8 @@
                         <p><?= strtoupper($user->authrole); ?></p>
                         <h5 class="subheader"><?= __('Logins') ?></h5>
                         <p><?= $this->Number->format($user->logins) ?></p>
+                        <h5 class="subheader"><?= __('OSM Synced') ?></h5>
+                        <p><?= $this->Number->format(!empty($user->osm_linked)) ? 'Yes' : 'No' ?></p>
                     </div>
                 </div>
             </div>
