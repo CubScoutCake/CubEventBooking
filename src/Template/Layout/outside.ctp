@@ -22,37 +22,18 @@ $cakeDescription = 'HertsCubs Booking System';
 <html lang="en">
 <head>
 
-    <!-- Bootstrap Implementation -->
-
-    <?php echo $this->Html->css('bootstrap.min.css');?>
-    <?php //echo $this->Html->script('jquery.js');?>
-    <?php //echo $this->Html->script('analytics.js');?>
-
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php echo $this->element('style'); ?>
 
     <title>
         <?= $cakeDescription ?>:
         <?= $this->fetch('title') ?>
     </title>
-    <?= $this->Html->meta('icon') ?>
-
-    <!-- Jan16 Admin Theme Scripts -->
-
-    <?php echo $this->Html->css('metisMenu.min.css');?>
-    <?php echo $this->Html->css('sb-admin-2.css');?>
-    <?php echo $this->Html->css('timeline.css');?>
-
-    <!-- Old Style CSS -->
-
-    <?php //echo $this->Html->css('base.css'); ?>
-    <?php //echo $this->Html->css('cake.css'); ?>
-    <?php //echo $this->Html->css('hertscubs100.css'); ?>
 
     <!-- Actual Fetch -->
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
+    <?= $this->fetch('style') ?>
 
 </head>
 <body>
@@ -154,7 +135,7 @@ $cakeDescription = 'HertsCubs Booking System';
 
     </nav>
     <div id="page-wrapper">
-    
+
         </br>
 
         <?php if (!$this->fetch('tb_flash')) {
@@ -173,28 +154,12 @@ $cakeDescription = 'HertsCubs Booking System';
 
     </div>
 
-    <!-- jQuery -->
-    <?php echo $this->Html->script('jquery.min.js');?>
-
-    <!-- Bootstrap Core JavaScript -->
-    <?php echo $this->Html->script('bootstrap.min.js');?>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <?php echo $this->Html->script('metisMenu.min.js');?>
-
-    <!-- Custom Theme JavaScript -->
-    <?php echo $this->Html->script('sb-admin-2.js');?>
-
-    <!-- Font Awesome CDN -->
-    <?php echo $this->Html->script('https://use.fontawesome.com/687b7f2021.js',['block' => true]);?>
-
+    <?php echo $this->element('script'); ?>
     <!-- Actual Script Fetch -->
     <?= $this->fetch('script') ?>
 
 </body>
-<footer>
-    <div class="footer-title">
-        <Span><a target="JacobAGTyler" href="http://bit.ly/1EOXzYQ">Designed &amp Developed by Jacob Tyler</a></span>
-    </div>
-</footer> 
+
+<?php echo $this->element('footer'); ?>
+
 </html>

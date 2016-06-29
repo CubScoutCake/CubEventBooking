@@ -1,0 +1,23 @@
+<!-- Bootstrap Implementation -->
+<?php echo $this->Html->css('https://cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap-theme.min.css', ['integrity' => 'sha256-o8bM0Z5cFvrvvvQp0EJFi4LICvBA9FCx7iCNuojVsN8=', 'crossorigin' => 'anonymous']);?>
+<?php echo $this->Html->css('https://cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css', ['integrity' => 'sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw=', 'crossorigin' => 'anonymous']);?>
+
+<?= $this->Html->charset() ?>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?= $this->Html->meta('icon') ?>
+
+<!-- Jan16 Admin Theme Scripts -->
+<?php echo $this->Html->css('https://cdn.jsdelivr.net/bootstrap.metismenu/1.1.2/css/metismenu.min.css', ['integrity' => 'sha256-7K7McfQ/UPBtbdwy48S6xEZH3gWIl3lAQQap565MJjI=', 'crossorigin' => 'anonymous']); ?>
+<?php echo $this->Html->css('https://cdn.jsdelivr.net/jquery.metismenu/2.5.2/metisMenu.min.css', ['integrity' => 'sha256-XjZ0z1dEt5rG6mqMEhy+ssUiX+83tigMsRhQX1nqvKs=', 'crossorigin' => 'anonymous']); ?>
+
+<?php echo $this->Html->css('sb-admin-2.css'); ?>
+<?php echo $this->Html->css('timeline.css'); ?>
+<?php echo $this->Html->css('print.css'); ?>
+<?php echo $this->Html->css('https://cdn.jsdelivr.net/jquery.datatables/1.10.10/css/dataTables.bootstrap.min.css', ['integrity' => 'sha256-z84A8SU1XXNN76l7Y+r65zvMYxgGD4v5wqg90I24Prw=', 'crossorigin' => 'anonymous']); ?>
+<?php echo $this->Html->css('https://cdn.jsdelivr.net/jquery.datatables/1.10.10/css/dataTables.foundation.min.css', ['integrity' => 'sha256-LjylWq8V8dUcA2g9XcK1u+lxlcqFzuuZDQA/0lwjePw=', 'crossorigin' => 'anonymous']); ?>
+<?php echo $this->Html->css('https://cdn.jsdelivr.net/bootstrap.datatables/0.1/css/datatables.css', ['integrity' => 'sha256-51OnKqzXt+Jbde3ANtABMH1epCKLat/GOlsf+vHzIdo=', 'crossorigin' => 'anonymous']); ?>
+
+<!-- Old Style CSS -->
+<?php //https://cdn.jsdelivr.net/bootstrap.datatables/0.1/images/sort_asc.png'); ?>
+<?php //echo $this->Html->css('cake.css'); ?>
+<?php //echo $this->Html->css('hertscubs100.css'); ?>
