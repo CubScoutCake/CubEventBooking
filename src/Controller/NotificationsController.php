@@ -102,6 +102,17 @@ class NotificationsController extends AppController
                 $this->Flash->error(__('The notification could not be marked as viewed. Please, try again.'));
             }
         }
+
+        $usersNotifID = $this->Auth->user('id');
+        $notificationEnts = $this->Notifications->find('unread')->where(['user_id' => $usersNotifID]);
+        $notificationCount = $notificationEnts->count();
+
+        if (isset($notificationCount) && $notificationCount > 0) {
+            $unreadNotifications = true;
+        } else {
+            $unreadNotifications = false;
+        }
+        $this->set(compact('unreadNotifications'));
     }
 
     // public function clean($userId = null)

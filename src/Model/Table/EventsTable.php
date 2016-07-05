@@ -258,4 +258,15 @@ class EventsTable extends Table
         $rules->add($rules->existsIn(['admin_user_id'], 'Users'));
         return $rules;
     }
+
+    /**
+     * Is a finder which will return a query with non-live (pre-release & archive) events only.
+     *
+     * @param $query The original query to be modified
+     * @return $query The modified query
+     */
+    public function findUnarchived($query) 
+    {
+        return $query->where(['Events.live' => true]);
+    }
 }

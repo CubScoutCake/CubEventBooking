@@ -23,7 +23,7 @@ class ApplicationsController extends AppController
         $this->paginate = [
             'contain' => ['Users', 'Scoutgroups', 'Events']
         ];
-        $this->set('applications', $this->paginate($this->Applications->find('ownedBy', ['userId' => $this->Auth->user('id')])));
+        $this->set('applications', $this->paginate($this->Applications->find('unarchived')->find('ownedBy', ['userId' => $this->Auth->user('id')])));
         $this->set('_serialize', ['applications']);
     }
 
@@ -33,7 +33,7 @@ class ApplicationsController extends AppController
             'contain' => ['Users', 'Scoutgroups', 'Events'],
             'conditions' => ['event_id' => $eventID]
         ];
-        $this->set('applications', $this->paginate($this->Applications->find('ownedBy', ['userId' => $this->Auth->user('id')])));
+        $this->set('applications', $this->paginate($this->Applications->find('unarchived')->find('ownedBy', ['userId' => $this->Auth->user('id')])));
         $this->set('_serialize', ['applications']);
     }
 

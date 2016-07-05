@@ -63,19 +63,6 @@ class AppController extends Controller
                 ]
         ]);
 
-/*        // Use HTTP Strict Transport Security to force client to use secure connections only
-        if (env('SERVER_NAME') == 'booking.hertscubs.uk')
-        {
-            $use_sts = true;
-        } else {
-            $use_sts = false;
-        }
-
-        // iis sets HTTPS to 'off' for non-SSL requests
-        if ($use_sts && $_SERVER['HTTPS'] != 'off') {
-            header('Strict-Transport-Security: max-age=31536000');
-        }*/
-
         $this->loadComponent('Security');
         $this->loadComponent('Csrf');
         $this->loadComponent('RequestHandler');
@@ -95,6 +82,22 @@ class AppController extends Controller
             $mobile = 0;
         }
         $this->set(compact('mobile'));
+
+        if ($this->Auth->user('id') !== null) {
+
+            $notificationTable = TableRegistry::get('Notifications');
+
+            $usersNotifID = $this->Auth->user('id');
+            $notificationEnts = $notificationTable->find('unread')->where(['user_id' => $usersNotifID]);
+            $notificationCount = $notificationEnts->count();
+
+            if (isset($notificationCount) && $notificationCount > 0) {
+                $unreadNotifications = true;
+            } else {
+                $unreadNotifications = false;
+            }
+            $this->set(compact('unreadNotifications'));
+        }
     }
 
     public function isAuthorized($user)

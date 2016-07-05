@@ -125,6 +125,11 @@ class ApplicationsTable extends Table
         return $query->where(['Applications.user_id' => $userId]);
     }
 
+    public function findUnarchived($query) 
+    {
+        return $query->contain('Events')->where(['Applications.Events.live' => true]);
+    }
+
     /*public function isChampedBy($applicationId, $userId)
     {
         $scoutgroups = TableRegistry::get('Scoutgroups');

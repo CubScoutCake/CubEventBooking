@@ -106,6 +106,17 @@ class NotificationsTable extends Table
         return $rules;
     }
 
+    /**
+     * Returns a modified query, filtering to unread Notifications.
+     *
+     * @param $query The query to be modified.
+     * @return $query The modified query.
+     */
+    public function findUnread($query)
+    {
+        return $query->where(['new' => true]);
+    }
+
     public function isOwnedBy($notificationId, $userId)
     {
         return $this->exists(['id' => $notificationId, 'user_id' => $userId]);

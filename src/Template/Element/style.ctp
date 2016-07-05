@@ -21,3 +21,6 @@
 <?php //https://cdn.jsdelivr.net/bootstrap.datatables/0.1/images/sort_asc.png'); ?>
 <?php //echo $this->Html->css('cake.css'); ?>
 <?php //echo $this->Html->css('hertscubs100.css'); ?>
+
+<!-- Animations -->
+<?php echo $this->Html->css('https://cdn.jsdelivr.net/animatecss/3.5.2/animate.min.css', ['integrity' => 'sha256-j+P6EZJVrbXgwSR5Mx+eCS6FvP9Wq27MBRC/ogVriY0=', 'crossorigin' => 'anonymous']);?>
