@@ -127,7 +127,7 @@ class ApplicationsTable extends Table
 
     public function findUnarchived($query) 
     {
-        return $query->contain('Events')->where(['Applications.Events.live' => true]);
+        return $query->contain('Events')->where(['Events.live' => true]);
     }
 
     /*public function isChampedBy($applicationId, $userId)
