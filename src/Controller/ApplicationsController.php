@@ -232,6 +232,11 @@ class ApplicationsController extends AppController
      */
     public function add($eventID = null)
     {
+    	return $this->redirect(['controller' => 'Applications', 'action' => 'book', $eventID]);
+
+        /*
+        HACK - TODO
+
         $now = Time::now();
 
         $evts = TableRegistry::get('Events');
@@ -295,11 +300,16 @@ class ApplicationsController extends AppController
         if ($this->request->is('get')) {
             // Values from the Model e.g.
             $this->request->data['event_id'] = $eventID;
-        }
+        } */
     }
 
     public function newApp($eventID = null)
     {
+    	return $this->redirect(['controller' => 'Applications', 'action' => 'book', $eventID]);
+
+        /*
+        TODO - HACK
+
         $now = Time::now();
 
         $evts = TableRegistry::get('Events');
@@ -359,7 +369,7 @@ class ApplicationsController extends AppController
         if ($this->request->is('get')) {
             // Values from the Model e.g.
             $this->request->data['event_id'] = $eventID;
-        }
+        }*/
     }
 
     public function book($eventID = null)
@@ -415,7 +425,7 @@ class ApplicationsController extends AppController
         
         $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('scoutgroup_id')]]);
         $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
-        $events = $this->Applications->Events->find('list', ['limit' => 200, 'conditions' => ['id' => $eventID]]);
+        $events = $this->Applications->Events->find('list', ['limit' => 200, 'conditions' => ['end >' => $now, 'live' => 1]]);
         $this->set(compact('application', 'users', 'scoutgroups', 'events', 'attendees'));
         $this->set('_serialize', ['application']);
 
