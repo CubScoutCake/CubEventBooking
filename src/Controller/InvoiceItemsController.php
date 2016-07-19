@@ -31,13 +31,13 @@ class InvoiceItemsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Invoice Item id.
+     * @param string|null $itemId Invoice Item id.
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($itemId = null)
     {
-        $invoiceItem = $this->InvoiceItems->get($id, [
+        $invoiceItem = $this->InvoiceItems->get($itemId, [
             'contain' => ['Invoices' => ['conditions' => ['user_id' => $this->Auth->user('id')]]]
         ]);
         $this->set('invoiceItem', $invoiceItem);
@@ -114,10 +114,8 @@ class InvoiceItemsController extends AppController
     public function populate($invID = null)
     {
         // Connect Registry
-        $settings = TableRegistry::get('Settings');
         $events = TableRegistry::get('Events');
         $applications = TableRegistry::get('Applications');
-        $attendees = TableRegistry::get('Attendees');
         $invoices = TableRegistry::get('Invoices');
 
         // Insantiate Objects
@@ -139,20 +137,18 @@ class InvoiceItemsController extends AppController
         }
 
         // Set Values for Options
-        $CubsVis = $event->cubs;
-        $YlsVis = $event->yls;
-        $LeadersVis = $event->leaders;
+        $cubsVis = $event->cubs;
+        $ylsVis = $event->yls;
+        $leadersVis = $event->leaders;
 
-        $this->set(compact('CubsVis', 'YlsVis', 'LeadersVis'));
+        $this->set(compact('cubsVis', 'ylsVis', 'leadersVis'));
 
         // Set Item Description Text
-        $depositDescription = $event->deposit_text;
         $cubsDescription = $event->cubs_text;
         $ylsDescription = $event->yls_text;
         $leadersDescription = $event->leaders_text;
 
-        // Set Item Price
-        $depositEventPrice = $event->deposit_value;
+        // Set Item ylsEventPrice
         $cubsEventPrice = $event->cubs_value;
         $ylsEventPrice = $event->yls_value;
         $leadersEventPrice = $event->leaders_value;
@@ -343,8 +339,6 @@ class InvoiceItemsController extends AppController
             }
         }
 
-        $this->set(compact('invoiceItem', 'invoices'));
-        $this->set('_serialize', ['invoiceItem']);
         $this->set('invPop', $invPop);
         
         if ($this->request->is('get')) {
@@ -395,10 +389,8 @@ class InvoiceItemsController extends AppController
         $limitTextLeaders = 'There is a limit for Leaders on this event.';
 
         // Connect Registry
-        $settings = TableRegistry::get('Settings');
         $events = TableRegistry::get('Events');
         $applications = TableRegistry::get('Applications');
-        $attendees = TableRegistry::get('Attendees');
         $invoices = TableRegistry::get('Invoices');
         $discounts = TableRegistry::get('Discounts');
 
@@ -425,21 +417,19 @@ class InvoiceItemsController extends AppController
         }
 
         // Set Values for Options
-        $CubsVis = $event->cubs;
-        $YlsVis = $event->yls;
-        $LeadersVis = $event->leaders;
+        $cubsVis = $event->cubs;
+        $ylsVis = $event->yls;
+        $leadersVis = $event->leaders;
 
-        $this->set(compact('CubsVis', 'YlsVis', 'LeadersVis'));
+        $this->set(compact('cubsVis', 'ylsVis', 'leadersVis'));
         
 
         // Set Item Description Text
-        $depositDescription = $event->deposit_text;
         $cubsDescription = $event->cubs_text;
         $ylsDescription = $event->yls_text;
         $leadersDescription = $event->leaders_text;
 
         // Set Item Price
-        $depositEventPrice = $event->deposit_value;
         $cubsEventPrice = $event->cubs_value;
         $ylsEventPrice = $event->yls_value;
         $leadersEventPrice = $event->leaders_value;
@@ -646,8 +636,6 @@ class InvoiceItemsController extends AppController
             }
         }
 
-        $this->set(compact('invoiceItem', 'invoices'));
-        $this->set('_serialize', ['invoiceItem']);
         $this->set('invPop', $invPop);
 
         // Set Field Loader Variables (for Get)
