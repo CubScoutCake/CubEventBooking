@@ -32,9 +32,10 @@
     "require-dev": {
         "psy/psysh": "@stable",
         "cakephp/debug_kit": "~3.0",
-        "cakephp/bake": "*",
         "cakephp/cakephp-codesniffer": "2.*",
-        "phpunit/phpunit": "^5.4"
+        "phpunit/phpunit": "^5.4",
+        "cakephp/bake": "^1.2",
+        "codeclimate/php-test-reporter": "dev-master"
     },
     "autoload": {
         "psr-4": {
