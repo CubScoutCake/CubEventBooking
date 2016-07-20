@@ -46,7 +46,7 @@ class PaymentsController extends AppController
      *
      * @return void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($invId = null)
     {
         $payment = $this->Payments->newEntity();
         if ($this->request->is('post')) {
@@ -64,7 +64,13 @@ class PaymentsController extends AppController
                 $this->Flash->error(__('The payment could not be saved. Please, try again.'));
             }
         }
-        $invoices = $this->Payments->Invoices->find('list', ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]);
+        
+        $invoices = $this->Payments->Invoices->find('unarchived')->find('list', ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]);
+
+        if (isset($invId)) {
+            $invoices = $this->Payments->Invoices->find('list', ['conditions' => ['Invoices.id' => $invId]]);
+        }
+        
         $this->set(compact('payment', 'invoices'));
         $this->set('_serialize', ['payment']);
     }

@@ -130,4 +130,9 @@ class InvoicesTable extends Table
     {
         return $query->where(['Invoices.value IS' => 0])->orWhere(['Invoices.value IS' => null]);
     }
+
+    public function findUnarchived($query) 
+    {
+        return $query->contain('Applications.Events')->where(['Events.live' => true]);
+    }
 }
