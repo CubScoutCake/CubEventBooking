@@ -432,10 +432,18 @@ class InvoicesController extends AppController
 
         $invoice = $this->Invoices->newEntity();
 
-        $newData = ['user_id' => $userId];
-
         if ($this->request->is(['patch', 'post', 'put'])) {
+
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+
+            if (!isset($userId)) {
+                $appId = $this->request->data['application_id'];
+                $application = $apps->get($appId);
+
+                $userId = $application->user_id;
+            }
+            
+            $newData = ['user_id' => $userId];
 
             $invoice = $this->Invoices->patchEntity($invoice, $newData);
 
@@ -458,8 +466,9 @@ class InvoicesController extends AppController
             $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
         }
 
-        $this->set(compact('applications'));
+        
         $this->set('_serialize', ['invoice']);
+        $this->set(compact('applications','invoice'));
 
         if ($this->request->is('get')) {
             // Values from the Model e.g.

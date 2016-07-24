@@ -159,7 +159,13 @@ class ApplicationsController extends AppController
             $this->set(compact('addCubs'));
         } elseif ($attCubs > 0 && $invCubs < $attCubs) {
             $this->Flash->error(__('Your Invoice is not Reflective of Your Number of Cubs.'));
-            $invDone = 0.5;
+            if ($invCount > 1) {
+                $invDone = 0.5;
+            } elseif ($invCount == 1) {
+                $invDone = 0.5;
+            } else {
+                $invDone = 0;
+            }
             $cubsDone = 1;
         } else {
             $cubsDone = 0;
@@ -172,7 +178,13 @@ class ApplicationsController extends AppController
             $this->set(compact('addNotCubs'));
         } elseif ($attNotCubs > 0 && $invNotCubs < $attNotCubs) {
             $this->Flash->error(__('Your Invoice is not Reflective of Your Number of Leaders & Young Leaders.'));
-            $invDone = 0.5;
+            if ($invCount > 1) {
+                $invDone = 0.5;
+            } elseif ($invCount == 1) {
+                $invDone = 0.5;
+            } else {
+                $invDone = 0;
+            }
             $cubsNotDone = 1;
         } else {
             $cubsNotDone = 0;
