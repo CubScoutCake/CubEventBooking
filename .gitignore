@@ -11,3 +11,7 @@
 *.lock
 
 *.pdf
+
+.idea/*
+-- config/Seeds/
+
