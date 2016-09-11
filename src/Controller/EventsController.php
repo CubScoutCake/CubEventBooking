@@ -21,7 +21,8 @@ class EventsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Settings', 'Discounts']
+            'contain' => ['Settings', 'Discounts'],
+            'conditions' => ['live' => true]
         ];
         $this->set('events', $this->paginate($this->Events));
         $this->set('_serialize', ['events']);
