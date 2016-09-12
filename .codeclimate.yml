@@ -27,5 +27,7 @@ ratings:
   - "**.py"
   - "**.rb"
 exclude_paths:
-- config/
-- tests/
+- "**/config/"
+- "**/tests/"
+- "**/spec/"
+- "**/vendor/"
