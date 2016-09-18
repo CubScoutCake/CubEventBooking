@@ -130,6 +130,36 @@ class ApplicationsTable extends Table
         return $query->contain('Events')->where(['Events.live' => true]);
     }
 
+    public function findCubs($query) 
+    {
+        $query = $query->matching(
+            'Attendees.Roles', function ($q) {
+                return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id' => 1]);
+            }
+        );
+        return $query;
+    }
+
+    public function findYoungLeaders($query) 
+    {
+        $query = $query->matching(
+            'Attendees.Roles', function ($q) {
+                return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id <>' => 1]);
+            }
+        );
+        return $query;
+    }
+
+    public function findLeaders($query) 
+    {
+        $query = $query->matching(
+            'Attendees.Roles', function ($q) {
+                return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => false]);
+            }
+        );
+        return $query;
+    }
+
     /*public function isChampedBy($applicationId, $userId)
     {
         $scoutgroups = TableRegistry::get('Scoutgroups');
