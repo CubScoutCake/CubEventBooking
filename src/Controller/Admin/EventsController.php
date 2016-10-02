@@ -120,17 +120,17 @@ class EventsController extends AppController
 
         $this->set(compact('cntApplications', 'cntInvoices'));
 
-        if ($cntInvoices < 1) {
-            $sumValues = 0;
-            $sumPayments = 0;
-            $sumBalances = 0;
+        $sumValues = 0;
+        $sumPayments = 0;
+        $sumBalances = 0;
 
-            $invCubs = 0;
-            $invYls = 0;
-            $invLeaders = 0;
+        $invCubs = 0;
+        $invYls = 0;
+        $invLeaders = 0;
 
-            $outstanding = 0;
-        } else {
+        $outstanding = 0;
+
+        if ($cntInvoices >= 1) {
             // Sum Values & Calculate Balances
             $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->group('Applications.event_id')->first();
             $sumPaymentItem = $invoices->select(['sum' => $invoices->func()->sum('value')])->group('Applications.event_id')->first();
@@ -180,9 +180,9 @@ class EventsController extends AppController
             $appLeaders = 0;
         } else {
             // Set Attendee Counts
-            $attendeeCubCount = $apps->find('cubs');
-            $attendeeYlCount = $apps->find('youngLeaders');
-            $attendeeLeaderCount = $apps->find('leaders');
+            $attendeeCubCount = $applications->find('cubs');
+            $attendeeYlCount = $applications->find('youngLeaders');
+            $attendeeLeaderCount = $applications->find('leaders');
             
             // Count of Attendees
             $appCubs = $attendeeCubCount->count('*');
@@ -378,9 +378,9 @@ class EventsController extends AppController
             $appLeaders = 0;
         } else {
             // Set Attendee Counts
-            $attendeeCubCount = $apps->find('cubs');
-            $attendeeYlCount = $apps->find('youngLeaders');
-            $attendeeLeaderCount = $apps->find('leaders');
+            $attendeeCubCount = $applications->find('cubs');
+            $attendeeYlCount = $applications->find('youngLeaders');
+            $attendeeLeaderCount = $applications->find('leaders');
             
             // Count of Attendees
             $appCubs = $attendeeCubCount->count('*');
