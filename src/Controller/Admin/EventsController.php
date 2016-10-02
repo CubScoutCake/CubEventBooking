@@ -174,15 +174,15 @@ class EventsController extends AppController
         $this->set(compact('sumValues', 'sumBalances', 'sumPayments', 'outstanding', 'unpaid'));
         $this->set(compact('invCubs', 'invYls', 'invLeaders'));
 
-        if ($cntApplications < 1) {
-            $appCubs = 0;
-            $appYls = 0;
-            $appLeaders = 0;
-        } else {
+        $appCubs = 0;
+        $appYls = 0;
+        $appLeaders = 0;
+
+        if ($cntApplications >= 1) {
             // Set Attendee Counts
-            $attendeeCubCount = $applications->find('cubs');
-            $attendeeYlCount = $applications->find('youngLeaders');
-            $attendeeLeaderCount = $applications->find('leaders');
+            $attendeeCubCount = $apps->find('cubs')->where(['event_id' => $event->id]);
+            $attendeeYlCount = $apps->find('youngLeaders')->where(['event_id' => $event->id]);
+            $attendeeLeaderCount = $apps->find('leaders')->where(['event_id' => $event->id]);
             
             // Count of Attendees
             $appCubs = $attendeeCubCount->count('*');
@@ -289,6 +289,24 @@ class EventsController extends AppController
 
         $this->set(compact('cntApplications', 'cntInvoices'));
 
+        $appCubs = 0;
+        $appYls = 0;
+        $appLeaders = 0;
+
+        if ($cntApplications >= 1) {
+            // Set Attendee Counts
+            $attendeeCubCount = $apps->find('cubs')->where(['event_id' => $event->id]);
+            $attendeeYlCount = $apps->find('youngLeaders')->where(['event_id' => $event->id]);
+            $attendeeLeaderCount = $apps->find('leaders')->where(['event_id' => $event->id]);
+            
+            // Count of Attendees
+            $appCubs = $attendeeCubCount->count('*');
+            $appYls = $attendeeYlCount->count('*');
+            $appLeaders = $attendeeLeaderCount->count('*');
+        }
+
+        $this->set(compact('appCubs', 'appYls', 'appLeaders'));
+
         $sumValues = 0;
         $sumPayments = 0;
         $sumBalances = 0;
@@ -296,6 +314,10 @@ class EventsController extends AppController
         $invCubs = 0;
         $invYls = 0;
         $invLeaders = 0;
+
+        $invValueCubs = 0;
+        $invValueYls = 0;
+        $invValueLeaders = 0;
 
         $canCubs = 0;
         $canYls = 0;
@@ -371,24 +393,6 @@ class EventsController extends AppController
         $this->set(compact('invCubs', 'invYls', 'invLeaders', 'invValueCubs', 'invValueYls', 'invValueLeaders'));
         $this->set(compact('canCubs', 'canYls', 'canLeaders', 'canValueCubs', 'canValueYls', 'canValueLeaders'));
         $this->set(compact('sumValues', 'sumBalances', 'sumPayments', 'outstanding', 'unpaid'));        
-
-        if ($cntApplications < 1) {
-            $appCubs = 0;
-            $appYls = 0;
-            $appLeaders = 0;
-        } else {
-            // Set Attendee Counts
-            $attendeeCubCount = $applications->find('cubs');
-            $attendeeYlCount = $applications->find('youngLeaders');
-            $attendeeLeaderCount = $applications->find('leaders');
-            
-            // Count of Attendees
-            $appCubs = $attendeeCubCount->count('*');
-            $appYls = $attendeeYlCount->count('*');
-            $appLeaders = $attendeeLeaderCount->count('*');
-        }
-
-        $this->set(compact('appCubs', 'appYls', 'appLeaders'));
     }
 
 
