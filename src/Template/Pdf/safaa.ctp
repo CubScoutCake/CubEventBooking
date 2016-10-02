@@ -34,25 +34,6 @@
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-tasks fa-fw"></i> Team Emergency Contact Number
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-                <span class="text-muted">Please complete:</span><h1><?= __('                        ') ?></h1>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12 col-sm-12">
-        <h5>When you have completed the above, all partcipants have arrived and you have checked that all details are correct, please hand in to the County Team in the Hall.</h5> 
-    </div>
-</div>
-<hr>
-<div class="row">
-    <div class="col-xs-12 col-sm-12">
         <?php if (!empty($application->attendees)): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -82,13 +63,6 @@
                         </tr>
                         <?php endforeach; ?>
                     </table>
-                    <div class="row">
-                        <table class="table table-hover">
-                        <td>
-                        <h3>Please include a next of Kin contact number for EVERY adult present, if this is not above.</h3>
-                        </td>
-                        </table> 
-                    </div>
                 </div>
             </div>   
         <?php endif; ?>
