@@ -630,7 +630,6 @@ class ApplicationsController extends AppController
             $attendees = $this->Applications->Attendees->find('list', ['limit' => 200]);
         }
 
-        $users = $this->Applications->Users->find('list', ['limit' => 200]);
         $users = $this->Applications->Users->find(
             'list',
             [
@@ -640,6 +639,15 @@ class ApplicationsController extends AppController
             ]
         )
             ->contain(['Scoutgroups.Districts']);
+        $scoutgroups = $this->Applications->Scoutgroups->find(
+            'list',
+            [
+                'keyField' => 'id',
+                'valueField' => 'scoutgroup',
+                'groupField' => 'district.district'
+            ]
+        )
+            ->contain(['Districts']);
         $events = $this->Applications->Events->find('list', ['limit' => 200]);
         
         $this->set(compact('application', 'users', 'attendees', 'scoutgroups', 'events'));
@@ -694,7 +702,15 @@ class ApplicationsController extends AppController
             ->contain(['Scoutgroups.Districts']);
         $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $application->user_id]]);
         $events = $this->Applications->Events->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $user->scoutgroup_id]]);
+        $scoutgroups = $this->Applications->Scoutgroups->find(
+            'list',
+            [
+                'keyField' => 'id',
+                'valueField' => 'scoutgroup',
+                'groupField' => 'district.district'
+            ]
+        )
+            ->contain(['Districts']);
         $this->set(compact('application', 'users', 'attendees', 'events', 'scoutgroups'));
         $this->set('_serialize', ['application']);
     }

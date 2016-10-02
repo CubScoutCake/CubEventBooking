@@ -37,6 +37,7 @@
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Accounts View'), ['action' => 'accounts', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>
                     <li class="divider"></li>
@@ -280,6 +281,12 @@
 	                <?php if (!empty($invoices)): ?>
 	                    <li><a href="#invo-pills" data-toggle="tab"><i class="fa fa-files-o fa-fw"></i> Invoices</a></li>
 	                <?php endif; ?>
+                    <?php if (!empty($outInvoices)): ?>
+                        <li><a href="#outi-pills" data-toggle="tab"><i class="fa fa-files-o fa-fw"></i> Outstanding Invoices</a></li>
+                    <?php endif; ?>
+                    <?php if (!empty($unpaidInvoices)): ?>
+                        <li><a href="#unpa-pills" data-toggle="tab"><i class="fa fa-files-o fa-fw"></i> Unpaid Invoices</a></li>
+                    <?php endif; ?>
                 </ul>
 
                 <!-- Tab panes -->
@@ -419,6 +426,8 @@
 	                                            	        <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoice->id]) ?></li>
 	                                            	        <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoice->id]) ?></li>
 	                                            	        <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?></li>
+                                                            <li class="divider"></li>
+                                                            <li><?= $this->Html->link(__('Add Payment'), ['controller' => 'Payments', 'action' => 'add', $invoice->id]) ?></li>
 	                                            	    </ul>
 	                                            	</div>
 	                                            </td>
@@ -428,6 +437,96 @@
 	                                            <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
 	                                            <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
 	                                        </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($outInvoices)): ?>
+                        <div class="tab-pane fade" id="outi-pills">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><?= __('Id') ?></th>
+                                            <th class="actions"><?= __('Actions') ?></th>
+                                            <th><?= __('Application') ?></th>
+                                            <th><?= __('Sum Value') ?></th>
+                                            <th><?= __('Received') ?></th>
+                                            <th><?= __('Balance') ?></th>
+                                            <th><?= __('Date Created') ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($outInvoices as $invoice): ?>
+                                            <tr>
+                                                <td><?= h($invoice->id) ?></td>
+                                                <td class="actions">
+                                                    <div class="dropdown btn-group">
+                                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu " role="menu">
+                                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoice->id]) ?></li>
+                                                            <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoice->id]) ?></li>
+                                                            <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?></li>
+                                                            <li class="divider"></li>
+                                                            <li><?= $this->Html->link(__('Add Payment'), ['controller' => 'Payments', 'action' => 'add', $invoice->id]) ?></li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
+                                                <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+                                                <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
+                                                <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
+                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($unpaidInvoices)): ?>
+                        <div class="tab-pane fade" id="unpa-pills">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><?= __('Id') ?></th>
+                                            <th class="actions"><?= __('Actions') ?></th>
+                                            <th><?= __('Application') ?></th>
+                                            <th><?= __('Sum Value') ?></th>
+                                            <th><?= __('Received') ?></th>
+                                            <th><?= __('Balance') ?></th>
+                                            <th><?= __('Date Created') ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($unpaidInvoices as $invoice): ?>
+                                            <tr>
+                                                <td><?= h($invoice->id) ?></td>
+                                                <td class="actions">
+                                                    <div class="dropdown btn-group">
+                                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu " role="menu">
+                                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoice->id]) ?></li>
+                                                            <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoice->id]) ?></li>
+                                                            <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?></li>
+                                                            <li class="divider"></li>
+                                                            <li><?= $this->Html->link(__('Add Payment'), ['controller' => 'Payments', 'action' => 'add', $invoice->id]) ?></li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
+                                                <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+                                                <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
+                                                <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
+                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                                            </tr>
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
