@@ -348,10 +348,9 @@ class InvoicesController extends AppController
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
         
         // If User Set or Not - Limit the list.
+        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'order' => ['modified' => 'DESC']]);
         if (isset($userId)) {
             $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
-        } else {
-            $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
         }
         
 
@@ -398,7 +397,7 @@ class InvoicesController extends AppController
         )
             ->contain(['Scoutgroups.Districts']);
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
-        $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
+        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'order' => ['modified' => 'DESC']]);
 
         $this->set(compact('invoice', 'users', 'payments', 'applications'));
         $this->set('_serialize', ['invoice']);
@@ -460,12 +459,13 @@ class InvoicesController extends AppController
             }
         }
 
+        $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
+        if (isset($appId)) {
+            $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['id' => $appId]]);
+        }
         if (isset($userId)) {
             $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
-        } else {
-            $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
         }
-
         
         $this->set('_serialize', ['invoice']);
         $this->set(compact('applications','invoice'));
