@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/CubScoutCake/CubEventBooking.svg?branch=master)](https://travis-ci.org/CubScoutCake/CubEventBooking)
 [![Issue Count](https://codeclimate.com/github/CubScoutCake/CubEventBooking/badges/issue_count.svg)](https://codeclimate.com/github/CubScoutCake/CubEventBooking)
-[![Test Coverage](https://codeclimate.com/github/CubScoutCake/CubEventBooking/badges/coverage.svg)](https://codeclimate.com/github/CubScoutCake/CubEventBooking/coverage)
+[![codecov](https://codecov.io/gh/CubScoutCake/CubEventBooking/branch/master/graph/badge.svg)](https://codecov.io/gh/CubScoutCake/CubEventBooking)
 [![Code Climate](https://codeclimate.com/github/CubScoutCake/CubEventBooking/badges/gpa.svg)](https://codeclimate.com/github/CubScoutCake/CubEventBooking)
 
 This is part of the CubScoutCake Organisation.
