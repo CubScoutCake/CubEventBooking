@@ -263,20 +263,29 @@ class UsersController extends AppController
                             ['type' => 'json']
                         );
 
+                        $this->loadComponent('Progress');
+
+                        $this->Progress->cacheApps($loggedInUser->id);
+
 
                         if (isset($eventId) && $eventId >= 0) {
                             $session->delete('Reset.lgTries');
                             $session->delete('Reset.rsTries');
                             return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
-                        } else {
-                            $session->delete('Reset.lgTries');
-                            $session->delete('Reset.rsTries');
-                            if ($syncRedir == 1) {
-                                return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'sync']);
-                            } else {
-                                return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
-                            }
+                        } 
+
+                        $session->delete('Reset.lgTries');
+                        $session->delete('Reset.rsTries');
+                        if ($syncRedir == 1) {
+                            return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'sync']);
                         }
+
+                        if ($loggedInUser->authrole == 'admin') {
+                            return $this->redirect(['prefix' => 'admin', 'controller' => 'Landing', 'action' => 'admin_home']);
+                        }
+
+                        return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
+                        
                     } else {
                         $this->Flash->error(__('The user could not be saved. Please, try again.'));
                     }

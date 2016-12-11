@@ -4,8 +4,12 @@ namespace App\Model\Table;
 use App\Model\Entity\User;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
+use Cake\Auth\DigestAuthenticate;
+use Cake\Event\Event;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Auth\DefaultPasswordHasher;
+use Cake\Utility\Text;
 
 /**
  * Users Model
@@ -150,5 +154,29 @@ class UsersTable extends Table
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
         return $rules;
+    }
+
+    public function beforeSave(Event $event)
+    {
+        $entity = $event->data['entity'];
+
+        // Make a password for digest auth.
+        $entity->digest_hash = DigestAuthenticate::password(
+            $entity->username,
+            'Rho9Sigma',
+            env('SERVER_NAME')
+        );
+
+        if ($entity->authrole === 'admin') {
+            $hasher = new DefaultPasswordHasher();
+
+            // Generate an API 'token'
+            $entity->api_key_plain = sha1(Text::uuid());
+
+            // Bcrypt the token so BasicAuthenticate can check
+            // it during login.
+            $entity->api_key = $hasher->hash($entity->api_key_plain);
+        }
+        return true;
     }
 }

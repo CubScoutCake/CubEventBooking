@@ -43,7 +43,6 @@ class LandingController extends AppController
         $apps = TableRegistry::get('Applications');
         $atts = TableRegistry::get('Attendees');
         $invs = TableRegistry::get('Invoices');
-        $usrs = TableRegistry::get('Users');
         $pays = TableRegistry::get('Payments');
         $evs = TableRegistry::get('Events');
 
@@ -52,22 +51,28 @@ class LandingController extends AppController
         $userId = $this->Auth->user('id');
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users', 'Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(5);
-        $events = $evs->find()->where(['end >' => $now, 'live' => 1])->contain(['Settings'])->order(['Events.start' => 'ASC']);
-        $invoices = $invs->find()->contain(['Users', 'Applications'])->order(['Invoices.created' => 'DESC'])->limit(5);
-        $users = $usrs->find()->contain(['Roles', 'Scoutgroups'])->order(['Users.modified' => 'DESC'])->limit(5);
-        $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(5);
+        $applications = $apps->find('all', ['conditions' => ['Applications.user_id' => $userId]])->contain(['Users', 'Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(5);
+        $events = $evs->find('all', ['conditions' => ['end >' => $now, 'live' => 1]])->contain(['Settings'])->order(['Events.start' => 'ASC']);
+        $invoices = $invs->find('all', ['conditions' => ['Invoices.user_id' => $userId]])->contain(['Users', 'Applications', 'Payments'])->order(['Invoices.created' => 'DESC'])->limit(5);
+        $payments = $countPayments = $pays->find('all')->matching('Invoices', function ($q) {
+                return $q->where(['Invoices.user_id' => $this->Auth->user('id')]);
+        });
 
         // Pass to View
-        $this->set(compact('applications', 'events', 'invoices', 'users', 'payments'));
+        $this->set(compact('applications', 'events', 'invoices', 'payments'));
 
         // Counts of Entities
-        $countApplications = $apps->find('all', ['conditions' => ['user_id' => $userId]])->count('*');
+        $countApplications = $applications->count('*');
+        $countInvoices = $invoices->count('*'); 
         $countAttendees = $atts->find('all', ['conditions' => ['user_id' => $userId]])->count('*');
-        $countInvoices = $invs->find('all', ['conditions' => ['user_id' => $userId]])->count('*');
-        $countPayments = $pays->find('all')->matching('Invoices', function ($q) {
-                return $q->where(['Invoices.user_id' => $this->Auth->user('id')]);
-        })->count('*');
+
+        if (empty($payments)) {
+            $countPayments = 0;
+        }
+
+        if (!empty($payments)) {
+            $countPayments = $payments->count('*');
+        }
 
         // Pass to View
         $this->set(compact('countApplications', 'countAttendees', 'countInvoices', 'countPayments', 'userId'));
@@ -90,7 +95,6 @@ class LandingController extends AppController
                 }
             }
         }
-
         $this->set(compact('eventId'));
     }
 

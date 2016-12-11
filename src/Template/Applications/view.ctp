@@ -112,7 +112,7 @@
                         <p>
                             <strong>Invoice Progress</strong>
                             </br>
-                            <span class="pull-right text-muted"><?= $this->Number->format($invCount); ?> Invoices</span>
+                            <span class="pull-right text-muted"><?= $this->Number->format($invCount); ?> <?php if ($invCount == 1) : ?>Invoice<?php else : ?>Invoices<?php endif ?></span>
                             </br>
                         </p>
                         <div class="progress progress-striped active">

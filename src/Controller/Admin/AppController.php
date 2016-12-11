@@ -44,14 +44,6 @@ class AppController extends Controller
                 'controller' => 'Landing',
                 'action' => 'user_home'
                 ],
-            //'authenticate' => [
-            //    'Form' => [
-            //        'fields' => [
-            //            'username' => 'username',
-            //            'password' => 'password'
-            //            ]
-            //        ]
-            //    ],
             'loginAction' => [
                 'controller' => 'Users',
                 'action' => 'login'
@@ -63,14 +55,11 @@ class AppController extends Controller
         $this->loadComponent('RequestHandler');
         $this->loadComponent('DataTables.DataTables');
 
-        // Allow the display action so our pages controller
-        // continues to work.
-        //$this->Auth->allow(['display']);
-        //$this->Auth->allow(['index']);
-
         $adminFormLink = new AdminForm();
         $this->set(compact('adminFormLink'));
 
+        $this->loadComponent('Notifications');
+        $this->Notifications->appLoad($this->Auth->user('id'));
     }
 
     public function isAuthorized($user)
