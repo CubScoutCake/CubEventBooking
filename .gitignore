@@ -3,11 +3,9 @@
 /tmp/*
 /logs/*
 .htaccess
-*.htaccess
 
 *.phar
 
-*.lock
 *.lock
 
 *.pdf
@@ -15,5 +13,5 @@
 *.DS_Store
 
 .idea/*
--- config/Seeds/
 
+.idea/
