@@ -30,11 +30,11 @@ class AppController extends Controller
 {
     use CellTrait;
 
-    public $helpers = [
+    /*public $helpers = [
         'DataTables' => [
             'className' => 'DataTables.DataTables'
         ]
-    ];
+    ];*/
 
     public function initialize()
     {
@@ -49,14 +49,6 @@ class AppController extends Controller
                 'controller' => 'Landing',
                 'action' => 'welcome'
                 ],
-            //'authenticate' => [
-            //    'Form' => [
-            //        'fields' => [
-            //            'username' => 'username',
-            //            'password' => 'password'
-            //            ]
-            //        ]
-            //    ],
             'loginAction' => [
                 'controller' => 'Users',
                 'action' => 'login'
@@ -72,32 +64,8 @@ class AppController extends Controller
         //$this->Security->requiresecure();
         }
 
-        // Allow the display action so our pages controller
-        // continues to work.
-        //$this->Auth->allow(['display']);
-        //$this->Auth->allow(['index']);
-        if ($this->RequestHandler->isMobile()) {
-            $mobile = 1;
-        } else {
-            $mobile = 0;
-        }
-        $this->set(compact('mobile'));
-
-        if ($this->Auth->user('id') !== null) {
-
-            $notificationTable = TableRegistry::get('Notifications');
-
-            $usersNotifID = $this->Auth->user('id');
-            $notificationEnts = $notificationTable->find('unread')->where(['user_id' => $usersNotifID]);
-            $notificationCount = $notificationEnts->count();
-
-            if (isset($notificationCount) && $notificationCount > 0) {
-                $unreadNotifications = true;
-            } else {
-                $unreadNotifications = false;
-            }
-            $this->set(compact('unreadNotifications'));
-        }
+        $this->loadComponent('Notifications');
+        $this->Notifications->appLoad($this->Auth->user('id'));
     }
 
     public function isAuthorized($user)
@@ -120,23 +88,6 @@ class AppController extends Controller
         if (isset($user['id']) && in_array($this->request->params['action'], ['index', 'add', 'admin-home'])) {
             return true;
         }
-
-        // Only admins can access admin functions
-        //if ($this->request->params['prefix'] === 'admin') {
-        //    return (bool)($user['authrole'] === 'admin');
-        //  }
-
-        //Alternate Method
-        //if ($this->request->action === 'add') {
-        //        return true;
-        //    }
-
-        // All other actions require an id.
-        //if (empty($this->request->params['pass'][0])) {
-        //    return true;
-        //}
-
-        //return parent::isAuthorized($user);
 
         return false;
     }

@@ -143,6 +143,7 @@ $cakeDescription = 'HertsCubs Booking System';
 
             if (isset($this->Flash)) {
                 echo $this->Flash->render();
+                echo $this->Flash->render('auth');
             }
             $this->end();
         }
