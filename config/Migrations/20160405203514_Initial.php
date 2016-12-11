@@ -5,78 +5,6 @@ class Initial extends AbstractMigration
 {
     public function up()
     {
-        $table = $this->table('Balances', ['id' => false, 'primary_key' => ['']]);
-        $table
-            ->addColumn('Total Value', 'float', [
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ])
-            ->addColumn('Total Payments', 'float', [
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ])
-            ->addColumn('Outstanding Balance', 'float', [
-                'default' => null,
-                'limit' => null,
-                'null' => true,
-            ])
-            ->create();
-
-        $table = $this->table('BookingSummary', ['id' => false, 'primary_key' => ['']]);
-        $table
-            ->addColumn('Description', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => true,
-            ])
-            ->addColumn('SUM(Quantity)', 'decimal', [
-                'default' => null,
-                'limit' => 32,
-                'null' => true,
-            ])
-            ->create();
-
-        $table = $this->table('UserView', ['id' => false, 'primary_key' => ['']]);
-        $table
-            ->addColumn('First Name', 'string', [
-                'default' => null,
-                'limit' => 125,
-                'null' => false,
-            ])
-            ->addColumn('Last Name', 'string', [
-                'default' => null,
-                'limit' => 125,
-                'null' => false,
-            ])
-            ->addColumn('Scouting Appointment', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => true,
-            ])
-            ->addColumn('Email Address', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->addColumn('Scout Group', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->addColumn('UserName', 'string', [
-                'default' => null,
-                'limit' => 45,
-                'null' => false,
-            ])
-            ->addColumn('District', 'string', [
-                'default' => null,
-                'limit' => 255,
-                'null' => false,
-            ])
-            ->create();
-
         $table = $this->table('allergies');
         $table
             ->addColumn('allergy', 'string', [
@@ -881,9 +809,9 @@ class Initial extends AbstractMigration
                 'limit' => 11,
                 'null' => true,
             ])
-            ->addColumn('minor', 'integer', [
+            ->addColumn('minor', 'boolean', [
                 'default' => null,
-                'limit' => 11,
+                'length' => null,
                 'null' => true,
             ])
             ->create();
