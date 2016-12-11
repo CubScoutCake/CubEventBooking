@@ -1,17 +1,13 @@
-/vendor/*
-/config/app.php
-/tmp/*
-/logs/*
+vendor/*
+config/app.php
+tmp/*
+logs/*
 .htaccess
 
 *.phar
 
-*.lock
-
 *.pdf
 
 *.DS_Store
-
-.idea/*
 
 .idea/
