@@ -17,20 +17,18 @@ class AttendeesAllergiesFixture extends TestFixture
      */
     // @codingStandardsIgnoreStart
     public $fields = [
-        'attendee_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'allergy_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'attendee_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'allergy_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         '_indexes' => [
-            'allergy_idx' => ['type' => 'index', 'columns' => ['attendee_id', 'allergy_id'], 'length' => []],
-            'allergy_key' => ['type' => 'index', 'columns' => ['allergy_id'], 'length' => []],
+            'attendees_allergies_attendee_id_allergy_id' => ['type' => 'index', 'columns' => ['attendee_id', 'allergy_id'], 'length' => []],
+            'attendees_allergies_attendee_id' => ['type' => 'index', 'columns' => ['attendee_id'], 'length' => []],
+            'atal_alle_x_atts_idx' => ['type' => 'index', 'columns' => ['attendee_id', 'allergy_id'], 'length' => []],
+            'attendees_allergies_allergy_id' => ['type' => 'index', 'columns' => ['allergy_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['attendee_id', 'allergy_id'], 'length' => []],
-            'allergies_key' => ['type' => 'foreign', 'columns' => ['allergy_id'], 'references' => ['allergies', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
-            'attendees_key' => ['type' => 'foreign', 'columns' => ['attendee_id'], 'references' => ['attendees', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
-        ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'latin1_swedish_ci'
+            'attendees_allergies_allergy_id' => ['type' => 'foreign', 'columns' => ['allergy_id'], 'references' => ['allergies', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
+            'attendees_allergies_attendee_id' => ['type' => 'foreign', 'columns' => ['attendee_id'], 'references' => ['attendees', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd

@@ -76,6 +76,16 @@ class ApplicationsControllerTest extends IntegrationTestCase
     }
 
     /**
+     * Test pdfView method
+     *
+     * @return void
+     */
+    public function testPdfView()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
      * Test add method
      *
      * @return void

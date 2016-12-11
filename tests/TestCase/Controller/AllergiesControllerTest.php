@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\AllergiesController;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -18,32 +19,20 @@ class AllergiesControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.allergies',
         'app.attendees',
-        'app.users',
         'app.roles',
-        'app.scoutgroups',
         'app.districts',
-        'app.champions',
-        'app.applications',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.notes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.applications_attendees',
-        'app.notifications',
-        'app.notificationtypes',
+        'app.scoutgroups',
+        'app.users',
         'app.attendees_allergies'
     ];
+
+    public function testIndexUnauthenticatedFails()
+    {
+        // No session data set.
+        $this->get('/allergies');
+
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+    }
 
     /**
      * Test index method
@@ -52,7 +41,21 @@ class AllergiesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->get('/allergies');
+
+        $this->assertResponseOk();
+    }
+
+    public function testIndexQueryData()
+    {
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->get('/allergies?page=1');
+
+        $this->assertResponseOk();
+        // More asserts.
     }
 
     /**
@@ -60,18 +63,90 @@ class AllergiesControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testView()
+
+    public function testViewUnauthenticatedFails()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // No session data set.
+        $this->get('/allergies/view/1');
+
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
     }
 
-    /**
-     * Test add method
-     *
-     * @return void
-     */
+    public function testView()
+    {
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->get('/allergies/view/1');
+
+        $this->assertResponseOk();
+    }
+
+    public function testAddUnauthenticatedFails()
+    {
+        // No session data set.
+        $this->get('/allergies/add');
+
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+    }
+
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->get('/allergies/add');
+
+        $this->assertResponseOk();
+    }
+
+    public function testAddPostBadCsrf()
+    {
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->enableSecurityToken();
+
+        $data = [
+            'id' => 2,
+            'allergy' => 'Test Me',
+            'description' => 'This is a test Allergy'
+        ];
+        $this->post('/allergies/add', $data);
+
+        $this->assertResponseError();
+    }
+
+    public function testAddPostGoodData()
+    {
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $data = [
+            'id' => '3',
+            'allergy' => 'I am a Test',
+            'description' => 'This is a different test Allergy'
+        ];
+        $this->post('/allergies/add', $data);
+
+        $this->assertRedirect(['controller' => 'allergies', 'action' => 'index']);
+
+        $articles = TableRegistry::get('Allergies');
+        $query = $articles->find()->where(['allergy' => $data['allergy']]);
+        $this->assertEquals(1, $query->count());
+
+    }
+
+    public function testAddPostBadData()
+    {
+        $this->session(['Auth.User.id' => 1]);
+
+        $data = [
+            'id' => '4',
+            'allergy' => null,
+            'description' => null
+        ];
+        $this->post('/allergies', $data);
+
+        $this->assertResponseError();
     }
 }
