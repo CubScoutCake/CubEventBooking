@@ -18,6 +18,16 @@ class DigestUpdate extends AbstractMigration
                 'length' => 255,
                 'null' => true,
             ])
+            ->addColumn('api_key_plain', 'string', [
+                'default' => null,
+                'length' => 999,
+                'null' => true,
+            ])
+            ->addColumn('api_key', 'string', [
+                'default' => null,
+                'length' => 999,
+                'null' => true,
+            ])
             ->update();
     }
 
@@ -27,6 +37,8 @@ class DigestUpdate extends AbstractMigration
         $this->table('users')
             ->removeColumn('digest_hash')
             ->removeColumn('pw_salt')
+            ->removeColumn('api_key_plain')
+            ->removeColumn('api_key')
             ->update();
     }
 }

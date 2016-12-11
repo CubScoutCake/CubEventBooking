@@ -12,9 +12,8 @@ class Initial extends AbstractMigration
                 'limit' => 255,
                 'null' => false,
             ])
-            ->addColumn('description', 'string', [
+            ->addColumn('description', 'text', [
                 'default' => null,
-                'limit' => 999,
                 'null' => true,
             ])
             ->create();
@@ -1291,7 +1290,7 @@ class Initial extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('address_2', 'string', [
-                'default' => null,
+                'default' => '',
                 'limit' => 255,
                 'null' => true,
             ])
@@ -1311,8 +1310,8 @@ class Initial extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('section', 'string', [
-                'default' => 'Cubs',
-                'limit' => 10,
+                'default' => '',
+                'limit' => 255,
                 'null' => true,
             ])
             ->addColumn('created', 'datetime', [
@@ -1335,9 +1334,8 @@ class Initial extends AbstractMigration
                 'limit' => 11,
                 'null' => true,
             ])
-            ->addColumn('osm_secret', 'string', [
+            ->addColumn('osm_secret', 'text', [
                 'default' => null,
-                'limit' => 999,
                 'null' => true,
             ])
             ->addColumn('osm_section_id', 'integer', [
@@ -1345,9 +1343,9 @@ class Initial extends AbstractMigration
                 'limit' => 11,
                 'null' => true,
             ])
-            ->addColumn('osm_linked', 'boolean', [
+            ->addColumn('osm_linked', 'integer', [
                 'default' => null,
-                'limit' => null,
+                'limit' => 11,
                 'null' => true,
             ])
             ->addColumn('osm_linkdate', 'datetime', [
@@ -1365,9 +1363,8 @@ class Initial extends AbstractMigration
                 'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('reset', 'string', [
-                'default' => null,
-                'limit' => 999,
+            ->addColumn('reset', 'text', [
+                'default' => '',
                 'null' => true,
             ])
             ->addColumn('last_login', 'datetime', [

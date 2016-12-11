@@ -8,7 +8,7 @@
         "php": "^7.0",
         "cakephp/cakephp": "@stable",
         "mobiledetect/mobiledetectlib": "2.*",
-        "cakephp/migrations": "*",
+        "cakephp/migrations": "dev-master",
         "cakephp/plugin-installer": "*",
         "dompdf/dompdf": "*",
         "friendsofcake/cakepdf": "3.*",
@@ -26,7 +26,8 @@
         "php-http/client-common": "@stable",
         "php-http/socket-client": "@stable",
         "SparkPost/php-sparkpost": "*",
-        "SparkPost/SparkPost": "*"
+        "SparkPost/SparkPost": "*",
+        "robmorgan/phinx": "*"
     },
     "require-dev": {
         "psy/psysh": "@stable",
