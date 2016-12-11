@@ -22,6 +22,12 @@ script:
 
 notifications:
   email: true
+  webhooks:
+    urls:
+      - DeployWebHook
+    on_success: always # default: always
+    on_failure: never # default: always
+    on_start: never # default: never
 
 addons:
     code_climate:
