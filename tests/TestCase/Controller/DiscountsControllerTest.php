@@ -23,7 +23,7 @@ class DiscountsControllerTest extends IntegrationTestCase
         'app.invoices_payments',
         'app.discounts'
     ];
-*/
+     */
     /**
      * Test initial setup
      *

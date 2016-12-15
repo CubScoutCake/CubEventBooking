@@ -26,7 +26,7 @@ class AttendeesControllerTest extends IntegrationTestCase
         'app.events',
         'app.applications_attendees'
     ];
-*/
+     */
     /**
      * Test index method
      *

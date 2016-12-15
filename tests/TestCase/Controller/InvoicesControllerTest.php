@@ -44,7 +44,7 @@ class InvoicesControllerTest extends IntegrationTestCase
         'app.payments',
         'app.invoices_payments'
     ];
-*/
+     */
     /**
      * Test initialize method
      *

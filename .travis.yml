@@ -19,6 +19,7 @@ before_script:
   - travis_wait ../travis/before_script.sh
 
 script:
+  - sh -c "vendor/bin/phpcbf --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests"
   - sh -c "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests"
   - ../travis/script.sh
 

@@ -133,7 +133,6 @@ class AllergiesControllerTest extends IntegrationTestCase
         $articles = TableRegistry::get('Allergies');
         $query = $articles->find()->where(['allergy' => $data['allergy']]);
         $this->assertEquals(1, $query->count());
-
     }
 
     public function testAddPostBadData()
