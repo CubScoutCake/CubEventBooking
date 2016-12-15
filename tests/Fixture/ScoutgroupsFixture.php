@@ -29,10 +29,6 @@ class ScoutgroupsFixture extends TestFixture
             'scoutgroup' => ['type' => 'unique', 'columns' => ['scoutgroup'], 'length' => []],
             'scoutgroups_ibfk_1' => ['type' => 'foreign', 'columns' => ['district_id'], 'references' => ['districts', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8_general_ci'
-        ],
     ];
     // @codingStandardsIgnoreEnd
 

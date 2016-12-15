@@ -67,8 +67,8 @@ class ApplicationsFixture extends TestFixture
             'scoutgroup_id' => 1,
             'section' => 'Lorem ipsum dolor sit amet',
             'permitholder' => 'Lorem ipsum dolor sit amet',
-            'created' => 1481496273,
-            'modified' => 1481496273,
+            'created' => 1481841289,
+            'modified' => 1481841289,
             'modification' => 1,
             'eventname' => 'Lorem ipsum dolor sit amet',
             'event_id' => 1,
@@ -82,7 +82,7 @@ class ApplicationsFixture extends TestFixture
             'cc_inv_cubs' => 1,
             'cc_inv_yls' => 1,
             'cc_inv_leaders' => 1,
-            'deleted' => 1481496273
+            'deleted' => 1481841289
         ],
     ];
 }

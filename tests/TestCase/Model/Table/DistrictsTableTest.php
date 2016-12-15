@@ -15,7 +15,7 @@ class DistrictsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.districts'
     ];

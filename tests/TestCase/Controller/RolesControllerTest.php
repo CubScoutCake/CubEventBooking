@@ -14,7 +14,7 @@ class RolesControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.roles',
         'app.attendees',
@@ -22,7 +22,8 @@ class RolesControllerTest extends IntegrationTestCase
         'app.scoutgroups',
         'app.districts',
         'app.applications',
-        'app.allergies'
+        'app.allergies',
+        'app.events'
     ];
 
     /**

@@ -22,7 +22,7 @@ class ParameterSetsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.parameter_sets'
     ];

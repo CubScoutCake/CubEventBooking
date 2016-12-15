@@ -22,7 +22,7 @@ class ScoutgroupsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.scoutgroups',
         'app.districts',

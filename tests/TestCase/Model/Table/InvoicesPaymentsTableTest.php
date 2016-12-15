@@ -22,7 +22,7 @@ class InvoicesPaymentsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.invoices_payments',
         'app.invoices',

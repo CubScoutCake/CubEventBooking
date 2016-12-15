@@ -31,10 +31,6 @@ class LogisticsFixture extends TestFixture
             'logistics_ibfk_1' => ['type' => 'foreign', 'columns' => ['event_id'], 'references' => ['events', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
             'logistics_ibfk_2' => ['type' => 'foreign', 'columns' => ['parameter_id'], 'references' => ['parameters', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
         ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8_general_ci'
-        ],
     ];
     // @codingStandardsIgnoreEnd
 

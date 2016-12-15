@@ -14,7 +14,7 @@ class PaymentsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.payments',
         'app.users',

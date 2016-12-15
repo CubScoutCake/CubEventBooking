@@ -22,7 +22,7 @@ class ItemtypesTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.itemtypes',
         'app.invoice_items',

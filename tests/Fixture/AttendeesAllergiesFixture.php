@@ -26,7 +26,6 @@ class AttendeesAllergiesFixture extends TestFixture
             'attendees_allergies_allergy_id' => ['type' => 'index', 'columns' => ['allergy_id'], 'length' => []],
         ],
         '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['attendee_id', 'allergy_id'], 'length' => []],
             'attendees_allergies_allergy_id' => ['type' => 'foreign', 'columns' => ['allergy_id'], 'references' => ['allergies', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
             'attendees_allergies_attendee_id' => ['type' => 'foreign', 'columns' => ['attendee_id'], 'references' => ['attendees', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],

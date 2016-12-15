@@ -44,10 +44,6 @@ class UsersFixture extends TestFixture
             'role_key' => ['type' => 'foreign', 'columns' => ['role_id'], 'references' => ['roles', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
             'scoutgroup_key' => ['type' => 'foreign', 'columns' => ['scoutgroup_id'], 'references' => ['scoutgroups', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'latin1_swedish_ci'
-        ],
     ];
     // @codingStandardsIgnoreEnd
 

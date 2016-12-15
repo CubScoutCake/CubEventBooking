@@ -32,10 +32,6 @@ class SettingsFixture extends TestFixture
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'settings_ibfk_1' => ['type' => 'foreign', 'columns' => ['settingtype_id'], 'references' => ['settingtypes', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8_general_ci'
-        ],
     ];
     // @codingStandardsIgnoreEnd
 

@@ -14,7 +14,7 @@ class InvoicesControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.invoices',
         'app.users',
@@ -44,7 +44,7 @@ class InvoicesControllerTest extends IntegrationTestCase
         'app.payments',
         'app.invoices_payments'
     ];
-
+*/
     /**
      * Test initialize method
      *

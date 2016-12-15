@@ -22,7 +22,7 @@ class ChampionsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.champions',
         'app.districts',

@@ -23,7 +23,6 @@ class ApplicationsAttendeesFixture extends TestFixture
             'attendee_idx' => ['type' => 'index', 'columns' => ['attendee_id', 'application_id'], 'length' => []],
         ],
         '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['application_id', 'attendee_id'], 'length' => []],
             'application_key' => ['type' => 'foreign', 'columns' => ['application_id'], 'references' => ['applications', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
             'attendee_key' => ['type' => 'foreign', 'columns' => ['attendee_id'], 'references' => ['attendees', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],

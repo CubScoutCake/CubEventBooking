@@ -14,7 +14,7 @@ class EventsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+
     public $fixtures = [
         'app.events',
         'app.settings',
@@ -44,6 +44,7 @@ class EventsControllerTest extends IntegrationTestCase
         'app.parameter_sets',
         'app.params'
     ];
+     */
 
     /**
      * Test index method

@@ -22,7 +22,7 @@ class LogisticsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.logistics',
         'app.parameters',

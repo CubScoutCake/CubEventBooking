@@ -14,7 +14,7 @@ class LogisticItemsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+
     public $fixtures = [
         'app.invoices',
         'app.users',
@@ -43,7 +43,7 @@ class LogisticItemsControllerTest extends IntegrationTestCase
         'app.itemtypes',
         'app.payments',
         'app.invoices_payments'
-    ];
+    ];*/
 
     /**
      * Test initial setup

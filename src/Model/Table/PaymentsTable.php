@@ -39,9 +39,7 @@ class PaymentsTable extends Table
             'foreignKey' => 'user_id'
         ]);
         $this->belongsToMany('Invoices', [
-            'foreignKey' => 'payment_id',
-            'targetForeignKey' => 'invoice_id',
-            'joinTable' => 'invoices_payments'
+            'through' => 'InvoicesPayments',
         ]);
     }
 
