@@ -17,6 +17,7 @@ before_script:
 
 script:
   - sh -c "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests"
+  - sh -c "vendor/bin/phpunit"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
