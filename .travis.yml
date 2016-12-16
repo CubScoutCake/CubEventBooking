@@ -10,6 +10,10 @@ services:
   - mysql
   - postgres
 
+before_install:
+  - mysql -e 'CREATE DATABASE cake;'
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
+
 env:
   - DB=mysql
   - DB=postgres
