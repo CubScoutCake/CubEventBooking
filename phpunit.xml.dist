@@ -19,6 +19,12 @@
 		<!-- Add plugin test suites here. -->
 	</testsuites>
 
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">./src</directory>
+		</whitelist>
+	</filter>
+
 	<!-- Setup a listener for fixtures -->
 	<listeners>
 		<listener
@@ -31,7 +37,17 @@
 	</listeners>
     
      <logging>
-		 <log type="coverage-clover" target="build/logs/clover.xml"/>
+		 <log type="coverage-clover" target="./logs/coverage/clover.xml"/>
+		 <log type="coverage-html" target="./logs/coverage/report" lowUpperBound="35"
+			  highLowerBound="70"/>
+		 <log type="coverage-clover" target="./logs/coverage/coverage.xml"/>
+		 <log type="coverage-php" target="./logs/coverage/coverage.serialized"/>
+		 <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+		 <log type="json" target="./logs/coverage/logfile.json"/>
+		 <log type="tap" target="./logs/coverage/logfile.tap"/>
+		 <log type="junit" target="./logs/coverage/logfile.xml" logIncompleteSkipped="false"/>
+		 <log type="testdox-html" target="./logs/coverage/testdox.html"/>
+		 <log type="testdox-text" target="./logs/coverage/testdox.txt"/>
      </logging>
 
 </phpunit>
