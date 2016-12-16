@@ -1,10 +1,14 @@
 language: php
 
-sudo: required
+sudo: false
 
 php:
   - 7.0
   - 7.1
+
+services:
+  - mysql
+  - postgres
 
 env:
   - DB=mysql
@@ -12,12 +16,15 @@ env:
 
 before_script:
   - sh -c "composer require 'cakephp/cakephp-codesniffer:dev-master'"
+  - sh -c "composer require 'codeclimate/php-test-reporter:dev-master'"
   - phpenv rehash
   - composer install
+  - sh -c "vendor/bin/phpcs --config-set installed_paths vendor/cakephp/cakephp-codesniffer"
 
 script:
-  - sh -c "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests"
+  - sh -c "vendor/bin/phpcs -p --extensions=php --standard=CakePHP ./tests"
   - sh -c "vendor/bin/phpunit"
+  - sh -c "vendor/bin/phpunit --coverage-clover build/logs/clover.xml"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
