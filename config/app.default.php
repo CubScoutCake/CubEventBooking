@@ -210,7 +210,7 @@ return [
     'Datasources' => [
         'default' => [
             'className' => 'Cake\Database\Connection',
-            'driver' => 'Cake\Database\Driver\Mysql',
+            'driver' => 'Cake\Database\Driver\Postgres',
             'persistent' => false,
             'host' => '127.0.0.1',
             /**
@@ -219,7 +219,7 @@ return [
              * the following line and set the port accordingly
              */
             //'port' => 'nonstandard_port_number',
-            'username' => 'travis',
+            'username' => 'postgres',
             'password' => '',
             'database' => 'cake',
             'encoding' => 'utf8',
@@ -251,11 +251,11 @@ return [
          */
         'test' => [
             'className' => 'Cake\Database\Connection',
-            'driver' => 'Cake\Database\Driver\Mysql',
+            'driver' => 'Cake\Database\Driver\Postgres',
             'persistent' => false,
             'host' => '127.0.0.1',
             //'port' => 'nonstandard_port_number',
-            'username' => 'travis',
+            'username' => 'postgres',
             'password' => '',
             'database' => 'cake',
             'encoding' => 'utf8',

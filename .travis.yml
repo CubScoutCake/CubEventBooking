@@ -6,20 +6,16 @@ php:
   - 7.0
   - 7.1
 
-services:
-  - mysql
-  - postgres
-
-before_install:
-  - mysql -e 'CREATE DATABASE cake;'
-
 env:
-  - DB=mysql
   - DB=postgres
+
+services:
+  - postgres
 
 before_script:
   - phpenv rehash
   - composer install
+  - psql -c 'create database cake;' -U postgres
   - sh -c "bin/cake database build"
   - sh -c "vendor/bin/phpcs --config-set installed_paths vendor/cakephp/cakephp-codesniffer"
 
