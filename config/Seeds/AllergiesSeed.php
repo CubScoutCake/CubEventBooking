@@ -27,7 +27,7 @@ class AllergiesSeed extends AbstractSeed
             [
                 'id' => '2',
                 'allergy' => 'Cereals containing gluten',
-                'description' => 'Wheat (such as spelt and Khorasan wheat/Kamut), rye, barley and oats is often found in foods containing flour, such as some types of baking powder, batter, breadcrumbs, bread, cakes, couscous, meat products, pasta, pastry, sauces, soups and fried foods which are dusted with flour.',
+                'description' => 'Wheat (such as spelt and Khorasan wheat/Kamut), rye, barley and oats.',
             ],
             [
                 'id' => '3',
@@ -67,12 +67,12 @@ class AllergiesSeed extends AbstractSeed
             [
                 'id' => '10',
                 'allergy' => 'Nuts',
-                'description' => 'Not to be mistaken with peanuts (which are actually a legume and grow underground), this ingredient refers to nuts which grow on trees, like cashew nuts, almonds and hazelnuts. You can find nuts in breads, biscuits, crackers, desserts, nut powders (often used in Asian curries), stir-fried dishes, ice cream, marzipan (almond paste), nut oils and sauces.',
+                'description' => 'Not to be mistaken with peanuts (which are actually a legume and grow underground), this ingredient refers to nuts which grow on trees, like cashew nuts, almonds and hazelnuts.',
             ],
             [
                 'id' => '11',
                 'allergy' => 'Peanuts',
-                'description' => 'Peanuts are actually a legume and grow underground, which is why it’s sometimes called a groundnut. Peanuts are often used as an ingredient in biscuits, cakes, curries, desserts, sauces (such as satay sauce), as well as in groundnut oil and peanut flour.',
+                'description' => 'Peanuts are actually a legume and grow underground, which is why it’s sometimes called a groundnut. Peanuts are often used as an ingredient in biscuits, cakes, curries, desserts, sauces, etc.',
             ],
             [
                 'id' => '12',
@@ -82,12 +82,12 @@ class AllergiesSeed extends AbstractSeed
             [
                 'id' => '13',
                 'allergy' => 'Soya',
-                'description' => 'Often found in bean curd, edamame beans, miso paste, textured soya protein, soya flour or tofu, soya is a staple ingredient in oriental food. It can also be found in desserts, ice cream, meat products, sauces and vegetarian products.',
+                'description' => 'Often found in bean curd, edamame beans, miso paste, textured soya protein, soya flour or tofu, soya is a staple ingredient in oriental food.',
             ],
             [
                 'id' => '14',
                 'allergy' => 'Sulphur dioxide (sometimes known as sulphites)',
-                'description' => 'This is an ingredient often used in dried fruit such as raisins, dried apricots and prunes. You might also find it in meat products, soft drinks, vegetables as well as in wine and beer. If you have asthma, you have a higher risk of developing a reaction to sulphur dioxide.',
+                'description' => 'This is an ingredient often used in dried fruit such as raisins, dried apricots and prunes. You might also find it in meat products, soft drinks, vegetables as well as in wine and beer.',
             ],
         ];
 
