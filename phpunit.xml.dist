@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-	colors="true"
-	processIsolation="false"
-	stopOnFailure="false"
-	syntaxCheck="false"
-	bootstrap="./tests/bootstrap.php"
-	>
+		colors="true"
+		processIsolation="false"
+		stopOnFailure="false"
+		syntaxCheck="false"
+		bootstrap="./tests/bootstrap.php"
+>
 	<php>
 		<ini name="memory_limit" value="-1"/>
 		<ini name="apc.enable_cli" value="1"/>
@@ -28,26 +28,16 @@
 	<!-- Setup a listener for fixtures -->
 	<listeners>
 		<listener
-		class="\Cake\TestSuite\Fixture\FixtureInjector"
-		file="./vendor/cakephp/cakephp/src/TestSuite/Fixture/FixtureInjector.php">
+				class="\Cake\TestSuite\Fixture\FixtureInjector"
+				file="./vendor/cakephp/cakephp/src/TestSuite/Fixture/FixtureInjector.php">
 			<arguments>
 				<object class="\Cake\TestSuite\Fixture\FixtureManager" />
 			</arguments>
 		</listener>
 	</listeners>
-    
-     <logging>
-		 <log type="coverage-clover" target="./logs/coverage/clover.xml"/>
-		 <log type="coverage-html" target="./logs/coverage/report" lowUpperBound="35"
-			  highLowerBound="70"/>
-		 <log type="coverage-clover" target="./logs/coverage/coverage.xml"/>
-		 <log type="coverage-php" target="./logs/coverage/coverage.serialized"/>
-		 <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
-		 <log type="json" target="./logs/coverage/logfile.json"/>
-		 <log type="tap" target="./logs/coverage/logfile.tap"/>
-		 <log type="junit" target="./logs/coverage/logfile.xml" logIncompleteSkipped="false"/>
-		 <log type="testdox-html" target="./logs/coverage/testdox.html"/>
-		 <log type="testdox-text" target="./logs/coverage/testdox.txt"/>
-     </logging>
+
+	<logging>
+		<log type="coverage-clover" target="./logs/coverage/clover.xml"/>
+	</logging>
 
 </phpunit>
