@@ -32,6 +32,5 @@ class DirectForm extends Form
     protected function _execute(array $data)
     {
         // Send an email.
-        return $this->redirect->;
     }
 }
