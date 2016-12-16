@@ -12,23 +12,21 @@ services:
 
 before_install:
   - mysql -e 'CREATE DATABASE cake;'
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
 
 env:
   - DB=mysql
   - DB=postgres
 
 before_script:
-  - sh -c "composer require 'cakephp/cakephp-codesniffer:dev-master'"
-  - sh -c "composer require 'codeclimate/php-test-reporter:dev-master'"
   - phpenv rehash
   - composer install
+  - sh -c "bin/cake database build"
   - sh -c "vendor/bin/phpcs --config-set installed_paths vendor/cakephp/cakephp-codesniffer"
 
 script:
   - sh -c "vendor/bin/phpcs -p --extensions=php --standard=CakePHP ./tests"
   - sh -c "vendor/bin/phpunit"
-  - sh -c "vendor/bin/phpunit --coverage-clover build/logs/clover.xml"
+  - sh -c "vendor/bin/phpunit --coverage-clover ./logs/clover.xml"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

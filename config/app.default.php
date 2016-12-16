@@ -257,7 +257,7 @@ return [
             //'port' => 'nonstandard_port_number',
             'username' => 'travis',
             'password' => '',
-            'database' => 'test',
+            'database' => 'cake',
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'cacheMetadata' => true,
