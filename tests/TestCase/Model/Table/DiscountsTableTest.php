@@ -22,7 +22,7 @@ class DiscountsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.discounts',
         'app.events',

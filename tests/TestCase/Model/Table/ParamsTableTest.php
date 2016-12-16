@@ -22,7 +22,7 @@ class ParamsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.params',
         'app.parameters',

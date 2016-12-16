@@ -22,7 +22,7 @@ class NotesTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.notes',
         'app.applications',

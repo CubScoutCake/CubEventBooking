@@ -14,7 +14,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.scoutgroups',
         'app.districts',

@@ -29,16 +29,16 @@
                 <i class="fa fa-files-o fa-fw"></i> Balance
             </div>
             <div class="panel-body">
-                <table class="table">  
-                    <tr class="active">
+                <table class="table table-condensed">  
+                    <tr>
                         <th><?= __('Initial Value') ?></th>
                         <th><?= __('Payments Recieved') ?></th>
                         <th><?= __('Balance') ?></th>          
                     </tr>
                     <tr>
-                        <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
-                        <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
-                        <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
+                        <td><span><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></span></td>
+                        <td><span></span><?= $this->Number->currency($invoice->value,'GBP') ?></span></td>
+                        <td><span><?= $this->Number->currency($invoice->balance,'GBP') ?></span></td>
                     </tr>
                 </table>
             </div>
@@ -54,8 +54,8 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <table class="table">
-                        <tr class="active">
+                    <table class="table table-condensed">
+                        <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Value') ?></th>
                             <th><?= __('Created') ?></th>
@@ -64,11 +64,11 @@
                         </tr>
                         <?php foreach ($invoice->payments as $payments): ?>
                             <tr>
-                                <td><?= h($payments->id) ?></td>
-                                <td><?= $this->Number->currency($payments->value,'GBP') ?></td>
-                                <td><?= $this->Time->i18nformat($payments->created,'dd-MMM-yy') ?></td>
-                                <td><?= $this->Time->i18nformat($payments->paid,'dd-MMM-yy') ?></td>
-                                <td><?= $this->Text->wrap($payments->name_on_cheque,20); ?></td>
+                                <td><span><?= h($payments->id) ?></span></td>
+                                <td><span><?= $this->Number->currency($payments->value,'GBP') ?></span></td>
+                                <td><span><?= $this->Time->i18nformat($payments->created,'dd-MMM-yy') ?></span></td>
+                                <td><span><?= $this->Time->i18nformat($payments->paid,'dd-MMM-yy') ?></span></td>
+                                <td><span><?= $this->Text->wrap($payments->name_on_cheque,20); ?></span></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>
@@ -92,8 +92,8 @@
                 <i class="fa fa-files-o fa-fw"></i> Invoice Line Items
             </div>
             <div class="panel-body">
-                <table class="table">
-                    <tr class="active">
+                <table class="table table-condensed">
+                    <tr>
                         <th><?= __('Description') ?></th>
                         <th><?= __('Quantity') ?></th>
                         <th><?= __('Value') ?></th>
@@ -101,10 +101,10 @@
                     </tr>
                     <?php foreach ($invoice->invoice_items as $invoiceItems): ?>
                     <tr>
-                        <td><?= h($invoiceItems->Description) ?></td>
-                        <td><?= h($invoiceItems->Quantity) ?></td>
-                        <td><?= h($this->number->currency($invoiceItems->Value,'GBP')) ?></td>
-                        <td><?= h($this->number->currency($invoiceItems->quantity_price,'GBP')) ?></td>
+                        <td><span><?= h($invoiceItems->Description) ?></span></td>
+                        <td><span><?= h($invoiceItems->Quantity) ?></span></td>
+                        <td><span><?= h($this->number->currency($invoiceItems->Value,'GBP')) ?></span></td>
+                        <td><span><?= h($this->number->currency($invoiceItems->quantity_price,'GBP')) ?></span></td>
                     </tr>
                     <?php endforeach; ?>
                 </table>

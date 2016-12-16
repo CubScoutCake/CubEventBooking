@@ -57,9 +57,7 @@ class InvoicesTable extends Table
             'foreignKey' => 'invoice_id'
         ]);
         $this->belongsToMany('Payments', [
-            'foreignKey' => 'invoice_id',
-            'targetForeignKey' => 'payment_id',
-            'joinTable' => 'invoices_payments'
+            'through' => 'InvoicesPayments',
         ]);
 
         // Adding Counter Caches

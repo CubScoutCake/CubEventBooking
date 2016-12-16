@@ -14,35 +14,16 @@ class ApplicationsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.applications',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.scoutgroups',
-        'app.districts',
-        'app.champions',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notes',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.notifications',
-        'app.notificationtypes',
         'app.events',
         'app.settings',
-        'app.settingtypes',
         'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items'
+        'app.users',
+        'app.scoutgroups',
+        'app.districts',
+        'app.roles'
     ];
 
     /**
@@ -71,6 +52,16 @@ class ApplicationsControllerTest extends IntegrationTestCase
      * @return void
      */
     public function testView()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test pdfView method
+     *
+     * @return void
+     */
+    public function testPdfView()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

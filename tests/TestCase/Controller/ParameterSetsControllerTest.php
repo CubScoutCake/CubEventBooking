@@ -14,7 +14,7 @@ class ParameterSetsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.notifications',
         'app.users',

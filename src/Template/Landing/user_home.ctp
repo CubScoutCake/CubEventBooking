@@ -3,9 +3,7 @@
     <div class="col-lg-12">
         <h1 class="page-header"><i class="fa fa-dashboard fa-fw"></i> User Home</h1>
     </div>
-    <!-- /.col-lg-12 -->
 </div>   
-    <!-- /.row -->
 <div class="row">
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-green">
@@ -109,55 +107,101 @@
         </div>
     </div>
 </div>
-
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-calendar-o fa-fw"></i> Upcoming Events
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th><?= h('Name') ?></th>
-                                <th class="actions"><?= __('Actions') ?></th>
-                                <th><?= h('Start Date') ?></th>
-                                <th><?= h('End Date') ?></th>
-                                <th><?= h('Last Modified') ?></th>
-                                <th><?= h('Venue') ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($events as $event): ?>
-                            <tr>
-                                <td><?= h($event->name) ?></td>
-                                <td class="actions">
-                                    <div class="dropdown btn-group">
-                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu " role="menu">
-                                            <li><?= $this->Html->link(__('Book onto Event'), ['controller' => 'Applications', 'action' => 'book', $event->id]) ?></li>
-                                            <li><?= $this->Html->link(__('View Details'), ['controller' => 'Events', 'action' => 'view', $event->id]) ?></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-yy HH:mm') ?></td>
-                                <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-yy HH:mm') ?></td>
-                                <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
-                                <td><?= h($event->location) ?></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+<?php if (!empty($events)): ?>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-calendar-o fa-fw"></i> Upcoming Events
                 </div>
-                <!-- /.table-responsive -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th><?= h('Name') ?></th>
+                                    <th class="actions"><?= __('Actions') ?></th>
+                                    <th><?= h('Start Date') ?></th>
+                                    <th><?= h('End Date') ?></th>
+                                    <th><?= h('Last Modified') ?></th>
+                                    <th><?= h('Venue') ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($events as $event): ?>
+                                <tr>
+                                    <td><?= h($event->name) ?></td>
+                                    <td class="actions">
+                                        <div class="dropdown btn-group">
+                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu " role="menu">
+                                                <li><?= $this->Html->link(__('Book onto Event'), ['controller' => 'Applications', 'action' => 'book', $event->id]) ?></li>
+                                                <li><?= $this->Html->link(__('View Details'), ['controller' => 'Events', 'action' => 'view', $event->id]) ?></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= h($event->location) ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <!-- /.panel-body -->
         </div>
-        <!-- /.panel -->
     </div>
-</div>
+<?php endif; ?>
+<?php if (!empty($applications)): ?>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-calendar-o fa-fw"></i> Upcoming Events
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th><?= h('Name') ?></th>
+                                    <th class="actions"><?= __('Actions') ?></th>
+                                    <th><?= h('Start Date') ?></th>
+                                    <th><?= h('End Date') ?></th>
+                                    <th><?= h('Last Modified') ?></th>
+                                    <th><?= h('Venue') ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($applications as $apps): ?>
+                                <tr>
+                                    <td><?= h($apps->name) ?></td>
+                                    <td class="actions">
+                                        <div class="dropdown btn-group">
+                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu " role="menu">
+                                                <li><?= $this->Html->link(__('Book onto apps'), ['controller' => 'Applications', 'action' => 'book', $apps->id]) ?></li>
+                                                <li><?= $this->Html->link(__('View Details'), ['controller' => 'appss', 'action' => 'view', $apps->id]) ?></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td><?= $this->Time->i18nFormat($apps->start, 'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nFormat($apps->end, 'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nFormat($apps->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= h($apps->location) ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

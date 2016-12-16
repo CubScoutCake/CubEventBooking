@@ -35,7 +35,7 @@ class MaintainanceController extends AppController
      * @throws \Cake\Network\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
-    public function display()
+    public function home()
     {
         $path = func_get_args();
 
@@ -65,6 +65,6 @@ class MaintainanceController extends AppController
 
     public function beforeFilter(\Cake\Event\Event $event)
     {
-        $this->Auth->allow(['display']);
+        $this->Auth->allow(['home']);
     }
 }

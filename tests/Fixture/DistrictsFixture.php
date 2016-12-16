@@ -25,10 +25,6 @@ class DistrictsFixture extends TestFixture
             'id_UNIQUE' => ['type' => 'unique', 'columns' => ['id'], 'length' => []],
             'district_UNIQUE' => ['type' => 'unique', 'columns' => ['district'], 'length' => []],
         ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'latin1_swedish_ci'
-        ],
     ];
     // @codingStandardsIgnoreEnd
 
