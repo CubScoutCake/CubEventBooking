@@ -14,7 +14,19 @@
 
 	<!-- Add any additional test suites you want to run here -->
 	<testsuites>
-		<testsuite name="App Test Suite">
+		<testsuite name="Model Test Suite">
+			<directory>./tests/TestCase</directory>
+		</testsuite>
+		<testsuite name="User Test Suite">
+			<directory>./tests/UserLevel</directory>
+		</testsuite>
+		<testsuite name="Admin Test Suite">
+			<directory>./tests/TestCase</directory>
+		</testsuite>
+		<testsuite name="Champion Test Suite">
+			<directory>./tests/TestCase</directory>
+		</testsuite>
+		<testsuite name="SuperUser Test Suite">
 			<directory>./tests/TestCase</directory>
 		</testsuite>
 		<!-- Add plugin test suites here. -->

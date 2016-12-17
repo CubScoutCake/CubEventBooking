@@ -1,32 +1,33 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\DistrictsController;
+use App\Controller\ApplicationsAttendeesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\DistrictsController Test Case
+ * App\Controller\ApplicationsAttendeesController Test Case
  */
-class DistrictsControllerTest extends IntegrationTestCase
+class ApplicationsAttendeesControllerTest extends IntegrationTestCase
 {
 
     /**
      * Fixtures
      *
      * @var array
-     */
+
     public $fixtures = [
-        'app.districts'
+        'app.applications_attendees',
+        'app.applications',
+        'app.users',
+        'app.roles',
+        'app.attendees',
+        'app.scoutgroups',
+        'app.districts',
+        'app.allergies',
+        'app.attendees_allergies',
+        'app.events'
     ];
-
-    public function testIndexUnauthenticatedFails()
-    {
-        // No session data set.
-        $this->get('/districts');
-
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
-    }
-
+     */
     /**
      * Test index method
      *
@@ -34,20 +35,7 @@ class DistrictsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->session(['Auth.User.id' => 1]);
-
-        $this->get('/districts');
-
-        $this->assertResponseOk();
-    }
-
-    public function testIndexQueryData()
-    {
-        $this->session(['Auth.User.id' => 1]);
-
-        $this->get('/districts?page=1');
-
-        $this->assertResponseOk();
+        $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
