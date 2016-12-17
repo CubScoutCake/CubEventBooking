@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\ORM\TableRegistry;
 
 /**
  * InvoicesPayments Model
@@ -44,6 +45,15 @@ class InvoicesPaymentsTable extends Table
         $this->belongsTo('Payments', [
             'foreignKey' => 'payment_id',
             'joinType' => 'INNER'
+        ]);
+        $this->addBehavior('CounterCache', [
+            'Invoices' => [
+                'rating_avg' => function ($event, $entity, $table) {
+                    $query = $entity->find()->contain(['Payments']);
+                    $query->select(['sum' => $query->func()->sum('payments.value')]);
+                    return $query->sum;
+                }
+            ]
         ]);
     }
 

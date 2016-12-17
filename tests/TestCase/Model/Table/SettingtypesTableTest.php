@@ -24,8 +24,7 @@ class SettingtypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.settingtypes',
-        'app.settings'
+        'app.settingtypes'
     ];
 
     /**

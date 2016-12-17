@@ -15,6 +15,7 @@ class InvoicesControllerTest extends IntegrationTestCase
      *
      * @var array
      *
+
     public $fixtures = [
         'app.invoices',
         'app.users',
@@ -22,29 +23,13 @@ class InvoicesControllerTest extends IntegrationTestCase
         'app.attendees',
         'app.scoutgroups',
         'app.districts',
-        'app.champions',
-        'app.applications',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
         'app.notes',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notifications',
-        'app.notificationtypes',
         'app.invoice_items',
         'app.itemtypes',
         'app.payments',
         'app.invoices_payments'
     ];
-     */
+
     /**
      * Test initialize method
      *
@@ -55,6 +40,14 @@ class InvoicesControllerTest extends IntegrationTestCase
         $this->markTestIncomplete('Not implemented yet.');
     }
 
+    public function testIndexUnauthenticatedFails()
+    {
+        // No session data set.
+        $this->get('/invoices');
+
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+    }
+
     /**
      * Test index method
      *
@@ -63,6 +56,20 @@ class InvoicesControllerTest extends IntegrationTestCase
     public function testIndex()
     {
         $this->markTestIncomplete('Not implemented yet.');
+        /*
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->get('/invoices');
+
+        $this->assertResponseOk();*/
+    }
+
+    public function testViewUnauthenticatedFails()
+    {
+        // No session data set.
+        $this->get('/invoices/view/1');
+
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
     }
 
     /**
@@ -151,6 +158,16 @@ class InvoicesControllerTest extends IntegrationTestCase
      * @return void
      */
     public function testIsAuthorized()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test isAuthorized method
+     *
+     * @return void
+     */
+    public function testIsAuthorizedFails()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

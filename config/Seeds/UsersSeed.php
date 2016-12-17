@@ -31,7 +31,7 @@ class UsersSeed extends AbstractSeed
                 'firstname' => 'Jacob',
                 'lastname' => 'Tyler',
                 'email' => 'j.a.g.tyler@me.com',
-                'password' => '$2y$10$r5J/wJfTwqqapCS/joatbebACA6v.vsY4xVt6vTe6xoCp7vM.ThZq',
+                'password' => 'TestMe',
                 'digest_hash' => 'b517225d7899cbd7d4c675b053d8f444',
                 'pw_salt' => 'dev.hertscubs.uk',
                 'api_key_plain' => 'a key',
