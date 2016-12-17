@@ -56,5 +56,4 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
 
         $this->assertResponseSuccess();
     }
-
 }

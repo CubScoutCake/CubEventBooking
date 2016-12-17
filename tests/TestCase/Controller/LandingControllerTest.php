@@ -14,7 +14,7 @@ class LandingControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-    *
+     *
 
     public $fixtures = [
     'app.settings',
@@ -44,7 +44,7 @@ class LandingControllerTest extends IntegrationTestCase
     {
         // No session data set.
         $this->get('/landing/user-home');
-    
+
         $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
     }
 
