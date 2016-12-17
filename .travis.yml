@@ -16,7 +16,8 @@ before_script:
   - phpenv rehash
   - composer install
   - psql -c 'create database cake;' -U postgres
-  - sh -c "bin/cake database build"
+  - sh -c "bin/cake migrations migrate"
+  - sh -c "bin/cake database seed"
   - sh -c "vendor/bin/phpcs --config-set installed_paths vendor/cakephp/cakephp-codesniffer"
 
 script:

@@ -13,12 +13,6 @@ use Cake\ORM\TableRegistry;
 
 class DatabaseShell extends Shell
 {
-    public function initialize()
-    {
-        parent::initialize();
-        $this->loadModel('Users');
-    }
-
     public function build()
     {
         $migrations = new Migrations();
@@ -29,6 +23,11 @@ class DatabaseShell extends Shell
             return;
         }
         $this->out('Database Migration Implementation Succeeded.');
+    }
+
+    public function seed()
+    {
+        $migrations = new Migrations();
 
         $seeded = $migrations->seed(['seed' => 'UsersSeed']);
         if(!$seeded) {
@@ -47,6 +46,8 @@ class DatabaseShell extends Shell
 
     public function password()
     {
+        $this->loadModel('Users');
+
         $default = $this->Users->findByUsername('Jacob')->first();
         $default->password = 'TestMe';
 

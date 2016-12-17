@@ -21,6 +21,7 @@ class UsersSeed extends AbstractSeed
         $this->call('DistrictsSeed');
         $this->call('ScoutgroupsSeed');
         $this->call('RolesSeed');
+        $this->call('AuthRolesSeed');
 
         $data = [
             [
