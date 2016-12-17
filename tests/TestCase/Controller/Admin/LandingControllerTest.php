@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\AdminLevel\Controller;
+namespace App\Test\TestCase\Controller\Admin;
 
 use App\Controller\Admin\LandingController;
 use Cake\TestSuite\IntegrationTestCase;

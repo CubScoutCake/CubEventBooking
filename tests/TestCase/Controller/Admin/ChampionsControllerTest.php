@@ -1,7 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\ChampionsController;
+use App\Controller\Admin\ChampionsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**

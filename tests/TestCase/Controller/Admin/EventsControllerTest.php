@@ -1,7 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\EventsController;
+use App\Controller\Admin\EventsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**

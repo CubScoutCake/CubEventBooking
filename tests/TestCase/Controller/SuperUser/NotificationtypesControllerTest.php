@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\Controller;
+namespace App\Test\TestCase\Controller\SuperUser;
 
 use App\Controller\NotificationtypesController;
 use Cake\TestSuite\IntegrationTestCase;

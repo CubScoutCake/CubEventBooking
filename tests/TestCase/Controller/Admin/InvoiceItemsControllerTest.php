@@ -1,7 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\InvoiceItemsController;
+use App\Controller\Admin\InvoiceItemsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**

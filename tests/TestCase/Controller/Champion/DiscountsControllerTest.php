@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\TestCase\ChampionLevel\Controller;
+namespace App\Test\TestCase\Controller\Champion;
 
 use App\Controller\DiscountsController;
 use Cake\TestSuite\IntegrationTestCase;
