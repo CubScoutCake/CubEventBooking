@@ -55,7 +55,6 @@ class AllergiesControllerTest extends IntegrationTestCase
         $this->get('/allergies?page=1');
 
         $this->assertResponseOk();
-        // More asserts.
     }
 
     /**

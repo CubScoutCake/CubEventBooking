@@ -19,6 +19,14 @@ class DistrictsControllerTest extends IntegrationTestCase
         'app.districts'
     ];
 
+    public function testIndexUnauthenticatedFails()
+    {
+        // No session data set.
+        $this->get('/districts');
+
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+    }
+
     /**
      * Test index method
      *
@@ -26,7 +34,20 @@ class DistrictsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->get('/districts');
+
+        $this->assertResponseOk();
+    }
+
+    public function testIndexQueryData()
+    {
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->get('/districts?page=1');
+
+        $this->assertResponseOk();
     }
 
     /**

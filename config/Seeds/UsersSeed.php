@@ -53,11 +53,12 @@ class UsersSeed extends AbstractSeed
                 'osm_linkdate' => '2016-10-09 06:28:03',
                 'osm_current_term' => '000',
                 'osm_term_end' => '2016-12-31 00:00:00',
-                'reset' => 'No Longer Active',
+                'pw_reset' => 'No Longer Active',
                 'last_login' => '2016-12-11 15:11:02',
                 'logins' => '0',
                 'validated' => NULL,
                 'deleted' => NULL,
+                'auth_role_id' => '2',
             ]
         ];
 
