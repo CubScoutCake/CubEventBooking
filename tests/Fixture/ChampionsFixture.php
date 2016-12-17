@@ -51,7 +51,7 @@ class ChampionsFixture extends TestFixture
             'lastname' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'user_id' => 1,
-            'deleted' => 1481986983
+            'deleted' => 1481987862
         ],
     ];
 }
