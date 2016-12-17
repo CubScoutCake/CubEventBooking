@@ -43,7 +43,7 @@ class Authrole extends AbstractMigration
         $this->table('users')
             ->renameColumn('reset', 'pw_reset')
             ->addColumn('auth_role_id', 'integer', [
-                'default' => '1',
+                'default' => 1,
                 'length' => 10,
                 'null' => false,
             ])
@@ -52,6 +52,17 @@ class Authrole extends AbstractMigration
                 'length' => 10,
                 'null' => true,
             ])
+            ->addColumn('membership_number', 'integer', [
+                'default' => null,
+                'length' => 10,
+                'null' => true,
+            ])
+            ->addIndex(
+                [
+                    'auth_role_id',
+                ],
+                ['unique' => true]
+            )
             ->update();
 
         $this->table('users')
@@ -86,6 +97,7 @@ class Authrole extends AbstractMigration
             ->renameColumn('pw_reset', 'reset')
             ->removeColumn('auth_role_id')
             ->removeColumn('pw_state')
+            ->removeColumn('membership_number')
             ->update();
 
         $this->table('settingtypes')
