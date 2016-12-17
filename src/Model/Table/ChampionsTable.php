@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Champion;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -10,7 +9,16 @@ use Cake\Validation\Validator;
 /**
  * Champions Model
  *
- * @property \Cake\ORM\Association\BelongsToMany $Attendees
+ * @property \Cake\ORM\Association\BelongsTo $Districts
+ * @property \Cake\ORM\Association\BelongsTo $Users
+ *
+ * @method \App\Model\Entity\Champion get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Champion newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Champion[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Champion|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Champion patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Champion[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Champion findOrCreate($search, callable $callback = null)
  */
 class ChampionsTable extends Table
 {
@@ -23,13 +31,11 @@ class ChampionsTable extends Table
      */
     public function initialize(array $config)
     {
+        parent::initialize($config);
+
         $this->table('champions');
         $this->displayField('firstname');
         $this->primaryKey('id');
-
-        $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
-        ]);
 
         $this->belongsTo('Districts', [
             'foreignKey' => 'district_id',
@@ -49,9 +55,9 @@ class ChampionsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->integer('id')
             ->allowEmpty('id', 'create');
-            
+
         $validator
             ->requirePresence('firstname', 'create')
             ->notEmpty('firstname');
@@ -61,12 +67,17 @@ class ChampionsTable extends Table
             ->notEmpty('lastname');
 
         $validator
+            ->email('email')
             ->requirePresence('email', 'create')
             ->notEmpty('email');
 
+        $validator
+            ->dateTime('deleted')
+            ->allowEmpty('deleted');
+
         return $validator;
     }
-    
+
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
@@ -76,9 +87,10 @@ class ChampionsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['champion']));
+        $rules->add($rules->isUnique(['email']));
         $rules->add($rules->existsIn(['district_id'], 'Districts'));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
+
         return $rules;
     }
 }

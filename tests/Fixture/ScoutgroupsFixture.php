@@ -45,6 +45,27 @@ class ScoutgroupsFixture extends TestFixture
             'scoutgroup' => 'Lorem ipsum dolor sit amet',
             'district_id' => 1,
             'number_stripped' => 1,
+            'deleted' => null
+        ],
+        [
+            'id' => 2,
+            'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
+            'district_id' => 2,
+            'number_stripped' => 1,
+            'deleted' => null
+        ],
+        [
+            'id' => 3,
+            'scoutgroup' => 'Lorem ipsum tempis sit amet',
+            'district_id' => 1,
+            'number_stripped' => 1,
+            'deleted' => 1481983190
+        ],
+        [
+            'id' => 4,
+            'scoutgroup' => 'Lorem tempis dolor sit amet',
+            'district_id' => 2,
+            'number_stripped' => 1,
             'deleted' => 1481983190
         ],
     ];

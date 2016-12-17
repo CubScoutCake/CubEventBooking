@@ -40,5 +40,11 @@ class DistrictsFixture extends TestFixture
             'county' => 'Lorem ipsum dolor sit amet',
             'deleted' => null
         ],
+        [
+            'id' => 2,
+            'district' => 'Lorem ipsum dolor aurum amet',
+            'county' => 'Lorem ipsum dolor sit amet',
+            'deleted' => 1481983190
+        ],
     ];
 }
