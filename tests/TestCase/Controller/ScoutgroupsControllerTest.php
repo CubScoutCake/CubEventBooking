@@ -5,7 +5,7 @@ use App\Controller\ScoutgroupsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\ScoutgroupsController Test Case
+ * App\Admin\ScoutgroupsController Test Case
  */
 class ScoutgroupsControllerTest extends IntegrationTestCase
 {

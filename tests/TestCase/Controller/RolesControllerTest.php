@@ -5,7 +5,7 @@ use App\Controller\RolesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\RolesController Test Case
+ * App\Admin\RolesController Test Case
  */
 class RolesControllerTest extends IntegrationTestCase
 {
@@ -14,26 +14,32 @@ class RolesControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
+
     public $fixtures = [
-        'app.roles',
-        'app.attendees',
-        'app.users',
-        'app.scoutgroups',
-        'app.districts',
-        'app.applications',
-        'app.allergies',
-        'app.events'
+        'app.roles'
     ];
+
+    public function testIndexUnauthenticatedFails()
+    {
+        // No session data set.
+        $this->get('/roles');
+
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+    }
 
     /**
      * Test index method
      *
      * @return void
      */
-    public function testIndex()
+    public function testIndexAuthorised()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->get('/roles');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -43,36 +49,10 @@ class RolesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $this->session(['Auth.User.id' => 1]);
 
-    /**
-     * Test add method
-     *
-     * @return void
-     */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $this->get('/roles/view/1');
 
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertResponseOk();
     }
 }

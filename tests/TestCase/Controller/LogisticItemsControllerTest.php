@@ -5,7 +5,7 @@ use App\Controller\LogisticItemsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\LogisticItemsController Test Case
+ * App\Admin\LogisticItemsController Test Case
  */
 class LogisticItemsControllerTest extends IntegrationTestCase
 {

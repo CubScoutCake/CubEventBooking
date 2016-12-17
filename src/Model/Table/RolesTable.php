@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Role;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -63,6 +62,14 @@ class RolesTable extends Table
         $validator
             ->add('minor', 'valid', ['rule' => 'boolean'])
             ->allowEmpty('minor');
+
+        $validator
+            ->boolean('automated')
+            ->allowEmpty('automated');
+
+        $validator
+            ->dateTime('deleted')
+            ->allowEmpty('deleted');
 
         return $validator;
     }

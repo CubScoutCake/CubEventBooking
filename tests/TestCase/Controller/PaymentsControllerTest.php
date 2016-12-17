@@ -5,7 +5,7 @@ use App\Controller\PaymentsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\PaymentsController Test Case
+ * App\Admin\PaymentsController Test Case
  */
 class PaymentsControllerTest extends IntegrationTestCase
 {
@@ -50,8 +50,22 @@ class PaymentsControllerTest extends IntegrationTestCase
      *
      * @return void
      */
+    public function testIndexUnauthenticatedFails()
+    {
+        // No session data set.
+        $this->get('/Payments');
+
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+    }
+
     public function testIndex()
     {
         $this->markTestIncomplete('Not implemented yet.');
+
+        /*$this->session(['Auth.User.id' => 1]);
+
+        $this->get('/payments');
+
+        $this->assertResponseOk();*/
     }
 }

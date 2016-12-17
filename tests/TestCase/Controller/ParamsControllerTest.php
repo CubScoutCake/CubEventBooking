@@ -5,7 +5,7 @@ use App\Controller\ParamsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\ParamsController Test Case
+ * App\Admin\ParamsController Test Case
  */
 class ParamsControllerTest extends IntegrationTestCase
 {

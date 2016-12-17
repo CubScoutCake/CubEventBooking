@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\SettingtypesTable Test Case
+ * App\ModelLevel\Table\SettingtypesTable Test Case
  */
 class SettingtypesTableTest extends TestCase
 {
@@ -24,8 +24,7 @@ class SettingtypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.settingtypes',
-        'app.settings'
+        'app.settingtypes'
     ];
 
     /**

@@ -5,7 +5,7 @@ use App\Controller\EventsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\EventsController Test Case
+ * App\Admin\EventsController Test Case
  */
 class EventsControllerTest extends IntegrationTestCase
 {

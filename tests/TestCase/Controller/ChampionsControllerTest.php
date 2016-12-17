@@ -5,7 +5,7 @@ use App\Controller\ChampionsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\ChampionsController Test Case
+ * App\Admin\ChampionsController Test Case
  */
 class ChampionsControllerTest extends IntegrationTestCase
 {

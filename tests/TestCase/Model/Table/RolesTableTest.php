@@ -6,24 +6,25 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\RolesTable Test Case
+ * App\ModelLevel\Table\RolesTable Test Case
  */
 class RolesTableTest extends TestCase
 {
 
     /**
+     * Test subject
+     *
+     * @var \App\Model\Table\RolesTable
+     */
+    public $Roles;
+
+    /**
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
-        'app.roles',
-        'app.attendees',
-        'app.users',
-        'app.scoutgroups',
-        'app.districts',
-        'app.applications',
-        'app.allergies'
+        'app.roles'
     ];
 
     /**
@@ -51,21 +52,51 @@ class RolesTableTest extends TestCase
     }
 
     /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test validationDefault method
      *
      * @return void
      */
     public function testValidationDefault()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test findNonAuto method
+     *
+     * @return void
+     */
+    public function testFindNonAuto()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test findAdults method
+     *
+     * @return void
+     */
+    public function testFindAdults()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test findLeaders method
+     *
+     * @return void
+     */
+    public function testFindLeaders()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test findMinors method
+     *
+     * @return void
+     */
+    public function testFindMinors()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

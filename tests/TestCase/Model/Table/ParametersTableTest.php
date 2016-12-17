@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\ParametersTable Test Case
+ * App\ModelLevel\Table\ParametersTable Test Case
  */
 class ParametersTableTest extends TestCase
 {

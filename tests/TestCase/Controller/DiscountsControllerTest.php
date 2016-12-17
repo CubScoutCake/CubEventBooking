@@ -5,7 +5,7 @@ use App\Controller\DiscountsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\DiscountsController Test Case
+ * App\Admin\DiscountsController Test Case
  */
 class DiscountsControllerTest extends IntegrationTestCase
 {

@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\AllergiesController Test Case
+ * App\Admin\AllergiesController Test Case
  */
 class AllergiesControllerTest extends IntegrationTestCase
 {
@@ -55,7 +55,6 @@ class AllergiesControllerTest extends IntegrationTestCase
         $this->get('/allergies?page=1');
 
         $this->assertResponseOk();
-        // More asserts.
     }
 
     /**

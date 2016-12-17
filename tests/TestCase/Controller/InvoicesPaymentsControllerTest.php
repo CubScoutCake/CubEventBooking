@@ -5,7 +5,7 @@ use App\Controller\InvoicesPaymentsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\InvoicesPaymentsController Test Case
+ * App\Admin\InvoicesPaymentsController Test Case
  */
 class InvoicesPaymentsControllerTest extends IntegrationTestCase
 {

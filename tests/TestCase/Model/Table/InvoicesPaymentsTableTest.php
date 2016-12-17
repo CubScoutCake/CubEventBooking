@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\InvoicesPaymentsTable Test Case
+ * App\ModelLevel\Table\InvoicesPaymentsTable Test Case
  */
 class InvoicesPaymentsTableTest extends TestCase
 {

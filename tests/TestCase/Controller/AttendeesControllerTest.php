@@ -5,7 +5,7 @@ use App\Controller\AttendeesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\AttendeesController Test Case
+ * App\Admin\AttendeesController Test Case
  */
 class AttendeesControllerTest extends IntegrationTestCase
 {

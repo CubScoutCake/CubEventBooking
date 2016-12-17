@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\DistrictsTable Test Case
+ * App\ModelLevel\Table\DistrictsTable Test Case
  */
 class DistrictsTableTest extends TestCase
 {
@@ -15,7 +15,7 @@ class DistrictsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.districts'
     ];

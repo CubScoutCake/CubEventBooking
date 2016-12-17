@@ -21,6 +21,7 @@ class UsersSeed extends AbstractSeed
         $this->call('DistrictsSeed');
         $this->call('ScoutgroupsSeed');
         $this->call('RolesSeed');
+        $this->call('AuthRolesSeed');
 
         $data = [
             [
@@ -31,7 +32,7 @@ class UsersSeed extends AbstractSeed
                 'firstname' => 'Jacob',
                 'lastname' => 'Tyler',
                 'email' => 'j.a.g.tyler@me.com',
-                'password' => '$2y$10$r5J/wJfTwqqapCS/joatbebACA6v.vsY4xVt6vTe6xoCp7vM.ThZq',
+                'password' => 'TestMe',
                 'digest_hash' => 'b517225d7899cbd7d4c675b053d8f444',
                 'pw_salt' => 'dev.hertscubs.uk',
                 'api_key_plain' => 'a key',
@@ -53,11 +54,12 @@ class UsersSeed extends AbstractSeed
                 'osm_linkdate' => '2016-10-09 06:28:03',
                 'osm_current_term' => '000',
                 'osm_term_end' => '2016-12-31 00:00:00',
-                'reset' => 'No Longer Active',
+                'pw_reset' => 'No Longer Active',
                 'last_login' => '2016-12-11 15:11:02',
                 'logins' => '0',
                 'validated' => NULL,
                 'deleted' => NULL,
+                'auth_role_id' => '2',
             ]
         ];
 

@@ -5,7 +5,7 @@ use App\Controller\NotificationsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\NotificationsController Test Case
+ * App\Admin\NotificationsController Test Case
  */
 class NotificationsControllerTest extends IntegrationTestCase
 {

@@ -5,6 +5,7 @@
 		stopOnFailure="false"
 		syntaxCheck="false"
 		bootstrap="./tests/bootstrap.php"
+		beStrictAboutTestsThatDoNotTestAnything="true"
 >
 	<php>
 		<ini name="memory_limit" value="-1"/>
@@ -13,9 +14,21 @@
 
 	<!-- Add any additional test suites you want to run here -->
 	<testsuites>
-		<testsuite name="App Test Suite">
-			<directory>./tests/TestCase</directory>
+		<testsuite name="Model Test Suite">
+			<directory>./tests/TestCase/Model</directory>
 		</testsuite>
+		<testsuite name="Admin Test Suite">
+			<directory>./tests/TestCase/Controller/Admin</directory>
+		</testsuite>
+		<testsuite name="Champion Test Suite">
+			<directory>./tests/TestCase/Controller/Champion</directory>
+		</testsuite>
+		<testsuite name="SuperUser Test Suite">
+			<directory>./tests/TestCase/Controller/SuperUser</directory>
+		</testsuite>
+        <testsuite name="User Test Suite">
+            <directory>./tests/TestCase/Controller</directory>
+        </testsuite>
 		<!-- Add plugin test suites here. -->
 	</testsuites>
 

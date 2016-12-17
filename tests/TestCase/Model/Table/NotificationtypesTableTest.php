@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\NotificationtypesTable Test Case
+ * App\ModelLevel\Table\NotificationtypesTable Test Case
  */
 class NotificationtypesTableTest extends TestCase
 {

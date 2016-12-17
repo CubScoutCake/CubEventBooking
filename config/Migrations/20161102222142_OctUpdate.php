@@ -7,10 +7,6 @@ class OctUpdate extends AbstractMigration
     public function up()
     {
 
-        $this->table('allergies')
-            ->changeColumn('allergy', 'string')
-            ->changeColumn('description', 'string')
-            ->update();
         $this->table('applications')
             ->dropForeignKey([], 'applications_event_id')
             ->dropForeignKey([], 'applications_scoutgroup_id')
@@ -268,7 +264,7 @@ class OctUpdate extends AbstractMigration
                     'scoutgroup_id',
                 ],
                 [
-                    'name' => 'scoutgroup_id_idx',
+                    'name' => 'atts_scoutgroup_id',
                 ]
             )
             ->addIndex(
@@ -1273,7 +1269,7 @@ class OctUpdate extends AbstractMigration
                     'scoutgroup_id',
                 ],
                 [
-                    'name' => 'scoutgroup_id',
+                    'name' => 'apps_scoutgroup_id',
                 ]
             )
             ->addIndex(
@@ -1386,7 +1382,7 @@ class OctUpdate extends AbstractMigration
                     'scoutgroup_id',
                 ],
                 [
-                    'name' => 'scoutgroup_id',
+                    'name' => 'users_scoutgroup_id',
                 ]
             )
             ->addIndex(
@@ -1930,7 +1926,7 @@ class OctUpdate extends AbstractMigration
                     'scoutgroup_id',
                 ],
                 [
-                    'name' => 'scoutgroup_id',
+                    'name' => 'users_scoutgroup_id',
                 ]
             )
             ->update();

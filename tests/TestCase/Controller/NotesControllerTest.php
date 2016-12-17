@@ -5,7 +5,7 @@ use App\Controller\NotesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\NotesController Test Case
+ * App\Admin\NotesController Test Case
  */
 class NotesControllerTest extends IntegrationTestCase
 {

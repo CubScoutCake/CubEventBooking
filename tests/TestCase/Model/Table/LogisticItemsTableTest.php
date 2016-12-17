@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\LogisticItemsTable Test Case
+ * App\ModelLevel\Table\LogisticItemsTable Test Case
  */
 class LogisticItemsTableTest extends TestCase
 {

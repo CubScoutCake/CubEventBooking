@@ -25,6 +25,7 @@ class ChampionsFixture extends TestFixture
         'user_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
+            'champions_district_id' => ['type' => 'index', 'columns' => ['district_id'], 'length' => []],
             'chmp_dist_idx' => ['type' => 'index', 'columns' => ['district_id'], 'length' => []],
             'champions_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
             'chmp_user_idx' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
@@ -50,7 +51,7 @@ class ChampionsFixture extends TestFixture
             'lastname' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'user_id' => 1,
-            'deleted' => 1481496171
+            'deleted' => 1481987862
         ],
     ];
 }
