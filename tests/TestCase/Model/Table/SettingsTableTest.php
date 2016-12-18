@@ -66,8 +66,8 @@ class SettingsTableTest extends TestCase
         $result = $query->hydrate(false)->first();
 
         $this->assertCount(8, $result);
-        $this->assertContains(1,$result);
-        $this->assertContains('Lorem ipsum dolor sit amet',$result);
+        $this->assertContains(1, $result);
+        $this->assertContains('Lorem ipsum dolor sit amet', $result);
     }
 
     /**
@@ -146,7 +146,7 @@ class SettingsTableTest extends TestCase
         $result = $query->hydrate(false)->toArray();
 
         $this->assertCount(8, $result);
-        $this->assertContains(1,$result);
-        $this->assertContains('Lorem ipsum dolor sit amet',$result);
+        $this->assertContains(1, $result);
+        $this->assertContains('Lorem ipsum dolor sit amet', $result);
     }
 }

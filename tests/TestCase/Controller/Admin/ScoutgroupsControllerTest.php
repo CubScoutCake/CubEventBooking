@@ -28,9 +28,9 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
     public function testIndexUnauthenticatedFails()
     {
     // No session data set.
-    $this->get('/admin/scoutgroups');
+        $this->get('/admin/scoutgroups');
 
-    $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
     }
 
     /**
