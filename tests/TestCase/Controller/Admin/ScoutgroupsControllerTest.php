@@ -1,7 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\ScoutgroupsController;
+use App\Controller\Admin\ScoutgroupsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -14,45 +14,76 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
+
     public $fixtures = [
-        'app.scoutgroups',
-        'app.districts',
-        'app.champions',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.applications',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.notes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notifications',
-        'app.notificationtypes'
+    'app.scoutgroups',
+    'app.districts',
+    'app.roles',
+    'app.users',
+    'app.auth_roles',
+    'app.attendees'
     ];
+
+    public function testIndexUnauthenticatedFails()
+    {
+    // No session data set.
+    $this->get('/admin/scoutgroups');
+
+    $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+    }
 
     /**
      * Test index method
      *
      * @return void
      */
+    public function testIndexUnauthorised()
+    {
+        $this->markTestSkipped('Authorisation Issue.');
+
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.authrole' => 'user'
+        ]);
+
+        $this->get('/admin/scoutgroups');
+
+        $this->assertRedirect(['controller' => 'Landing', 'action' => 'user-home']);
+    }
+
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.authrole' => 'admin'
+        ]);
+
+        $this->get('/admin/scoutgroups');
+
+        $this->assertResponseOk();
+    }
+
+    public function testViewUnauthenticatedFails()
+    {
+        // No session data set.
+        $this->get('/admin/scoutgroups/view/1');
+
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+    }
+
+    public function testViewUnauthorised()
+    {
+        $this->markTestSkipped('Authorisation Issue.');
+
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.authrole' => 'user'
+        ]);
+
+        $this->get('/admin/scoutgroups/view/1');
+
+        $this->assertRedirect(['controller' => 'Landing', 'action' => 'user-home']);
     }
 
     /**
@@ -62,6 +93,13 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.authrole' => 'admin'
+        ]);
+
+        $this->get('/admin/scoutgroups/view/1');
+
+        $this->assertResponseOk();
     }
 }

@@ -67,13 +67,18 @@ class EventsFixture extends TestFixture
         'available_cubs' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
+            'evnt_invtext_idx' => ['type' => 'index', 'columns' => ['invtext_id'], 'length' => []],
             'events_invtext_id' => ['type' => 'index', 'columns' => ['invtext_id'], 'length' => []],
+            'evnt_legaltext_id_idx' => ['type' => 'index', 'columns' => ['legaltext_id'], 'length' => []],
             'events_legaltext_id' => ['type' => 'index', 'columns' => ['legaltext_id'], 'length' => []],
+            'evnt_discount_idx' => ['type' => 'index', 'columns' => ['discount_id'], 'length' => []],
             'events_discount_id' => ['type' => 'index', 'columns' => ['discount_id'], 'length' => []],
+            'evnt_admin_user_idx' => ['type' => 'index', 'columns' => ['admin_user_id'], 'length' => []],
             'events_admin_user_id' => ['type' => 'index', 'columns' => ['admin_user_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'events_discount_id' => ['type' => 'foreign', 'columns' => ['discount_id'], 'references' => ['discounts', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'events_discount_id' => ['type' => 'foreign', 'columns' => ['discount_id'], 'references' => ['discounts', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'events_invtext_id' => ['type' => 'foreign', 'columns' => ['invtext_id'], 'references' => ['settings', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'events_legaltext_id' => ['type' => 'foreign', 'columns' => ['legaltext_id'], 'references' => ['settings', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
@@ -93,12 +98,12 @@ class EventsFixture extends TestFixture
             'full_name' => 'Lorem ipsum dolor sit amet',
             'live' => 1,
             'new_apps' => 1,
-            'start' => 1481841259,
-            'end' => 1481841259,
-            'created' => 1481841259,
-            'modified' => 1481841259,
+            'start' => 1482071220,
+            'end' => 1482071220,
+            'created' => 1482071220,
+            'modified' => 1482071220,
             'deposit' => 1,
-            'deposit_date' => 1481841259,
+            'deposit_date' => 1482071220,
             'deposit_value' => 1,
             'deposit_inc_leaders' => 1,
             'deposit_text' => 'Lorem ipsum dolor sit amet',
@@ -136,7 +141,7 @@ class EventsFixture extends TestFixture
             'parent_applications' => 1,
             'available_apps' => 1,
             'available_cubs' => 1,
-            'deleted' => null
+            'deleted' => 1482071220
         ],
     ];
 }

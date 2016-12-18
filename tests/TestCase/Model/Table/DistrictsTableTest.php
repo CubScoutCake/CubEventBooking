@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
+use App\Model\Entity\District;
 use App\Model\Table\DistrictsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -51,7 +52,26 @@ class DistrictsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Districts->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'district' => 'Lorem ipsum dolor sit amet',
+                'county' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null
+            ],
+            [
+                'id' => 3,
+                'district' => 'Lorem ipsum sit amet',
+                'county' => 'Lorem dolor sit amet',
+                'deleted' => null
+            ]
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -61,6 +81,50 @@ class DistrictsTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badData = [
+            'district' => null,
+            'county' => null,
+            'deleted' => null
+        ];
+
+        $goodData = [
+            'id' => 4,
+            'district' => 'Lorem fish dolor sit amet',
+            'county' => 'Lorem ipsum fish dolor amet'
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'district' => 'Lorem ipsum dolor sit amet',
+                'county' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null
+            ],
+            [
+                'id' => 3,
+                'district' => 'Lorem ipsum sit amet',
+                'county' => 'Lorem dolor sit amet',
+                'deleted' => null
+            ],
+            [
+                'id' => 4,
+                'district' => 'Lorem fish dolor sit amet',
+                'county' => 'Lorem ipsum fish dolor amet',
+                'deleted' => null
+            ]
+        ];
+
+        $badEntity = $this->Districts->newEntity($badData);
+        $goodEntity = $this->Districts->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Districts->save($badEntity));
+        $this->Districts->save($goodEntity);
+
+        $query = $this->Districts->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 }

@@ -4,12 +4,13 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Event Entity.
+ * Event Entity
  *
  * @property int $id
  * @property string $name
  * @property string $full_name
  * @property bool $live
+ * @property bool $new_apps
  * @property \Cake\I18n\Time $start
  * @property \Cake\I18n\Time $end
  * @property \Cake\I18n\Time $created
@@ -36,7 +37,6 @@ use Cake\ORM\Entity;
  * @property int $invtext_id
  * @property int $legaltext_id
  * @property int $discount_id
- * @property \App\Model\Entity\Discount $discount
  * @property string $intro_text
  * @property string $tagline_text
  * @property string $location
@@ -46,8 +46,21 @@ use Cake\ORM\Entity;
  * @property int $max_leaders
  * @property bool $allow_reductions
  * @property float $logo_ratio
+ * @property bool $invoices_locked
+ * @property string $admin_firstname
+ * @property string $admin_lastname
+ * @property string $admin_email
+ * @property int $admin_user_id
+ * @property bool $parent_applications
+ * @property int $available_apps
+ * @property int $available_cubs
+ * @property \Cake\I18n\Time $deleted
+ *
  * @property \App\Model\Entity\Setting[] $settings
+ * @property \App\Model\Entity\Discount $discount
  * @property \App\Model\Entity\Application[] $applications
+ * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\Logistic[] $logistics
  */
 class Event extends Entity
 {
@@ -63,18 +76,6 @@ class Event extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false,
+        'id' => false
     ];
-
-    protected function _getAltText()
-    {
-        return $this->_properties['name'] . ' logo';
-    }
-
-    protected function _getAdminFullName()
-    {
-        return $this->_properties['admin_firstname'] . ' ' . $this->_properties['admin_lastname'];
-    }
-
-    protected $_virtual = ['admin_full_name', 'alt_text'];
 }

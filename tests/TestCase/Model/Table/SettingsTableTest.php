@@ -25,7 +25,8 @@ class SettingsTableTest extends TestCase
      */
     public $fixtures = [
         'app.settings',
-        'app.settingtypes'
+        'app.settingtypes',
+        //'app.events'
     ];
 
     /**
@@ -59,7 +60,14 @@ class SettingsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Settings->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->first();
+
+        $this->assertCount(8, $result);
+        $this->assertContains(1,$result);
+        $this->assertContains('Lorem ipsum dolor sit amet',$result);
     }
 
     /**
@@ -69,16 +77,76 @@ class SettingsTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $badData = [
+            'id' => null,
+            'name' => null,
+            'text' => null,
+            'event_id' => 99,
+            'settingtype_id' => 24,
+            'number' => 'the fish'
+        ];
 
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $goodData = [
+            'id' => 2,
+            'name' => 'Lorem Fishy dolor sit amet',
+            'text' => 'Lorem ipsum Goaty sit amet',
+            'created' => 1482070364,
+            'modified' => 1482070364,
+            'event_id' => 1,
+            'settingtype_id' => 1,
+            'number' => 1
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'name' => 'Lorem ipsum dolor sit amet',
+                'text' => 'Lorem ipsum dolor sit amet',
+                'created' => 1482070364,
+                'modified' => 1482070364,
+                'event_id' => 1,
+                'settingtype_id' => 1,
+                'number' => 1
+            ],
+            [
+                'id' => 2,
+                'name' => 'Lorem Fishy dolor sit amet',
+                'text' => 'Lorem ipsum Goaty sit amet',
+                'event_id' => 1,
+                'settingtype_id' => 1,
+                'number' => 1
+            ],
+            [
+                'id' => 3,
+                'district' => 'Lorem ipsum sit amet',
+                'county' => 'Lorem dolor sit amet',
+                'deleted' => null
+            ],
+            [
+                'id' => 4,
+                'district' => 'Lorem fish dolor sit amet',
+                'county' => 'Lorem ipsum fish dolor amet',
+                'deleted' => null
+            ]
+        ];
+
+        $badEntity = $this->Settings->newEntity($badData);
+        $inaccessibleEntity = $this->Settings->newEntity($goodData);
+        $goodEntity = $this->Settings->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Settings->save($badEntity));
+        $this->assertFalse($this->Settings->save($inaccessibleEntity));
+        $this->Settings->save($goodEntity);
+
+        $this->markTestSkipped();
+
+        $query = $this->Settings->get('2');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertCount(8, $result);
+        $this->assertContains(1,$result);
+        $this->assertContains('Lorem ipsum dolor sit amet',$result);
     }
 }

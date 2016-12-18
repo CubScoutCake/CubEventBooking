@@ -4,14 +4,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Setting Entity.
+ * Setting Entity
  *
  * @property int $id
  * @property string $name
  * @property string $text
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
+ * @property int $event_id
  * @property int $settingtype_id
+ * @property float $number
+ *
+ * @property \App\Model\Entity\Event $event
  * @property \App\Model\Entity\Settingtype $settingtype
  */
 class Setting extends Entity
@@ -28,6 +32,6 @@ class Setting extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false,
+        'id' => false
     ];
 }

@@ -15,7 +15,7 @@ class District extends Entity
      * @var array
      */
     protected $_accessible = [
-        'id' => true,
+        'id' => false,
         'district' => true,
         'county' => true,
     ];
