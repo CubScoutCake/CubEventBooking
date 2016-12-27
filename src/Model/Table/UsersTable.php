@@ -157,6 +157,12 @@ class UsersTable extends Table
         return $rules;
     }
 
+    /**
+     * Hashes the password before save
+     *
+     * @param \Cake\Event\Event $event The event trigger.
+     * @return true
+     */
     public function beforeSave(Event $event)
     {
         $entity = $event->data['entity'];

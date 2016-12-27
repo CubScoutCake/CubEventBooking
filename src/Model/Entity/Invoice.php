@@ -33,11 +33,21 @@ class Invoice extends Entity
         'id' => false,
     ];
 
+    /**
+     * Specify the balance of the invoice as determined by balance less payments.
+     *
+     * @return mixed
+     */
     protected function _getBalance()
     {
         return $this->_properties['initialvalue'] - $this->_properties['value'];
     }
 
+    /**
+     * Build the display code property.
+     *
+     * @return string
+     */
     protected function _getDisplayCode()
     {
         return 'INV #' . $this->_properties['id'];

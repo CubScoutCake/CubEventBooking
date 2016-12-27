@@ -36,6 +36,11 @@ class Application extends Entity
         'id' => false,
     ];
 
+    /**
+     * Specification of a standard method of building a display code.
+     *
+     * @return string
+     */
     protected function _getDisplayCode()
     {
         return 'E0' . $this->_properties['event_id'] . ' - APP#' . $this->_properties['id'];

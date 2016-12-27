@@ -110,14 +110,21 @@ class NotificationsTable extends Table
     /**
      * Returns a modified query, filtering to unread Notifications.
      *
-     * @param $query The query to be modified.
-     * @return $query The modified query.
+     * @param \Cake\ORM\Query $query The query to be modified.
+     * @return \Cake\ORM\Query The modified query.
      */
     public function findUnread($query)
     {
         return $query->where(['new' => true]);
     }
 
+    /**
+     * Returns a modified query, filtering to unread Notifications.
+     *
+     * @param int $notificationId The query to be modified.
+     * @param int $userId The user to check for ownership.
+     * @return \App\Model\Entity\Notification
+     */
     public function isOwnedBy($notificationId, $userId)
     {
         return $this->exists(['id' => $notificationId, 'user_id' => $userId]);

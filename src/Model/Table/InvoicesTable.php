@@ -109,11 +109,25 @@ class InvoicesTable extends Table
         return $rules;
     }
 
+    /**
+     * Is Owned By Function method
+     *
+     * @param int $invoiceId The configuration for the Table.
+     * @param int $userId The configuration for the Table.
+     * @return \App\Model\Entity\Invoice The Auth function for ownership;
+     */
     public function isOwnedBy($invoiceId, $userId)
     {
         return $this->exists(['id' => $invoiceId, 'user_id' => $userId]);
     }
 
+    /**
+     * Find Owned By Filter method
+     *
+     * @param \Cake\ORM\Query $query an existing ORM Query.
+     * @param array $options The user in an Array.
+     * @return \Cake\ORM\Query
+     */
     public function findOwnedBy($query, $options)
     {
         $user = $options['user'];
@@ -121,16 +135,34 @@ class InvoicesTable extends Table
         return $query->where(['Invoices.user_id' => $user->id]);
     }
 
+    /**
+     * Find Invoices which haven't been settled.
+     *
+     * @param \Cake\ORM\Query $query an existing ORM Query.
+     * @return \Cake\ORM\Query
+     */
     public function findOutstanding($query)
     {
         return $query->where(['Invoices.value < Invoices.initialvalue'])->orWhere(['Invoices.value IS' => null]);
     }
 
+    /**
+     * Find Invoices which haven't had any value paid.
+     *
+     * @param \Cake\ORM\Query $query an existing ORM Query.
+     * @return \Cake\ORM\Query
+     */
     public function findUnpaid($query)
     {
         return $query->where(['Invoices.value IS' => 0])->orWhere(['Invoices.value IS' => null]);
     }
 
+    /**
+     * Find Invoices which are not on an event which has been archived.
+     *
+     * @param \Cake\ORM\Query $query an existing ORM Query.
+     * @return \Cake\ORM\Query
+     */
     public function findUnarchived($query)
     {
         return $query->contain('Applications.Events')->where(['Events.live' => true]);
