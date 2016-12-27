@@ -39,28 +39,7 @@ $cakeDescription = 'HertsCubs Booking System';
 </head>
 <body>
     <div id="wrapper">
-        <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];
-        a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        <?php
-        // New Google Analytics code to set User ID.
-        // $userId is a unique, persistent, and non-personally identifiable string ID.
-        if (!is_null($this->request->session()->read('Auth.User.id'))) {
-          $gaucode = "ga('create', 'UA-71500319-2', 'auto', {'userId': 'HERTS-USR:" . $this->request->session()->read('Auth.User.id') . "'});";
-          echo sprintf($gaucode);
-        } else {
-          $gacode = "ga('create', 'UA-71500319-2', 'auto');";
-          echo sprintf($gacode);
-        }?>
-
-        ga('require', 'linkid');
-
-        ga('send', 'pageview');
-        </script>
+        <?php echo $this->element('analytics'); ?>
 
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom: 0">

@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\Event;
+use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -11,10 +12,20 @@ use Cake\Validation\Validator;
  * Events Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Settings
- * @property \Cake\ORM\Association\BelongsTo $Settings
  * @property \Cake\ORM\Association\BelongsTo $Discounts
+ * @property \Cake\ORM\Association\BelongsTo $AdminUsers
  * @property \Cake\ORM\Association\HasMany $Applications
- * @property \Cake\ORM\Association\HasMany $Settings
+ * @property \Cake\ORM\Association\HasMany $Logistics
+ *
+ * @method \App\Model\Entity\Event get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Event newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Event[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Event|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Event patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Event[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Event findOrCreate($search, callable $callback = null)
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class EventsTable extends Table
 {
@@ -38,9 +49,9 @@ class EventsTable extends Table
                 'Model.beforeSave' => [
                     'created' => 'new',
                     'modified' => 'always',
-                    ]
                 ]
-            ]);
+            ]
+        ]);
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);
@@ -92,70 +103,70 @@ class EventsTable extends Table
             ->notEmpty('full_name');
 
         $validator
-            ->add('live', 'valid', ['rule' => 'boolean'])
+            ->boolean('live')
             ->allowEmpty('live');
 
         $validator
-            ->add('new_apps', 'valid', ['rule' => 'boolean'])
+            ->boolean('new_apps')
             ->allowEmpty('new_apps');
 
         $validator
-            ->add('start', 'valid', ['rule' => 'datetime'])
+            ->dateTime('start')
             ->requirePresence('start', 'create')
             ->notEmpty('start');
 
         $validator
-            ->add('end', 'valid', ['rule' => 'datetime'])
+            ->dateTime('end')
             ->requirePresence('end', 'create')
             ->notEmpty('end');
 
         $validator
-            ->add('deposit', 'valid', ['rule' => 'boolean'])
+            ->boolean('deposit')
             ->allowEmpty('deposit');
 
         $validator
-            ->add('deposit_date', 'valid', ['rule' => 'datetime'])
+            ->dateTime('deposit_date')
             ->allowEmpty('deposit_date');
 
         $validator
-            ->add('deposit_value', 'valid', ['rule' => 'numeric'])
+            ->numeric('deposit_value')
             ->allowEmpty('deposit_value');
 
         $validator
-            ->add('deposit_inc_leaders', 'valid', ['rule' => 'boolean'])
+            ->boolean('deposit_inc_leaders')
             ->allowEmpty('deposit_inc_leaders');
 
         $validator
             ->allowEmpty('deposit_text');
 
         $validator
-            ->add('cubs', 'valid', ['rule' => 'boolean'])
+            ->boolean('cubs')
             ->allowEmpty('cubs');
 
         $validator
-            ->add('cubs_value', 'valid', ['rule' => 'numeric'])
+            ->numeric('cubs_value')
             ->allowEmpty('cubs_value');
 
         $validator
             ->allowEmpty('cubs_text');
 
         $validator
-            ->add('yls', 'valid', ['rule' => 'boolean'])
+            ->boolean('yls')
             ->allowEmpty('yls');
 
         $validator
-            ->add('yls_value', 'valid', ['rule' => 'numeric'])
+            ->numeric('yls_value')
             ->allowEmpty('yls_value');
 
         $validator
             ->allowEmpty('yls_text');
 
         $validator
-            ->add('leaders', 'valid', ['rule' => 'boolean'])
+            ->boolean('leaders')
             ->allowEmpty('leaders');
 
         $validator
-            ->add('leaders_value', 'valid', ['rule' => 'numeric'])
+            ->numeric('leaders_value')
             ->allowEmpty('leaders_value');
 
         $validator
@@ -188,31 +199,31 @@ class EventsTable extends Table
             ->notEmpty('location');
 
         $validator
-            ->add('max', 'valid', ['rule' => 'boolean'])
+            ->boolean('max')
             ->allowEmpty('max');
 
         $validator
-            ->add('max_cubs', 'valid', ['rule' => 'numeric'])
+            ->integer('max_cubs')
             ->allowEmpty('max_cubs');
 
         $validator
-            ->add('max_yls', 'valid', ['rule' => 'numeric'])
+            ->integer('max_yls')
             ->allowEmpty('max_yls');
 
         $validator
-            ->add('max_leaders', 'valid', ['rule' => 'numeric'])
+            ->integer('max_leaders')
             ->allowEmpty('max_leaders');
 
         $validator
-            ->add('allow_reductions', 'valid', ['rule' => 'boolean'])
+            ->boolean('allow_reductions')
             ->allowEmpty('allow_reductions');
 
         $validator
-            ->add('logo_ratio', 'valid', ['rule' => 'numeric'])
+            ->numeric('logo_ratio')
             ->allowEmpty('logo_ratio');
 
         $validator
-            ->add('invoices_locked', 'valid', ['rule' => 'boolean'])
+            ->boolean('invoices_locked')
             ->allowEmpty('invoices_locked');
 
         $validator
@@ -229,16 +240,20 @@ class EventsTable extends Table
             ->notEmpty('admin_email');
 
         $validator
-            ->add('parent_applications', 'valid', ['rule' => 'boolean'])
+            ->boolean('parent_applications')
             ->allowEmpty('parent_applications');
 
         $validator
-            ->add('available_apps', 'valid', ['rule' => 'numeric'])
+            ->integer('available_apps')
             ->allowEmpty('available_apps');
 
         $validator
-            ->add('available_cubs', 'valid', ['rule' => 'numeric'])
+            ->integer('available_cubs')
             ->allowEmpty('available_cubs');
+
+        $validator
+            ->dateTime('deleted')
+            ->allowEmpty('deleted');
 
         return $validator;
     }
@@ -256,17 +271,29 @@ class EventsTable extends Table
         $rules->add($rules->existsIn(['legaltext_id'], 'Settings'));
         $rules->add($rules->existsIn(['discount_id'], 'Discounts'));
         $rules->add($rules->existsIn(['admin_user_id'], 'Users'));
+
         return $rules;
     }
 
     /**
      * Is a finder which will return a query with non-live (pre-release & archive) events only.
      *
-     * @param $query The original query to be modified
-     * @return $query The modified query
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
      */
-    public function findUnarchived($query) 
+    public function findUnarchived($query)
     {
         return $query->where(['Events.live' => true]);
+    }
+
+    /**
+     * Will filter events to those which are coming up and haven't happened yet.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
+    public function findUpcoming($query)
+    {
+        return $query->where(['Events.end_date >' => Time::now()]);
     }
 }

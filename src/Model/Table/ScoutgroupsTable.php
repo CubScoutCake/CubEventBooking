@@ -33,7 +33,7 @@ class ScoutgroupsTable extends Table
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);
-        
+
         $this->belongsTo('Districts', [
             'foreignKey' => 'district_id',
             'joinType' => 'INNER'
@@ -60,7 +60,7 @@ class ScoutgroupsTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create');
-            
+
         $validator
             ->requirePresence('scoutgroup', 'create')
             ->notEmpty('scoutgroup');
@@ -78,6 +78,7 @@ class ScoutgroupsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['district_id'], 'Districts'));
+
         return $rules;
     }
 }

@@ -61,5 +61,4 @@ class AttendeesAllergiesTable extends Table
 
         return $rules;
     }
-
 }

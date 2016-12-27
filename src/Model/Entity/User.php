@@ -1,8 +1,8 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\ORM\Entity;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\ORM\Entity;
 
 /**
  * User Entity.
@@ -50,14 +50,26 @@ class User extends Entity
         'id' => false,
     ];
 
+    /**
+     * Hashes the password when a password is set.
+     *
+     * @param string $value This is the password as entered to be hashed.
+     * @return bool|string
+     */
     protected function _setPassword($value)
     {
         $hasher = new DefaultPasswordHasher();
+
         return $hasher->hash($value);
     }
 
-    //protected $_hidden = ['password'];
+    protected $_hidden = ['password'];
 
+    /**
+     * Specifies the method for building up a user's full name.
+     *
+     * @return string
+     */
     protected function _getFullName()
     {
         return $this->_properties['firstname'] . ' ' . $this->_properties['lastname'];

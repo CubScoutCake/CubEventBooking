@@ -80,6 +80,7 @@ class DiscountsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['code']));
+
         return $rules;
     }
 }

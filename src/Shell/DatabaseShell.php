@@ -8,8 +8,8 @@
 namespace App\Shell;
 
 use Cake\Console\Shell;
-use Migrations\Migrations;
 use Cake\ORM\TableRegistry;
+use Migrations\Migrations;
 
 class DatabaseShell extends Shell
 {
@@ -46,12 +46,12 @@ class DatabaseShell extends Shell
 
     public function password()
     {
-        $this->loadModel('Users');
+        $users = TableRegistry::get('Users');
 
-        $default = $this->Users->findByUsername('Jacob')->first();
+        $default = $users->findByUsername('Jacob')->first();
         $default->password = 'TestMe';
 
-        if(!$this->Users->save($default)) {
+        if(!$users->save($default)) {
             $this->out('User Password Reset Failed.');
             return;
         }

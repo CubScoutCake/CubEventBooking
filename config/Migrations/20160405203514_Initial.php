@@ -437,12 +437,12 @@ class Initial extends AbstractMigration
                 'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('start', 'datetime', [
+            ->addColumn('start_date', 'datetime', [
                 'default' => null,
                 'limit' => null,
                 'null' => false,
             ])
-            ->addColumn('end', 'datetime', [
+            ->addColumn('end_date', 'datetime', [
                 'default' => null,
                 'limit' => null,
                 'null' => false,

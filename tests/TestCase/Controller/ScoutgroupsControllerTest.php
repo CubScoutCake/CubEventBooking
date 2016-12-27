@@ -14,36 +14,24 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
+
     public $fixtures = [
         'app.scoutgroups',
         'app.districts',
-        'app.champions',
-        'app.users',
         'app.roles',
-        'app.attendees',
-        'app.applications',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.notes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notifications',
-        'app.notificationtypes'
+        'app.users',
+        'app.auth_roles',
+        'app.attendees'
     ];
+
+    public function testIndexUnauthenticatedFails()
+    {
+        // No session data set.
+        $this->get('/scoutgroups');
+
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+    }
 
     /**
      * Test index method
@@ -52,7 +40,19 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->get('/scoutgroups');
+
+        $this->assertResponseOk();
+    }
+
+    public function testViewUnauthenticatedFails()
+    {
+        // No session data set.
+        $this->get('/scoutgroups/view/1');
+
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
     }
 
     /**
@@ -62,6 +62,13 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.authrole' => 'user'
+        ]);
+
+        $this->get('/scoutgroups/view/1');
+
+        $this->assertResponseOk();
     }
 }

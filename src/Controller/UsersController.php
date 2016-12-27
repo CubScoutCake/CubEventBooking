@@ -202,103 +202,103 @@ class UsersController extends AppController
             $tries = 0;
         }
 
-        if (isset($tries) && $tries < 11) {
-            if ($this->request->is('post')) {
-                $user = $this->Auth->identify();
-                if ($user) {
-                    $this->Auth->setUser($user);
-
-                    $userId = $this->Auth->user('id');
-
-                    $loggedInUser = $this->Users->get($userId);
-
-                    $now = Time::now();
-                    if (!empty($loggedInUser->logins)) {
-                        $logins = $loggedInUser->logins + 1;
-                        $previousLogin = $loggedInUser->last_login;
-                        $syncRedir = 0;
-                    } else {
-                        $logins = 1;
-                        $previousLogin = $now;
-                        $syncRedir = 1;
-                    }
-
-                    $loginPass = ['last_login' => $now, 'logins' => $logins];
-
-                    $loginEnt = [
-                        'Entity Id' => $loggedInUser->id,
-                        'Controller' => 'Users',
-                        'Action' => 'Login',
-                        'User Id' => $loggedInUser->id,
-                        'Creation Date' => $loggedInUser->created,
-                        'Modified' => $loggedInUser->modified,
-                        'User' => [
-                            'Type' => $loggedInUser->authrole,
-                            'Username' => $loggedInUser->username,
-                            'First Name' => $loggedInUser->firstname,
-                            'Last Name' => $loggedInUser->lastname,
-                            'Number of Logins' => $logins,
-                            'Previous Login' => $previousLogin,
-                            'This Login' => $now
-                            ]
-                        ];
-
-                    $loggedInUser = $this->Users->patchEntity($loggedInUser, $loginPass);
-                    $loggedInUser->dirty('modified', true);
-
-                    if ($this->Users->save($loggedInUser)) {
-                        $sets = TableRegistry::get('Settings');
-                        
-                        $jsonLogin = json_encode($loginEnt);
-                        $apiKey = $sets->get(13)->text;
-                        $projectId = $sets->get(14)->text;
-                        $eventType = 'Login';
-                        
-                        $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-                        
-                        $http = new Client();
-                        $response = $http->post(
-                            $keenURL,
-                            $jsonLogin,
-                            ['type' => 'json']
-                        );
-
-                        $this->loadComponent('Progress');
-
-                        $this->Progress->cacheApps($loggedInUser->id);
-
-
-                        if (isset($eventId) && $eventId >= 0) {
-                            $session->delete('Reset.lgTries');
-                            $session->delete('Reset.rsTries');
-                            return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
-                        } 
-
-                        $session->delete('Reset.lgTries');
-                        $session->delete('Reset.rsTries');
-                        if ($syncRedir == 1) {
-                            return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'sync']);
-                        }
-
-                        if ($loggedInUser->authrole == 'admin') {
-                            return $this->redirect(['prefix' => 'admin', 'controller' => 'Landing', 'action' => 'admin_home']);
-                        }
-
-                        return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
-                        
-                    } else {
-                        $this->Flash->error(__('The user could not be saved. Please, try again.'));
-                    }
-                }
-                $tries = $tries + 1;
-                $this->Flash->error('Your username or password is incorrect. Please try again.');
-                $session->write('Reset.lgTries', $tries);
-            }
-            $this->set(compact('eventId'));
-        } else {
+        if(isset($tries) && $tries > 10) {
             $this->Flash->error('You have failed entry too many times. Please try again later.');
             return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'reset']);
         }
+
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+
+                $userId = $this->Auth->user('id');
+
+                $loggedInUser = $this->Users->get($userId);
+
+                $now = Time::now();
+                if (!empty($loggedInUser->logins)) {
+                    $logins = $loggedInUser->logins + 1;
+                    $previousLogin = $loggedInUser->last_login;
+                    $syncRedir = 0;
+                } else {
+                    $logins = 1;
+                    $previousLogin = $now;
+                    $syncRedir = 1;
+                }
+
+                $loginPass = ['last_login' => $now, 'logins' => $logins];
+
+                $loginEnt = [
+                    'Entity Id' => $loggedInUser->id,
+                    'Controller' => 'Users',
+                    'Action' => 'Login',
+                    'User Id' => $loggedInUser->id,
+                    'Creation Date' => $loggedInUser->created,
+                    'Modified' => $loggedInUser->modified,
+                    'User' => [
+                        'Type' => $loggedInUser->authrole,
+                        'Username' => $loggedInUser->username,
+                        'First Name' => $loggedInUser->firstname,
+                        'Last Name' => $loggedInUser->lastname,
+                        'Number of Logins' => $logins,
+                        'Previous Login' => $previousLogin,
+                        'This Login' => $now
+                        ]
+                    ];
+
+                $loggedInUser = $this->Users->patchEntity($loggedInUser, $loginPass);
+                $loggedInUser->dirty('modified', true);
+
+                if ($this->Users->save($loggedInUser)) {
+                    $sets = TableRegistry::get('Settings');
+
+                    $jsonLogin = json_encode($loginEnt);
+                    $apiKey = $sets->get(13)->text;
+                    $projectId = $sets->get(14)->text;
+                    $eventType = 'Login';
+
+                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
+
+                    $http = new Client();
+                    $response = $http->post(
+                        $keenURL,
+                        $jsonLogin,
+                        ['type' => 'json']
+                    );
+
+                    $this->loadComponent('Progress');
+
+                    $this->Progress->cacheApps($loggedInUser->id);
+
+
+                    if (isset($eventId) && $eventId >= 0) {
+                        $session->delete('Reset.lgTries');
+                        $session->delete('Reset.rsTries');
+                        return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
+                    }
+
+                    $session->delete('Reset.lgTries');
+                    $session->delete('Reset.rsTries');
+                    if ($syncRedir == 1) {
+                        return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'sync']);
+                    }
+
+                    if ($loggedInUser->authrole == 'admin') {
+                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Landing', 'action' => 'admin_home']);
+                    }
+
+                    return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
+
+                } else {
+                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                }
+            }
+            $tries = $tries + 1;
+            $this->Flash->error('Your username or password is incorrect. Please try again.');
+            $session->write('Reset.lgTries', $tries);
+        }
+        $this->set(compact('eventId'));
     }
 
     public function reset()

@@ -4,8 +4,8 @@ namespace App\Model\Table;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\Validation\Validator;
 use Cake\ORM\TableRegistry;
+use Cake\Validation\Validator;
 
 /**
  * InvoicesPayments Model
@@ -51,6 +51,7 @@ class InvoicesPaymentsTable extends Table
                 'rating_avg' => function ($event, $entity, $table) {
                     $query = $entity->find()->contain(['Payments']);
                     $query->select(['sum' => $query->func()->sum('payments.value')]);
+
                     return $query->sum;
                 }
             ]
@@ -87,5 +88,4 @@ class InvoicesPaymentsTable extends Table
 
         return $rules;
     }
-
 }

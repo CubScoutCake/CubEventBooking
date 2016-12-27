@@ -88,6 +88,7 @@ class NotesTable extends Table
         $rules->add($rules->existsIn(['application_id'], 'Applications'));
         $rules->add($rules->existsIn(['invoice_id'], 'Invoices'));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
+
         return $rules;
     }
 }

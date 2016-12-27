@@ -141,14 +141,28 @@ class AttendeesTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
+
         return $rules;
     }
 
+    /**
+     * Ownership test function for Authentication.
+     *
+     * @param int $attendeeId The Attendee Id to be checked.
+     * @param int $userId The asserted User.
+     * @return bool
+     */
     public function isOwnedBy($attendeeId, $userId)
     {
         return $this->exists(['id' => $attendeeId, 'user_id' => $userId]);
     }
 
+    /**
+     * Finds the number of applications the attendee is on.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
     public function findCountIncluded($query)
     {
         return $query->select(['total_applications' => $query->func()->count('x.application_id')])
@@ -163,11 +177,23 @@ class AttendeesTable extends Table
             ->autoFields(true);
     }
 
+    /**
+     * Finds OSM attendees.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
     public function findOsm($query)
     {
         return $query->where(['osm_id IS NOT' => false]);
     }
 
+    /**
+     * Filters the attendees to those which haven't been attached to an application.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
     public function findUnattached($query)
     {
         return $query->select(['total_applications' => $query->func()->count('x.application_id')])

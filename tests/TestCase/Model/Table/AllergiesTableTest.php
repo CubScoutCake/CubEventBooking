@@ -58,7 +58,24 @@ class AllergiesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Allergies->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'allergy' => 'Lorem ipsum dolor sit amet',
+                'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. The Goat'
+            ],
+            [
+                'id' => 2,
+                'allergy' => 'Lorem ipsum dolor sit amet',
+                'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. The Goat'
+            ]
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -68,16 +85,46 @@ class AllergiesTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $badData = [
+            'allergy' => null,
+            'description' => null
+        ];
 
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $goodData = [
+            'id' => 3,
+            'allergy' => 'Lorem Goat Fish dolor sit amet',
+            'description' => 'Lorem Monkey dolor sit amet, aliquet feugiat. The Goat'
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'allergy' => 'Lorem ipsum dolor sit amet',
+                'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. The Goat'
+            ],
+            [
+                'id' => 2,
+                'allergy' => 'Lorem ipsum dolor sit amet',
+                'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. The Goat'
+            ],
+            [
+                'id' => 3,
+                'allergy' => 'Lorem Goat Fish dolor sit amet',
+                'description' => 'Lorem Monkey dolor sit amet, aliquet feugiat. The Goat'
+            ]
+        ];
+
+        $badEntity = $this->Allergies->newEntity($badData);
+        $goodEntity = $this->Allergies->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Allergies->save($badEntity));
+        $this->Allergies->save($goodEntity);
+
+        $query = $this->Allergies->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 }

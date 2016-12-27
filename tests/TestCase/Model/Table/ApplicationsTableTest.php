@@ -22,9 +22,16 @@ class ApplicationsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.applications',
+        'app.settings',
+        'app.settingtypes',
+        'app.discounts',
+        'app.roles',
+        'app.districts',
+        'app.scoutgroups',
+        'app.users',
         'app.events'
     ];
 

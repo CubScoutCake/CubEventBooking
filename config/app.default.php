@@ -323,4 +323,14 @@ return [
     'Session' => [
         'defaults' => 'php',
     ],
+
+    /**
+     * Google Analytics Configuration. Stores the config options for GA.
+     *
+     * This takes effect in the Analytics Element under App/Template/Element/Analytics.ctp
+     */
+    'GA' => [
+        'ua' => 'UA CODE',
+        'userCode' => 'USR:'
+    ]
 ];

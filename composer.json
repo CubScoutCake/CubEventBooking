@@ -1,7 +1,7 @@
 {   
     "name": "JacobAGTyler/CubsBooking",
     "description": "An app to manage booking for Cub Scouts by leaders.",
-    "homepage": "http://hertscubs.uk",
+    "homepage": "https://github.com/CubScoutCake/CubEventBooking",
     "type": "project",
     "license": "MIT",
     "require": {

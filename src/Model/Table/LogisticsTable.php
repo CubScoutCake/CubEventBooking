@@ -78,6 +78,7 @@ class LogisticsTable extends Table
     {
         $rules->add($rules->existsIn(['parameter_id'], 'Parameters'));
         $rules->add($rules->existsIn(['event_id'], 'Events'));
+
         return $rules;
     }
 }

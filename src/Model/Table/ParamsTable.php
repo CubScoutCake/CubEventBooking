@@ -66,6 +66,7 @@ class ParamsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['parameter_id'], 'Parameters'));
+
         return $rules;
     }
 }

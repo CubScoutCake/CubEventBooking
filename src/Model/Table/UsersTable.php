@@ -2,14 +2,14 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\User;
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\Auth\DigestAuthenticate;
 use Cake\Event\Event;
+use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\Validation\Validator;
-use Cake\Auth\DefaultPasswordHasher;
 use Cake\Utility\Text;
+use Cake\Validation\Validator;
 
 /**
  * Users Model
@@ -153,9 +153,16 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['username']));
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
+
         return $rules;
     }
 
+    /**
+     * Hashes the password before save
+     *
+     * @param \Cake\Event\Event $event The event trigger.
+     * @return true
+     */
     public function beforeSave(Event $event)
     {
         $entity = $event->data['entity'];
@@ -177,6 +184,7 @@ class UsersTable extends Table
             // it during login.
             $entity->api_key = $hasher->hash($entity->api_key_plain);
         }
+
         return true;
     }
 }

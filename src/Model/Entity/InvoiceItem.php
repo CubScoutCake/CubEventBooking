@@ -32,6 +32,11 @@ class InvoiceItem extends Entity
         'id' => false,
     ];
 
+    /**
+     * Find the price of the invoice item specified.
+     *
+     * @return mixed
+     */
     protected function _getQuantityPrice()
     {
         return $this->_properties['Value'] * $this->_properties['Quantity'];

@@ -73,6 +73,7 @@ class LogisticItemsTable extends Table
         $rules->add($rules->existsIn(['application_id'], 'Applications'));
         $rules->add($rules->existsIn(['logistic_id'], 'Logistics'));
         $rules->add($rules->existsIn(['param_id'], 'Params'));
+
         return $rules;
     }
 }

@@ -8,7 +8,6 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
-
 /**
  * Applications Model
  *
@@ -95,7 +94,7 @@ class ApplicationsTable extends Table
         $validator
             ->requirePresence('permitholder', 'create')
             ->notEmpty('permitholder');
-            
+
         return $validator;
     }
 
@@ -111,52 +110,98 @@ class ApplicationsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
         $rules->add($rules->existsIn(['event_id'], 'Events'));
+
         return $rules;
     }
-    
+
+    /**
+     * Ownership test function for Authentication.
+     *
+     * @param int $applicationId The Application Id to be checked.
+     * @param int $userId The asserted User.
+     * @return bool
+     */
     public function isOwnedBy($applicationId, $userId)
     {
         return $this->exists(['id' => $applicationId, 'user_id' => $userId]);
     }
 
+    /**
+     * Finds the applications owned by the user.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options An array containing the user to be searched for.
+     * @return \Cake\ORM\Query The modified query.
+     */
     public function findOwnedBy($query, $options)
     {
         $userId = $options['userId'];
+
         return $query->where(['Applications.user_id' => $userId]);
     }
 
-    public function findUnarchived($query) 
+    /**
+     * Finds the applications that are not for an archived event.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
+    public function findUnarchived($query)
     {
         return $query->contain('Events')->where(['Events.live' => true]);
     }
 
-    public function findCubs($query) 
+    /**
+     * Finds the attendees, which are Cubs on the Application.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
+    public function findCubs($query)
     {
         $query = $query->matching(
-            'Attendees.Roles', function ($q) {
+            'Attendees.Roles',
+            function ($q) {
                 return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id' => 1]);
             }
         );
+
         return $query;
     }
 
-    public function findYoungLeaders($query) 
+    /**
+     * Finds the attendees, which are Young Leaders on the Application.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
+    public function findYoungLeaders($query)
     {
         $query = $query->matching(
-            'Attendees.Roles', function ($q) {
+            'Attendees.Roles',
+            function ($q) {
                 return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id <>' => 1]);
             }
         );
+
         return $query;
     }
 
-    public function findLeaders($query) 
+    /**
+     * Finds the attendees, which are Adult Leaders on the Application.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
+    public function findLeaders($query)
     {
         $query = $query->matching(
-            'Attendees.Roles', function ($q) {
+            'Attendees.Roles',
+            function ($q) {
                 return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => false]);
             }
         );
+
         return $query;
     }
 
