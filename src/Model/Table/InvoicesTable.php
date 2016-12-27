@@ -105,6 +105,7 @@ class InvoicesTable extends Table
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['application_id'], 'Applications'));
+
         return $rules;
     }
 
@@ -116,6 +117,7 @@ class InvoicesTable extends Table
     public function findOwnedBy($query, $options)
     {
         $user = $options['user'];
+
         return $query->where(['Invoices.user_id' => $user->id]);
     }
 
@@ -129,7 +131,7 @@ class InvoicesTable extends Table
         return $query->where(['Invoices.value IS' => 0])->orWhere(['Invoices.value IS' => null]);
     }
 
-    public function findUnarchived($query) 
+    public function findUnarchived($query)
     {
         return $query->contain('Applications.Events')->where(['Events.live' => true]);
     }

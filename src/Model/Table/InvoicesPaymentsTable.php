@@ -51,6 +51,7 @@ class InvoicesPaymentsTable extends Table
                 'rating_avg' => function ($event, $entity, $table) {
                     $query = $entity->find()->contain(['Payments']);
                     $query->select(['sum' => $query->func()->sum('payments.value')]);
+
                     return $query->sum;
                 }
             ]
@@ -87,5 +88,4 @@ class InvoicesPaymentsTable extends Table
 
         return $rules;
     }
-
 }

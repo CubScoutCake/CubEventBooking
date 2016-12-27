@@ -103,6 +103,7 @@ class NotificationsTable extends Table
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['notificationtype_id'], 'Notificationtypes'));
+
         return $rules;
     }
 

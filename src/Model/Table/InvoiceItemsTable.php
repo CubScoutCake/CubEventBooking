@@ -77,6 +77,7 @@ class InvoiceItemsTable extends Table
     {
         $rules->add($rules->existsIn(['invoice_id'], 'Invoices'));
         $rules->add($rules->existsIn(['itemtype_id'], 'Itemtypes'));
+
         return $rules;
     }
 }

@@ -8,7 +8,6 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
-
 /**
  * Applications Model
  *
@@ -95,7 +94,7 @@ class ApplicationsTable extends Table
         $validator
             ->requirePresence('permitholder', 'create')
             ->notEmpty('permitholder');
-            
+
         return $validator;
     }
 
@@ -111,9 +110,10 @@ class ApplicationsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
         $rules->add($rules->existsIn(['event_id'], 'Events'));
+
         return $rules;
     }
-    
+
     public function isOwnedBy($applicationId, $userId)
     {
         return $this->exists(['id' => $applicationId, 'user_id' => $userId]);
@@ -122,41 +122,48 @@ class ApplicationsTable extends Table
     public function findOwnedBy($query, $options)
     {
         $userId = $options['userId'];
+
         return $query->where(['Applications.user_id' => $userId]);
     }
 
-    public function findUnarchived($query) 
+    public function findUnarchived($query)
     {
         return $query->contain('Events')->where(['Events.live' => true]);
     }
 
-    public function findCubs($query) 
+    public function findCubs($query)
     {
         $query = $query->matching(
-            'Attendees.Roles', function ($q) {
+            'Attendees.Roles',
+            function ($q) {
                 return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id' => 1]);
             }
         );
+
         return $query;
     }
 
-    public function findYoungLeaders($query) 
+    public function findYoungLeaders($query)
     {
         $query = $query->matching(
-            'Attendees.Roles', function ($q) {
+            'Attendees.Roles',
+            function ($q) {
                 return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id <>' => 1]);
             }
         );
+
         return $query;
     }
 
-    public function findLeaders($query) 
+    public function findLeaders($query)
     {
         $query = $query->matching(
-            'Attendees.Roles', function ($q) {
+            'Attendees.Roles',
+            function ($q) {
                 return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => false]);
             }
         );
+
         return $query;
     }
 

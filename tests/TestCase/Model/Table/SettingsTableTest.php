@@ -138,7 +138,7 @@ class SettingsTableTest extends TestCase
         $this->assertFalse($this->Settings->save($inaccessibleEntity));
         $this->Settings->save($goodEntity);
 
-        $this->markTestSkipped();
+        $this->markTestSkipped('Issue not passing Setting.');
 
         $query = $this->Settings->get('2');
 

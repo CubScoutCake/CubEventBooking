@@ -30,7 +30,7 @@ class RolesTable extends Table
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);
-        
+
         $this->hasMany('Attendees', [
             'foreignKey' => 'role_id'
         ]);
@@ -50,15 +50,15 @@ class RolesTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create');
-            
+
         $validator
             ->requirePresence('role', 'create')
             ->notEmpty('role');
-            
+
         $validator
             ->add('invested', 'valid', ['rule' => 'boolean'])
             ->allowEmpty('invested');
-            
+
         $validator
             ->add('minor', 'valid', ['rule' => 'boolean'])
             ->allowEmpty('minor');

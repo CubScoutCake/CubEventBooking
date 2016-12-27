@@ -61,5 +61,4 @@ class ApplicationsAttendeesTable extends Table
 
         return $rules;
     }
-
 }

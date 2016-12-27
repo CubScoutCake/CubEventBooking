@@ -141,6 +141,7 @@ class AttendeesTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
+
         return $rules;
     }
 

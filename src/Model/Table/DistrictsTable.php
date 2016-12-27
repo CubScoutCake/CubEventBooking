@@ -30,7 +30,7 @@ class DistrictsTable extends Table
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);
-        
+
         $this->hasMany('Scoutgroups', [
             'foreignKey' => 'district_id'
         ]);
@@ -50,11 +50,11 @@ class DistrictsTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create');
-            
+
         $validator
             ->requirePresence('district', 'create')
             ->notEmpty('district');
-            
+
         $validator
             ->allowEmpty('county');
 

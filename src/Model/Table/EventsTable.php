@@ -6,6 +6,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\I18n\Time;
 
 /**
  * Events Model
@@ -270,6 +271,7 @@ class EventsTable extends Table
         $rules->add($rules->existsIn(['legaltext_id'], 'Settings'));
         $rules->add($rules->existsIn(['discount_id'], 'Discounts'));
         $rules->add($rules->existsIn(['admin_user_id'], 'Users'));
+
         return $rules;
     }
 
@@ -282,5 +284,10 @@ class EventsTable extends Table
     public function findUnarchived($query)
     {
         return $query->where(['Events.live' => true]);
+    }
+
+    public function findUpcoming($query)
+    {
+        return $query->where(['Events.end_date >' => Time::now()]);
     }
 }
