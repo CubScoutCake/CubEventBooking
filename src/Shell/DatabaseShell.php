@@ -8,8 +8,8 @@
 namespace App\Shell;
 
 use Cake\Console\Shell;
-use Migrations\Migrations;
 use Cake\ORM\TableRegistry;
+use Migrations\Migrations;
 
 class DatabaseShell extends Shell
 {

@@ -18,7 +18,6 @@ use Cake\Core\Configure;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\ORM\TableRegistry;
-use Cake\I18n\Time;
 use Cake\Mailer\Email;
 
 /**
@@ -51,12 +50,11 @@ class LandingController extends AppController
         $nts = TableRegistry::get('Notes');
         $notifs = TableRegistry::get('Notifications');
 
-        $now = Time::now();
         $userId = $this->Auth->user('id');
 
         // Table Entities
         $applications = $apps->find()->contain(['Users', 'Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(10);
-        $events = $evs->find()->where(['end >' => $now])->contain(['Settings'])->order(['Events.start' => 'ASC']);
+        $events = $evs->find('upcoming')->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
         $invoices = $invs->find()->contain(['Users', 'Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
         $users = $usrs->find()->contain(['Roles', 'Scoutgroups'])->order(['Users.last_login' => 'DESC'])->limit(10);
         $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
@@ -76,12 +74,6 @@ class LandingController extends AppController
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));
-
-        $keenRead = $sets->get(15)->text;
-        $keenProject = $sets->get(14)->text;
-
-        $this->set(compact('keenRead', 'keenProject'));
-
     }
 
     public function link($ent = null)
@@ -92,46 +84,43 @@ class LandingController extends AppController
 
         if (is_null($ent)) {
             return $this->redirect(['action' => 'admin_home']);
-        } else {
-            $entStr = strtoupper($ent);
+        }
 
-            $cont = substr($entStr, 0, 1);
+        $entStr = strtoupper($ent);
 
-            $len = strlen($entStr);
-            $numLen = $len - 1;
+        $cont = substr($entStr, 0, 1);
 
-            $id = substr($entStr, 1);
-            $idNum = intval($id);
+        $id = substr($entStr, 1);
+        $idNum = intval($id);
 
-            if (is_int($idNum) && $idNum != 0) {
-                switch ($cont) {
-                    case "U":
-                        return $this->redirect(['controller' => 'Users', 'action' => 'view', $idNum]);
-                        break;
-                    case "I":
-                        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $idNum]);
-                        break;
-                    case "A":
-                        return $this->redirect(['controller' => 'Applications', 'action' => 'view', $idNum]);
-                        break;
-                    case "N":
-                        return $this->redirect(['controller' => 'Notes', 'action' => 'view', $idNum]);
-                        break;
-                    case "P":
-                        return $this->redirect(['controller' => 'Payments', 'action' => 'view', $idNum]);
-                        break;
-                    case "T":
-                        return $this->redirect(['controller' => 'Attendees', 'action' => 'view', $idNum]);
-                        break;
-                    case "E":
-                        return $this->redirect(['controller' => 'Events', 'action' => 'full_view', $idNum]);
-                        break;
-                    case "S":
-                        return $this->redirect(['controller' => 'Settings', 'action' => 'view', $idNum]);
-                        break;
-                    default:
-                        return $this->redirect(['action' => 'admin_home']);
-                }
+        if (is_int($idNum) && $idNum != 0) {
+            switch ($cont) {
+                case "U":
+                    return $this->redirect(['controller' => 'Users', 'action' => 'view', $idNum]);
+                    break;
+                case "I":
+                    return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $idNum]);
+                    break;
+                case "A":
+                    return $this->redirect(['controller' => 'Applications', 'action' => 'view', $idNum]);
+                    break;
+                case "N":
+                    return $this->redirect(['controller' => 'Notes', 'action' => 'view', $idNum]);
+                    break;
+                case "P":
+                    return $this->redirect(['controller' => 'Payments', 'action' => 'view', $idNum]);
+                    break;
+                case "T":
+                    return $this->redirect(['controller' => 'Attendees', 'action' => 'view', $idNum]);
+                    break;
+                case "E":
+                    return $this->redirect(['controller' => 'Events', 'action' => 'full_view', $idNum]);
+                    break;
+                case "S":
+                    return $this->redirect(['controller' => 'Settings', 'action' => 'view', $idNum]);
+                    break;
+                default:
+                    return $this->redirect(['action' => 'admin_home']);
             }
         }
     }
