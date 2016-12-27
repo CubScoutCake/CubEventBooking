@@ -86,8 +86,9 @@ class LandingController extends AppController
 
     public function link($ent = null)
     {
-        $ent = $this->request->data['link'];
-
+        if (is_null($ent)) {
+            $ent = $this->request->data['link'];
+        }
 
         if (is_null($ent)) {
             return $this->redirect(['action' => 'admin_home']);

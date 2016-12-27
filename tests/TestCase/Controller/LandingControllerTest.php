@@ -14,15 +14,18 @@ class LandingControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
-
+     */
     public $fixtures = [
-    'app.settings',
-    'app.districts',
-    'app.scoutgroups',
-    'app.roles',
-    'app.users'
-    ];*/
+        'app.settingtypes',
+        'app.settings',
+        'app.districts',
+        'app.scoutgroups',
+        'app.roles',
+        'app.users',
+        'app.applications',
+        'app.events',
+        'app.discounts'
+    ];
 
     /**
      * Test userHome method
@@ -31,8 +34,6 @@ class LandingControllerTest extends IntegrationTestCase
      */
     public function testUserHome()
     {
-        $this->markTestSkipped('Fixture Issue');
-
         $this->session(['Auth.User.id' => 1]);
 
         $this->get('/landing/user-home');
