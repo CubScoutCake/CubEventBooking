@@ -1,7 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\AllergiesController;
+use App\Controller\Admin\AllergiesController;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
@@ -115,13 +115,16 @@ class AllergiesControllerTest extends IntegrationTestCase
 
     public function testAddPostGoodData()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.authrole' => 'user'
+        ]);
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
         $data = [
-            'id' => '3',
+            'id' => 4,
             'allergy' => 'I am a Test',
             'description' => 'This is a different test Allergy'
         ];
