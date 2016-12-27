@@ -278,14 +278,20 @@ class EventsTable extends Table
     /**
      * Is a finder which will return a query with non-live (pre-release & archive) events only.
      *
-     * @param $query The original query to be modified
-     * @return $query The modified query
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
      */
     public function findUnarchived($query)
     {
         return $query->where(['Events.live' => true]);
     }
 
+    /**
+     * Will filter events to those which are coming up and haven't happened yet.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
     public function findUpcoming($query)
     {
         return $query->where(['Events.end_date >' => Time::now()]);
