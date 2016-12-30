@@ -22,12 +22,14 @@ class UsersSeed extends AbstractSeed
         $this->call('ScoutgroupsSeed');
         $this->call('RolesSeed');
         $this->call('AuthRolesSeed');
+        $this->call('SectionTypesSeed');
+        $this->call('SectionsSeed');
 
         $data = [
             [
                 'id' => '1',
                 'role_id' => '2',
-                'scoutgroup_id' => '106',
+                'section_id' => '1',
                 'authrole' => 'admin',
                 'firstname' => 'Jacob',
                 'lastname' => 'Tyler',
