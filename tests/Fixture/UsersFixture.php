@@ -19,7 +19,7 @@ class UsersFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 10, 'autoIncrement' => true, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
         'role_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'scoutgroup_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'section_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'authrole' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'firstname' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'lastname' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
@@ -57,15 +57,14 @@ class UsersFixture extends TestFixture
         '_indexes' => [
             'user_role_idx' => ['type' => 'index', 'columns' => ['role_id'], 'length' => []],
             'users_role_id' => ['type' => 'index', 'columns' => ['role_id'], 'length' => []],
-            'users_scoutgroup_id' => ['type' => 'index', 'columns' => ['scoutgroup_id'], 'length' => []],
-            'user_scoutgroup_idx' => ['type' => 'index', 'columns' => ['scoutgroup_id'], 'length' => []],
+            'users_section_id' => ['type' => 'index', 'columns' => ['section_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'users_username' => ['type' => 'unique', 'columns' => ['username'], 'length' => []],
             'users_auth_role_id' => ['type' => 'unique', 'columns' => ['auth_role_id'], 'length' => []],
             'users_role_id' => ['type' => 'foreign', 'columns' => ['role_id'], 'references' => ['roles', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
-            'users_scoutgroup_id' => ['type' => 'foreign', 'columns' => ['scoutgroup_id'], 'references' => ['scoutgroups', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
+            'users_section_id' => ['type' => 'foreign', 'columns' => ['section_id'], 'references' => ['sections', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
@@ -79,7 +78,7 @@ class UsersFixture extends TestFixture
         [
             'id' => 1,
             'role_id' => 1,
-            'scoutgroup_id' => 1,
+            'section_id' => 1,
             'authrole' => 'Lorem ipsum dolor sit amet',
             'firstname' => 'Lorem ipsum dolor sit amet',
             'lastname' => 'Lorem ipsum dolor sit amet',

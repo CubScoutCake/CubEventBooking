@@ -22,13 +22,15 @@ class AttendeesAllergiesTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.attendees_allergies',
         'app.attendees',
         'app.allergies',
         'app.roles',
         'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
         'app.districts',
         'app.users'
     ];

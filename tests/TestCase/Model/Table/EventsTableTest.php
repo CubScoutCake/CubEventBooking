@@ -29,6 +29,8 @@ class EventsTableTest extends TestCase
         'app.events',
         'app.settings',
         'app.settingtypes',
+        'app.section_types',
+        'app.sections',
         'app.discounts',
         'app.users',
         'app.roles',

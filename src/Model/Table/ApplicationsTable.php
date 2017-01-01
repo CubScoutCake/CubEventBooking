@@ -50,8 +50,8 @@ class ApplicationsTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Scoutgroups', [
-            'foreignKey' => 'scoutgroup_id',
+        $this->belongsTo('Sections', [
+            'foreignKey' => 'section_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Events', [

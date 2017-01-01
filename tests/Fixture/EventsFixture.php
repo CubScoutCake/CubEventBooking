@@ -67,13 +67,9 @@ class EventsFixture extends TestFixture
         'available_cubs' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
-            'evnt_invtext_idx' => ['type' => 'index', 'columns' => ['invtext_id'], 'length' => []],
             'events_invtext_id' => ['type' => 'index', 'columns' => ['invtext_id'], 'length' => []],
-            'evnt_legaltext_id_idx' => ['type' => 'index', 'columns' => ['legaltext_id'], 'length' => []],
             'events_legaltext_id' => ['type' => 'index', 'columns' => ['legaltext_id'], 'length' => []],
-            'evnt_discount_idx' => ['type' => 'index', 'columns' => ['discount_id'], 'length' => []],
             'events_discount_id' => ['type' => 'index', 'columns' => ['discount_id'], 'length' => []],
-            'evnt_admin_user_idx' => ['type' => 'index', 'columns' => ['admin_user_id'], 'length' => []],
             'events_admin_user_id' => ['type' => 'index', 'columns' => ['admin_user_id'], 'length' => []],
         ],
         '_constraints' => [

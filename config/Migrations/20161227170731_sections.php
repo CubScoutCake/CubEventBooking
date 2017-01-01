@@ -30,7 +30,7 @@ class Sections extends AbstractMigration
         $table = $this->table('section_types');
         $table->addColumn('section_type', 'string', [
                 'default' => null,
-                'limit' => 11,
+                'limit' => 255,
                 'null' => false,
             ])
             ->addColumn('upper_age', 'integer')
@@ -58,6 +58,11 @@ class Sections extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('modified', 'datetime', [
+                'default' => null,
+                'limit' => null,
+                'null' => true,
+            ])
+            ->addColumn('deleted', 'datetime', [
                 'default' => null,
                 'limit' => null,
                 'null' => true,
