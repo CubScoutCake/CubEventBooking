@@ -55,6 +55,17 @@ class InvoicesFixture extends TestFixture
             'modified' => 1481496353,
             'paid' => 1,
             'initialvalue' => 1,
+            'deleted' => null
+        ],
+        [
+            'id' => 2,
+            'user_id' => 1,
+            'application_id' => 1,
+            'value' => 1,
+            'created' => 1481496353,
+            'modified' => 1481496353,
+            'paid' => 1,
+            'initialvalue' => 1,
             'deleted' => 1481496353
         ],
     ];

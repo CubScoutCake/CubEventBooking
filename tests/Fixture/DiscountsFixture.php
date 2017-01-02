@@ -42,9 +42,20 @@ class DiscountsFixture extends TestFixture
         [
             'id' => 1,
             'discount' => 'Lorem ipsum dolor sit amet',
-            'code' => 'Lorem ipsum dolor sit amet',
+            'code' => 'ABCDEF',
             'text' => 'Lorem ipsum dolor sit amet',
             'active' => 1,
+            'discount_value' => 1,
+            'discount_number' => 1,
+            'uses' => 0,
+            'max_uses' => 1
+        ],
+        [
+            'id' => 2,
+            'discount' => 'Lorem ipsum dolor go amet',
+            'code' => 'BCDEFG',
+            'text' => 'Lorem This dolor sit amet',
+            'active' => 0,
             'discount_value' => 1,
             'discount_number' => 1,
             'uses' => 1,

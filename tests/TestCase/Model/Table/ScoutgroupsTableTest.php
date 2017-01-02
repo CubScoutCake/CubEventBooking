@@ -22,35 +22,10 @@ class ScoutgroupsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.scoutgroups',
-        'app.districts',
-        'app.champions',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.applications',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.notes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notifications',
-        'app.notificationtypes'
+        'app.districts'
     ];
 
     /**
@@ -84,7 +59,28 @@ class ScoutgroupsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Scoutgroups->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'scoutgroup' => 'Lorem ipsum dolor sit amet',
+                'district_id' => 1,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 2,
+                'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
+                'district_id' => 2,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -94,7 +90,58 @@ class ScoutgroupsTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badData = [
+            'id' => 5,
+            'scoutgroup' => null,
+            'district_id' => 2,
+            'number_stripped' => 1,
+            'deleted' => null
+        ];
+
+        $goodData = [
+            'id' => 5,
+            'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
+            'district_id' => 1,
+            'number_stripped' => 1,
+            'deleted' => null
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'scoutgroup' => 'Lorem ipsum dolor sit amet',
+                'district_id' => 1,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 2,
+                'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
+                'district_id' => 2,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 5,
+                'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
+                'district_id' => 1,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+        ];
+
+        $badEntity = $this->Scoutgroups->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Scoutgroups->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Scoutgroups->save($badEntity));
+        $this->Scoutgroups->save($goodEntity);
+
+        $query = $this->Scoutgroups->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -104,6 +151,57 @@ class ScoutgroupsTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badData = [
+            'id' => 5,
+            'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
+            'district_id' => 2,
+            'number_stripped' => 1,
+            'deleted' => null
+        ];
+
+        $goodData = [
+            'id' => 5,
+            'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
+            'district_id' => 1,
+            'number_stripped' => 1,
+            'deleted' => null
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'scoutgroup' => 'Lorem ipsum dolor sit amet',
+                'district_id' => 1,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 2,
+                'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
+                'district_id' => 2,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 5,
+                'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
+                'district_id' => 1,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+        ];
+
+        $badEntity = $this->Scoutgroups->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Scoutgroups->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Scoutgroups->save($badEntity));
+        $this->Scoutgroups->save($goodEntity);
+
+        $query = $this->Scoutgroups->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 }

@@ -22,7 +22,8 @@ class UsersTableTest extends TestCase
         'app.section_types',
         'app.roles',
         'app.scoutgroups',
-        'app.districts'
+        'app.districts',
+        'app.auth_roles'
     ];
 
     /**

@@ -27,6 +27,8 @@ class SettingsTableTest extends TestCase
     public $fixtures = [
         'app.settings',
         'app.settingtypes',
+        'app.events',
+        'app.discounts'
     ];
 
     /**
@@ -66,11 +68,24 @@ class SettingsTableTest extends TestCase
         $query = $this->Settings->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->first();
+        $result = $query->hydrate(false)->toArray();
 
-        $this->assertCount(8, $result);
-        $this->assertContains(1, $result);
-        $this->assertContains('Lorem ipsum dolor sit amet', $result);
+        $timeNow = Time::now();
+
+        $expected = [
+            [
+                'id' => 1,
+                'name' => 'Lorem ipsum dolor sit amet',
+                'text' => 'Lorem ipsum dolor sit amet',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'settingtype_id' => 1,
+                'number' => 1.0
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -80,7 +95,7 @@ class SettingsTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $startNow = Time::now();
+        $timeNow = Time::now();
 
         $badData = [
             'id' => null,
@@ -95,11 +110,11 @@ class SettingsTableTest extends TestCase
             'id' => 2,
             'name' => 'Lorem Fishy dolor sit amet',
             'text' => 'Lorem ipsum Goaty sit amet',
-            'created' => 1482070364,
-            'modified' => 1482070364,
-            'event_id' => 1,
+            'created' => $timeNow,
+            'modified' => $timeNow,
+            'event_id' => null,
             'settingtype_id' => 1,
-            'number' => 1
+            'number' => 2.9
         ];
 
         $expected = [
@@ -107,51 +122,111 @@ class SettingsTableTest extends TestCase
                 'id' => 1,
                 'name' => 'Lorem ipsum dolor sit amet',
                 'text' => 'Lorem ipsum dolor sit amet',
-                'created' => 1482070364,
-                'modified' => 1482070364,
+                'created' => $timeNow,
+                'modified' => $timeNow,
                 'event_id' => 1,
                 'settingtype_id' => 1,
-                'number' => 1
+                'number' => 1.0
             ],
             [
                 'id' => 2,
                 'name' => 'Lorem Fishy dolor sit amet',
                 'text' => 'Lorem ipsum Goaty sit amet',
-                'event_id' => 1,
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => null,
                 'settingtype_id' => 1,
-                'number' => 1
+                'number' => 2.9
             ],
-            [
-                'id' => 3,
-                'district' => 'Lorem ipsum sit amet',
-                'county' => 'Lorem dolor sit amet',
-                'deleted' => null
-            ],
-            [
-                'id' => 4,
-                'district' => 'Lorem fish dolor sit amet',
-                'county' => 'Lorem ipsum fish dolor amet',
-                'deleted' => null
-            ]
         ];
 
         $badEntity = $this->Settings->newEntity($badData);
-        $inaccessibleEntity = $this->Settings->newEntity($goodData);
         $goodEntity = $this->Settings->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
 
-        $this->assertFalse($this->Settings->save($badEntity));
-        $this->assertFalse($this->Settings->save($inaccessibleEntity));
         $this->Settings->save($goodEntity);
+        $this->assertFalse($this->Settings->save($badEntity));
 
-        $this->markTestSkipped('Issue not passing Setting.');
-
-        $query = $this->Settings->get('2');
+        $query = $this->Settings->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
 
-        $this->assertCount(8, $result);
-        $this->assertContains(1, $result);
-        $this->assertContains('Lorem ipsum dolor sit amet', $result);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testBuildRules()
+    {
+        $timeNow = Time::now();
+
+        $badData = [
+            'id' => 2,
+            'name' => 'Lorem Fishy dolor sit amet',
+            'text' => 'Lorem ipsum Goaty sit amet',
+            'created' => $timeNow,
+            'modified' => $timeNow,
+            'event_id' => 1,
+            'settingtype_id' => 109,
+            'number' => 2.9
+        ];
+
+        $outData = [
+            'id' => 2,
+            'name' => 'Lorem Fishy dolor sit amet',
+            'text' => 'Lorem ipsum Goaty sit amet',
+            'created' => $timeNow,
+            'modified' => $timeNow,
+            'event_id' => 209,
+            'settingtype_id' => 1,
+            'number' => 2.9
+        ];
+
+        $goodData = [
+            'id' => 2,
+            'name' => 'Lorem Fishy dolor sit amet',
+            'text' => 'Lorem ipsum Goaty sit amet',
+            'created' => $timeNow,
+            'modified' => $timeNow,
+            'event_id' => 3,
+            'settingtype_id' => 1,
+            'number' => 2.9
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'name' => 'Lorem ipsum dolor sit amet',
+                'text' => 'Lorem ipsum dolor sit amet',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'settingtype_id' => 1,
+                'number' => 1.0
+            ],
+            [
+                'id' => 2,
+                'name' => 'Lorem Fishy dolor sit amet',
+                'text' => 'Lorem ipsum Goaty sit amet',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 3,
+                'settingtype_id' => 1,
+                'number' => 2.9
+            ],
+        ];
+
+        $badEntity = $this->Settings->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $outEntity = $this->Settings->newEntity($outData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Settings->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Settings->save($badEntity));
+        $this->assertFalse($this->Settings->save($outEntity));
+        $this->Settings->save($goodEntity);
+
+        $query = $this->Settings->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 }

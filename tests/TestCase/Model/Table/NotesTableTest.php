@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\NotesTable;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -28,29 +29,19 @@ class NotesTableTest extends TestCase
         'app.applications',
         'app.users',
         'app.roles',
+        'app.sections',
+        'app.section_types',
+        'app.auth_roles',
         'app.attendees',
         'app.scoutgroups',
         'app.districts',
-        'app.champions',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
         'app.notifications',
         'app.notificationtypes',
         'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.payments',
-        'app.invoices_payments',
         'app.events',
         'app.settings',
         'app.settingtypes',
         'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items'
     ];
 
     /**
@@ -63,6 +54,9 @@ class NotesTableTest extends TestCase
         parent::setUp();
         $config = TableRegistry::exists('Notes') ? [] : ['className' => 'App\Model\Table\NotesTable'];
         $this->Notes = TableRegistry::get('Notes', $config);
+
+        $now = new Time('2016-12-26 23:22:30');
+        Time::setTestNow($now);
     }
 
     /**
@@ -84,7 +78,27 @@ class NotesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Notes->find('all');
+
+        $timeNow = Time::now();
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'application_id' => 1,
+                'invoice_id' => 1,
+                'user_id' => 1,
+                'visible' => true,
+                'note_text' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'created' => $timeNow,
+                'modified' => $timeNow
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -94,7 +108,69 @@ class NotesTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $timeNow = Time::now();
+
+        $badData = [
+            'id' => 'go jump now',
+            'application_id' => 1,
+            'invoice_id' => 1,
+            'user_id' => 1,
+            'visible' => 'This is bad',
+            'note_text' => 'Lorem ipsum dolor sit amet',
+            'deleted' => $timeNow,
+            'created' => $timeNow,
+            'modified' => $timeNow
+        ];
+
+        $goodData = [
+            'id' => 2,
+            'application_id' => 1,
+            'invoice_id' => 1,
+            'user_id' => 1,
+            'visible' => true,
+            'note_text' => 'Lorem ipsum dolor sit amet',
+            'deleted' => null,
+            'created' => $timeNow,
+            'modified' => $timeNow
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'application_id' => 1,
+                'invoice_id' => 1,
+                'user_id' => 1,
+                'visible' => true,
+                'note_text' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'created' => $timeNow,
+                'modified' => $timeNow
+            ],
+            [
+                'id' => 2,
+                'application_id' => 1,
+                'invoice_id' => 1,
+                'user_id' => 1,
+                'visible' => true,
+                'note_text' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'created' => $timeNow,
+                'modified' => $timeNow
+            ]
+        ];
+
+        $badEntity = $this->Notes->newEntity($badData);
+        $goodEntity = $this->Notes->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Notes->save($badEntity));
+        $this->Notes->save($goodEntity);
+
+        $query = $this->Notes->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -104,6 +180,82 @@ class NotesTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $timeNow = Time::now();
+
+        $badData = [
+            'id' => 'go jump now',
+            'application_id' => 2,
+            'invoice_id' => 2,
+            'user_id' => 1,
+            'visible' => 'This is bad',
+            'note_text' => 'Lorem ipsum dolor sit amet',
+            'deleted' => $timeNow,
+            'created' => $timeNow,
+            'modified' => $timeNow
+        ];
+
+        $outData = [
+            'id' => 'go jump now',
+            'application_id' => 255,
+            'invoice_id' => 991,
+            'user_id' => 2421,
+            'visible' => 'This is bad',
+            'note_text' => 'Lorem ipsum dolor sit amet',
+            'deleted' => $timeNow,
+            'created' => $timeNow,
+            'modified' => $timeNow
+        ];
+
+        $goodData = [
+            'id' => 2,
+            'application_id' => 1,
+            'invoice_id' => 1,
+            'user_id' => 1,
+            'visible' => true,
+            'note_text' => 'Lorem ipsum dolor sit amet',
+            'deleted' => null,
+            'created' => $timeNow,
+            'modified' => $timeNow
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'application_id' => 1,
+                'invoice_id' => 1,
+                'user_id' => 1,
+                'visible' => true,
+                'note_text' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'created' => $timeNow,
+                'modified' => $timeNow
+            ],
+            [
+                'id' => 2,
+                'application_id' => 1,
+                'invoice_id' => 1,
+                'user_id' => 1,
+                'visible' => true,
+                'note_text' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'created' => $timeNow,
+                'modified' => $timeNow
+            ]
+        ];
+
+        $badEntity = $this->Notes->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $outEntity = $this->Notes->newEntity($outData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Notes->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Notes->save($badEntity));
+        $this->assertFalse($this->Notes->save($outEntity));
+        $this->Notes->save($goodEntity);
+
+        $query = $this->Notes->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 }

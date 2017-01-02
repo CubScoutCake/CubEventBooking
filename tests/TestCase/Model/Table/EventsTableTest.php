@@ -23,7 +23,7 @@ class EventsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     */
+     *
 
     public $fixtures = [
         'app.events',
@@ -33,10 +33,11 @@ class EventsTableTest extends TestCase
         'app.sections',
         'app.discounts',
         'app.users',
+        'app.auth_roles',
         'app.roles',
+        'app.discounts',
         'app.scoutgroups',
-        'app.districts',
-        'app.auth_roles'
+        'app.districts'
     ];
 
     /**

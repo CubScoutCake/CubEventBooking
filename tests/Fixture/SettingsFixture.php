@@ -41,16 +41,20 @@ class SettingsFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
-        [
-            'id' => 1,
-            'name' => 'Lorem ipsum dolor sit amet',
-            'text' => 'Lorem ipsum dolor sit amet',
-            'created' => 1482070364,
-            'modified' => 1482070364,
-            'event_id' => 1,
-            'settingtype_id' => 1,
-            'number' => 1
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'name' => 'Lorem ipsum dolor sit amet',
+                'text' => 'Lorem ipsum dolor sit amet',
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'event_id' => 1,
+                'settingtype_id' => 1,
+                'number' => 1
+            ],
+        ];
+        parent::init();
+    }
 }
