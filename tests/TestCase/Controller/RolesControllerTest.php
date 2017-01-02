@@ -49,6 +49,8 @@ class RolesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
+        $this->markTestSkipped('Need to associate Scoutgroups to Sections');
+
         $this->session(['Auth.User.id' => 1]);
 
         $this->get('/roles/view/1');

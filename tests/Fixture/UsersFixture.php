@@ -148,7 +148,7 @@ class UsersFixture extends TestFixture
                 'pw_reset' => 'No Longer Active',
                 'last_login' => date('Y-m-d H:i:s'),
                 'logins' => '12',
-                'validated' => NULL,
+                'validated' => null,
                 'deleted' => date('Y-m-d H:i:s'),
                 'auth_role_id' => 2,
                 'digest_hash' => 'Lorem ipsum sit amet',

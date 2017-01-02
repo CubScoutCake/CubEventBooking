@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\InvoicesTable;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -22,35 +23,22 @@ class InvoicesTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.invoices',
         'app.users',
         'app.roles',
-        'app.attendees',
         'app.scoutgroups',
         'app.districts',
-        'app.champions',
         'app.applications',
         'app.events',
         'app.settings',
         'app.settingtypes',
         'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
+        'app.auth_roles',
+        'app.sections',
+        'app.section_types',
         'app.notes',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notifications',
-        'app.notificationtypes',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.payments',
-        'app.invoices_payments'
     ];
 
     /**
@@ -63,6 +51,9 @@ class InvoicesTableTest extends TestCase
         parent::setUp();
         $config = TableRegistry::exists('Invoices') ? [] : ['className' => 'App\Model\Table\InvoicesTable'];
         $this->Invoices = TableRegistry::get('Invoices', $config);
+
+        $now = new Time('2016-12-26 23:22:30');
+        Time::setTestNow($now);
     }
 
     /**
@@ -84,7 +75,27 @@ class InvoicesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $timeNow = Time::now();
+
+        $query = $this->Invoices->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'user_id' => 1,
+                'application_id' => 1,
+                'value' => 1,
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'paid' => 1,
+                'initialvalue' => 1,
+                'deleted' => null
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**

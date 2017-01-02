@@ -3,9 +3,9 @@ namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\UsersTable;
 use Cake\I18n\Time;
-use Cake\Utility\Hash;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Hash;
 
 /**
  * App\Model\Table\UsersTable Test Case

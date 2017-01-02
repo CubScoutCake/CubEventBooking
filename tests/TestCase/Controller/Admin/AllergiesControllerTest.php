@@ -20,6 +20,9 @@ class AllergiesControllerTest extends IntegrationTestCase
         'app.allergies',
         'app.attendees',
         'app.roles',
+        'app.sections',
+        'app.auth_roles',
+        'app.section_types',
         'app.districts',
         'app.scoutgroups',
         'app.users',
@@ -43,7 +46,7 @@ class AllergiesControllerTest extends IntegrationTestCase
     {
         $this->session(['Auth.User.id' => 1]);
 
-        $this->get('/allergies');
+        $this->get('/admin/allergies');
 
         $this->assertResponseOk();
     }

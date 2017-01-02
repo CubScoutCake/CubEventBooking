@@ -22,35 +22,9 @@ class NotificationtypesTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
-        'app.notificationtypes',
-        'app.notifications',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.scoutgroups',
-        'app.districts',
-        'app.champions',
-        'app.applications',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.notes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies'
+        'app.notificationtypes'
     ];
 
     /**
@@ -84,7 +58,20 @@ class NotificationtypesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Notificationtypes->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'notification_type' => 'Lorem ipsum dolor sit amet',
+                'notification_description' => 'Lorem ipsum dolor sit amet',
+                'icon' => 'Lorem ipsum dolor sit amet'
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -94,6 +81,46 @@ class NotificationtypesTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badData = [
+            'id' => 2,
+            'notification_type' => null,
+            'notification_description' => null,
+            'icon' => null
+        ];
+
+        $goodData = [
+            'id' => 2,
+            'notification_type' => 'Lorem dolor sit amet',
+            'notification_description' => 'Lorem ipsum sit amet',
+            'icon' => 'Lorem ipsum dolor sit'
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'notification_type' => 'Lorem ipsum dolor sit amet',
+                'notification_description' => 'Lorem ipsum dolor sit amet',
+                'icon' => 'Lorem ipsum dolor sit amet'
+            ],
+            [
+                'id' => 2,
+                'notification_type' => 'Lorem dolor sit amet',
+                'notification_description' => 'Lorem ipsum sit amet',
+                'icon' => 'Lorem ipsum dolor sit'
+            ],
+        ];
+
+        $badEntity = $this->Notificationtypes->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Notificationtypes->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Notificationtypes->save($badEntity));
+        $this->Notificationtypes->save($goodEntity);
+
+        $query = $this->Notificationtypes->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 }

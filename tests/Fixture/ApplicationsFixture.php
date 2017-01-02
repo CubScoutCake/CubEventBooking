@@ -54,48 +54,52 @@ class ApplicationsFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
-        [
-            'id' => 1,
-            'user_id' => 1,
-            'section_id' => 1,
-            'permitholder' => 'Lorem as dolor sit amet',
-            'created' => 1481841289,
-            'modified' => 1481841289,
-            'modification' => 1,
-            'event_id' => 1,
-            'osm_event_id' => 1,
-            'cc_att_total' => 1,
-            'cc_att_cubs' => 1,
-            'cc_att_yls' => 1,
-            'cc_att_leaders' => 1,
-            'cc_inv_count' => 1,
-            'cc_inv_total' => 1,
-            'cc_inv_cubs' => 1,
-            'cc_inv_yls' => 1,
-            'cc_inv_leaders' => 1,
-            'deleted' => null
-        ],
-        [
-            'id' => 2,
-            'user_id' => 1,
-            'section_id' => 1,
-            'permitholder' => 'Lorem dolor sit amet',
-            'created' => 1481841289,
-            'modified' => 1481841289,
-            'modification' => 1,
-            'event_id' => 2,
-            'osm_event_id' => 1,
-            'cc_att_total' => 1,
-            'cc_att_cubs' => 1,
-            'cc_att_yls' => 1,
-            'cc_att_leaders' => 1,
-            'cc_inv_count' => 1,
-            'cc_inv_total' => 1,
-            'cc_inv_cubs' => 1,
-            'cc_inv_yls' => 1,
-            'cc_inv_leaders' => 1,
-            'deleted' => 1481841289
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'user_id' => 1,
+                'section_id' => 1,
+                'permitholder' => 'Lorem as dolor sit amet',
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'modification' => 1,
+                'event_id' => 1,
+                'osm_event_id' => 1,
+                'cc_att_total' => 1,
+                'cc_att_cubs' => 1,
+                'cc_att_yls' => 1,
+                'cc_att_leaders' => 1,
+                'cc_inv_count' => 1,
+                'cc_inv_total' => 1,
+                'cc_inv_cubs' => 1,
+                'cc_inv_yls' => 1,
+                'cc_inv_leaders' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 2,
+                'user_id' => 1,
+                'section_id' => 1,
+                'permitholder' => 'Lorem dolor sit amet',
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'modification' => 1,
+                'event_id' => 2,
+                'osm_event_id' => 1,
+                'cc_att_total' => 1,
+                'cc_att_cubs' => 1,
+                'cc_att_yls' => 1,
+                'cc_att_leaders' => 1,
+                'cc_inv_count' => 1,
+                'cc_inv_total' => 1,
+                'cc_inv_cubs' => 1,
+                'cc_inv_yls' => 1,
+                'cc_inv_leaders' => 1,
+                'deleted' => 1481841289
+            ],
+        ];
+        parent::init();
+    }
 }

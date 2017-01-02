@@ -4,6 +4,7 @@ namespace App\Test\TestCase\Model\Table;
 use App\Model\Table\ItemtypesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use phpDocumentor\Reflection\Types\Null_;
 
 /**
  * App\ModelLevel\Table\ItemtypesTable Test Case
@@ -22,35 +23,9 @@ class ItemtypesTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
-        'app.itemtypes',
-        'app.invoice_items',
-        'app.invoices',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.scoutgroups',
-        'app.districts',
-        'app.champions',
-        'app.applications',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.notes',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notifications',
-        'app.notificationtypes',
-        'app.payments',
-        'app.invoices_payments'
+        'app.itemtypes'
     ];
 
     /**
@@ -84,7 +59,20 @@ class ItemtypesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Itemtypes->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'itemtype' => 'Lorem ipsum dolor sit amet',
+                'roletype' => 1,
+                'minor' => 1
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -94,6 +82,46 @@ class ItemtypesTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badData = [
+            'id' => 2,
+            'itemtype' => null,
+            'roletype' => null,
+            'minor' => null
+        ];
+
+        $goodData = [
+            'id' => 2,
+            'itemtype' => 'Lorem dolor goat amet',
+            'roletype' => 0,
+            'minor' => 0
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'itemtype' => 'Lorem ipsum dolor sit amet',
+                'roletype' => 1,
+                'minor' => 1
+            ],
+            [
+                'id' => 2,
+                'itemtype' => 'Lorem dolor goat amet',
+                'roletype' => 0,
+                'minor' => 0
+            ],
+        ];
+
+        $badEntity = $this->Itemtypes->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Itemtypes->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Itemtypes->save($badEntity));
+        $this->Itemtypes->save($goodEntity);
+
+        $query = $this->Itemtypes->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 }

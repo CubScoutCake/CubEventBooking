@@ -24,7 +24,10 @@ class LandingControllerTest extends IntegrationTestCase
         'app.users',
         'app.applications',
         'app.events',
-        'app.discounts'
+        'app.discounts',
+        'app.sections',
+        'app.section_types',
+        'app.auth_roles',
     ];
 
     /**

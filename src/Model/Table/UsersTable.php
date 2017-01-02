@@ -277,4 +277,19 @@ class UsersTable extends Table
 
         return true;
     }
+
+    /**
+     * Stores emails as lower case.
+     *
+     * @param \Cake\Event\Event $event The event being processed.
+     * @return bool
+     */
+    public function beforeRules(Event $event)
+    {
+        $entity = $event->data['entity'];
+
+        $entity->email = strtolower($entity->email);
+
+        return true;
+    }
 }

@@ -46,12 +46,10 @@ class LandingController extends AppController
         $pays = TableRegistry::get('Payments');
         $evs = TableRegistry::get('Events');
 
-        $now = Time::now();
-
         $userId = $this->Auth->user('id');
 
         // Table Entities
-        $applications = $apps->find('all', ['conditions' => ['Applications.user_id' => $userId]])->contain(['Users', 'Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(5);
+        $applications = $apps->find('all', ['conditions' => ['Applications.user_id' => $userId]])->contain(['Users', 'Sections.Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(5);
         $events = $evs->find('upcoming')->find('unarchived')->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
         $invoices = $invs->find('all', ['conditions' => ['Invoices.user_id' => $userId]])->contain(['Users', 'Applications', 'Payments'])->order(['Invoices.created' => 'DESC'])->limit(5);
         $payments = $countPayments = $pays->find('all')->matching('Invoices', function ($q) {

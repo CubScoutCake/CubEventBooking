@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\ApplicationsAttendeesTable Test Case
+ * App\Model\Table\ApplicationsAttendeesTable Test Case
  */
 class ApplicationsAttendeesTableTest extends TestCase
 {
@@ -26,8 +26,34 @@ class ApplicationsAttendeesTableTest extends TestCase
     public $fixtures = [
         'app.applications_attendees',
         'app.applications',
+        'app.users',
+        'app.roles',
         'app.attendees',
-        'app.events'
+        'app.scoutgroups',
+        'app.districts',
+        'app.champions',
+        'app.allergies',
+        'app.attendees_allergies',
+        'app.auth_roles',
+        'app.sections',
+        'app.section_types',
+        'app.invoices',
+        'app.invoice_items',
+        'app.itemtypes',
+        'app.notes',
+        'app.payments',
+        'app.invoices_payments',
+        'app.notifications',
+        'app.notificationtypes',
+        'app.events',
+        'app.settings',
+        'app.settingtypes',
+        'app.discounts',
+        'app.logistics',
+        'app.parameters',
+        'app.parameter_sets',
+        'app.params',
+        'app.logistic_items'
     ];
 
     /**
@@ -61,7 +87,20 @@ class ApplicationsAttendeesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->markTestIncomplete('To be added.');
+
+        $query = $this->ApplicationsAttendees->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'application_id' => 1,
+                'attendee_id' => 1
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -70,16 +109,6 @@ class ApplicationsAttendeesTableTest extends TestCase
      * @return void
      */
     public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test defaultConnectionName method
-     *
-     * @return void
-     */
-    public function testDefaultConnectionName()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

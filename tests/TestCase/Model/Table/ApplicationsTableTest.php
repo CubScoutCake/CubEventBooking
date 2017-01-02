@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ApplicationsTable;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -22,7 +23,7 @@ class ApplicationsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.applications',
         'app.settings',
@@ -47,6 +48,9 @@ class ApplicationsTableTest extends TestCase
         parent::setUp();
         $config = TableRegistry::exists('Applications') ? [] : ['className' => 'App\Model\Table\ApplicationsTable'];
         $this->Applications = TableRegistry::get('Applications', $config);
+
+        $now = new Time('2016-12-26 23:22:30');
+        Time::setTestNow($now);
     }
 
     /**
@@ -68,7 +72,37 @@ class ApplicationsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $timeNow = Time::now();
+
+        $query = $this->Applications->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'user_id' => 1,
+                'section_id' => 1,
+                'permitholder' => 'Lorem as dolor sit amet',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'modification' => 1,
+                'event_id' => 1,
+                'osm_event_id' => 1,
+                'cc_att_total' => 1,
+                'cc_att_cubs' => 1,
+                'cc_att_yls' => 1,
+                'cc_att_leaders' => 1,
+                'cc_inv_count' => 1,
+                'cc_inv_total' => 1,
+                'cc_inv_cubs' => 1,
+                'cc_inv_yls' => 1,
+                'cc_inv_leaders' => 1,
+                'deleted' => null
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
