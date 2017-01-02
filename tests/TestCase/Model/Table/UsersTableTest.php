@@ -1,15 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\UsersTable;
+use App\Model\Table\usersTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\UsersTable Test Case
+ * App\Model\Table\usersTable Test Case
  */
 class UsersTableTest extends TestCase
 {
+
+    /**
+     * Test subject
+     *
+     * @var \App\Model\Table\usersTable
+     */
+    public $users;
 
     /**
      * Fixtures
@@ -18,12 +25,15 @@ class UsersTableTest extends TestCase
      */
     public $fixtures = [
         'app.users',
-        'app.sections',
-        'app.section_types',
         'app.roles',
         'app.scoutgroups',
         'app.districts',
-        'app.auth_roles'
+        'app.champions',
+        'app.sections',
+        'app.section_types',
+        'app.auth_roles',
+        'app.settings',
+        'app.settingtypes'
     ];
 
     /**
@@ -34,8 +44,8 @@ class UsersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Users') ? [] : ['className' => 'App\Model\Table\UsersTable'];
-        $this->Users = TableRegistry::get('Users', $config);
+        $config = TableRegistry::exists('users') ? [] : ['className' => 'App\Model\Table\usersTable'];
+        $this->users = TableRegistry::get('users', $config);
     }
 
     /**
@@ -45,37 +55,17 @@ class UsersTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Users);
+        unset($this->users);
 
         parent::tearDown();
     }
 
     /**
-     * Test initialize method
+     * Test initial setup
      *
      * @return void
      */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
+    public function testInitialization()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
