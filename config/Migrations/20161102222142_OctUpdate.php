@@ -9,10 +9,8 @@ class OctUpdate extends AbstractMigration
 
         $this->table('applications')
             ->dropForeignKey([], 'applications_event_id')
-            ->dropForeignKey([], 'applications_scoutgroup_id')
             ->dropForeignKey([], 'applications_user_id')
             ->removeIndex(['event_id'])
-            ->removeIndex(['scoutgroup_id'])
             ->removeIndex(['user_id'])
             ->update();
 
@@ -32,10 +30,8 @@ class OctUpdate extends AbstractMigration
 
         $this->table('attendees')
             ->dropForeignKey([], 'attendees_role_id')
-            ->dropForeignKey([], 'attendees_scoutgroup_id')
             ->dropForeignKey([], 'attendees_user_id')
             ->removeIndex(['role_id'])
-            ->removeIndex(['scoutgroup_id'])
             ->removeIndex(['user_id'])
             ->update();
 
@@ -178,10 +174,8 @@ class OctUpdate extends AbstractMigration
 
         $this->table('users')
             ->dropForeignKey([], 'users_role_id')
-            ->dropForeignKey([], 'users_scoutgroup_id')
             ->removeIndex(['username'])
             ->removeIndex(['role_id'])
-            ->removeIndex(['scoutgroup_id'])
             ->update();
 
         $this->table('users')
@@ -218,7 +212,6 @@ class OctUpdate extends AbstractMigration
                 'null' => true,
             ])
             ->addIndex(['event_id'])
-            ->addIndex(['scoutgroup_id'])
             ->addIndex(['user_id'])
             ->update();
 
@@ -248,11 +241,6 @@ class OctUpdate extends AbstractMigration
                 'null' => true,
             ])
             ->addIndex(['role_id'])
-            ->addIndex(
-                [
-                    'scoutgroup_id',
-                ]
-            )
             ->addIndex(
                 [
                     'user_id',
@@ -520,11 +508,6 @@ class OctUpdate extends AbstractMigration
                     'role_id',
                 ]
             )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
-                ]
-            )
             ->update();
 
         $this->table('itemtypes')
@@ -567,15 +550,6 @@ class OctUpdate extends AbstractMigration
                 ]
             )
             ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
                 'user_id',
                 'users',
                 'id',
@@ -611,15 +585,6 @@ class OctUpdate extends AbstractMigration
             ->addForeignKey(
                 'role_id',
                 'roles',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
                 'id',
                 [
                     'update' => 'RESTRICT',
@@ -944,15 +909,6 @@ class OctUpdate extends AbstractMigration
                     'delete' => 'RESTRICT'
                 ]
             )
-            ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
             ->update();
     }
 
@@ -961,9 +917,6 @@ class OctUpdate extends AbstractMigration
         $this->table('applications')
             ->dropForeignKey(
                 'event_id'
-            )
-            ->dropForeignKey(
-                'scoutgroup_id'
             )
             ->dropForeignKey(
                 'user_id'
@@ -980,9 +933,6 @@ class OctUpdate extends AbstractMigration
         $this->table('attendees')
             ->dropForeignKey(
                 'role_id'
-            )
-            ->dropForeignKey(
-                'scoutgroup_id'
             )
             ->dropForeignKey(
                 'user_id'
@@ -1111,9 +1061,6 @@ class OctUpdate extends AbstractMigration
         $this->table('users')
             ->dropForeignKey(
                 'role_id'
-            )
-            ->dropForeignKey(
-                'scoutgroup_id'
             );
 
         $this->table('allergies')
@@ -1131,7 +1078,6 @@ class OctUpdate extends AbstractMigration
 
         $this->table('applications')
             ->removeIndex(['event_id'])
-            ->removeIndex(['scoutgroup_id'])
             ->removeIndex(['user_id'])
             ->update();
 
@@ -1155,11 +1101,6 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'event_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
                 ]
             )
             ->addIndex(
@@ -1194,7 +1135,6 @@ class OctUpdate extends AbstractMigration
 
         $this->table('attendees')
             ->removeIndex(['role_id'])
-            ->removeIndex(['scoutgroup_id'])
             ->removeIndex(['user_id'])
             ->update();
 
@@ -1250,11 +1190,6 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'role_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
                 ]
             )
             ->addIndex(
@@ -1619,7 +1554,6 @@ class OctUpdate extends AbstractMigration
 
         $this->table('users')
             ->removeIndex(['role_id'])
-            ->removeIndex(['scoutgroup_id'])
             ->update();
 
         $this->table('users')
@@ -1713,11 +1647,6 @@ class OctUpdate extends AbstractMigration
                     'role_id',
                 ]
             )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
-                ]
-            )
             ->update();
 
         $this->table('itemtypes')
@@ -1760,15 +1689,6 @@ class OctUpdate extends AbstractMigration
                     'delete' => 'RESTRICT'
                 ]
             )
-            /*->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )*/
             ->addForeignKey(
                 'user_id',
                 'users',
@@ -1811,15 +1731,6 @@ class OctUpdate extends AbstractMigration
                     'delete' => 'RESTRICT'
                 ]
             )
-            /*->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )*/
             ->addForeignKey(
                 'user_id',
                 'users',
@@ -2138,15 +2049,6 @@ class OctUpdate extends AbstractMigration
                     'delete' => 'RESTRICT'
                 ]
             )
-            /*->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )*/
             ->update();
     }
 }

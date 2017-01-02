@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\SettingsTable;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -26,7 +27,6 @@ class SettingsTableTest extends TestCase
     public $fixtures = [
         'app.settings',
         'app.settingtypes',
-        //'app.events'
     ];
 
     /**
@@ -39,6 +39,9 @@ class SettingsTableTest extends TestCase
         parent::setUp();
         $config = TableRegistry::exists('Settings') ? [] : ['className' => 'App\Model\Table\SettingsTable'];
         $this->Settings = TableRegistry::get('Settings', $config);
+
+        $now = new Time('2016-12-26 23:22:30');
+        Time::setTestNow($now);
     }
 
     /**
@@ -77,6 +80,8 @@ class SettingsTableTest extends TestCase
      */
     public function testValidationDefault()
     {
+        $startNow = Time::now();
+
         $badData = [
             'id' => null,
             'name' => null,
