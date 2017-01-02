@@ -57,6 +57,7 @@ class Authrole extends AbstractMigration
                 'length' => 10,
                 'null' => true,
             ])
+            ->renameColumn('section', 'legacy_section')
             ->addIndex(
                 [
                     'auth_role_id',
@@ -93,6 +94,7 @@ class Authrole extends AbstractMigration
             );
 
         $this->table('users')
+            ->renameColumn('legacy_section', 'section')
             ->renameColumn('pw_reset', 'reset')
             ->removeColumn('auth_role_id')
             ->removeColumn('pw_state')

@@ -45,7 +45,7 @@ class UsersSeed extends AbstractSeed
                 'city' => 'ADDRESS 2',
                 'county' => 'COUNTY',
                 'postcode' => 'POSTCODE',
-                'section' => '',
+                'legacy_section' => 'Cubs',
                 'created' => '2015-08-01 21:38:23',
                 'modified' => '2016-11-02 23:41:16',
                 'username' => 'Jacob',
