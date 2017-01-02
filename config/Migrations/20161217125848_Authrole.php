@@ -60,8 +60,7 @@ class Authrole extends AbstractMigration
             ->addIndex(
                 [
                     'auth_role_id',
-                ],
-                ['unique' => true]
+                ]
             )
             ->update();
 

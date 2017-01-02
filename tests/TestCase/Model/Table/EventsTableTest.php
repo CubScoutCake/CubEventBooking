@@ -23,7 +23,7 @@ class EventsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
 
     public $fixtures = [
         'app.events',

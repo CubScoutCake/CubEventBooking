@@ -151,8 +151,10 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['email']));
         $rules->add($rules->isUnique(['username']));
+
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
+        $rules->add($rules->existsIn(['auth_role_id'], 'auth_roles'));
 
         return $rules;
     }
