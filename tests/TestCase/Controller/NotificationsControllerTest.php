@@ -18,7 +18,13 @@ class NotificationsControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.notifications',
         'app.auth_roles',
-        'app.notificationtypes'
+        'app.notificationtypes',
+        'app.districts',
+        'app.roles',
+        'app.users',
+        'app.scoutgroups',
+        'app.sections',
+        'app.section_types',
     ];
 
     /**
