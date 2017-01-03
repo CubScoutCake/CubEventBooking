@@ -83,6 +83,7 @@ class InvoiceItemsController extends AppController
         $permitted = [7, 8, 9, 10];
         if (!in_array($invoiceItem->itemtype_id, $permitted)) {
             $this->Flash->error(__('You can only edit cancelled values.'));
+
             return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invNum]);
         }
 
@@ -90,6 +91,7 @@ class InvoiceItemsController extends AppController
             $invoiceItem = $this->InvoiceItems->patchEntity($invoiceItem, $this->request->data);
             if ($this->InvoiceItems->save($invoiceItem)) {
                 $this->Flash->success(__('The invoice item has been saved.'));
+
                 return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invNum]);
             } else {
                 $this->Flash->error(__('The invoice item could not be saved. Please, try again.'));
@@ -144,13 +146,16 @@ class InvoiceItemsController extends AppController
 
             if ($this->InvoiceItems->save($feeItem)) {
                 $this->Flash->success('An Overdue Surcharge was added to the invoice.');
+
                 return $this->redirect(['controller' => 'Notifications', 'action' => 'surcharge', $invID, $percentage]);
             } else {
                 $this->Flash->error('There was an error in adding a Surcharge.');
+
                 return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
             }
         } else {
             $this->Flash->error('The Invoice ID was not set.');
+
             return $this->redirect(['controller' => 'Invoices', 'action' => 'outstanding']);
         }
     }
@@ -290,6 +295,7 @@ class InvoiceItemsController extends AppController
                 && $this->InvoiceItems->save($leaderItem)
                 && $this->InvoiceItems->save($disItem)) {
                 $this->Flash->success(__('The invoice has been populated.'));
+
                 return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
             } else {
                 $this->Flash->error(__('There was an error.'));
@@ -299,7 +305,7 @@ class InvoiceItemsController extends AppController
         $this->set(compact('invoiceItem', 'invoices'));
         $this->set('_serialize', ['invoiceItem']);
         $this->set('invPop', $invPop);
-        
+
         if ($this->request->is('get')) {
             // Values from the User Model e.g.
             $this->request->data['cubs'] = $predictedCubs;
@@ -313,7 +319,6 @@ class InvoiceItemsController extends AppController
 
             $this->set(compact('CubsVis', 'YlsVis', 'LeadersVis'));
         }
-        
     }
 
     public function repopulate($invID = null)
@@ -363,7 +368,7 @@ class InvoiceItemsController extends AppController
             $existingCanCubDepQty = 0;
             $existingCanCubDepItem = $this->InvoiceItems->newEntity();
         }
-        
+
         if (!empty($existingCanCub)) {
             $existingCanCubID = $existingCanCub->id;
             $existingCanCubItem = $this->InvoiceItems->get($existingCanCubID);
@@ -420,7 +425,7 @@ class InvoiceItemsController extends AppController
         if (isset($event->discount_id)) {
             $discount = $discounts->get($event->discount_id);
         }
-        
+
 
         // Set Item Description Text
         $depositDescription = $event->deposit_text;
@@ -521,7 +526,7 @@ class InvoiceItemsController extends AppController
             } else {
                 $DepVis = $event->deposit;
             }
-            
+
             if ($numCubs > 0) {
                 $CubsVis = 1;
             } else {
@@ -533,13 +538,13 @@ class InvoiceItemsController extends AppController
             } else {
                 $YlsVis = $event->yls;
             }
-            
+
             if ($numLeaders > 0) {
                 $LeadersVis = 1;
             } else {
                 $LeadersVis = $event->leaders;
             }
-            
+
             if ($disCubs > 0) {
                 $DisVis = 1;
             } elseif (isset($discount) && $discount->active) {
@@ -605,7 +610,7 @@ class InvoiceItemsController extends AppController
             } else {
                 $DepCanVis = 0;
             }
-            
+
             if (MAX($existingCanCubQty, $numCanCubs) > 0) {
                 $CubsCanVis = 1;
             } else {
@@ -617,7 +622,7 @@ class InvoiceItemsController extends AppController
             } else {
                 $YlsCanVis = 0;
             }
-            
+
             if (MAX($existingCanLeaderQty, $numCanLeaders) > 0) {
                 $LeadersCanVis = 1;
             } else {
@@ -686,6 +691,7 @@ class InvoiceItemsController extends AppController
                         && $this->InvoiceItems->save($existingCanLeaderItem)) {
                         // SUCCESS
                         $this->Flash->success(__('The invoice has been repopulated with updated values.'));
+
                         return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
                     } else {
                         $this->Flash->error(__('There was an error with Cancellation.'));
@@ -693,6 +699,7 @@ class InvoiceItemsController extends AppController
                 } else {
                     // SUCCESS
                     $this->Flash->success(__('The invoice has been repopulated with updated values.'));
+
                     return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
                 }
             } else {
@@ -759,6 +766,5 @@ class InvoiceItemsController extends AppController
 
             $this->set(compact('CubsVis', 'YlsVis', 'LeadersVis'));
         }
-        
     }
 }

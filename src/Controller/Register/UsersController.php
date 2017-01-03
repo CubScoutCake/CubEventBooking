@@ -70,6 +70,7 @@ class UsersController extends AppController
                 $redir = $user->get('id');
 
                 $this->Flash->success(__('You have successfully registered!'));
+
                 return $this->redirect(['controller' => 'Notifications', 'action' => 'welcome', 'prefix' => false, $redir, $eventId]);
             } else {
                 $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));

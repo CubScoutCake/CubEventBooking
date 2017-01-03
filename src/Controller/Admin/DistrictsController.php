@@ -34,8 +34,8 @@ class DistrictsController extends AppController
         $district = $this->Districts->get($id, [
             'contain' => [
                 'Champions.Users'
-                , 'Scoutgroups.Applications.Events'
-                , 'Scoutgroups.Applications.Users'
+                , 'Scoutgroups.Sections.Applications.Events'
+                , 'Scoutgroups.Sections.Applications.Users'
             ]
         ]);
         $this->set('district', $district);
@@ -54,6 +54,7 @@ class DistrictsController extends AppController
             $district = $this->Districts->patchEntity($district, $this->request->data);
             if ($this->Districts->save($district)) {
                 $this->Flash->success(__('The district has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The district could not be saved. Please, try again.'));
@@ -79,6 +80,7 @@ class DistrictsController extends AppController
             $district = $this->Districts->patchEntity($district, $this->request->data);
             if ($this->Districts->save($district)) {
                 $this->Flash->success(__('The district has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The district could not be saved. Please, try again.'));
@@ -104,6 +106,7 @@ class DistrictsController extends AppController
         } else {
             $this->Flash->error(__('The district could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

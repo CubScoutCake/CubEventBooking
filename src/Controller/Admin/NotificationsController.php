@@ -72,6 +72,7 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $this->request->data);
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
@@ -145,6 +146,7 @@ class NotificationsController extends AppController
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+
             return $this->redirect(['prefix' => 'admin',  'controller' => 'Landing', 'action' => 'admin_home']);
         }
     }
@@ -396,6 +398,7 @@ class NotificationsController extends AppController
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+
             return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']);
         }
     }
@@ -488,6 +491,7 @@ class NotificationsController extends AppController
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+
             return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']);
         }
     }
@@ -592,6 +596,7 @@ class NotificationsController extends AppController
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+
             return $this->redirect(['action' => 'index']);
         }
     }
@@ -655,6 +660,7 @@ class NotificationsController extends AppController
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+
             return $this->redirect(['action' => 'index']);
         }
     }
@@ -666,6 +672,7 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $this->request->data);
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
@@ -684,6 +691,7 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $this->request->data);
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
@@ -752,6 +760,7 @@ class NotificationsController extends AppController
             $this->Flash->success(__('Invoice Delivered.'));
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+
             return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
         }
     }
@@ -772,6 +781,7 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $this->request->data);
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
@@ -799,6 +809,7 @@ class NotificationsController extends AppController
         } else {
             $this->Flash->error(__('The notification could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

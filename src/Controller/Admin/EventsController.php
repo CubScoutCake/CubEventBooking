@@ -183,7 +183,7 @@ class EventsController extends AppController
             $attendeeCubCount = $apps->find('cubs')->where(['event_id' => $event->id]);
             $attendeeYlCount = $apps->find('youngLeaders')->where(['event_id' => $event->id]);
             $attendeeLeaderCount = $apps->find('leaders')->where(['event_id' => $event->id]);
-            
+
             // Count of Attendees
             $appCubs = $attendeeCubCount->count('*');
             $appYls = $attendeeYlCount->count('*');
@@ -198,7 +198,6 @@ class EventsController extends AppController
         $logoHeight = $logoSet;
         $logoWidth = $logoSet / $event->logo_ratio;
         $this->set(compact('logoWidth', 'logoHeight'));
-
     }
 
     public function regList($id = null)
@@ -244,7 +243,7 @@ class EventsController extends AppController
 
     public function accounts($id = null)
     {
-    	$event = $this->Events->get($id, [
+        $event = $this->Events->get($id, [
             'contain' => ['Settings', 'Discounts', 'Applications', 'Applications.Users', 'Applications.Scoutgroups']
         ]);
         $this->set('event', $event);
@@ -298,7 +297,7 @@ class EventsController extends AppController
             $attendeeCubCount = $apps->find('cubs')->where(['event_id' => $event->id]);
             $attendeeYlCount = $apps->find('youngLeaders')->where(['event_id' => $event->id]);
             $attendeeLeaderCount = $apps->find('leaders')->where(['event_id' => $event->id]);
-            
+
             // Count of Attendees
             $appCubs = $attendeeCubCount->count('*');
             $appYls = $attendeeYlCount->count('*');
@@ -340,7 +339,7 @@ class EventsController extends AppController
             $sumBalances = $sumValues - $sumPayments;
 
             // Count of Line Items
-            $invItemCounts = $itms->find('all')->contain(['Invoices.Applications'])->where(['Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity'),'value' => $invoices->func()->max('InvoiceItems.Value')])->group('itemtype_id')->toArray();
+            $invItemCounts = $itms->find('all')->contain(['Invoices.Applications'])->where(['Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity'), 'value' => $invoices->func()->max('InvoiceItems.Value')])->group('itemtype_id')->toArray();
 
             $invCubs = $invItemCounts[1]->sum;
             $invYls = $invItemCounts[2]->sum;
@@ -354,7 +353,7 @@ class EventsController extends AppController
 
             if (count($invItemCounts) > 6) {
                 // Count of Cancelled Items
-                $canItemCounts = $itms->find('all')->contain(['Invoices.Applications', 'Itemtypes'])->where(['Itemtypes.cancelled' => true, 'Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity'),'value' => $invoices->func()->max('InvoiceItems.Value')])->group('itemtype_id')->toArray();
+                $canItemCounts = $itms->find('all')->contain(['Invoices.Applications', 'Itemtypes'])->where(['Itemtypes.cancelled' => true, 'Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity'), 'value' => $invoices->func()->max('InvoiceItems.Value')])->group('itemtype_id')->toArray();
 
                 $canCubs = $canItemCounts[1]->sum;
                 $canYls = $canItemCounts[2]->sum;
@@ -363,9 +362,8 @@ class EventsController extends AppController
                 $canValueCubs = $canItemCounts[1]->value * $canItemCounts[1]->sum;
                 $canValueYls = $canItemCounts[2]->value * $canItemCounts[2]->sum;
                 $canValueLeaders = $canItemCounts[3]->value * $canItemCounts[3]->sum;
-
             }
-            
+
             //Find all Outstanding Invoices
             $outInvoices = $invs
                 ->find('outstanding')
@@ -386,13 +384,13 @@ class EventsController extends AppController
             }
             if ($unpaid == 0) {
                 $unpaidInvoices = null;
-            }          
+            }
         }
 
         $this->set(compact('outInvoices', 'unpaidInvoices'));
         $this->set(compact('invCubs', 'invYls', 'invLeaders', 'invValueCubs', 'invValueYls', 'invValueLeaders'));
         $this->set(compact('canCubs', 'canYls', 'canLeaders', 'canValueCubs', 'canValueYls', 'canValueLeaders'));
-        $this->set(compact('sumValues', 'sumBalances', 'sumPayments', 'outstanding', 'unpaid'));        
+        $this->set(compact('sumValues', 'sumBalances', 'sumPayments', 'outstanding', 'unpaid'));
     }
 
 
@@ -409,6 +407,7 @@ class EventsController extends AppController
             $event = $this->Events->patchEntity($event, $this->request->data);
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The event could not be saved. Please, try again.'));
@@ -438,6 +437,7 @@ class EventsController extends AppController
             $event = $this->Events->patchEntity($event, $this->request->data);
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The event could not be saved. Please, try again.'));
@@ -467,6 +467,7 @@ class EventsController extends AppController
         } else {
             $this->Flash->error(__('The event could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

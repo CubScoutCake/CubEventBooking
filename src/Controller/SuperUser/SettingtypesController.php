@@ -50,6 +50,7 @@ class SettingtypesController extends AppController
             $settingtype = $this->Settingtypes->patchEntity($settingtype, $this->request->data);
             if ($this->Settingtypes->save($settingtype)) {
                 $this->Flash->success(__('The settingtype has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The settingtype could not be saved. Please, try again.'));
@@ -75,6 +76,7 @@ class SettingtypesController extends AppController
             $settingtype = $this->Settingtypes->patchEntity($settingtype, $this->request->data);
             if ($this->Settingtypes->save($settingtype)) {
                 $this->Flash->success(__('The settingtype has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The settingtype could not be saved. Please, try again.'));
@@ -100,6 +102,7 @@ class SettingtypesController extends AppController
         } else {
             $this->Flash->error(__('The settingtype could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

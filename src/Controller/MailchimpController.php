@@ -39,7 +39,6 @@ class MailchimpController extends AppController
     {
         // Set the layout.
         $this->viewBuilder()->layout('outside');
-
     }
 
     public function beforeFilter(\Cake\Event\Event $event)

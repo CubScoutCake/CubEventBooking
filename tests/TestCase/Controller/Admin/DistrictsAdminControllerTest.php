@@ -11,7 +11,8 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
 {
 
     public $fixtures = [
-        'app.districts'
+        'app.districts',
+        'app.auth_roles',
     ];
 
     public function testIndexUnauthenticatedFails()
@@ -24,9 +25,7 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
 
     public function testIndexUnauthorisedFails()
     {
-        $this->markTestSkipped('Authentication Issue being addressed.');
-
-        $this->session(['Auth.User.authrole' => 'user']);
+        $this->session(['Auth.User.auth_role_id' => 1]);
 
         $this->get('/admin/districts');
 
@@ -39,7 +38,7 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
 
     public function testAddUnauthorisedFails()
     {
-        $this->session(['Auth.User.authrole' => 'user']);
+        $this->session(['Auth.User.auth_role_id' => 1]);
 
         $this->get('/admin/districts/add');
 
@@ -50,7 +49,7 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
 
     public function testAddAuthorisedLoads()
     {
-        $this->session(['Auth.User.authrole' => 'admin']);
+        $this->session(['Auth.User.auth_role_id' => 2]);
 
         $this->get('/admin/districts/add');
 

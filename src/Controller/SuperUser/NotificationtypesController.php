@@ -50,6 +50,7 @@ class NotificationtypesController extends AppController
             $notificationtype = $this->Notificationtypes->patchEntity($notificationtype, $this->request->data);
             if ($this->Notificationtypes->save($notificationtype)) {
                 $this->Flash->success(__('The notificationtype has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notificationtype could not be saved. Please, try again.'));
@@ -75,6 +76,7 @@ class NotificationtypesController extends AppController
             $notificationtype = $this->Notificationtypes->patchEntity($notificationtype, $this->request->data);
             if ($this->Notificationtypes->save($notificationtype)) {
                 $this->Flash->success(__('The notificationtype has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notificationtype could not be saved. Please, try again.'));
@@ -100,6 +102,7 @@ class NotificationtypesController extends AppController
         } else {
             $this->Flash->error(__('The notificationtype could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

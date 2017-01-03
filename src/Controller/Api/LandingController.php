@@ -31,7 +31,6 @@ class LandingController extends AppController
 {
     public function welcome($eventId = null)
     {
-        
     }
 
     public function beforeFilter(\Cake\Event\Event $event)

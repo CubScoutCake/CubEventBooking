@@ -142,7 +142,6 @@ class InvoicesController extends AppController
 
         $this->set('invoice', $invoice);
         $this->set('_serialize', ['invoice']);
-
     }
 
     public function pdfView($id = null)
@@ -158,7 +157,7 @@ class InvoicesController extends AppController
                    'filename' => 'Invoice_' . $id
                ]
            ]);
-        
+
         // Connect Registry
         $settings = TableRegistry::get('Settings');
         $events = TableRegistry::get('Events');
@@ -211,11 +210,11 @@ class InvoicesController extends AppController
 
             $event = $events->get($eventId, ['contain' => ['Applications.Invoices', 'Settings']]);
 
-            
+
 
             foreach ($event->applications as $applications) {
                 $invoiceFirst = $this->Invoices->find('all')->where(['application_id' => $applications->id])->first();
-                
+
                 // Insantiate Objects
                 $invoice = $this->Invoices->get($invoiceFirst->id, [
                     'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
@@ -276,7 +275,7 @@ class InvoicesController extends AppController
                    'filename' => 'Invoice_' . $id
                ]
            ]);
-        
+
         // Connect Registry
         $settings = TableRegistry::get('Settings');
         $events = TableRegistry::get('Events');
@@ -331,6 +330,7 @@ class InvoicesController extends AppController
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
             if ($this->Invoices->save($invoice)) {
                 $this->Flash->success(__('The invoice has been saved.'));
+
                 return $this->redirect(['action' => 'view', $invoice->id]);
             } else {
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
@@ -346,13 +346,13 @@ class InvoicesController extends AppController
         )
                     ->contain(['Scoutgroups.Districts']);
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
-        
+
         // If User Set or Not - Limit the list.
         $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'order' => ['modified' => 'DESC']]);
         if (isset($userId)) {
             $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
         }
-        
+
 
         $this->set(compact('invoice', 'users', 'payments', 'applications'));
         $this->set('_serialize', ['invoice']);
@@ -361,7 +361,6 @@ class InvoicesController extends AppController
             // Values from the Model e.g.
             $this->request->data['user_id'] = $userId;
         }
-              
     }
 
     /**
@@ -381,6 +380,7 @@ class InvoicesController extends AppController
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
             if ($this->Invoices->save($invoice)) {
                 $this->Flash->success(__('The invoice has been saved.'));
+
                 return $this->redirect(['action' => 'view', $invoice->id]);
             } else {
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
@@ -419,6 +419,7 @@ class InvoicesController extends AppController
         } else {
             $this->Flash->error(__('The invoice could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 
@@ -432,7 +433,6 @@ class InvoicesController extends AppController
         $invoice = $this->Invoices->newEntity();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 
             if (!isset($userId)) {
@@ -441,7 +441,7 @@ class InvoicesController extends AppController
 
                 $userId = $application->user_id;
             }
-            
+
             $newData = ['user_id' => $userId];
 
             $invoice = $this->Invoices->patchEntity($invoice, $newData);
@@ -466,9 +466,9 @@ class InvoicesController extends AppController
         if (isset($userId)) {
             $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
         }
-        
+
         $this->set('_serialize', ['invoice']);
-        $this->set(compact('applications','invoice'));
+        $this->set(compact('applications', 'invoice'));
 
         if ($this->request->is('get')) {
             // Values from the Model e.g.
@@ -490,13 +490,16 @@ class InvoicesController extends AppController
         if ($this->Invoices->save($invoice)) {
             if ($itemCount >= 5) {
                 $this->Flash->success(__('The invoice is valid. Please enter the number of Attendees you are bringing.'));
+
                 return $this->redirect(['prefix' => 'admin', 'controller' => 'InvoiceItems', 'action' => 'repopulate', $InvId]);
             } else {
                 $this->Flash->success(__('An invoice has been generated. Please enter the number of Attendees you are bringing.'));
+
                 return $this->redirect(['prefix' => 'admin', 'controller' => 'InvoiceItems', 'action' => 'populate', $InvId]);
             }
         } else {
             $this->Flash->error(__('The invoice could not be regenerated. Please, try again.'));
+
             return $this->redirect(['Controller' => 'Invoices', 'action' => 'view', $InvId]);
         }
     }

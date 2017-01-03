@@ -33,7 +33,6 @@ class InvcanForm extends Form
         $validator->allowEmpty('cancelled_leaders');
 
         return $validator;
-
     }
 
     protected function _execute(array $data)

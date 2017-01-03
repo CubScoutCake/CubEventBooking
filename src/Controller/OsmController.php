@@ -57,10 +57,10 @@ class OsmController extends AppController
     {
         $settings = TableRegistry::get('Settings');
         $users = TableRegistry::get('Users');
-        
+
         $linkForm = new LinkForm();
         $session = $this->request->session();
-        
+
         $user = $users->get($this->Auth->user('id'));
 
         if ($this->request->is('post')) {
@@ -108,14 +108,14 @@ class OsmController extends AppController
                         ];
 
                     $sets = TableRegistry::get('Settings');
-                    
+
                     $jsonOSM = json_encode($osmEnt);
                     $apiKey = $sets->get(13)->text;
                     $projectId = $sets->get(14)->text;
                     $eventType = 'Action';
-                    
+
                     $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-                    
+
                     $http = new Client();
                     $response = $http->post(
                         $keenURL,
@@ -162,14 +162,14 @@ class OsmController extends AppController
                             ];
 
                         $sets = TableRegistry::get('Settings');
-                        
+
                         $jsonOSM = json_encode($osmEnt);
                         $apiKey = $sets->get(13)->text;
                         $projectId = $sets->get(14)->text;
                         $eventType = 'Action';
-                        
+
                         $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-                        
+
                         $http = new Client();
                         $response = $http->post(
                             $keenURL,
@@ -188,6 +188,7 @@ class OsmController extends AppController
                 }
             } else {
                 $this->Flash->error(__('There was a request error, please try again.'));
+
                 return $this->redirect(['action' => 'link']);
             }
         }
@@ -214,6 +215,7 @@ class OsmController extends AppController
 
             if (empty($user->osm_secret) || !$session->check('OSM.Secret')) {
                 $this->Flash->error(__('Please link your account first'));
+
                 return $this->redirect(['action' => 'link']);
             } else {
                 $userOsmId = $user->osm_user_id;
@@ -240,7 +242,7 @@ class OsmController extends AppController
                 $body = $response->json;
 
                 $this->set(compact('body'));
-                
+
                 $body = Hash::remove($body, '{n}.sectionConfig');
                 $body = Hash::remove($body, '{n}.permissions');
 
@@ -249,6 +251,7 @@ class OsmController extends AppController
                 $this->set(compact('hsec'));
             } else {
                 $this->Flash->error(__('There was a request error, please try again.'));
+
                 return $this->redirect(['action' => 'home']);
             }
         }
@@ -292,9 +295,11 @@ class OsmController extends AppController
 
         if (is_null($user->osm_secret) || !$session->check('OSM.Secret')) {
             $this->Flash->error(__('Please link your account first'));
+
             return $this->redirect(['action' => 'link']);
         } elseif (is_null($user->osm_section_id)) {
             $this->Flash->error(__('Please set your section first'));
+
             return $this->redirect(['action' => 'section']);
         } else {
             $userOsmId = $user->osm_user_id;
@@ -346,7 +351,7 @@ class OsmController extends AppController
                     $termSel = $term;
                 }
             }
-            
+
             if ($count == 1) {
                 $termId = Hash::get($termSel, 'termid');
                 $termEndDate = Hash::get($termSel, 'enddate');
@@ -358,9 +363,11 @@ class OsmController extends AppController
 
                 if ($users->save($user)) {
                     $this->Flash->success(__('Your OSM Term has been set.'));
+
                     return $this->redirect(['action' => 'home']);
                 } else {
                     $this->Flash->error(__('The user could not be saved. Please, try again.'));
+
                     return $this->redirect(['action' => 'home']);
                 }
             } else {
@@ -368,6 +375,7 @@ class OsmController extends AppController
             }
         } else {
             $this->Flash->error(__('There was a request error, please try again.'));
+
             return $this->redirect(['action' => 'home']);
         }
     }
@@ -390,12 +398,15 @@ class OsmController extends AppController
 
         if (empty($user->osm_secret) || !$session->check('OSM.Secret')) {
             $this->Flash->error(__('Please link your account first'));
+
             return $this->redirect(['action' => 'link']);
         } elseif (empty($user->osm_section_id)) {
             $this->Flash->error(__('Please select your section first'));
+
             return $this->redirect(['action' => 'section']);
         } elseif (empty($user->osm_current_term) && $user->osm_term_end > $now) {
             $this->Flash->error(__('Please choose your Term first'));
+
             return $this->redirect(['action' => 'term']);
         } else {
             $userOsmId = $user->osm_user_id;
@@ -442,12 +453,13 @@ class OsmController extends AppController
                 $message = Hash::get($error, 'message');
 
                 $this->Flash->error(__($message . ' Please see instructions for granting access in OSM.'));
+
                 return $this->redirect(['action' => 'access']);
             }
 
             $cubs = Hash::get($preBody, 'data');
             //Debugger::dump($cubs);
-            
+
             //$cubs = Hash::extract($body, 'items');
             //$cubs = Hash::normalize($cubs);
 
@@ -705,14 +717,14 @@ class OsmController extends AppController
                 ];
 
             $sets = TableRegistry::get('Settings');
-            
+
             $jsonOSM = json_encode($osmEnt);
             $apiKey = $sets->get(13)->text;
             $projectId = $sets->get(14)->text;
             $eventType = 'Action';
-            
+
             $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-            
+
             $http = new Client();
             $response = $http->post(
                 $keenURL,
@@ -723,12 +735,12 @@ class OsmController extends AppController
             return $this->redirect(['action' => 'home']);
         } else {
             $this->Flash->error(__('There was a request error, please try again.'));
+
             return $this->redirect(['action' => 'home']);
         }
     }
 
     public function access()
     {
-
     }
 }

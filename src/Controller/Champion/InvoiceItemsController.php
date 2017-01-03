@@ -36,6 +36,7 @@ class InvoiceItemsController extends AppController
 
         if ($event->invoices_locked) {
             $this->Flash->error(__($errorMsg));
+
             return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
         }
 
@@ -115,7 +116,7 @@ class InvoiceItemsController extends AppController
             } else {
                 $formNumCubs = 0;
             }
-            
+
             if ($event->yls) {
                 $formNumYls = $this->request->data['yls'];
             } else {
@@ -232,6 +233,7 @@ class InvoiceItemsController extends AppController
             } else {
                 if ($this->InvoiceItems->save($depCubItem) && $this->InvoiceItems->save($cubItem) && $this->InvoiceItems->save($yLItem) && $this->InvoiceItems->save($leaderItem) && $this->InvoiceItems->save($disItem)) {
                     $this->Flash->success(__('The invoice has been populated.'));
+
                     return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
                 } else {
                     $this->Flash->error(__('There was an error.'));
@@ -242,14 +244,13 @@ class InvoiceItemsController extends AppController
         $this->set(compact('invoiceItem', 'invoices'));
         $this->set('_serialize', ['invoiceItem']);
         $this->set('invPop', $invPop);
-        
+
         if ($this->request->is('get')) {
             // Values from the User Model e.g.
             $this->request->data['cubs'] = $predictedCubs;
             $this->request->data['yls'] = $predictedYls;
             $this->request->data['leaders'] = $predictedLeaders;
         }
-        
     }
 
     public function repopulate($invID = null)
@@ -314,6 +315,7 @@ class InvoiceItemsController extends AppController
 
         if ($event->invoices_locked) {
             $this->Flash->error(__($errorMsg));
+
             return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
         }
 
@@ -327,7 +329,7 @@ class InvoiceItemsController extends AppController
         $LeadersVis = $event->leaders;
 
         $this->set(compact('CubsVis', 'YlsVis', 'LeadersVis'));
-        
+
 
         // Set Item Description Text
         $depositDescription = $event->deposit_text;
@@ -383,7 +385,7 @@ class InvoiceItemsController extends AppController
             } else {
                 $formNumCubs = 0;
             }
-            
+
             if ($event->yls) {
                 $formNumYls = $this->request->data['yls'];
             } else {
@@ -395,7 +397,7 @@ class InvoiceItemsController extends AppController
             } else {
                 $formNumLeaders = 0;
             }
-            
+
 
 
             // Compare Form Info - Cubs
@@ -536,6 +538,7 @@ class InvoiceItemsController extends AppController
             } else {
                 if ($this->InvoiceItems->save($existingCubDepItem) && $this->InvoiceItems->save($existingCubItem) && $this->InvoiceItems->save($existingYlItem) && $this->InvoiceItems->save($existingLeaderItem) && $this->InvoiceItems->save($disItem) && $this->InvoiceItems->delete($existingDiscountItem)) {
                     $this->Flash->success(__('The invoice has been repopulated with updated values.'));
+
                     return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
                 } else {
                     $this->Flash->error(__('There was an error.'));

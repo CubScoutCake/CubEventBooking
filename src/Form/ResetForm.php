@@ -23,7 +23,6 @@ class ResetForm extends Form
             ->notEmpty('email');
 
         return $validator;
-
     }
 
     protected function _execute(array $data)

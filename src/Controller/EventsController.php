@@ -96,7 +96,7 @@ class EventsController extends AppController
         $applications = $apps->find('all')->where(['event_id' => $event->id]);
         $invoices = $invs->find('all')->contain(['Applications'])->where(['Applications.event_id' => $event->id]);
         $allInvoices = $invs->find('all')->contain(['Applications'])->where(['Applications.event_id' => $event->id]);
-        
+
         if (isset($event->discount_id)) {
             $discount = $dscs->get($event->discount_id);
         }
@@ -193,6 +193,5 @@ class EventsController extends AppController
         $logoHeight = $logoSet;
         $logoWidth = $logoSet / $event->logo_ratio;
         $this->set(compact('logoWidth', 'logoHeight'));
-
     }
 }

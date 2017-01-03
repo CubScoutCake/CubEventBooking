@@ -26,6 +26,8 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
         'app.auth_roles',
         'app.sections',
         'app.section_types',
+        'app.notifications',
+        'app.notificationtypes',
     ];
 
     public function testIndexUnauthenticatedFails()
@@ -43,23 +45,21 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
      */
     public function testIndexUnauthorised()
     {
-        $this->markTestSkipped('Authorisation Issue.');
-
         $this->session([
-            'Auth.User.id' => 1,
-            'Auth.User.authrole' => 'user'
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 1
         ]);
 
         $this->get('/admin/scoutgroups');
 
-        $this->assertRedirect(['controller' => 'Landing', 'action' => 'user-home']);
+        $this->assertRedirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user-home']);
     }
 
     public function testIndex()
     {
         $this->session([
-            'Auth.User.id' => 1,
-            'Auth.User.authrole' => 'admin'
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
         ]);
 
         $this->get('/admin/scoutgroups');
@@ -77,16 +77,14 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
 
     public function testViewUnauthorised()
     {
-        $this->markTestSkipped('Authorisation Issue.');
-
         $this->session([
-            'Auth.User.id' => 1,
-            'Auth.User.authrole' => 'user'
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 1
         ]);
 
         $this->get('/admin/scoutgroups/view/1');
 
-        $this->assertRedirect(['controller' => 'Landing', 'action' => 'user-home']);
+        $this->assertRedirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user-home']);
     }
 
     /**
@@ -96,11 +94,9 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestSkipped('To be Fixed');
-
         $this->session([
-            'Auth.User.id' => 1,
-            'Auth.User.authrole' => 'admin'
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
         ]);
 
         $this->get('/admin/scoutgroups/view/1');

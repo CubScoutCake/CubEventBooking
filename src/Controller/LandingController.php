@@ -61,7 +61,7 @@ class LandingController extends AppController
 
         // Counts of Entities
         $countApplications = $applications->count('*');
-        $countInvoices = $invoices->count('*'); 
+        $countInvoices = $invoices->count('*');
         $countAttendees = $atts->find('all', ['conditions' => ['user_id' => $userId]])->count('*');
 
         if (empty($payments)) {

@@ -58,7 +58,6 @@ class AppController extends Controller
         // continues to work.
         //$this->Auth->allow(['display']);
         //$this->Auth->allow(['index']);
-
     }
 
     public function isAuthorized($user)

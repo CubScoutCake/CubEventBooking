@@ -23,7 +23,7 @@ class ProgressComponent extends Component
             $flash = $set;
         }
 
-		$apps = TableRegistry::get('Applications');
+        $apps = TableRegistry::get('Applications');
         $invs = TableRegistry::get('Invoices');
         $atts = TableRegistry::get('Attendees');
         $itms = TableRegistry::get('InvoiceItems');
@@ -31,7 +31,7 @@ class ProgressComponent extends Component
         $controller = $this->_registry->getController();
 
         // Get Application
-		$app = $apps->get($appID, [
+        $app = $apps->get($appID, [
             'contain' => [
                 'Users',
                 'Scoutgroups',
@@ -39,44 +39,44 @@ class ProgressComponent extends Component
                 'Invoices',
                 'Attendees' => [
                     'sort' => [
-                        'Attendees.role_id' => 'ASC', 
+                        'Attendees.role_id' => 'ASC',
                         'Attendees.lastname' => 'ASC'
                     ]
                 ]
-                ,'Attendees.Roles'
-                ,'Attendees.Scoutgroups'
+                , 'Attendees.Roles'
+                , 'Attendees.Scoutgroups'
             ]
         ]);
 
         if (isset($userID)) {
-        	$app = $apps->get($appID, [
-        	    'contain' => [
-        	        'Users',
-        	        'Scoutgroups',
-        	        'Events',
-        	        'Invoices',
-        	        'Attendees' => [
-        	            'sort' => [
-        	                'Attendees.role_id' => 'ASC', 
-        	                'Attendees.lastname' => 'ASC'
-        	            ]
-        	        ], 
-        	        'Attendees.Roles' => [
-        	            'conditions' => [
-        	                'Attendees.user_id' => $userID
-        	        ]], 
-        	        'Attendees.Scoutgroups' => [
-        	            'conditions' => [
-        	                'Attendees.user_id' => $userID
-        	        ]]]
-        	]);
+            $app = $apps->get($appID, [
+                'contain' => [
+                    'Users',
+                    'Scoutgroups',
+                    'Events',
+                    'Invoices',
+                    'Attendees' => [
+                        'sort' => [
+                            'Attendees.role_id' => 'ASC',
+                            'Attendees.lastname' => 'ASC'
+                        ]
+                    ],
+                    'Attendees.Roles' => [
+                        'conditions' => [
+                            'Attendees.user_id' => $userID
+                        ]],
+                    'Attendees.Scoutgroups' => [
+                        'conditions' => [
+                            'Attendees.user_id' => $userID
+                        ]]]
+            ]);
         }
 
         // Determine Invoice Progress
         $invoices = $invs->find('all')->where(['application_id' => $appID]);
         $invCount = $invoices->count('*');
         $invFirst = $invs->find('all')->where(['application_id' => $appID])->first();
-        
+
         // Find Cub, YL & Leader Counts
         $attendeeCubCount = $apps->find('cubs')->where(['Applications.id' => $appID])->all();
         $attendeeYlCount = $apps->find('youngLeaders')->where(['Applications.id' => $appID])->all();
@@ -125,7 +125,7 @@ class ProgressComponent extends Component
         }
 
         $sumBalances = $sumValues - $sumPayments;
-        
+
         $appDone = 1; // Set at 100% because an application has been created.
         $invDone = 0;
         $cubsDone = 0;
@@ -134,9 +134,9 @@ class ProgressComponent extends Component
         $status = 'danger';
 
         if ($invCount > 1) {
-        	if ($flash == true) {
-        		$this->Flash->error(__('There are Multiple Invoices on one Application.'));
-        	}
+            if ($flash == true) {
+                $this->Flash->error(__('There are Multiple Invoices on one Application.'));
+            }
             $invDone = 0.5;
         } elseif ($invCount == 1) {
             $invDone = 1;
@@ -147,12 +147,12 @@ class ProgressComponent extends Component
             $cubsDone = $attCubs / $invCubs;
 
             if ($set == true) {
-            	$controller->set(compact('addCubs'));
+                $controller->set(compact('addCubs'));
             }
         } elseif ($attCubs > 0 && $invCubs < $attCubs) {
-        	if ($flash == true) {
-        		$this->Flash->error(__('Your Invoice is not Reflective of Your Number of Cubs.'));
-        	}
+            if ($flash == true) {
+                $this->Flash->error(__('Your Invoice is not Reflective of Your Number of Cubs.'));
+            }
             $invDone = 0;
             if ($invCount > 1) {
                 $invDone = 0.5;
@@ -167,12 +167,12 @@ class ProgressComponent extends Component
             $cubsNotDone = $attNotCubs / $invNotCubs;
 
             if ($set == true) {
-            	$controller->set(compact('addNotCubs'));
+                $controller->set(compact('addNotCubs'));
             }
         } elseif ($attNotCubs > 0 && $invNotCubs < $attNotCubs) {
-        	if ($flash == true) {
-        		$this->Flash->error(__('Your Invoice is not Reflective of Your Number of Leaders & Young Leaders.'));
-        	}
+            if ($flash == true) {
+                $this->Flash->error(__('Your Invoice is not Reflective of Your Number of Leaders & Young Leaders.'));
+            }
             $invDone = 0;
             if ($invCount > 1) {
                 $invDone = 0.5;
@@ -199,58 +199,58 @@ class ProgressComponent extends Component
         }
 
         if ($set == true) {
-        	$controller->set(compact('invCount', 'invFirst'));
-        	$controller->set(compact('attCubs', 'attYls', 'attLeaders', 'attNotCubs'));
-        	$controller->set(compact('invCubs', 'invYls', 'invLeaders', 'invNotCubs'));
-        	$controller->set(compact('sumBalances', 'sumPayments', 'sumValues'));
-        	$controller->set(compact('appDone', 'invDone', 'cubsDone', 'cubsNotDone', 'payDone'));
-        	$controller->set(compact('done', 'status'));
+            $controller->set(compact('invCount', 'invFirst'));
+            $controller->set(compact('attCubs', 'attYls', 'attLeaders', 'attNotCubs'));
+            $controller->set(compact('invCubs', 'invYls', 'invLeaders', 'invNotCubs'));
+            $controller->set(compact('sumBalances', 'sumPayments', 'sumValues'));
+            $controller->set(compact('appDone', 'invDone', 'cubsDone', 'cubsNotDone', 'payDone'));
+            $controller->set(compact('done', 'status'));
         }
 
         if ($set == false && $full == true) {
-        	$results = [
-        		'invCount' => $invCount
-        		,'invFirst' => $invFirst
-        		,'invCubs' => $invCubs
-        		,'invYls' => $invYls
-        		,'invLeaders' => $invLeaders
-        		,'invNotCubs' => $invNotCubs
-        		,'attCubs' => $attCubs
-        		,'attYls' => $attYls
-        		,'attLeaders' => $attLeaders
-        		,'attNotCubs' => $attNotCubs
-        		,'sumBalances' => $sumBalances
-        		,'sumPayments' => $sumPayments
-        		,'sumValues' => $sumValues
-        		,'appDone' => $appDone
-        		,'invDone' => $invDone
-        		,'cubsDone' => $cubsDone
-        		,'cubsNotDone' => $cubsNotDone
-        		,'payDone' => $payDone
-        		,'done' => $done
-        		,'status' => $status
-        		];
+            $results = [
+                'invCount' => $invCount
+                , 'invFirst' => $invFirst
+                , 'invCubs' => $invCubs
+                , 'invYls' => $invYls
+                , 'invLeaders' => $invLeaders
+                , 'invNotCubs' => $invNotCubs
+                , 'attCubs' => $attCubs
+                , 'attYls' => $attYls
+                , 'attLeaders' => $attLeaders
+                , 'attNotCubs' => $attNotCubs
+                , 'sumBalances' => $sumBalances
+                , 'sumPayments' => $sumPayments
+                , 'sumValues' => $sumValues
+                , 'appDone' => $appDone
+                , 'invDone' => $invDone
+                , 'cubsDone' => $cubsDone
+                , 'cubsNotDone' => $cubsNotDone
+                , 'payDone' => $payDone
+                , 'done' => $done
+                , 'status' => $status
+                ];
 
-        	return $results;
+            return $results;
         }
 
         if ($set == false && $full == false) {
-        	$simpleResults = [
-        		'done' => $done
-        		,'appDone' => $appDone
-        		,'invDone' => $invDone
-        		,'cubsDone' => $cubsDone
-        		,'cubsNotDone' => $cubsNotDone
-        		,'payDone' => $payDone
-        		,'status' => $status
-        	];
+            $simpleResults = [
+                'done' => $done
+                , 'appDone' => $appDone
+                , 'invDone' => $invDone
+                , 'cubsDone' => $cubsDone
+                , 'cubsNotDone' => $cubsNotDone
+                , 'payDone' => $payDone
+                , 'status' => $status
+            ];
 
-        	return $simpleResults;
+            return $simpleResults;
         }
     }
 
     public function cacheApps($userID)
-    {   
+    {
         $usrs = TableRegistry::get('Users');
 
         $user = $usrs->get($userID, ['contain' => ['Applications.Events' => ['conditions' => ['Events.live' => true]]]]);
@@ -258,7 +258,6 @@ class ProgressComponent extends Component
 
         if (!empty($user->applications)) {
             foreach ($user->applications as $applications => $applications) {
-
                 $appProgress = ['this' => 'is a new value'];
 
                 //$this->determineApp($applications->id, false, $userID, false, false, false);

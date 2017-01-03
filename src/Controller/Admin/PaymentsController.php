@@ -57,20 +57,21 @@ class PaymentsController extends AppController
 
             if ($this->Payments->save($payment)) {
                 $redir = $payment->get('id');
-                
+
                 $this->Flash->success(__('The payment has been saved.'));
+
                 return $this->redirect(['controller' => 'Notifications', 'action' => 'new_payment', 'prefix' => 'admin', $redir]);
             } else {
                 $this->Flash->error(__('The payment could not be saved. Please, try again.'));
             }
         }
-        
+
         $invoices = $this->Payments->Invoices->find('unarchived')->find('list', ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]);
 
         if (isset($invId)) {
             $invoices = $this->Payments->Invoices->find('list', ['conditions' => ['Invoices.id' => $invId]]);
         }
-        
+
         $this->set(compact('payment', 'invoices'));
         $this->set('_serialize', ['payment']);
     }
@@ -91,6 +92,7 @@ class PaymentsController extends AppController
             $payment = $this->Payments->patchEntity($payment, $this->request->data);
             if ($this->Payments->save($payment)) {
                 $this->Flash->success(__('The payment has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The payment could not be saved. Please, try again.'));
@@ -117,6 +119,7 @@ class PaymentsController extends AppController
         } else {
             $this->Flash->error(__('The payment could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

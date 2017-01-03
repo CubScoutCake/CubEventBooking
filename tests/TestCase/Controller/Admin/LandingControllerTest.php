@@ -34,13 +34,12 @@ class LandingAdminControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testUserHome()
+    public function testAdminHome()
     {
-        $this->markTestSkipped('To be Fixed');
+        $this->session(['Auth.User.id' => 1,
+                        'Auth.User.auth_role_id' => 2]);
 
-        $this->session(['Auth.User.id' => 1]);
-
-        $this->get('/landing/user-home');
+        $this->get('/admin/landing/admin-home');
 
         $this->assertResponseOk();
     }
@@ -63,11 +62,11 @@ class LandingAdminControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testUserHomeUnauthorisedFails()
+    public function testAdminHomeUnauthorisedFails()
     {
         $this->session([
-            'Auth.User.id' => 1,
-            'Auth.User.authrole' => 'user'
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 1
         ]);
 
         $this->get('/admin/landing/admin-home');
@@ -75,8 +74,8 @@ class LandingAdminControllerTest extends IntegrationTestCase
         $this->assertRedirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'userHome']);
 
         $this->session([
-            'Auth.User.id' => 1,
-            'Auth.User.authrole' => 'champion'
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 1
         ]);
 
         $this->get('/admin/landing/admin-home');

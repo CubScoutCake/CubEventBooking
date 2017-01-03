@@ -24,7 +24,6 @@ class InvGenForm extends Form
         $validator->requirePresence('leaders', 'create');
 
         return $validator;
-
     }
 
     protected function _execute(array $data)

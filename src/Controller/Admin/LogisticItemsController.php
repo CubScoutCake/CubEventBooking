@@ -56,6 +56,7 @@ class LogisticItemsController extends AppController
             $logisticItem = $this->LogisticItems->patchEntity($logisticItem, $this->request->data);
             if ($this->LogisticItems->save($logisticItem)) {
                 $this->Flash->success(__('The logistic item has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The logistic item could not be saved. Please, try again.'));
@@ -84,6 +85,7 @@ class LogisticItemsController extends AppController
             $logisticItem = $this->LogisticItems->patchEntity($logisticItem, $this->request->data);
             if ($this->LogisticItems->save($logisticItem)) {
                 $this->Flash->success(__('The logistic item has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The logistic item could not be saved. Please, try again.'));
@@ -112,6 +114,7 @@ class LogisticItemsController extends AppController
         } else {
             $this->Flash->error(__('The logistic item could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

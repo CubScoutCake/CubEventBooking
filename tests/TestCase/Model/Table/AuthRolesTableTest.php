@@ -65,10 +65,10 @@ class AuthRolesTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'auth_role' => 'Admin',
-                'admin_access' => 1,
-                'champion_access' => 1,
-                'super_user' => 1,
+                'auth_role' => 'User',
+                'admin_access' => 0,
+                'champion_access' => 0,
+                'super_user' => 0,
                 'auth' => 1
             ],
             [
@@ -102,7 +102,7 @@ class AuthRolesTableTest extends TestCase
 
         $goodData = [
             'id' => 3,
-            'auth_role' => 'User',
+            'auth_role' => 'Admin',
             'admin_access' => 1,
             'champion_access' => 1,
             'super_user' => 1,
@@ -112,10 +112,10 @@ class AuthRolesTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'auth_role' => 'Admin',
-                'admin_access' => 1,
-                'champion_access' => 1,
-                'super_user' => 1,
+                'auth_role' => 'User',
+                'admin_access' => 0,
+                'champion_access' => 0,
+                'super_user' => 0,
                 'auth' => 1
             ],
             [
@@ -128,7 +128,7 @@ class AuthRolesTableTest extends TestCase
             ],
             [
                 'id' => 3,
-                'auth_role' => 'User',
+                'auth_role' => 'Admin',
                 'admin_access' => 1,
                 'champion_access' => 1,
                 'super_user' => 1,
@@ -159,7 +159,7 @@ class AuthRolesTableTest extends TestCase
     {
         $badData = [
             'id' => 5,
-            'auth_role' => 'Admin',
+            'auth_role' => 'User',
             'admin_access' => 0,
             'champion_access' => 0,
             'super_user' => 0,
@@ -168,7 +168,7 @@ class AuthRolesTableTest extends TestCase
 
         $goodData = [
             'id' => 3,
-            'auth_role' => 'User',
+            'auth_role' => 'Admin',
             'admin_access' => 1,
             'champion_access' => 1,
             'super_user' => 1,
@@ -178,10 +178,10 @@ class AuthRolesTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'auth_role' => 'Admin',
-                'admin_access' => 1,
-                'champion_access' => 1,
-                'super_user' => 1,
+                'auth_role' => 'User',
+                'admin_access' => 0,
+                'champion_access' => 0,
+                'super_user' => 0,
                 'auth' => 1
             ],
             [
@@ -194,7 +194,7 @@ class AuthRolesTableTest extends TestCase
             ],
             [
                 'id' => 3,
-                'auth_role' => 'User',
+                'auth_role' => 'Admin',
                 'admin_access' => 1,
                 'champion_access' => 1,
                 'super_user' => 1,

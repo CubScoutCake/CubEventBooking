@@ -14,7 +14,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.applications',
         'app.events',
@@ -22,8 +22,12 @@ class ApplicationsControllerTest extends IntegrationTestCase
         'app.discounts',
         'app.users',
         'app.scoutgroups',
+        'app.sections',
+        'app.section_types',
+        'app.authroles',
         'app.districts',
-        'app.roles'
+        'app.roles',
+        'app.settingtypes',
     ];
 
     /**

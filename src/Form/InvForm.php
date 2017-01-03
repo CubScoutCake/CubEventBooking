@@ -24,7 +24,6 @@ class InvForm extends Form
         $validator->allowEmpty('leaders');
 
         return $validator;
-
     }
 
     protected function _execute(array $data)

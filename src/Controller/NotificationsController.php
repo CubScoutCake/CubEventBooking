@@ -82,14 +82,14 @@ class NotificationsController extends AppController
                     ];
 
                 $sets = TableRegistry::get('Settings');
-                
+
                 $jsonView = json_encode($viewEnt);
                 $apiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'Action';
-                
+
                 $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-                
+
                 $http = new Client();
                 $response = $http->post(
                     $keenURL,
@@ -118,7 +118,7 @@ class NotificationsController extends AppController
     // public function clean($userId = null)
     // {
     //     $this->request->allowMethod('delete');
-        
+
     //     $notifications = $this->Notifications->find('all')->where(['user_id' => $userId]);
 
     //     $count = 0;
@@ -133,7 +133,7 @@ class NotificationsController extends AppController
 
     //     $this->Flash->success(__($count . ' notifications were cleaned.'));
     //     return $this->redirect(['action' => 'index']);
-        
+
     // }
 
     // /**
@@ -291,7 +291,6 @@ class NotificationsController extends AppController
 
     public function new_logistic()
     {
-        
     }
 
     public function new_reset()
@@ -301,6 +300,7 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $this->request->data);
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
@@ -336,14 +336,14 @@ class NotificationsController extends AppController
                     ];
 
                 $sets = TableRegistry::get('Settings');
-                
+
                 $jsonDelete = json_encode($deleteEnt);
                 $apiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'Action';
-                
+
                 $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-                
+
                 $http = new Client();
                 $response = $http->post(
                     $keenURL,
@@ -358,7 +358,7 @@ class NotificationsController extends AppController
         } else {
             $this->Flash->error(__('You do not have permission to delete this notification.'));
         }
-        
+
         return $this->redirect(['action' => 'index']);
     }
 

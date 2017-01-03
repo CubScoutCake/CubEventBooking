@@ -38,13 +38,7 @@ class ScoutgroupsTable extends Table
             'foreignKey' => 'district_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('Applications', [
-            'foreignKey' => 'scoutgroup_id'
-        ]);
-        $this->hasMany('Attendees', [
-            'foreignKey' => 'scoutgroup_id'
-        ]);
-        $this->hasMany('Users', [
+        $this->hasMany('Sections', [
             'foreignKey' => 'scoutgroup_id'
         ]);
     }

@@ -29,8 +29,7 @@ class ConfigShell extends Shell
      *
      * @return bool|int Success or error code.
      */
-    public function main() 
+    public function main()
     {
-
     }
 }

@@ -38,10 +38,10 @@ class AuthRolesFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'auth_role' => 'Admin',
-            'admin_access' => 1,
-            'champion_access' => 1,
-            'super_user' => 1,
+            'auth_role' => 'User',
+            'admin_access' => 0,
+            'champion_access' => 0,
+            'super_user' => 0,
             'auth' => 1
         ],
         [

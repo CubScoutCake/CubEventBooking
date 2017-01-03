@@ -23,6 +23,5 @@ class AdminForm extends Form
 
     protected function _execute(array $data)
     {
-
     }
 }

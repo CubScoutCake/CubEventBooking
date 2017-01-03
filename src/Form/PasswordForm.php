@@ -27,7 +27,6 @@ class PasswordForm extends Form
             ->notEmpty('postcode');
 
         return $validator;
-
     }
 
     protected function _execute(array $data)
