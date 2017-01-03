@@ -124,6 +124,7 @@ class Sections extends AbstractMigration
                 'limit' => 11,
                 'null' => true,
             ])
+            ->renameColumn('section', 'legacy_section')
             ->addForeignKey(
                 'section_id',
                 'sections',
