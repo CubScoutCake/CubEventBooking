@@ -14,28 +14,33 @@ class LandingControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
 
     public $fixtures = [
-    'app.settings',
-    'app.districts',
-    'app.scoutgroups',
-    'app.roles',
-    'app.users'
-    ];*/
+        'app.settings',
+        'app.districts',
+        'app.scoutgroups',
+        'app.roles',
+        'app.users',
+        'app.auth_roles',
+        'app.sections',
+        'app.section_types',
+        'app.settingtypes',
+    ];
 
     /**
      * Test userHome method
      *
      * @return void
      */
-    public function testUserHome()
+    public function testSuperUserHome()
     {
-        $this->markTestSkipped('Fixture Issue');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->session(['Auth.User.id' => 1]);
-
-        $this->get('/landing/user-home');
+        $this->get('/champion/landing/champion-home');
 
         $this->assertResponseOk();
     }
@@ -43,7 +48,7 @@ class LandingControllerTest extends IntegrationTestCase
     public function testUserHomeUnauthenticatedFails()
     {
         // No session data set.
-        $this->get('/landing/user-home');
+        $this->get('/champion/landing/champion-home');
 
         $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
     }

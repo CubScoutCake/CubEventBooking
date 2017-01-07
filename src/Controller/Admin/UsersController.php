@@ -26,7 +26,7 @@ class UsersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Roles', 'Scoutgroups']
+            'contain' => ['Roles', 'Sections.Scoutgroups']
             , 'order' => ['modified' => 'DESC']
         ];
         $this->set('users', $this->paginate($this->Users));
@@ -37,7 +37,7 @@ class UsersController extends AppController
      * View method
      *
      * @param string|null $id User id.
-     * @return void
+     * @return void|path
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
@@ -48,9 +48,9 @@ class UsersController extends AppController
 
         $user = $this->Users->get($id, [
             'contain' => ['Roles'
-                , 'Scoutgroups'
-                , 'Applications' => ['Scoutgroups', 'Events']
-                , 'Attendees' => ['Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']]
+                , 'Sections.Scoutgroups'
+                , 'Applications' => ['Sections.Scoutgroups', 'Events']
+                , 'Attendees' => ['Sections.Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']]
                 , 'Invoices.Applications.Events'
                 , 'Notes' => ['Invoices' , 'Applications']
                 , 'Notifications' => ['Notificationtypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']]
