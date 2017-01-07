@@ -46,6 +46,8 @@ class ApplicationsTable extends Table
             'field' => 'deleted'
         ]);
 
+        $this->addBehavior('Authrole');
+
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'

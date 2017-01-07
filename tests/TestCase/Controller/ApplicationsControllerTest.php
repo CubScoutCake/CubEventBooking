@@ -37,7 +37,14 @@ class ApplicationsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 1
+        ]);
+
+        $this->get('/applications');
+
+        $this->assertResponseOk();
     }
 
     /**

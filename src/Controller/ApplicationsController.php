@@ -21,7 +21,7 @@ class ApplicationsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Events']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Events']
         ];
         $this->set('applications', $this->paginate($this->Applications->find('unarchived')->find('ownedBy', ['userId' => $this->Auth->user('id')])));
         $this->set('_serialize', ['applications']);
@@ -30,7 +30,7 @@ class ApplicationsController extends AppController
     public function bookings($eventID = null)
     {
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Events'],
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Events'],
             'conditions' => ['event_id' => $eventID]
         ];
         $this->set('applications', $this->paginate($this->Applications->find('unarchived')->find('ownedBy', ['userId' => $this->Auth->user('id')])));
@@ -56,7 +56,7 @@ class ApplicationsController extends AppController
         $application = $this->Applications->get($id, [
             'contain' => [
                 'Users',
-                'Scoutgroups',
+                'Sections.Scoutgroups',
                 'Events',
                 'Invoices',
                 'Attendees' => [
@@ -70,7 +70,7 @@ class ApplicationsController extends AppController
                         'Attendees.user_id' => $this->Auth->user('id')
                     ]
                 ]
-                , 'Attendees.Scoutgroups' => [
+                , 'Attendees.Sections.Scoutgroups' => [
                     'conditions' => [
                         'Attendees.user_id' => $this->Auth->user('id')
                     ]
@@ -92,7 +92,7 @@ class ApplicationsController extends AppController
         $application = $this->Applications->get($id, [
             'contain' => [
                 'Users',
-                'Scoutgroups',
+                'Sections.Scoutgroups',
                 'Events',
                 'Invoices',
                 'Attendees' => [
@@ -106,7 +106,7 @@ class ApplicationsController extends AppController
                         'Attendees.user_id' => $this->Auth->user('id')
                     ]
                 ]
-                , 'Attendees.Scoutgroups' => [
+                , 'Attendees.Sections.Scoutgroups' => [
                     'conditions' => [
                         'Attendees.user_id' => $this->Auth->user('id')
                     ]
@@ -217,7 +217,7 @@ class ApplicationsController extends AppController
         $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('scoutgroup_id')]]);
         $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $events = $this->Applications->Events->find('list', ['limit' => 200, 'conditions' => ['end >' => $now, 'live' => 1]]);
-        $this->set(compact('application', 'users', 'scoutgroups', 'events', 'attendees'));
+        $this->set(compact('application', 'users', 'Sections.Scoutgroups', 'events', 'attendees'));
         $this->set('_serialize', ['application']);
 
         if ($this->request->is('get')) {
@@ -238,7 +238,7 @@ class ApplicationsController extends AppController
         $evts = TableRegistry::get('Events');
 
         $application = $this->Applications->get($id, [
-            'contain' => ['Attendees', 'Scoutgroups']
+            'contain' => ['Attendees', 'Sections.Scoutgroups']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             // Check Max Applications
@@ -279,7 +279,7 @@ class ApplicationsController extends AppController
         // $evts = TableRegistry::get('Events');
 
         $application = $this->Applications->get($id, [
-            'contain' => ['Attendees', 'Scoutgroups']
+            'contain' => ['Attendees', 'Sections.Scoutgroups']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             // Check Max Applications
