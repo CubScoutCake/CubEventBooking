@@ -275,7 +275,6 @@
                                         <th><?= h('Application') ?></th>
                                         <th class="actions"><?= __('Actions') ?></th>
                                         <th><?= h('User') ?></th>
-                                        <th><?= h('Scout Group') ?></th>
                                         <th><?= h('Section') ?></th>
                                         <th><?= h('Permit Holder') ?></th>
                                         <th><?= h('Last Modified') ?></th>
@@ -299,9 +298,8 @@
                                                     </ul>
                                                 </div>
                                             </td>
-                                            <td><?= $application->has('user') ? $this->Html->link($this->Text->truncate($application->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></td>
-                                            <td><?= $application->has('scoutgroup') ? $this->Html->link($this->Text->truncate($application->scoutgroup->scoutgroup,18), ['controller' => 'Scoutgroups', 'action' => 'view', $application->scoutgroup->id]) : '' ?></td>
-                                            <td><?= $this->Text->truncate($application->section,18) ?></td>
+                                            <td><?= $application->has('user') ? $this->Html->link($this->Text->truncate($application->user->full_name,30), ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></td>
+                                            <td><?= $application->has('section') ? $this->Html->link($this->Text->truncate($application->section->section,30), ['controller' => 'Sections', 'action' => 'view', $application->section->id]) : '' ?></td>
                                             <td><?= $this->Text->truncate($application->permitholder,18) ?></td>
                                             <td><?= $this->Time->i18nFormat($application->modified, 'dd-MMM-yy HH:mm') ?></td>
                                         </tr>
@@ -344,8 +342,8 @@
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-yy HH:mm') ?></td>
-                                        <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-yy HH:mm') ?></td>
+                                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
+                                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
                                         <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
                                         <td><?= h($event->location) ?></td>
                                     </tr>

@@ -34,7 +34,7 @@ class ProgressComponent extends Component
         $app = $apps->get($appID, [
             'contain' => [
                 'Users',
-                'Scoutgroups',
+                'Sections.Scoutgroups',
                 'Events',
                 'Invoices',
                 'Attendees' => [
@@ -44,7 +44,7 @@ class ProgressComponent extends Component
                     ]
                 ]
                 , 'Attendees.Roles'
-                , 'Attendees.Scoutgroups'
+                , 'Attendees.Sections.Scoutgroups'
             ]
         ]);
 
@@ -52,7 +52,7 @@ class ProgressComponent extends Component
             $app = $apps->get($appID, [
                 'contain' => [
                     'Users',
-                    'Scoutgroups',
+                    'Sections.Scoutgroups',
                     'Events',
                     'Invoices',
                     'Attendees' => [
@@ -65,7 +65,7 @@ class ProgressComponent extends Component
                         'conditions' => [
                             'Attendees.user_id' => $userID
                         ]],
-                    'Attendees.Scoutgroups' => [
+                    'Attendees.Sections.Scoutgroups' => [
                         'conditions' => [
                             'Attendees.user_id' => $userID
                         ]]]
@@ -229,7 +229,7 @@ class ProgressComponent extends Component
                 , 'payDone' => $payDone
                 , 'done' => $done
                 , 'status' => $status
-                ];
+            ];
 
             return $results;
         }

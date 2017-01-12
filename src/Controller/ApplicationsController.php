@@ -227,6 +227,98 @@ class ApplicationsController extends AppController
     }
 
     /**
+     * Simple Book Method - Single form for a whole booking.
+     *
+     * @param null $eventId
+     * @param null $attendees
+     *
+     * @return void Redirects on successful add, renders view otherwise.
+     */
+    public function simpleBook($eventId = null, $attendees = null)
+    {
+        if(!isset($eventId) || !isset($attendees)) {
+            $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId, $attendees]);
+        }
+
+        $this->Events = TableRegistry::get('Events');
+        $event = $this->Events->get($eventId);
+
+        if (isset($eventId)) {
+            $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventId])->count('*');
+
+
+            if ($applicationCount > $event->available_apps && isset($event->available_apps)) {
+                $this->Flash->error(__('Apologies this Event is Full.'));
+
+                return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
+            } elseif (!$event->new_apps) {
+                $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
+
+                return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
+            }
+        }
+
+        $application = $this->Applications->newEntity();
+
+
+        if ($this->request->is('post')) {
+            // Patch Data
+            $userId = $this->Auth->user('id');
+            $users = TableRegistry::get('Users');
+            $user = $users->get($userId);
+            $sectionId = $user['section_id'];
+
+            $newData = [
+                'modification' => 0,
+                'user_id' => $userId,
+                'section_id' => $sectionId,
+                'event_id' => $eventId
+            ];
+
+            $application = $this->Applications->patchEntity($application, $newData);
+
+            $application = $this->Applications->patchEntity(
+                $application,
+                $this->request->data
+                , ['associated' => [ 'Attendees']]
+            );
+
+            foreach ($application->attendees as $attendee) {
+                $attendee['user_id'] = $userId;
+                $attendee['section_id'] = $sectionId;
+            }
+
+            if ($this->Applications->save($application)) {
+
+                $appId = $application->get('id');
+
+                $this->loadComponent('Application');
+
+                //$this->loadComponent('Invoice');
+
+                $this->Application->getNumbers($appId);
+
+                $this->Invoices = TableRegistry::get('Invoices');
+
+                $invoice = $this->Invoices->newEntity();
+
+                $this->Flash->success(__('The application has been saved.'));
+
+                return $this->redirect(['action' => 'view', $appId]);
+            } else {
+                $this->Flash->error(__('The application could not be saved. Please, try again.'));
+            }
+        }
+
+        $sections = $this->Applications->Sections->find('list',['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
+        $roles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('nonAuto');
+
+        $this->set(compact('application', 'roles', 'sections', 'attendees'));
+        $this->set('_serialize', ['application']);
+
+    }
+
+    /**
      * Edit method
      *
      * @param string|null $id Application id.

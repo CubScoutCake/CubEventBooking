@@ -39,7 +39,7 @@ class SectionsTable extends Table
         parent::initialize($config);
 
         $this->table('sections');
-        $this->displayField('id');
+        $this->displayField('section');
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');

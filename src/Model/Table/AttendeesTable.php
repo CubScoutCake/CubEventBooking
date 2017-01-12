@@ -11,7 +11,7 @@ use Cake\Validation\Validator;
  * Attendees Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsTo $Scoutgroups
+ * @property \Cake\ORM\Association\BelongsTo $Sections
  * @property \Cake\ORM\Association\BelongsTo $Roles
  * @property \Cake\ORM\Association\BelongsToMany $Applications
  * @property \Cake\ORM\Association\BelongsToMany $Allergies
@@ -94,11 +94,10 @@ class AttendeesTable extends Table
             ->notEmpty('lastname');
 
         $validator
-            ->add('dateofbirth', 'valid', ['rule' => 'date'])
-            ->notEmpty('dateofbirth');
+            ->allowEmpty('dateofbirth');
 
         $validator
-            ->notEmpty('phone');
+            ->allowEmpty('phone');
 
         $validator
             ->allowEmpty('phone2');
@@ -139,7 +138,7 @@ class AttendeesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
+        $rules->add($rules->existsIn(['section_id'], 'Sections'));
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
 
         return $rules;

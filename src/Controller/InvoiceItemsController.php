@@ -59,34 +59,14 @@ class InvoiceItemsController extends AppController
         $appID = $invoice->application_id;
 
         // Set Attendee Counts
-        $attendeeCubCount = $applications->find()
-            ->hydrate(false)
-            ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
-                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
-                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
-
-        $attendeeYlCount = $applications->find()
-            ->hydrate(false)
-            ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
-                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
-                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
-
-        $attendeeLeaderCount = $applications->find()
-            ->hydrate(false)
-            ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
-                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
-                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => null]);
+        $attendeeCubCount = $applications->find('cubs')->where(['Applications.id' => $appID]);
+        $attendeeYlCount = $applications->find('youngLeaders')->where(['Applications.id' => $appID]);
+        $attendeeLeaderCount = $applications->find('leaders')->where(['Applications.id' => $appID]);
 
         // Load into Variables
-        $predictedCubs = $attendeeCubCount->count(['t.id']);
-        $predictedYls = $attendeeYlCount->count(['t.id']);
-        $predictedLeaders = $attendeeLeaderCount->count(['t.id']);
+        $predictedCubs = $attendeeCubCount->count(['*']);
+        $predictedYls = $attendeeYlCount->count(['*']);
+        $predictedLeaders = $attendeeLeaderCount->count(['*']);
 
         // Set Variable for the Modeless Form to take Values
         $invPop = new InvForm();
@@ -374,7 +354,7 @@ class InvoiceItemsController extends AppController
         // Perform the Post
 
         if ($this->request->is('post')) {
-            // Extract Form Info
+            /*// Extract Form Info
             if ($event->cubs) {
                 $formNumCubs = $this->request->data['cubs'];
             } else {
@@ -391,7 +371,7 @@ class InvoiceItemsController extends AppController
                 $formNumLeaders = $this->request->data['leaders'];
             } else {
                 $formNumLeaders = 0;
-            }
+            }*/
 
 
 
