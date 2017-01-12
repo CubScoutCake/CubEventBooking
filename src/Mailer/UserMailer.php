@@ -1,11 +1,19 @@
-<?
+<?php
 
 namespace App\Mailer;
 
 use Cake\Mailer\Mailer;
+use Cake\ORM\Entity;
 
 class UserMailer extends Mailer
 {
+    /**
+     * @param Entity $user The User Entity
+     * @param Entity $group The Scoutgroup associated
+     * @param Entity $notification The Notification Entity.
+     *
+     * @return void
+     */
     public function welcome($user, $group, $notification)
     {
         // $email = new Email('default');
@@ -15,25 +23,32 @@ class UserMailer extends Mailer
             ->to([$user->email => $user->full_name])
             ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
             ->subject('Welcome to the Hertfordshire Cubs Booking System')
-            ->setHeaders(['X-MC-Tags' => 'WelcomeEmail,Type1,Notification'
-                    , 'X-MC-AutoText' => true
-                    , 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk'
-                    , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
-                    , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
-            ->viewVars(['username' => $user->username
-                    , 'date_created' => $user->created
-                    , 'full_name' => $user->full_name
-                    , 'scoutgroup' => $group->scoutgroup
-                    , 'link_controller' => $notification->link_controller
-                    , 'link_action' => $notification->link_action
-                    , 'link_id' => $notification->link_id
-                    , 'link_prefix' => $notification->link_prefix
-                    , 'notification_id' => $notification->id
-                    ])
+            ->setHeaders(['X-MC-Tags' => 'WelcomeEmail,Type1,Notification',
+                 'X-MC-AutoText' => true,
+                 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk',
+                 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email',
+                 'X-MC-TrackingDomain' => 'track.hertscubs.uk'])
+            ->viewVars(['username' => $user->username,
+                 'date_created' => $user->created,
+                 'full_name' => $user->full_name,
+                 'scoutgroup' => $group->scoutgroup,
+                 'link_controller' => $notification->link_controller,
+                 'link_action' => $notification->link_action,
+                 'link_id' => $notification->link_id,
+                 'link_prefix' => $notification->link_prefix,
+                 'notification_id' => $notification->id
+            ])
             ->helpers(['Html', 'Text', 'Time']);
-            //->send();
+        //->send();
     }
 
+    /**
+     * @param Entity $user The User Entity
+     * @param Entity $group The Scoutgroup associated
+     * @param Entity $notification The Notification Entity.
+     *
+     * @return void
+     */
     public function validate($user, $group, $notification)
     {
         // $email = new Email('default');
@@ -43,20 +58,26 @@ class UserMailer extends Mailer
             ->to([$user->email => $user->full_name])
             ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
             ->subject('Hertfordshire Cubs Booking System - Please Validate your Email')
-            ->viewVars(['username' => $user->username
-                    , 'date_created' => $user->created
-                    , 'full_name' => $user->full_name
-                    , 'scoutgroup' => $group->scoutgroup
-                    , 'link_controller' => $notification->link_controller
-                    , 'link_action' => $notification->link_action
-                    , 'link_id' => $notification->link_id
-                    , 'link_prefix' => $notification->link_prefix
-                    , 'notification_id' => $notification->id
-                    ])
+            ->viewVars(['username' => $user->username,
+                'date_created' => $user->created,
+                'full_name' => $user->full_name,
+                'scoutgroup' => $group->scoutgroup,
+                'link_controller' => $notification->link_controller,
+                'link_action' => $notification->link_action,
+                'link_id' => $notification->link_id,
+                'link_prefix' => $notification->link_prefix,
+                'notification_id' => $notification->id,
+            ])
             ->helpers(['Html', 'Text', 'Time']);
-            //->send();
+        //->send();
     }
 
+    /**
+     * @param Entity $user The User Entity.
+     * @param string $random The Random Number Value.
+     *
+     * @return void
+     */
     public function passres($user, $random)
     {
         $this->transport('sparkpost')
@@ -65,18 +86,18 @@ class UserMailer extends Mailer
             ->to([$user->email => $user->full_name])
             ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
             ->subject('Reset password')
-            ->setHeaders(['X-MC-Tags' => 'PasswordReset,Type2,Request'
-                    , 'X-MC-AutoText' => true
-                    , 'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk'
-                    , 'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email'
-                    , 'X-MC-TrackingDomain' => 'track.hertscubs.uk' ])
-            ->viewVars(['username' => $user->username
-                    , 'date_created' => $user->created
-                    , 'full_name' => $user->full_name
-                    , 'token' => $random
-                    , 'uid' => $user->id
-                    ])
+            ->setHeaders(['X-MC-Tags' => 'PasswordReset,Type2,Request',
+                'X-MC-AutoText' => true,
+                'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk',
+                'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email',
+                'X-MC-TrackingDomain' => 'track.hertscubs.uk'])
+            ->viewVars(['username' => $user->username,
+                'date_created' => $user->created,
+                'full_name' => $user->full_name,
+                'token' => $random,
+                'uid' => $user->id,
+            ])
             ->helpers(['Html', 'Text', 'Time']);
-            //->send();
+        //->send();
     }
 }

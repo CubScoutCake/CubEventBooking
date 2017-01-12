@@ -20,6 +20,8 @@ class NotificationsCell extends Cell
     /**
      * Default display method.
      *
+     * @param int $userId The User Id for display.
+     *
      * @return void
      */
     public function display($userId = null)

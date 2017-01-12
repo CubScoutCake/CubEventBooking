@@ -20,6 +20,8 @@ class SidebarCell extends Cell
     /**
      * Default display method.
      *
+     * @param int $userId The User ID being displayed.
+     *
      * @return void
      */
     public function display($userId = null)

@@ -1,8 +1,8 @@
 <?php
 namespace App\View\Cell;
 
-use Cake\View\Cell;
 use Cake\ORM\TableRegistry;
+use Cake\View\Cell;
 
 /**
  * Notifications cell
@@ -20,6 +20,8 @@ class AppsCell extends Cell
 
     /**
      * Default display method.
+     *
+     * @param int $userId The User id of the Notifications.
      *
      * @return void
      */
