@@ -13,9 +13,9 @@ class NotificationsComponent extends Component
 
     use MailerAwareTrait;
 
-    public function appLoad($userID) {
+    public function appLoad($userID)
+    {
         if ($userID !== null) {
-
             $notificationTable = TableRegistry::get('Notifications');
             $controller = $this->_registry->getController();
 
@@ -43,13 +43,11 @@ class NotificationsComponent extends Component
     public function queryApp($appID)
     {
         if (isset($appID)) {
-            
-        	$this->loadComponent('Progress');
+            $this->loadComponent('Progress');
 
-        	$this->Progress->determineApp($appID, true, null, false, true, false);
+            $this->Progress->determineApp($appID, true, null, false, true, false);
 
-        	if ($results->done != 1) {
-
+            if ($results->done != 1) {
                 // Application is incomplete for one of four reasons 1: Missing an Application, 2: Number of Cubs doesn't match, 3: Number of Leaders doesn't match, 4: Payment is incomplete.
 
                 $issues = [];
@@ -91,62 +89,62 @@ class NotificationsComponent extends Component
                     arraypush($issueKeys, 7);
                 }
 
-        		$notification = $this->Notifications->newEntity();
+                $notification = $this->Notifications->newEntity();
 
-        		$notification = $this->Notifications->patchEntity($notification, $invoiceData);
+                $notification = $this->Notifications->patchEntity($notification, $invoiceData);
 
-        		if ($this->Notifications->save($notification)) {
-        		    $notificationId = $notification->get('id');
+                if ($this->Notifications->save($notification)) {
+                    $notificationId = $notification->get('id');
 
-        		    $noteData = [
-        		        'note_text' => 'A Balance Outstanding Prompt Email was Sent with Notification id #' . $notificationId,
-        		        'visible' => false,
-        		        'user_id' => $user->id,
-        		        'invoice_id' => $invoice->id,
-        		        'application_id' => $app->id
-        		    ];
+                    $noteData = [
+                        'note_text' => 'A Balance Outstanding Prompt Email was Sent with Notification id #' . $notificationId,
+                        'visible' => false,
+                        'user_id' => $user->id,
+                        'invoice_id' => $invoice->id,
+                        'application_id' => $app->id
+                    ];
 
-        		    $note = $notes->newEntity();
-        		    $note = $notes->patchEntity($note, $noteData);
+                    $note = $notes->newEntity();
+                    $note = $notes->patchEntity($note, $noteData);
 
-        		    if ($notes->save($note)) {
-        		        $this->Flash->success(__('Outstanding Balance Prompt Sent.'));
+                    if ($notes->save($note)) {
+                        $this->Flash->success(__('Outstanding Balance Prompt Sent.'));
 
-        		        $this->getMailer('Payment')->send('outstanding', [$user, $group, $notification, $invoice, $app]);
+                        $this->getMailer('Payment')->send('outstanding', [$user, $group, $notification, $invoice, $app]);
 
-        		        $sets = TableRegistry::get('Settings');
+                        $sets = TableRegistry::get('Settings');
 
-        		        $jsonInvoice = json_encode($invoiceData);
-        		        $pApiKey = $sets->get(13)->text;
-        		        $projectId = $sets->get(14)->text;
-        		        $eventType = 'OutstandingPayment';
+                        $jsonInvoice = json_encode($invoiceData);
+                        $pApiKey = $sets->get(13)->text;
+                        $projectId = $sets->get(14)->text;
+                        $eventType = 'OutstandingPayment';
 
-        		        $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $pApiKey;
+                        $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $pApiKey;
 
-        		        $http = new Client();
-        		        $response = $http->post(
-        		            $keenURL,
-        		            $jsonInvoice,
-        		            ['type' => 'json']
-        		        );
+                        $http = new Client();
+                        $response = $http->post(
+                            $keenURL,
+                            $jsonInvoice,
+                            ['type' => 'json']
+                        );
 
-        		        $genericType = 'Notification';
+                        $genericType = 'Notification';
 
-        		        $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $pApiKey;
+                        $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $pApiKey;
 
-        		        $http = new Client();
-        		        $response = $http->post(
-        		            $keenGenURL,
-        		            $jsonInvoice,
-        		            ['type' => 'json']
-        		        );
+                        $http = new Client();
+                        $response = $http->post(
+                            $keenGenURL,
+                            $jsonInvoice,
+                            ['type' => 'json']
+                        );
 
-        		        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => 'admin', $invoiceId]);
-        		    } else {
-        		        $this->Flash->error(__('The note could not be saved. Please, try again.'));
-        		    }
-        		}
-        	}
+                        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => 'admin', $invoiceId]);
+                    } else {
+                        $this->Flash->error(__('The note could not be saved. Please, try again.'));
+                    }
+                }
+            }
         }
     }
 }

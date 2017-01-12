@@ -17,7 +17,19 @@ class DistrictsControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.districts',
-        'app.scoutgroups'
+        'app.scoutgroups',
+        'app.users',
+        'app.sections',
+        'app.notifications',
+        'app.notificationtypes',
+        'app.roles',
+        'app.section_types',
+        'app.auth_roles',
+        'app.applications',
+        'app.events',
+        'app.settings',
+        'app.setting_types',
+        'app.discounts',
     ];
 
     public function testIndexUnauthenticatedFails()
@@ -35,18 +47,24 @@ class DistrictsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->get('/districts');
+        $this->get('/admin/districts');
 
         $this->assertResponseOk();
     }
 
     public function testIndexQueryData()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->get('/districts?page=1');
+        $this->get('/admin/districts?page=1');
 
         $this->assertResponseOk();
     }
@@ -58,9 +76,12 @@ class DistrictsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->get('/districts/view/1');
+        $this->get('/admin/districts/view/1');
 
         $this->assertResponseOk();
     }
@@ -68,7 +89,7 @@ class DistrictsControllerTest extends IntegrationTestCase
     public function testViewUnauthenticatedFails()
     {
         // No session data set.
-        $this->get('/districts/view/1');
+        $this->get('/admin/districts/view/1');
 
         $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
     }

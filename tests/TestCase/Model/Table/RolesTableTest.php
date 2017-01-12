@@ -52,13 +52,102 @@ class RolesTableTest extends TestCase
     }
 
     /**
+     * Test initialize method
+     *
+     * @return void
+     */
+    public function testInitialize()
+    {
+        $query = $this->Roles->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'role' => 'Lorem ipsum dolor sit amet',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 2,
+                'role' => 'Lorem ipsum dasfasolor sit amet',
+                'invested' => 0,
+                'minor' => 0,
+                'automated' => 0,
+                'deleted' => null
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
      * Test validationDefault method
      *
      * @return void
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badData = [
+            'id' => 5,
+            'role' => null,
+            'invested' => 1,
+            'minor' => 0,
+            'automated' => 0,
+            'deleted' => null
+        ];
+
+        $goodData = [
+            'id' => 5,
+            'role' => 'Lorem Goat dasfasolor sit amet',
+            'invested' => 1,
+            'minor' => 0,
+            'automated' => 0,
+            'deleted' => null
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'role' => 'Lorem ipsum dolor sit amet',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 2,
+                'role' => 'Lorem ipsum dasfasolor sit amet',
+                'invested' => 0,
+                'minor' => 0,
+                'automated' => 0,
+                'deleted' => null
+            ],
+            [
+                'id' => 5,
+                'role' => 'Lorem Goat dasfasolor sit amet',
+                'invested' => 1,
+                'minor' => 0,
+                'automated' => 0,
+                'deleted' => null
+            ],
+        ];
+
+        $badEntity = $this->Roles->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Roles->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Roles->save($badEntity));
+        $this->Roles->save($goodEntity);
+
+        $query = $this->Roles->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 
     /**

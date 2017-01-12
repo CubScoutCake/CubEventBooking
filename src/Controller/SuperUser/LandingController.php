@@ -81,7 +81,6 @@ class LandingController extends AppController
         $keenProject = $sets->get(14)->text;
 
         $this->set(compact('keenRead', 'keenProject'));
-
     }
 
     public function link($ent = null)

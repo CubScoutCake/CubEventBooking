@@ -34,6 +34,7 @@ class InvoiceItemsController extends AppController
 
         if ($event->invoices_locked) {
             $this->Flash->error(__($errorMsg));
+
             return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
         }
 
@@ -58,34 +59,14 @@ class InvoiceItemsController extends AppController
         $appID = $invoice->application_id;
 
         // Set Attendee Counts
-        $attendeeCubCount = $applications->find()
-            ->hydrate(false)
-            ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
-                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
-                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
-
-        $attendeeYlCount = $applications->find()
-            ->hydrate(false)
-            ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
-                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
-                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
-
-        $attendeeLeaderCount = $applications->find()
-            ->hydrate(false)
-            ->join([
-                'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
-                't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
-                'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
-            ])->where(['r.minor' => 0, 'Applications.id' => $appID, 't.deleted IS' => null]);
+        $attendeeCubCount = $applications->find('cubs')->where(['Applications.id' => $appID]);
+        $attendeeYlCount = $applications->find('youngLeaders')->where(['Applications.id' => $appID]);
+        $attendeeLeaderCount = $applications->find('leaders')->where(['Applications.id' => $appID]);
 
         // Load into Variables
-        $predictedCubs = $attendeeCubCount->count(['t.id']);
-        $predictedYls = $attendeeYlCount->count(['t.id']);
-        $predictedLeaders = $attendeeLeaderCount->count(['t.id']);
+        $predictedCubs = $attendeeCubCount->count(['*']);
+        $predictedYls = $attendeeYlCount->count(['*']);
+        $predictedLeaders = $attendeeLeaderCount->count(['*']);
 
         // Set Variable for the Modeless Form to take Values
         $invPop = new InvForm();
@@ -110,7 +91,7 @@ class InvoiceItemsController extends AppController
             } else {
                 $formNumCubs = 0;
             }
-            
+
             if ($event->yls) {
                 $formNumYls = $this->request->data['yls'];
             } else {
@@ -233,6 +214,7 @@ class InvoiceItemsController extends AppController
             } else {
                 if ($this->InvoiceItems->save($depCubItem) && $this->InvoiceItems->save($cubItem) && $this->InvoiceItems->save($yLItem) && $this->InvoiceItems->save($leaderItem) && $this->InvoiceItems->save($disItem)) {
                     $this->Flash->success(__('The invoice has been populated.'));
+
                     return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
                 } else {
                     $this->Flash->error(__('There was an error.'));
@@ -241,7 +223,7 @@ class InvoiceItemsController extends AppController
         }
 
         $this->set('invPop', $invPop);
-        
+
         if ($this->request->is('get')) {
             // Values from the User Model e.g.
             $this->request->data['cubs'] = $predictedCubs;
@@ -310,6 +292,7 @@ class InvoiceItemsController extends AppController
 
         if ($event->invoices_locked) {
             $this->Flash->error(__($errorMsg));
+
             return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
         }
 
@@ -323,7 +306,7 @@ class InvoiceItemsController extends AppController
         $leadersVis = $event->leaders;
 
         $this->set(compact('cubsVis', 'ylsVis', 'leadersVis'));
-        
+
 
         // Set Item Description Text
         $cubsDescription = $event->cubs_text;
@@ -371,13 +354,13 @@ class InvoiceItemsController extends AppController
         // Perform the Post
 
         if ($this->request->is('post')) {
-            // Extract Form Info
+            /*// Extract Form Info
             if ($event->cubs) {
                 $formNumCubs = $this->request->data['cubs'];
             } else {
                 $formNumCubs = 0;
             }
-            
+
             if ($event->yls) {
                 $formNumYls = $this->request->data['yls'];
             } else {
@@ -388,8 +371,8 @@ class InvoiceItemsController extends AppController
                 $formNumLeaders = $this->request->data['leaders'];
             } else {
                 $formNumLeaders = 0;
-            }
-            
+            }*/
+
 
 
             // Compare Form Info - Cubs
@@ -530,6 +513,7 @@ class InvoiceItemsController extends AppController
             } else {
                 if ($this->InvoiceItems->save($existingCubDepItem) && $this->InvoiceItems->save($existingCubItem) && $this->InvoiceItems->save($existingYlItem) && $this->InvoiceItems->save($existingLeaderItem) && $this->InvoiceItems->save($disItem) && $this->InvoiceItems->delete($existingDiscountItem)) {
                     $this->Flash->success(__('The invoice has been repopulated with updated values.'));
+
                     return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
                 } else {
                     $this->Flash->error(__('There was an error.'));
@@ -588,6 +572,5 @@ class InvoiceItemsController extends AppController
             $this->request->data['yls'] = $predictedYls;
             $this->request->data['leaders'] = $predictedLeaders;
         }
-        
     }
 }

@@ -72,6 +72,7 @@ class NotesController extends AppController
             if ($this->Notes->save($note)) {
                 $this->Flash->success(__('The note has been saved.'));
                 $redir = $note->get('id');
+
                 return $this->redirect(['action' => 'view', $redir]);
             } else {
                 $this->Flash->error(__('The note could not be saved. Please, try again.'));
@@ -124,6 +125,7 @@ class NotesController extends AppController
                 $note = $this->Notes->patchEntity($note, $invoiceLink);
                 if ($this->Notes->save($note)) {
                     $this->Flash->success(__('The note has been saved.'));
+
                     return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invId]);
                 } else {
                     $this->Flash->error(__('The note could not be saved. Please, try again.'));
@@ -133,6 +135,7 @@ class NotesController extends AppController
             $this->set('_serialize', ['note']);
         } else {
             $this->Flash->error(__('No Invoice ID Specified.'));
+
             return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
         }
     }
@@ -158,6 +161,7 @@ class NotesController extends AppController
                 $note = $this->Notes->patchEntity($note, $applicationLink);
                 if ($this->Notes->save($note)) {
                     $this->Flash->success(__('The note has been saved.'));
+
                     return $this->redirect(['controller' => 'Applications', 'action' => 'view', $appId]);
                 } else {
                     $this->Flash->error(__('The note could not be saved. Please, try again.'));
@@ -167,6 +171,7 @@ class NotesController extends AppController
             $this->set('_serialize', ['note']);
         } else {
             $this->Flash->error(__('No Application ID Specified.'));
+
             return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
         }
     }
@@ -182,6 +187,7 @@ class NotesController extends AppController
                 $note = $this->Notes->patchEntity($note, $userLink);
                 if ($this->Notes->save($note)) {
                     $this->Flash->success(__('The note has been saved.'));
+
                     return $this->redirect(['controller' => 'Users', 'action' => 'view', $userId]);
                 } else {
                     $this->Flash->error(__('The note could not be saved. Please, try again.'));
@@ -191,6 +197,7 @@ class NotesController extends AppController
             $this->set('_serialize', ['note']);
         } else {
             $this->Flash->error(__('No User ID Specified.'));
+
             return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
         }
     }
@@ -210,6 +217,7 @@ class NotesController extends AppController
             if ($this->Notes->save($note)) {
                 $this->Flash->success(__('The note has been saved.'));
                 $redir = $note->get('id');
+
                 return $this->redirect(['action' => 'view', $redir]);
             } else {
                 $this->Flash->error(__('The note could not be saved. Please, try again.'));
@@ -260,6 +268,7 @@ class NotesController extends AppController
         } else {
             $this->Flash->error(__('The note could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

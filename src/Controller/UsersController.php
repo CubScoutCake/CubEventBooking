@@ -109,9 +109,10 @@ class UsersController extends AppController
                 , 'section' => ucwords(strtolower($user->section))];
 
             $user = $this->Users->patchEntity($user, $upperUser);
-            
+
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
+
                 return $this->redirect(['action' => 'sync']);
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -176,6 +177,7 @@ class UsersController extends AppController
         } else {
             $this->Flash->error(__('An Attendee for your User could not be Syncronised. Please, try again.'));
         }
+
         return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
     }
 
@@ -202,8 +204,9 @@ class UsersController extends AppController
             $tries = 0;
         }
 
-        if(isset($tries) && $tries > 10) {
+        if (isset($tries) && $tries > 10) {
             $this->Flash->error('You have failed entry too many times. Please try again later.');
+
             return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'reset']);
         }
 
@@ -275,6 +278,7 @@ class UsersController extends AppController
                     if (isset($eventId) && $eventId >= 0) {
                         $session->delete('Reset.lgTries');
                         $session->delete('Reset.rsTries');
+
                         return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
                     }
 
@@ -289,7 +293,6 @@ class UsersController extends AppController
                     }
 
                     return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
-
                 } else {
                     $this->Flash->error(__('The user could not be saved. Please, try again.'));
                 }
@@ -385,14 +388,14 @@ class UsersController extends AppController
                             'Header' => $notification->notification_header
                             ]
                         ]
-                    
+
                     $jsonWelcome = json_encode($welcomeData);
                     $api_key = $sets->get(13)->text;
                     $projectId = $sets->get(14)->text;
                     $eventType = 'UserWelcome';
-                    
+
                     $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
-                    
+
                     $http = new Client();
                     $response = $http->post(
                       $keenURL,
@@ -411,6 +414,7 @@ class UsersController extends AppController
                 }
             } else {
                 $this->Flash->error('You have failed entry too many times. Please try again later.');
+
                 return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
             }
         }
@@ -464,9 +468,9 @@ class UsersController extends AppController
             }
         } else {
             $this->Flash->success(__('The user has been saved.'));
+
             return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
         }
-
     }
 
     public function validate($userId)
@@ -493,6 +497,7 @@ class UsersController extends AppController
         $session->delete('OSM.Secret');
 
         $this->Flash->success('You are now logged out.');
+
         return $this->redirect($this->Auth->logout());
     }
 
@@ -504,8 +509,8 @@ class UsersController extends AppController
         $this->Auth->allow(['reset']);
         $this->Auth->allow(['token']);
     }
-    
-    
+
+
     public function isAuthorized($user)
     {
         // All registered users can add articles

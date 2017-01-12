@@ -35,7 +35,7 @@ class ScoutgroupsController extends AppController
     public function view($id = null)
     {
         $scoutgroup = $this->Scoutgroups->get($id, [
-            'contain' => ['Districts', 'Applications.Events', 'Applications.Users', 'Attendees.Roles', 'Attendees.Users', 'Users.Roles']
+            'contain' => ['Districts', 'Sections.Applications.Events', 'Sections.Applications.Users', 'Sections.Attendees.Roles', 'Sections.Attendees.Users', 'Sections.Users.Roles']
         ]);
         $this->set('scoutgroup', $scoutgroup);
         $this->set('_serialize', ['scoutgroup']);
@@ -53,6 +53,7 @@ class ScoutgroupsController extends AppController
             $scoutgroup = $this->Scoutgroups->patchEntity($scoutgroup, $this->request->data);
             if ($this->Scoutgroups->save($scoutgroup)) {
                 $this->Flash->success(__('The scoutgroup has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The scoutgroup could not be saved. Please, try again.'));
@@ -77,6 +78,7 @@ class ScoutgroupsController extends AppController
             $scoutgroup = $this->Scoutgroups->patchEntity($scoutgroup, $this->request->data);
             if ($this->Scoutgroups->save($scoutgroup)) {
                 $this->Flash->success(__('The scoutgroup has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The scoutgroup could not be saved. Please, try again.'));
@@ -103,6 +105,7 @@ class ScoutgroupsController extends AppController
         } else {
             $this->Flash->error(__('The scoutgroup could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

@@ -75,6 +75,7 @@ class ScoutgroupsController extends AppController
             $scoutgroup = $this->Scoutgroups->patchEntity($scoutgroup, $district);
             if ($this->Scoutgroups->save($scoutgroup)) {
                 $this->Flash->success(__('The scoutgroup has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The scoutgroup could not be saved. Please, try again.'));
@@ -98,6 +99,7 @@ class ScoutgroupsController extends AppController
             $scoutgroup = $this->Scoutgroups->patchEntity($scoutgroup, $this->request->data);
             if ($this->Scoutgroups->save($scoutgroup)) {
                 $this->Flash->success(__('The scoutgroup has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The scoutgroup could not be saved. Please, try again.'));
@@ -124,6 +126,7 @@ class ScoutgroupsController extends AppController
         } else {
             $this->Flash->error(__('The scoutgroup could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

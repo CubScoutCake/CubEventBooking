@@ -25,7 +25,7 @@ class ApplicationsController extends AppController
             , 'order' => ['modified' => 'DESC']
         ];
 
-        
+
 
         $this->set('applications', $this->paginate($this->Applications));
         $this->set('_serialize', ['applications']);
@@ -74,7 +74,7 @@ class ApplicationsController extends AppController
                    'filename' => 'Invoice_' . $id
                ]
            ]);
-        
+
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
 
@@ -119,7 +119,7 @@ class ApplicationsController extends AppController
                            'filename' => 'Application ' . $application->id
                        ]
                    ]);
-                
+
                 $this->set('application', $application);
                 $this->set('_serialize', ['application']);
 
@@ -189,12 +189,13 @@ class ApplicationsController extends AppController
 
             if ($this->Applications->save($application)) {
                 $this->Flash->success(__('The application has been saved.'));
+
                 return $this->redirect(['action' => 'view', $application->id]);
             } else {
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
             }
         }
-        
+
         if (isset($userId)) {
             $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
         } else {
@@ -220,7 +221,7 @@ class ApplicationsController extends AppController
         )
             ->contain(['Districts']);
         $events = $this->Applications->Events->find('list', ['limit' => 200]);
-        
+
         $this->set(compact('application', 'users', 'attendees', 'scoutgroups', 'events'));
         $this->set('_serialize', ['application']);
 
@@ -232,7 +233,7 @@ class ApplicationsController extends AppController
             if (isset($userScoutGroup)) {
                 $this->request->data['scoutgroup_id'] = $userScoutGroup;
             }
-        }  
+        }
     }
 
     /**
@@ -255,6 +256,7 @@ class ApplicationsController extends AppController
             $application = $this->Applications->patchEntity($application, $this->request->data);
             if ($this->Applications->save($application)) {
                 $this->Flash->success(__('The application has been saved.'));
+
                 return $this->redirect(['action' => 'view', $application->id]);
             } else {
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
@@ -294,6 +296,7 @@ class ApplicationsController extends AppController
             $application = $this->Applications->patchEntity($application, $this->request->data);
             if ($this->Applications->save($application)) {
                 $this->Flash->success(__('The application has been saved.'));
+
                 return $this->redirect(['action' => 'view', $application->id]);
             } else {
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
@@ -320,6 +323,7 @@ class ApplicationsController extends AppController
         } else {
             $this->Flash->error(__('The application could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 
@@ -342,7 +346,7 @@ class ApplicationsController extends AppController
 
             // Check that the application belongs to the current user.
             $application = $this->Applications->get($id);
-            
+
             if ($application->user_id == $user['id']) {
                 return true;
             }

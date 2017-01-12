@@ -22,7 +22,10 @@ class AttendeesAllergiesControllerTest extends IntegrationTestCase
         'app.roles',
         'app.scoutgroups',
         'app.users',
-        'app.districts'
+        'app.districts',
+        'app.sections',
+        'app.section_types',
+        'app.auth_roles',
     ];
 
     /**

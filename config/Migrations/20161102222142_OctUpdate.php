@@ -9,11 +9,9 @@ class OctUpdate extends AbstractMigration
 
         $this->table('applications')
             ->dropForeignKey([], 'applications_event_id')
-            ->dropForeignKey([], 'applications_scoutgroup_id')
             ->dropForeignKey([], 'applications_user_id')
-            ->removeIndexByName('event_id')
-            ->removeIndexByName('scoutgroup_id')
-            ->removeIndexByName('user_id')
+            ->removeIndex(['event_id'])
+            ->removeIndex(['user_id'])
             ->update();
 
         $this->table('applications')
@@ -21,20 +19,20 @@ class OctUpdate extends AbstractMigration
             ->changeColumn('permitholder', 'string')
             ->changeColumn('eventname', 'string')
             ->update();
+
         $this->table('applications_attendees')
             ->dropForeignKey([], 'applications_attendees_application_id')
             ->dropForeignKey([], 'applications_attendees_attendee_id')
-            ->removeIndexByName('application_id')
-            ->removeIndexByName('attendee_id')
-            ->removeIndexByName('attendee_id_2')
+            ->removeIndex(['application_id'])
+            ->removeIndex(['attendee_id'])
+            ->removeIndex(['application_id', 'attendee_id'])
             ->update();
+
         $this->table('attendees')
             ->dropForeignKey([], 'attendees_role_id')
-            ->dropForeignKey([], 'attendees_scoutgroup_id')
             ->dropForeignKey([], 'attendees_user_id')
-            ->removeIndexByName('role_id')
-            ->removeIndexByName('scoutgroup_id')
-            ->removeIndexByName('user_id')
+            ->removeIndex(['role_id'])
+            ->removeIndex(['user_id'])
             ->update();
 
         $this->table('attendees')
@@ -48,120 +46,136 @@ class OctUpdate extends AbstractMigration
             ->changeColumn('county', 'string')
             ->changeColumn('postcode', 'string')
             ->update();
+
         $this->table('attendees_allergies')
             ->dropForeignKey([], 'attendees_allergies_allergy_id')
             ->dropForeignKey([], 'attendees_allergies_attendee_id')
-            ->removeIndexByName('allergy_id')
-            ->removeIndexByName('attendee_id')
-            ->removeIndexByName('attendee_id_2')
+            ->removeIndex(['allergy_id'])
+            ->removeIndex(['attendee_id'])
+            ->removeIndex(['attendee_id', 'allergy_id'])
             ->update();
+
         $this->table('champions')
             ->dropForeignKey([], 'champions_district_id')
             ->dropForeignKey([], 'champions_user_id')
-            ->removeIndexByName('district_id')
-            ->removeIndexByName('user_id')
+            ->removeIndex(['district_id'])
+            ->removeIndex(['user_id'])
             ->update();
+
         $this->table('discounts')
-            ->removeIndexByName('code')
+            ->removeIndex(['code'])
             ->update();
+
         $this->table('districts')
-            ->removeIndexByName('district')
+            ->removeIndex(['district'])
             ->update();
 
         $this->table('districts')
             ->changeColumn('district', 'string')
             ->changeColumn('county', 'string')
             ->update();
+
         $this->table('events')
             ->dropForeignKey([], 'events_discount_id')
             ->dropForeignKey([], 'events_invtext_id')
             ->dropForeignKey([], 'events_legaltext_id')
-            ->removeIndexByName('admin_user_id')
-            ->removeIndexByName('discount_id')
-            ->removeIndexByName('invtext_id')
-            ->removeIndexByName('legaltext_id')
+            ->removeIndex(['admin_user_id'])
+            ->removeIndex(['discount_id'])
+            ->removeIndex(['invtext_id'])
+            ->removeIndex(['legaltext_id'])
             ->update();
+
         $this->table('invoice_items')
             ->dropForeignKey([], 'invoice_items_invoice_id')
             ->dropForeignKey([], 'invoice_items_itemtype_id')
-            ->removeIndexByName('invoice_id')
-            ->removeIndexByName('itemtype_id')
+            ->removeIndex(['invoice_id'])
+            ->removeIndex(['itemtype_id'])
             ->update();
+
         $this->table('invoices')
             ->dropForeignKey([], 'invoices_application_id')
             ->dropForeignKey([], 'invoices_user_id')
-            ->removeIndexByName('application_id')
-            ->removeIndexByName('user_id')
+            ->removeIndex(['application_id'])
+            ->removeIndex(['user_id'])
             ->update();
+
         $this->table('invoices_payments')
             ->dropForeignKey([], 'invoices_payments_invoice_id')
             ->dropForeignKey([], 'invoices_payments_payment_id')
-            ->removeIndexByName('invoice_id')
-            ->removeIndexByName('payment_id')
+            ->removeIndex(['invoice_id'])
+            ->removeIndex(['payment_id'])
             ->update();
+
         $this->table('logistic_items')
             ->dropForeignKey([], 'logistic_items_application_id')
             ->dropForeignKey([], 'logistic_items_logistic_id')
             ->dropForeignKey([], 'logistic_items_param_id')
-            ->removeIndexByName('application_id')
-            ->removeIndexByName('logistic_id')
-            ->removeIndexByName('param_id')
+            ->removeIndex(['application_id'])
+            ->removeIndex(['logistic_id'])
+            ->removeIndex(['param_id'])
             ->update();
+
         $this->table('logistics')
             ->dropForeignKey([], 'logistics_event_id')
             ->dropForeignKey([], 'logistics_parameter_id')
-            ->removeIndexByName('event_id')
-            ->removeIndexByName('parameter_id')
+            ->removeIndex(['event_id'])
+            ->removeIndex(['parameter_id'])
             ->update();
+
         $this->table('notes')
             ->dropForeignKey([], 'notes_application_id')
             ->dropForeignKey([], 'notes_invoice_id')
             ->dropForeignKey([], 'notes_user_id')
-            ->removeIndexByName('application_id')
-            ->removeIndexByName('invoice_id')
-            ->removeIndexByName('user_id')
+            ->removeIndex(['application_id'])
+            ->removeIndex(['invoice_id'])
+            ->removeIndex(['user_id'])
             ->update();
+
         $this->table('notifications')
             ->dropForeignKey([], 'notifications_notificationtype_id')
             ->dropForeignKey([], 'notifications_user_id')
-            ->removeIndexByName('notificationtype_id')
-            ->removeIndexByName('user_id')
+            ->removeIndex(['notificationtype_id'])
+            ->removeIndex(['user_id'])
             ->update();
+
         $this->table('parameters')
             ->dropForeignKey([], 'parameters_set_id')
-            ->removeIndexByName('set_id')
+            ->removeIndex(['set_id'])
             ->update();
 
         $this->table('parameters')
             ->changeColumn('id', 'integer')
             ->update();
+
         $this->table('params')
             ->dropForeignKey([], 'params_parameter_id')
-            ->removeIndexByName('parameter_id')
+            ->removeIndex(['parameter_id'])
             ->update();
 
         $this->table('params')
             ->changeColumn('id', 'integer')
             ->update();
+
         $this->table('payments')
             ->dropForeignKey([], 'payments_user_id')
-            ->removeIndexByName('user_id')
+            ->removeIndex(['user_id'])
             ->update();
+
         $this->table('scoutgroups')
             ->dropForeignKey([], 'scoutgroups_district_id')
-            ->removeIndexByName('scoutgroup')
-            ->removeIndexByName('district_id')
+            ->removeIndex(['scoutgroup'])
+            ->removeIndex(['district_id'])
             ->update();
+
         $this->table('settings')
             ->dropForeignKey([], 'settings_settingtype_id')
-            ->removeIndexByName('settingtype_id')
+            ->removeIndex(['settingtype_id'])
             ->update();
+
         $this->table('users')
             ->dropForeignKey([], 'users_role_id')
-            ->dropForeignKey([], 'users_scoutgroup_id')
-            ->removeIndexByName('username')
-            ->removeIndexByName('role_id')
-            ->removeIndexByName('scoutgroup_id')
+            ->removeIndex(['username'])
+            ->removeIndex(['role_id'])
             ->update();
 
         $this->table('users')
@@ -197,30 +211,8 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'event_id',
-                ],
-                [
-                    'name' => 'apps_event_idx',
-                ]
-            )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
-                ],
-                [
-                    'name' => 'apps_scoutgroup_idx',
-                ]
-            )
-            ->addIndex(
-                [
-                    'user_id',
-                ],
-                [
-                    'name' => 'apps_user_idx',
-                ]
-            )
+            ->addIndex(['event_id'])
+            ->addIndex(['user_id'])
             ->update();
 
         $this->table('applications_attendees')
@@ -228,9 +220,6 @@ class OctUpdate extends AbstractMigration
                 [
                     'attendee_id',
                     'application_id',
-                ],
-                [
-                    'name' => 'apat_atts_x_apps_idx',
                 ]
             )
             ->update();
@@ -251,28 +240,10 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'role_id',
-                ],
-                [
-                    'name' => 'role_idx',
-                ]
-            )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
-                ],
-                [
-                    'name' => 'atts_scoutgroup_id',
-                ]
-            )
+            ->addIndex(['role_id'])
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'user_idx',
                 ]
             )
             ->update();
@@ -282,9 +253,6 @@ class OctUpdate extends AbstractMigration
                 [
                     'attendee_id',
                     'allergy_id',
-                ],
-                [
-                    'name' => 'atal_alle_x_atts_idx',
                 ]
             )
             ->update();
@@ -298,17 +266,11 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'chmp_user_idx',
                 ]
             )
             ->addIndex(
                 [
                     'district_id',
-                ],
-                [
-                    'name' => 'chmp_dist_idx',
                 ]
             )
             ->update();
@@ -330,33 +292,21 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'admin_user_id',
-                ],
-                [
-                    'name' => 'evnt_admin_user_idx',
                 ]
             )
             ->addIndex(
                 [
                     'discount_id',
-                ],
-                [
-                    'name' => 'evnt_discount_idx',
                 ]
             )
             ->addIndex(
                 [
                     'invtext_id',
-                ],
-                [
-                    'name' => 'evnt_invtext_idx',
                 ]
             )
             ->addIndex(
                 [
                     'legaltext_id',
-                ],
-                [
-                    'name' => 'evnt_legaltext_id_idx',
                 ]
             )
             ->update();
@@ -365,17 +315,11 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'invoice_id',
-                ],
-                [
-                    'name' => 'item_Invoice_idx',
                 ]
             )
             ->addIndex(
                 [
                     'itemtype_id',
-                ],
-                [
-                    'name' => 'item_itemtype_idx',
                 ]
             )
             ->update();
@@ -389,17 +333,11 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'application_id',
-                ],
-                [
-                    'name' => 'invs_application_idx',
                 ]
             )
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'invs_user_idx',
                 ]
             )
             ->update();
@@ -408,9 +346,6 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'invoice_id',
-                ],
-                [
-                    'name' => 'inpy_invoice_idx',
                 ]
             )
             ->update();
@@ -424,25 +359,16 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'application_id',
-                ],
-                [
-                    'name' => 'lgit_application_idx',
                 ]
             )
             ->addIndex(
                 [
                     'logistic_id',
-                ],
-                [
-                    'name' => 'lgit_logistic_idx',
                 ]
             )
             ->addIndex(
                 [
                     'param_id',
-                ],
-                [
-                    'name' => 'lgit_param_idx',
                 ]
             )
             ->update();
@@ -456,17 +382,11 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'event_id',
-                ],
-                [
-                    'name' => 'lsts_event_idx',
                 ]
             )
             ->addIndex(
                 [
                     'parameter_id',
-                ],
-                [
-                    'name' => 'lsts_parameter_idx',
                 ]
             )
             ->update();
@@ -490,25 +410,16 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'application_id',
-                ],
-                [
-                    'name' => 'note_application_idx',
                 ]
             )
             ->addIndex(
                 [
                     'invoice_id',
-                ],
-                [
-                    'name' => 'note_invoice_idx',
                 ]
             )
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'note_user_idx',
                 ]
             )
             ->update();
@@ -517,17 +428,11 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'noti_user_idx',
                 ]
             )
             ->addIndex(
                 [
                     'notificationtype_id',
-                ],
-                [
-                    'name' => 'noti_notitype_idx',
                 ]
             )
             ->update();
@@ -541,9 +446,6 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'set_id',
-                ],
-                [
-                    'name' => 'para_set_idx',
                 ]
             )
             ->update();
@@ -552,9 +454,6 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'parameter_id',
-                ],
-                [
-                    'name' => 'pram_parameter_idx',
                 ]
             )
             ->update();
@@ -568,9 +467,6 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'pays_user_idx',
                 ]
             )
             ->update();
@@ -584,9 +480,6 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'district_id',
-                ],
-                [
-                    'name' => 'grps_district_idx',
                 ]
             )
             ->update();
@@ -595,9 +488,6 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'settingtype_id',
-                ],
-                [
-                    'name' => 'seti_settingtype_idx',
                 ]
             )
             ->update();
@@ -616,17 +506,6 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'role_id',
-                ],
-                [
-                    'name' => 'user_role_idx',
-                ]
-            )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
-                ],
-                [
-                    'name' => 'user_scoutgroup_idx',
                 ]
             )
             ->update();
@@ -671,15 +550,6 @@ class OctUpdate extends AbstractMigration
                 ]
             )
             ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
                 'user_id',
                 'users',
                 'id',
@@ -715,15 +585,6 @@ class OctUpdate extends AbstractMigration
             ->addForeignKey(
                 'role_id',
                 'roles',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
                 'id',
                 [
                     'update' => 'RESTRICT',
@@ -1048,15 +909,6 @@ class OctUpdate extends AbstractMigration
                     'delete' => 'RESTRICT'
                 ]
             )
-            ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
             ->update();
     }
 
@@ -1065,9 +917,6 @@ class OctUpdate extends AbstractMigration
         $this->table('applications')
             ->dropForeignKey(
                 'event_id'
-            )
-            ->dropForeignKey(
-                'scoutgroup_id'
             )
             ->dropForeignKey(
                 'user_id'
@@ -1084,9 +933,6 @@ class OctUpdate extends AbstractMigration
         $this->table('attendees')
             ->dropForeignKey(
                 'role_id'
-            )
-            ->dropForeignKey(
-                'scoutgroup_id'
             )
             ->dropForeignKey(
                 'user_id'
@@ -1215,9 +1061,6 @@ class OctUpdate extends AbstractMigration
         $this->table('users')
             ->dropForeignKey(
                 'role_id'
-            )
-            ->dropForeignKey(
-                'scoutgroup_id'
             );
 
         $this->table('allergies')
@@ -1234,9 +1077,8 @@ class OctUpdate extends AbstractMigration
             ->update();
 
         $this->table('applications')
-            ->removeIndexByName('applications_event_idx')
-            ->removeIndexByName('scoutgroup_id_idx')
-            ->removeIndexByName('user_id_idx')
+            ->removeIndex(['event_id'])
+            ->removeIndex(['user_id'])
             ->update();
 
         $this->table('applications')
@@ -1259,65 +1101,41 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'event_id',
-                ],
-                [
-                    'name' => 'event_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
-                ],
-                [
-                    'name' => 'apps_scoutgroup_id',
                 ]
             )
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'user_id',
                 ]
             )
             ->update();
 
         $this->table('applications_attendees')
-            ->removeIndexByName('attendee_idx')
+            ->removeIndex(['attendee_id'])
             ->update();
 
         $this->table('applications_attendees')
             ->addIndex(
                 [
                     'application_id',
-                ],
-                [
-                    'name' => 'application_id',
                 ]
             )
             ->addIndex(
                 [
                     'attendee_id',
-                ],
-                [
-                    'name' => 'attendee_id',
                 ]
             )
             ->addIndex(
                 [
                     'attendee_id',
                     'application_id',
-                ],
-                [
-                    'name' => 'attendee_id_2',
                 ]
             )
             ->update();
 
         $this->table('attendees')
-            ->removeIndexByName('role_idx')
-            ->removeIndexByName('scoutgroup_id_idx')
-            ->removeIndexByName('user_idx')
+            ->removeIndex(['role_id'])
+            ->removeIndex(['user_id'])
             ->update();
 
         $this->table('attendees')
@@ -1372,65 +1190,42 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'role_id',
-                ],
-                [
-                    'name' => 'role_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
-                ],
-                [
-                    'name' => 'users_scoutgroup_id',
                 ]
             )
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'user_id',
                 ]
             )
             ->update();
 
         $this->table('attendees_allergies')
-            ->removeIndexByName('allergy_idx')
-            ->removeIndexByName('allergy_key')
+            ->removeIndex(['allergy_id'])
+            ->removeIndex(['allergy_key'])
             ->update();
 
         $this->table('attendees_allergies')
             ->addIndex(
                 [
                     'allergy_id',
-                ],
-                [
-                    'name' => 'allergy_id',
                 ]
             )
             ->addIndex(
                 [
                     'attendee_id',
-                ],
-                [
-                    'name' => 'attendee_id',
                 ]
             )
             ->addIndex(
                 [
                     'attendee_id',
                     'allergy_id',
-                ],
-                [
-                    'name' => 'attendee_id_2',
                 ]
             )
             ->update();
 
         $this->table('champions')
-            ->removeIndexByName('champ_user_id_idx')
-            ->removeIndexByName('district_id_idx')
+            ->removeIndex(['user_id'])
+            ->removeIndex(['district_id'])
             ->update();
 
         $this->table('champions')
@@ -1438,17 +1233,11 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'district_id',
-                ],
-                [
-                    'name' => 'district_id',
                 ]
             )
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'user_id',
                 ]
             )
             ->update();
@@ -1459,7 +1248,6 @@ class OctUpdate extends AbstractMigration
                     'code',
                 ],
                 [
-                    'name' => 'code',
                     'unique' => true,
                 ]
             )
@@ -1489,10 +1277,10 @@ class OctUpdate extends AbstractMigration
             ->update();
 
         $this->table('events')
-            ->removeIndexByName('admin_user_id_idx')
-            ->removeIndexByName('discount_id_idx')
-            ->removeIndexByName('invtext_id_idx')
-            ->removeIndexByName('legaltext_id_idx')
+            ->removeIndex(['admin_user_id'])
+            ->removeIndex(['discount_id'])
+            ->removeIndex(['invtext_id'])
+            ->removeIndex(['legaltext_id'])
             ->update();
 
         $this->table('events')
@@ -1532,8 +1320,8 @@ class OctUpdate extends AbstractMigration
             ->update();
 
         $this->table('invoice_items')
-            ->removeIndexByName('InvoiceID_idx')
-            ->removeIndexByName('itemtype_id_idx')
+            ->removeIndex(['invoice_id'])
+            ->removeIndex(['itemtype_id'])
             ->update();
 
         $this->table('invoice_items')
@@ -1556,8 +1344,8 @@ class OctUpdate extends AbstractMigration
             ->update();
 
         $this->table('invoices')
-            ->removeIndexByName('invoices_applications_idx')
-            ->removeIndexByName('user_id_idx')
+            ->removeIndex(['applications_id'])
+            ->removeIndex(['user_id'])
             ->update();
 
         $this->table('invoices')
@@ -1565,48 +1353,37 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'application_id',
-                ],
-                [
-                    'name' => 'application_id',
                 ]
             )
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'user_id',
                 ]
             )
             ->update();
 
         $this->table('invoices_payments')
-            ->removeIndexByName('invoice_id_idx')
+            ->removeIndex(['invoice_id'])
+            ->removeIndex(['payment_id'])
             ->update();
 
         $this->table('invoices_payments')
             ->addIndex(
                 [
                     'invoice_id',
-                ],
-                [
-                    'name' => 'invoice_id',
                 ]
             )
             ->addIndex(
                 [
                     'payment_id',
-                ],
-                [
-                    'name' => 'payment_id',
                 ]
             )
             ->update();
 
         $this->table('logistic_items')
-            ->removeIndexByName('FK_logisticitems_applications_idx')
-            ->removeIndexByName('FK_logisticitems_logistics_idx')
-            ->removeIndexByName('FK_logisticitems_params_idx')
+            ->removeIndex(['applications_id'])
+            ->removeIndex(['logistics_id'])
+            ->removeIndex(['params_id'])
             ->update();
 
         $this->table('logistic_items')
@@ -1614,32 +1391,23 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'application_id',
-                ],
-                [
-                    'name' => 'application_id',
                 ]
             )
             ->addIndex(
                 [
                     'logistic_id',
-                ],
-                [
-                    'name' => 'logistic_id',
                 ]
             )
             ->addIndex(
                 [
                     'param_id',
-                ],
-                [
-                    'name' => 'param_id',
                 ]
             )
             ->update();
 
         $this->table('logistics')
-            ->removeIndexByName('FK_logistics_events_idx')
-            ->removeIndexByName('parameters_logistics_idx')
+            ->removeIndex(['event_id'])
+            ->removeIndex(['logistic_id'])
             ->update();
 
         $this->table('logistics')
@@ -1647,25 +1415,19 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'event_id',
-                ],
-                [
-                    'name' => 'event_id',
                 ]
             )
             ->addIndex(
                 [
                     'parameter_id',
-                ],
-                [
-                    'name' => 'parameter_id',
                 ]
             )
             ->update();
 
         $this->table('notes')
-            ->removeIndexByName('FK_Notes_Apps_idx')
-            ->removeIndexByName('FK_Notes_Invs_idx')
-            ->removeIndexByName('FK_Notes_Users_idx')
+            ->removeIndex(['application_id'])
+            ->removeIndex(['invoice_id'])
+            ->removeIndex(['user_id'])
             ->update();
 
         $this->table('notes')
@@ -1675,55 +1437,40 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'application_id',
-                ],
-                [
-                    'name' => 'application_id',
                 ]
             )
             ->addIndex(
                 [
                     'invoice_id',
-                ],
-                [
-                    'name' => 'invoice_id',
                 ]
             )
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'user_id',
                 ]
             )
             ->update();
 
         $this->table('notifications')
-            ->removeIndexByName('notification_user_idx')
-            ->removeIndexByName('notificationtypes_idx')
+            ->removeIndex(['user_id'])
+            ->removeIndex(['notificationtype_id'])
             ->update();
 
         $this->table('notifications')
             ->addIndex(
                 [
                     'notificationtype_id',
-                ],
-                [
-                    'name' => 'notificationtype_id',
                 ]
             )
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'user_id',
                 ]
             )
             ->update();
 
         $this->table('parameters')
-            ->removeIndexByName('FK_parameters_sets_idx')
+            ->removeIndex(['set_id'])
             ->update();
 
         $this->table('parameters')
@@ -1737,15 +1484,12 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'set_id',
-                ],
-                [
-                    'name' => 'set_id',
                 ]
             )
             ->update();
 
         $this->table('params')
-            ->removeIndexByName('parameter_id_idx')
+            ->removeIndex(['parameter_id'])
             ->update();
 
         $this->table('params')
@@ -1758,15 +1502,12 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'parameter_id',
-                ],
-                [
-                    'name' => 'parameter_id',
                 ]
             )
             ->update();
 
         $this->table('payments')
-            ->removeIndexByName('user_id_idx')
+            ->removeIndex(['user_id'])
             ->update();
 
         $this->table('payments')
@@ -1774,15 +1515,12 @@ class OctUpdate extends AbstractMigration
             ->addIndex(
                 [
                     'user_id',
-                ],
-                [
-                    'name' => 'user_id',
                 ]
             )
             ->update();
 
         $this->table('scoutgroups')
-            ->removeIndexByName('district_id_idx')
+            ->removeIndex(['district_id'])
             ->update();
 
         $this->table('scoutgroups')
@@ -1792,38 +1530,30 @@ class OctUpdate extends AbstractMigration
                     'scoutgroup',
                 ],
                 [
-                    'name' => 'scoutgroup',
                     'unique' => true,
                 ]
             )
             ->addIndex(
                 [
                     'district_id',
-                ],
-                [
-                    'name' => 'district_id',
                 ]
             )
             ->update();
 
         $this->table('settings')
-            ->removeIndexByName('settingtype_id_idx')
+            ->removeIndex(['settingtype_id'])
             ->update();
 
         $this->table('settings')
             ->addIndex(
                 [
                     'settingtype_id',
-                ],
-                [
-                    'name' => 'settingtype_id',
                 ]
             )
             ->update();
 
         $this->table('users')
-            ->removeIndexByName('role_id_idx')
-            ->removeIndexByName('scoutgroup_id_idx')
+            ->removeIndex(['role_id'])
             ->update();
 
         $this->table('users')
@@ -1909,24 +1639,12 @@ class OctUpdate extends AbstractMigration
                     'username',
                 ],
                 [
-                    'name' => 'username',
                     'unique' => true,
                 ]
             )
             ->addIndex(
                 [
                     'role_id',
-                ],
-                [
-                    'name' => 'role_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
-                ],
-                [
-                    'name' => 'users_scoutgroup_id',
                 ]
             )
             ->update();
@@ -1972,15 +1690,6 @@ class OctUpdate extends AbstractMigration
                 ]
             )
             ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
                 'user_id',
                 'users',
                 'id',
@@ -2016,15 +1725,6 @@ class OctUpdate extends AbstractMigration
             ->addForeignKey(
                 'role_id',
                 'roles',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
                 'id',
                 [
                     'update' => 'RESTRICT',
@@ -2343,15 +2043,6 @@ class OctUpdate extends AbstractMigration
             ->addForeignKey(
                 'role_id',
                 'roles',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
                 'id',
                 [
                     'update' => 'CASCADE',

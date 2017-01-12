@@ -45,7 +45,7 @@ class RolesFixture extends TestFixture
         ],
         [
             'id' => 2,
-            'role' => 'Lorem ipsum dolor sit amet',
+            'role' => 'Lorem ipsum dasfasolor sit amet',
             'invested' => 0,
             'minor' => 0,
             'automated' => 0,
@@ -53,15 +53,15 @@ class RolesFixture extends TestFixture
         ],
         [
             'id' => 3,
-            'role' => 'Lorem ipsum dolor sit amet',
-            'invested' => 0,
+            'role' => 'Lorem ipsum asas sit amet',
+            'invested' => 1,
             'minor' => 0,
-            'automated' => 0,
+            'automated' => 1,
             'deleted' => 1481983190
         ],
         [
             'id' => 4,
-            'role' => 'Lorem ipsum dolor sit amet',
+            'role' => 'Lorem ipsum yhe sit amet',
             'invested' => 0,
             'minor' => 0,
             'automated' => 0,

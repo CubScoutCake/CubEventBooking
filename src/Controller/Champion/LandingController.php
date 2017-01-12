@@ -84,6 +84,5 @@ class LandingController extends AppController
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees'));
-
     }
 }

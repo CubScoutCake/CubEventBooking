@@ -64,6 +64,7 @@ class AttendeesController extends AppController
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
@@ -123,6 +124,7 @@ class AttendeesController extends AppController
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
@@ -184,9 +186,11 @@ class AttendeesController extends AppController
 
         if ($this->Attendees->save($attendee)) {
             $this->Flash->success(__('The attendee has been updated.'));
+
             return $this->redirect(['action' => 'view', $attendee->id]);
         } else {
             $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
+
             return $this->redirect(['action' => 'view', $attendee->id]);
         }
     }
@@ -207,6 +211,7 @@ class AttendeesController extends AppController
         } else {
             $this->Flash->error(__('The attendee could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

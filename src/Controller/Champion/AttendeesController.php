@@ -74,6 +74,7 @@ class AttendeesController extends AppController
 
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
@@ -124,9 +125,10 @@ class AttendeesController extends AppController
                 , 'postcode' => strtoupper($attendee->postcode)];
 
             $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
-            
+
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
@@ -164,9 +166,11 @@ class AttendeesController extends AppController
 
         if ($this->Attendees->save($attendee)) {
             $this->Flash->success(__('The attendee has been updated.'));
+
             return $this->redirect(['action' => 'view', $attendee->id]);
         } else {
             $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
+
             return $this->redirect(['action' => 'view', $attendee->id]);
         }
     }
@@ -187,6 +191,7 @@ class AttendeesController extends AppController
         } else {
             $this->Flash->error(__('The attendee could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

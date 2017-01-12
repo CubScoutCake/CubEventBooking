@@ -53,6 +53,7 @@ class SettingsController extends AppController
             $setting = $this->Settings->patchEntity($setting, $this->request->data);
             if ($this->Settings->save($setting)) {
                 $this->Flash->success(__('The setting has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The setting could not be saved. Please, try again.'));
@@ -79,6 +80,7 @@ class SettingsController extends AppController
             $setting = $this->Settings->patchEntity($setting, $this->request->data);
             if ($this->Settings->save($setting)) {
                 $this->Flash->success(__('The setting has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The setting could not be saved. Please, try again.'));
@@ -105,6 +107,7 @@ class SettingsController extends AppController
         } else {
             $this->Flash->error(__('The setting could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

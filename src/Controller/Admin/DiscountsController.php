@@ -50,6 +50,7 @@ class DiscountsController extends AppController
             $discount = $this->Discounts->patchEntity($discount, $this->request->data);
             if ($this->Discounts->save($discount)) {
                 $this->Flash->success(__('The discount has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The discount could not be saved. Please, try again.'));
@@ -75,6 +76,7 @@ class DiscountsController extends AppController
             $discount = $this->Discounts->patchEntity($discount, $this->request->data);
             if ($this->Discounts->save($discount)) {
                 $this->Flash->success(__('The discount has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The discount could not be saved. Please, try again.'));
@@ -100,6 +102,7 @@ class DiscountsController extends AppController
         } else {
             $this->Flash->error(__('The discount could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

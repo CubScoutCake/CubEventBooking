@@ -5,8 +5,8 @@
         <?php
             echo $this->Form->input('name');
             echo $this->Form->input('full_name');
-            echo $this->Form->input('start');
-            echo $this->Form->input('end');
+            echo $this->Form->input('start_date');
+            echo $this->Form->input('end_date');
             echo $this->Form->input('live', ['label' => 'Live (will show up on the site)']);
             echo $this->Form->input('new_apps', ['label' => 'Accepting New Applications']);
             echo $this->Form->input('max', ['label' => 'Limit Numbers (will enforce max numbers)']);

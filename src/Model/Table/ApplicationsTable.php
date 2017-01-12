@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
  * Applications Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsTo $Scoutgroups
+ * @property \Cake\ORM\Association\BelongsTo $Sections
  * @property \Cake\ORM\Association\BelongsTo $Events
  * @property \Cake\ORM\Association\HasMany $Invoices
  * @property \Cake\ORM\Association\BelongsToMany $Attendees
@@ -46,12 +46,14 @@ class ApplicationsTable extends Table
             'field' => 'deleted'
         ]);
 
+        //$this->addBehavior('Authrole');
+
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Scoutgroups', [
-            'foreignKey' => 'scoutgroup_id',
+        $this->belongsTo('Sections', [
+            'foreignKey' => 'section_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Events', [
@@ -108,7 +110,7 @@ class ApplicationsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
+        $rules->add($rules->existsIn(['sections_id'], 'Sections'));
         $rules->add($rules->existsIn(['event_id'], 'Events'));
 
         return $rules;

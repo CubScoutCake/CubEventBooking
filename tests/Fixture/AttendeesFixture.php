@@ -19,7 +19,7 @@ class AttendeesFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 10, 'autoIncrement' => true, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
         'user_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'scoutgroup_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'section_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'role_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'firstname' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'lastname' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
@@ -42,16 +42,13 @@ class AttendeesFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'attendees_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
-            'user_idx' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
-            'atts_scoutgroup_id' => ['type' => 'index', 'columns' => ['scoutgroup_id'], 'length' => []],
-            'attendees_scoutgroup_id' => ['type' => 'index', 'columns' => ['scoutgroup_id'], 'length' => []],
+            'attendees_section_id' => ['type' => 'index', 'columns' => ['section_id'], 'length' => []],
             'attendees_role_id' => ['type' => 'index', 'columns' => ['role_id'], 'length' => []],
-            'role_idx' => ['type' => 'index', 'columns' => ['role_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'attendees_role_id' => ['type' => 'foreign', 'columns' => ['role_id'], 'references' => ['roles', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
-            'attendees_scoutgroup_id' => ['type' => 'foreign', 'columns' => ['scoutgroup_id'], 'references' => ['scoutgroups', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
+            'attendees_section_id' => ['type' => 'foreign', 'columns' => ['section_id'], 'references' => ['sections', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
             'attendees_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
     ];
@@ -66,7 +63,7 @@ class AttendeesFixture extends TestFixture
         [
             'id' => 1,
             'user_id' => 1,
-            'scoutgroup_id' => 1,
+            'section_id' => 1,
             'role_id' => 1,
             'firstname' => 'Lorem ipsum dolor sit amet',
             'lastname' => 'Lorem ipsum dolor sit amet',
@@ -86,7 +83,7 @@ class AttendeesFixture extends TestFixture
             'osm_id' => 1,
             'osm_sync_date' => 1482061379,
             'user_attendee' => 1,
-            'deleted' => 1482061379
+            'deleted' => null
         ],
     ];
 }

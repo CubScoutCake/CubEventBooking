@@ -32,7 +32,7 @@ class AllergiesController extends AppController
     public function view($id = null)
     {
         $allergy = $this->Allergies->get($id, [
-            'contain' => ['Attendees.Users', 'Attendees.Scoutgroups', 'Attendees.Roles']
+            'contain' => ['Attendees.Users', 'Attendees.Sections.Scoutgroups', 'Attendees.Roles']
         ]);
         $this->set('allergy', $allergy);
         $this->set('_serialize', ['allergy']);
@@ -48,9 +48,10 @@ class AllergiesController extends AppController
         $allergy = $this->Allergies->newEntity();
 
         if ($this->request->is('post')) {
-            $allergy = $this->Allergies->newEntity($allergy, $this->request->data, ['accessibleFields' => ['id' => true]]);
+            $allergy = $this->Allergies->patchEntity($allergy, $this->request->data, ['accessibleFields' => ['id' => true]]);
             if ($this->Allergies->save($allergy)) {
                 $this->Flash->success(__('The allergy has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The allergy could not be saved. Please, try again.'));
@@ -77,6 +78,7 @@ class AllergiesController extends AppController
             $allergy = $this->Allergies->patchEntity($allergy, $this->request->data);
             if ($this->Allergies->save($allergy)) {
                 $this->Flash->success(__('The allergy has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The allergy could not be saved. Please, try again.'));
@@ -103,6 +105,7 @@ class AllergiesController extends AppController
         } else {
             $this->Flash->error(__('The allergy could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

@@ -24,7 +24,6 @@ class ScoutgroupsFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'scoutgroups_district_id' => ['type' => 'index', 'columns' => ['district_id'], 'length' => []],
-            'grps_district_idx' => ['type' => 'index', 'columns' => ['district_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],

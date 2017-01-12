@@ -188,6 +188,5 @@ class EventsController extends AppController
         $logoHeight = $logoSet;
         $logoWidth = $logoSet / $event->logo_ratio;
         $this->set(compact('logoWidth', 'logoHeight'));
-
     }
 }

@@ -22,35 +22,9 @@ class DiscountsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
-        'app.discounts',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.applications',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.scoutgroups',
-        'app.districts',
-        'app.champions',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notes',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.notifications',
-        'app.notificationtypes',
-        'app.logistic_items',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params'
+        'app.discounts'
     ];
 
     /**
@@ -84,7 +58,36 @@ class DiscountsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Discounts->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'discount' => 'Lorem ipsum dolor sit amet',
+                'code' => 'ABCDEF',
+                'text' => 'Lorem ipsum dolor sit amet',
+                'active' => 1,
+                'discount_value' => 1,
+                'discount_number' => 1,
+                'uses' => 0,
+                'max_uses' => 1
+            ],
+            [
+                'id' => 2,
+                'discount' => 'Lorem ipsum dolor go amet',
+                'code' => 'BCDEFG',
+                'text' => 'Lorem This dolor sit amet',
+                'active' => 0,
+                'discount_value' => 1,
+                'discount_number' => 1,
+                'uses' => 1,
+                'max_uses' => 1
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -94,7 +97,78 @@ class DiscountsTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badData = [
+            'id' => 3,
+            'discount' => 'Lorem ipsum fish go amet',
+            'code' => 'CDEFGH',
+            'text' => 'Lorem This dolor goat amet',
+            'active' => 0,
+            'discount_value' => 'Monkey',
+            'discount_number' => 'Goat',
+            'uses' => 1,
+            'max_uses' => 1
+        ];
+
+        $goodData = [
+            'id' => 3,
+            'discount' => 'Lorem ipsum fish go amet',
+            'code' => 'CDEFGH',
+            'text' => 'Lorem This dolor goat amet',
+            'active' => 0,
+            'discount_value' => 1,
+            'discount_number' => 1,
+            'uses' => 1,
+            'max_uses' => 1
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'discount' => 'Lorem ipsum dolor sit amet',
+                'code' => 'ABCDEF',
+                'text' => 'Lorem ipsum dolor sit amet',
+                'active' => 1,
+                'discount_value' => 1,
+                'discount_number' => 1,
+                'uses' => 0,
+                'max_uses' => 1
+            ],
+            [
+                'id' => 2,
+                'discount' => 'Lorem ipsum dolor go amet',
+                'code' => 'BCDEFG',
+                'text' => 'Lorem This dolor sit amet',
+                'active' => 0,
+                'discount_value' => 1,
+                'discount_number' => 1,
+                'uses' => 1,
+                'max_uses' => 1
+            ],
+            [
+                'id' => 3,
+                'discount' => 'Lorem ipsum fish go amet',
+                'code' => 'CDEFGH',
+                'text' => 'Lorem This dolor goat amet',
+                'active' => 0,
+                'discount_value' => 1,
+                'discount_number' => 1,
+                'uses' => 1,
+                'max_uses' => 1
+            ],
+        ];
+
+        $badEntity = $this->Discounts->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Discounts->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Discounts->save($badEntity));
+        $this->Discounts->save($goodEntity);
+
+        $query = $this->Discounts->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -104,6 +178,77 @@ class DiscountsTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badData = [
+            'id' => 3,
+            'discount' => 'Lorem ipsum fish go amet',
+            'code' => 'ABCDEF',
+            'text' => 'Lorem This dolor goat amet',
+            'active' => 0,
+            'discount_value' => 1,
+            'discount_number' => 1,
+            'uses' => 1,
+            'max_uses' => 1
+        ];
+
+        $goodData = [
+            'id' => 3,
+            'discount' => 'Lorem ipsum fish go amet',
+            'code' => 'CDEFGH',
+            'text' => 'Lorem This dolor goat amet',
+            'active' => 0,
+            'discount_value' => 1,
+            'discount_number' => 1,
+            'uses' => 1,
+            'max_uses' => 1
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'discount' => 'Lorem ipsum dolor sit amet',
+                'code' => 'ABCDEF',
+                'text' => 'Lorem ipsum dolor sit amet',
+                'active' => 1,
+                'discount_value' => 1,
+                'discount_number' => 1,
+                'uses' => 0,
+                'max_uses' => 1
+            ],
+            [
+                'id' => 2,
+                'discount' => 'Lorem ipsum dolor go amet',
+                'code' => 'BCDEFG',
+                'text' => 'Lorem This dolor sit amet',
+                'active' => 0,
+                'discount_value' => 1,
+                'discount_number' => 1,
+                'uses' => 1,
+                'max_uses' => 1
+            ],
+            [
+                'id' => 3,
+                'discount' => 'Lorem ipsum fish go amet',
+                'code' => 'CDEFGH',
+                'text' => 'Lorem This dolor goat amet',
+                'active' => 0,
+                'discount_value' => 1,
+                'discount_number' => 1,
+                'uses' => 1,
+                'max_uses' => 1
+            ],
+        ];
+
+        $badEntity = $this->Discounts->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Discounts->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Discounts->save($badEntity));
+        $this->Discounts->save($goodEntity);
+
+        $query = $this->Discounts->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 }

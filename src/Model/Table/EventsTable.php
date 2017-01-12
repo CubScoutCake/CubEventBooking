@@ -111,14 +111,14 @@ class EventsTable extends Table
             ->allowEmpty('new_apps');
 
         $validator
-            ->dateTime('start')
-            ->requirePresence('start', 'create')
-            ->notEmpty('start');
+            ->dateTime('start_date')
+            ->requirePresence('start_date', 'create')
+            ->notEmpty('start_date');
 
         $validator
-            ->dateTime('end')
-            ->requirePresence('end', 'create')
-            ->notEmpty('end');
+            ->dateTime('end_date')
+            ->requirePresence('end_date', 'create')
+            ->notEmpty('end_date');
 
         $validator
             ->boolean('deposit')

@@ -54,7 +54,6 @@ class AuthRolesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('auth_role')
             ->requirePresence('auth_role', 'create')
             ->notEmpty('auth_role')
             ->add('auth_role', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);

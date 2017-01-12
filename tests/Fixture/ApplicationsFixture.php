@@ -19,13 +19,11 @@ class ApplicationsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 10, 'autoIncrement' => true, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
         'user_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'scoutgroup_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'section' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'section_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'permitholder' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'created' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'modified' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'modification' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'eventname' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'event_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'osm_event_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'cc_att_total' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
@@ -40,16 +38,12 @@ class ApplicationsFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'applications_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
-            'apps_user_idx' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
-            'apps_scoutgroup_idx' => ['type' => 'index', 'columns' => ['scoutgroup_id'], 'length' => []],
-            'applications_scoutgroup_id' => ['type' => 'index', 'columns' => ['scoutgroup_id'], 'length' => []],
-            'applications_event_id' => ['type' => 'index', 'columns' => ['event_id'], 'length' => []],
-            'apps_event_idx' => ['type' => 'index', 'columns' => ['event_id'], 'length' => []],
-        ],
+            'applications_section_id' => ['type' => 'index', 'columns' => ['section_id'], 'length' => []],
+            'applications_event_id' => ['type' => 'index', 'columns' => ['event_id'], 'length' => []],],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'applications_event_id' => ['type' => 'foreign', 'columns' => ['event_id'], 'references' => ['events', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
-            'applications_scoutgroup_id' => ['type' => 'foreign', 'columns' => ['scoutgroup_id'], 'references' => ['scoutgroups', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
+            'applications_section_id' => ['type' => 'foreign', 'columns' => ['section_id'], 'references' => ['sections', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'applications_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
     ];
@@ -60,29 +54,52 @@ class ApplicationsFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
-        [
-            'id' => 1,
-            'user_id' => 1,
-            'scoutgroup_id' => 1,
-            'section' => 'Lorem ipsum dolor sit amet',
-            'permitholder' => 'Lorem ipsum dolor sit amet',
-            'created' => 1481841289,
-            'modified' => 1481841289,
-            'modification' => 1,
-            'eventname' => 'Lorem ipsum dolor sit amet',
-            'event_id' => 1,
-            'osm_event_id' => 1,
-            'cc_att_total' => 1,
-            'cc_att_cubs' => 1,
-            'cc_att_yls' => 1,
-            'cc_att_leaders' => 1,
-            'cc_inv_count' => 1,
-            'cc_inv_total' => 1,
-            'cc_inv_cubs' => 1,
-            'cc_inv_yls' => 1,
-            'cc_inv_leaders' => 1,
-            'deleted' => 1481841289
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'user_id' => 1,
+                'section_id' => 1,
+                'permitholder' => 'Lorem as dolor sit amet',
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'modification' => 1,
+                'event_id' => 1,
+                'osm_event_id' => 1,
+                'cc_att_total' => 1,
+                'cc_att_cubs' => 1,
+                'cc_att_yls' => 1,
+                'cc_att_leaders' => 1,
+                'cc_inv_count' => 1,
+                'cc_inv_total' => 1,
+                'cc_inv_cubs' => 1,
+                'cc_inv_yls' => 1,
+                'cc_inv_leaders' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 2,
+                'user_id' => 1,
+                'section_id' => 1,
+                'permitholder' => 'Lorem dolor sit amet',
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'modification' => 1,
+                'event_id' => 2,
+                'osm_event_id' => 1,
+                'cc_att_total' => 1,
+                'cc_att_cubs' => 1,
+                'cc_att_yls' => 1,
+                'cc_att_leaders' => 1,
+                'cc_inv_count' => 1,
+                'cc_inv_total' => 1,
+                'cc_inv_cubs' => 1,
+                'cc_inv_yls' => 1,
+                'cc_inv_leaders' => 1,
+                'deleted' => 1481841289
+            ],
+        ];
+        parent::init();
+    }
 }

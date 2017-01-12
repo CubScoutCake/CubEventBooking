@@ -46,11 +46,12 @@ class AllergiesController extends AppController
     public function add()
     {
         $allergy = $this->Allergies->newEntity();
-        
+
         if ($this->request->is('post')) {
             $allergy = $this->Allergies->patchEntity($allergy, $this->request->data, ['accessibleFields' => ['id' => true]]);
             if ($this->Allergies->save($allergy)) {
                 $this->Flash->success(__('The allergy has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The allergy could not be saved. Please, try again.'));

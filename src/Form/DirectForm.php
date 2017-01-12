@@ -11,6 +11,7 @@ class DirectForm extends Form
     protected function _buildSchema(Schema $schema)
     {
         return $schema->addField('id', 'int');
+
         return $schema->addField('controller', 'int');
     }
 

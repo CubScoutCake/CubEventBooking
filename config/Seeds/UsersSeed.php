@@ -22,12 +22,14 @@ class UsersSeed extends AbstractSeed
         $this->call('ScoutgroupsSeed');
         $this->call('RolesSeed');
         $this->call('AuthRolesSeed');
+        $this->call('SectionTypesSeed');
+        $this->call('SectionsSeed');
 
         $data = [
             [
                 'id' => '1',
                 'role_id' => '2',
-                'scoutgroup_id' => '106',
+                'section_id' => '1',
                 'authrole' => 'admin',
                 'firstname' => 'Jacob',
                 'lastname' => 'Tyler',
@@ -43,7 +45,7 @@ class UsersSeed extends AbstractSeed
                 'city' => 'ADDRESS 2',
                 'county' => 'COUNTY',
                 'postcode' => 'POSTCODE',
-                'section' => '',
+                'legacy_section' => 'Cubs',
                 'created' => '2015-08-01 21:38:23',
                 'modified' => '2016-11-02 23:41:16',
                 'username' => 'Jacob',

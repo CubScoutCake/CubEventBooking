@@ -20,7 +20,7 @@ class AttendeesController extends AppController
      */
     public function index()
     {
-        
+
         $this->paginate = [
             'contain' => ['Users', 'Scoutgroups', 'Roles'],
             'conditions' => ['user_id' => $this->Auth->user('id')]
@@ -114,14 +114,14 @@ class AttendeesController extends AppController
                     ];
 
                 $sets = TableRegistry::get('Settings');
-                
+
                 $jsonAdd = json_encode($adultEnt);
                 $apiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'Action';
-                
+
                 $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-                
+
                 $http = new Client();
                 $response = $http->post(
                     $keenURL,
@@ -147,7 +147,6 @@ class AttendeesController extends AppController
             // Values from the Model e.g.
             $this->request->data['application_id'] = $appId;
         }
-              
     }
 
 
@@ -214,14 +213,14 @@ class AttendeesController extends AppController
                     ];
 
                 $sets = TableRegistry::get('Settings');
-                
+
                 $jsonAdd = json_encode($cubEnt);
                 $apiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'Action';
-                
+
                 $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-                
+
                 $http = new Client();
                 $response = $http->post(
                     $keenURL,
@@ -295,9 +294,10 @@ class AttendeesController extends AppController
                 ];
 
             $attendee = $this->Attendees->patchEntity($attendee, $phoneAttendee);
-            
+
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
@@ -341,14 +341,14 @@ class AttendeesController extends AppController
                 ];
 
             $sets = TableRegistry::get('Settings');
-            
+
             $jsonDelete = json_encode($deleteEnt);
             $apiKey = $sets->get(13)->text;
             $projectId = $sets->get(14)->text;
             $eventType = 'Action';
-            
+
             $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-            
+
             $http = new Client();
             $response = $http->post(
                 $keenURL,
@@ -361,6 +361,7 @@ class AttendeesController extends AppController
         } else {
             $this->Flash->error(__('The attendee could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 

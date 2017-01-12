@@ -45,7 +45,6 @@ class LandingController extends AppController
         $invs = TableRegistry::get('Invoices');
         $usrs = TableRegistry::get('Users');
         $pays = TableRegistry::get('Payments');
-        $sets = TableRegistry::get('Settings');
         $atts = TableRegistry::get('Attendees');
         $nts = TableRegistry::get('Notes');
         $notifs = TableRegistry::get('Notifications');
@@ -53,10 +52,10 @@ class LandingController extends AppController
         $userId = $this->Auth->user('id');
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users', 'Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(10);
+        $applications = $apps->find()->contain(['Users', 'Sections.Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(10);
         $events = $evs->find('upcoming')->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
         $invoices = $invs->find()->contain(['Users', 'Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
-        $users = $usrs->find()->contain(['Roles', 'Scoutgroups'])->order(['Users.last_login' => 'DESC'])->limit(10);
+        $users = $usrs->find()->contain(['Roles', 'Sections.Scoutgroups'])->order(['Users.last_login' => 'DESC'])->limit(10);
         $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
         $notes = $nts->find()->contain(['Invoices', 'Applications', 'Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
         $notifications = $notifs->find()->contain(['Notificationtypes', 'Users'])->order(['Notifications.created' => 'DESC'])->limit(10);

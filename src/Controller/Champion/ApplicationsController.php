@@ -125,7 +125,7 @@ class ApplicationsController extends AppController
             $invYls = 0;
             $invLeaders = 0;
         }
-        
+
 
         $invNotCubs = $invYls + $invLeaders;
         $this->set(compact('invCubs', 'invYls', 'invLeaders', 'invNotCubs'));
@@ -188,7 +188,7 @@ class ApplicationsController extends AppController
         } else {
             $payDone = 0;
         }
-        
+
 
         $this->set(compact('appDone', 'invDone', 'cubsDone', 'cubsNotDone', 'payDone'));
 
@@ -233,6 +233,7 @@ class ApplicationsController extends AppController
 
             if ($this->Applications->save($application)) {
                 $this->Flash->success(__('The application has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
@@ -248,7 +249,7 @@ class ApplicationsController extends AppController
         $users = $this->Applications->Users->find('list', ['limit' => 200, 'contain' => 'Scoutgroups', 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]]);
         $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
         $events = $this->Applications->Events->find('list', ['limit' => 200, 'conditions' => ['live' => 1]]);
-        
+
         $this->set(compact('application', 'users', 'attendees', 'scoutgroups', 'events'));
         $this->set('_serialize', ['application']);
 
@@ -261,7 +262,6 @@ class ApplicationsController extends AppController
                 $this->request->data['scoutgroup_id'] = $userScoutGroup;
             }
         }
-              
     }
 
     /**
@@ -289,17 +289,18 @@ class ApplicationsController extends AppController
 
             if ($this->Applications->save($application)) {
                 $this->Flash->success(__('The application has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
             }
         }
-        
+
         $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $user->id]]);
         $users = $this->Applications->Users->find('list', ['limit' => 200, 'contain' => 'Scoutgroups', 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]]);
         $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
         $events = $this->Applications->Events->find('list', ['limit' => 200, 'conditions' => ['live' => 1]]);
-        
+
         $this->set(compact('application', 'users', 'attendees', 'scoutgroups', 'events'));
         $this->set('_serialize', ['application']);
     }
@@ -320,6 +321,7 @@ class ApplicationsController extends AppController
         } else {
             $this->Flash->error(__('The application could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 

@@ -57,9 +57,9 @@
             <div class="panel-body">
                 <span><?= __('User') ?>: <?= $application->has('user') ? $this->Html->link($application->user->full_name, ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></span>
                 </br>
-                <span><?= __('Scoutgroup') ?>: <?= $application->has('scoutgroup') ? $this->Html->link($application->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $application->scoutgroup->id]) : '' ?></span>
+                <span><?= __('Scoutgroup') ?>: <?= $application->has('section.scoutgroup') ? $this->Html->link($application->section->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $application->section->scoutgroup->id]) : '' ?></span>
                 </br>
-                <span><?= __('Section') ?>: <?= h($application->section) ?></span>
+                <span><?= __('Section') ?>: <?= $application->has('section') ? $this->Html->link($application->section->section, ['controller' => 'Sections', 'action' => 'view', $application->section->id]) : '' ?></span>
                 </br>
                 <span><?= __('Permitholder') ?>: <?= h($application->permitholder) ?></span>
 
@@ -355,7 +355,6 @@
                                 <th><?= __('Last Name') ?></th>
                                 <th class="actions"><?= __('Actions') ?></th>
                                 <th><?= __('Role') ?></th>
-                                <th><?= __('Group') ?></th>
                                 <th><?= __('Modified') ?></th>
                             </tr>
                             <?php foreach ($application->attendees as $attendees): ?>
@@ -373,8 +372,7 @@
                                             </ul>
                                         </div>
                                     </td>
-                                    <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
-                                    <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,10), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
+                                    <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,30), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
                                     <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
                                 </tr>
                             <?php endforeach; ?>

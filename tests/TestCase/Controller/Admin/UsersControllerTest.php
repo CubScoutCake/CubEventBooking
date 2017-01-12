@@ -14,15 +14,22 @@ class UsersControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.users',
         'app.roles',
+        'app.auth_roles',
+        'app.sections',
+        'app.section_types',
         'app.attendees',
         'app.scoutgroups',
         'app.districts',
         'app.applications',
-        'app.allergies'
+        'app.allergies',
+        'app.events',
+        'app.settings',
+        'app.settingtypes',
+        'app.discounts',
     ];
 
     /**
@@ -32,7 +39,14 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'index']);
+
+        $this->assertResponseOk();
     }
 
     /**

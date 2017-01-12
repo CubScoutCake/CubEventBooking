@@ -56,6 +56,7 @@ class ParamsController extends AppController
             $param = $this->Params->patchEntity($param, $this->request->data);
             if ($this->Params->save($param)) {
                 $this->Flash->success(__('The param has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The param could not be saved. Please, try again.'));
@@ -82,6 +83,7 @@ class ParamsController extends AppController
             $param = $this->Params->patchEntity($param, $this->request->data);
             if ($this->Params->save($param)) {
                 $this->Flash->success(__('The param has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The param could not be saved. Please, try again.'));
@@ -108,6 +110,7 @@ class ParamsController extends AppController
         } else {
             $this->Flash->error(__('The param could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

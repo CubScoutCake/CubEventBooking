@@ -47,13 +47,13 @@ class NotificationtypesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->allowEmpty('notification_type');
+            ->requirePresence('notification_type');
 
         $validator
-            ->allowEmpty('notification_description');
+            ->requirePresence('notification_description');
 
         $validator
-            ->allowEmpty('icon');
+            ->requirePresence('icon');
 
         return $validator;
     }

@@ -26,7 +26,7 @@ class UsersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Roles', 'Scoutgroups']
+            'contain' => ['Roles', 'Sections.Scoutgroups']
             , 'order' => ['modified' => 'DESC']
         ];
         $this->set('users', $this->paginate($this->Users));
@@ -37,7 +37,7 @@ class UsersController extends AppController
      * View method
      *
      * @param string|null $id User id.
-     * @return void
+     * @return void|path
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
@@ -45,12 +45,12 @@ class UsersController extends AppController
         if ($id == $this->Auth->user('id')) {
             return $this->redirect(['controller' => 'Users', 'action' => 'view', 'prefix' => false, $id]);
         }
-        
+
         $user = $this->Users->get($id, [
             'contain' => ['Roles'
-                , 'Scoutgroups'
-                , 'Applications' => ['Scoutgroups', 'Events']
-                , 'Attendees' => ['Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']]
+                , 'Sections.Scoutgroups'
+                , 'Applications' => ['Sections.Scoutgroups', 'Events']
+                , 'Attendees' => ['Sections.Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']]
                 , 'Invoices.Applications.Events'
                 , 'Notes' => ['Invoices' , 'Applications']
                 , 'Notifications' => ['Notificationtypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']]
@@ -73,7 +73,7 @@ class UsersController extends AppController
     public function add()
     {
         $user = $this->Users->newEntity();
-        
+
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->data);
 
@@ -87,9 +87,10 @@ class UsersController extends AppController
                 , 'section' => ucwords(strtolower($user->section))];
 
             $user = $this->Users->patchEntity($user, $upperUser);
-            
+
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -156,6 +157,7 @@ class UsersController extends AppController
         } else {
             $this->Flash->error(__('An Attendee for the User could not be Syncronised. Please, try again.'));
         }
+
         return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $user->id]);
     }
 
@@ -213,6 +215,7 @@ class UsersController extends AppController
         }
         $this->Flash->error('There were ' . $error . ' Syncronisation Errors.');
         $this->Flash->success($success . ' Users were Syncronised.');
+
         return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'index']);
     }
 
@@ -244,6 +247,7 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -280,9 +284,11 @@ class UsersController extends AppController
 
         if ($this->Users->save($user)) {
             $this->Flash->success(__('The user has been updated.'));
+
             return $this->redirect(['action' => 'view', $user->id]);
         } else {
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
+
             return $this->redirect(['action' => 'view', $user->id]);
         }
     }
@@ -335,6 +341,7 @@ class UsersController extends AppController
         } else {
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 
@@ -350,6 +357,7 @@ class UsersController extends AppController
     public function logout()
     {
         $this->Flash->success('You are now logged out.');
+
         return $this->redirect($this->Auth->logout());
     }
 

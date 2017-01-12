@@ -14,8 +14,12 @@ use Cake\ORM\TableRegistry;
 class UsersController extends AppController
 {
 
-    public function register($eventId = null)
+    public function register($eventId = null, $sectionId = null)
     {
+        if (!isset($sectionId) || is_null($sectionId)) {
+            $this->redirect(['controller' => 'Users', 'prefix' => 'register', 'action' => 'section']);
+        }
+
         $user = $this->Users->newEntity();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -66,6 +70,7 @@ class UsersController extends AppController
                 $redir = $user->get('id');
 
                 $this->Flash->success(__('You have successfully registered!'));
+
                 return $this->redirect(['controller' => 'Notifications', 'action' => 'welcome', 'prefix' => false, $redir, $eventId]);
             } else {
                 $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));
@@ -73,6 +78,13 @@ class UsersController extends AppController
         }
 
         $roles = $this->Users->Roles->find('nonAuto')->find('leaders')->find('list', ['limit' => 200]);
+
+        $this->set(compact('user', 'roles', 'scoutgroups'));
+        $this->set('_serialize', ['user']);
+    }
+
+    public function section($eventId = null)
+    {
         $scoutgroups = $this->Users->Scoutgroups->find(
             'list',
             [
@@ -80,10 +92,8 @@ class UsersController extends AppController
                 'valueField' => 'scoutgroup',
                 'groupField' => 'district.district'
             ]
-        )
-            ->contain(['Districts']);
-        $this->set(compact('user', 'roles', 'scoutgroups'));
-        $this->set('_serialize', ['user']);
+        ) ->contain(['Districts']);
+        $sectionTypes = TableRegistry::get('sectionTypes');
     }
 
     public function beforeFilter(\Cake\Event\Event $event)
