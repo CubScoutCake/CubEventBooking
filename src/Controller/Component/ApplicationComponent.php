@@ -11,7 +11,6 @@ namespace App\Controller\Component;
 use Cake\Controller\Component;
 use Cake\ORM\TableRegistry;
 
-
 /**
  * Class ApplicationComponent
  * @package App\Controller\Component

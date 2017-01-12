@@ -12,6 +12,13 @@ use Cake\ORM\Behavior;
 
 class AuthroleBehaviour extends Behavior
 {
+    /**
+     * @param Event $event The event being processed.
+     * @param Query $query The Query to be returned.
+     * @param ArrayObject $options Options for the query etc.
+     * @param bool $primary Indicates if root query.
+     * @return Query
+     */
     public function beforeFind(Event $event, Query $query, ArrayObject $options, $primary)
     {
         $entity = $event->data['entity'];

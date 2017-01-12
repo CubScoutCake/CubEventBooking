@@ -16,6 +16,5 @@ class EventComponent extends Component
 
     public function randomColour($max = null)
     {
-
     }
 }

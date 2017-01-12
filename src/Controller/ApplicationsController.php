@@ -236,7 +236,7 @@ class ApplicationsController extends AppController
      */
     public function simpleBook($eventId = null, $attendees = null)
     {
-        if(!isset($eventId) || !isset($attendees)) {
+        if (!isset($eventId) || !isset($attendees)) {
             $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId, $attendees]);
         }
 
@@ -279,8 +279,8 @@ class ApplicationsController extends AppController
 
             $application = $this->Applications->patchEntity(
                 $application,
-                $this->request->data
-                , ['associated' => [ 'Attendees']]
+                $this->request->data,
+                ['associated' => [ 'Attendees']]
             );
 
             foreach ($application->attendees as $attendee) {
@@ -289,7 +289,6 @@ class ApplicationsController extends AppController
             }
 
             if ($this->Applications->save($application)) {
-
                 $appId = $application->get('id');
 
                 $this->loadComponent('Application');
@@ -310,12 +309,11 @@ class ApplicationsController extends AppController
             }
         }
 
-        $sections = $this->Applications->Sections->find('list',['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
+        $sections = $this->Applications->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
         $roles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('nonAuto');
 
         $this->set(compact('application', 'roles', 'sections', 'attendees'));
         $this->set('_serialize', ['application']);
-
     }
 
     /**

@@ -235,13 +235,12 @@ class InvoiceComponent extends Component
                 $this->Flash->error(__('There was an error.'));
             }
         }
-
     }
 
     public function getLines($invoiceId)
     {
         $this->InvoiceItems = TableRegistry::get('InvoiceItems');
-        
+
         // Find Existing Lines
         $existingCubDep = $this->InvoiceItems->find()->where(['itemtype_id' => 1, 'invoice_id' => $invoiceId])->first();
         $existingCub = $this->InvoiceItems->find()->where(['itemtype_id' => 2, 'invoice_id' => $invoiceId])->first();

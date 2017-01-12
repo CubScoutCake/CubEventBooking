@@ -71,8 +71,9 @@ class EventsController extends AppController
         $logoWidth = $logoSet / $event->logo_ratio;
         $this->set(compact('logoWidth', 'logoHeight'));
     }
-    
-    public function book() {
+
+    public function book()
+    {
         $event = $this->Events->get($id, [
             'contain' => ['Settings', 'Discounts', 'Applications']
         ]);
