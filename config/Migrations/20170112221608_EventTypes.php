@@ -88,6 +88,19 @@ class EventTypes extends AbstractMigration
             ])
             ->addIndex(['event_type_id'])
             ->update();
+
+        $table = $this->table('auth_roles');
+        $table->addColumn('parent', 'boolean', [
+                'default' => null,
+                'limit' => null,
+                'null' => true,
+            ])
+            ->addColumn('user', 'boolean', [
+                'default' => null,
+                'limit' => null,
+                'null' => true,
+            ])
+            ->update();
     }
 
     public function up()
@@ -102,5 +115,9 @@ class EventTypes extends AbstractMigration
             )
             ->removeColumn('logo_ratio')
             ->save();
+
+        $table = $this->table('auth_roles');
+        $table->removeColumn('auth')
+            ->update();
     }
 }

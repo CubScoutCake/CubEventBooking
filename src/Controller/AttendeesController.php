@@ -22,7 +22,7 @@ class AttendeesController extends AppController
     {
 
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Roles'],
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles'],
             'conditions' => ['user_id' => $this->Auth->user('id')]
         ];
         $this->set('attendees', $this->paginate($this->Attendees));
@@ -39,7 +39,7 @@ class AttendeesController extends AppController
     public function view($id = null)
     {
         $attendee = $this->Attendees->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);

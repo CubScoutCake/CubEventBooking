@@ -29,10 +29,10 @@ class UsersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Roles', 'Scoutgroups']
+            'contain' => ['Roles', 'Sections.Scoutgroups']
         ];
         $this->paginate['conditions'] = [
-            'scoutgroup_id' => $this->Auth->user('scoutgroup_id')
+            'section_id' => $this->Auth->user('section_id')
         ];
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
@@ -49,11 +49,11 @@ class UsersController extends AppController
     {
         $user = $this->Users->get($id, [
             'contain' => ['Roles',
-                'Scoutgroups',
+                'Sections.Scoutgroups',
                 'Invoices.Applications',
-                'Applications.Scoutgroups',
+                'Applications.Sections.Scoutgroups',
                 'Applications.Events',
-                'Attendees.Scoutgroups',
+                'Attendees.Sections.Scoutgroups',
                 'Notes' => ['conditions' => ['visible' => true]],
                 'Notifications.Notificationtypes'
             ]
@@ -151,8 +151,7 @@ class UsersController extends AppController
                 $att = $attName->first();
             }
         } else {
-            $newAttendeeData = ['dateofbirth' => '01-01-1990'];
-            $att = $atts->newEntity($newAttendeeData);
+            $att = $atts->newEntity();
         }
 
         $attendeeData = [
@@ -166,16 +165,17 @@ class UsersController extends AppController
             'user_attendee' => true,
             'postcode' => $user->postcode,
             'role_id' => $user->role_id,
-            'scoutgroup_id' => $user->scoutgroup_id,
+            'section_id' => $user->section_id,
             'phone' => $user->phone
         ];
 
         $att = $atts->patchEntity($att, $attendeeData);
 
         if ($atts->save($att)) {
-            $this->Flash->success(__('An Attendee for your User has been Syncronised.'));
+            $this->Flash->success(__('An Attendee for your User has been Synchronised.'));
         } else {
-            $this->Flash->error(__('An Attendee for your User could not be Syncronised. Please, try again.'));
+            $this->Flash->error(__('An Attendee for your User could not be Synchronised. Please, try again.'));
+            $this->log('Attendees:SYNC User:' . $user->id . ' Sync Error','notice');
         }
 
         return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);

@@ -14,15 +14,21 @@ class UsersControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.scoutgroups',
+        'app.settingtypes',
+        'app.settings',
         'app.districts',
+        'app.scoutgroups',
+        'app.roles',
+        'app.users',
         'app.applications',
-        'app.allergies'
+        'app.events',
+        'app.discounts',
+        'app.sections',
+        'app.section_types',
+        'app.auth_roles',
+        'app.attendees',
     ];
 
     /**
@@ -32,7 +38,14 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 1
+        ]);
+
+        $this->get('/users');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -42,7 +55,14 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 1
+        ]);
+
+        $this->get('/users/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -73,5 +93,22 @@ class UsersControllerTest extends IntegrationTestCase
     public function testDelete()
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test Sync method
+     *
+     * @return void
+     */
+    public function testSync()
+    {
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 1
+        ]);
+
+        $this->get('/users/sync');
+
+        $this->assertRedirect(['controller' => 'Landing', 'action' => 'user_home']);
     }
 }

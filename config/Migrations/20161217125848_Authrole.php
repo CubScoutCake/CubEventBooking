@@ -12,19 +12,19 @@ class Authrole extends AbstractMigration
                 'limit' => 255,
                 'null' => false
             ])
-            ->addColumn('admin_access', 'integer', [
+            ->addColumn('admin_access', 'boolean', [
                 'default' => null,
-                'limit' => 10,
+                'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('champion_access', 'integer', [
+            ->addColumn('champion_access', 'boolean', [
                 'default' => null,
-                'limit' => 10,
+                'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('super_user', 'integer', [
+            ->addColumn('super_user', 'boolean', [
                 'default' => null,
-                'limit' => 10,
+                'limit' => null,
                 'null' => true,
             ])
             ->addColumn('auth', 'integer', [

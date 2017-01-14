@@ -58,14 +58,10 @@ class AttendeesTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsToMany('Applications', [
-            'foreignKey' => 'attendee_id',
-            'targetForeignKey' => 'application_id',
-            'joinTable' => 'applications_attendees'
+            'through' => 'ApplicationsAttendees',
         ]);
         $this->belongsToMany('Allergies', [
-            'foreignKey' => 'attendee_id',
-            'targetForeignKey' => 'allergy_id',
-            'joinTable' => 'attendees_allergies'
+            'through' => 'AttendeesAllergies',
         ]);
 
         // Adding Counter Caches

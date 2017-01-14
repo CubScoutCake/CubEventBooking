@@ -14,7 +14,7 @@ class AttendeesControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-
+     */
     public $fixtures = [
         'app.attendees',
         'app.users',
@@ -24,9 +24,15 @@ class AttendeesControllerTest extends IntegrationTestCase
         'app.champions',
         'app.applications',
         'app.events',
-        'app.applications_attendees'
+        'app.applications_attendees',
+        'app.sections',
+        'app.auth_roles',
+        'app.section_types',
+        'app.settings',
+        'app.settingtypes',
+        'app.discounts',
     ];
-     */
+
     /**
      * Test index method
      *
@@ -34,7 +40,14 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/attendees');
+
+        $this->assertResponseOk();
     }
 
     /**

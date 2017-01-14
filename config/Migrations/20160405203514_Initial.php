@@ -177,7 +177,7 @@ class Initial extends AbstractMigration
             ->addColumn('dateofbirth', 'date', [
                 'default' => null,
                 'limit' => null,
-                'null' => false,
+                'null' => true,
             ])
             ->addColumn('phone', 'string', [
                 'default' => null,

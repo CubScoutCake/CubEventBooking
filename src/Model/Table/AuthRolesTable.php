@@ -59,21 +59,29 @@ class AuthRolesTable extends Table
             ->add('auth_role', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
-            ->integer('admin_access')
+            ->boolean('admin_access')
             ->allowEmpty('admin_access');
 
         $validator
-            ->integer('champion_access')
+            ->boolean('champion_access')
             ->allowEmpty('champion_access');
 
         $validator
-            ->integer('super_user')
+            ->boolean('super_user')
             ->allowEmpty('super_user');
 
         $validator
             ->integer('auth')
             ->requirePresence('auth', 'create')
             ->notEmpty('auth');
+
+        $validator
+            ->boolean('parent')
+            ->allowEmpty('parent');
+
+        $validator
+            ->boolean('user')
+            ->allowEmpty('user');
 
         return $validator;
     }

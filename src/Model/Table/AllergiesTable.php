@@ -37,9 +37,7 @@ class AllergiesTable extends Table
         $this->primaryKey('id');
 
         $this->belongsToMany('Attendees', [
-            'foreignKey' => 'allergy_id',
-            'targetForeignKey' => 'attendee_id',
-            'joinTable' => 'attendees_allergies'
+            'through' => 'AttendeesAllergies',
         ]);
     }
 

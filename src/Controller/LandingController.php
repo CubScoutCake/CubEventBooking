@@ -56,8 +56,12 @@ class LandingController extends AppController
                 return $q->where(['Invoices.user_id' => $this->Auth->user('id')]);
         });
 
+        if($events->count('*') > 0) {
+            $this->set(compact('events'));
+        }
+
         // Pass to View
-        $this->set(compact('applications', 'events', 'invoices', 'payments'));
+        $this->set(compact('applications', 'invoices', 'payments'));
 
         // Counts of Entities
         $countApplications = $applications->count('*');

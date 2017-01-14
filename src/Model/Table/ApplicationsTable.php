@@ -69,9 +69,7 @@ class ApplicationsTable extends Table
             'foreignKey' => 'application_id'
         ]);
         $this->belongsToMany('Attendees', [
-            'foreignKey' => 'application_id',
-            'targetForeignKey' => 'attendee_id',
-            'joinTable' => 'applications_attendees'
+            'through' => 'ApplicationsAttendees',
         ]);
     }
 

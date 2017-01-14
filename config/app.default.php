@@ -274,13 +274,19 @@ return [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => LOGS,
             'file' => 'debug',
-            'levels' => ['notice', 'info', 'debug'],
+            'levels' => ['info', 'debug'],
         ],
         'error' => [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => LOGS,
             'file' => 'error',
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
+        ],
+        'flash' => [
+            'className' => 'Cake\Log\Engine\FileLog',
+            'path' => LOGS,
+            'file' => 'flash',
+            'levels' => ['notice'],
         ],
     ],
 

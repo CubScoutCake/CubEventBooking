@@ -20,17 +20,17 @@ class AttendeesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
             , 'order' => ['modified' => 'DESC']
         ];
-        $this->set('attendees', $this->paginate($this->Attendees->find('countIncluded')));
+        $this->set('attendees', $this->paginate($this->Attendees->find('all')));
         $this->set('_serialize', ['attendees']);
     }
 
     public function unattached()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
             , 'order' => ['modified' => 'DESC']
         ];
         $this->set('attendees', $this->paginate($this->Attendees->find('unattached')));
@@ -46,7 +46,7 @@ class AttendeesController extends AppController
     public function view($id = null)
     {
         $attendee = $this->Attendees->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);

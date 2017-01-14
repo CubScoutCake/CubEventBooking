@@ -7,7 +7,7 @@ use Cake\TestSuite\IntegrationTestCase;
 /**
  * App\Admin\Admin/LandingController Test Case
  */
-class LandingAdminControllerTest extends IntegrationTestCase
+class LandingControllerTest extends IntegrationTestCase
 {
     /**
      * Fixtures
@@ -24,9 +24,11 @@ class LandingAdminControllerTest extends IntegrationTestCase
         'app.applications',
         'app.events',
         'app.discounts',
+        'app.invoices',
         'app.auth_roles',
         'app.sections',
         'app.section_types',
+        'app.notes',
     ];
 
     /**

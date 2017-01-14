@@ -46,16 +46,16 @@ class InvoicesPaymentsTable extends Table
             'foreignKey' => 'payment_id',
             'joinType' => 'INNER'
         ]);
-        $this->addBehavior('CounterCache', [
-            'Invoices' => [
-                'rating_avg' => function ($event, $entity, $table) {
-                    $query = $entity->find()->contain(['Payments']);
-                    $query->select(['sum' => $query->func()->sum('payments.value')]);
-
-                    return $query->sum;
-                }
-            ]
-        ]);
+//        $this->addBehavior('CounterCache', [
+//            'Invoices' => [
+//                'rating_avg' => function ($event, $entity, $table) {
+//                    $query = $entity->find()->contain(['Payments']);
+//                    $query->select(['sum' => $query->func()->sum('payments.value')]);
+//
+//                    return $query->sum;
+//                }
+//            ]
+//        ]);
     }
 
     /**

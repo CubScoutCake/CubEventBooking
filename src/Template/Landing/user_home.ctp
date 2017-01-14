@@ -20,7 +20,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($countApplications); ?></div>
-                        <div>Total Number of Applications</div>
+                        <div>Number of Applications</div>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($countAttendees); ?></div>
-                        <div>Total Number of Attendees</div>
+                        <div>Number of Attendees</div>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($countInvoices); ?></div>
-                        <div>Total Number of
+                        <div>Number of
                             Invoices</div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($countPayments); ?></div>
-                        <div>Total Number of Payments Received</div>
+                        <div>Number of Payments Received</div>
                     </div>
                 </div>
             </div>
