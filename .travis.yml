@@ -8,6 +8,7 @@ php:
 
 env:
   - DB=postgres
+  - DB=mysql
 
 services:
   - postgres
