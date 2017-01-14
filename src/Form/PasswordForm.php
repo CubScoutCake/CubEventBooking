@@ -7,14 +7,29 @@ use Cake\Validation\Validator;
 
 class PasswordForm extends Form
 {
-
+    /**
+     * Build the Schema of the form.
+     *
+     * @param Schema $schema The basic Schema to be Extended
+     *
+     * @return Schema $schema
+     */
     protected function _buildSchema(Schema $schema)
     {
-        return $schema->addField('newpw', ['type' => 'string'])
+        $schema->addField('newpw', ['type' => 'string'])
             ->addField('confirm', ['type' => 'string'])
             ->addField('postcode', ['type' => 'string']);
+
+        return $schema;
     }
 
+    /**
+     * Function to Validate the Form
+     *
+     * @param Validator $validator The basic Validation to be extended.
+     *
+     * @return Validator $validator
+     */
     protected function _buildValidator(Validator $validator)
     {
         $validator->requirePresence('newpw')
@@ -27,11 +42,5 @@ class PasswordForm extends Form
             ->notEmpty('postcode');
 
         return $validator;
-    }
-
-    protected function _execute(array $data)
-    {
-        // Send an email.
-        return true;
     }
 }

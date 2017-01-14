@@ -13,6 +13,11 @@ use Migrations\Migrations;
 
 class DatabaseShell extends Shell
 {
+    /**
+     * Function to build the database via migrations.
+     *
+     * @return void
+     */
     public function build()
     {
         $migrations = new Migrations();
@@ -26,6 +31,11 @@ class DatabaseShell extends Shell
         $this->out('Database Migration Implementation Succeeded.');
     }
 
+    /**
+     * Function to add basic config data to the database.
+     *
+     * @return void
+     */
     public function seed()
     {
         $migrations = new Migrations();
@@ -47,6 +57,11 @@ class DatabaseShell extends Shell
         $this->out('Settings Seeding Succeeded.');
     }
 
+    /**
+     * Hashes the password for the inital user with the installed Hash.
+     *
+     * @return void
+     */
     public function password()
     {
         $users = TableRegistry::get('Users');
