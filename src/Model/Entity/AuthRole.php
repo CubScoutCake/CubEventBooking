@@ -34,49 +34,55 @@ class AuthRole extends Entity
     ];
 
     /**
-     * @param $adminAccess
+     * @param bool $adminAccess Value to be mutated.
      *
      * @return string
      */
     protected function _setAdminAccess($adminAccess)
     {
         $this->set('auth', $this->_properties['auth_value']);
+
         return $adminAccess;
     }
 
+    /**
+     * Virtual property to get a binary hash of the auth permissions.
+     *
+     * @return int
+     */
     protected function _getAuthValue()
     {
-        if($this->_properties['super_user'] && isset($this->_properties['super_user'])) {
+        if ($this->_properties['super_user'] && isset($this->_properties['super_user'])) {
             $super = 1;
         } else {
             $super = 0;
         };
 
-        if($this->_properties['admin_access'] && isset($this->_properties['admin_access'])) {
+        if ($this->_properties['admin_access'] && isset($this->_properties['admin_access'])) {
             $admin = 1;
         } else {
             $admin = 0;
         };
 
-        if($this->_properties['champion_access'] && isset($this->_properties['champion_access'])) {
+        if ($this->_properties['champion_access'] && isset($this->_properties['champion_access'])) {
             $champion = 1;
         } else {
             $champion = 0;
         };
 
-        if($this->_properties['user'] && isset($this->_properties['user'])) {
+        if ($this->_properties['user'] && isset($this->_properties['user'])) {
             $user = 1;
         } else {
             $user = 0;
         };
 
-        if($this->_properties['parent'] && isset($this->_properties['parent'])) {
+        if ($this->_properties['parent'] && isset($this->_properties['parent'])) {
             $parent = 1;
         } else {
             $parent = 0;
         };
 
-        $binary =  $super . $admin . $champion . $user . $parent;
+        $binary = $super . $admin . $champion . $user . $parent;
 
         $authValue = bindec($binary);
 

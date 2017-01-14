@@ -25,6 +25,8 @@ class AuthRolesSeed extends AbstractSeed
                 'admin_access' => 0,
                 'champion_access' => 0,
                 'super_user' => 0,
+                'user' => 1,
+                'parent' => 0,
                 'auth' => 1,
             ],
             [
@@ -33,6 +35,8 @@ class AuthRolesSeed extends AbstractSeed
                 'admin_access' => 1,
                 'champion_access' => 1,
                 'super_user' => 1,
+                'user' => 1,
+                'parent' => 0,
                 'auth' => 150,
             ],
         ];

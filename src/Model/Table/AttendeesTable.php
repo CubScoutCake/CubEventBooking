@@ -63,12 +63,6 @@ class AttendeesTable extends Table
         $this->belongsToMany('Allergies', [
             'through' => 'AttendeesAllergies',
         ]);
-
-        // Adding Counter Caches
-
-        /*$this->addBehavior('CounterCache', [
-            'Applications' => ['cc_att_total']
-        ]);*/
     }
 
     /**
