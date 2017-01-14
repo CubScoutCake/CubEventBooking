@@ -29,13 +29,14 @@ class LandingControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testUserHome()
+    public function testChampionHome()
     {
-        $this->markTestSkipped('Fixture Issue');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->session(['Auth.User.id' => 1]);
-
-        $this->get('/landing/user-home');
+        $this->get('/champion/landing/champion-home');
 
         $this->assertResponseOk();
     }

@@ -40,6 +40,21 @@ class Authrole extends AbstractMigration
             )
             ->create();
 
+        $data = [
+            [
+                'id' => 1,
+                'auth_role' => 'User',
+                'admin_access' => 0,
+                'champion_access' => 0,
+                'super_user' => 0,
+                'auth' => 1,
+            ],
+        ];
+
+        $table = $this->table('auth_roles');
+        $table->insert($data)
+            ->save();
+
         $this->table('users')
             ->renameColumn('reset', 'pw_reset')
             ->addColumn('auth_role_id', 'integer', [

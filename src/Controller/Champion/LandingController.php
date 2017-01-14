@@ -45,20 +45,22 @@ class LandingController extends AppController
         $apps = TableRegistry::get('Applications');
         $evs = TableRegistry::get('Events');
         $invs = TableRegistry::get('Invoices');
-        $usrs = TableRegistry::get('Users');
+        $this->Users = TableRegistry::get('Users');
         $pays = TableRegistry::get('Payments');
-        $grps = TableRegistry::get('Scoutgroups');
+        $this->Districts = TableRegistry::get('Districts');
         $atts = TableRegistry::get('Attendees');
 
         $now = Time::now();
         $userId = $this->Auth->user('id');
-        $champD = $grps->get($this->Auth->user('scoutgroup_id'));
+        $user = $this->Users->get($userId, ['contain' => ['Sections.Scoutgroups']]);
+        $district_id = 1; //$user['Scoutgroups.district_id'];
+        $champD = $this->Districts->get($district_id);
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users', 'Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Applications.modified' => 'DESC'])->limit(15);
-        $events = $evs->find()->where(['end >' => $now])->contain(['Settings'])->order(['Events.start' => 'ASC']);
-        $invoices = $invs->find()->contain(['Users', 'Applications', 'Applications.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Invoices.modified' => 'DESC'])->limit(15);
-        $users = $usrs->find()->contain(['Roles', 'Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Users.modified' => 'DESC'])->limit(15);
+        $applications = $apps->find()->contain(['Users', 'Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->id])->order(['Applications.modified' => 'DESC'])->limit(15);
+        $events = $evs->find('upcoming')->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
+        $invoices = $invs->find()->contain(['Users', 'Applications', 'Applications.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->id])->order(['Invoices.modified' => 'DESC'])->limit(15);
+        $users = $this->Users->find()->contain(['Roles', 'Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->id])->order(['Users.modified' => 'DESC'])->limit(15);
         $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(15);
 
         // Pass to View
@@ -75,12 +77,12 @@ class LandingController extends AppController
         $this->set(compact('cntApplications', 'cntEvents','cntInvoices','cntUsers','cntPayments','userId'));*/
 
         // Counts of Entities
-        $cntApplications = $apps->find('all')->contain(['Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntApplications = $apps->find('all')->contain(['Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
         $cntEvents = $evs->find('all')->count('*');
-        $cntInvoices = $invs->find('all')->contain(['Applications.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
-        $cntUsers = $usrs->find('all')->contain(['Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntInvoices = $invs->find('all')->contain(['Applications.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntUsers = $this->Users->find('all')->contain(['Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
         $cntPayments = $pays->find('all')->count('*');
-        $cntAttendees = $atts->find('all')->contain(['Users.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntAttendees = $atts->find('all')->contain(['Users.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees'));

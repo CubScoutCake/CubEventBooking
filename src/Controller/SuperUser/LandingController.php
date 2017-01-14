@@ -14,12 +14,8 @@
  */
 namespace App\Controller\SuperUser;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
-use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
-use Cake\Mailer\Email;
+use Cake\ORM\TableRegistry;
 
 /**
  * Static content controller
@@ -38,7 +34,7 @@ class LandingController extends AppController
      * @throws \Cake\Network\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
-    public function adminHome()
+    public function superUserHome()
     {
         // Get Entities from Registry
         $apps = TableRegistry::get('Applications');

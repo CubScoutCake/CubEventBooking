@@ -14,7 +14,6 @@
  */
 namespace App\Controller\Admin;
 
-use App\Form\AdminForm;
 use Cake\Controller\Controller;
 use Cake\ORM\TableRegistry;
 
@@ -55,9 +54,6 @@ class AppController extends Controller
         $this->loadComponent('Csrf');
         $this->loadComponent('RequestHandler');
         $this->loadComponent('DataTables.DataTables');
-
-        $adminFormLink = new AdminForm();
-        $this->set(compact('adminFormLink'));
 
         $this->loadComponent('Notifications');
         $this->Notifications->appLoad($this->Auth->user('id'));

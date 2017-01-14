@@ -27,7 +27,7 @@ class SidebarCell extends Cell
     public function display($userId = null)
     {
         $this->loadModel('Notifications');
-        $unread = $this->Notifications->find('all')->where(['user_id' => $userId, 'new' => 1]);
+        $unread = $this->Notifications->find('unread')->where(['user_id' => $userId]);
         $this->set('unread_count', $unread->count());
     }
 }

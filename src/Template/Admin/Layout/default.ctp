@@ -234,60 +234,9 @@ $cakeDescription = 'HertsCubs Booking System';
                     <!-- /.dropdown-alerts -->
                 </li>
                 <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li>
-                        </li>
-                        <li><a href="<?php
-
-                        if (is_null($this->request->session()->read('Auth.User.username'))) {
-
-                            echo $this->Url->build(['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')]);
-
-                        } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
-
-                            echo $this->Url->build(['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')]);
-
-                        } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
-
-                            echo $this->Url->build(['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')]);
-
-                        } else {
-
-                            echo $this->Url->build(['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')]);
-
-                        } ?>"><i class="fa fa-user fa-fw"></i> <?php
-
-                        if (is_null($this->request->session()->read('Auth.User.username'))) {
-
-                            echo " Not Logged In";
-
-                        } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
-
-                            echo " " . $this->request->session()->read('Auth.User.full_name') . " Profile";
-
-                        } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
-
-                            echo " " . $this->request->session()->read('Auth.User.full_name') . " Profile";
-
-                        } else {
-
-                            echo " " . $this->request->session()->read('Auth.User.full_name') . " Profile";
-
-                        } ?></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="<?php echo $this->Url->build([
-                            'controller' => 'Users',
-                            'action' => 'logout',
-                            'prefix' => false]); ?>"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
+                <?php   $usr = $this->request->session()->read('Auth.User.id');
+                $cell = $this->cell('Profile', [$usr]);
+                echo $cell; ?>
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
@@ -295,44 +244,10 @@ $cakeDescription = 'HertsCubs Booking System';
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <?= $this->Form->create($adminFormLink, ['url' => ['controller' => 'Landing', 'action' => 'link'], 'class' => 'custom-search-form input-group']); ?>
-                            <fieldset>
-                                <?php echo $this->Form->input('link', [
-                                    'label' => false, 
-                                    'class' => 'input-group-form form-control', 
-                                    'placeholder' => 'Search...'
-                                ]); ?>
-                            </fieldset>
-                            <span class="input-group-btn">
-                                <?= $this->Form->button(__('<i class="fa fa-search"></i>'),['class' => 'btn btn-default', 'escape' => false ]) ?>
-                            </span>
-                            <?= $this->Form->end() ?>                            
-                            <!-- /input-group -->
-                        </li>
-                        <?php if ($this->request->session()->read('Auth.User.authrole') === 'admin'): ?>
-                        <li>
-                            <a href="<?php echo $this->Url->build([
-                                'controller' => 'Landing',
-                                'action' => 'admin_home',
-                                'prefix' => 'admin']); ?>"><i class="fa fa-rocket fa-fw"></i> Admin Home</a>
-                        </li>
-                        <?php endif ?>
-                        <?php $r = $this->request->session()->read('Auth.User.authrole');
-                        if ( $r === 'admin' || $r === 'champion'): ?>
-                        <li>
-                            <a href="<?php echo $this->Url->build([
-                                'controller' => 'Landing',
-                                'action' => 'champion_home',
-                                'prefix' => 'champion']); ?>"><i class="fa fa-life-ring fa-fw"></i> Champion Home</a>
-                        </li>
-                        <?php endif ?>
-                        <li>
-                            <a href="<?php echo $this->Url->build([
-                                'controller' => 'Landing',
-                                'action' => 'user_home',
-                                'prefix' => false]); ?>"><i class="fa fa-dashboard fa-fw"></i> User Home</a>
-                        </li>
+                        <?php   echo $this->cell('QuickLink'); ?>
+                        <?php   $usr = $this->request->session()->read('Auth.User.id');
+                        $cell = $this->cell('Roleside', [$usr]);
+                        echo $cell; ?>
                         <li>
                             <a href="#"><i class="fa fa-calendar-o fa-fw"></i> Events <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
