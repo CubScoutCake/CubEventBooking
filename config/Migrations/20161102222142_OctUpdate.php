@@ -14,12 +14,6 @@ class OctUpdate extends AbstractMigration
             ->removeIndex(['user_id'])
             ->update();
 
-        $this->table('applications')
-            ->changeColumn('section', 'string')
-            ->changeColumn('permitholder', 'string')
-            ->changeColumn('eventname', 'string')
-            ->update();
-
         $this->table('applications_attendees')
             ->dropForeignKey([], 'applications_attendees_application_id')
             ->dropForeignKey([], 'applications_attendees_attendee_id')

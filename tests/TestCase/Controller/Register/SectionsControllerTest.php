@@ -48,7 +48,6 @@ class SectionsControllerTest extends IntegrationTestCase
 
         $this->assertTrue(isset($groups));
         $this->assertTrue(isset($types));
-
     }
 
     /**

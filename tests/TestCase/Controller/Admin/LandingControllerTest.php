@@ -15,7 +15,7 @@ class LandingControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.settingtypes',
+        'app.setting_types',
         'app.settings',
         'app.districts',
         'app.scoutgroups',

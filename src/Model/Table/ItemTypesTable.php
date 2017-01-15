@@ -1,18 +1,18 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Settingtype;
+use App\Model\Entity\Itemtype;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Settingtypes Model
+ * ItemTypes Model
  *
- * @property \Cake\ORM\Association\HasMany $Settings
+ * @property \Cake\ORM\Association\HasMany $InvoiceItems
  */
-class SettingtypesTable extends Table
+class ItemTypesTable extends Table
 {
 
     /**
@@ -25,12 +25,12 @@ class SettingtypesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('settingtypes');
-        $this->displayField('settingtype');
+        $this->table('item_types');
+        $this->displayField('item_type');
         $this->primaryKey('id');
 
-        $this->hasMany('Settings', [
-            'foreignKey' => 'settingtype_id'
+        $this->hasMany('InvoiceItems', [
+            'foreignKey' => 'item_type_id'
         ]);
     }
 
@@ -47,11 +47,20 @@ class SettingtypesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('settingtype', 'create')
-            ->notEmpty('settingtype');
+            ->requirePresence('item_type', 'create')
+            ->notEmpty('item_type');
 
         $validator
-            ->allowEmpty('description');
+            ->add('role_id', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('role_id');
+
+        $validator
+            ->add('minor', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('minor');
+
+        $validator
+            ->add('cancelled', 'valid', ['rule' => 'boolean'])
+            ->allowEmpty('cancelled');
 
         return $validator;
     }

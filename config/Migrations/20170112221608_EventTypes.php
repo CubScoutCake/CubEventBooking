@@ -28,6 +28,21 @@ class EventTypes extends AbstractMigration
                 'limit' => 11,
                 'null' => true,
             ])
+            ->changeColumn('legacy_section','string', [
+                'default' => null,
+                'limit' => 255,
+                'null' => true,
+                ])
+            ->changeColumn('osm_secret','string', [
+                'default' => null,
+                'limit' => 255,
+                'null' => true,
+            ])
+            ->changeColumn('pw_reset','string', [
+                'default' => null,
+                'limit' => 255,
+                'null' => true,
+            ])
             ->update();
 
         $table = $this->table('event_types');
@@ -76,7 +91,7 @@ class EventTypes extends AbstractMigration
         $table->addColumn('event_type_id', 'integer', [
                 'default' => null,
                 'limit' => 11,
-                'null' => true,
+                'null' => false,
             ])
             ->addForeignKey(
             'event_type_id',
@@ -86,8 +101,88 @@ class EventTypes extends AbstractMigration
                 'delete' => 'RESTRICT',
                 'update' => 'CASCADE'
             ])
+            ->addColumn('section_type_id', 'integer', [
+                'default' => null,
+                'limit' => 11,
+                'null' => false,
+            ])
+            ->addForeignKey(
+                'section_type_id',
+                'section_types',
+                'id',
+                [
+                    'delete' => 'RESTRICT',
+                    'update' => 'CASCADE'
+                ])
             ->addIndex(['event_type_id'])
+            ->addIndex(['section_type_id'])
             ->update();
+
+        $table = $this->table('itemtypes');
+        $table->renameColumn('roletype','role_id')
+            ->renameColumn('itemtype', 'item_type')
+            ->rename('item_types')
+            ->update();
+
+        $table = $this->table('invoice_items');
+        $table->renameColumn('itemtype_id', 'item_type_id')
+            ->update();
+
+        $table = $this->table('notificationtypes');
+        $table->rename('notification_types')
+            ->update();
+
+        $table = $this->table('notifications');
+        $table->renameColumn('notificationtype_id','notification_type_id')
+            ->update();
+
+        $table = $this->table('settingtypes');
+        $table->rename('setting_types')
+            ->renameColumn('settingtype', 'setting_type')
+            ->update();
+
+        $table = $this->table('settings');
+        $table->renameColumn('settingtype_id', 'setting_type_id')
+            ->update();
+
+        $table = $this->table('prices');
+        $table->addColumn('item_type_id', 'integer', [
+                'default' => null,
+                'limit' => 11,
+                'null' => true,
+            ])
+            ->addColumn('event_id', 'integer', [
+                'default' => null,
+                'limit' => 11,
+                'null' => false,
+            ])
+            ->addColumn('value', 'float', [
+                'default' => null,
+                'limit' => null,
+                'null' => true,
+            ])
+            ->addColumn('description', 'string', [
+                'default' => null,
+                'limit' => 255,
+                'null' => true,
+            ])
+            ->addForeignKey(
+                'item_type_id',
+                'item_types',
+                'id',
+                [
+                    'delete' => 'RESTRICT',
+                    'update' => 'CASCADE'
+                ])
+            ->addForeignKey(
+                'event_id',
+                'events',
+                'id',
+                [
+                    'delete' => 'RESTRICT',
+                    'update' => 'CASCADE'
+                ])
+            ->create();
 
         $table = $this->table('auth_roles');
         $table->addColumn('parent', 'boolean', [

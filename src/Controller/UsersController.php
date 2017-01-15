@@ -55,7 +55,7 @@ class UsersController extends AppController
                 'Applications.Events',
                 'Attendees.Sections.Scoutgroups',
                 'Notes' => ['conditions' => ['visible' => true]],
-                'Notifications.Notificationtypes'
+                'Notifications.NotificationTypes'
             ]
         ]);
         $this->set('user', $user);

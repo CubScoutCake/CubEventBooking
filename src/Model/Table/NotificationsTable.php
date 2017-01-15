@@ -42,8 +42,8 @@ class NotificationsTable extends Table
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id'
         ]);
-        $this->belongsTo('Notificationtypes', [
-            'foreignKey' => 'notificationtype_id'
+        $this->belongsTo('NotificationTypes', [
+            'foreignKey' => 'notification_type_id'
         ]);
     }
 

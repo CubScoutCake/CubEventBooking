@@ -2,8 +2,8 @@
 <li>
     <a href="<?php echo $this->Url->build([
     'controller' => 'Landing',
-    'action' => 'admin_home',
-    'prefix' => 'admin']); ?>"><i class="fa fa-ravelry fa-fw"></i> SuperUser Home</a>
+    'action' => 'super_user_home',
+    'prefix' => 'super_user']); ?>"><i class="fa fa-ravelry fa-fw"></i> SuperUser Home</a>
 </li>
 <?php endif ?>
 <?php if ($admin): ?>

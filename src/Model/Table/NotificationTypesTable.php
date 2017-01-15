@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \Cake\ORM\Association\HasMany $Notifications
  */
-class NotificationtypesTable extends Table
+class NotificationTypesTable extends Table
 {
 
     /**
@@ -25,12 +25,12 @@ class NotificationtypesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('notificationtypes');
+        $this->table('notification_types');
         $this->displayField('id');
         $this->primaryKey('id');
 
         $this->hasMany('Notifications', [
-            'foreignKey' => 'notificationtype_id'
+            'foreignKey' => 'notification_type_id'
         ]);
     }
 

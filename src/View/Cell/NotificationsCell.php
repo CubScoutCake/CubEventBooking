@@ -27,8 +27,7 @@ class NotificationsCell extends Cell
     public function display($userId = null)
     {
         $this->loadModel('Notifications');
-        $this->loadModel('Notificationstypes');
-        $unread = $this->Notifications->find('all')->where(['user_id' => $userId, 'new' => 1])->contain(['Notificationtypes']);
+        $unread = $this->Notifications->find('all')->where(['user_id' => $userId, 'new' => 1])->contain(['NotificationTypes']);
         $this->set('notifications', $unread);
 
         //$this->set('notifications', $this->paginate($this->Notifications));

@@ -18,9 +18,9 @@ class SettingsSeed extends AbstractSeed
      */
     public function run()
     {
-        $this->call('SettingtypesSeed');
-        $this->call('NotificationtypesSeed');
-        $this->call('ItemtypesSeed');
+        $this->call('SettingTypesSeed');
+        $this->call('NotificationTypesSeed');
+        $this->call('ItemTypesSeed');
         $this->call('AllergiesSeed');
 
         $data = [
@@ -31,7 +31,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2015-11-29 22:43:40',
                 'modified' => '2015-11-29 22:43:40',
                 'event_id' => NULL,
-                'settingtype_id' => '3',
+                'setting_type_id' => '3',
                 'number' => NULL,
             ],
             [
@@ -41,7 +41,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2015-12-03 19:42:51',
                 'modified' => '2015-12-03 19:44:15',
                 'event_id' => NULL,
-                'settingtype_id' => '4',
+                'setting_type_id' => '4',
                 'number' => NULL,
             ],
             [
@@ -51,7 +51,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2015-12-03 19:42:51',
                 'modified' => '2015-12-03 19:42:51',
                 'event_id' => NULL,
-                'settingtype_id' => '3',
+                'setting_type_id' => '3',
                 'number' => NULL,
             ],
             [
@@ -61,7 +61,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2015-12-09 22:49:00',
                 'modified' => '2015-12-09 22:49:00',
                 'event_id' => NULL,
-                'settingtype_id' => '4',
+                'setting_type_id' => '4',
                 'number' => NULL,
             ],
             [
@@ -71,7 +71,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2015-12-09 22:49:48',
                 'modified' => '2015-12-09 22:49:48',
                 'event_id' => NULL,
-                'settingtype_id' => '4',
+                'setting_type_id' => '4',
                 'number' => NULL,
             ],
             [
@@ -81,7 +81,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2015-12-19 17:28:50',
                 'modified' => '2015-12-19 17:28:50',
                 'event_id' => NULL,
-                'settingtype_id' => '5',
+                'setting_type_id' => '5',
                 'number' => NULL,
             ],
             [
@@ -91,7 +91,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2015-12-19 17:31:35',
                 'modified' => '2015-12-19 17:31:35',
                 'event_id' => NULL,
-                'settingtype_id' => '5',
+                'setting_type_id' => '5',
                 'number' => NULL,
             ],
             [
@@ -101,7 +101,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2015-12-19 17:31:56',
                 'modified' => '2015-12-19 17:31:56',
                 'event_id' => NULL,
-                'settingtype_id' => '5',
+                'setting_type_id' => '5',
                 'number' => NULL,
             ],
             [
@@ -111,7 +111,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2015-12-24 17:31:31',
                 'modified' => '2015-12-24 17:31:31',
                 'event_id' => NULL,
-                'settingtype_id' => '2',
+                'setting_type_id' => '2',
                 'number' => NULL,
             ],
             [
@@ -121,7 +121,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2015-12-24 17:32:12',
                 'modified' => '2015-12-24 17:32:12',
                 'event_id' => NULL,
-                'settingtype_id' => '2',
+                'setting_type_id' => '2',
                 'number' => NULL,
             ],
             [
@@ -131,7 +131,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2015-12-24 17:36:37',
                 'modified' => '2015-12-28 12:20:37',
                 'event_id' => NULL,
-                'settingtype_id' => '2',
+                'setting_type_id' => '2',
                 'number' => NULL,
             ],
             [
@@ -141,7 +141,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2016-03-07 19:59:46',
                 'modified' => '2016-03-07 19:59:46',
                 'event_id' => NULL,
-                'settingtype_id' => '2',
+                'setting_type_id' => '2',
                 'number' => NULL,
             ],
             [
@@ -151,7 +151,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2016-03-07 20:04:01',
                 'modified' => '2016-03-07 20:04:01',
                 'event_id' => NULL,
-                'settingtype_id' => '2',
+                'setting_type_id' => '2',
                 'number' => NULL,
             ],
             [
@@ -161,7 +161,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2016-03-13 13:40:35',
                 'modified' => '2016-03-13 13:40:35',
                 'event_id' => NULL,
-                'settingtype_id' => '2',
+                'setting_type_id' => '2',
                 'number' => NULL,
             ],
             [
@@ -171,7 +171,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2016-03-15 22:26:55',
                 'modified' => '2016-03-15 22:26:55',
                 'event_id' => NULL,
-                'settingtype_id' => '2',
+                'setting_type_id' => '2',
                 'number' => NULL,
             ],
             [
@@ -181,7 +181,7 @@ class SettingsSeed extends AbstractSeed
                 'created' => '2016-03-15 22:27:14',
                 'modified' => '2016-03-15 22:27:14',
                 'event_id' => NULL,
-                'settingtype_id' => '2',
+                'setting_type_id' => '2',
                 'number' => NULL,
             ],
         ];

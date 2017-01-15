@@ -2,9 +2,9 @@
 use Migrations\AbstractSeed;
 
 /**
- * Settingtypes seed.
+ * SettingTypes seed.
  */
-class SettingtypesSeed extends AbstractSeed
+class SettingTypesSeed extends AbstractSeed
 {
     /**
      * Run Method.
@@ -21,32 +21,32 @@ class SettingtypesSeed extends AbstractSeed
         $data = [
             [
                 'id' => '1',
-                'settingtype' => 'General',
+                'setting_type' => 'General',
                 'description' => 'General Setting Type',
             ],
             [
                 'id' => '2',
-                'settingtype' => 'Code',
+                'setting_type' => 'Code',
                 'description' => 'SQL or PHP code for insertion.',
             ],
             [
                 'id' => '3',
-                'settingtype' => 'Legal Text',
+                'setting_type' => 'Legal Text',
                 'description' => 'Specifying Legal Text for Use under areas.',
             ],
             [
                 'id' => '4',
-                'settingtype' => 'Invoice Label',
+                'setting_type' => 'Invoice Label',
                 'description' => 'Labels for invoices - e.g. INV#',
             ],
             [
                 'id' => '5',
-                'settingtype' => 'Image Size',
+                'setting_type' => 'Image Size',
                 'description' => 'An image height in px for a template.',
             ],
         ];
 
-        $table = $this->table('settingtypes');
+        $table = $this->table('setting_types');
         $table->insert($data)->save();
     }
 }

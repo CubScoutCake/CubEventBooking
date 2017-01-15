@@ -23,15 +23,14 @@ class SettingsFixture extends TestFixture
         'created' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'modified' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'event_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'settingtype_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'setting_type_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'number' => ['type' => 'float', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null],
         '_indexes' => [
-            'settings_settingtype_id' => ['type' => 'index', 'columns' => ['settingtype_id'], 'length' => []],
-            'seti_settingtype_idx' => ['type' => 'index', 'columns' => ['settingtype_id'], 'length' => []],
+            'settings_settingtype_id' => ['type' => 'index', 'columns' => ['setting_type_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'settings_settingtype_id' => ['type' => 'foreign', 'columns' => ['settingtype_id'], 'references' => ['settingtypes', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
+            'settings_settingtype_id' => ['type' => 'foreign', 'columns' => ['setting_type_id'], 'references' => ['setting_types', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
@@ -51,7 +50,7 @@ class SettingsFixture extends TestFixture
                 'created' => date_create('2016-12-26 23:22:30'),
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'event_id' => 1,
-                'settingtype_id' => 1,
+                'setting_type_id' => 1,
                 'number' => 1
             ],
         ];

@@ -42,22 +42,20 @@ class LandingController extends AppController
         $invs = TableRegistry::get('Invoices');
         $usrs = TableRegistry::get('Users');
         $pays = TableRegistry::get('Payments');
-        $sets = TableRegistry::get('Settings');
         $atts = TableRegistry::get('Attendees');
         $nts = TableRegistry::get('Notes');
         $notifs = TableRegistry::get('Notifications');
 
-        $now = Time::now();
         $userId = $this->Auth->user('id');
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users', 'Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(10);
-        $events = $evs->find()->where(['end >' => $now])->contain(['Settings'])->order(['Events.start' => 'ASC']);
+        $applications = $apps->find()->contain(['Users', 'Sections.Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(10);
+        $events = $evs->find('upcoming')->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
         $invoices = $invs->find()->contain(['Users', 'Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
-        $users = $usrs->find()->contain(['Roles', 'Scoutgroups'])->order(['Users.last_login' => 'DESC'])->limit(10);
+        $users = $usrs->find()->contain(['Roles', 'Sections.SectionTypes', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
         $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
         $notes = $nts->find()->contain(['Invoices', 'Applications', 'Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
-        $notifications = $notifs->find()->contain(['Notificationtypes', 'Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
+        $notifications = $notifs->find()->contain(['NotificationTypes', 'Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
 
         // Pass to View
         $this->set(compact('applications', 'events', 'invoices', 'users', 'payments', 'notes', 'notifications'));
@@ -72,11 +70,6 @@ class LandingController extends AppController
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));
-
-        $keenRead = $sets->get(15)->text;
-        $keenProject = $sets->get(14)->text;
-
-        $this->set(compact('keenRead', 'keenProject'));
     }
 
     public function link($ent = null)

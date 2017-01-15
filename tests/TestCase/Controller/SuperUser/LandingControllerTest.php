@@ -25,7 +25,7 @@ class LandingControllerTest extends IntegrationTestCase
         'app.auth_roles',
         'app.sections',
         'app.section_types',
-        'app.settingtypes',
+        'app.setting_types',
     ];
 
     /**
@@ -35,14 +35,12 @@ class LandingControllerTest extends IntegrationTestCase
      */
     public function testSuperUserHome()
     {
-        $this->markTestSkipped('Issue with Champions');
-
         $this->session([
            'Auth.User.id' => 1,
            'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/champion/landing/champion-home');
+        $this->get('/super_user');
 
         $this->assertResponseOk();
     }

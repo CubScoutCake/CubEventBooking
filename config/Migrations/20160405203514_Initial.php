@@ -661,17 +661,17 @@ class Initial extends AbstractMigration
                 'limit' => 11,
                 'null' => false,
             ])
-            ->addColumn('Value', 'float', [
+            ->addColumn('value', 'float', [
                 'default' => null,
                 'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('Description', 'string', [
+            ->addColumn('description', 'string', [
                 'default' => null,
                 'limit' => 255,
                 'null' => true,
             ])
-            ->addColumn('Quantity', 'integer', [
+            ->addColumn('quantity', 'integer', [
                 'default' => null,
                 'limit' => 11,
                 'null' => true,

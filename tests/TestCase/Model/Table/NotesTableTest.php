@@ -36,11 +36,11 @@ class NotesTableTest extends TestCase
         'app.scoutgroups',
         'app.districts',
         'app.notifications',
-        'app.notificationtypes',
+        'app.notification_types',
         'app.invoices',
         'app.events',
         'app.settings',
-        'app.settingtypes',
+        'app.setting_types',
         'app.discounts',
     ];
 

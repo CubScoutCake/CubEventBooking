@@ -27,7 +27,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         'app.authroles',
         'app.districts',
         'app.roles',
-        'app.settingtypes',
+        'app.setting_types',
     ];
 
     /**

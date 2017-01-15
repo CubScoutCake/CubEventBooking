@@ -75,7 +75,7 @@ class NotificationtypesSeed extends AbstractSeed
             ],
         ];
 
-        $table = $this->table('notificationtypes');
+        $table = $this->table('notification_types');
         $table->insert($data)->save();
     }
 }

@@ -4,15 +4,14 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Itemtype Entity.
+ * Settingtype Entity.
  *
  * @property int $id
- * @property string $itemtype
- * @property int $roletype
- * @property int $minor
- * @property \App\Model\Entity\InvoiceItem[] $invoice_items
+ * @property string $settingtype
+ * @property string $description
+ * @property \App\Model\Entity\Setting[] $settings
  */
-class Itemtype extends Entity
+class SettingType extends Entity
 {
 
     /**

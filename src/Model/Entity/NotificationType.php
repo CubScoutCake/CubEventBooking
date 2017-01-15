@@ -4,7 +4,7 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Notificationtype Entity.
+ * Notification Type Entity.
  *
  * @property int $id
  * @property string $notification_type
@@ -12,7 +12,7 @@ use Cake\ORM\Entity;
  * @property string $icon
  * @property \App\Model\Entity\Notification[] $notifications
  */
-class Notificationtype extends Entity
+class NotificationType extends Entity
 {
 
     /**

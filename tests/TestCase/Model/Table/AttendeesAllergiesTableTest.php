@@ -22,12 +22,14 @@ class AttendeesAllergiesTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.attendees_allergies',
         'app.attendees',
         'app.allergies',
         'app.roles',
+        'app.section_types',
+        'app.sections',
         'app.scoutgroups',
         'app.section_types',
         'app.sections',
@@ -66,7 +68,18 @@ class AttendeesAllergiesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->AttendeesAllergies->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'attendee_id' => 1,
+                'allergy_id' => 1
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -76,16 +89,38 @@ class AttendeesAllergiesTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $badData = [
+            'attendee_id' => 99,
+            'allergy_id' => 99
+        ];
 
-    /**
-     * Test defaultConnectionName method
-     *
-     * @return void
-     */
-    public function testDefaultConnectionName()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $goodData = [
+            'attendee_id' => 1,
+            'allergy_id' => 2
+        ];
+
+        $expected = [
+            [
+                'attendee_id' => 1,
+                'allergy_id' => 1
+            ],
+            [
+                'attendee_id' => 1,
+                'allergy_id' => 2
+            ]
+        ];
+
+        $badEntity = $this->AttendeesAllergies->newEntity($badData, ['accessibleFields' => ['allergy_id' => true, 'attendee_id' => true]]);
+        $goodEntity = $this->AttendeesAllergies->newEntity($goodData, ['accessibleFields' => ['allergy_id' => true, 'attendee_id' => true]]);
+
+        $this->assertFalse($this->AttendeesAllergies->save($badEntity), '');
+        $this->AttendeesAllergies->save($goodEntity);
+
+        $query = $this->AttendeesAllergies->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 }

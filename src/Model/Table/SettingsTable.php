@@ -44,8 +44,8 @@ class SettingsTable extends Table
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id'
         ]);
-        $this->belongsTo('Settingtypes', [
-            'foreignKey' => 'settingtype_id'
+        $this->belongsTo('SettingTypes', [
+            'foreignKey' => 'setting_type_id'
         ]);
     }
 
@@ -86,7 +86,7 @@ class SettingsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['event_id'], 'Events'));
-        $rules->add($rules->existsIn(['settingtype_id'], 'Settingtypes'));
+        $rules->add($rules->existsIn(['setting_type_id'], 'SettingTypes'));
 
         return $rules;
     }

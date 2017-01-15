@@ -26,7 +26,7 @@ class SettingsTableTest extends TestCase
      */
     public $fixtures = [
         'app.settings',
-        'app.settingtypes',
+        'app.setting_types',
         'app.events',
         'app.discounts'
     ];
@@ -80,7 +80,7 @@ class SettingsTableTest extends TestCase
                 'created' => $timeNow,
                 'modified' => $timeNow,
                 'event_id' => 1,
-                'settingtype_id' => 1,
+                'setting_type_id' => 1,
                 'number' => 1.0
             ],
         ];
@@ -102,7 +102,7 @@ class SettingsTableTest extends TestCase
             'name' => null,
             'text' => null,
             'event_id' => 99,
-            'settingtype_id' => 24,
+            'setting_type_id' => 24,
             'number' => 'the fish'
         ];
 
@@ -113,7 +113,7 @@ class SettingsTableTest extends TestCase
             'created' => $timeNow,
             'modified' => $timeNow,
             'event_id' => null,
-            'settingtype_id' => 1,
+            'setting_type_id' => 1,
             'number' => 2.9
         ];
 
@@ -125,7 +125,7 @@ class SettingsTableTest extends TestCase
                 'created' => $timeNow,
                 'modified' => $timeNow,
                 'event_id' => 1,
-                'settingtype_id' => 1,
+                'setting_type_id' => 1,
                 'number' => 1.0
             ],
             [
@@ -135,7 +135,7 @@ class SettingsTableTest extends TestCase
                 'created' => $timeNow,
                 'modified' => $timeNow,
                 'event_id' => null,
-                'settingtype_id' => 1,
+                'setting_type_id' => 1,
                 'number' => 2.9
             ],
         ];
@@ -165,7 +165,7 @@ class SettingsTableTest extends TestCase
             'created' => $timeNow,
             'modified' => $timeNow,
             'event_id' => 1,
-            'settingtype_id' => 109,
+            'setting_type_id' => 109,
             'number' => 2.9
         ];
 
@@ -176,7 +176,7 @@ class SettingsTableTest extends TestCase
             'created' => $timeNow,
             'modified' => $timeNow,
             'event_id' => 209,
-            'settingtype_id' => 1,
+            'setting_type_id' => 1,
             'number' => 2.9
         ];
 
@@ -187,7 +187,7 @@ class SettingsTableTest extends TestCase
             'created' => $timeNow,
             'modified' => $timeNow,
             'event_id' => 3,
-            'settingtype_id' => 1,
+            'setting_type_id' => 1,
             'number' => 2.9
         ];
 
@@ -199,7 +199,7 @@ class SettingsTableTest extends TestCase
                 'created' => $timeNow,
                 'modified' => $timeNow,
                 'event_id' => 1,
-                'settingtype_id' => 1,
+                'setting_type_id' => 1,
                 'number' => 1.0
             ],
             [
@@ -209,7 +209,7 @@ class SettingsTableTest extends TestCase
                 'created' => $timeNow,
                 'modified' => $timeNow,
                 'event_id' => 3,
-                'settingtype_id' => 1,
+                'setting_type_id' => 1,
                 'number' => 2.9
             ],
         ];

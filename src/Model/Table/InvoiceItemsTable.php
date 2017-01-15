@@ -34,8 +34,8 @@ class InvoiceItemsTable extends Table
             'foreignKey' => 'invoice_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Itemtypes', [
-            'foreignKey' => 'itemtype_id'
+        $this->belongsTo('ItemTypes', [
+            'foreignKey' => 'item_type_id'
         ]);
     }
 

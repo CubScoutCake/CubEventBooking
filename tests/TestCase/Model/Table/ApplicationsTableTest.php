@@ -27,7 +27,7 @@ class ApplicationsTableTest extends TestCase
     public $fixtures = [
         'app.applications',
         'app.settings',
-        'app.settingtypes',
+        'app.setting_types',
         'app.discounts',
         'app.roles',
         'app.districts',
@@ -81,6 +81,27 @@ class ApplicationsTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
+                'user_id' => 1,
+                'section_id' => 1,
+                'permitholder' => 'Lorem as dolor sit amet',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'modification' => 1,
+                'event_id' => 1,
+                'osm_event_id' => 1,
+                'cc_att_total' => 1,
+                'cc_att_cubs' => 1,
+                'cc_att_yls' => 1,
+                'cc_att_leaders' => 1,
+                'cc_inv_count' => 1,
+                'cc_inv_total' => 1,
+                'cc_inv_cubs' => 1,
+                'cc_inv_yls' => 1,
+                'cc_inv_leaders' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 3,
                 'user_id' => 1,
                 'section_id' => 1,
                 'permitholder' => 'Lorem as dolor sit amet',

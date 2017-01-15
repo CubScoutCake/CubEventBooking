@@ -17,7 +17,7 @@ class ItemtypesTableTest extends TestCase
      *
      * @var \App\Model\Table\ItemtypesTable
      */
-    public $Itemtypes;
+    public $ItemTypes;
 
     /**
      * Fixtures
@@ -25,7 +25,7 @@ class ItemtypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.itemtypes'
+        'app.item_types'
     ];
 
     /**
@@ -36,8 +36,8 @@ class ItemtypesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Itemtypes') ? [] : ['className' => 'App\Model\Table\ItemtypesTable'];
-        $this->Itemtypes = TableRegistry::get('Itemtypes', $config);
+        $config = TableRegistry::exists('ItemTypes') ? [] : ['className' => 'App\Model\Table\ItemTypesTable'];
+        $this->Itemtypes = TableRegistry::get('ItemTypes', $config);
     }
 
     /**
@@ -66,9 +66,10 @@ class ItemtypesTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'itemtype' => 'Lorem ipsum dolor sit amet',
-                'roletype' => 1,
-                'minor' => 1
+                'minor' => true,
+                'item_type' => 'Lorem ipsum dolor sit amet',
+                'role_id' => 1,
+                'cancelled' => true,
             ],
         ];
 
@@ -91,23 +92,26 @@ class ItemtypesTableTest extends TestCase
 
         $goodData = [
             'id' => 2,
-            'itemtype' => 'Lorem dolor goat amet',
-            'roletype' => 0,
-            'minor' => 0
+            'minor' => true,
+            'item_type' => 'Lorem dolor goat amet',
+            'role_id' => 1,
+            'cancelled' => false,
         ];
 
         $expected = [
             [
                 'id' => 1,
-                'itemtype' => 'Lorem ipsum dolor sit amet',
-                'roletype' => 1,
-                'minor' => 1
+                'minor' => true,
+                'item_type' => 'Lorem ipsum dolor sit amet',
+                'role_id' => 1,
+                'cancelled' => true,
             ],
             [
                 'id' => 2,
-                'itemtype' => 'Lorem dolor goat amet',
-                'roletype' => 0,
-                'minor' => 0
+                'minor' => true,
+                'item_type' => 'Lorem dolor goat amet',
+                'role_id' => 1,
+                'cancelled' => false,
             ],
         ];
 

@@ -61,7 +61,7 @@ class UsersSeed extends AbstractSeed
                 'logins' => '0',
                 'validated' => NULL,
                 'deleted' => NULL,
-                'auth_role_id' => '2',
+                'auth_role_id' => '3',
             ]
         ];
 
