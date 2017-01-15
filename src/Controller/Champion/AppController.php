@@ -15,6 +15,7 @@
 namespace App\Controller\Champion;
 
 use Cake\Controller\Controller;
+use Cake\ORM\TableRegistry;
 
 /**
  * Application Controller
@@ -62,38 +63,17 @@ class AppController extends Controller
 
     public function isAuthorized($user)
     {
-        // Admin can access every action
-        if (isset($user['authrole']) && $user['authrole'] === 'champion') {
-            return true;
+        $auth = TableRegistry::get('AuthRoles');
+
+        $adminTrue = $auth->get($user['auth_role_id']);
+
+        if (!isset($user['auth_role_id'])) {
+            return false;
         }
 
-        if (isset($user['authrole']) && $user['authrole'] === 'admin') {
-            return true;
+        if ($this->request->params['prefix'] === 'champion' && isset($user['auth_role_id'])) {
+            return (bool)($adminTrue['champion_access']);
         }
-
-        $action = $this->request->params['action'];
-
-        //The add and index actions are always allowed.
-        //if (in_array($action, ['index'])) {
-        //    return true;
-        //}
-
-        // Only admins can access admin functions
-        if ($this->request->params['prefix'] === 'champion') {
-            return (bool)($user['authrole'] === 'champion');
-        }
-
-        //Alternate Method
-        //if ($this->request->action === 'add') {
-        //        return true;
-        //    }
-
-        // All other actions require an id.
-        //if (empty($this->request->params['pass'][0])) {
-        //    return true;
-        //}
-
-        //return parent::isAuthorized($user);
 
         return false;
     }

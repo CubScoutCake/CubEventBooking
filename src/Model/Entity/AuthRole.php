@@ -34,18 +34,6 @@ class AuthRole extends Entity
     ];
 
     /**
-     * @param bool $adminAccess Value to be mutated.
-     *
-     * @return string
-     */
-    protected function _setAdminAccess($adminAccess)
-    {
-        $this->set('auth', $this->_properties['auth_value']);
-
-        return $adminAccess;
-    }
-
-    /**
      * Virtual property to get a binary hash of the auth permissions.
      *
      * @return int

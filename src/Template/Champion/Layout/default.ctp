@@ -240,7 +240,9 @@ $cakeDescription = 'HertsCubs Booking System';
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
                         <?php   $usr = $this->request->session()->read('Auth.User.id');
-                                $cell = $this->cell('Notifications', [$usr]); 
+                                $cell = $this->cell('Notifications', [$usr], [
+                                    'cache' => ['config' => 'cell_cache', 'key' => 'notifications_' . $usr]
+                                ]);
                                 echo $cell; ?>
                         <li>
                             <a class="text-center" href="<?php echo $this->Url->build([
@@ -256,7 +258,9 @@ $cakeDescription = 'HertsCubs Booking System';
                 </li>
                 <!-- /.dropdown -->
                 <?php   $usr = $this->request->session()->read('Auth.User.id');
-                $cell = $this->cell('Profile', [$usr]);
+                $cell = $this->cell('Profile', [$usr], [
+                    'cache' => ['config' => 'cell_cache', 'key' => 'profile_' . $usr]
+                ]);
                 echo $cell; ?>
                 <!-- /.dropdown -->
             </ul>
@@ -267,7 +271,9 @@ $cakeDescription = 'HertsCubs Booking System';
                     <ul class="nav" id="side-menu">
                         <?php   echo $this->cell('QuickLink'); ?>
                         <?php   $usr = $this->request->session()->read('Auth.User.id');
-                        $cell = $this->cell('Roleside', [$usr]);
+                        $cell = $this->cell('Roleside', [$usr], [
+                            'cache' => ['config' => 'cell_cache', 'key' => 'roleside_' . $usr]
+                        ]);
                         echo $cell; ?>
                         <li>
                             <a href="#"><i class="fa fa-calendar-o fa-fw"></i> Events <span class="fa arrow"></span></a>

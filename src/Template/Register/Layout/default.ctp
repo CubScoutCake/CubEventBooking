@@ -2,6 +2,7 @@
 
 use Cake\Core\Configure;
 
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -38,67 +39,46 @@ $cakeDescription = 'HertsCubs Booking System';
 </head>
 <body>
     <div id="wrapper">
-    <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];
-    a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        <?php echo $this->element('analytics'); ?>
 
-    <?php
-    // New Google Analytics code to set User ID.
-    // $userId is a unique, persistent, and non-personally identifiable string ID.
-    if (!is_null($this->request->session()->read('Auth.User.id'))) {
-      $gaucode = "ga('create', 'UA-71500319-2', 'auto', {'userId': 'HERTS-USR:" . $this->request->session()->read('Auth.User.id') . "'});";
-      echo sprintf($gaucode);
-    } else {
-      $gacode = "ga('create', 'UA-71500319-2', 'auto');";
-      echo sprintf($gacode);
-    }?>
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <?php 
 
-    ga('require', 'linkid');
+                if (is_null($this->request->session()->read('Auth.User.username'))) {
 
-    ga('send', 'pageview');
-    </script>
+                    echo $this->Html->link($this->fetch('title')
+                        ,['controller' => 'Landing', 'action' => 'welcome', 'prefix' => false]
+                        ,['class' => 'navbar-brand']);
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-static-top navbar-fixed-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <?php 
+                } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
 
-            if (is_null($this->request->session()->read('Auth.User.username'))) {
+                    echo $this->Html->link($this->fetch('title')
+                        ,['controller' => 'Landing', 'action' => 'user_home', 'prefix' => false]
+                        ,['class' => 'navbar-brand']);
 
-                echo $this->Html->link($this->fetch('title')
-                    ,['controller' => 'Landing', 'action' => 'welcome', 'prefix' => false]
-                    ,['class' => 'navbar-brand']);
+                } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
 
-            } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
+                    echo $this->Html->link($this->fetch('title')
+                        ,['controller' => 'Landing', 'action' => 'user_home', 'prefix' => false]
+                        ,['class' => 'navbar-brand']);
 
-                echo $this->Html->link($this->fetch('title')
-                    ,['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']
-                    ,['class' => 'navbar-brand']);
+                } else {
 
-            } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
+                    echo $this->Html->link($this->fetch('title')
+                        ,['controller' => 'Landing', 'action' => 'user_home', 'prefix' => false]
+                        ,['class' => 'navbar-brand']);
 
-                echo $this->Html->link($this->fetch('title')
-                    ,['controller' => 'Landing', 'action' => 'champion_home', 'prefix' => 'champion']
-                    ,['class' => 'navbar-brand']);
-
-            } else {
-
-                echo $this->Html->link($this->fetch('title')
-                    ,['controller' => 'Landing', 'action' => 'user_home', 'prefix' => false]
-                    ,['class' => 'navbar-brand']);
-
-            } ?>
-        </div>
-        <!-- /.navbar-header -->
+                } ?>
+            </div>
+            <!-- /.navbar-header -->
 
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
@@ -135,30 +115,29 @@ $cakeDescription = 'HertsCubs Booking System';
 
     </nav>
     <div id="page-wrapper">
-        
-       <?php 
+        <br>
 
-        if (!$this->fetch('tb_flash')) {
-            $this->start('tb_flash');
+            <?php if (!$this->fetch('tb_flash')) {
+                $this->start('tb_flash');
 
-            if (isset($this->Flash)) {
-                echo $this->Flash->render();
+                if (isset($this->Flash)) {
+                    echo $this->Flash->render();
+                    echo $this->Flash->render('auth');
+                }
+                $this->end();
             }
-            $this->end();
-        }
-        echo $this->fetch('tb_flash'); ?>
-        <?= $this->Flash->render() ?>
-        <?= $this->Flash->render('auth') ?>
-             
-        <?= $this->fetch('content') ?>   
+            echo $this->fetch('tb_flash'); ?>
+            <?= $this->Flash->render() ?>
+            <?= $this->Flash->render('auth') ?>
+                 
+            <?= $this->fetch('content') ?>    
 
+        </div>
+
+        <?php echo $this->element('script'); ?>
+        <!-- Actual Script Fetch -->
+        <?= $this->fetch('script') ?>
     </div>
-
-    <?php echo $this->element('script'); ?>
-    
-    <!-- Actual Script Fetch -->
-    <?= $this->fetch('script') ?>
-
 </body>
 
 <?php echo $this->element('footer'); ?>

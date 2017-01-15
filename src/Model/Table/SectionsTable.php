@@ -80,10 +80,6 @@ class SectionsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->dateTime('deleted')
-            ->allowEmpty('deleted');
-
-        $validator
             ->requirePresence('section', 'create')
             ->notEmpty('section');
 
@@ -101,6 +97,8 @@ class SectionsTable extends Table
     {
         $rules->add($rules->existsIn(['section_type_id'], 'SectionTypes'));
         $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
+
+        $rules->add($rules->isUnique(['section']));
 
         return $rules;
     }

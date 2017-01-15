@@ -42,47 +42,51 @@ class LandingController extends AppController
     public function championHome()
     {
         // Get Entities from Registry
-        $apps = TableRegistry::get('Applications');
-        $evs = TableRegistry::get('Events');
-        $invs = TableRegistry::get('Invoices');
+        $this->Applications = TableRegistry::get('Applications');
+        $this->Events = TableRegistry::get('Events');
+        $this->Invoices = TableRegistry::get('Invoices');
         $this->Users = TableRegistry::get('Users');
-        $pays = TableRegistry::get('Payments');
+        $this->Payments = TableRegistry::get('Payments');
         $this->Districts = TableRegistry::get('Districts');
-        $atts = TableRegistry::get('Attendees');
+        $this->Attendees = TableRegistry::get('Attendees');
+        $this->Sections = TableRegistry::get('Sections');
+        $this->Scoutgroups = TableRegistry::get('Scoutgroups');
+
 
         $now = Time::now();
         $userId = $this->Auth->user('id');
-        $user = $this->Users->get($userId, ['contain' => ['Sections.Scoutgroups']]);
-        $district_id = 1; //$user['Scoutgroups.district_id'];
-        $champD = $this->Districts->get($district_id);
+        $user = $this->Users->get($userId);
+        $section = $this->Sections->get($user->section_id);
+        $group = $this->Scoutgroups->get($section->scoutgroup_id);
+        $champD = $this->Districts->get($group->district_id);
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users', 'Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->id])->order(['Applications.modified' => 'DESC'])->limit(15);
-        $events = $evs->find('upcoming')->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
-        $invoices = $invs->find()->contain(['Users', 'Applications', 'Applications.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->id])->order(['Invoices.modified' => 'DESC'])->limit(15);
+        $applications = $this->Applications->find()->contain(['Users', 'Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->id])->order(['Applications.modified' => 'DESC'])->limit(15);
+        $events = $this->Events->find('upcoming')->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
+        $invoices = $this->Invoices->find()->contain(['Users', 'Applications', 'Applications.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->id])->order(['Invoices.modified' => 'DESC'])->limit(15);
         $users = $this->Users->find()->contain(['Roles', 'Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->id])->order(['Users.modified' => 'DESC'])->limit(15);
-        $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(15);
+        $payments = $this->Payments->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(15);
 
         // Pass to View
         $this->set(compact('applications', 'events', 'invoices', 'users', 'payments'));
 
         /*// Counts of Entities
-        $cntApplications = $apps->find('all')->count('*');
-        $cntEvents = $evs->find('all')->count('*');
-        $cntInvoices = $invs->find('all')->count('*');
+        $cntApplications = $this->Applications->find('all')->count('*');
+        $cntEvents = $this->Events->find('all')->count('*');
+        $cntInvoices = $this->Invoices->find('all')->count('*');
         $cntUsers = $usrs->find('all')->count('*');
-        $cntPayments = $pays->find('all')->count('*');
+        $cntPayments = $this->Payments->find('all')->count('*');
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents','cntInvoices','cntUsers','cntPayments','userId'));*/
 
         // Counts of Entities
-        $cntApplications = $apps->find('all')->contain(['Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
-        $cntEvents = $evs->find('all')->count('*');
-        $cntInvoices = $invs->find('all')->contain(['Applications.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntApplications = $this->Applications->find('all')->contain(['Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntEvents = $this->Events->find('all')->count('*');
+        $cntInvoices = $this->Invoices->find('all')->contain(['Applications.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
         $cntUsers = $this->Users->find('all')->contain(['Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
-        $cntPayments = $pays->find('all')->count('*');
-        $cntAttendees = $atts->find('all')->contain(['Users.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntPayments = $this->Payments->find('all')->count('*');
+        $cntAttendees = $this->Attendees->find('all')->contain(['Users.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees'));

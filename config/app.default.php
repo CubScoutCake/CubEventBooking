@@ -111,6 +111,11 @@ return [
             'serialize' => true,
             'duration' => '+2 minutes',
         ],
+
+        'cell_cache' => [
+            'engine' => 'Apc',
+            'duration' => '+2 minutes',
+        ],
     ],
 
     /**

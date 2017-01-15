@@ -17,7 +17,7 @@ class UsersController extends AppController
     public function register($eventId = null, $sectionId = null)
     {
         if (!isset($sectionId) || is_null($sectionId)) {
-            $this->redirect(['controller' => 'Users', 'prefix' => 'register', 'action' => 'section']);
+            $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
         $user = $this->Users->newEntity();
@@ -81,19 +81,6 @@ class UsersController extends AppController
 
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
-    }
-
-    public function section($eventId = null)
-    {
-        $scoutgroups = $this->Users->Scoutgroups->find(
-            'list',
-            [
-                'keyField' => 'id',
-                'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
-            ]
-        ) ->contain(['Districts']);
-        $sectionTypes = TableRegistry::get('sectionTypes');
     }
 
     public function beforeFilter(\Cake\Event\Event $event)

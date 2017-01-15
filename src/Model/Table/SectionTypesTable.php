@@ -34,7 +34,7 @@ class SectionTypesTable extends Table
         parent::initialize($config);
 
         $this->table('section_types');
-        $this->displayField('id');
+        $this->displayField('section_type');
         $this->primaryKey('id');
 
         $this->belongsTo('Roles', [
