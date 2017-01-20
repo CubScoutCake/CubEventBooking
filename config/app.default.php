@@ -113,7 +113,10 @@ return [
         ],
 
         'cell_cache' => [
-            'engine' => 'Apc',
+            'className' => 'File',
+            'prefix' => 'myapp_cake_model_',
+            'path' => CACHE . 'cells/',
+            'serialize' => true,
             'duration' => '+2 minutes',
         ],
     ],
@@ -343,5 +346,27 @@ return [
     'GA' => [
         'ua' => 'UA CODE',
         'userCode' => 'USR:'
+    ],
+
+    /**
+     * OSM API config.
+     *
+     * Takes effect in the OSM controller.
+     */
+    'OSM' => [
+        'api_id' => 'secret id',
+        'api_token' => 'secret token',
+        'api_base' => 'www.onlinescoutmanager.co.uk'
+    ],
+
+    /**
+     * KeenIO Config
+     *
+     * Takes effect in reporting, enables real time transactional reporting.
+     */
+    'KeenIO' => [
+        'project_id' => 'secret project id',
+        'read_key' => 'the secret read key',
+        'write_key' => 'the secret write key'
     ]
 ];

@@ -64,8 +64,8 @@
                 <p><?= h($user->username) ?></p>
                 <h5 class="subheader"><?= __('Role') ?></h5>
                 <p><?= $user->has('role') ? $this->Html->link($user->role->role, ['prefix' => 'admin', 'controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></p>
-                <h5 class="subheader"><?= __('Scoutgroup') ?></h5>
-                <p><?= $user->has('scoutgroup') ? $this->Html->link($user->scoutgroup->scoutgroup, ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $user->scoutgroup->id]) : '' ?></p>                
+                <h5 class="subheader"><?= __('Section') ?></h5>
+                <p><?= $user->has('section') ? $this->Html->link($user->section->section, ['prefix' => 'admin', 'controller' => 'Sections', 'action' => 'view', $user->section->id]) : '' ?></p>
             </div>
             <div class="panel-footer">
                 <div class="row">
@@ -83,7 +83,7 @@
                         <h5 class="subheader"><?= __('Id') ?></h5>
                         <p><?= $this->Number->format($user->id) ?></p>
                         <h5 class="subheader"><?= __('Auth Role') ?></h5>
-                        <p><?= strtoupper($user->authrole); ?></p>
+                        <p><?= $user->has('auth_role') ? $this->Html->link($user->auth_role->auth_role, ['prefix' => 'admin', 'controller' => 'AuthRoles', 'action' => 'view', $user->auth_role->id]) : '' ?></p>
                         <h5 class="subheader"><?= __('Logins') ?></h5>
                         <p><?= $this->Number->format($user->logins) ?></p>
                         <h5 class="subheader"><?= __('OSM Synced') ?></h5>
@@ -272,7 +272,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,12), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
+                                                <td><?= $attendees->has('section') ? $this->Html->link($this->Text->truncate($attendees->section->section,12), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $attendees->section->id]) : '' ?></td>
                                                 <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['prefix' => 'admin', 'controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
                                                 <td><?= h($attendees->firstname) ?></td>    
                                                 <td><?= h($attendees->lastname) ?></td>
@@ -360,7 +360,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $notification->has('notificationtype') ? $notification->notificationtype->notification_type : '' ?></td>
+                                                <td><?= $notification->has('notification_type') ? $notification->notification_type->notification_type : '' ?></td>
                                                 <td><?= h($notification->notification_source) ?></td>
                                                 <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
                                                 <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-yy HH:mm') ?></td>

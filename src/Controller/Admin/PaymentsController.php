@@ -46,14 +46,18 @@ class PaymentsController extends AppController
      *
      * @return void Redirects on successful add, renders view otherwise.
      */
-    public function add($invId = null)
+    public function add($invs = null)
     {
         $payment = $this->Payments->newEntity();
         if ($this->request->is('post')) {
             $newData = ['user_id' => $this->Auth->user('id')];
             $payment = $this->Payments->patchEntity($payment, $newData);
 
-            $payment = $this->Payments->patchEntity($payment, $this->request->data);
+            $payment = $this->Payments->patchEntity($payment, $this->request->data, [
+                'associated' => [
+                    'Invoices'
+                ]
+            ]);
 
             if ($this->Payments->save($payment)) {
                 $redir = $payment->get('id');
@@ -72,7 +76,11 @@ class PaymentsController extends AppController
             $invoices = $this->Payments->Invoices->find('list', ['conditions' => ['Invoices.id' => $invId]]);
         }
 
-        $this->set(compact('payment', 'invoices'));
+        if (is_null($invs)) {
+            $invs = 1;
+        }
+
+        $this->set(compact('payment', 'invoices', 'invs'));
         $this->set('_serialize', ['payment']);
     }
 

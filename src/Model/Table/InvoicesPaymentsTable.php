@@ -46,16 +46,28 @@ class InvoicesPaymentsTable extends Table
             'foreignKey' => 'payment_id',
             'joinType' => 'INNER'
         ]);
-//        $this->addBehavior('CounterCache', [
-//            'Invoices' => [
-//                'rating_avg' => function ($event, $entity, $table) {
-//                    $query = $entity->find()->contain(['Payments']);
-//                    $query->select(['sum' => $query->func()->sum('payments.value')]);
-//
-//                    return $query->sum;
-//                }
-//            ]
-//        ]);
+        $this->addBehavior('CounterCache', [
+            'Invoices' => [
+                'value' => function ($event, $entity, $table) {
+
+                    $query = $this->find()->where(['invoice_id' => $entity->invoice_id]);
+                    $query = $query->select(['sum' => $query->func()->sum('x_value')]);
+                    $query = $query->first();
+
+                    return $query->sum;
+                }
+            ],
+            'Payments' => [
+                'value' => function ($event, $entity, $table) {
+
+                    $query = $this->find()->where(['payment_id' => $entity->payment_id]);
+                    $query = $query->select(['sum' => $query->func()->sum('x_value')]);
+                    $query = $query->first();
+
+                    return $query->sum;
+                }
+            ]
+        ]);
     }
 
     /**
@@ -67,9 +79,9 @@ class InvoicesPaymentsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->numeric('xValue')
-            ->requirePresence('xValue', 'create')
-            ->notEmpty('xValue');
+            ->numeric('x_value')
+            ->requirePresence('x_value', 'create')
+            ->notEmpty('x_value');
 
         return $validator;
     }

@@ -6,6 +6,7 @@ use Cake\Mailer\MailerAwareTrait;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
+use Cake\Cache\Cache;
 
 //use DataTables\Controller\Component;
 
@@ -25,9 +26,13 @@ class UsersController extends AppController
      */
     public function index()
     {
+        $this->Sections = TableRegistry::get('Sections');
+        $section = $this->Sections->get($this->Auth->user('section_id'));
+
         $this->paginate = [
-            'contain' => ['Roles', 'Sections.Scoutgroups']
-            , 'order' => ['modified' => 'DESC']
+            'contain' => ['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes'],
+            'order' => ['modified' => 'DESC'],
+            'conditions' => ['SectionTypes.id' => $section['section_type_id']]
         ];
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
@@ -42,18 +47,15 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        if ($id == $this->Auth->user('id')) {
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', 'prefix' => false, $id]);
-        }
-
         $user = $this->Users->get($id, [
             'contain' => ['Roles'
                 , 'Sections.Scoutgroups'
                 , 'Applications' => ['Sections.Scoutgroups', 'Events']
                 , 'Attendees' => ['Sections.Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']]
                 , 'Invoices.Applications.Events'
+                , 'AuthRoles'
                 , 'Notes' => ['Invoices' , 'Applications']
-                , 'Notifications' => ['Notificationtypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']]
+                , 'Notifications' => ['NotificationTypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']]
             ]
         ]);
 
@@ -75,18 +77,8 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
 
         if ($this->request->is('post')) {
+
             $user = $this->Users->patchEntity($user, $this->request->data);
-
-            $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-                , 'lastname' => ucwords(strtolower($user->lastname))
-                , 'address_1' => ucwords(strtolower($user->address_1))
-                , 'address_2' => ucwords(strtolower($user->address_2))
-                , 'city' => ucwords(strtolower($user->city))
-                , 'county' => ucwords(strtolower($user->county))
-                , 'postcode' => strtoupper($user->postcode)
-                , 'section' => ucwords(strtolower($user->section))];
-
-            $user = $this->Users->patchEntity($user, $upperUser);
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
@@ -97,16 +89,18 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find(
+        $auth_roles = $this->Users->AuthRoles->find('list');
+        $sections = $this->Users->Sections->find(
             'list',
             [
                 'keyField' => 'id',
-                'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
+                'valueField' => 'section',
+                'groupField' => 'scoutgroup.scoutgroup'
             ]
         )
-            ->contain(['Districts']);
-        $this->set(compact('user', 'roles', 'scoutgroups'));
+            ->contain(['Scoutgroups']);
+
+        $this->set(compact('user', 'roles', 'sections', 'auth_roles'));
         $this->set('_serialize', ['user']);
     }
 
@@ -234,18 +228,14 @@ class UsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
 
-            $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-                , 'lastname' => ucwords(strtolower($user->lastname))
-                , 'address_1' => ucwords(strtolower($user->address_1))
-                , 'address_2' => ucwords(strtolower($user->address_2))
-                , 'city' => ucwords(strtolower($user->city))
-                , 'county' => ucwords(strtolower($user->county))
-                , 'postcode' => strtoupper($user->postcode)
-                , 'section' => ucwords(strtolower($user->section))];
-
-            $user = $this->Users->patchEntity($user, $upperUser);
-
             if ($this->Users->save($user)) {
+
+                if ($this->Auth->user('id') == $user->id) {
+                    $this->Auth->setUser($user->toArray());
+                    $this->Flash->success(__('Your login session has been refreshed.'));
+                    Cache::clear(true);
+                }
+
                 $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -254,16 +244,17 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find(
+        $auth_roles = $this->Users->AuthRoles->find('list');
+        $sections = $this->Users->Sections->find(
             'list',
             [
                 'keyField' => 'id',
-                'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
+                'valueField' => 'section',
+                'groupField' => 'scoutgroup.scoutgroup'
             ]
         )
-            ->contain(['Districts']);
-        $this->set(compact('user', 'roles', 'scoutgroups'));
+            ->contain(['Scoutgroups']);
+        $this->set(compact('user', 'roles', 'sections', 'auth_roles'));
         $this->set('_serialize', ['user']);
     }
 

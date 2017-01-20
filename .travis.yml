@@ -22,7 +22,7 @@ before_script:
 
 script:
   - sh -c "vendor/bin/phpcs -p --extensions=php --standard=CakePHP ./tests ./src/Model"
-  - sh -c "vendor/bin/phpunit --coverage-clover ./logs/clover.xml"
+  - sh -c "vendor/bin/phpunit"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -30,7 +30,13 @@ class PaymentsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->addBehavior('Timestamp');
+        $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created' => 'new',
+                ]
+            ]
+        ]);
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);
@@ -54,14 +60,6 @@ class PaymentsTable extends Table
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create');
-
-        $validator
-            ->add('value', 'valid', ['rule' => 'numeric'])
-            ->requirePresence('value');
-
-        $validator
-            ->add('paid', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('paid');
 
         $validator
             ->allowEmpty('cheque_number');

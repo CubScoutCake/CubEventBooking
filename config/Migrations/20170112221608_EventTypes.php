@@ -38,6 +38,11 @@ class EventTypes extends AbstractMigration
                 'limit' => 255,
                 'null' => true,
             ])
+            ->changeColumn('address_2','string', [
+                'default' => null,
+                'limit' => 255,
+                'null' => true,
+            ])
             ->changeColumn('pw_reset','string', [
                 'default' => null,
                 'limit' => 255,

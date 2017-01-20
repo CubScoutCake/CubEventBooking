@@ -97,17 +97,101 @@ class User extends Entity
 
     protected $_virtual = ['full_name'];
 
-    /*public function implementedEvents()
+    /**
+     * Mutator Method for Firstname
+     *
+     * @param mixed $firstname The firstname is mutated to Proper Case.
+     *
+     * @return mixed
+     *
+    protected function _setFirstname($firstname)
     {
-        return [
-            'Model.afterSave' => 'onRegistration'
-        ];
+        $this->set('firstname', ucwords(strtolower($firstname)));
+
+        return $firstname;
     }
 
-    public function onRegistration(Event $event, EntityInterface $entity, ArrayObject $options)
+    /**
+     * Mutator Method for Lastname
+     *
+     * @param mixed $lastname The lastname is mutated to Proper Case.
+     *
+     * @return mixed
+     *
+    protected function _setLastname($lastname)
     {
-        if ($entity->isNew()) {
-            $this->send('welcome', [$entity]);
-        }
+        $this->set('lastname', ucwords(strtolower($lastname)));
+
+        return $lastname;
+    }
+
+    /**
+     * Mutator Method for Address1
+     *
+     * @param mixed $address1 The address1 is mutated to Proper Case.
+     *
+     * @return mixed
+     *
+    protected function _setAddress1($address1)
+    {
+        $this->set('address_1', ucwords(strtolower($address1)));
+
+        return $address1;
+    }
+
+    /**
+     * Mutator Method for Address2
+     *
+     * @param mixed $address2 The address2 is mutated to Proper Case.
+     *
+     * @return mixed
+     *
+    protected function _setAddress2($address2)
+    {
+        $this->set('address_2', ucwords(strtolower($address2)));
+
+        return $address2;
+    }
+
+    /**
+     * Mutator Method for City
+     *
+     * @param mixed $city The city is mutated to Proper Case.
+     *
+     * @return mixed
+     *
+    protected function _setCity($city)
+    {
+        $this->set('city', ucwords(strtolower($city)));
+
+        return $city;
+    }
+
+    /**
+     * Mutator Method for County
+     *
+     * @param mixed $county The county is mutated to Proper Case.
+     *
+     * @return mixed
+     *
+    protected function _setCounty($county)
+    {
+        $this->set('county', ucwords(strtolower($county)));
+
+        return $county;
+    }
+
+    /**
+     * Mutator Method for Postcode
+     *
+     * @param mixed $postcode The postcode is mutated to Upper Case.
+     *
+     * @return mixed
+     *
+    protected function _setPostcode($postcode)
+    {
+        $this->set('postcode', strtoupper($postcode));
+
+        return $postcode;
     }*/
 }

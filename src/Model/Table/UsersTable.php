@@ -113,10 +113,7 @@ class UsersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('authrole', 'create')
-            ->notEmpty('authrole');
-
-        $validator
+            ->requirePresence('firstname', 'create')
             ->notEmpty('firstname');
 
         $validator

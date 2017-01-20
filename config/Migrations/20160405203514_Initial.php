@@ -759,7 +759,7 @@ class Initial extends AbstractMigration
                 'limit' => 11,
                 'null' => false,
             ])
-            ->addColumn('xValue', 'float', [
+            ->addColumn('x_value', 'float', [
                 'default' => null,
                 'limit' => null,
                 'null' => false,

@@ -76,4 +76,6 @@ class AuthRole extends Entity
 
         return $authValue;
     }
+
+    protected $_virtual = ['auth_value'];
 }
