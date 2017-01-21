@@ -58,7 +58,14 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/users/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -68,7 +75,48 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/users/add');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test Sync method
+     *
+     * @return void
+     */
+    public function testSync()
+    {
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/users/sync/1');
+
+        $this->assertRedirect();
+    }
+
+    /**
+     * Test SyncAll method
+     *
+     * @return void
+     */
+    public function testSyncAll()
+    {
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/users/sync-all');
+
+        $this->assertRedirect();
     }
 
     /**
@@ -78,7 +126,14 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/users/edit/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -88,6 +143,16 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/admin/users/delete/1');
+
+        $this->assertRedirect();
     }
 }

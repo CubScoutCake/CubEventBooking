@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\SuperUser;
 
-use App\Controller\Admin\AppController;
+use App\Controller\SuperUser\AppController;
 
 /**
  * Settingtypes Controller

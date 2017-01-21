@@ -26,7 +26,7 @@
             </td>
         </tr>
 
-        <?php foreach ($applications->has('invoices') as $invoice): ?>
+        <?php foreach ($applications->invoices as $invoice): ?>
             <tr>
                 <td><?= h($invoice->balance) ?></td>
             </tr>

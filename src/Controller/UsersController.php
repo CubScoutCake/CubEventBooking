@@ -119,16 +119,16 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('nonAuto')->find('leaders')->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find(
+        $sections = $this->Users->Sections->find(
             'list',
             [
                 'keyField' => 'id',
-                'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
+                'valueField' => 'section',
+                'groupField' => 'scoutgroup.district.district'
             ]
         )
-            ->contain(['Districts']);
-        $this->set(compact('user', 'roles', 'scoutgroups'));
+            ->contain(['Scoutgroups.Districts']);
+        $this->set(compact('user', 'roles', 'sections'));
         $this->set('_serialize', ['user']);
     }
 

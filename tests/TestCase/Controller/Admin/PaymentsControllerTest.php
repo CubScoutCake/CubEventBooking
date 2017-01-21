@@ -14,35 +14,40 @@ class PaymentsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
-        'app.payments',
+        'app.event_types',
+        'app.events',
+        'app.settings',
+        'app.setting_types',
+        'app.discounts',
         'app.users',
         'app.roles',
         'app.attendees',
+        'app.sections',
+        'app.section_types',
         'app.scoutgroups',
         'app.districts',
         'app.champions',
         'app.applications',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
+        'app.invoices',
+        'app.invoice_items',
+        'app.item_types',
+        'app.prices',
+        'app.notes',
+        'app.payments',
+        'app.invoices_payments',
+        'app.logistic_items',
         'app.logistics',
         'app.parameters',
         'app.parameter_sets',
         'app.params',
-        'app.logistic_items',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.notes',
-        'app.invoices_payments',
         'app.applications_attendees',
         'app.allergies',
         'app.attendees_allergies',
+        'app.auth_roles',
         'app.notifications',
-        'app.notificationtypes'
+        'app.notification_types'
     ];
 
     /**
@@ -60,12 +65,13 @@ class PaymentsControllerTest extends IntegrationTestCase
 
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-        /*$this->session(['Auth.User.id' => 1]);
+        $this->get('/admin/payments');
 
-        $this->get('/payments');
-
-        $this->assertResponseOk();*/
+        $this->assertResponseOk();
     }
 }

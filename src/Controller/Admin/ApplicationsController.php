@@ -20,7 +20,7 @@ class ApplicationsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Events', 'Attendees']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Events', 'Attendees']
             , 'conditions' => ['Events.live' => true]
             , 'order' => ['modified' => 'DESC']
         ];
@@ -34,7 +34,7 @@ class ApplicationsController extends AppController
     public function bookings($eventID = null)
     {
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Events', 'Attendees', 'Invoices'],
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Events', 'Attendees', 'Invoices'],
             'conditions' => ['event_id' => $eventID]
         ];
         $this->set('applications', $this->paginate($this->Applications));
@@ -51,7 +51,7 @@ class ApplicationsController extends AppController
     public function view($id = null)
     {
         $application = $this->Applications->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Scoutgroups', 'Allergies'], 'Notes']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes']
         ]);
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
@@ -65,7 +65,7 @@ class ApplicationsController extends AppController
     {
         // Insantiate Objects
         $application = $this->Applications->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Scoutgroups', 'Allergies'], 'Notes']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes']
         ]);
 
         $this->viewBuilder()->options([
@@ -207,22 +207,22 @@ class ApplicationsController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'full_name',
-                'groupField' => 'scoutgroup.district.district'
+                'groupField' => 'sections.scoutgroup.district.district'
             ]
         )
-            ->contain(['Scoutgroups.Districts']);
-        $scoutgroups = $this->Applications->Scoutgroups->find(
+            ->contain(['Sections.Scoutgroups.Districts']);
+        $sections = $this->Applications->Sections->find(
             'list',
             [
                 'keyField' => 'id',
-                'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
+                'valueField' => 'section',
+                'groupField' => 'scoutgroup.scoutgroup'
             ]
         )
-            ->contain(['Districts']);
+            ->contain(['Scoutgroups']);
         $events = $this->Applications->Events->find('list', ['limit' => 200]);
 
-        $this->set(compact('application', 'users', 'attendees', 'scoutgroups', 'events'));
+        $this->set(compact('application', 'users', 'attendees', 'sections', 'events'));
         $this->set('_serialize', ['application']);
 
         //$startuser = $this->Applications->Users->find('all',['conditions' => ['user_id' => $userId]])->first()->user_id;
@@ -246,7 +246,7 @@ class ApplicationsController extends AppController
     public function edit($id = null)
     {
         $application = $this->Applications->get($id, [
-            'contain' => ['Attendees', 'Events', 'Scoutgroups', 'Users']
+            'contain' => ['Attendees', 'Events', 'Sections.Scoutgroups', 'Users']
         ]);
 
         $users = TableRegistry::get('Users');
@@ -267,29 +267,29 @@ class ApplicationsController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'full_name',
+                'groupField' => 'section.scoutgroup.district.district'
+            ]
+        )
+            ->contain(['Sections.Scoutgroups.Districts']);
+        $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $application->user_id]]);
+        $events = $this->Applications->Events->find('list', ['limit' => 200]);
+        $sections = $this->Applications->Sections->find(
+            'list',
+            [
+                'keyField' => 'id',
+                'valueField' => 'section',
                 'groupField' => 'scoutgroup.district.district'
             ]
         )
             ->contain(['Scoutgroups.Districts']);
-        $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $application->user_id]]);
-        $events = $this->Applications->Events->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Applications->Scoutgroups->find(
-            'list',
-            [
-                'keyField' => 'id',
-                'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
-            ]
-        )
-            ->contain(['Districts']);
-        $this->set(compact('application', 'users', 'attendees', 'events', 'scoutgroups'));
+        $this->set(compact('application', 'users', 'attendees', 'events', 'sections'));
         $this->set('_serialize', ['application']);
     }
 
     public function link($id = null)
     {
         $application = $this->Applications->get($id, [
-            'contain' => ['Attendees', 'Events', 'Scoutgroups', 'Users']
+            'contain' => ['Attendees', 'Events', 'Sections.Scoutgroups', 'Users']
         ]);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -325,31 +325,5 @@ class ApplicationsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
-    }
-
-    public function isAuthorized($user)
-    {
-
-        // Admin can access every action
-        if (isset($user['authrole']) && $user['authrole'] === 'admin') {
-            return true;
-        }
-
-        if ($this->request->action === 'add') {
-                return true;
-        }
-
-        if (in_array($this->request->action, ['edit', 'delete'])) {
-            if ($this->applications->isOwnedBy($application['user_id'], $user['id'])) {
-                return true;
-            }
-
-            // Check that the application belongs to the current user.
-            $application = $this->Applications->get($id);
-
-            if ($application->user_id == $user['id']) {
-                return true;
-            }
-        }
     }
 }

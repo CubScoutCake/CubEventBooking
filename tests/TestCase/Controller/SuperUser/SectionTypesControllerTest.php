@@ -1,7 +1,7 @@
 <?php
-namespace App\Test\TestCase\Controller;
+namespace App\Test\TestCase\Controller\SuperUser;
 
-use App\Controller\SectionTypesController;
+use App\Controller\SuperUser\SectionTypesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -16,11 +16,38 @@ class SectionTypesControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.section_types',
+        'app.event_types',
+        'app.events',
+        'app.settings',
+        'app.setting_types',
+        'app.discounts',
+        'app.users',
         'app.roles',
+        'app.attendees',
+        'app.sections',
+        'app.section_types',
         'app.scoutgroups',
         'app.districts',
-        'app.sections'
+        'app.champions',
+        'app.applications',
+        'app.invoices',
+        'app.invoice_items',
+        'app.item_types',
+        'app.prices',
+        'app.notes',
+        'app.payments',
+        'app.invoices_payments',
+        'app.logistic_items',
+        'app.logistics',
+        'app.parameters',
+        'app.parameter_sets',
+        'app.params',
+        'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
+        'app.auth_roles',
+        'app.notifications',
+        'app.notification_types'
     ];
 
     /**
@@ -30,7 +57,14 @@ class SectionTypesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/super_user/section-types');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -40,7 +74,14 @@ class SectionTypesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/super_user/section-types/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -50,7 +91,14 @@ class SectionTypesControllerTest extends IntegrationTestCase
      */
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/super_user/section-types/add');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -60,7 +108,14 @@ class SectionTypesControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/super_user/section-types/edit/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -70,6 +125,16 @@ class SectionTypesControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/super_user/section-types/delete/2');
+
+        $this->assertRedirect();
     }
 }

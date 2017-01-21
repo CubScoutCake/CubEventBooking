@@ -42,5 +42,12 @@ class SectionTypesFixture extends TestFixture
             'lower_age' => 8,
             'role_id' => 1
         ],
+        [
+            'id' => 2,
+            'section_type' => 'Random ips',
+            'upper_age' => 10,
+            'lower_age' => 8,
+            'role_id' => 1
+        ],
     ];
 }

@@ -67,33 +67,20 @@ class UsersControllerTest extends IntegrationTestCase
     }
 
     /**
-     * Test add method
-     *
-     * @return void
-     */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test edit method
      *
      * @return void
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 1
+        ]);
 
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/users/edit/1');
+
+        $this->assertResponseOk();
     }
 
     /**

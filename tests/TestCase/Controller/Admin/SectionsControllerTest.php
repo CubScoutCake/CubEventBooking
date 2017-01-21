@@ -20,7 +20,8 @@ class SectionsControllerTest extends IntegrationTestCase
         'app.section_types',
         'app.scoutgroups',
         'app.districts',
-        'app.roles'
+        'app.roles',
+        'app.auth_roles',
     ];
 
     /**
@@ -30,7 +31,14 @@ class SectionsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/sections');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -40,7 +48,14 @@ class SectionsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/sections/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -50,7 +65,14 @@ class SectionsControllerTest extends IntegrationTestCase
      */
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/sections/add');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -60,7 +82,14 @@ class SectionsControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/sections/edit/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -70,6 +99,16 @@ class SectionsControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/admin/sections/delete/1');
+
+        $this->assertRedirect();
     }
 }

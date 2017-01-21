@@ -71,6 +71,13 @@ class SectionTypesTableTest extends TestCase
                 'lower_age' => 8,
                 'role_id' => 1
             ],
+            [
+                'id' => 2,
+                'section_type' => 'Random ips',
+                'upper_age' => 10,
+                'lower_age' => 8,
+                'role_id' => 1
+            ],
         ];
 
         $this->assertEquals($expected, $result);
@@ -84,7 +91,7 @@ class SectionTypesTableTest extends TestCase
     public function testValidationDefault()
     {
         $badData = [
-            'id' => 3,
+            'id' => 4,
             'section_type' => null,
             'upper_age' => null,
             'lower_age' => 'This is',
@@ -92,7 +99,7 @@ class SectionTypesTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 2,
+            'id' => 3,
             'section_type' => 'aksfka ips',
             'upper_age' => 14,
             'lower_age' => 10,
@@ -109,6 +116,13 @@ class SectionTypesTableTest extends TestCase
             ],
             [
                 'id' => 2,
+                'section_type' => 'Random ips',
+                'upper_age' => 10,
+                'lower_age' => 8,
+                'role_id' => 1
+            ],
+            [
+                'id' => 3,
                 'section_type' => 'aksfka ips',
                 'upper_age' => 14,
                 'lower_age' => 10,
@@ -157,6 +171,13 @@ class SectionTypesTableTest extends TestCase
             [
                 'id' => 1,
                 'section_type' => 'Lorem ips',
+                'upper_age' => 10,
+                'lower_age' => 8,
+                'role_id' => 1
+            ],
+            [
+                'id' => 2,
+                'section_type' => 'Random ips',
                 'upper_age' => 10,
                 'lower_age' => 8,
                 'role_id' => 1

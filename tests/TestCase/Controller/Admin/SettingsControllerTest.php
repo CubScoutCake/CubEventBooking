@@ -1,11 +1,11 @@
 <?php
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\SettingsController;
+use App\Controller\Admin\SettingsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Admin\SettingsController Test Case
+ * App\Controller\Admin\SettingsController Test Case
  */
 class SettingsControllerTest extends IntegrationTestCase
 {

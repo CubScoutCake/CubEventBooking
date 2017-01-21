@@ -103,7 +103,7 @@ class ProgressComponent extends Component
                     ->contain(['Invoices.Applications'])
                     ->where(['Applications.id' => $appID])
                     ->select(['sum' => $invoices->func()->sum('Quantity')])
-                    ->group('itemtype_id')->toArray();
+                    ->group('item_type_id')->toArray();
 
                 $invCubs = $invItemCounts[1]->sum;
                 $invYls = $invItemCounts[2]->sum;

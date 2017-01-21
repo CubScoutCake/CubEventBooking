@@ -133,18 +133,18 @@ class AttendeesController extends AppController
         $users = $this->Attendees->Users->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $attendee->user_id]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Attendees->Scoutgroups->find(
+        $sections = $this->Attendees->Sections->find(
             'list',
             [
                     'keyField' => 'id',
-                    'valueField' => 'scoutgroup',
-                    'groupField' => 'district.district'
+                    'valueField' => 'section',
+                    'groupField' => 'scoutgroup.district.district'
             ]
         )
-                ->contain(['Districts']);
+                ->contain(['Scoutgroups.Districts']);
         $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
 
-        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'scoutgroups', 'roles'));
+        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'sections', 'roles'));
         $this->set('_serialize', ['attendee']);
     }
 
