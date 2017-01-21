@@ -4,16 +4,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * InvoiceItem Entity.
+ * InvoiceItem Entity
  *
  * @property int $id
  * @property int $invoice_id
+ * @property float $value
+ * @property string $description
+ * @property int $quantity
+ * @property int $item_type_id
+ * @property bool $visible
+ *
  * @property \App\Model\Entity\Invoice $invoice
- * @property float $Value
- * @property string $Description
- * @property int $Quantity
- * @property int $itemtype_id
- * @property \App\Model\Entity\Itemtype $itemtype
+ * @property \App\Model\Entity\ItemType $item_type
  */
 class InvoiceItem extends Entity
 {
@@ -29,7 +31,7 @@ class InvoiceItem extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false,
+        'id' => false
     ];
 
     /**
@@ -39,7 +41,7 @@ class InvoiceItem extends Entity
      */
     protected function _getQuantityPrice()
     {
-        return $this->_properties['Value'] * $this->_properties['Quantity'];
+        return $this->_properties['value'] * $this->_properties['quantity'];
     }
 
     protected $_virtual = ['quantity_price'];

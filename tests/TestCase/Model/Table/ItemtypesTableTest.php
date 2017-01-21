@@ -87,7 +87,7 @@ class ItemTypesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $query = $this->Itemtypes->find('all');
+        $query = $this->ItemTypes->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
@@ -98,6 +98,7 @@ class ItemTypesTableTest extends TestCase
                 'item_type' => 'Lorem ipsum dolor sit amet',
                 'role_id' => 1,
                 'cancelled' => true,
+                'available' => true,
             ],
         ];
 
@@ -115,7 +116,8 @@ class ItemTypesTableTest extends TestCase
             'id' => 2,
             'itemtype' => null,
             'roletype' => null,
-            'minor' => null
+            'minor' => null,
+            'available' => null,
         ];
 
         $goodData = [
@@ -124,6 +126,7 @@ class ItemTypesTableTest extends TestCase
             'item_type' => 'Lorem dolor goat amet',
             'role_id' => 1,
             'cancelled' => false,
+            'available' => true,
         ];
 
         $expected = [
@@ -133,6 +136,7 @@ class ItemTypesTableTest extends TestCase
                 'item_type' => 'Lorem ipsum dolor sit amet',
                 'role_id' => 1,
                 'cancelled' => true,
+                'available' => true,
             ],
             [
                 'id' => 2,
@@ -140,16 +144,17 @@ class ItemTypesTableTest extends TestCase
                 'item_type' => 'Lorem dolor goat amet',
                 'role_id' => 1,
                 'cancelled' => false,
+                'available' => true,
             ],
         ];
 
-        $badEntity = $this->Itemtypes->newEntity($badData, ['accessibleFields' => ['id' => true]]);
-        $goodEntity = $this->Itemtypes->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        $badEntity = $this->ItemTypes->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->ItemTypes->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
 
-        $this->assertFalse($this->Itemtypes->save($badEntity));
-        $this->Itemtypes->save($goodEntity);
+        $this->assertFalse($this->ItemTypes->save($badEntity));
+        $this->ItemTypes->save($goodEntity);
 
-        $query = $this->Itemtypes->find('all');
+        $query = $this->ItemTypes->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
