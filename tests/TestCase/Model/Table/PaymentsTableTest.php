@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\PaymentsTable;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -22,35 +23,16 @@ class PaymentsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.payments',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.scoutgroups',
         'app.districts',
-        'app.champions',
-        'app.applications',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.notes',
-        'app.invoices_payments',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notifications',
-        'app.notificationtypes'
+        'app.auth_roles',
+        'app.scoutgroups',
+        'app.sections',
+        'app.section_types',
+        'app.roles',
+        'app.users',
     ];
 
     /**
@@ -63,6 +45,9 @@ class PaymentsTableTest extends TestCase
         parent::setUp();
         $config = TableRegistry::exists('Payments') ? [] : ['className' => 'App\Model\Table\PaymentsTable'];
         $this->Payments = TableRegistry::get('Payments', $config);
+
+        $now = new Time('2016-12-26 23:22:30');
+        Time::setTestNow($now);
     }
 
     /**
@@ -84,7 +69,28 @@ class PaymentsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Payments->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $startNow = Time::now();
+
+        $expected = [
+            [
+                'id' => 1,
+                'value' => 1,
+                'created' => null,
+                'paid' => null,
+                'cheque_number' => 'Lorem ipsum dolor sit amet',
+                'name_on_cheque' => 'Lorem ipsum dolor sit amet',
+                'user_id' => 1,
+                'payment_notes' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**

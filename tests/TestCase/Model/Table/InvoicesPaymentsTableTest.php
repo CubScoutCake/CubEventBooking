@@ -22,35 +22,23 @@ class InvoicesPaymentsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
+        'app.payments',
         'app.invoices_payments',
         'app.invoices',
         'app.users',
         'app.roles',
-        'app.attendees',
         'app.scoutgroups',
         'app.districts',
-        'app.champions',
+        'app.section_types',
+        'app.sections',
+        'app.auth_roles',
         'app.applications',
         'app.events',
         'app.settings',
-        'app.settingtypes',
+        'app.setting_types',
         'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.notes',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notifications',
-        'app.notificationtypes',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.payments'
     ];
 
     /**
@@ -84,7 +72,19 @@ class InvoicesPaymentsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->InvoicesPayments->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'invoice_id' => 1,
+                'payment_id' => 1,
+                'x_value' => 1
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**

@@ -22,7 +22,7 @@ class ApplicationsAttendeesTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.applications_attendees',
         'app.applications',
@@ -38,22 +38,13 @@ class ApplicationsAttendeesTableTest extends TestCase
         'app.sections',
         'app.section_types',
         'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
         'app.notes',
         'app.payments',
         'app.invoices_payments',
-        'app.notifications',
-        'app.notificationtypes',
         'app.events',
         'app.settings',
-        'app.settingtypes',
+        'app.setting_types',
         'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items'
     ];
 
     /**
@@ -87,8 +78,6 @@ class ApplicationsAttendeesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('To be added.');
-
         $query = $this->ApplicationsAttendees->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
@@ -110,6 +99,38 @@ class ApplicationsAttendeesTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badData = [
+            'application_id' => 98,
+            'attendee_id' => 98
+        ];
+
+                $goodData = [
+                    'application_id' => 3,
+                    'attendee_id' => 1
+                ];
+
+                $expected = [
+                    [
+                        'application_id' => 1,
+                        'attendee_id' => 1
+                    ],
+                    [
+                        'application_id' => 3,
+                        'attendee_id' => 1
+                    ],
+                ];
+
+                $badEntity = $this->ApplicationsAttendees->newEntity($badData, ['accessibleFields' => ['*' => true]]);
+                $goodEntity = $this->ApplicationsAttendees->newEntity($goodData, ['accessibleFields' => ['*' => true]]);
+
+                $this->assertFalse($this->ApplicationsAttendees->save($badEntity));
+                $this->ApplicationsAttendees->save($goodEntity);
+
+                $query = $this->ApplicationsAttendees->find('all');
+
+                $this->assertInstanceOf('Cake\ORM\Query', $query);
+                $result = $query->hydrate(false)->toArray();
+
+                $this->assertEquals($expected, $result);
     }
 }

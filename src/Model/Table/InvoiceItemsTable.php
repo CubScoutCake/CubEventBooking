@@ -52,15 +52,15 @@ class InvoiceItemsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->add('Value', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('Value');
+            ->add('value', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('value');
 
         $validator
-            ->allowEmpty('Description');
+            ->allowEmpty('description');
 
         $validator
-            ->add('Quantity', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('Quantity');
+            ->add('quantity', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('quantity');
 
 
         return $validator;

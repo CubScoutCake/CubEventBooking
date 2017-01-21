@@ -125,6 +125,20 @@ class EventTypes extends AbstractMigration
 
         $table = $this->table('itemtypes');
         $table->renameColumn('roletype','role_id')
+            ->addForeignKey(
+                'role_id',
+                'roles',
+                'id',
+                [
+                    'delete' => 'RESTRICT',
+                    'update' => 'RESTRICT'
+                ])
+            ->addColumn('available', 'boolean',[
+                'default' => null,
+                'limit' => null,
+                'null' => true,
+            ])
+            ->addIndex(['role_id'])
             ->renameColumn('itemtype', 'item_type')
             ->rename('item_types')
             ->update();
@@ -161,6 +175,11 @@ class EventTypes extends AbstractMigration
                 'limit' => 11,
                 'null' => false,
             ])
+            ->addColumn('max_number', 'integer', [
+                'default' => null,
+                'limit' => 11,
+                'null' => true,
+            ])
             ->addColumn('value', 'float', [
                 'default' => null,
                 'limit' => null,
@@ -187,6 +206,8 @@ class EventTypes extends AbstractMigration
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
                 ])
+            ->addIndex(['item_type_id'])
+            ->addIndex(['event_id'])
             ->create();
 
         $table = $this->table('auth_roles');
@@ -213,11 +234,19 @@ class EventTypes extends AbstractMigration
             ->dropForeignKey(
                 'legaltext_id'
             )
+            ->removeIndex(['invtext_id'])
+            ->removeIndex(['legaltext_id'])
+            ->removeColumn('invtext_id')
+            ->removeColumn('legaltext_id')
             ->removeColumn('logo_ratio')
+            ->save();
+
+        $table = $this->table('itemtypes');
+        $table->removeColumn('minor')
             ->save();
 
         $table = $this->table('auth_roles');
         $table->removeColumn('auth')
-            ->update();
+            ->save();
     }
 }

@@ -19,7 +19,7 @@ class InvoicesPaymentsFixture extends TestFixture
     public $fields = [
         'invoice_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'payment_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'xValue' => ['type' => 'float', 'length' => null, 'precision' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => ''],
+        'x_value' => ['type' => 'float', 'length' => null, 'precision' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => ''],
         '_indexes' => [
             'invoice_id_idx' => ['type' => 'index', 'columns' => ['invoice_id'], 'length' => []],
         ],
@@ -39,7 +39,7 @@ class InvoicesPaymentsFixture extends TestFixture
         [
             'invoice_id' => 1,
             'payment_id' => 1,
-            'xValue' => 1
+            'x_value' => 1
         ],
     ];
 }

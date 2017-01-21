@@ -28,7 +28,6 @@ class PaymentsFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'payments_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
-            'pays_user_idx' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
@@ -46,13 +45,24 @@ class PaymentsFixture extends TestFixture
         [
             'id' => 1,
             'value' => 1,
-            'created' => 1481496384,
-            'paid' => 1481496384,
+            'created' => null,
+            'paid' => null,
             'cheque_number' => 'Lorem ipsum dolor sit amet',
             'name_on_cheque' => 'Lorem ipsum dolor sit amet',
             'user_id' => 1,
             'payment_notes' => 'Lorem ipsum dolor sit amet',
-            'deleted' => 1481496384
+            'deleted' => null
+        ],
+        [
+            'id' => 2,
+            'value' => 1,
+            'created' => 1484948568,
+            'paid' => 1484948568,
+            'cheque_number' => 'Lorem ipsum dolor sit amet',
+            'name_on_cheque' => 'Lorem ipsum dolor sit amet',
+            'user_id' => 1,
+            'payment_notes' => 'Lorem ipsum dolor sit amet',
+            'deleted' => 1484948568
         ],
     ];
 }
