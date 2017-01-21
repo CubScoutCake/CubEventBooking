@@ -4,12 +4,15 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Item Type Entity.
+ * ItemType Entity
  *
  * @property int $id
- * @property string $itemtype
- * @property int $roletype
- * @property int $minor
+ * @property string $item_type
+ * @property int $role_id
+ * @property bool $minor
+ * @property bool $cancelled
+ * @property bool $available
+ *
  * @property \App\Model\Entity\InvoiceItem[] $invoice_items
  */
 class ItemType extends Entity
@@ -26,6 +29,6 @@ class ItemType extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false,
+        'id' => false
     ];
 }
