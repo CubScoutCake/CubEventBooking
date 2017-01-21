@@ -1,13 +1,13 @@
 <?php
-namespace App\Test\TestCase\Controller;
+namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\PricesController;
+use App\Controller\Admin\EventTypesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\PricesController Test Case
+ * App\Controller\EventTypesController Test Case
  */
-class PricesControllerTest extends IntegrationTestCase
+class EventTypesControllerTest extends IntegrationTestCase
 {
 
     /**
@@ -16,10 +16,11 @@ class PricesControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.prices',
-        'app.item_types',
-        'app.invoice_items',
-        'app.invoices',
+        'app.event_types',
+        'app.events',
+        'app.settings',
+        'app.setting_types',
+        'app.discounts',
         'app.users',
         'app.roles',
         'app.attendees',
@@ -29,25 +30,24 @@ class PricesControllerTest extends IntegrationTestCase
         'app.districts',
         'app.champions',
         'app.applications',
-        'app.events',
-        'app.settings',
-        'app.setting_types',
-        'app.discounts',
+        'app.invoices',
+        'app.invoice_items',
+        'app.item_types',
+        'app.prices',
+        'app.notes',
+        'app.payments',
+        'app.invoices_payments',
+        'app.logistic_items',
         'app.logistics',
         'app.parameters',
         'app.parameter_sets',
         'app.params',
-        'app.logistic_items',
-        'app.notes',
         'app.applications_attendees',
         'app.allergies',
         'app.attendees_allergies',
         'app.auth_roles',
         'app.notifications',
-        'app.notification_types',
-        'app.payments',
-        'app.invoices_payments',
-        'app.event_types',
+        'app.notification_types'
     ];
 
     /**

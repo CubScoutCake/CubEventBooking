@@ -31,6 +31,7 @@ class AttendeesControllerTest extends IntegrationTestCase
         'app.settings',
         'app.settingtypes',
         'app.discounts',
+        'app.event_types',
     ];
 
     /**

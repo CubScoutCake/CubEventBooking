@@ -29,6 +29,7 @@ class UsersControllerTest extends IntegrationTestCase
         'app.section_types',
         'app.auth_roles',
         'app.attendees',
+        'app.event_types',
     ];
 
     /**

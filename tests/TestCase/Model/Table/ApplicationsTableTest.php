@@ -35,7 +35,8 @@ class ApplicationsTableTest extends TestCase
         'app.section_types',
         'app.sections',
         'app.users',
-        'app.events'
+        'app.events',
+        'app.event_types',
     ];
 
     /**

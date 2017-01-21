@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\InvoiceItemsTable;
+use App\Model\Table\EventTypesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\InvoiceItemsTable Test Case
+ * App\Model\Table\EventTypesTable Test Case
  */
-class InvoiceItemsTableTest extends TestCase
+class EventTypesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\InvoiceItemsTable
+     * @var \App\Model\Table\EventTypesTable
      */
-    public $InvoiceItems;
+    public $EventTypes;
 
     /**
      * Fixtures
@@ -24,8 +24,11 @@ class InvoiceItemsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.invoice_items',
-        'app.invoices',
+        'app.event_types',
+        'app.events',
+        'app.settings',
+        'app.setting_types',
+        'app.discounts',
         'app.users',
         'app.roles',
         'app.attendees',
@@ -35,26 +38,24 @@ class InvoiceItemsTableTest extends TestCase
         'app.districts',
         'app.champions',
         'app.applications',
-        'app.events',
-        'app.settings',
-        'app.setting_types',
-        'app.discounts',
+        'app.invoices',
+        'app.invoice_items',
+        'app.item_types',
+        'app.prices',
+        'app.notes',
+        'app.payments',
+        'app.invoices_payments',
+        'app.logistic_items',
         'app.logistics',
         'app.parameters',
         'app.parameter_sets',
         'app.params',
-        'app.logistic_items',
-        'app.notes',
         'app.applications_attendees',
         'app.allergies',
         'app.attendees_allergies',
         'app.auth_roles',
         'app.notifications',
         'app.notification_types',
-        'app.payments',
-        'app.invoices_payments',
-        'app.item_types',
-        'app.prices',
         'app.event_types',
     ];
 
@@ -66,8 +67,8 @@ class InvoiceItemsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('InvoiceItems') ? [] : ['className' => 'App\Model\Table\InvoiceItemsTable'];
-        $this->InvoiceItems = TableRegistry::get('InvoiceItems', $config);
+        $config = TableRegistry::exists('EventTypes') ? [] : ['className' => 'App\Model\Table\EventTypesTable'];
+        $this->EventTypes = TableRegistry::get('EventTypes', $config);
     }
 
     /**
@@ -77,7 +78,7 @@ class InvoiceItemsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->InvoiceItems);
+        unset($this->EventTypes);
 
         parent::tearDown();
     }

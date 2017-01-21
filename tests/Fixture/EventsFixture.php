@@ -66,17 +66,23 @@ class EventsFixture extends TestFixture
         'available_apps' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'available_cubs' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+        'event_type_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'section_type_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         '_indexes' => [
             'events_invtext_id' => ['type' => 'index', 'columns' => ['invtext_id'], 'length' => []],
             'events_legaltext_id' => ['type' => 'index', 'columns' => ['legaltext_id'], 'length' => []],
             'events_discount_id' => ['type' => 'index', 'columns' => ['discount_id'], 'length' => []],
             'events_admin_user_id' => ['type' => 'index', 'columns' => ['admin_user_id'], 'length' => []],
+            'events_event_type_id' => ['type' => 'index', 'columns' => ['event_type_id'], 'length' => []],
+            'events_section_type_id' => ['type' => 'index', 'columns' => ['section_type_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'events_discount_id' => ['type' => 'foreign', 'columns' => ['discount_id'], 'references' => ['discounts', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
+            'events_event_type_id' => ['type' => 'foreign', 'columns' => ['event_type_id'], 'references' => ['event_types', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'events_invtext_id' => ['type' => 'foreign', 'columns' => ['invtext_id'], 'references' => ['settings', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'events_legaltext_id' => ['type' => 'foreign', 'columns' => ['legaltext_id'], 'references' => ['settings', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
+            'events_section_type_id' => ['type' => 'foreign', 'columns' => ['section_type_id'], 'references' => ['section_types', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
@@ -133,7 +139,9 @@ class EventsFixture extends TestFixture
                 'parent_applications' => 1,
                 'available_apps' => 1,
                 'available_cubs' => 1,
-                'deleted' => null
+                'deleted' => null,
+                'event_type_id' => 1,
+                'section_type_id' => 1,
             ],
             [
                 'id' => 2,
@@ -184,7 +192,9 @@ class EventsFixture extends TestFixture
                 'parent_applications' => 1,
                 'available_apps' => 1,
                 'available_cubs' => 1,
-                'deleted' => 1482071220
+                'deleted' => 1482071220,
+                'event_type_id' => 1,
+                'section_type_id' => 1,
             ],
             [
                 'id' => 3,
@@ -235,7 +245,9 @@ class EventsFixture extends TestFixture
                 'parent_applications' => 1,
                 'available_apps' => 1,
                 'available_cubs' => 1,
-                'deleted' => null
+                'deleted' => null,
+                'event_type_id' => 1,
+                'section_type_id' => 1,
             ],
         ];
         parent::init();

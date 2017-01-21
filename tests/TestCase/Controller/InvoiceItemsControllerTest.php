@@ -46,7 +46,8 @@ class InvoiceItemsControllerTest extends IntegrationTestCase
         'app.payments',
         'app.invoices_payments',
         'app.item_types',
-        'app.prices'
+        'app.prices',
+        'app.event_types',
     ];
 
     /**

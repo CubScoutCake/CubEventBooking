@@ -42,6 +42,7 @@ class ApplicationsAttendeesTableTest extends TestCase
         'app.payments',
         'app.invoices_payments',
         'app.events',
+        'app.event_types',
         'app.settings',
         'app.setting_types',
         'app.discounts',
