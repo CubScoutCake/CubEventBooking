@@ -39,6 +39,7 @@ class InvoicesPaymentsTableTest extends TestCase
         'app.settings',
         'app.setting_types',
         'app.discounts',
+        'app.event_types',
     ];
 
     /**

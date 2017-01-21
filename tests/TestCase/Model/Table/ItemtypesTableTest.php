@@ -53,7 +53,8 @@ class ItemTypesTableTest extends TestCase
         'app.notifications',
         'app.notification_types',
         'app.payments',
-        'app.invoices_payments'
+        'app.invoices_payments',
+        'app.event_types',
     ];
 
     /**

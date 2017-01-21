@@ -11,8 +11,8 @@ use Cake\ORM\Entity;
  * @property string $full_name
  * @property bool $live
  * @property bool $new_apps
- * @property \Cake\I18n\Time $start
- * @property \Cake\I18n\Time $end
+ * @property \Cake\I18n\Time $start_date
+ * @property \Cake\I18n\Time $end_date
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  * @property bool $deposit
@@ -55,6 +55,8 @@ use Cake\ORM\Entity;
  * @property int $available_apps
  * @property int $available_cubs
  * @property \Cake\I18n\Time $deleted
+ * @property int $event_type_id
+ * @property int $section_type_id
  *
  * @property \App\Model\Entity\Setting[] $settings
  * @property \App\Model\Entity\Discount $discount

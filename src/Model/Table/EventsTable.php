@@ -1,9 +1,7 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Event;
 use Cake\I18n\Time;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -14,8 +12,11 @@ use Cake\Validation\Validator;
  * @property \Cake\ORM\Association\BelongsTo $Settings
  * @property \Cake\ORM\Association\BelongsTo $Discounts
  * @property \Cake\ORM\Association\BelongsTo $AdminUsers
+ * @property \Cake\ORM\Association\BelongsTo $EventTypes
+ * @property \Cake\ORM\Association\BelongsTo $SectionTypes
  * @property \Cake\ORM\Association\HasMany $Applications
  * @property \Cake\ORM\Association\HasMany $Logistics
+ * @property \Cake\ORM\Association\HasMany $Prices
  *
  * @method \App\Model\Entity\Event get($primaryKey, $options = [])
  * @method \App\Model\Entity\Event newEntity($data = null, array $options = [])
@@ -23,7 +24,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Event|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Event patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Event[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Event findOrCreate($search, callable $callback = null)
+ * @method \App\Model\Entity\Event findOrCreate($search, callable $callback = null, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
@@ -65,19 +66,31 @@ class EventsTable extends Table
         $this->belongsTo('Discounts', [
             'foreignKey' => 'discount_id'
         ]);
+        $this->belongsTo('Users', [
+            'foreignKey' => 'admin_user_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('EventTypes', [
+            'foreignKey' => 'event_type_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('SectionTypes', [
+            'foreignKey' => 'section_type_id',
+            'joinType' => 'INNER'
+        ]);
         $this->hasMany('Applications', [
             'foreignKey' => 'event_id'
         ]);
         $this->hasMany('Settings', [
             'foreignKey' => 'event_id'
         ]);
-        $this->belongsTo('Users', [
-            'foreignKey' => 'admin_user_id'
-        ]);
-        $this->hasMany('Settings', [
+        $this->hasMany('Logistics', [
             'foreignKey' => 'event_id'
         ]);
-        $this->hasMany('Logistics', [
+        $this->hasMany('Prices', [
+            'foreignKey' => 'event_id'
+        ]);
+        $this->hasMany('Settings', [
             'foreignKey' => 'event_id'
         ]);
     }
@@ -91,7 +104,7 @@ class EventsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->integer('id')
             ->allowEmpty('id', 'create');
 
         $validator
@@ -270,7 +283,9 @@ class EventsTable extends Table
         $rules->add($rules->existsIn(['invtext_id'], 'Settings'));
         $rules->add($rules->existsIn(['legaltext_id'], 'Settings'));
         $rules->add($rules->existsIn(['discount_id'], 'Discounts'));
-        $rules->add($rules->existsIn(['admin_user_id'], 'Users'));
+        $rules->add($rules->existsIn(['admin_user_id'], 'AdminUsers'));
+        $rules->add($rules->existsIn(['event_type_id'], 'EventTypes'));
+        $rules->add($rules->existsIn(['section_type_id'], 'SectionTypes'));
 
         return $rules;
     }

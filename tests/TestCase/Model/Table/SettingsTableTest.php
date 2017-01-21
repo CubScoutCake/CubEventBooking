@@ -28,7 +28,10 @@ class SettingsTableTest extends TestCase
         'app.settings',
         'app.setting_types',
         'app.events',
-        'app.discounts'
+        'app.discounts',
+        'app.event_types',
+        'app.section_types',
+        'app.roles',
     ];
 
     /**

@@ -5,7 +5,7 @@ use App\Controller\EventsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Admin\EventsController Test Case
+ * App\Controller\EventsController Test Case
  */
 class EventsControllerTest extends IntegrationTestCase
 {
@@ -14,37 +14,41 @@ class EventsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-
+     */
     public $fixtures = [
         'app.events',
         'app.settings',
-        'app.settingtypes',
+        'app.setting_types',
         'app.discounts',
         'app.applications',
         'app.users',
         'app.roles',
         'app.attendees',
+        'app.sections',
+        'app.section_types',
         'app.scoutgroups',
         'app.districts',
         'app.champions',
         'app.applications_attendees',
         'app.allergies',
         'app.attendees_allergies',
-        'app.notes',
+        'app.auth_roles',
         'app.invoices',
         'app.invoice_items',
-        'app.itemtypes',
+        'app.item_types',
+        'app.prices',
+        'app.notes',
         'app.payments',
         'app.invoices_payments',
         'app.notifications',
-        'app.notificationtypes',
+        'app.notification_types',
         'app.logistic_items',
         'app.logistics',
         'app.parameters',
         'app.parameter_sets',
-        'app.params'
+        'app.params',
+        'app.event_types',
     ];
-     */
 
     /**
      * Test index method
@@ -67,11 +71,31 @@ class EventsControllerTest extends IntegrationTestCase
     }
 
     /**
-     * Test fullView method
+     * Test add method
      *
      * @return void
      */
-    public function testFullView()
+    public function testAdd()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testEdit()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test delete method
+     *
+     * @return void
+     */
+    public function testDelete()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

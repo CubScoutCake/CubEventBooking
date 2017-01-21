@@ -30,6 +30,7 @@ class DistrictsControllerTest extends IntegrationTestCase
         'app.settings',
         'app.setting_types',
         'app.discounts',
+        'app.event_types',
     ];
 
     public function testIndexUnauthenticatedFails()

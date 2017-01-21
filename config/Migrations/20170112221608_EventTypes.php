@@ -71,6 +71,11 @@ class EventTypes extends AbstractMigration
                 'limit' => null,
                 'null' => true,
             ])
+            ->addColumn('dietary', 'boolean',[
+                'default' => null,
+                'limit' => null,
+                'null' => true,
+            ])
             ->addColumn('parent_applications', 'boolean',[
                 'default' => null,
                 'limit' => null,

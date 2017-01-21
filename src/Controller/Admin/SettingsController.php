@@ -19,7 +19,7 @@ class SettingsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Settingtypes'], 'conditions' => ['settingtype_id !=' => '2']
+            'contain' => ['SettingTypes'], 'conditions' => ['setting_type_id !=' => '2']
         ];
         $this->set('settings', $this->paginate($this->Settings));
         $this->set('_serialize', ['settings']);
@@ -35,7 +35,7 @@ class SettingsController extends AppController
     public function view($id = null)
     {
         $setting = $this->Settings->get($id, [
-            'contain' => ['Settingtypes']
+            'contain' => ['SettingTypes']
         ]);
         $this->set('setting', $setting);
         $this->set('_serialize', ['setting']);
@@ -59,8 +59,8 @@ class SettingsController extends AppController
                 $this->Flash->error(__('The setting could not be saved. Please, try again.'));
             }
         }
-        $settingtypes = $this->Settings->Settingtypes->find('list', ['limit' => 200]);
-        $this->set(compact('setting', 'settingtypes'));
+        $setting_types = $this->Settings->SettingTypes->find('list', ['limit' => 200]);
+        $this->set(compact('setting', 'setting_types'));
         $this->set('_serialize', ['setting']);
     }
 
@@ -86,8 +86,8 @@ class SettingsController extends AppController
                 $this->Flash->error(__('The setting could not be saved. Please, try again.'));
             }
         }
-        $settingtypes = $this->Settings->Settingtypes->find('list', ['limit' => 200]);
-        $this->set(compact('setting', 'settingtypes'));
+        $setting_types = $this->Settings->SettingTypes->find('list', ['limit' => 200]);
+        $this->set(compact('setting', 'setting_types'));
         $this->set('_serialize', ['setting']);
     }
 
