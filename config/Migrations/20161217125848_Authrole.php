@@ -67,6 +67,7 @@ class Authrole extends AbstractMigration
                 'length' => 10,
                 'null' => true,
             ])
+            ->removeColumn('authrole')
             ->addColumn('membership_number', 'integer', [
                 'default' => null,
                 'length' => 10,

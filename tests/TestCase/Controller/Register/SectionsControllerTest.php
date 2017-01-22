@@ -51,32 +51,42 @@ class SectionsControllerTest extends IntegrationTestCase
     }
 
     /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testExisting()
+    {
+        $this->get('/register/sections/existing/1/1');
+
+        $this->assertResponseOk();
+
+        $this->get('/register/sections/existing/1');
+
+        $this->assertRedirect();
+
+        $this->get('/register/sections/existing/');
+
+        $this->assertRedirect();
+    }
+
+    /**
      * Test add method
      *
      * @return void
      */
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $this->get('/register/sections/add/1/1');
 
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $this->assertResponseOk();
 
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/register/sections/add/1');
+
+        $this->assertRedirect();
+
+        $this->get('/register/sections/add/');
+
+        $this->assertRedirect();
     }
 }

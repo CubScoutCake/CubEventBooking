@@ -175,4 +175,31 @@ class AllergiesControllerTest extends IntegrationTestCase
 
         $this->assertResponseError();
     }
+
+    public function testEdit()
+    {
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/allergies/edit/1');
+
+        $this->assertResponseOk();
+    }
+
+    public function testDelete()
+    {
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/admin/allergies/delete/1');
+
+        $this->assertRedirect();
+    }
 }

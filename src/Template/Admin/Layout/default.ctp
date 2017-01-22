@@ -286,6 +286,23 @@ $cakeDescription = 'HertsCubs Booking System';
                                         </li>
                                     </ul>
                                 </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-calendar-check-o fa-fw"></i> Event Types <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'EventTypes',
+                                                'action' => 'index',
+                                                'prefix' => 'admin']); ?>">View Event Types</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'EventTypes',
+                                                'action' => 'add',
+                                                'prefix' => 'admin']); ?>">Add an Event Type</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li>
@@ -476,6 +493,23 @@ $cakeDescription = 'HertsCubs Booking System';
                                 'controller' => 'Districts',
                                 'action' => 'add',
                                 'prefix' => 'admin']); ?>">Add a District</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-fire fa-fw"></i> Sections <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'Sections',
+                                                'action' => 'index',
+                                                'prefix' => 'admin']); ?>">View Sections</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'Sections',
+                                                'action' => 'add',
+                                                'prefix' => 'admin']); ?>">Add a Section</a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
                                     <a href="#"><i class="fa fa-paw fa-fw"></i> Scout Groups <span class="fa arrow"></span></a>

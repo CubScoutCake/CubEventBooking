@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Register;
 
-use App\Controller\AppController;
+use App\Controller\Register\AppController;
 use Cake\Utility\Text;
 
 /**
@@ -52,7 +52,7 @@ class SectionsController extends AppController
     public function existing($groupId = null, $typeId = null)
     {
         if(!isset($groupId) || !isset($typeId)) {
-            $this->redirect(['action' => 'select']);
+            return $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
         $existing = $this->Sections->find('list')->where(['scoutgroup_id' => $groupId, 'section_type_id' => $typeId]);
@@ -65,8 +65,8 @@ class SectionsController extends AppController
 
         $section = $this->Sections->newEntity();
         if ($this->request->is('post')) {
-            $redir = $this->request->data['ids'];
-            $this->redirect(['controller' => 'Users', 'action' => 'register', 'prefix' => 'register', null, $redir]);
+            $redir = $this->request->data['_ids'];
+            $this->redirect(['controller' => 'Users', 'action' => 'register', 'prefix' => 'register', $redir]);
         }
 
         $this->set(compact('section', 'groupId', 'typeId'));
@@ -85,7 +85,7 @@ class SectionsController extends AppController
     public function add($groupId = null, $typeId = null)
     {
         if(!isset($groupId) || !isset($typeId)) {
-            $this->redirect(['action' => 'select']);
+            return $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
         $this->request->data['scoutgroup_id'] = $groupId;

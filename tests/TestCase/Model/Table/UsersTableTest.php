@@ -82,7 +82,6 @@ class UsersTableTest extends TestCase
             [
                 'id' => 1,
                 'role_id' => 1,
-                'authrole' => 'Lorem ipsum dolor sit amet',
                 'firstname' => 'Lorem ipsum dolor sit amet',
                 'lastname' => 'Lorem ipsum dolor sit amet',
                 'email' => 'jacob@fish.com',
@@ -135,7 +134,6 @@ class UsersTableTest extends TestCase
         $badData = [
             'id' => 3,
             'role_id' => 1,
-            'authrole' => null,
             'firstname' => null,
             'lastname' => null,
             'email' => null,
@@ -175,7 +173,6 @@ class UsersTableTest extends TestCase
         $goodData = [
             'id' => 3,
             'role_id' => 1,
-            'authrole' => 'Lorem ipsum dolor sit amet',
             'firstname' => 'Lorem  dolor sit amet',
             'lastname' => 'Lorem  dolor sit amet',
             'email' => 'jacob@goat.com',
@@ -216,7 +213,6 @@ class UsersTableTest extends TestCase
             [
                 'id' => 1,
                 'role_id' => 1,
-                'authrole' => 'Lorem ipsum dolor sit amet',
                 'firstname' => 'Lorem ipsum dolor sit amet',
                 'lastname' => 'Lorem ipsum dolor sit amet',
                 'email' => 'jacob@fish.com',
@@ -253,7 +249,6 @@ class UsersTableTest extends TestCase
             [
                 'id' => 3,
                 'role_id' => 1,
-                'authrole' => 'Lorem ipsum dolor sit amet',
                 'firstname' => 'Lorem  dolor sit amet',
                 'lastname' => 'Lorem  dolor sit amet',
                 'email' => 'jacob@goat.com',
@@ -318,7 +313,6 @@ class UsersTableTest extends TestCase
         $badRoleData = [
             'id' => 3,
             'role_id' => 123,
-            'authrole' => 'Lorem ipsum dolor sit amet',
             'firstname' => 'Lorem  dolor sit amet',
             'lastname' => 'Lorem  dolor sit amet',
             'email' => 'jacob@goat.com',
@@ -358,7 +352,6 @@ class UsersTableTest extends TestCase
         $badAuthData = [
             'id' => 3,
             'role_id' => 1,
-            'authrole' => 'Lorem ipsum dolor sit amet',
             'firstname' => 'Lorem  dolor sit amet',
             'lastname' => 'Lorem  dolor sit amet',
             'email' => 'jacob@goat.com',
@@ -398,7 +391,6 @@ class UsersTableTest extends TestCase
         $badSectionData = [
             'id' => 3,
             'role_id' => 1,
-            'authrole' => 'Lorem ipsum dolor sit amet',
             'firstname' => 'Lorem  dolor sit amet',
             'lastname' => 'Lorem  dolor sit amet',
             'email' => 'jacob@goat.com',
@@ -435,50 +427,9 @@ class UsersTableTest extends TestCase
             'section_id' => 12342
         ];
 
-        $goodData = [
-            'id' => 3,
-            'role_id' => 1,
-            'authrole' => 'Lorem ipsum dolor sit amet',
-            'firstname' => 'Lorem  dolor sit amet',
-            'lastname' => 'Lorem  dolor sit amet',
-            'email' => 'jacob@goat.com',
-            'password' => 'Lorem ipsum dolor sit amet',
-            'phone' => 'Lorem ipsum dolor sit amet',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'Lorem ipsum dolor sit amet',
-            'legacy_section' => 'Lorem ipsum dolor sit amet',
-            'created' => $startNow,
-            'modified' => $startNow,
-            'username' => 'Fish',
-            'osm_user_id' => 12,
-            'osm_secret' => 'Lorem ipsum dolor sit amet',
-            'osm_section_id' => 134,
-            'osm_linked' => 1,
-            'osm_linkdate' => $startNow,
-            'osm_current_term' => 12,
-            'osm_term_end' => $startNow,
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'deleted' => null,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'auth_role_id' => 1,
-            'pw_state' => 1,
-            'membership_number' => 123,
-            'section_id' => 1
-        ];
-
         $badUsernameData = [
             'id' => 3,
             'role_id' => 1,
-            'authrole' => 'Lorem ipsum dolor sit amet',
             'firstname' => 'Lorem  dolor sit amet',
             'lastname' => 'Lorem  dolor sit amet',
             'email' => 'jacob@goat.com',
@@ -518,7 +469,6 @@ class UsersTableTest extends TestCase
         $badEmailData = [
             'id' => 3,
             'role_id' => 1,
-            'authrole' => 'Lorem ipsum dolor sit amet',
             'firstname' => 'Lorem  dolor sit amet',
             'lastname' => 'Lorem  dolor sit amet',
             'email' => 'jacob@fish.com',
@@ -558,7 +508,6 @@ class UsersTableTest extends TestCase
         $badMembershipNumberData = [
             'id' => 3,
             'role_id' => 1,
-            'authrole' => 'Lorem ipsum dolor sit amet',
             'firstname' => 'Lorem  dolor sit amet',
             'lastname' => 'Lorem  dolor sit amet',
             'email' => 'jacob@goat.com',
@@ -598,7 +547,6 @@ class UsersTableTest extends TestCase
         $goodData = [
             'id' => 3,
             'role_id' => 1,
-            'authrole' => 'Lorem ipsum dolor sit amet',
             'firstname' => 'Lorem  dolor sit amet',
             'lastname' => 'Lorem  dolor sit amet',
             'email' => 'jacob@goat.com',
@@ -639,7 +587,6 @@ class UsersTableTest extends TestCase
             [
                 'id' => 1,
                 'role_id' => 1,
-                'authrole' => 'Lorem ipsum dolor sit amet',
                 'firstname' => 'Lorem ipsum dolor sit amet',
                 'lastname' => 'Lorem ipsum dolor sit amet',
                 'email' => 'jacob@fish.com',
@@ -676,7 +623,6 @@ class UsersTableTest extends TestCase
             [
                 'id' => 3,
                 'role_id' => 1,
-                'authrole' => 'Lorem ipsum dolor sit amet',
                 'firstname' => 'Lorem  dolor sit amet',
                 'lastname' => 'Lorem  dolor sit amet',
                 'email' => 'jacob@goat.com',

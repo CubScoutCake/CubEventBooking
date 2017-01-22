@@ -14,7 +14,7 @@ use Cake\ORM\TableRegistry;
 class UsersController extends AppController
 {
 
-    public function register($eventId = null, $sectionId = null)
+    public function register($sectionId = null, $eventId = null)
     {
         if (!isset($sectionId) || is_null($sectionId)) {
             $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
@@ -23,7 +23,10 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $usrData = ['authrole' => 'user'];
+            $usrData = [
+                'auth_role_id' => 1,
+                'section_id' => $sectionId
+            ];
 
             $user = $this->Users->patchEntity($user, $this->request->data);
 
@@ -35,8 +38,7 @@ class UsersController extends AppController
                 , 'address_2' => ucwords(strtolower($user->address_2))
                 , 'city' => ucwords(strtolower($user->city))
                 , 'county' => ucwords(strtolower($user->county))
-                , 'postcode' => strtoupper($user->postcode)
-                , 'section' => ucwords(strtolower($user->section))];
+                , 'postcode' => strtoupper($user->postcode)];
 
             $user = $this->Users->patchEntity($user, $upperUser);
 
@@ -56,9 +58,8 @@ class UsersController extends AppController
                     'user_attendee' => true,
                     'postcode' => $user->postcode,
                     'role_id' => $user->role_id,
-                    'scoutgroup_id' => $user->scoutgroup_id,
-                    'phone' => $user->phone,
-                    'dateofbirth' => '01-01-1980'
+                    'section_id' => $user->section_id,
+                    'phone' => $user->phone
                 ];
 
                 $att = $atts->patchEntity($att, $attendeeData);
@@ -77,9 +78,22 @@ class UsersController extends AppController
             }
         }
 
-        $roles = $this->Users->Roles->find('nonAuto')->find('leaders')->find('list', ['limit' => 200]);
+        if($this->request->is('get')) {
+            $this->request->data['section_id'] = $sectionId;
+        }
 
-        $this->set(compact('user', 'roles', 'scoutgroups'));
+        $roles = $this->Users->Roles->find('nonAuto')->find('leaders')->find('list', ['limit' => 200]);
+        $sections = $this->Users->Sections->find(
+            'list',
+            [
+                'keyField' => 'id',
+                'valueField' => 'section',
+                'groupField' => 'scoutgroup.district.district'
+            ]
+        )
+            ->contain(['Scoutgroups.Districts']);
+
+        $this->set(compact('user', 'roles', 'sections'));
         $this->set('_serialize', ['user']);
     }
 

@@ -6,7 +6,7 @@
             <legend><?= __('Existing Sections Found - select one or choose to create a new one.') ?></legend>
             <?php
                 echo '<span>There are existing sections which meet your criteria.</span><br>';
-                echo $this->Form->input('ids', ['label' => false, 'type' => 'radio', 'empty' => false, 'options' => $existing]);
+                echo $this->Form->input('_ids', ['label' => false, 'type' => 'radio', 'empty' => false, 'options' => $existing]);
                 echo '<br>';
             ?>
         </fieldset>

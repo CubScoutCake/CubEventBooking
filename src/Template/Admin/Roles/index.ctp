@@ -5,27 +5,24 @@
             <table class="table table-hover">
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
                     <th><?= $this->Paginator->sort('role') ?></th>
+                    <th class="actions"><?= __('Actions') ?></th>
                     <th><?= $this->Paginator->sort('invested') ?></th>
                     <th><?= $this->Paginator->sort('minor') ?></th>
+                    <th><?= $this->Paginator->sort('automated') ?></th>
                 </tr>
                 <?php foreach ($roles as $role): ?>
                     <tr>
                         <td><?= $this->Number->format($role->id) ?></td>
-                        <td class="actions">
-                            <div class="dropdown btn-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu " role="menu">
-                                    <li><?= $this->Html->link(__('View'), ['action' => 'view', $role->id]) ?></li>
-                                </ul>
-                            </div>
-                        </td>
                         <td><?= h($role->role) ?></td>
-                        <td><?= h($role->invested == 1 ? __('Yes') : __('')) ?></td>
-                        <td><?= h($role->minor == 1 ? __('Yes') : __('')) ?></td>
+                        <td class="actions">
+                            <?= $this->Html->link('', ['action' => 'view', $role->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
+                            <?= $this->Html->link('', ['action' => 'edit', $role->id], ['title' => __('Edit'), 'class' => 'btn btn-default fa fa-pencil']) ?>
+                            <?= $this->Form->postLink('', ['action' => 'delete', $role->id], ['confirm' => __('Are you sure you want to delete # {0}?', $role->id), 'title' => __('Delete'), 'class' => 'btn btn-default fa fa-trash-o']) ?>
+                        </td>
+                        <td><?= h($role->invested ? __('Yes') : __('')) ?></td>
+                        <td><?= h($role->minor ? __('Yes') : __('')) ?></td>
+                        <td><?= h($role->automated ? __('Yes') : __('')) ?></td>
                     </tr>
 
                 <?php endforeach; ?>

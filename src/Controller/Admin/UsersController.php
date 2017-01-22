@@ -91,14 +91,14 @@ class UsersController extends AppController
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
         $auth_roles = $this->Users->AuthRoles->find('list');
         $sections = $this->Users->Sections->find(
-            'list',
-            [
-                'keyField' => 'id',
-                'valueField' => 'section',
-                'groupField' => 'scoutgroup.scoutgroup'
-            ]
-        )
-            ->contain(['Scoutgroups']);
+                'list',
+                [
+                    'keyField' => 'id',
+                    'valueField' => 'section',
+                    'groupField' => 'scoutgroup.district.district'
+                ]
+            )
+            ->contain(['Scoutgroups.Districts']);
 
         $this->set(compact('user', 'roles', 'sections', 'auth_roles'));
         $this->set('_serialize', ['user']);

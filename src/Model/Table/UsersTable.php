@@ -138,8 +138,7 @@ class UsersTable extends Table
             ->notEmpty('address_1');
 
         $validator
-            ->requirePresence('address_2', 'create')
-            ->notEmpty('address_2');
+            ->allowEmpty('address_2');
 
         $validator
             ->requirePresence('city', 'create')
@@ -154,16 +153,11 @@ class UsersTable extends Table
             ->notEmpty('postcode');
 
         $validator
-            ->requirePresence('legacy_section', 'create')
-            ->allowEmpty('legacy_section');
-
-        $validator
             ->requirePresence('username', 'create')
             ->notEmpty('username');
 
         $validator
-            ->requirePresence('osm_secret', 'create')
-            ->notEmpty('osm_secret');
+            ->allowEmpty('osm_secret');
 
         $validator
             ->integer('osm_linked')
@@ -182,8 +176,7 @@ class UsersTable extends Table
             ->allowEmpty('osm_term_end');
 
         $validator
-            ->requirePresence('pw_reset', 'create')
-            ->notEmpty('pw_reset');
+            ->allowEmpty('pw_reset');
 
         $validator
             ->dateTime('last_login')
