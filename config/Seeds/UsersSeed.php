@@ -30,7 +30,6 @@ class UsersSeed extends AbstractSeed
                 'id' => '1',
                 'role_id' => '2',
                 'section_id' => '1',
-                'authrole' => 'admin',
                 'firstname' => 'Jacob',
                 'lastname' => 'Tyler',
                 'email' => 'jacob@hertscubs.com',
