@@ -64,13 +64,6 @@ class EventsController extends AppController
 
         // Pass to View
         $this->set(compact('users', 'payments', 'discount', 'invText', 'legal'));
-
-        // Set Logo Dimensions
-        $setting = $sets->get(7);
-        $logoSet = $setting->text;
-        $logoHeight = $logoSet;
-        $logoWidth = $logoSet / $event->logo_ratio;
-        $this->set(compact('logoWidth', 'logoHeight'));
     }
 
     public function fullView($id = null)
@@ -191,13 +184,6 @@ class EventsController extends AppController
         }
 
         $this->set(compact('appCubs', 'appYls', 'appLeaders'));
-
-        // Set Logo Dimensions
-        $setting = $sets->get(7);
-        $logoSet = $setting->text;
-        $logoHeight = $logoSet;
-        $logoWidth = $logoSet / $event->logo_ratio;
-        $this->set(compact('logoWidth', 'logoHeight'));
     }
 
     public function regList($id = null)
@@ -404,7 +390,17 @@ class EventsController extends AppController
     {
         $event = $this->Events->newEntity();
         if ($this->request->is('post')) {
+
+            $sections = TableRegistry::get('Sections');
+
+            $userSection = $sections->get($this->Auth->user('section_id'));
+
+            $sectionType = [
+                'section_type_id' => $userSection->section_type_id
+            ];
+
             $event = $this->Events->patchEntity($event, $this->request->data);
+            $event = $this->Events->patchEntity($event, $sectionType);
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
 
@@ -416,8 +412,9 @@ class EventsController extends AppController
         $inv = $this->Events->Settings->find('list', ['limit' => 200, 'conditions' => ['setting_type_id' => 4]]);
         $legal = $this->Events->Settings->find('list', ['limit' => 200, 'conditions' => ['setting_type_id' => 3]]);
         $discounts = $this->Events->Discounts->find('list', ['limit' => 200]);
+        $eventTypes = $this->Events->EventTypes->find('list', ['limit' => 200]);
         $users = $this->Events->Users->find('list', ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]);
-        $this->set(compact('event', 'inv', 'legal', 'discounts', 'users'));
+        $this->set(compact('event', 'eventTypes', 'inv', 'legal', 'discounts', 'users'));
         $this->set('_serialize', ['event']);
     }
 
@@ -469,5 +466,31 @@ class EventsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function export($eventID)
+    {
+        $events = $this->Events->Applications->find('all', ['contain' => ['Sections.Scoutgroups.Districts', 'Users']])->where(['Applications.event_id' => $eventID])->toArray();
+        $_serialize = 'events';
+        $_header = ['App ID', 'Section', 'PermitHolder', 'Created', 'User', 'Email', 'Scout Group', 'District'];
+
+        $_extract = [
+            'id',
+            'section.section',
+            'permitholder',
+            'created',
+            'user.full_name',
+            'user.email',
+            'section.scoutgroup.scoutgroup',
+            'section.scoutgroup.district.district',
+        ];
+
+        $this->set(compact('events', '_serialize', '_extract', '_header'));
+
+        $fileName = 'Event ' . $eventID . ' Applications' . '.csv';
+        $this->response->download($fileName);
+
+        $this->viewBuilder()->className('CsvView.Csv');
+        $this->set(compact('data', '_serialize'));
     }
 }

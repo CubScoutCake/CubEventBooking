@@ -35,7 +35,7 @@ class EventTypesTable extends Table
         parent::initialize($config);
 
         $this->table('event_types');
-        $this->displayField('id');
+        $this->displayField('event_type');
         $this->primaryKey('id');
 
         $this->belongsTo('Settings', [

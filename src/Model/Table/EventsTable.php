@@ -142,37 +142,8 @@ class EventsTable extends Table
             ->allowEmpty('deposit_date');
 
         $validator
-            ->numeric('deposit_value')
-            ->allowEmpty('deposit_value');
-
-        $validator
             ->boolean('deposit_inc_leaders')
             ->allowEmpty('deposit_inc_leaders');
-
-        $validator
-            ->allowEmpty('deposit_text');
-
-        $validator
-            ->boolean('cubs')
-            ->allowEmpty('cubs');
-
-        $validator
-            ->numeric('cubs_value')
-            ->allowEmpty('cubs_value');
-
-        $validator
-            ->allowEmpty('cubs_text');
-
-        $validator
-            ->boolean('yls')
-            ->allowEmpty('yls');
-
-        $validator
-            ->numeric('yls_value')
-            ->allowEmpty('yls_value');
-
-        $validator
-            ->allowEmpty('yls_text');
 
         $validator
             ->boolean('leaders')
@@ -216,24 +187,8 @@ class EventsTable extends Table
             ->allowEmpty('max');
 
         $validator
-            ->integer('max_cubs')
-            ->allowEmpty('max_cubs');
-
-        $validator
-            ->integer('max_yls')
-            ->allowEmpty('max_yls');
-
-        $validator
-            ->integer('max_leaders')
-            ->allowEmpty('max_leaders');
-
-        $validator
             ->boolean('allow_reductions')
             ->allowEmpty('allow_reductions');
-
-        $validator
-            ->numeric('logo_ratio')
-            ->allowEmpty('logo_ratio');
 
         $validator
             ->boolean('invoices_locked')
@@ -252,22 +207,6 @@ class EventsTable extends Table
             ->requirePresence('admin_email', 'create')
             ->notEmpty('admin_email');
 
-        $validator
-            ->boolean('parent_applications')
-            ->allowEmpty('parent_applications');
-
-        $validator
-            ->integer('available_apps')
-            ->allowEmpty('available_apps');
-
-        $validator
-            ->integer('available_cubs')
-            ->allowEmpty('available_cubs');
-
-        $validator
-            ->dateTime('deleted')
-            ->allowEmpty('deleted');
-
         return $validator;
     }
 
@@ -280,10 +219,8 @@ class EventsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['invtext_id'], 'Settings'));
-        $rules->add($rules->existsIn(['legaltext_id'], 'Settings'));
         $rules->add($rules->existsIn(['discount_id'], 'Discounts'));
-        $rules->add($rules->existsIn(['admin_user_id'], 'AdminUsers'));
+        $rules->add($rules->existsIn(['admin_user_id'], 'Users'));
         $rules->add($rules->existsIn(['event_type_id'], 'EventTypes'));
         $rules->add($rules->existsIn(['section_type_id'], 'SectionTypes'));
 
