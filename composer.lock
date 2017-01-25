@@ -2503,12 +2503,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/codeclimate/php-test-reporter.git",
-                "reference": "90b6df82f9676041fdf6206e6049520511bf9ba5"
+                "reference": "bacd21ed3b52b46f5779c12ffe2974883782ec9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codeclimate/php-test-reporter/zipball/90b6df82f9676041fdf6206e6049520511bf9ba5",
-                "reference": "90b6df82f9676041fdf6206e6049520511bf9ba5",
+                "url": "https://api.github.com/repos/codeclimate/php-test-reporter/zipball/bacd21ed3b52b46f5779c12ffe2974883782ec9b",
+                "reference": "bacd21ed3b52b46f5779c12ffe2974883782ec9b",
                 "shasum": ""
             },
             "require": {
@@ -2553,7 +2553,7 @@
                 "codeclimate",
                 "coverage"
             ],
-            "time": "2017-01-24 18:05:52"
+            "time": "2017-01-24 23:15:04"
         },
         {
             "name": "composer/ca-bundle",
@@ -3856,16 +3856,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.6",
+            "version": "5.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "caf8141b89691498d91aaac6c82e9cd5f685ae86"
+                "reference": "e52551bbc229c6cee26c7a00deef80c2108c5b15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/caf8141b89691498d91aaac6c82e9cd5f685ae86",
-                "reference": "caf8141b89691498d91aaac6c82e9cd5f685ae86",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e52551bbc229c6cee26c7a00deef80c2108c5b15",
+                "reference": "e52551bbc229c6cee26c7a00deef80c2108c5b15",
                 "shasum": ""
             },
             "require": {
@@ -3934,7 +3934,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-01-22 08:39:59"
+            "time": "2017-01-25 19:19:41"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
