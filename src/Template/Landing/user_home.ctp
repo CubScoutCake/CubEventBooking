@@ -141,7 +141,7 @@
         <?php if ($event->new_apps): ?>
             <a href="<?php echo $this->Url->build([
                 'controller' => 'Events',
-                'action' => 'simpleBook',
+                'action' => 'book',
                 'prefix' => false,
                 $event->id],['_full']); ?>">
                 <div class='panel-footer'>

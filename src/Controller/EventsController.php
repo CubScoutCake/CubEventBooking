@@ -71,28 +71,23 @@ class EventsController extends AppController
     /**
      * View method
      *
-     * @param int|null $id Event id.
+     * @param int|null $eventID Event id.
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function book($id)
+    public function book($eventID)
     {
-        $event = $this->Events->get($id, [
-            'contain' => ['Settings', 'Discounts', 'Applications']
+        $event = $this->Events->get($eventID, [
+            'contain' => ['Settings', 'Discounts', 'Applications', 'EventTypes']
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $event = $this->Events->patchEntity($event, $this->request->data);
-            if ($this->Events->save($event)) {
-                $this->Flash->success(__('The event has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The event could not be saved. Please, try again.'));
-            }
+        $eventTypes = TableRegistry::get('EventTypes');
+        $type = $eventTypes->get($event['event_type_id']);
+
+        $simple = $type->simple_booking;
+
+        if ($simple == false && isset($simple)) {
+            return $this->redirect(['controller' => 'Applications', 'action' => 'book', $eventID]);
         }
-        $discounts = $this->Events->Discounts->find('list', ['limit' => 200]);
-        $users = $this->Events->Users->find('list', ['limit' => 200]);
-        $this->set(compact('event', 'discounts', 'users'));
-        $this->set('_serialize', ['event']);
     }
 }

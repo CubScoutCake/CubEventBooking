@@ -1,7 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller\SuperUser;
 
-use App\Controller\SectionsController;
+use App\Controller\SuperUser\SectionsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -21,6 +21,10 @@ class SectionsControllerTest extends IntegrationTestCase
         'app.scoutgroups',
         'app.districts',
         'app.roles',
+        'app.auth_roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
     ];
 
     /**
@@ -30,7 +34,14 @@ class SectionsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/sections');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -40,17 +51,14 @@ class SectionsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-    /**
-     * Test add method
-     *
-     * @return void
-     */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/sections/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -60,16 +68,24 @@ class SectionsControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2,
+            'Auth.User.section_id' => 1,
+        ]);
 
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/sections/edit/1');
+
+        $this->assertResponseOk();
+
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2,
+            'Auth.User.section_id' => 2,
+        ]);
+
+        $this->get('/sections/edit/1');
+
+        $this->assertRedirect();
     }
 }

@@ -8,9 +8,9 @@ use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Search\Manager;
 use Cake\Utility\Text;
 use Cake\Validation\Validator;
+use Search\Manager;
 
 /**
  * Users Model
@@ -270,6 +270,11 @@ class UsersTable extends Table
         return true;
     }
 
+    /**
+     * Search configuration options
+     *
+     * @return Manager Search query.
+     */
     public function searchConfiguration()
     {
         $search = new Manager($this);

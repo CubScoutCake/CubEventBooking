@@ -33,7 +33,14 @@ class ChampionsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/champions');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -43,7 +50,14 @@ class ChampionsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/champions/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -53,6 +67,8 @@ class ChampionsControllerTest extends IntegrationTestCase
      */
     public function testBeforeFilter()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/champions');
+
+        $this->assertResponseOk();
     }
 }

@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\EventsController;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -57,7 +58,14 @@ class EventsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/events');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -85,9 +93,16 @@ class EventsControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testEdit()
+    public function testBook()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/events/book/1');
+
+        $this->assertResponseOk();
     }
 
     /**
