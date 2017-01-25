@@ -8,6 +8,7 @@ use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Search\Manager;
 use Cake\Utility\Text;
 use Cake\Validation\Validator;
 
@@ -65,6 +66,7 @@ class UsersTable extends Table
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);
+        $this->addBehavior('Search.Search');
 
         $this->belongsTo('Roles', [
             'foreignKey' => 'role_id',
@@ -266,6 +268,29 @@ class UsersTable extends Table
         }
 
         return true;
+    }
+
+    public function searchConfiguration()
+    {
+        $search = new Manager($this);
+
+        $search->value('section_id')
+            // Here we will alias the 'q' query param to search the `Articles.title`
+            // field and the `Articles.content` field, using a LIKE match, with `%`
+            // both before and after.
+                ->value('role_id')
+                ->value('auth_role_id')
+                ->add('q', 'Search.Like', [
+                    'before' => true,
+                    'after' => true,
+                    'fieldMode' => 'OR',
+                    'comparison' => 'ILIKE',
+                    'wildcardAny' => '*',
+                    'wildcardOne' => '?',
+                    'field' => ['firstname', 'lastname', 'email', 'username']
+                ]);
+
+        return $search;
     }
 
     /**

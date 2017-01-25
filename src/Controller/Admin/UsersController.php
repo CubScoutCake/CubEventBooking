@@ -19,6 +19,16 @@ class UsersController extends AppController
 {
     use MailerAwareTrait;
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Search.Prg', [
+            // This is default config. You can modify "actions" as needed to make
+            // the PRG component work only for specified methods.
+            'actions' => ['index', 'lookup']
+        ]);
+    }
+
     /**
      * Index method
      *
@@ -29,13 +39,25 @@ class UsersController extends AppController
         $this->Sections = TableRegistry::get('Sections');
         $section = $this->Sections->get($this->Auth->user('section_id'));
 
+        $query = $this->Users
+            ->find('search', ['search' => $this->request->query])
+            ->contain(['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes', 'AuthRoles'])
+            ->where(['SectionTypes.id' => $section['section_type_id']]);
+
+        $this->set('users', $this->paginate($query));
+
         $this->paginate = [
             'contain' => ['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes'],
             'order' => ['modified' => 'DESC'],
             'conditions' => ['SectionTypes.id' => $section['section_type_id']]
         ];
-        $this->set('users', $this->paginate($this->Users));
+        //$this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
+
+        $sections = $this->Users->Sections->find('list');
+        $roles = $this->Users->Roles->find('leaders')->find('list');
+        $authRoles = $this->Users->AuthRoles->find('list');
+        $this->set(compact('sections', 'roles', 'authRoles'));
     }
 
     /**

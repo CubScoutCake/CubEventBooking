@@ -19,7 +19,7 @@
         "friendsofcake/cakephp-csvview": "*",
         "muffin/trash": "dev-master",
         "friendsofcake/CakePdf": "*",
-        "friendsofcake/search": "^1.2",
+        "friendsofcake/search": "^2.3",
         "dereuromark/cakephp-ajax": "dev-master",
         "syntaxera/cakephp-sparkpost-plugin": "^0.4.5",
         "php-http/httplug": "@stable",

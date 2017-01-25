@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9642e03eb0254afe78e454e620b5c21a",
-    "content-hash": "bcd7d72aec932fe9cefbefcf511f260f",
+    "hash": "7ab16b2c7edf96aa8c086efb2f36696b",
+    "content-hash": "4c87b52de6dbd769c12c27bd5e864532",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -804,20 +804,23 @@
         },
         {
             "name": "friendsofcake/search",
-            "version": "1.2.4",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfCake/search.git",
-                "reference": "001baf45d1c2502d8f2f5f931556af8f8e4fe051"
+                "reference": "b7a9d10aa9f92a1039b8e26c3f1d4ec816a40dfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfCake/search/zipball/001baf45d1c2502d8f2f5f931556af8f8e4fe051",
-                "reference": "001baf45d1c2502d8f2f5f931556af8f8e4fe051",
+                "url": "https://api.github.com/repos/FriendsOfCake/search/zipball/b7a9d10aa9f92a1039b8e26c3f1d4ec816a40dfb",
+                "reference": "b7a9d10aa9f92a1039b8e26c3f1d4ec816a40dfb",
                 "shasum": ""
             },
+            "require": {
+                "cakephp/cakephp": "~3.0"
+            },
             "require-dev": {
-                "cakephp/cakephp": "~3.0",
+                "cakephp/cakephp-codesniffer": "dev-master",
                 "friendsofcake/cakephp-test-utilities": "dev-master"
             },
             "type": "cakephp-plugin",
@@ -845,7 +848,7 @@
                 "cakephp3",
                 "search"
             ],
-            "time": "2016-05-17 15:22:34"
+            "time": "2016-09-24 04:32:33"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
