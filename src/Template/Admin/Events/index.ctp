@@ -18,22 +18,10 @@
                     <tr>
                         <td><?= h($event->name) ?></td>
                         <td class="actions">
-                            <div class="dropdown btn-group">
-                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu " role="menu">
-                                    <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>
-                                    <li><?= $this->Html->link(__('Full View - inc Bookings'), ['action' => 'full_view', $event->id]) ?></li>
-                                    <li><?= $this->Html->link(__('Accounts View'), ['action' => 'accounts', $event->id]) ?></li>
-                                    <li><?= $this->Html->link(__('Unpaid Invoices'), ['controller' => 'invoices', 'action' => 'unpaid', $event->id]) ?></li>
-                                    <li class="divider"></li>
-                                    <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
-                                </ul>
-                            </div>
+                            <?= $this->Html->link('', ['controller' => 'Events', 'action' => 'full_view', $event->id], ['title' => __('View'), 'class' => 'btn btn-primary dropdown-toggle fa fa-eye']) ?>
                         </td>
-                        <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
                         <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
                         <td><?= h($event->location) ?></td>
                     </tr>

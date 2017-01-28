@@ -56,6 +56,10 @@ class DistrictsTable extends Table
             ->notEmpty('district');
 
         $validator
+            ->requirePresence('short_name', 'create')
+            ->notEmpty('short_name');
+
+        $validator
             ->allowEmpty('county');
 
         return $validator;

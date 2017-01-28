@@ -11,6 +11,16 @@ use App\Controller\Admin\AppController;
 class ScoutgroupsController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Search.Prg', [
+            // This is default config. You can modify "actions" as needed to make
+            // the PRG component work only for specified methods.
+            'actions' => ['index', 'lookup']
+        ]);
+    }
+
     /**
      * Index method
      *
@@ -18,10 +28,18 @@ class ScoutgroupsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Districts']
-        ];
-        $this->set('scoutgroups', $this->paginate($this->Scoutgroups));
+        $query = $this->Scoutgroups
+            // Use the plugins 'search' custom finder and pass in the
+            // processed query params
+            ->find('search', ['search' => $this->request->query])
+            // You can add extra things to the query if you need to
+            ->contain(['Districts']);
+
+        $districts = $this->Scoutgroups->Districts->find('list');
+
+        $this->set(compact('districts'));
+
+        $this->set('scoutgroups', $this->paginate($query));
         $this->set('_serialize', ['scoutgroups']);
     }
 

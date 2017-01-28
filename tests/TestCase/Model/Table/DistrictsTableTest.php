@@ -61,13 +61,15 @@ class DistrictsTableTest extends TestCase
                 'id' => 1,
                 'district' => 'Lorem ipsum dolor sit amet',
                 'county' => 'Lorem ipsum dolor sit amet',
-                'deleted' => null
+                'deleted' => null,
+                'short_name' => 'Lorem',
             ],
             [
                 'id' => 3,
                 'district' => 'Lorem ipsum sit amet',
                 'county' => 'Lorem dolor sit amet',
-                'deleted' => null
+                'deleted' => null,
+                'short_name' => 'Lorem',
             ]
         ];
 
@@ -84,13 +86,15 @@ class DistrictsTableTest extends TestCase
         $badData = [
             'district' => null,
             'county' => null,
-            'deleted' => null
+            'deleted' => null,
+            'short_name' => null,
         ];
 
         $goodData = [
             'id' => 4,
             'district' => 'Lorem fish dolor sit amet',
-            'county' => 'Lorem ipsum fish dolor amet'
+            'county' => 'Lorem ipsum fish dolor amet',
+            'short_name' => 'Lorem',
         ];
 
         $expected = [
@@ -98,19 +102,22 @@ class DistrictsTableTest extends TestCase
                 'id' => 1,
                 'district' => 'Lorem ipsum dolor sit amet',
                 'county' => 'Lorem ipsum dolor sit amet',
-                'deleted' => null
+                'deleted' => null,
+                'short_name' => 'Lorem',
             ],
             [
                 'id' => 3,
                 'district' => 'Lorem ipsum sit amet',
                 'county' => 'Lorem dolor sit amet',
-                'deleted' => null
+                'deleted' => null,
+                'short_name' => 'Lorem',
             ],
             [
                 'id' => 4,
                 'district' => 'Lorem fish dolor sit amet',
                 'county' => 'Lorem ipsum fish dolor amet',
-                'deleted' => null
+                'deleted' => null,
+                'short_name' => 'Lorem',
             ]
         ];
 

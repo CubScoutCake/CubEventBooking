@@ -19,7 +19,7 @@ class SectionsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['SectionTypes', 'Scoutgroups']
+            'contain' => ['SectionTypes', 'Scoutgroups.Districts']
         ];
         $sections = $this->paginate($this->Sections);
 

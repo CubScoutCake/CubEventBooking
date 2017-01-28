@@ -1,14 +1,3 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Auth Role'), ['action' => 'edit', $authRole->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Auth Role'), ['action' => 'delete', $authRole->id], ['confirm' => __('Are you sure you want to delete # {0}?', $authRole->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Auth Roles'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Auth Role'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
 <div class="authRoles view large-9 medium-8 columns content">
     <h3><?= h($authRole->id) ?></h3>
     <table class="vertical-table">
@@ -33,8 +22,8 @@
             <td><?= $this->Number->format($authRole->super_user) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Auth') ?></th>
-            <td><?= $this->Number->format($authRole->auth) ?></td>
+            <th scope="row"><?= __('Auth Value') ?></th>
+            <td><?= $this->Number->format($authRole->auth_value) ?></td>
         </tr>
     </table>
     <div class="related">
@@ -83,45 +72,13 @@
             <?php foreach ($authRole->users as $users): ?>
             <tr>
                 <td><?= h($users->id) ?></td>
-                <td><?= h($users->role_id) ?></td>
-                <td><?= h($users->scoutgroup_id) ?></td>
-                <td><?= h($users->authrole) ?></td>
                 <td><?= h($users->firstname) ?></td>
                 <td><?= h($users->lastname) ?></td>
                 <td><?= h($users->email) ?></td>
-                <td><?= h($users->password) ?></td>
-                <td><?= h($users->phone) ?></td>
-                <td><?= h($users->address_1) ?></td>
-                <td><?= h($users->address_2) ?></td>
-                <td><?= h($users->city) ?></td>
-                <td><?= h($users->county) ?></td>
-                <td><?= h($users->postcode) ?></td>
-                <td><?= h($users->section) ?></td>
-                <td><?= h($users->created) ?></td>
-                <td><?= h($users->modified) ?></td>
-                <td><?= h($users->username) ?></td>
-                <td><?= h($users->osm_user_id) ?></td>
-                <td><?= h($users->osm_secret) ?></td>
-                <td><?= h($users->osm_section_id) ?></td>
-                <td><?= h($users->osm_linked) ?></td>
-                <td><?= h($users->osm_linkdate) ?></td>
-                <td><?= h($users->osm_current_term) ?></td>
-                <td><?= h($users->osm_term_end) ?></td>
-                <td><?= h($users->pw_reset) ?></td>
                 <td><?= h($users->last_login) ?></td>
                 <td><?= h($users->logins) ?></td>
-                <td><?= h($users->validated) ?></td>
-                <td><?= h($users->deleted) ?></td>
-                <td><?= h($users->digest_hash) ?></td>
-                <td><?= h($users->pw_salt) ?></td>
-                <td><?= h($users->api_key_plain) ?></td>
-                <td><?= h($users->api_key) ?></td>
-                <td><?= h($users->auth_role_id) ?></td>
-                <td><?= h($users->pw_state) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Users', 'action' => 'view', $users->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Users', 'action' => 'edit', $users->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Users', 'action' => 'delete', $users->id], ['confirm' => __('Are you sure you want to delete # {0}?', $users->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

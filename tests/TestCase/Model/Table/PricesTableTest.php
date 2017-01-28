@@ -89,7 +89,22 @@ class PricesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Prices->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'item_type_id' => 1,
+                'event_id' => 1,
+                'max_number' => 1,
+                'value' => 1,
+                'description' => 'Lorem ipsum dolor sit amet'
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**

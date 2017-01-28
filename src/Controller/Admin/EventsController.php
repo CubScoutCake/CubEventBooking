@@ -69,7 +69,7 @@ class EventsController extends AppController
     public function fullView($id = null)
     {
         $event = $this->Events->get($id, [
-            'contain' => ['Settings', 'Discounts', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups']
+            'contain' => ['Settings', 'Discounts', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups.Districts', 'Prices.ItemTypes.Roles']
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);
@@ -440,11 +440,51 @@ class EventsController extends AppController
                 $this->Flash->error(__('The event could not be saved. Please, try again.'));
             }
         }
-        $inv = $this->Events->Settings->find('list', ['limit' => 200, 'conditions' => ['settingtype_id' => 4]]);
-        $legal = $this->Events->Settings->find('list', ['limit' => 200, 'conditions' => ['settingtype_id' => 3]]);
+        $inv = $this->Events->Settings->find('list', ['limit' => 200, 'conditions' => ['setting_type_id' => 4]]);
+        $legal = $this->Events->Settings->find('list', ['limit' => 200, 'conditions' => ['setting_type_id' => 3]]);
         $discounts = $this->Events->Discounts->find('list', ['limit' => 200]);
-        $users = $this->Events->Users->find('list', ['limit' => 200, 'conditions' => ['authrole' => 'admin']]);
+        $users = $this->Events->Users->find('list', ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]);
         $this->set(compact('event', 'inv', 'legal', 'discounts', 'users'));
+        $this->set('_serialize', ['event']);
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Event id.
+     * @param int $prices Number of Prices to be Created.
+     * @return void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function prices($id = null, $prices = 2)
+    {
+        $event = $this->Events->get($id, [
+            'contain' => ['Settings', 'Prices']
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $event = $this->Events->patchEntity($event, $this->request->data,
+                ['associated' => [ 'Prices']]);
+            if ($this->Events->save($event)) {
+                $this->Flash->success(__('The event has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The event could not be saved. Please, try again.'));
+            }
+        }
+
+        $itemTypes = TableRegistry::get('ItemTypes');
+        $itemTypeOptions = $itemTypes->find('list')->where(['available' => true]);
+
+
+        $eventPrices = count($event->prices);
+
+        if ($eventPrices > 0) {
+            $prices = $eventPrices + 1;
+        }
+
+        $this->set(compact('prices', 'event', 'itemTypeOptions'));
+
         $this->set('_serialize', ['event']);
     }
 

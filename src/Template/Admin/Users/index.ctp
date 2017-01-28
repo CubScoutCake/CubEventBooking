@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-user     fa-fw"></i> All Users</h3>
+        <h3><i class="fa fa-user fa-fw"></i> All Users</h3>
         <div class="table-responsive">
             <table class="table  table-condensed">
                 <tr>

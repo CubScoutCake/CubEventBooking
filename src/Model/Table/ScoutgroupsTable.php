@@ -6,6 +6,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Search\Manager;
 
 /**
  * Scoutgroups Model
@@ -33,6 +34,7 @@ class ScoutgroupsTable extends Table
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);
+        $this->addBehavior('Search.Search');
 
         $this->belongsTo('Districts', [
             'foreignKey' => 'district_id',
@@ -59,6 +61,10 @@ class ScoutgroupsTable extends Table
             ->requirePresence('scoutgroup', 'create')
             ->notEmpty('scoutgroup');
 
+        $validator
+            ->requirePresence('number_stripped', 'create')
+            ->notEmpty('number_stripped');
+
         return $validator;
     }
 
@@ -74,5 +80,28 @@ class ScoutgroupsTable extends Table
         $rules->add($rules->existsIn(['district_id'], 'Districts'));
 
         return $rules;
+    }
+
+    /**
+     * Search configuration options
+     *
+     * @return Manager Search query.
+     */
+    public function searchConfiguration()
+    {
+        $search = new Manager($this);
+
+        $search->value('district_id')
+            ->add('q', 'Search.Like', [
+                'before' => true,
+                'after' => true,
+                'fieldMode' => 'OR',
+                'comparison' => 'ILIKE',
+                'wildcardAny' => '*',
+                'wildcardOne' => '?',
+                'field' => ['scoutgroup']
+            ]);
+
+        return $search;
     }
 }

@@ -8,7 +8,7 @@
                     echo $this->Form->input('permitholder', ['label' => 'The Name of the Permitholder (or Leader In Charge)']);
 
                     for ($att = 0; $att < $attendees; $att ++) {
-                        echo '<table class="table table-hover"> <tr> <td>';
+                        echo '<div class="table-responsive"> <table class="table table-hover"> <tr> <td>';
                         echo '<p>Attendee ' . ($att + 1) . '</p>';
                         echo '</td> <td>';
                         echo $this->Form->input('attendees.' . $att . '.firstname');
@@ -19,7 +19,7 @@
                         echo '</td> <td>';
                         echo $this->Form->input('attendees.' . $att . '.nightsawaypermit', ['type' => 'checkbox', 'label' => 'Nights Away Permit']);
                         echo $this->Form->input('attendees.' . $att . '.vegetarian', ['type' => 'checkbox', 'label' => 'Vegetarian']);
-                        echo '</td></tr></table>';
+                        echo '</td></tr></table></div>';
                     }
                 ?>
             </fieldset>

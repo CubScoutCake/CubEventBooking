@@ -4,6 +4,7 @@
         <legend><?= __('Edit District') ?></legend>
         <?php
             echo $this->Form->input('district');
+            echo $this->Form->input('short_name');
             echo $this->Form->input('county');
         ?>
     </fieldset>
