@@ -12,3 +12,4 @@ logs/*
 
 .idea/
 /config/Migrations/schema-dump-default.lock
+/config/app_DB.php

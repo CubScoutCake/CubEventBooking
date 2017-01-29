@@ -60,7 +60,7 @@ class RoleSideCell extends Cell
 
             if ($authRole['super_user']) {
                 $superUser = true;
-                //$prefix = 'super-user';
+                $prefix = 'super-user';
             } else {
                 $superUser = false;
             }
