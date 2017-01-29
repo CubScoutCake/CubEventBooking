@@ -6,10 +6,19 @@ class OctUpdate extends AbstractMigration
 
     public function up()
     {
+        $table = $this->table('applications');
+
+        if ($table->hasForeignKey('applications_event_id')) {
+            $table->dropForeignKey([], 'applications_event_id')
+                ->update();
+        }
+
+        if ($table->hasForeignKey('applications_user_id')) {
+            $table->dropForeignKey([], 'applications_user_id')
+                ->update();
+        }
 
         $this->table('applications')
-            ->dropForeignKey([], 'applications_event_id')
-            ->dropForeignKey([], 'applications_user_id')
             ->removeIndex(['event_id'])
             ->removeIndex(['user_id'])
             ->update();
