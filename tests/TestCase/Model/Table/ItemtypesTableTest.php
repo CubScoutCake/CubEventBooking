@@ -101,6 +101,14 @@ class ItemTypesTableTest extends TestCase
                 'cancelled' => true,
                 'available' => true,
             ],
+            [
+                'id' => 2,
+                'item_type' => 'Lorem dolor sit amet',
+                'role_id' => 1,
+                'minor' => 1,
+                'cancelled' => 1,
+                'available' => 1
+            ],
         ];
 
         $this->assertEquals($expected, $result);
@@ -114,7 +122,7 @@ class ItemTypesTableTest extends TestCase
     public function testValidationDefault()
     {
         $badData = [
-            'id' => 2,
+            'id' => 3,
             'itemtype' => null,
             'roletype' => null,
             'minor' => null,
@@ -122,7 +130,7 @@ class ItemTypesTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 2,
+            'id' => 3,
             'minor' => true,
             'item_type' => 'Lorem dolor goat amet',
             'role_id' => 1,
@@ -141,6 +149,14 @@ class ItemTypesTableTest extends TestCase
             ],
             [
                 'id' => 2,
+                'item_type' => 'Lorem dolor sit amet',
+                'role_id' => 1,
+                'minor' => 1,
+                'cancelled' => 1,
+                'available' => 1
+            ],
+            [
+                'id' => 3,
                 'minor' => true,
                 'item_type' => 'Lorem dolor goat amet',
                 'role_id' => 1,

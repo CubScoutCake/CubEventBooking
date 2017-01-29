@@ -69,7 +69,8 @@ class RolesTableTest extends TestCase
                 'invested' => 1,
                 'minor' => 1,
                 'automated' => 1,
-                'deleted' => null
+                'deleted' => null,
+                'short_role' => 'Lorem',
             ],
             [
                 'id' => 2,
@@ -77,7 +78,8 @@ class RolesTableTest extends TestCase
                 'invested' => 0,
                 'minor' => 0,
                 'automated' => 0,
-                'deleted' => null
+                'deleted' => null,
+                'short_role' => 'Lorem',
             ],
         ];
 
@@ -97,7 +99,8 @@ class RolesTableTest extends TestCase
             'invested' => 1,
             'minor' => 0,
             'automated' => 0,
-            'deleted' => null
+            'deleted' => null,
+            'short_role' => 'Lorem',
         ];
 
         $goodData = [
@@ -106,7 +109,8 @@ class RolesTableTest extends TestCase
             'invested' => 1,
             'minor' => 0,
             'automated' => 0,
-            'deleted' => null
+            'deleted' => null,
+            'short_role' => 'Lorem',
         ];
 
         $expected = [
@@ -116,7 +120,8 @@ class RolesTableTest extends TestCase
                 'invested' => 1,
                 'minor' => 1,
                 'automated' => 1,
-                'deleted' => null
+                'deleted' => null,
+                'short_role' => 'Lorem',
             ],
             [
                 'id' => 2,
@@ -124,7 +129,8 @@ class RolesTableTest extends TestCase
                 'invested' => 0,
                 'minor' => 0,
                 'automated' => 0,
-                'deleted' => null
+                'deleted' => null,
+                'short_role' => 'Lorem',
             ],
             [
                 'id' => 5,
@@ -132,7 +138,8 @@ class RolesTableTest extends TestCase
                 'invested' => 1,
                 'minor' => 0,
                 'automated' => 0,
-                'deleted' => null
+                'deleted' => null,
+                'short_role' => 'Lorem',
             ],
         ];
 

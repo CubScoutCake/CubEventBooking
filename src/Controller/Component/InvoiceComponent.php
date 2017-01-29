@@ -272,4 +272,48 @@ class InvoiceComponent extends Component
         $existingLeaderQty = $existingLeaderItem->Quantity;
         $existingDiscountQty = $existingDiscountItem->Quantity;
     }
+
+    public function createLine($invoiceId, $itemTypeId, $quantity)
+    {
+        $this->Invoices = TableRegistry::get('Invoices');
+        $this->Events = TableRegistry::get('Events');
+        $this->Prices = TableRegistry::get('Prices');
+        $this->ItemTypes = TableRegistry::get('ItemTypes');
+        $this->InvoiceItems = TableRegistry::get('InvoiceItems');
+
+        $invoice = $this->Invoices->get($invoiceId, ['contain' => 'Applications']);
+        $event = $this->Events->get($invoice->application->event_id);
+        $itemType = $this->ItemTypes->get($itemTypeId);
+        $price = $this->Prices->findAllByEventIdAndItemTypeId($event->id, $itemType->id)->first();
+
+        if ($quantity > $price->max_number && $event->max && !is_null($price->max_number)) {
+            $this->Flash->error(__('The Number of ' . $itemType->item_type . ' is more than allowed.'));
+            return false;
+        }
+
+        $lineData = [
+            'invoice_id' => $invoiceId,
+            'value' => $price->value,
+            'description' => $price->description,
+            'quantity' => $quantity,
+            'item_type_id' => $itemTypeId,
+        ];
+
+        $line = $this->InvoiceItems->newEntity($lineData, [
+            'fieldList' => [
+                'invoice_id',
+                'value',
+                'description',
+                'quantity',
+                'item_type_id' ]
+        ]);
+
+        if ($this->InvoiceItems->save($line)) {
+            return true;
+        }
+
+        $this->Flash->error(__('There was an error Processing.'));
+        return false;
+    }
+
 }

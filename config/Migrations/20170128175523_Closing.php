@@ -48,10 +48,19 @@ class Closing extends AbstractMigration
         $table = $this->table('districts');
 
         $table->addColumn('short_name', 'string', [
-            'default' => null,
-            'limit' => 16,
-            'null' => true,
-        ])
+                'default' => null,
+                'limit' => 16,
+                'null' => true,
+            ])
+            ->update();
+
+        $table = $this->table('roles');
+
+        $table->addColumn('short_role', 'string', [
+                'default' => null,
+                'limit' => 16,
+                'null' => true,
+            ])
             ->update();
     }
 }

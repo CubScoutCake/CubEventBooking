@@ -234,6 +234,7 @@
                                         <th><?= h('Full Name') ?></th>
                                         <th class="actions"><?= __('Actions') ?></th>
                                         <th><?= h('Scout Group') ?></th>
+                                        <th><?= h('District') ?></th>
                                         <th><?= h('Role') ?></th>
                                         <th><?= h('Username') ?></th>
                                         <th><?= h('Auth Role') ?></th>
@@ -246,8 +247,9 @@
                                             <td class="actions">
                                                 <?= $this->Html->link('', ['controller' => 'Users', 'action' => 'view', $user->id], ['title' => __('View'), 'class' => 'btn btn-primary fa fa-eye']) ?>
                                             </td>
-                                            <td><?= $user->section->has('scoutgroup') ? $this->Html->link($this->Text->truncate($user->section->scoutgroup->scoutgroup,18), ['controller' => 'Scoutgroups', 'action' => 'view', $user->section->scoutgroup->id]) : '' ?></td>
-                                            <td><?= $user->has('role') ? $this->Html->link($this->Text->truncate($user->role->role,18), ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></td>
+                                            <td><?= $user->section->has('scoutgroup') ? $this->Html->link($this->Text->truncate($user->section->scoutgroup->scoutgroup,30), ['controller' => 'Scoutgroups', 'action' => 'view', $user->section->scoutgroup->id]) : '' ?></td>
+                                            <td><?= $user->section->scoutgroup->has('district') ? $this->Html->link($user->section->scoutgroup->district->short_name, ['controller' => 'Districts', 'action' => 'view', $user->section->scoutgroup->district->id]) : '' ?></td>
+                                            <td><?= $user->has('role') ? $this->Html->link($user->role->short_role, ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></td>
                                             <td><?= h($this->Text->truncate($user->username,18)) ?></td>
                                             <td><?= $user->has('auth_role') ? $this->Html->link($user->auth_role->auth_role, ['controller' => 'AuthRoles', 'action' => 'view', $user->auth_role->id]) : '' ?></td>
                                         </tr>

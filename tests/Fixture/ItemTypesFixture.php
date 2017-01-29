@@ -47,5 +47,13 @@ class ItemTypesFixture extends TestFixture
             'cancelled' => 1,
             'available' => 1
         ],
+        [
+            'id' => 2,
+            'item_type' => 'Lorem dolor sit amet',
+            'role_id' => 1,
+            'minor' => 1,
+            'cancelled' => 1,
+            'available' => 1
+        ],
     ];
 }

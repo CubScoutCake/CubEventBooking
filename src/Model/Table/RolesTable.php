@@ -56,6 +56,10 @@ class RolesTable extends Table
             ->notEmpty('role');
 
         $validator
+            ->requirePresence('short_role', 'create')
+            ->notEmpty('short_role');
+
+        $validator
             ->add('invested', 'valid', ['rule' => 'boolean'])
             ->allowEmpty('invested');
 

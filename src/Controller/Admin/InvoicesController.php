@@ -28,66 +28,6 @@ class InvoicesController extends AppController
         $this->set('_serialize', ['invoices']);
     }
 
-    public function unpaid($eventId = null)
-    {
-        if (isset($eventId)) {
-            $evts = TableRegistry::get('Events');
-
-            $event = $evts->get($eventId);
-            $eventName = $event->name;
-
-            $this->set(compact('eventName'));
-
-            $this->paginate = [
-                'contain' => ['Users', 'Applications', 'Payments', 'InvoiceItems']
-                , 'conditions' => ['Applications.event_id' => $eventId]
-            ];
-            $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')->find('unpaid')));
-            $this->set('_serialize', ['invoices']);
-        } else {
-            $eventName = 'All Events';
-
-            $this->set(compact('eventName'));
-
-            $this->paginate = [
-                'contain' => ['Users', 'Applications', 'Payments', 'InvoiceItems']
-            ];
-            $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')->find('unpaid')));
-            $this->set('_serialize', ['invoices']);
-        }
-    }
-
-    public function outstanding($eventId = null)
-    {
-        if (isset($eventId)) {
-            $evts = TableRegistry::get('Events');
-            $usrs = TableRegistry::get('Users');
-
-            $event = $evts->get($eventId);
-            $eventName = $event->name;
-            $user = $usrs->get($this->Auth->user('id'));
-
-            $this->set(compact('eventName'));
-
-            $this->paginate = [
-                'contain' => ['Users', 'Applications', 'Payments', 'InvoiceItems']
-                , 'conditions' => ['Applications.event_id' => $eventId]
-            ];
-            $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')));
-            $this->set('_serialize', ['invoices']);
-        } else {
-            $eventName = 'All Events';
-
-            $this->set(compact('eventName'));
-
-            $this->paginate = [
-                'contain' => ['Users', 'Applications', 'Payments', 'InvoiceItems']
-            ];
-            $this->set('invoices', $this->paginate($this->Invoices->find('outstanding')));
-            $this->set('_serialize', ['invoices']);
-        }
-    }
-
     /**
      * View method
      *
@@ -112,33 +52,31 @@ class InvoicesController extends AppController
         $event = $events->get($application->event_id, ['contain' => ['Applications', 'Settings']]);
 
         // Set Address Variables
-        $eventName = $event->full_name;
         $invAddress = $event->address;
         $invCity = $event->city;
         $invPostcode = $event->postcode;
 
-        $this->set('eventName', $eventName);
+        $this->set(compact('event'));
         $this->set('invAddress', $invAddress);
         $this->set('invCity', $invCity);
         $this->set('invPostcode', $invPostcode);
 
-        // Set Deadline Variable
-        $invDeadline = $event->deposit_date;
-        $this->set('invDeadline', $invDeadline);
 
-        // Set Prefix Variable
-        $invSetPre = $event->invtext_id;
-        $invSetting = $settings->get($invSetPre);
-        $invPrefix = $invSetting->text;
-        //$invPrefix = $invSetPre;
+        // Set Variable Defaults
+        $invPrefix = 'Inv';
+        $invPayable = 'Hertfordshire Scouts';
 
-        $this->set('invPrefix', $invPrefix);
+        if (!is_null($event->event_type->invtext_id)) {
+            $invSetting = $settings->get($event->event_type->invtext_id);
+            $invPrefix = $invSetting->text;
+        }
 
-        // Set Payable Variable
-        $payableSetting = $settings->get(4);
-        $invPayable = $payableSetting->text;
+        if (!is_null($event->legal_text_id)) {
+            $payableSetting = $settings->get($event->legal_text_id);
+            $invPayable = $payableSetting->text;
+        }
 
-        $this->set('invPayable', $invPayable);
+        $this->set(compact('invPrefix', 'invPayable'));
 
         $this->set('invoice', $invoice);
         $this->set('_serialize', ['invoice']);

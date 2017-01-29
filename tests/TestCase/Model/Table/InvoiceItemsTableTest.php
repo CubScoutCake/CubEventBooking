@@ -89,7 +89,23 @@ class InvoiceItemsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->InvoiceItems->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 3,
+                'invoice_id' => 1,
+                'value' => 1,
+                'description' => 'Lorem ipsum dolor sit amet',
+                'quantity' => 1,
+                'item_type_id' => 1,
+                'visible' => 1
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**

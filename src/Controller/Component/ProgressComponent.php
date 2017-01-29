@@ -74,7 +74,7 @@ class ProgressComponent extends Component
 
         // Determine Invoice Progress
         $invoices = $invs->find('all')->where(['application_id' => $appID]);
-        $invCount = $invoices->count('*');
+        $invCount = $invoices->count();
         $invFirst = $invs->find('all')->where(['application_id' => $appID])->first();
 
         // Find Cub, YL & Leader Counts
