@@ -6,204 +6,15 @@ class OctUpdate extends AbstractMigration
 
     public function up()
     {
-
-        $this->table('applications')
-            ->dropForeignKey([], 'applications_event_id')
-            ->dropForeignKey([], 'applications_user_id')
-            ->removeIndex(['event_id'])
-            ->removeIndex(['user_id'])
-            ->update();
-
-        $this->table('applications_attendees')
-            ->dropForeignKey([], 'applications_attendees_application_id')
-            ->dropForeignKey([], 'applications_attendees_attendee_id')
-            ->removeIndex(['application_id'])
-            ->removeIndex(['attendee_id'])
-            ->removeIndex(['application_id', 'attendee_id'])
-            ->update();
-
-        $this->table('attendees')
-            ->dropForeignKey([], 'attendees_role_id')
-            ->dropForeignKey([], 'attendees_user_id')
-            ->removeIndex(['role_id'])
-            ->removeIndex(['user_id'])
-            ->update();
-
-        $this->table('attendees_allergies')
-            ->dropForeignKey([], 'attendees_allergies_allergy_id')
-            ->dropForeignKey([], 'attendees_allergies_attendee_id')
-            ->removeIndex(['allergy_id'])
-            ->removeIndex(['attendee_id'])
-            ->removeIndex(['attendee_id', 'allergy_id'])
-            ->update();
-
-        $this->table('champions')
-            ->dropForeignKey([], 'champions_district_id')
-            ->dropForeignKey([], 'champions_user_id')
-            ->removeIndex(['district_id'])
-            ->removeIndex(['user_id'])
-            ->update();
-
-        $this->table('discounts')
-            ->removeIndex(['code'])
-            ->update();
-
-        $this->table('districts')
-            ->removeIndex(['district'])
-            ->update();
-
-        $this->table('districts')
-            ->changeColumn('district', 'string')
-            ->changeColumn('county', 'string')
-            ->update();
-
-        $this->table('events')
-            ->dropForeignKey([], 'events_discount_id')
-            ->dropForeignKey([], 'events_invtext_id')
-            ->dropForeignKey([], 'events_legaltext_id')
-            ->removeIndex(['admin_user_id'])
-            ->removeIndex(['discount_id'])
-            ->removeIndex(['invtext_id'])
-            ->removeIndex(['legaltext_id'])
-            ->update();
-
-        $this->table('invoice_items')
-            ->dropForeignKey([], 'invoice_items_invoice_id')
-            ->dropForeignKey([], 'invoice_items_itemtype_id')
-            ->removeIndex(['invoice_id'])
-            ->removeIndex(['itemtype_id'])
-            ->update();
-
-        $this->table('invoices')
-            ->dropForeignKey([], 'invoices_application_id')
-            ->dropForeignKey([], 'invoices_user_id')
-            ->removeIndex(['application_id'])
-            ->removeIndex(['user_id'])
-            ->update();
-
-        $this->table('invoices_payments')
-            ->dropForeignKey([], 'invoices_payments_invoice_id')
-            ->dropForeignKey([], 'invoices_payments_payment_id')
-            ->removeIndex(['invoice_id'])
-            ->removeIndex(['payment_id'])
-            ->update();
-
-        $this->table('logistic_items')
-            ->dropForeignKey([], 'logistic_items_application_id')
-            ->dropForeignKey([], 'logistic_items_logistic_id')
-            ->dropForeignKey([], 'logistic_items_param_id')
-            ->removeIndex(['application_id'])
-            ->removeIndex(['logistic_id'])
-            ->removeIndex(['param_id'])
-            ->update();
-
-        $this->table('logistics')
-            ->dropForeignKey([], 'logistics_event_id')
-            ->dropForeignKey([], 'logistics_parameter_id')
-            ->removeIndex(['event_id'])
-            ->removeIndex(['parameter_id'])
-            ->update();
-
-        $this->table('notes')
-            ->dropForeignKey([], 'notes_application_id')
-            ->dropForeignKey([], 'notes_invoice_id')
-            ->dropForeignKey([], 'notes_user_id')
-            ->removeIndex(['application_id'])
-            ->removeIndex(['invoice_id'])
-            ->removeIndex(['user_id'])
-            ->update();
-
-        $this->table('notifications')
-            ->dropForeignKey([], 'notifications_notificationtype_id')
-            ->dropForeignKey([], 'notifications_user_id')
-            ->removeIndex(['notificationtype_id'])
-            ->removeIndex(['user_id'])
-            ->update();
-
-        $this->table('parameters')
-            ->dropForeignKey([], 'parameters_set_id')
-            ->removeIndex(['set_id'])
-            ->update();
-
-        $this->table('parameters')
-            ->changeColumn('id', 'integer')
-            ->update();
-
-        $this->table('params')
-            ->dropForeignKey([], 'params_parameter_id')
-            ->removeIndex(['parameter_id'])
-            ->update();
-
-        $this->table('params')
-            ->changeColumn('id', 'integer')
-            ->update();
-
-        $this->table('payments')
-            ->dropForeignKey([], 'payments_user_id')
-            ->removeIndex(['user_id'])
-            ->update();
-
-        $this->table('scoutgroups')
-            ->dropForeignKey([], 'scoutgroups_district_id')
-            ->removeIndex(['scoutgroup'])
-            ->removeIndex(['district_id'])
-            ->update();
-
-        $this->table('settings')
-            ->dropForeignKey([], 'settings_settingtype_id')
-            ->removeIndex(['settingtype_id'])
-            ->update();
-
-        $this->table('users')
-            ->dropForeignKey([], 'users_role_id')
-            ->removeIndex(['username'])
-            ->removeIndex(['role_id'])
-            ->update();
-
-        $this->table('users')
-            ->changeColumn('authrole', 'string')
-            ->changeColumn('firstname', 'string')
-            ->changeColumn('lastname', 'string')
-            ->changeColumn('email', 'string')
-            ->changeColumn('password', 'string')
-            ->changeColumn('phone', 'string')
-            ->changeColumn('address_1', 'string')
-            ->changeColumn('address_2', 'string')
-            ->changeColumn('city', 'string')
-            ->changeColumn('county', 'string')
-            ->changeColumn('postcode', 'string')
-            ->changeColumn('section', 'string')
-            ->changeColumn('username', 'string')
-            ->changeColumn('osm_secret', 'string')
-            ->changeColumn('reset', 'string')
-            ->update();
-
-        $this->table('itemtypes')
-            ->changeColumn('id', 'integer')
-            ->changeColumn('minor', 'boolean')
-            ->update();
-
-        $this->table('parameter_sets')
-            ->changeColumn('id', 'integer')
-            ->update();
-
         $this->table('applications')
             ->addColumn('deleted', 'datetime', [
                 'default' => null,
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(['event_id'])
-            ->addIndex(['user_id'])
             ->update();
 
         $this->table('applications_attendees')
-            ->addIndex(
-                [
-                    'attendee_id',
-                    'application_id',
-                ]
-            )
             ->update();
 
         $this->table('attendees')
@@ -222,21 +33,9 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(['role_id'])
-            ->addIndex(
-                [
-                    'user_id',
-                ]
-            )
             ->update();
 
         $this->table('attendees_allergies')
-            ->addIndex(
-                [
-                    'attendee_id',
-                    'allergy_id',
-                ]
-            )
             ->update();
 
         $this->table('champions')
@@ -245,16 +44,6 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'user_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'district_id',
-                ]
-            )
             ->update();
 
         $this->table('districts')
@@ -271,39 +60,9 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'admin_user_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'discount_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'invtext_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'legaltext_id',
-                ]
-            )
             ->update();
 
         $this->table('invoice_items')
-            ->addIndex(
-                [
-                    'invoice_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'itemtype_id',
-                ]
-            )
             ->update();
 
         $this->table('invoices')
@@ -312,24 +71,9 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'application_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'user_id',
-                ]
-            )
             ->update();
 
         $this->table('invoices_payments')
-            ->addIndex(
-                [
-                    'invoice_id',
-                ]
-            )
             ->update();
 
         $this->table('logistic_items')
@@ -338,21 +82,6 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'application_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'logistic_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'param_id',
-                ]
-            )
             ->update();
 
         $this->table('logistics')
@@ -361,16 +90,6 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'event_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'parameter_id',
-                ]
-            )
             ->update();
 
         $this->table('notes')
@@ -389,34 +108,9 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'application_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'invoice_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'user_id',
-                ]
-            )
             ->update();
 
         $this->table('notifications')
-            ->addIndex(
-                [
-                    'user_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'notificationtype_id',
-                ]
-            )
             ->update();
 
         $this->table('parameters')
@@ -425,19 +119,9 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'set_id',
-                ]
-            )
             ->update();
 
         $this->table('params')
-            ->addIndex(
-                [
-                    'parameter_id',
-                ]
-            )
             ->update();
 
         $this->table('payments')
@@ -446,11 +130,6 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'user_id',
-                ]
-            )
             ->update();
 
         $this->table('scoutgroups')
@@ -459,19 +138,9 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'district_id',
-                ]
-            )
             ->update();
 
         $this->table('settings')
-            ->addIndex(
-                [
-                    'settingtype_id',
-                ]
-            )
             ->update();
 
         $this->table('users')
@@ -485,11 +154,6 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->addIndex(
-                [
-                    'role_id',
-                ]
-            )
             ->update();
 
         $this->table('itemtypes')
@@ -519,378 +183,6 @@ class OctUpdate extends AbstractMigration
                 'length' => null,
                 'null' => true,
             ])
-            ->update();
-
-        $this->table('applications')
-            ->addForeignKey(
-                'event_id',
-                'events',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'user_id',
-                'users',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('applications_attendees')
-            ->addForeignKey(
-                'application_id',
-                'applications',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->addForeignKey(
-                'attendee_id',
-                'attendees',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('attendees')
-            ->addForeignKey(
-                'role_id',
-                'roles',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'user_id',
-                'users',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('attendees_allergies')
-            ->addForeignKey(
-                'allergy_id',
-                'allergies',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'attendee_id',
-                'attendees',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('champions')
-            ->addForeignKey(
-                'user_id',
-                'users',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'district_id',
-                'districts',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('events')
-            ->addForeignKey(
-                'discount_id',
-                'discounts',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'invtext_id',
-                'settings',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'legaltext_id',
-                'settings',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('invoice_items')
-            ->addForeignKey(
-                'invoice_id',
-                'invoices',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->addForeignKey(
-                'itemtype_id',
-                'itemtypes',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('invoices')
-            ->addForeignKey(
-                'application_id',
-                'applications',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'user_id',
-                'users',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('invoices_payments')
-            ->addForeignKey(
-                'invoice_id',
-                'invoices',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'payment_id',
-                'payments',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->update();
-
-        $this->table('logistic_items')
-            ->addForeignKey(
-                'application_id',
-                'applications',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->addForeignKey(
-                'logistic_id',
-                'logistics',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->addForeignKey(
-                'param_id',
-                'params',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->update();
-
-        $this->table('logistics')
-            ->addForeignKey(
-                'event_id',
-                'events',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->addForeignKey(
-                'parameter_id',
-                'parameters',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->update();
-
-        $this->table('notes')
-            ->addForeignKey(
-                'application_id',
-                'applications',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->addForeignKey(
-                'invoice_id',
-                'invoices',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->addForeignKey(
-                'user_id',
-                'users',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->update();
-
-        $this->table('notifications')
-            ->addForeignKey(
-                'user_id',
-                'users',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->addForeignKey(
-                'notificationtype_id',
-                'notificationtypes',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->update();
-
-        $this->table('parameters')
-            ->addForeignKey(
-                'set_id',
-                'parameter_sets',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('params')
-            ->addForeignKey(
-                'parameter_id',
-                'parameters',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
-                ]
-            )
-            ->update();
-
-        $this->table('payments')
-            ->addForeignKey(
-                'user_id',
-                'users',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('scoutgroups')
-            ->addForeignKey(
-                'district_id',
-                'districts',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('settings')
-            ->addForeignKey(
-                'settingtype_id',
-                'settingtypes',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->update();
-
-        $this->table('users')
-            ->addForeignKey(
-                'role_id',
-                'roles',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
             ->update();
     }
 
