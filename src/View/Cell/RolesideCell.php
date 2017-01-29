@@ -6,7 +6,7 @@ use Cake\View\Cell;
 /**
  * RoleSide cell
  */
-class RoleSideCell extends Cell
+class RolesideCell extends Cell
 {
 
     /**
