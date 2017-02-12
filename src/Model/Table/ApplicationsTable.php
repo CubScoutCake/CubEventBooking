@@ -46,7 +46,7 @@ class ApplicationsTable extends Table
             'field' => 'deleted'
         ]);
 
-        //$this->addBehavior('Authrole');
+        $this->addBehavior('SectionAuth');
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',

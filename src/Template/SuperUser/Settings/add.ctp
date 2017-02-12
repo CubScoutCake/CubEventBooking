@@ -5,7 +5,7 @@
         <?php
             echo $this->Form->input('name');
             echo $this->Form->input('text');
-            echo $this->Form->input('settingtype_id', ['options' => $settingtypes]);
+            echo $this->Form->input('setting_type_id', ['options' => $settingTypes]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

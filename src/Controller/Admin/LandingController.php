@@ -51,11 +51,15 @@ class LandingController extends AppController
 
         $userId = $this->Auth->user('id');
 
-        // Table Entities
-        $applications = $apps->find()->contain(['Users', 'Sections.Scoutgroups.Districts'])->order(['Applications.modified' => 'DESC'])->limit(10);
+        $user = $usrs->get($userId, ['contain' => ['Sections', 'AuthRoles']]);
+        $sectionTypeId = $user->section->section_type_id;
+        $section_limited = $user->auth_role->section_limited;
+
+        // Limited Table Entities
+        $applications = $apps->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->contain(['Users', 'Sections.Scoutgroups.Districts'])->order(['Applications.modified' => 'DESC'])->limit(10);
         $events = $evs->find('upcoming')->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
         $invoices = $invs->find()->contain(['Users', 'Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
-        $users = $usrs->find()->contain(['Roles', 'Sections.Scoutgroups.Districts', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
+        $users = $usrs->find('userSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->contain(['Roles', 'Sections.Scoutgroups.Districts', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
         $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
         $notes = $nts->find()->contain(['Invoices', 'Applications', 'Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
         $notifications = $notifs->find()->contain(['NotificationTypes', 'Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
@@ -64,10 +68,10 @@ class LandingController extends AppController
         $this->set(compact('applications', 'events', 'invoices', 'users', 'payments', 'notes', 'notifications'));
 
         // Counts of Entities
-        $cntApplications = $apps->find('all')->count('*');
+        $cntApplications = $apps->find('all')->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->count('*');
         $cntEvents = $evs->find('all')->count('*');
         $cntInvoices = $invs->find('all')->count('*');
-        $cntUsers = $usrs->find('all')->count('*');
+        $cntUsers = $usrs->find('all')->find('userSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->count('*');
         $cntPayments = $pays->find('all')->count('*');
         $cntAttendees = $atts->find('all')->count('*');
 

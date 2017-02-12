@@ -552,32 +552,15 @@ $cakeDescription = 'HertsCubs Booking System';
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="<?php echo $this->Url->build([
-                                'controller' => 'Settings',
-                                'action' => 'index',
-                                'prefix' => 'admin']); ?>">View Settings</a>
+                                        'controller' => 'Settings',
+                                        'action' => 'index',
+                                        'prefix' => 'admin']); ?>">View Settings</a>
                                 </li>
                                 <li>
                                     <a href="<?php echo $this->Url->build([
-                                'controller' => 'Settings',
-                                'action' => 'add',
-                                'prefix' => 'admin']); ?>">Add a Setting</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-gears fa-fw"></i> Setting Types <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="<?php echo $this->Url->build([
-                                        'controller' => 'Settingtypes',
-                                        'action' => 'index',
-                                        'prefix' => 'admin']); ?>">View Setting Types</a>
-                                        </li>
-                                        <li>
-                                            <a href="<?php echo $this->Url->build([
-                                        'controller' => 'Settingtypes',
+                                        'controller' => 'Settings',
                                         'action' => 'add',
-                                        'prefix' => 'admin']); ?>">Add a Setting Type</a>
-                                        </li>
-                                    </ul>
+                                        'prefix' => 'admin']); ?>">Add a Setting</a>
                                 </li>
                             </ul>
                         </li>

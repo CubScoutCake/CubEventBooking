@@ -4,11 +4,11 @@ namespace App\Controller\SuperUser;
 use App\Controller\SuperUser\AppController;
 
 /**
- * Settingtypes Controller
+ * SettingTypes Controller
  *
- * @property \App\Model\Table\SettingtypesTable $Settingtypes
+ * @property \App\Model\Table\SettingTypesTable $SettingTypes
  */
-class SettingtypesController extends AppController
+class SettingTypesController extends AppController
 {
 
     /**
@@ -18,8 +18,8 @@ class SettingtypesController extends AppController
      */
     public function index()
     {
-        $this->set('settingtypes', $this->paginate($this->Settingtypes));
-        $this->set('_serialize', ['settingtypes']);
+        $this->set('settingTypes', $this->paginate($this->SettingTypes));
+        $this->set('_serialize', ['settingTypes']);
     }
 
     /**
@@ -31,11 +31,11 @@ class SettingtypesController extends AppController
      */
     public function view($id = null)
     {
-        $settingtype = $this->Settingtypes->get($id, [
+        $settingType = $this->SettingTypes->get($id, [
             'contain' => ['Settings']
         ]);
-        $this->set('settingtype', $settingtype);
-        $this->set('_serialize', ['settingtype']);
+        $this->set('settingType', $settingType);
+        $this->set('_serialize', ['settingType']);
     }
 
     /**
@@ -45,19 +45,19 @@ class SettingtypesController extends AppController
      */
     public function add()
     {
-        $settingtype = $this->Settingtypes->newEntity();
+        $settingType = $this->SettingTypes->newEntity();
         if ($this->request->is('post')) {
-            $settingtype = $this->Settingtypes->patchEntity($settingtype, $this->request->data);
-            if ($this->Settingtypes->save($settingtype)) {
-                $this->Flash->success(__('The settingtype has been saved.'));
+            $settingType = $this->SettingTypes->patchEntity($settingType, $this->request->data);
+            if ($this->SettingTypes->save($settingType)) {
+                $this->Flash->success(__('The settingType has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__('The settingtype could not be saved. Please, try again.'));
+                $this->Flash->error(__('The settingType could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('settingtype'));
-        $this->set('_serialize', ['settingtype']);
+        $this->set(compact('settingType'));
+        $this->set('_serialize', ['settingType']);
     }
 
     /**
@@ -69,21 +69,21 @@ class SettingtypesController extends AppController
      */
     public function edit($id = null)
     {
-        $settingtype = $this->Settingtypes->get($id, [
+        $settingType = $this->SettingTypes->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $settingtype = $this->Settingtypes->patchEntity($settingtype, $this->request->data);
-            if ($this->Settingtypes->save($settingtype)) {
-                $this->Flash->success(__('The settingtype has been saved.'));
+            $settingType = $this->SettingTypes->patchEntity($settingType, $this->request->data);
+            if ($this->SettingTypes->save($settingType)) {
+                $this->Flash->success(__('The settingType has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__('The settingtype could not be saved. Please, try again.'));
+                $this->Flash->error(__('The settingType could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('settingtype'));
-        $this->set('_serialize', ['settingtype']);
+        $this->set(compact('settingType'));
+        $this->set('_serialize', ['settingType']);
     }
 
     /**
@@ -96,11 +96,11 @@ class SettingtypesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $settingtype = $this->Settingtypes->get($id);
-        if ($this->Settingtypes->delete($settingtype)) {
-            $this->Flash->success(__('The settingtype has been deleted.'));
+        $settingType = $this->SettingTypes->get($id);
+        if ($this->SettingTypes->delete($settingType)) {
+            $this->Flash->success(__('The settingType has been deleted.'));
         } else {
-            $this->Flash->error(__('The settingtype could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The settingType could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

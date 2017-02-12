@@ -129,7 +129,7 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('leaders')->find('list', ['limit' => 200]);
-        $authRoles = $this->Users->AuthRoles->find('list');
+        $auth_roles = $this->Users->AuthRoles->find('list');
         $sections = $this->Users->Sections->find(
             'list',
             [
@@ -139,7 +139,6 @@ class UsersController extends AppController
                 ]
         )
             ->contain(['Scoutgroups.Districts']);
-
         $this->set(compact('user', 'roles', 'sections', 'auth_roles'));
         $this->set('_serialize', ['user']);
     }

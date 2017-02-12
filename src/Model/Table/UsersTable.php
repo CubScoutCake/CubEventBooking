@@ -55,6 +55,8 @@ class UsersTable extends Table
         $this->displayField('full_name');
         $this->primaryKey('id');
 
+        $this->addBehavior('SectionAuth');
+
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [

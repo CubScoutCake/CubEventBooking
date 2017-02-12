@@ -19,7 +19,7 @@ class SectionsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['SectionTypes', 'Scoutgroups']
+            'contain' => ['SectionTypes', 'Scoutgroups.Districts']
         ];
         $sections = $this->paginate($this->Sections);
 
@@ -63,7 +63,15 @@ class SectionsController extends AppController
             }
         }
         $sectionTypes = $this->Sections->SectionTypes->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Sections->Scoutgroups->find('list', ['limit' => 200]);
+        $scoutgroups = $this->Sections->Scoutgroups->find(
+            'list',
+            [
+                'keyField' => 'id',
+                'valueField' => 'scoutgroup',
+                'groupField' => 'district.district'
+            ]
+        )
+            ->contain(['Districts']);
         $this->set(compact('section', 'sectionTypes', 'scoutgroups'));
         $this->set('_serialize', ['section']);
     }
@@ -91,7 +99,15 @@ class SectionsController extends AppController
             }
         }
         $sectionTypes = $this->Sections->SectionTypes->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Sections->Scoutgroups->find('list', ['limit' => 200]);
+        $scoutgroups = $this->Sections->Scoutgroups->find(
+            'list',
+            [
+                'keyField' => 'id',
+                'valueField' => 'scoutgroup',
+                'groupField' => 'district.district'
+            ]
+        )
+            ->contain(['Districts']);
         $this->set(compact('section', 'sectionTypes', 'scoutgroups'));
         $this->set('_serialize', ['section']);
     }
