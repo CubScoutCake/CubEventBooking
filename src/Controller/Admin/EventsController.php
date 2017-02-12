@@ -390,7 +390,6 @@ class EventsController extends AppController
     {
         $event = $this->Events->newEntity();
         if ($this->request->is('post')) {
-
             $sections = TableRegistry::get('Sections');
 
             $userSection = $sections->get($this->Auth->user('section_id'));
@@ -462,8 +461,11 @@ class EventsController extends AppController
             'contain' => ['Settings', 'Prices']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $event = $this->Events->patchEntity($event, $this->request->data,
-                ['associated' => [ 'Prices']]);
+            $event = $this->Events->patchEntity(
+                $event,
+                $this->request->data,
+                ['associated' => [ 'Prices']]
+            );
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
 

@@ -62,28 +62,6 @@ class UsersController extends AppController
         $this->set('_serialize', ['user']);
     }
 
-    //use MailerAwareTrait;
-
-    /*public function register()
-    {
-        $user = $this->Users->newEntity($this->request->data);
-
-        $usrData = ['section' => 'Cubs', 'authrole' => 'user'];
-        $user = $this->Users->patchEntity($user, $usrData);
-
-        if ($this->Users->save($user)) {
-            $this->Flash->success(__('You have sucesfully registered!'));
-            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
-        } else {
-            $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));
-        }
-
-        $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200])->order(['district_id' => 'ASC']);
-        $this->set(compact('user', 'roles', 'scoutgroups'));
-        $this->set('_serialize', ['user']);
-    }*/
-
     /**
      * Edit method
      *
@@ -98,17 +76,6 @@ class UsersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
-
-            $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-                , 'lastname' => ucwords(strtolower($user->lastname))
-                , 'address_1' => ucwords(strtolower($user->address_1))
-                , 'address_2' => ucwords(strtolower($user->address_2))
-                , 'city' => ucwords(strtolower($user->city))
-                , 'county' => ucwords(strtolower($user->county))
-                , 'postcode' => strtoupper($user->postcode)
-                , 'section' => ucwords(strtolower($user->section))];
-
-            $user = $this->Users->patchEntity($user, $upperUser);
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
@@ -185,7 +152,7 @@ class UsersController extends AppController
      * Delete method
      *
      * @param null $eventId User id.
-     * @return void Redirects to index.
+     * @return \Cake\Network\Response If Successful - redirects to landing.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
 
@@ -220,14 +187,15 @@ class UsersController extends AppController
                 $loggedInUser = $this->Users->get($userId);
 
                 $now = Time::now();
+
+                $logins = 1;
+                $previousLogin = $now;
+                $syncRedir = 1;
+
                 if (!empty($loggedInUser->logins)) {
                     $logins = $loggedInUser->logins + 1;
                     $previousLogin = $loggedInUser->last_login;
                     $syncRedir = 0;
-                } else {
-                    $logins = 1;
-                    $previousLogin = $now;
-                    $syncRedir = 1;
                 }
 
                 $loginPass = ['last_login' => $now, 'logins' => $logins];
@@ -250,7 +218,7 @@ class UsersController extends AppController
                         ]
                     ];
 
-                $loggedInUser = $this->Users->patchEntity($loggedInUser, $loginPass);
+                $loggedInUser = $this->Users->patchEntity($loggedInUser, $loginPass, ['validate' => false]);
                 $loggedInUser->dirty('modified', true);
 
                 if ($this->Users->save($loggedInUser)) {
@@ -274,23 +242,22 @@ class UsersController extends AppController
 
                     $this->Progress->cacheApps($loggedInUser->id);
 
+                    $session->delete('Reset.lgTries');
+                    $session->delete('Reset.rsTries');
 
                     if (isset($eventId) && $eventId >= 0) {
-                        $session->delete('Reset.lgTries');
-                        $session->delete('Reset.rsTries');
-
                         return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
                     }
 
-                    $session->delete('Reset.lgTries');
-                    $session->delete('Reset.rsTries');
                     if ($syncRedir == 1) {
                         return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'sync']);
                     }
 
-                    if ($loggedInUser->authrole == 'admin') {
+                    // TODO: Add Method for redirecting higher authorisation users.
+
+                    /*if ($loggedInUser->authrole == 'admin') {
                         return $this->redirect(['prefix' => 'admin', 'controller' => 'Landing', 'action' => 'admin_home']);
-                    }
+                    }*/
 
                     return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
                 } else {
@@ -339,7 +306,8 @@ class UsersController extends AppController
                 $fmEmail = $this->request->data['email'];
 
                 $found = $this->Users->find('all')
-                    ->where(['email' => $fmEmail, 'scoutgroup_id' => $fmGroup]);
+                    ->contain('Sections')
+                    ->where(['email' => $fmEmail, 'Sections.scoutgroup_id' => $fmGroup]);
 
                 $count = $found->count('*');
                 $user = $found->first();

@@ -99,7 +99,6 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
 
         if ($this->request->is('post')) {
-
             $user = $this->Users->patchEntity($user, $this->request->data, [
                 'fieldList' => [
                     'id',
@@ -130,15 +129,15 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('leaders')->find('list', ['limit' => 200]);
-        $auth_roles = $this->Users->AuthRoles->find('list');
+        $authRoles = $this->Users->AuthRoles->find('list');
         $sections = $this->Users->Sections->find(
-                'list',
-                [
+            'list',
+            [
                     'keyField' => 'id',
                     'valueField' => 'section',
                     'groupField' => 'scoutgroup.district.district'
                 ]
-            )
+        )
             ->contain(['Scoutgroups.Districts']);
 
         $this->set(compact('user', 'roles', 'sections', 'auth_roles'));
@@ -270,7 +269,6 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->data);
 
             if ($this->Users->save($user)) {
-
                 if ($this->Auth->user('id') == $user->id) {
                     $this->Auth->setUser($user->toArray());
                     $this->Flash->success(__('Your login session has been refreshed.'));
@@ -285,7 +283,7 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $auth_roles = $this->Users->AuthRoles->find('list');
+        $authRoles = $this->Users->AuthRoles->find('list');
         $sections = $this->Users->Sections->find(
             'list',
             [

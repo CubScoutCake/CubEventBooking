@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\Attendee;
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -196,5 +197,26 @@ class AttendeesTable extends Table
             ->group(['Attendees.id'])
             ->having(['total_applications <' => 1])
             ->autoFields(true);
+    }
+
+    /**
+     * Stores emails as lower case.
+     *
+     * @param \Cake\Event\Event $event The event being processed.
+     * @return bool
+     */
+    public function beforeRules(Event $event)
+    {
+        $entity = $event->data['entity'];
+
+        $entity->firstname = ucwords(strtolower($entity->firstname));
+        $entity->lastname = ucwords(strtolower($entity->lastname));
+        $entity->address_1 = ucwords(strtolower($entity->address_1));
+        $entity->address_2 = ucwords(strtolower($entity->address_2));
+        $entity->city = ucwords(strtolower($entity->city));
+        $entity->county = ucwords(strtolower($entity->county));
+        $entity->postcode = strtoupper($entity->postcode);
+
+        return true;
     }
 }

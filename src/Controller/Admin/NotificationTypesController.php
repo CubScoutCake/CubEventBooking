@@ -34,7 +34,7 @@ class NotificationTypesController extends AppController
         $notificationtype = $this->NotificationTypes->get($id, [
             'contain' => ['Notifications']
         ]);
-        $this->set('notification_type', $notification_type);
+        $this->set('notification_type', $notificationType);
         $this->set('_serialize', ['notification_type']);
     }
 
@@ -45,10 +45,10 @@ class NotificationTypesController extends AppController
      */
     public function add()
     {
-        $notification_type = $this->NotificationTypes->newEntity();
+        $notificationType = $this->NotificationTypes->newEntity();
         if ($this->request->is('post')) {
-            $notification_type = $this->NotificationTypes->patchEntity($notification_type, $this->request->data);
-            if ($this->NotificationTypes->save($notification_type)) {
+            $notificationType = $this->NotificationTypes->patchEntity($notificationType, $this->request->data);
+            if ($this->NotificationTypes->save($notificationType)) {
                 $this->Flash->success(__('The notification type has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -69,12 +69,12 @@ class NotificationTypesController extends AppController
      */
     public function edit($id = null)
     {
-        $notification_type = $this->NotificationTypes->get($id, [
+        $notificationType = $this->NotificationTypes->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $notification_type = $this->NotificationTypes->patchEntity($notification_type, $this->request->data);
-            if ($this->NotificationTypes->save($notification_type)) {
+            $notificationType = $this->NotificationTypes->patchEntity($notificationType, $this->request->data);
+            if ($this->NotificationTypes->save($notificationType)) {
                 $this->Flash->success(__('The notification type has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -96,8 +96,8 @@ class NotificationTypesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $notification_type = $this->NotificationTypes->get($id);
-        if ($this->NotificationTypes->delete($notification_type)) {
+        $notificationType = $this->NotificationTypes->get($id);
+        if ($this->NotificationTypes->delete($notificationType)) {
             $this->Flash->success(__('The notification_type has been deleted.'));
         } else {
             $this->Flash->error(__('The notification_type could not be deleted. Please, try again.'));

@@ -59,7 +59,7 @@ class SettingsController extends AppController
                 $this->Flash->error(__('The setting could not be saved. Please, try again.'));
             }
         }
-        $setting_types = $this->Settings->SettingTypes->find('list', ['limit' => 200]);
+        $settingTypes = $this->Settings->SettingTypes->find('list', ['limit' => 200]);
         $this->set(compact('setting', 'setting_types'));
         $this->set('_serialize', ['setting']);
     }
@@ -86,7 +86,7 @@ class SettingsController extends AppController
                 $this->Flash->error(__('The setting could not be saved. Please, try again.'));
             }
         }
-        $setting_types = $this->Settings->SettingTypes->find('list', ['limit' => 200]);
+        $settingTypes = $this->Settings->SettingTypes->find('list', ['limit' => 200]);
         $this->set(compact('setting', 'setting_types'));
         $this->set('_serialize', ['setting']);
     }

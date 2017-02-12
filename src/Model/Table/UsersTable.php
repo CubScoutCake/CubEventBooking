@@ -232,7 +232,7 @@ class UsersTable extends Table
                     'before' => true,
                     'after' => true,
                     'fieldMode' => 'OR',
-                    'comparison' => 'ILIKE',
+                    'comparison' => 'LIKE',
                     'wildcardAny' => '*',
                     'wildcardOne' => '?',
                     'field' => ['firstname', 'lastname', 'email', 'username']
@@ -252,6 +252,13 @@ class UsersTable extends Table
         $entity = $event->data['entity'];
 
         $entity->email = strtolower($entity->email);
+        $entity->firstname = ucwords(strtolower($entity->firstname));
+        $entity->lastname = ucwords(strtolower($entity->lastname));
+        $entity->address_1 = ucwords(strtolower($entity->address_1));
+        $entity->address_2 = ucwords(strtolower($entity->address_2));
+        $entity->city = ucwords(strtolower($entity->city));
+        $entity->county = ucwords(strtolower($entity->county));
+        $entity->postcode = strtoupper($entity->postcode);
 
         return true;
     }
