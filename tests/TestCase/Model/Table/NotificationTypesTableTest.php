@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\NotificationtypesTable;
+use App\Model\Table\NotificationTypesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\NotificationtypesTable Test Case
+ * App\ModelLevel\Table\NotificationTypesTable Test Case
  */
-class NotificationtypesTableTest extends TestCase
+class NotificationTypesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\NotificationtypesTable
+     * @var \App\Model\Table\NotificationTypesTable
      */
-    public $Notificationtypes;
+    public $NotificationTypes;
 
     /**
      * Fixtures
@@ -35,8 +35,8 @@ class NotificationtypesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Notificationtypes') ? [] : ['className' => 'App\Model\Table\NotificationtypesTable'];
-        $this->Notificationtypes = TableRegistry::get('Notificationtypes', $config);
+        $config = TableRegistry::exists('NotificationTypes') ? [] : ['className' => 'App\Model\Table\NotificationTypesTable'];
+        $this->NotificationTypes = TableRegistry::get('NotificationTypes', $config);
     }
 
     /**
@@ -46,7 +46,7 @@ class NotificationtypesTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Notificationtypes);
+        unset($this->NotificationTypes);
 
         parent::tearDown();
     }
@@ -58,7 +58,7 @@ class NotificationtypesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $query = $this->Notificationtypes->find('all');
+        $query = $this->NotificationTypes->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
@@ -110,13 +110,13 @@ class NotificationtypesTableTest extends TestCase
             ],
         ];
 
-        $badEntity = $this->Notificationtypes->newEntity($badData, ['accessibleFields' => ['id' => true]]);
-        $goodEntity = $this->Notificationtypes->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        $badEntity = $this->NotificationTypes->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->NotificationTypes->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
 
-        $this->assertFalse($this->Notificationtypes->save($badEntity));
-        $this->Notificationtypes->save($goodEntity);
+        $this->assertFalse($this->NotificationTypes->save($badEntity));
+        $this->NotificationTypes->save($goodEntity);
 
-        $query = $this->Notificationtypes->find('all');
+        $query = $this->NotificationTypes->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
