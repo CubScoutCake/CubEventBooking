@@ -57,7 +57,7 @@ class LandingController extends AppController
 
         // Limited Table Entities
         $applications = $apps->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->contain(['Users', 'Sections.Scoutgroups.Districts'])->order(['Applications.modified' => 'DESC'])->limit(10);
-        $events = $evs->find('upcoming')->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
+        $events = $evs->find('upcoming')->find('eventSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
         $invoices = $invs->find()->contain(['Users', 'Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
         $users = $usrs->find('userSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->contain(['Roles', 'Sections.Scoutgroups.Districts', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
         $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
@@ -69,11 +69,11 @@ class LandingController extends AppController
 
         // Counts of Entities
         $cntApplications = $apps->find('all')->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->count('*');
-        $cntEvents = $evs->find('all')->count('*');
+        $cntEvents = $evs->find('eventSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->find('all')->count('*');
         $cntInvoices = $invs->find('all')->count('*');
         $cntUsers = $usrs->find('all')->find('userSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->count('*');
         $cntPayments = $pays->find('all')->count('*');
-        $cntAttendees = $atts->find('all')->count('*');
+        $cntAttendees = $atts->find('all')->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->count('*');
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));

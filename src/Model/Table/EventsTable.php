@@ -45,6 +45,8 @@ class EventsTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
+        $this->addBehavior('SectionAuth');
+
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [

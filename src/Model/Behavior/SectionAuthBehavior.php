@@ -25,7 +25,9 @@ class SectionAuthBehavior extends Behavior
      */
     public function findSameSection(Query $query, array $options)
     {
-        return $query->contain('Users.Sections')->where(['Sections.id' => $options['section_type_id']]);
+        $query = $query->contain('Users.Sections')->where(['Sections.id' => $options['section_type_id']]);
+
+        return $query;
     }
 
     /**
@@ -38,6 +40,24 @@ class SectionAuthBehavior extends Behavior
      */
     public function findUserSection(Query $query, array $options)
     {
-        return $query->contain('Sections')->where(['Sections.id' => $options['section_type_id']]);
+        $query = $query->contain('Sections')->where(['Sections.id' => $options['section_type_id']]);
+
+        return $query;
+    }
+
+
+    /**
+     * Find Section Types Directly
+     *
+     * @param Query $query The Query to be returned.
+     * @param array $options Options for the query etc.
+     *
+     * @return Query
+     */
+    public function findEventSection(Query $query, array $options)
+    {
+        $query = $query->where(['section_type_id' => $options['section_type_id']]);
+
+        return $query;
     }
 }
