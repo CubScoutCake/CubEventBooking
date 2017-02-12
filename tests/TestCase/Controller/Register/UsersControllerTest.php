@@ -71,7 +71,7 @@ class UsersControllerTest extends IntegrationTestCase
 
     public function testRegisterPost()
     {
-        $this->markTestSkipped('Needs to be fixed.');
+        //$this->markTestSkipped('Needs to be fixed.');
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
@@ -83,14 +83,15 @@ class UsersControllerTest extends IntegrationTestCase
             'email' => 'joe.bloggs@somewhere.cool',
             'username' => 'ThisUser',
             'password' => 'SuperSecure',
-            'phone' => '0892 912912',
+            'phone' => '0892912912',
             'address_1' => 'Here is',
             'address_2' => 'The Way',
             'city' => 'to',
-            'membership_number' => 82925,
+            'membership_number' => '82925',
             'county' => 'Ammarillo',
             'postcode' => 'GO8 0FK',
-            'section_id' => 1,
+            //'section_id' => 1,
+            //'auth_role_id' => 1,
         ];
         $this->post('/register/users/register/1', $data);
 

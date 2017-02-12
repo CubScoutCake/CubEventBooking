@@ -102,14 +102,19 @@ class SectionsController extends AppController
 
         $section = $this->Sections->newEntity();
         if ($this->request->is('post')) {
-            $section = $this->Sections->patchEntity($section, $this->request->data);
+            $section = $this->Sections->patchEntity($section, $this->request->data, [
+                'fieldList' => [
+                    'section_type_id',
+                    'scoutgroup_id',
+                    'section',
+                ]]);
             if ($this->Sections->save($section)) {
                 $this->Flash->success(__('The section has been saved.'));
                 $redir = $section->get('id');
                 if (is_null($this->Auth->user(['User.id']))) {
-                    $this->redirect(['controller' => 'Sections', 'prefix' => false,'action' => 'view', $redir]);
+                    $this->redirect(['controller' => 'Users','action' => 'register', $redir]);
                 }
-                $this->redirect(['controller' => 'Users','action' => 'register', null, $redir]);
+                $this->redirect(['controller' => 'Sections', 'prefix' => false,'action' => 'view', $redir]);
             } else {
                 $this->Flash->error(__('The section could not be saved. Please, try again.'));
                 $this->log('Register:Sections:Add - Fail - Could not be saved.', 'notice');

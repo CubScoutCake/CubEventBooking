@@ -83,6 +83,10 @@ class AuthRolesTable extends Table
             ->boolean('user')
             ->allowEmpty('user');
 
+        $validator
+            ->boolean('section_limited')
+            ->allowEmpty('section_limited');
+
         return $validator;
     }
 

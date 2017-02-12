@@ -28,9 +28,26 @@ class UsersController extends AppController
                 'section_id' => $sectionId
             ];
 
-            $user = $this->Users->patchEntity($user, $this->request->data);
+            $user = $this->Users->patchEntity($user, $usrData, ['validate' => false]);
 
-            $user = $this->Users->patchEntity($user, $usrData);
+            $user = $this->Users->patchEntity($user, $this->request->data, [
+                'fieldList' => [
+                    'role_id',
+                    'section_id',
+                    'auth_role_id',
+                    'firstname',
+                    'lastname',
+                    'username',
+                    'membership_number',
+                    'email',
+                    'password',
+                    'phone',
+                    'address_1',
+                    'address_2',
+                    'city',
+                    'county',
+                    'postcode', ]
+            ]);
 
             $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
                 , 'lastname' => ucwords(strtolower($user->lastname))
@@ -40,7 +57,7 @@ class UsersController extends AppController
                 , 'county' => ucwords(strtolower($user->county))
                 , 'postcode' => strtoupper($user->postcode)];
 
-            $user = $this->Users->patchEntity($user, $upperUser);
+            $user = $this->Users->patchEntity($user, $upperUser, ['validate' => false]);
 
             if ($this->Users->save($user)) {
                 $atts = TableRegistry::get('Attendees');

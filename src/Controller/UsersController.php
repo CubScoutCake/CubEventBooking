@@ -41,13 +41,13 @@ class UsersController extends AppController
     /**
      * View method
      *
-     * @param string|null $id User id.
+     * @param string|null $userID User id.
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($userID = null)
     {
-        $user = $this->Users->get($id, [
+        $user = $this->Users->get($userID, [
             'contain' => ['Roles',
                 'Sections.Scoutgroups',
                 'Invoices.Applications',
@@ -87,13 +87,13 @@ class UsersController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id User id.
+     * @param string|null $userID User id.
      * @return void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($userID = null)
     {
-        $user = $this->Users->get($id, [
+        $user = $this->Users->get($userID, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {

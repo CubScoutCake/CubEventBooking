@@ -9,6 +9,7 @@
             echo $this->Form->input('firstname');
             echo $this->Form->input('lastname');
             echo $this->Form->input('email');
+            echo $this->Form->input('membership_number');
             echo $this->Form->input('phone');
             echo $this->Form->input('address_1');
             echo $this->Form->input('address_2');

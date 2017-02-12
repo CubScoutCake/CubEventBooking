@@ -8,11 +8,7 @@
                 echo $this->Form->input('role_id');
                 echo $this->Form->input('firstname');
                 echo $this->Form->input('lastname');
-                echo $this->Form->input('dateofbirth', [
-                    'label' => 'Date of birth',
-                    'minYear' => date('Y') - 20,
-                    'maxYear' => date('Y') - 5,
-                ]);
+                echo $this->Form->input('dateofbirth', ['label' => 'Date of Birth', 'type' => 'date', 'maxYear' => (date('Y')-3), 'minYear' => (date('Y')-18)]);
                 echo $this->Form->input('phone', ['label' =>'Emergency Contact Number']);
                 echo $this->Form->input('vegetarian');
                 echo $this->Form->input('applications._ids', ['options' => $applications, 'multiple' => 'checkbox']);

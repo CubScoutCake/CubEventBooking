@@ -92,7 +92,7 @@ class UsersController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Network\Response Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -100,17 +100,36 @@ class UsersController extends AppController
 
         if ($this->request->is('post')) {
 
-            $user = $this->Users->patchEntity($user, $this->request->data);
+            $user = $this->Users->patchEntity($user, $this->request->data, [
+                'fieldList' => [
+                    'id',
+                    'role_id',
+                    'section_id',
+                    'auth_role_id',
+                    'firstname',
+                    'lastname',
+                    'username',
+                    'membership_number',
+                    'email',
+                    'password',
+                    'phone',
+                    'address_1',
+                    'address_2',
+                    'city',
+                    'county',
+                    'postcode'
+                ]
+            ]);
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $user->get('id')]);
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
         }
-        $roles = $this->Users->Roles->find('list', ['limit' => 200]);
+        $roles = $this->Users->Roles->find('leaders')->find('list', ['limit' => 200]);
         $auth_roles = $this->Users->AuthRoles->find('list');
         $sections = $this->Users->Sections->find(
                 'list',
@@ -162,7 +181,7 @@ class UsersController extends AppController
             'user_attendee' => true,
             'postcode' => $user->postcode,
             'role_id' => $user->role_id,
-            'scoutgroup_id' => $user->scoutgroup_id,
+            'section_id' => $user->section_id,
             'phone' => $user->phone
         ];
 
@@ -217,7 +236,7 @@ class UsersController extends AppController
                 'user_attendee' => true,
                 'postcode' => $user->postcode,
                 'role_id' => $user->role_id,
-                'scoutgroup_id' => $user->scoutgroup_id,
+                'section_id' => $user->section_id,
                 'phone' => $user->phone
             ];
 

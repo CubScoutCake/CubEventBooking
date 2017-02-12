@@ -58,7 +58,14 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -68,7 +75,14 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testAdult()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/adult');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -78,7 +92,14 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testCub()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/cub');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -88,7 +109,14 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/edit/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -98,7 +126,17 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/attendees/delete/1');
+
+        $this->assertRedirect();
     }
 
     /**
@@ -108,6 +146,22 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testIsAuthorized()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/edit/1');
+
+        $this->assertResponseOk();
+
+        $this->session([
+            'Auth.User.id' => 2,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/edit/1');
+
+        $this->assertRedirect();
     }
 }

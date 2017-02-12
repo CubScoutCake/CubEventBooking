@@ -66,18 +66,24 @@ class AuthRolesTableTest extends TestCase
             [
                 'id' => 1,
                 'auth_role' => 'User',
-                'admin_access' => 0,
-                'champion_access' => 0,
-                'super_user' => 0,
-                'auth' => 1
+                'admin_access' => false,
+                'champion_access' => false,
+                'super_user' => false,
+                'auth' => 1,
+                'parent_access' => false,
+                'user_access' => true,
+                'section_limited' => true,
             ],
             [
                 'id' => 2,
                 'auth_role' => 'SuperUser',
-                'admin_access' => 1,
-                'champion_access' => 1,
-                'super_user' => 1,
-                'auth' => 1
+                'admin_access' => true,
+                'champion_access' => true,
+                'super_user' => true,
+                'auth' => 12,
+                'parent_access' => false,
+                'user_access' => true,
+                'section_limited' => false,
             ],
         ];
 
@@ -92,47 +98,62 @@ class AuthRolesTableTest extends TestCase
     public function testValidationDefault()
     {
         $badData = [
-            'id' => 4,
-            'auth_role' => 'Fish',
-            'admin_access' => 0,
-            'champion_access' => 0,
-            'super_user' => 0,
-            'auth' => null
+            'id' => 3,
+            'auth_role' => null,
+            'admin_access' => true,
+            'champion_access' => true,
+            'super_user' => false,
+            'auth' => null,
+            'parent_access' => false,
+            'user_access' => true,
+            'section_limited' => true,
         ];
 
         $goodData = [
             'id' => 3,
             'auth_role' => 'Admin',
-            'admin_access' => 1,
-            'champion_access' => 1,
-            'super_user' => 1,
-            'auth' => 12
+            'admin_access' => true,
+            'champion_access' => true,
+            'super_user' => false,
+            'auth' => 1,
+            'parent_access' => false,
+            'user_access' => true,
+            'section_limited' => true,
         ];
 
         $expected = [
             [
                 'id' => 1,
                 'auth_role' => 'User',
-                'admin_access' => 0,
-                'champion_access' => 0,
-                'super_user' => 0,
-                'auth' => 1
+                'admin_access' => false,
+                'champion_access' => false,
+                'super_user' => false,
+                'auth' => 1,
+                'parent_access' => false,
+                'user_access' => true,
+                'section_limited' => true,
             ],
             [
                 'id' => 2,
                 'auth_role' => 'SuperUser',
-                'admin_access' => 1,
-                'champion_access' => 1,
-                'super_user' => 1,
-                'auth' => 1
+                'admin_access' => true,
+                'champion_access' => true,
+                'super_user' => true,
+                'auth' => 12,
+                'parent_access' => false,
+                'user_access' => true,
+                'section_limited' => false,
             ],
             [
                 'id' => 3,
                 'auth_role' => 'Admin',
-                'admin_access' => 1,
-                'champion_access' => 1,
-                'super_user' => 1,
-                'auth' => 12
+                'admin_access' => true,
+                'champion_access' => true,
+                'super_user' => false,
+                'auth' => 1,
+                'parent_access' => false,
+                'user_access' => true,
+                'section_limited' => true,
             ],
         ];
 
@@ -158,47 +179,62 @@ class AuthRolesTableTest extends TestCase
     public function testBuildRules()
     {
         $badData = [
-            'id' => 5,
+            'id' => 1,
             'auth_role' => 'User',
-            'admin_access' => 0,
-            'champion_access' => 0,
-            'super_user' => 0,
-            'auth' => 1
+            'admin_access' => false,
+            'champion_access' => false,
+            'super_user' => false,
+            'auth' => 1,
+            'parent_access' => false,
+            'user_access' => true,
+            'section_limited' => true,
         ];
 
         $goodData = [
             'id' => 3,
             'auth_role' => 'Admin',
-            'admin_access' => 1,
-            'champion_access' => 1,
-            'super_user' => 1,
-            'auth' => 12
+            'admin_access' => true,
+            'champion_access' => true,
+            'super_user' => false,
+            'auth' => 1,
+            'parent_access' => false,
+            'user_access' => true,
+            'section_limited' => true,
         ];
 
         $expected = [
             [
                 'id' => 1,
                 'auth_role' => 'User',
-                'admin_access' => 0,
-                'champion_access' => 0,
-                'super_user' => 0,
-                'auth' => 1
+                'admin_access' => false,
+                'champion_access' => false,
+                'super_user' => false,
+                'auth' => 1,
+                'parent_access' => false,
+                'user_access' => true,
+                'section_limited' => true,
             ],
             [
                 'id' => 2,
                 'auth_role' => 'SuperUser',
-                'admin_access' => 1,
-                'champion_access' => 1,
-                'super_user' => 1,
-                'auth' => 1
+                'admin_access' => true,
+                'champion_access' => true,
+                'super_user' => true,
+                'auth' => 12,
+                'parent_access' => false,
+                'user_access' => true,
+                'section_limited' => false,
             ],
             [
                 'id' => 3,
                 'auth_role' => 'Admin',
-                'admin_access' => 1,
-                'champion_access' => 1,
-                'super_user' => 1,
-                'auth' => 12
+                'admin_access' => true,
+                'champion_access' => true,
+                'super_user' => false,
+                'auth' => 1,
+                'parent_access' => false,
+                'user_access' => true,
+                'section_limited' => true,
             ],
         ];
 

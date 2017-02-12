@@ -62,6 +62,7 @@ class UsersFixture extends TestFixture
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'users_username' => ['type' => 'unique', 'columns' => ['username'], 'length' => []],
             'users_role_id' => ['type' => 'foreign', 'columns' => ['role_id'], 'references' => ['roles', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
+            'users_auth_role_id' => ['type' => 'foreign', 'columns' => ['auth_role_id'], 'references' => ['auth_roles', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'users_section_id' => ['type' => 'foreign', 'columns' => ['section_id'], 'references' => ['sections', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
         ],
     ];
@@ -150,10 +151,6 @@ class UsersFixture extends TestFixture
                 'validated' => null,
                 'deleted' => date('Y-m-d H:i:s'),
                 'auth_role_id' => 2,
-                'digest_hash' => 'Lorem ipsum sit amet',
-                'pw_salt' => 'Lorem afsaf dolor sit amet',
-                'api_key_plain' => 'Lorem cas dolor sit amet',
-                'api_key' => 'Lorem dolasasor sit amet',
                 'pw_state' => 1,
                 'membership_number' => 123,
             ],

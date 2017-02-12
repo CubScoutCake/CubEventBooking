@@ -111,10 +111,6 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
-
-        $validator
             ->requirePresence('firstname', 'create')
             ->notEmpty('firstname');
 
@@ -159,62 +155,9 @@ class UsersTable extends Table
             ->notEmpty('username');
 
         $validator
-            ->allowEmpty('osm_secret');
-
-        $validator
-            ->integer('osm_linked')
-            ->allowEmpty('osm_linked');
-
-        $validator
-            ->dateTime('osm_linkdate')
-            ->allowEmpty('osm_linkdate');
-
-        $validator
-            ->integer('osm_current_term')
-            ->allowEmpty('osm_current_term');
-
-        $validator
-            ->dateTime('osm_term_end')
-            ->allowEmpty('osm_term_end');
-
-        $validator
-            ->allowEmpty('pw_reset');
-
-        $validator
-            ->dateTime('last_login')
-            ->allowEmpty('last_login');
-
-        $validator
-            ->integer('logins')
-            ->allowEmpty('logins');
-
-        $validator
-            ->boolean('validated')
-            ->allowEmpty('validated');
-
-        $validator
-            ->dateTime('deleted')
-            ->allowEmpty('deleted');
-
-        $validator
-            ->allowEmpty('digest_hash');
-
-        $validator
-            ->allowEmpty('pw_salt');
-
-        $validator
-            ->allowEmpty('api_key_plain');
-
-        $validator
-            ->allowEmpty('api_key');
-
-        $validator
-            ->integer('pw_state')
-            ->allowEmpty('pw_state');
-
-        $validator
             ->integer('membership_number')
-            ->allowEmpty('membership_number');
+            ->requirePresence('membership_number')
+            ->notEmpty('membership_number');
 
         return $validator;
     }
