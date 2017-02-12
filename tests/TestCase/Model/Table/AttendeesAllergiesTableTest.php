@@ -34,7 +34,8 @@ class AttendeesAllergiesTableTest extends TestCase
         'app.section_types',
         'app.sections',
         'app.districts',
-        'app.users'
+        'app.users',
+        'app.auth_roles',
     ];
 
     /**

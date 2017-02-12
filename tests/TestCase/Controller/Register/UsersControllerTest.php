@@ -71,7 +71,7 @@ class UsersControllerTest extends IntegrationTestCase
 
     public function testRegisterPost()
     {
-        //$this->markTestSkipped('Needs to be fixed.');
+        $this->markTestSkipped('Needs to be fixed.');
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();

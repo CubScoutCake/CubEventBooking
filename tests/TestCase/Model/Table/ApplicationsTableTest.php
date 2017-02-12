@@ -37,6 +37,7 @@ class ApplicationsTableTest extends TestCase
         'app.users',
         'app.events',
         'app.event_types',
+        'app.auth_roles',
     ];
 
     /**

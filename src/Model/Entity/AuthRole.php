@@ -58,13 +58,13 @@ class AuthRole extends Entity
             $champion = 0;
         };
 
-        if ($this->_properties['user'] && isset($this->_properties['user'])) {
+        if ($this->_properties['user_access'] && isset($this->_properties['user_access'])) {
             $user = 1;
         } else {
             $user = 0;
         };
 
-        if ($this->_properties['parent'] && isset($this->_properties['parent'])) {
+        if ($this->_properties['parent_access'] && isset($this->_properties['parent_access'])) {
             $parent = 1;
         } else {
             $parent = 0;

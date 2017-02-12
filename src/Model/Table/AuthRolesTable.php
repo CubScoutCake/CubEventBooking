@@ -76,12 +76,12 @@ class AuthRolesTable extends Table
             ->notEmpty('auth');
 
         $validator
-            ->boolean('parent')
-            ->allowEmpty('parent');
+            ->boolean('parent_access')
+            ->allowEmpty('parent_access');
 
         $validator
-            ->boolean('user')
-            ->allowEmpty('user');
+            ->boolean('user_access')
+            ->allowEmpty('user_access');
 
         $validator
             ->boolean('section_limited')
