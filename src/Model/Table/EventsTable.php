@@ -55,6 +55,7 @@ class EventsTable extends Table
                 ]
             ]
         ]);
+
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);
@@ -119,10 +120,12 @@ class EventsTable extends Table
 
         $validator
             ->boolean('live')
+            ->requirePresence('live', 'create')
             ->allowEmpty('live');
 
         $validator
             ->boolean('new_apps')
+            ->requirePresence('new_apps', 'create')
             ->allowEmpty('new_apps');
 
         $validator
@@ -134,6 +137,16 @@ class EventsTable extends Table
             ->dateTime('end_date')
             ->requirePresence('end_date', 'create')
             ->notEmpty('end_date');
+
+        $validator
+            ->dateTime('deposit_date')
+            ->requirePresence('deposit_date', 'create')
+            ->allowEmpty('deposit_date');
+
+        $validator
+            ->dateTime('closing_date')
+            ->requirePresence('closing_date', 'create')
+            ->allowEmpty('closing_date');
 
         $validator
             ->boolean('deposit')
@@ -148,19 +161,7 @@ class EventsTable extends Table
             ->allowEmpty('deposit_inc_leaders');
 
         $validator
-            ->boolean('leaders')
-            ->allowEmpty('leaders');
-
-        $validator
-            ->numeric('leaders_value')
-            ->allowEmpty('leaders_value');
-
-        $validator
-            ->allowEmpty('leaders_text');
-
-        $validator
-            ->requirePresence('logo', 'create')
-            ->notEmpty('logo');
+            ->allowEmpty('logo');
 
         $validator
             ->allowEmpty('address');
@@ -186,6 +187,7 @@ class EventsTable extends Table
 
         $validator
             ->boolean('max')
+            ->requirePresence('max', 'create')
             ->allowEmpty('max');
 
         $validator
@@ -208,6 +210,20 @@ class EventsTable extends Table
             ->add('admin_email', 'valid', ['rule' => 'email'])
             ->requirePresence('admin_email', 'create')
             ->notEmpty('admin_email');
+
+        $validator
+            ->integer('admin_user_id')
+            ->requirePresence('admin_user_id', 'create')
+            ->notEmpty('admin_user_id');
+
+        $validator
+            ->integer('event_type_id')
+            ->requirePresence('event_type_id', 'create')
+            ->notEmpty('event_type_id');
+
+        $validator
+            ->integer('section_type_id')
+            ->requirePresence('section_type_id', 'create');
 
         return $validator;
     }

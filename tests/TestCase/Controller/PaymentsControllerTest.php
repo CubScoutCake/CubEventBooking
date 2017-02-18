@@ -44,7 +44,7 @@ class PaymentsControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/Payments');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/Payments']);
     }
 
     public function testIndex()

@@ -18,39 +18,39 @@ class ParametersTableTest extends TestCase
      */
     public $Parameters;
 
-    /**
-     * Fixtures
-     *
-     * @var array
-     *
     public $fixtures = [
-        'app.parameters',
-        'app.parameter_sets',
-        'app.logistics',
+        'app.event_types',
         'app.events',
         'app.settings',
-        'app.settingtypes',
+        'app.setting_types',
         'app.discounts',
-        'app.applications',
         'app.users',
         'app.roles',
         'app.attendees',
+        'app.sections',
+        'app.section_types',
         'app.scoutgroups',
         'app.districts',
         'app.champions',
+        'app.applications',
+        'app.invoices',
+        'app.invoice_items',
+        'app.item_types',
+        'app.prices',
+        'app.notes',
+        'app.payments',
+        'app.invoices_payments',
+        'app.logistic_items',
+        'app.logistics',
+        'app.parameters',
+        'app.parameter_sets',
+        'app.params',
         'app.applications_attendees',
         'app.allergies',
         'app.attendees_allergies',
-        'app.notes',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.payments',
-        'app.invoices_payments',
+        'app.auth_roles',
         'app.notifications',
-        'app.notificationtypes',
-        'app.logistic_items',
-        'app.params'
+        'app.notification_types'
     ];
 
     /**

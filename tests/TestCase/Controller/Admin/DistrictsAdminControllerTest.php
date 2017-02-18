@@ -20,7 +20,7 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/admin/districts');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, 'redirect' => '/admin/districts']);
     }
 
     public function testIndexUnauthorisedFails()

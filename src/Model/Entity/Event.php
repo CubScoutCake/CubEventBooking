@@ -80,4 +80,23 @@ class Event extends Entity
         '*' => true,
         'id' => false
     ];
+
+    /**
+     * Specifies the method for determining Application Booking Full.
+     *
+     * @return string
+     */
+    protected function _getAppFull()
+    {
+        $value = false;
+
+        if ($this->_properties['cc_apps'] >= $this->_properties['max_apps'])
+        {
+            $value = true;
+        }
+
+        return $value;
+    }
+
+    protected $_virtual = ['appFull'];
 }

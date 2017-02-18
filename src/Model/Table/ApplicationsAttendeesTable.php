@@ -45,6 +45,13 @@ class ApplicationsAttendeesTable extends Table
             'foreignKey' => 'attendee_id',
             'joinType' => 'INNER'
         ]);
+
+        $this->addBehavior('CounterCache', [
+            'Applications' => [
+                'cc_att_total'
+            ],
+            'Attendees' => 'cc_apps'
+        ]);
     }
 
     /**

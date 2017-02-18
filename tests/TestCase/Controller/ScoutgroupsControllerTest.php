@@ -33,7 +33,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/scoutgroups');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/scoutgroups']);
     }
 
     /**
@@ -55,7 +55,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/scoutgroups/view/1');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/scoutgroups/view/1']);
     }
 
     /**

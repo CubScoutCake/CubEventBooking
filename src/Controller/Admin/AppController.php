@@ -27,13 +27,6 @@ use Cake\ORM\TableRegistry;
  */
 class AppController extends Controller
 {
-
-    public $helpers = [
-        'DataTables' => [
-            'className' => 'DataTables.DataTables'
-        ]
-    ];
-
     public function initialize()
     {
         $this->loadComponent('Flash');
@@ -45,6 +38,7 @@ class AppController extends Controller
                 'action' => 'user_home'
                 ],
             'loginAction' => [
+                'prefix' => false,
                 'controller' => 'Users',
                 'action' => 'login'
                 ]
@@ -53,10 +47,9 @@ class AppController extends Controller
         $this->loadComponent('Security');
         $this->loadComponent('Csrf');
         $this->loadComponent('RequestHandler');
-        $this->loadComponent('DataTables.DataTables');
 
-        $this->loadComponent('Notifications');
-        $this->Notifications->appLoad($this->Auth->user('id'));
+        $this->loadComponent('Alert');
+        $this->Alert->appLoad($this->Auth->user('id'));
     }
 
     public function isAuthorized($user)

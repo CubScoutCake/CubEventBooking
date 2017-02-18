@@ -193,10 +193,10 @@ Plugin::load('Search');
 Plugin::load('SparkPost');
 Plugin::loadAll();
 
-Plugin::load('Ajax', ['bootstrap' => true]);
+//Plugin::load('Ajax', ['bootstrap' => true]);
 Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);
 // Plugin::load('CakePdf', ['bootstrap' => true]);
-Plugin::load('DataTables', ['bootstrap' => false, 'routes' => false]);
+//Plugin::load('DataTables', ['bootstrap' => false, 'routes' => false]);
 
 //Plugin::loadAll();
 //Plugin::load('dompdf');

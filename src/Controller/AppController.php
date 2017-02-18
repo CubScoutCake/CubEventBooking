@@ -30,12 +30,6 @@ class AppController extends Controller
 {
     use CellTrait;
 
-    /*public $helpers = [
-        'DataTables' => [
-            'className' => 'DataTables.DataTables'
-        ]
-    ];*/
-
     public function initialize()
     {
         $this->loadComponent('Flash');
@@ -58,14 +52,13 @@ class AppController extends Controller
         $this->loadComponent('Security');
         $this->loadComponent('Csrf');
         $this->loadComponent('RequestHandler');
-        $this->loadComponent('DataTables.DataTables');
 
         if (env('SERVER_NAME') !== 'dev.hertscubs100.uk') {
         //$this->Security->requiresecure();
         }
 
-        $this->loadComponent('Notifications');
-        $this->Notifications->appLoad($this->Auth->user('id'));
+        $this->loadComponent('Alert');
+        $this->Alert->appLoad($this->Auth->user('id'));
     }
 
     public function isAuthorized($user)

@@ -219,8 +219,8 @@ $cakeDescription = 'HertsCubs Booking System';
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
                         <?php   $usr = $this->request->session()->read('Auth.User.id');
-                                $cell = $this->cell('Notifications', [$usr], [
-                                    'cache' => ['config' => 'cell_cache', 'key' => 'notifications_' . $usr]
+                                $cell = $this->cell('Bell', [$usr], [
+                                    'cache' => ['config' => 'cell_cache', 'key' => 'bell_' . $usr]
                                 ]);
                                 echo $cell; ?>
                         <li>

@@ -42,11 +42,18 @@ class ApplicationsTable extends Table
                     ]
                 ]
             ]);
+
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);
 
         $this->addBehavior('SectionAuth');
+
+        $this->addBehavior('CounterCache', [
+            'Events' => [
+                'cc_apps'
+            ]
+        ]);
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',

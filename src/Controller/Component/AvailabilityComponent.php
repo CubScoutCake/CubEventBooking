@@ -15,7 +15,7 @@ use Cake\ORM\TableRegistry;
  * Class ApplicationComponent
  * @package App\Controller\Component
  */
-class ApplicationComponent extends Component
+class AvailabilityComponent extends Component
 {
     /**
      * Retrieve an Array of Numbers for the Number of Attendees.

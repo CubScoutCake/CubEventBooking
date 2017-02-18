@@ -149,14 +149,13 @@ class UsersController extends AppController
     }
 
     /**
-     * Delete method
+     * Login method
      *
-     * @param null $eventId User id.
      * @return \Cake\Network\Response If Successful - redirects to landing.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
 
-    public function login($eventId = null)
+    public function login()
     {
         // Set the layout.
         $this->viewBuilder()->layout('outside');
@@ -184,7 +183,7 @@ class UsersController extends AppController
 
                 $userId = $this->Auth->user('id');
 
-                $loggedInUser = $this->Users->get($userId);
+                $loggedInUser = $this->Users->get($userId, ['contain' => 'AuthRoles']);
 
                 $now = Time::now();
 
@@ -198,7 +197,7 @@ class UsersController extends AppController
                     $syncRedir = 0;
                 }
 
-                $loginPass = ['last_login' => $now, 'logins' => $logins];
+                $loginPass = ['last_login' => $now, 'logins' => $logins, 'pw_salt' => $this->request->getQuery('redirect')];
 
                 $loginEnt = [
                     'Entity Id' => $loggedInUser->id,
@@ -208,7 +207,7 @@ class UsersController extends AppController
                     'Creation Date' => $loggedInUser->created,
                     'Modified' => $loggedInUser->modified,
                     'User' => [
-                        'Type' => $loggedInUser->authrole,
+                        'AuthValue' => $loggedInUser->auth_role->auth_value,
                         'Username' => $loggedInUser->username,
                         'First Name' => $loggedInUser->firstname,
                         'Last Name' => $loggedInUser->lastname,
@@ -219,7 +218,7 @@ class UsersController extends AppController
                     ];
 
                 $loggedInUser = $this->Users->patchEntity($loggedInUser, $loginPass, ['validate' => false]);
-                $loggedInUser->dirty('modified', true);
+                $loggedInUser->setDirty('modified',true);
 
                 if ($this->Users->save($loggedInUser)) {
                     $sets = TableRegistry::get('Settings');
@@ -245,24 +244,42 @@ class UsersController extends AppController
                     $session->delete('Reset.lgTries');
                     $session->delete('Reset.rsTries');
 
-                    if (isset($eventId) && $eventId >= 0) {
-                        return $this->redirect(['prefix' => false, 'controller' => 'Applications', 'action' => 'book',  $eventId]);
+                    if (!empty($this->request->getQuery('redirect'))) {
+                        return $this->redirect($this->request->getQuery('redirect'));
+                    }
+
+                    if (!empty($this->request->getQueryParams())) {
+                        return $this->redirect($this->request->getQueryParams());
                     }
 
                     if ($syncRedir == 1) {
                         return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'sync']);
                     }
 
-                    // TODO: Add Method for redirecting higher authorisation users.
+                    $superBinary = 1 . 0 . 0 . 1 . 0; // Redirect SuperUsers
 
-                    /*if ($loggedInUser->authrole == 'admin') {
+                    if ($loggedInUser->auth_role->auth_value >= bindec($superBinary)) {
+                        return $this->redirect(['prefix' => 'super_user', 'controller' => 'Landing', 'action' => 'super_user_home']);
+                    }
+
+                    $adminBinary = 0 . 1 . 0 . 1 . 0; // Redirect Admins
+
+                    if ($loggedInUser->auth_role->auth_value >= bindec($adminBinary)) {
                         return $this->redirect(['prefix' => 'admin', 'controller' => 'Landing', 'action' => 'admin_home']);
-                    }*/
+                    }
+
+                    $champBinary = 0 . 0 . 1 . 1 . 0; // Redirect Champions
+
+                    if ($loggedInUser->auth_role->auth_value >= bindec($champBinary)) {
+                        return $this->redirect(['prefix' => 'champion', 'controller' => 'Landing', 'action' => 'champion_home']);
+                    }
 
                     return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
-                } else {
-                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+
                 }
+
+                $this->Flash->error(__('The user could not be saved. Please, try again.'));
+
             }
             $tries = $tries + 1;
             $this->Flash->error('Your username or password is incorrect. Please try again.');

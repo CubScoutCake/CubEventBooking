@@ -389,10 +389,18 @@ class EventsController extends AppController
     public function add()
     {
         $event = $this->Events->newEntity();
-        if ($this->request->is('post')) {
-            $sections = TableRegistry::get('Sections');
 
-            $userSection = $sections->get($this->Auth->user('section_id'));
+        $sections = TableRegistry::get('Sections');
+
+        $userSection = $sections->get($this->Auth->user('section_id'));
+
+        $sectionType = [
+            'section_type_id' => $userSection->section_type_id
+        ];
+        $event = $this->Events->patchEntity($event, $sectionType, ['validation' => false]);
+
+        if ($this->request->is('post')) {
+
 
             $sectionType = [
                 'section_type_id' => $userSection->section_type_id
@@ -412,8 +420,9 @@ class EventsController extends AppController
         $legal = $this->Events->Settings->find('list', ['limit' => 200, 'conditions' => ['setting_type_id' => 3]]);
         $discounts = $this->Events->Discounts->find('list', ['limit' => 200]);
         $eventTypes = $this->Events->EventTypes->find('list', ['limit' => 200]);
+        $sectionTypes = $this->Events->SectionTypes->find('list', ['limit' => 200]);
         $users = $this->Events->Users->find('list', ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]);
-        $this->set(compact('event', 'eventTypes', 'inv', 'legal', 'discounts', 'users'));
+        $this->set(compact('event', 'eventTypes', 'inv', 'legal', 'discounts', 'users', 'sectionTypes'));
         $this->set('_serialize', ['event']);
     }
 

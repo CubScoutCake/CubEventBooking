@@ -47,6 +47,8 @@ class LandingControllerTest extends IntegrationTestCase
 
     public function testUserHomeUnauthenticatedFails()
     {
+        $this->markTestIncomplete('SuperUser');
+
         // No session data set.
         $this->get('/champion/landing/champion-home');
 

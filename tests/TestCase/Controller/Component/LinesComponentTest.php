@@ -1,17 +1,17 @@
 <?php
 namespace App\Test\TestCase\Controller\Component;
 
-use App\Controller\Component\InvoiceComponent;
+use App\Controller\Component\LineComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\Component\InvoiceComponent Test Case
+ * App\Controller\Component\LineComponent Test Case
  */
-class InvoiceComponentTest extends TestCase
+class LineComponentTest extends TestCase
 {
 
-    public $fixtures = [
+    /*public $fixtures = [
         'app.event_types',
         'app.events',
         'app.settings',
@@ -49,14 +49,14 @@ class InvoiceComponentTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Controller\Component\InvoiceComponent
+     * @var \App\Controller\Component\LineComponent
      */
-    public $Invoice;
+    public $Line;
 
     /**
      * Test subject
      *
-     * @var \App\Controller\Component\InvoiceComponent
+     * @var \App\Controller\Component\LineComponent
      */
     public $component = null;
 
@@ -76,7 +76,7 @@ class InvoiceComponentTest extends TestCase
     {
         parent::setUp();
         $registry = new ComponentRegistry();
-        $this->Invoice = new InvoiceComponent($registry);
+        $this->Line = new LineComponent($registry);
     }
 
     /**
@@ -86,7 +86,7 @@ class InvoiceComponentTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Invoice);
+        unset($this->Line);
 
         parent::tearDown();
     }
@@ -102,11 +102,11 @@ class InvoiceComponentTest extends TestCase
     }
 
     /**
-     * Test getLines method
+     * Test getLine method
      *
      * @return void
      */
-    public function testGetLines()
+    public function testGetLine()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
@@ -118,8 +118,10 @@ class InvoiceComponentTest extends TestCase
      */
     public function testCreateLine()
     {
-        $this->assertTrue($this->Invoice->createLine(1, 1, 1));
+        $this->markTestIncomplete();
 
-        $this->assertTrue($this->Invoice->createLine(1, 2, 1));
+        $this->assertTrue($this->Line->createLine(1, 1, 1));
+
+        $this->assertTrue($this->Line->createLine(1, 2, 1));
     }
 }

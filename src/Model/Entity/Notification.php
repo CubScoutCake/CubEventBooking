@@ -9,8 +9,8 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $user_id
  * @property \App\Model\Entity\User $user
- * @property int $notificationtype_id
- * @property \App\Model\Entity\Notificationtype $notificationtype
+ * @property int $notification_type_id
+ * @property \App\Model\Entity\NotificationType $notification_type
  * @property bool $new
  * @property string $header
  * @property string $text
@@ -37,4 +37,12 @@ class Notification extends Entity
         '*' => true,
         'id' => false,
     ];
+
+    protected function _getLinkPrefix($link_prefix)
+    {
+        if ($link_prefix == '') {
+            return false;
+        }
+        return $link_prefix;
+    }
 }

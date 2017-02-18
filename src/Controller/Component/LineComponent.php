@@ -11,7 +11,7 @@ namespace App\Controller\Component;
 use Cake\Controller\Component;
 use Cake\ORM\TableRegistry;
 
-class InvoiceComponent extends Component
+class LineComponent extends Component
 {
     public $components = ['Flash'];
 

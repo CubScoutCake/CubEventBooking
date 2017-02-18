@@ -18,7 +18,7 @@ class NotificationsControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.notifications',
         'app.auth_roles',
-        'app.notificationtypes',
+        'app.notification_types',
         'app.districts',
         'app.roles',
         'app.users',
@@ -34,7 +34,14 @@ class NotificationsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/notifications');
+
+        $this->assertResponseOk();
     }
 
     /**

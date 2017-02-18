@@ -111,7 +111,8 @@ class EventsControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
+            'Auth.User.section_id' => 1,
         ]);
 
         $this->get('/admin/events/add');

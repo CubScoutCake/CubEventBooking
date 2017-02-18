@@ -35,18 +35,11 @@ class AppController extends Controller
             'authorize' => 'Controller',
             'loginRedirect' => [
                 'controller' => 'Landing',
-                'action' => 'champion_home',
-                'prefix' => 'champion'
+                'action' => 'user_home',
+                'prefix' => false
                 ],
-            //'authenticate' => [
-            //    'Form' => [
-            //        'fields' => [
-            //            'username' => 'username',
-            //            'password' => 'password'
-            //            ]
-            //        ]
-            //    ],
             'loginAction' => [
+                'prefix' => false,
                 'controller' => 'Users',
                 'action' => 'login'
                 ]
@@ -55,10 +48,8 @@ class AppController extends Controller
         $this->loadComponent('Security');
         $this->loadComponent('Csrf');
 
-        // Allow the display action so our pages controller
-        // continues to work.
-        //$this->Auth->allow(['display']);
-        //$this->Auth->allow(['index']);
+        $this->loadComponent('Alert');
+        $this->Alert->appLoad($this->Auth->user('id'));
     }
 
     public function isAuthorized($user)

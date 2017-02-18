@@ -5,6 +5,8 @@
         <?php
         echo $this->Form->input('name');
         echo $this->Form->input('full_name');
+        echo $this->Form->input('event_type_id', ['options' => $eventTypes]);
+        echo $this->Form->input('section_type_id', ['options' => $sectionTypes]);
         echo '<div class="row"> <div class="col-lg-6">';
         echo $this->Form->input('start_date');
         echo $this->Form->input('deposit_date');

@@ -34,7 +34,7 @@ class AllergiesControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/allergies');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/allergies']);
     }
 
     /**
@@ -71,7 +71,7 @@ class AllergiesControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/allergies/view/1');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/allergies/view/1']);
     }
 
     public function testView()
@@ -88,7 +88,7 @@ class AllergiesControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/allergies/add');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/allergies/add']);
     }
 
     public function testAdd()

@@ -10,7 +10,7 @@ namespace App\Controller\Component;
 
 use Cake\Controller\Component;
 
-class EventComponent extends Component
+class BookingComponent extends Component
 {
     public $components = ['Flash'];
 

@@ -51,7 +51,7 @@ class LandingControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/landing/user-home');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/landing/user-home']);
     }
 
     /**

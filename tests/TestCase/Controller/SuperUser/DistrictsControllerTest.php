@@ -22,6 +22,8 @@ class DistrictsControllerTest extends IntegrationTestCase
 
     public function testIndexUnauthenticatedFails()
     {
+        $this->markTestIncomplete('SuperUser');
+
         // No session data set.
         $this->get('/districts');
 
@@ -67,6 +69,8 @@ class DistrictsControllerTest extends IntegrationTestCase
 
     public function testViewUnauthenticatedFails()
     {
+        $this->markTestIncomplete('SuperUser');
+
         // No session data set.
         $this->get('/districts/view/1');
 

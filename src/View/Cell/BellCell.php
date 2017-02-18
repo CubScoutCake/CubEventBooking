@@ -4,9 +4,9 @@ namespace App\View\Cell;
 use Cake\View\Cell;
 
 /**
- * Notifications cell
+ * Bell cell
  */
-class NotificationsCell extends Cell
+class BellCell extends Cell
 {
 
     /**

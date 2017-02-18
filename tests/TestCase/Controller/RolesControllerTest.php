@@ -25,7 +25,7 @@ class RolesControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/roles');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/roles']);
     }
 
     /**

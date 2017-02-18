@@ -89,5 +89,7 @@ class EventsController extends AppController
         if ($simple == false && isset($simple)) {
             return $this->redirect(['controller' => 'Applications', 'action' => 'book', $eventID]);
         }
+
+        $this->set(compact('event'));
     }
 }

@@ -85,11 +85,11 @@ class UsersController extends AppController
                     $this->Flash->success(__('An Attendee for your user has been created.'));
                 }
 
-                $redir = $user->get('id');
+                $this->Auth->setUser($user->toArray());
 
                 $this->Flash->success(__('You have successfully registered!'));
 
-                return $this->redirect(['controller' => 'Notifications', 'action' => 'welcome', 'prefix' => false, $redir, $eventId]);
+                return $this->redirect(['controller' => 'Landing', 'action' => 'user_home', 'prefix' => false]);
             } else {
                 $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));
             }

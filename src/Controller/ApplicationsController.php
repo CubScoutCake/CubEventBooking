@@ -143,21 +143,6 @@ class ApplicationsController extends AppController
         $this->redirect(['controller' => 'Applications', 'action' => 'view', $application->id, '_ext' => 'pdf']);
     }
 
-    /**
-     * Add method
-     *
-     * @return void Redirects on successful add, renders view otherwise.
-     */
-    public function add($eventID = null)
-    {
-        return $this->redirect(['controller' => 'Applications', 'action' => 'book', $eventID]);
-    }
-
-    public function newApp($eventID = null)
-    {
-        return $this->redirect(['controller' => 'Applications', 'action' => 'book', $eventID]);
-    }
-
     public function book($eventID = null)
     {
         $now = Time::now();
@@ -436,9 +421,8 @@ class ApplicationsController extends AppController
             $applicationId = (int)$this->request->params['pass'][0];
             if ($this->Applications->isOwnedBy($applicationId, $user['id'])) {
                 return true;
-            } else {
-                return false;
             }
+                return false;
         }
 
         return parent::isAuthorized($user);

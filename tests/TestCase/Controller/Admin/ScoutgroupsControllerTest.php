@@ -35,7 +35,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
     // No session data set.
         $this->get('/admin/scoutgroups');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, 'redirect' => '/admin/scoutgroups']);
     }
 
     /**
@@ -72,7 +72,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/admin/scoutgroups/view/1');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, 'redirect' => '/admin/scoutgroups/view/1']);
     }
 
     public function testViewUnauthorised()
@@ -84,7 +84,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
 
         $this->get('/admin/scoutgroups/view/1');
 
-        $this->assertRedirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user-home']);
+        $this->assertRedirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
     }
 
     /**

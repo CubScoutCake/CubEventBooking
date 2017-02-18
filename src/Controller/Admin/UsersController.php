@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\AppController;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\I18n\Time;
+use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
 use Cake\Cache\Cache;
@@ -40,7 +41,7 @@ class UsersController extends AppController
         $section = $this->Sections->get($this->Auth->user('section_id'));
 
         $query = $this->Users
-            ->find('search', ['search' => $this->request->query])
+            ->find('search', ['search' => $this->request->getQueryParams()])
             ->contain(['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes', 'AuthRoles'])
             ->where(['SectionTypes.id' => $section['section_type_id']]);
 

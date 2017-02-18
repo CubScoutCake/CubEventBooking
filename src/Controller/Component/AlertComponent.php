@@ -7,7 +7,7 @@ use Cake\Mailer\MailerAwareTrait;
 use Cake\Mailer\Email;
 use Cake\Cache\Cache;
 
-class NotificationsComponent extends Component
+class AlertComponent extends Component
 {
     public $components = ['Flash', 'Progress'];
 

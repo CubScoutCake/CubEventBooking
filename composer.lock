@@ -4,116 +4,43 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c87b52de6dbd769c12c27bd5e864532",
+    "content-hash": "6d9d02de770f5040f6a5e36eb364c083",
     "packages": [
         {
-            "name": "aura/installer-default",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/auraphp/installer-default.git",
-                "reference": "52f8de3670cc1ef45a916f40f732937436d028c8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/installer-default/zipball/52f8de3670cc1ef45a916f40f732937436d028c8",
-                "reference": "52f8de3670cc1ef45a916f40f732937436d028c8",
-                "shasum": ""
-            },
-            "type": "composer-installer",
-            "extra": {
-                "class": "Aura\\Composer\\DefaultInstaller"
-            },
-            "autoload": {
-                "psr-0": {
-                    "Aura\\Composer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Paul M. Jones",
-                    "email": "pmjones88@gmail.com",
-                    "homepage": "http://paul-m-jones.com"
-                }
-            ],
-            "description": "Installs Aura packages using the Composer defaults.",
-            "keywords": [
-                "aura",
-                "installer"
-            ],
-            "time": "2012-11-26T21:35:57+00:00"
-        },
-        {
             "name": "aura/intl",
-            "version": "1.1.1",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/auraphp/Aura.Intl.git",
-                "reference": "c5fe620167550ad6fa77dd3570fba2efc77a2a21"
+                "reference": "7fce228980b19bf4dee2d7bbd6202a69b0dde926"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auraphp/Aura.Intl/zipball/c5fe620167550ad6fa77dd3570fba2efc77a2a21",
-                "reference": "c5fe620167550ad6fa77dd3570fba2efc77a2a21",
+                "url": "https://api.github.com/repos/auraphp/Aura.Intl/zipball/7fce228980b19bf4dee2d7bbd6202a69b0dde926",
+                "reference": "7fce228980b19bf4dee2d7bbd6202a69b0dde926",
                 "shasum": ""
             },
             "require": {
-                "aura/installer-default": "1.0.*",
-                "php": ">=5.4.0"
+                "php": "^5.6|^7.0"
             },
-            "type": "aura-package",
-            "extra": {
-                "aura": {
-                    "type": "library",
-                    "config": {
-                        "common": "Aura\\Intl\\_Config\\Common"
-                    }
-                },
-                "branch-alias": {
-                    "dev-develop": "1.1.x-dev"
-                }
-            },
+            "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Aura\\Intl": "src/"
-                },
                 "psr-4": {
-                    "Aura\\Intl\\_Config\\": "config/"
+                    "Aura\\Intl\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-2-Clause"
+                "MIT"
             ],
             "authors": [
                 {
-                    "name": "Paul M. Jones",
-                    "email": "pmjones88@gmail.com",
-                    "homepage": "http://paul-m-jones.com"
-                },
-                {
                     "name": "Aura.Intl Contributors",
                     "homepage": "https://github.com/auraphp/Aura.Intl/contributors"
-                },
-                {
-                    "name": "Pascal Borreli",
-                    "email": "pascal@borreli.com"
-                },
-                {
-                    "name": "Mapthegod",
-                    "email": "mapthegod@gmail.com"
-                },
-                {
-                    "name": "Jose Lorenzo Rodriguez",
-                    "email": "jose.zap@gmail.com"
                 }
             ],
-            "description": "The Aura.Intl package provides internationalization (I18N) tools, specifically\npackage-oriented per-locale message translation.",
-            "homepage": "http://auraphp.com/Aura.Intl",
+            "description": "The Aura Intl package provides internationalization tools, specifically message translation.",
+            "homepage": "https://github.com/auraphp/Aura.Intl",
             "keywords": [
                 "g11n",
                 "globalization",
@@ -123,28 +50,29 @@
                 "l10n",
                 "localization"
             ],
-            "time": "2014-08-24T00:00:00+00:00"
+            "time": "2017-01-20T05:00:11+00:00"
         },
         {
             "name": "cakephp/cakephp",
-            "version": "3.3.14",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "d12b9ab1af26421fc32120b3c9e4d18a6a0d2a6c"
+                "reference": "35b2390090479300f08bace6179acc9f16c8a51e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/d12b9ab1af26421fc32120b3c9e4d18a6a0d2a6c",
-                "reference": "d12b9ab1af26421fc32120b3c9e4d18a6a0d2a6c",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/35b2390090479300f08bace6179acc9f16c8a51e",
+                "reference": "35b2390090479300f08bace6179acc9f16c8a51e",
                 "shasum": ""
             },
             "require": {
-                "aura/intl": "1.1.*",
+                "aura/intl": "^3.0.0",
                 "cakephp/chronos": "~1.0",
                 "ext-intl": "*",
                 "ext-mbstring": "*",
-                "php": ">=5.5.9",
+                "lib-icu": ">=4.8",
+                "php": ">=5.6.0",
                 "psr/log": "^1.0",
                 "zendframework/zend-diactoros": "~1.0"
             },
@@ -197,20 +125,20 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-02-06T03:22:10+00:00"
+            "time": "2017-02-13T03:19:04+00:00"
         },
         {
             "name": "cakephp/chronos",
-            "version": "1.0.4",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
-                "reference": "16753ad209f5b478dd35caadcd609104762fc157"
+                "reference": "5146ab942a4c3aea06789da5f3fa5e601c9dc6df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/chronos/zipball/16753ad209f5b478dd35caadcd609104762fc157",
-                "reference": "16753ad209f5b478dd35caadcd609104762fc157",
+                "url": "https://api.github.com/repos/cakephp/chronos/zipball/5146ab942a4c3aea06789da5f3fa5e601c9dc6df",
+                "reference": "5146ab942a4c3aea06789da5f3fa5e601c9dc6df",
                 "shasum": ""
             },
             "require": {
@@ -218,8 +146,8 @@
             },
             "require-dev": {
                 "athletic/athletic": "~0.1",
-                "cakephp/cakephp-codesniffer": "dev-master",
-                "phpunit/phpunit": "*"
+                "cakephp/cakephp-codesniffer": "~2.3",
+                "phpunit/phpunit": "<6.0"
             },
             "type": "library",
             "autoload": {
@@ -252,30 +180,30 @@
                 "datetime",
                 "time"
             ],
-            "time": "2017-01-09T02:11:45+00:00"
+            "time": "2017-02-15T08:51:03+00:00"
         },
         {
             "name": "cakephp/migrations",
-            "version": "dev-master",
+            "version": "1.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/migrations.git",
-                "reference": "d31b2bfa857a95822bc855309f984b5dbb052f03"
+                "reference": "f2a5e2915f8924bd36979a1001edeef7cd455f89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/migrations/zipball/d31b2bfa857a95822bc855309f984b5dbb052f03",
-                "reference": "d31b2bfa857a95822bc855309f984b5dbb052f03",
+                "url": "https://api.github.com/repos/cakephp/migrations/zipball/f2a5e2915f8924bd36979a1001edeef7cd455f89",
+                "reference": "f2a5e2915f8924bd36979a1001edeef7cd455f89",
                 "shasum": ""
             },
             "require": {
-                "cakephp/cakephp": "~3.2",
-                "php": ">=5.5.9",
-                "robmorgan/phinx": "0.6.6"
+                "cakephp/cakephp": "~3.1",
+                "php": ">=5.4",
+                "robmorgan/phinx": "0.6.5"
             },
             "require-dev": {
                 "cakephp/bake": "@stable",
-                "phpunit/phpunit": "~4.1"
+                "phpunit/phpunit": "*"
             },
             "suggest": {
                 "cakephp/bake": "Required if you want to generate migrations."
@@ -302,7 +230,7 @@
                 "cakephp",
                 "migrations"
             ],
-            "time": "2017-02-03 11:17:37"
+            "time": "2017-01-07T16:45:31+00:00"
         },
         {
             "name": "cakephp/plugin-installer",
@@ -394,56 +322,6 @@
             "time": "2015-11-08T23:41:30+00:00"
         },
         {
-            "name": "dereuromark/cakephp-ajax",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dereuromark/cakephp-ajax.git",
-                "reference": "10589034529e382391dfda7bbff10bdf3c4f418a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dereuromark/cakephp-ajax/zipball/10589034529e382391dfda7bbff10bdf3c4f418a",
-                "reference": "10589034529e382391dfda7bbff10bdf3c4f418a",
-                "shasum": ""
-            },
-            "require": {
-                "cakephp/cakephp": "~3.2",
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "dereuromark/cakephp-tools": "dev-master",
-                "fig-r/psr2r-sniffer": "dev-master"
-            },
-            "type": "cakephp-plugin",
-            "autoload": {
-                "psr-4": {
-                    "Ajax\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mark Scherer",
-                    "homepage": "http://www.dereuromark.de",
-                    "role": "Author"
-                }
-            ],
-            "description": "A CakePHP plugin that makes working with AJAX a piece of cake.",
-            "homepage": "https://github.com/dereuromark/cakephp-ajax",
-            "keywords": [
-                "ajax",
-                "asynchronous",
-                "cakephp",
-                "plugin",
-                "view"
-            ],
-            "time": "2016-09-21 22:03:23"
-        },
-        {
             "name": "dompdf/dompdf",
             "version": "v0.7.0",
             "source": {
@@ -503,139 +381,6 @@
             "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
             "homepage": "https://github.com/dompdf/dompdf",
             "time": "2016-05-11T00:36:29+00:00"
-        },
-        {
-            "name": "egeloen/http-adapter",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/egeloen/ivory-http-adapter.git",
-                "reference": "a2518c343e412fd09d02de4900794ae66500ff41"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/egeloen/ivory-http-adapter/zipball/a2518c343e412fd09d02de4900794ae66500ff41",
-                "reference": "a2518c343e412fd09d02de4900794ae66500ff41",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.8",
-                "zendframework/zend-diactoros": "^1.1"
-            },
-            "require-dev": {
-                "cakephp/cakephp": "^3.0.3",
-                "doctrine/cache": "^1.4",
-                "ext-curl": "*",
-                "guzzle/guzzle": "^3.9.4@dev",
-                "guzzlehttp/guzzle": "^4.1.4|^5.0|^6.0",
-                "kriswallsmith/buzz": "~0.13",
-                "nategood/httpful": "^0.2.17",
-                "phpunit/phpunit": "^4.0|^5.0",
-                "phpunit/phpunit-mock-objects": "^2.1|^3.0",
-                "psr/log": "^1.0",
-                "react/dns": "^0.4.1",
-                "react/http-client": "^0.4",
-                "rmccue/requests": "^1.7",
-                "symfony/event-dispatcher": "^2.0|^3.0",
-                "symfony/phpunit-bridge": "^2.7|^3.0",
-                "symfony/stopwatch": "^2.2|^3.0",
-                "tedivm/stash": "~0.13",
-                "zendframework/zend-http": "^2.3.4",
-                "zendframework/zendframework1": "^1.12.9"
-            },
-            "suggest": {
-                "doctrine/cache": "Allows you to use the cache event subscriber",
-                "ext-curl": "Allows you to use the cURL adapter",
-                "ext-http": "Allows you to use the PECL adapter",
-                "guzzle/guzzle": "Allows you to use the Guzzle 3 adapter",
-                "guzzlehttp/guzzle": "Allows you to use the Guzzle 4 adapter",
-                "kriswallsmith/buzz": "Allows you to use the Buzz adapter",
-                "nategood/httpful": "Allows you to use the Httpful adapter",
-                "psr/log": "Allows you to use the logger event subscriber",
-                "rmccue/requests": "Allows you to use the Requests adapter",
-                "symfony/event-dispatcher": "Allows you to use the event lifecycle",
-                "symfony/stopwatch": "Allows you to use the stopwatch http adapter and event subscriber",
-                "tedivm/stash": "Allows you to use the cache event subscriber",
-                "zendframework/zend-http": "Allows you to use the Zend 2 adapter",
-                "zendframework/zendframework1": "Allows you to use the Zend 1 adapter"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Ivory\\HttpAdapter\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Eric GELOEN",
-                    "email": "geloen.eric@gmail.com"
-                }
-            ],
-            "description": "Issue HTTP request for PHP 5.3+.",
-            "keywords": [
-                "http",
-                "http-adapter",
-                "http-client",
-                "psr-7"
-            ],
-            "abandoned": "php-http/httplug",
-            "time": "2017-01-12T17:33:18+00:00"
-        },
-        {
-            "name": "fheider/cakephp-datatables",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fheider/cakephp-datatables.git",
-                "reference": "d3bf1d382edfd46ddca50688e5824cb7e4af14d1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fheider/cakephp-datatables/zipball/d3bf1d382edfd46ddca50688e5824cb7e4af14d1",
-                "reference": "d3bf1d382edfd46ddca50688e5824cb7e4af14d1",
-                "shasum": ""
-            },
-            "require": {
-                "cakephp/cakephp": "~3.0",
-                "php": ">=5.4.16"
-            },
-            "suggest": {
-                "cakephp/cakephp-codesniffer": "Allows to check the code against the coding standards used in CakePHP.",
-                "phpunit/phpunit": "Allows automated tests to be run without system-wide install."
-            },
-            "type": "cakephp-plugin",
-            "autoload": {
-                "psr-4": {
-                    "DataTables\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Frank Heider",
-                    "homepage": "https://github.com/fheider",
-                    "role": "Author"
-                }
-            ],
-            "description": "Use jQuery dataTables for CakePHP 3",
-            "homepage": "https://github.com/fheider/cakephp-datatables",
-            "keywords": [
-                "cakephp",
-                "datatables"
-            ],
-            "time": "2015-12-08 14:46:33"
         },
         {
             "name": "friendsofcake/bootstrap-ui",
@@ -1262,16 +1007,16 @@
         },
         {
             "name": "php-http/message",
-            "version": "v1.4.1",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/message.git",
-                "reference": "bfd895a4e753bdde99bed64d75b999e0c9fa6147"
+                "reference": "13df8c48f40ca7925303aa336f19be4b80984f01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/message/zipball/bfd895a4e753bdde99bed64d75b999e0c9fa6147",
-                "reference": "bfd895a4e753bdde99bed64d75b999e0c9fa6147",
+                "url": "https://api.github.com/repos/php-http/message/zipball/13df8c48f40ca7925303aa336f19be4b80984f01",
+                "reference": "13df8c48f40ca7925303aa336f19be4b80984f01",
                 "shasum": ""
             },
             "require": {
@@ -1299,7 +1044,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -1327,7 +1072,7 @@
                 "message",
                 "psr-7"
             ],
-            "time": "2016-12-16T21:09:21+00:00"
+            "time": "2017-02-14T08:58:37+00:00"
         },
         {
             "name": "php-http/message-factory",
@@ -1583,16 +1328,16 @@
         },
         {
             "name": "robmorgan/phinx",
-            "version": "v0.6.6",
+            "version": "v0.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/robmorgan/phinx.git",
-                "reference": "cc97b79f62c2180caba0be1d3744a335a296a678"
+                "reference": "6943cb4bb78bf9d3964967a032220b7c793b97b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/robmorgan/phinx/zipball/cc97b79f62c2180caba0be1d3744a335a296a678",
-                "reference": "cc97b79f62c2180caba0be1d3744a335a296a678",
+                "url": "https://api.github.com/repos/robmorgan/phinx/zipball/6943cb4bb78bf9d3964967a032220b7c793b97b7",
+                "reference": "6943cb4bb78bf9d3964967a032220b7c793b97b7",
                 "shasum": ""
             },
             "require": {
@@ -1645,7 +1390,7 @@
                 "migrations",
                 "phinx"
             ],
-            "time": "2017-01-23T08:53:20+00:00"
+            "time": "2016-10-27T10:16:12+00:00"
         },
         {
             "name": "setasign/fpdi",
@@ -1695,52 +1440,6 @@
                 "pdf"
             ],
             "time": "2015-11-30T10:53:14+00:00"
-        },
-        {
-            "name": "sparkpost/php-sparkpost",
-            "version": "1.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SparkPost/php-sparkpost.git",
-                "reference": "aac8412f0b6a12dd26b21e891a6f216e0a1c88e2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SparkPost/php-sparkpost/zipball/aac8412f0b6a12dd26b21e891a6f216e0a1c88e2",
-                "reference": "aac8412f0b6a12dd26b21e891a6f216e0a1c88e2",
-                "shasum": ""
-            },
-            "require": {
-                "egeloen/http-adapter": "*",
-                "php": ">=5.5.0"
-            },
-            "require-dev": {
-                "fabpot/php-cs-fixer": "^1.11",
-                "guzzlehttp/guzzle": "6.*",
-                "mockery/mockery": "^0.9.4",
-                "phpunit/phpunit": "4.3.*",
-                "satooshi/php-coveralls": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "SparkPost\\": "lib/SparkPost/",
-                    "SparkPost\\SendGridCompatibility\\": "lib/SendGridCompatibility/",
-                    "SparkPost\\Test\\TestUtils\\": "test/unit/TestUtils/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache 2.0"
-            ],
-            "authors": [
-                {
-                    "name": "SparkPost"
-                }
-            ],
-            "description": "Client library for interfacing with the SparkPost API.",
-            "abandoned": "sparkpost/sparkpost",
-            "time": "2016-05-27T16:33:25+00:00"
         },
         {
             "name": "sparkpost/sparkpost",
@@ -2185,21 +1884,22 @@
         },
         {
             "name": "syntaxera/cakephp-sparkpost-plugin",
-            "version": "v0.4.5",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/syntaxera/cakephp-sparkpost-plugin.git",
-                "reference": "5211903f9f0fbc54eda2fdb8421d4676ff0cabb1"
+                "reference": "0086c8112f53df493aa40e8f10a5fc0ab870d810"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/syntaxera/cakephp-sparkpost-plugin/zipball/5211903f9f0fbc54eda2fdb8421d4676ff0cabb1",
-                "reference": "5211903f9f0fbc54eda2fdb8421d4676ff0cabb1",
+                "url": "https://api.github.com/repos/syntaxera/cakephp-sparkpost-plugin/zipball/0086c8112f53df493aa40e8f10a5fc0ab870d810",
+                "reference": "0086c8112f53df493aa40e8f10a5fc0ab870d810",
                 "shasum": ""
             },
             "require": {
                 "cakephp/cakephp": "~3.0",
-                "sparkpost/php-sparkpost": "~1.0"
+                "php-http/discovery": "^1.0",
+                "sparkpost/sparkpost": "^2.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~5.3",
@@ -2235,7 +1935,7 @@
                 "plugin",
                 "sparkpost"
             ],
-            "time": "2016-05-06T19:31:52+00:00"
+            "time": "2016-07-21 19:29:10"
         },
         {
             "name": "tecnickcom/tcpdf",
@@ -2499,16 +2199,16 @@
         },
         {
             "name": "codeclimate/php-test-reporter",
-            "version": "dev-master",
+            "version": "v0.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codeclimate/php-test-reporter.git",
-                "reference": "cafd233795d7c44087fdac00ae7ff678527d05e7"
+                "reference": "eab9ac233f23a4c12a12755793750f22fc46dd3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codeclimate/php-test-reporter/zipball/cafd233795d7c44087fdac00ae7ff678527d05e7",
-                "reference": "cafd233795d7c44087fdac00ae7ff678527d05e7",
+                "url": "https://api.github.com/repos/codeclimate/php-test-reporter/zipball/eab9ac233f23a4c12a12755793750f22fc46dd3e",
+                "reference": "eab9ac233f23a4c12a12755793750f22fc46dd3e",
                 "shasum": ""
             },
             "require": {
@@ -2554,7 +2254,7 @@
                 "codeclimate",
                 "coverage"
             ],
-            "time": "2017-02-06 19:07:57"
+            "time": "2017-02-15T22:25:47+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -5181,16 +4881,15 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "cakephp/cakephp": 0,
-        "cakephp/migrations": 20,
+        "cakephp/migrations": 0,
         "tecnickcom/tcpdf": 0,
-        "fheider/cakephp-datatables": 20,
         "muffin/trash": 20,
-        "dereuromark/cakephp-ajax": 20,
+        "syntaxera/cakephp-sparkpost-plugin": 20,
         "php-http/httplug": 0,
         "php-http/client-common": 0,
         "php-http/socket-client": 0,
-        "psy/psysh": 0,
-        "codeclimate/php-test-reporter": 20
+        "robmorgan/phinx": 0,
+        "psy/psysh": 0
     },
     "prefer-stable": true,
     "prefer-lowest": false,

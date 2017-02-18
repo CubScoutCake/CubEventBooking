@@ -38,7 +38,7 @@ class DistrictsControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/districts');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect('/login?redirect=%2Fdistricts');
     }
 
     /**
@@ -92,6 +92,6 @@ class DistrictsControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/admin/districts/view/1');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, 'redirect' => '/admin/districts/view/1']);
     }
 }
