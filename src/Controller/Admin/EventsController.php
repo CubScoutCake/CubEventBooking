@@ -32,17 +32,34 @@ class EventsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Event id.
-     * @return void
+     * @param string|null $eventId Event id.
+     *
+*@return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($eventId = null)
     {
-        $event = $this->Events->get($id, [
+        $event = $this->Events->get($eventId, [
             'contain' => ['Settings', 'Discounts', 'Applications']
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);
+
+        $lineQuery = $this->Events->Applications->find('all', ['contain' => ['Sections.Scoutgroups.Districts']])
+            ->where(['event_id' => $eventId]);
+        $lineQuery = $lineQuery->select([
+                'value' => $lineQuery->func()->count('*'),
+                'label' => 'Districts.district'
+            ])
+            ->group('Districts.district');
+
+        $lineArray = $lineQuery->toArray();
+
+        $lineArray = Hash::flatten($lineArray);
+
+        $lineArray = json_encode($lineArray);
+
+        $this->set(compact('lineArray', 'arrayCount', 'arrayDistrict'));
 
         // Get Entities from Registry
         $sets = TableRegistry::get('Settings');
@@ -230,7 +247,7 @@ class EventsController extends AppController
     public function accounts($id = null)
     {
         $event = $this->Events->get($id, [
-            'contain' => ['Settings', 'Discounts', 'Applications', 'Applications.Users', 'Applications.Scoutgroups']
+            'contain' => ['Settings', 'Discounts', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups.Districts']
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);
@@ -325,7 +342,7 @@ class EventsController extends AppController
             $sumBalances = $sumValues - $sumPayments;
 
             // Count of Line Items
-            $invItemCounts = $itms->find('all')->contain(['Invoices.Applications'])->where(['Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity'), 'value' => $invoices->func()->max('InvoiceItems.Value')])->group('itemtype_id')->toArray();
+            $invItemCounts = $itms->find('all')->contain(['Invoices.Applications'])->where(['Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity'), 'value' => $invoices->func()->max('InvoiceItems.Value')])->group('item_type_id')->toArray();
 
             $invCubs = $invItemCounts[1]->sum;
             $invYls = $invItemCounts[2]->sum;
@@ -339,7 +356,7 @@ class EventsController extends AppController
 
             if (count($invItemCounts) > 6) {
                 // Count of Cancelled Items
-                $canItemCounts = $itms->find('all')->contain(['Invoices.Applications', 'Itemtypes'])->where(['Itemtypes.cancelled' => true, 'Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity'), 'value' => $invoices->func()->max('InvoiceItems.Value')])->group('itemtype_id')->toArray();
+                $canItemCounts = $itms->find('all')->contain(['Invoices.Applications', 'Itemtypes'])->where(['Itemtypes.cancelled' => true, 'Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity'), 'value' => $invoices->func()->max('InvoiceItems.Value')])->group('item_type_id')->toArray();
 
                 $canCubs = $canItemCounts[1]->sum;
                 $canYls = $canItemCounts[2]->sum;

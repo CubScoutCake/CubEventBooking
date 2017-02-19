@@ -16,7 +16,7 @@ class AdminForm extends Form
      */
     protected function _buildSchema(Schema $schema)
     {
-        return $schema->addField('link', 'string');
+        return $schema->addField('q', 'string');
     }
 
     /**
@@ -29,7 +29,7 @@ class AdminForm extends Form
     protected function _buildValidator(Validator $validator)
     {
         $validator
-            ->notEmpty('link');
+            ->notEmpty('q');
 
         return $validator;
     }

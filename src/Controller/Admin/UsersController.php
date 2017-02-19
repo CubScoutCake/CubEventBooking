@@ -49,13 +49,20 @@ class UsersController extends AppController
 
         $this->paginate = [
             'contain' => ['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes'],
-            'order' => ['modified' => 'DESC'],
+            'order' => ['last_login' => 'DESC'],
             'conditions' => ['SectionTypes.id' => $section['section_type_id']]
         ];
         //$this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
 
-        $sections = $this->Users->Sections->find('list');
+        $sections = $this->Users->Sections->find(
+            'list',
+            [
+                'keyField' => 'id',
+                'valueField' => 'section',
+                'groupField' => 'scoutgroup.district.district'
+            ]
+        )->contain(['Scoutgroups.Districts']);
         $roles = $this->Users->Roles->find('leaders')->find('list');
         $authRoles = $this->Users->AuthRoles->find('list');
         $this->set(compact('sections', 'roles', 'authRoles'));

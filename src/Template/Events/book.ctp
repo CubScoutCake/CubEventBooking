@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div>Event Availability</div>
-                                        <div class="huge"><?= $this->Number->format($event->max_apps - $event->cc_apps) ?> Application Bookings Available</div>
+                                        <div class="huge"><?= $this->Number->format($event->max_apps - $event->cc_apps) ?> <?= h($term) ?> Available</div>
                                     </div>
                                 </div>
                             </div>
@@ -142,13 +142,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="<?php echo $this->Url->build([
-                                'controller' => 'Events',
-                                'action' => 'book_process',
-                                'prefix' => false,
-                                $event->id,
-                                1
-                                ]); ?>">
+                            <a href="#" data-toggle="modal" data-target="#myModal">
                                 <div class="panel-footer">
                                     <span class="pull-left">Book</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -157,6 +151,64 @@
                             </a>
                         </div>
                     </div>
+
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fa fa-list fa-5x"></i>
+                                        </div>
+                                        <div class="col-xs-7 text-right">
+                                            <div class="huge">List Book</div>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <br/>
+                                        <div class="col-lg-offset-1 col-lg-10">
+                                            <?= $this->Form->create($attForm); ?>
+                                                <legend><?= __('Number of Attendees Being Registered') ?></legend>
+                                                <p>Please enter the number of attendees of each type you are booking for.</p>
+                                                <?php
+                                                //if ($cubsVis == 1) {
+                                                echo $this->Form->input('section');
+                                                //}
+                                                //if ($ylsVis == 1) {
+                                                echo $this->Form->input('non_section');
+                                                //}
+                                                //if ($leadersVis == 1) {
+                                                echo $this->Form->input('leaders');
+                                                //}
+                                                ?>
+                                            <br/>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            Step 1 of 3
+                                        </div>
+                                        <div class="col-xs-9 pull-right">
+                                            <?php echo $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary']); ?>
+                                            <?php echo $this->Form->end(); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+
                 </div>
             </div>
         </div>

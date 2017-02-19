@@ -3,6 +3,7 @@ namespace App\Form;
 
 use Cake\Form\Form;
 use Cake\Form\Schema;
+use Cake\Controller\Controller;
 use Cake\Validation\Validator;
 
 class DiscountForm extends Form
@@ -40,11 +41,10 @@ class DiscountForm extends Form
      *
      * @param array $data The Data to feed the form.
      *
-     * @return bool
+     * @return bool;
      */
     protected function _execute(array $data)
     {
-        // Send an email.
         return true;
     }
 }

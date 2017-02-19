@@ -5,13 +5,13 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^7.0",
+        "php": "^7",
         "cakephp/cakephp": "@stable",
-        "mobiledetect/mobiledetectlib": "^2.0",
+        "mobiledetect/mobiledetectlib": "*",
         "cakephp/migrations": "@stable",
         "cakephp/plugin-installer": "*",
         "dompdf/dompdf": "*",
-        "friendsofcake/cakepdf": "^3.0",
+        "friendsofcake/cakepdf": "*",
         "tecnickcom/tcpdf" : "@stable",
         "mpdf/mpdf" : "^6.1",
         "friendsofcake/bootstrap-ui": "*",
@@ -22,7 +22,7 @@
         "php-http/httplug": "@stable",
         "php-http/client-common": "@stable",
         "php-http/socket-client": "@stable",
-        "robmorgan/phinx": "@stable"
+        "robmorgan/phinx": "*"
     },
     "require-dev": {
         "psy/psysh": "@stable",

@@ -19,7 +19,7 @@ class EventTypesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['InvoiceTexts', 'LegalTexts']
+            'contain' => ['Settings']
         ];
         $eventTypes = $this->paginate($this->EventTypes);
 
@@ -37,7 +37,7 @@ class EventTypesController extends AppController
     public function view($id = null)
     {
         $eventType = $this->EventTypes->get($id, [
-            'contain' => ['InvoiceTexts', 'LegalTexts', 'Events']
+            'contain' => ['Settings', 'Events']
         ]);
 
         $this->set('eventType', $eventType);

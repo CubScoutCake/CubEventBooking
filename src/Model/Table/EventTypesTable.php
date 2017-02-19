@@ -39,14 +39,20 @@ class EventTypesTable extends Table
         $this->primaryKey('id');
 
         $this->belongsTo('Settings', [
-            'foreignKey' => 'invoice_text_id'
-        ]);
+                'foreignKey' => 'invoice_text_id',
+                'property' => 'invoice_text',
+                'conditions' => ['Settings.setting_type_id' => 4],
+            ]);
         $this->belongsTo('Settings', [
-            'foreignKey' => 'legal_text_id'
-        ]);
+                'foreignKey' => 'legal_text_id',
+                'property' => 'legal_text',
+                'conditions' => ['Settings.setting_type_id' => 3],
+            ]);
         $this->belongsTo('Settings', [
-            'foreignKey' => 'application_ref_id'
-        ]);
+                'foreignKey' => 'application_ref_id',
+                'property' => 'application_term',
+                'conditions' => ['Settings.setting_type_id' => 6],
+            ]);
 
         $this->hasMany('Events', [
             'foreignKey' => 'event_type_id'

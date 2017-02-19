@@ -18,12 +18,11 @@ class SettingsController extends AppController
      */
     public function index()
     {
+        $superAuth = bindec('0' . '1' . '000');
         $this->paginate = [
-            'contain' => ['Events', 'SettingTypes']
+            'contain' => ['SettingTypes'], 'conditions' => ['SettingTypes.min_auth <=' => $superAuth]
         ];
-        $settings = $this->paginate($this->Settings);
-
-        $this->set(compact('settings'));
+        $this->set('settings', $this->paginate($this->Settings));
         $this->set('_serialize', ['settings']);
     }
 
@@ -62,7 +61,7 @@ class SettingsController extends AppController
             $this->Flash->error(__('The setting could not be saved. Please, try again.'));
         }
         $events = $this->Settings->Events->find('list', ['limit' => 200]);
-        $settingTypes = $this->Settings->SettingTypes->find('list', ['limit' => 200]);
+        $settingTypes = $this->Settings->SettingTypes->find('list', ['limit' => 200])->where(['min_auth <=' => bindec('01000')]);
         $this->set(compact('setting', 'events', 'settingTypes'));
         $this->set('_serialize', ['setting']);
     }
@@ -88,8 +87,7 @@ class SettingsController extends AppController
             }
             $this->Flash->error(__('The setting could not be saved. Please, try again.'));
         }
-        $events = $this->Settings->Events->find('list', ['limit' => 200]);
-        $settingTypes = $this->Settings->SettingTypes->find('list', ['limit' => 200]);
+        $settingTypes = $this->Settings->SettingTypes->find('list', ['limit' => 200])->where(['min_auth <=' => bindec('01000')]);
         $this->set(compact('setting', 'events', 'settingTypes'));
         $this->set('_serialize', ['setting']);
     }

@@ -20,29 +20,28 @@ class SettingTypesSeed extends AbstractSeed
     {
         $data = [
             [
-                'id' => '1',
                 'setting_type' => 'General',
                 'description' => 'General Setting Type',
             ],
             [
-                'id' => '2',
                 'setting_type' => 'Code',
                 'description' => 'SQL or PHP code for insertion.',
             ],
             [
-                'id' => '3',
                 'setting_type' => 'Legal Text',
                 'description' => 'Specifying Legal Text for Use under areas.',
             ],
             [
-                'id' => '4',
                 'setting_type' => 'Invoice Label',
                 'description' => 'Labels for invoices - e.g. INV#',
             ],
             [
-                'id' => '5',
                 'setting_type' => 'Image Size',
                 'description' => 'An image height in px for a template.',
+            ],
+            [
+                'setting_type' => 'Application Term',
+                'description' => 'A term for an application. E.g. Team.',
             ],
         ];
 

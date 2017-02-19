@@ -68,6 +68,8 @@ class EventsFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'event_type_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'section_type_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'cc_apps' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'complete' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'events_invtext_id' => ['type' => 'index', 'columns' => ['invtext_id'], 'length' => []],
             'events_legaltext_id' => ['type' => 'index', 'columns' => ['legaltext_id'], 'length' => []],
@@ -142,6 +144,7 @@ class EventsFixture extends TestFixture
                 'deleted' => null,
                 'event_type_id' => 1,
                 'section_type_id' => 1,
+                'complete' => 1,
             ],
             [
                 'id' => 2,
@@ -195,6 +198,7 @@ class EventsFixture extends TestFixture
                 'deleted' => 1482071220,
                 'event_type_id' => 1,
                 'section_type_id' => 1,
+                'complete' => 1,
             ],
             [
                 'id' => 3,
@@ -248,6 +252,7 @@ class EventsFixture extends TestFixture
                 'deleted' => null,
                 'event_type_id' => 1,
                 'section_type_id' => 1,
+                'complete' => 0,
             ],
         ];
         parent::init();

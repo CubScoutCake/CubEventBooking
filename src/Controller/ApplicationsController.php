@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
 
 
 /**
@@ -220,18 +221,17 @@ class ApplicationsController extends AppController
      *
      * @return void Redirects on successful add, renders view otherwise.
      */
-    public function simpleBook($eventId = null, $attendees = null)
+    public function simpleBook($eventId = null, $attendees = null, $nonSectionAtts = null, $leaderAtts = null)
     {
         if (!isset($eventId) || !isset($attendees)) {
-            $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId, $attendees]);
+            //$this->redirect(['controller' => 'Events', 'action' => 'book', $eventId, $attendees]);
         }
 
         $this->Events = TableRegistry::get('Events');
-        $event = $this->Events->get($eventId);
+        $event = $this->Events->get($eventId, ['contain' => ['EventTypes']]);
 
         if (isset($eventId)) {
             $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventId])->count('*');
-
 
             if ($applicationCount > $event->available_apps && isset($event->available_apps)) {
                 $this->Flash->error(__('Apologies this Event is Full.'));
@@ -246,32 +246,41 @@ class ApplicationsController extends AppController
 
         $application = $this->Applications->newEntity();
 
+        $userId = $this->Auth->user('id');
+        $users = TableRegistry::get('Users');
+        $user = $users->get($userId, ['contain' => ['Sections.SectionTypes.Roles']]);
+        $sectionId = $user['section_id'];
 
         if ($this->request->is('post')) {
             // Patch Data
-            $userId = $this->Auth->user('id');
-            $users = TableRegistry::get('Users');
-            $user = $users->get($userId);
-            $sectionId = $user['section_id'];
 
             $newData = [
                 'modification' => 0,
                 'user_id' => $userId,
                 'section_id' => $sectionId,
-                'event_id' => $eventId
+                'event_id' => $eventId,
+                'invoices.0.user_id' => $userId,
             ];
 
-            $application = $this->Applications->patchEntity($application, $newData);
+            $application = $this->Applications->patchEntity(
+                $application,
+                $newData,
+                ['associated' => [ 'Invoices' ]]
+            );
 
             $application = $this->Applications->patchEntity(
                 $application,
                 $this->request->data,
-                ['associated' => [ 'Attendees']]
+                ['associated' => [ 'Attendees', 'Invoices' ]]
             );
 
             foreach ($application->attendees as $attendee) {
                 $attendee['user_id'] = $userId;
                 $attendee['section_id'] = $sectionId;
+            }
+
+            foreach ($application->invoices as $invoice) {
+                $invoice['user_id'] = $userId;
             }
 
             if ($this->Applications->save($application)) {
@@ -295,10 +304,23 @@ class ApplicationsController extends AppController
             }
         }
 
-        $sections = $this->Applications->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
-        $roles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('nonAuto');
+        $sectionType = Inflector::singularize($user->section->section_type->section_type);
 
-        $this->set(compact('application', 'roles', 'sections', 'attendees'));
+        $settings = TableRegistry::get('Settings');
+        $termSetting = $settings->get($event->event_type->application_ref_id);
+
+        $term = $termSetting->text;
+        $teamLeaderBool = $event->event_type->team_leader;
+        $permitHolderBool = $event->event_type->permit_holder;
+
+        $this->set(compact('application', 'teamLeaderBool', 'permitHolderBool', 'term',  'attendees', 'nonSectionAtts', 'leaderAtts', 'sectionType'));
+
+        $sections = $this->Applications->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
+        $sectionRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->where(['id' => $user->section->section_type->role_id]);
+        $nonSectionRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('nonAuto')->find('minors')->where(['id <>' => $user->section->section_type->role_id]);
+        $leaderRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('leaders')->find('nonAuto');
+
+        $this->set(compact('application', 'sectionRoles', 'term', 'nonSectionRoles', 'leaderRoles', 'sections', 'attendees', 'nonSectionAtts', 'leaderAtts', 'sectionType'));
         $this->set('_serialize', ['application']);
     }
 

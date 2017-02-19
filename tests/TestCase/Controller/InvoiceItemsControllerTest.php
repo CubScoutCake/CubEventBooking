@@ -14,7 +14,7 @@ class InvoiceItemsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.invoice_items',
         'app.invoices',
@@ -31,12 +31,6 @@ class InvoiceItemsControllerTest extends IntegrationTestCase
         'app.settings',
         'app.setting_types',
         'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.notes',
         'app.applications_attendees',
         'app.allergies',
         'app.attendees_allergies',

@@ -5,7 +5,6 @@
         <?php
             echo $this->Form->input('name');
             echo $this->Form->input('text');
-            echo $this->Form->input('event_id', ['options' => $events, 'empty' => true]);
             echo $this->Form->input('setting_type_id', ['options' => $settingTypes, 'empty' => true]);
             echo $this->Form->input('number');
         ?>

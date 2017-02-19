@@ -1,35 +1,3 @@
-<?php
-$this->extend('../Layout/TwitterBootstrap/dashboard');
-
-
-$this->start('tb_actions');
-?>
-<li><?= $this->Html->link(__('Edit Event Type'), ['action' => 'edit', $eventType->id]) ?> </li>
-<li><?= $this->Form->postLink(__('Delete Event Type'), ['action' => 'delete', $eventType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $eventType->id)]) ?> </li>
-<li><?= $this->Html->link(__('List Event Types'), ['action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('New Event Type'), ['action' => 'add']) ?> </li>
-<li><?= $this->Html->link(__('List Settings'), ['controller' => 'Settings', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('New Setting'), ['controller' => 'Settings', 'action' => 'add']) ?> </li>
-<li><?= $this->Html->link(__('List Events'), ['controller' => 'Events', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('New Event'), ['controller' => 'Events', 'action' => 'add']) ?> </li>
-<?php
-$this->end();
-
-$this->start('tb_sidebar');
-?>
-<ul class="nav nav-sidebar">
-<li><?= $this->Html->link(__('Edit Event Type'), ['action' => 'edit', $eventType->id]) ?> </li>
-<li><?= $this->Form->postLink(__('Delete Event Type'), ['action' => 'delete', $eventType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $eventType->id)]) ?> </li>
-<li><?= $this->Html->link(__('List Event Types'), ['action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('New Event Type'), ['action' => 'add']) ?> </li>
-<li><?= $this->Html->link(__('List Settings'), ['controller' => 'Settings', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('New Setting'), ['controller' => 'Settings', 'action' => 'add']) ?> </li>
-<li><?= $this->Html->link(__('List Events'), ['controller' => 'Events', 'action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('New Event'), ['controller' => 'Events', 'action' => 'add']) ?> </li>
-</ul>
-<?php
-$this->end();
-?>
 <div class="panel panel-default">
     <!-- Panel header -->
     <div class="panel-heading">

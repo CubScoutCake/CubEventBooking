@@ -18,16 +18,16 @@
                 <?php foreach ($settings as $setting): ?>
                     <tr>
                         <td><?= $this->Number->format($setting->id) ?></td>
-                        <td><?= $this->Text->truncate($setting->name,18) ?></td>
+                        <td><?= h($setting->name) ?></td>
                         <td class="actions">
                             <?= $this->Html->link('', ['action' => 'view', $setting->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
                             <?= $this->Html->link('', ['action' => 'edit', $setting->id], ['title' => __('Edit'), 'class' => 'btn btn-default fa fa-pencil']) ?>
                             <?= $this->Form->postLink('', ['action' => 'delete', $setting->id], ['confirm' => __('Are you sure you want to delete # {0}?', $setting->id), 'title' => __('Delete'), 'class' => 'btn btn-default fa fa-trash-o']) ?>
                         </td>
-                        <td><?= $this->Text->truncate($setting->text,18) ?></td>
+                        <td><?= $this->Text->truncate($setting->text,60) ?></td>
                         <td><?= h($setting->created) ?></td>
                         <td><?= h($setting->modified) ?></td>
-                        <td><?= $setting->has('setting_type') ? $this->Html->link($setting->setting_type->setting_type, ['controller' => 'SettingTypes', 'action' => 'view', $setting->setting_type->id]) : '' ?></td>
+                        <td><?= $setting->has('setting_type') ? $setting->setting_type->setting_type : '' ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

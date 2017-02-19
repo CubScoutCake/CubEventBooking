@@ -14,7 +14,7 @@ use Cake\Validation\Validator;
  * @property \Cake\ORM\Association\BelongsTo $Users
  * @property \Cake\ORM\Association\BelongsTo $Sections
  * @property \Cake\ORM\Association\BelongsTo $Events
- * @property \Cake\ORM\Association\HasMany $Invoices
+ * @property \Cake\ORM\Association\HasOne $Invoices
  * @property \Cake\ORM\Association\BelongsToMany $Attendees
  */
 class ApplicationsTable extends Table
@@ -66,9 +66,12 @@ class ApplicationsTable extends Table
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id'
         ]);
-        $this->hasMany('Invoices', [
-            'foreignKey' => 'application_id'
-        ]);
+        $this->hasOne('Invoices', [
+                'foreignKey' => 'application_id',
+            ])
+            ->setDependent(true)
+            ->setCascadeCallbacks(true);
+
         $this->hasMany('LogisticItems', [
             'foreignKey' => 'application_id'
         ]);
@@ -99,8 +102,10 @@ class ApplicationsTable extends Table
             ->allowEmpty('modification');
 
         $validator
-            ->requirePresence('permitholder', 'create')
-            ->notEmpty('permitholder');
+            ->notEmpty('permit_holder');
+
+        $validator
+            ->notEmpty('team_leader');
 
         return $validator;
     }

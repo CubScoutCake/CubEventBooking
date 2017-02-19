@@ -264,32 +264,19 @@ $cakeDescription = 'HertsCubs Booking System';
                         ]);
                         echo $cell; ?>
                         <li>
-                            <a href="#"><i class="fa fa-calendar-o fa-fw"></i> Events<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
+                            <a href="<?php echo $this->Url->build([
                                 'controller' => 'Events',
                                 'action' => 'index',
-                                'prefix' => false]); ?>">View Events</a>
-                                </li>
-                            </ul>
+                                'prefix' => false]); ?>">
+                                <i class="fa fa-calendar-o fa-fw"></i> Events</a>
+                            <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-tasks fa-fw"></i> Applications<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
+                            <a href="<?php echo $this->Url->build([
                                 'controller' => 'Applications',
                                 'action' => 'index',
-                                'prefix' => false]); ?>">View Applications</a>
-                                </li>
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
-                                'controller' => 'Applications',
-                                'action' => 'add',  
-                                'prefix' => false]); ?>">Add New Application</a>
-                                </li>
-                            </ul>
+                                'prefix' => false]); ?>">
+                                <i class="fa fa-tasks fa-fw"></i> Applications</a>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
@@ -353,33 +340,20 @@ $cakeDescription = 'HertsCubs Booking System';
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Invoices<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
+                            <a href="<?php echo $this->Url->build([
                                 'controller' => 'Invoices',
                                 'action' => 'index',
-                                'prefix' => false]); ?>">View Invoices</a>
-                                </li>
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
-                                'controller' => 'Invoices',
-                                'action' => 'generate',
-                                'prefix' => false]); ?>">Generate New Invoice</a>
-                                </li>
-                            </ul>
+                                'prefix' => false]); ?>">
+                                <i class="fa fa-files-o fa-fw"></i> Invoices</a>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-gbp fa-fw"></i> Payments<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
+                            <a href="<?php echo $this->Url->build([
                                 'controller' => 'Payments',
                                 'action' => 'index',
-                                'prefix' => false]); ?>">View Payments</a>
-                                </li>
-                            </ul>
+                                'prefix' => false]); ?>">
+                                <i class="fa fa-gbp fa-fw"></i> Payments</a>
+                            <!-- /.nav-second-level -->
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> More<span class="fa arrow"></span></a>

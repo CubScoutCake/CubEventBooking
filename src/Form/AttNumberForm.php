@@ -40,4 +40,16 @@ class AttNumberForm extends Form
 
         return $validator;
     }
+
+    /**
+     * Application of the Discount Array.
+     *
+     * @param array $data The Data to feed the form.
+     *
+     * @return bool
+     */
+    protected function _execute(array $data)
+    {
+        return true;
+    }
 }

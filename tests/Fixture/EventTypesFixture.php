@@ -25,12 +25,19 @@ class EventTypesFixture extends TestFixture
         'parent_applications' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'invoice_text_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'legal_text_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'team_leader' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+        'permit_holder' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+        'display_availability' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+        'application_ref_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         '_indexes' => [
             'event_types_invoice_text_id' => ['type' => 'index', 'columns' => ['invoice_text_id'], 'length' => []],
             'event_types_legal_text_id' => ['type' => 'index', 'columns' => ['legal_text_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'event_types_inv_text_id' => ['type' => 'foreign', 'columns' => ['invoice_text_id'], 'references' => ['settings', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
+            'event_types_legal_text_id' => ['type' => 'foreign', 'columns' => ['legal_text_id'], 'references' => ['settings', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
+            'event_types_application_ref_id' => ['type' => 'foreign', 'columns' => ['application_ref_id'], 'references' => ['settings', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
@@ -49,7 +56,11 @@ class EventTypesFixture extends TestFixture
             'medical' => 1,
             'parent_applications' => 1,
             'invoice_text_id' => 1,
-            'legal_text_id' => 1
+            'legal_text_id' => 1,
+            'application_ref_id' => 1,
+            'display_availability' => 1,
+            'permit_holder' => 1,
+            'team_leader' => 1,
         ],
     ];
 }

@@ -29,6 +29,15 @@ use Cake\Mailer\Email;
  */
 class LandingController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Search.Prg', [
+            // This is default config. You can modify "actions" as needed to make
+            // the PRG component work only for specified methods.
+            'actions' => ['link']
+        ]);
+    }
 
     /**
      * Displays a view
@@ -79,52 +88,106 @@ class LandingController extends AppController
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));
     }
 
-    public function link($ent = null)
+    public function link($linkEntry = null)
     {
-        if (is_null($ent)) {
-            $ent = $this->request->data['link'];
+        $searchEntry = $this->request->getQuery('q');
+
+        if (!is_null($linkEntry)) {
+            $searchEntry = $linkEntry;
         }
 
-        if (is_null($ent)) {
-            return $this->redirect(['action' => 'admin_home']);
-        }
+        $this->set(compact('searchEntry'));
 
-        $entStr = strtoupper($ent);
+        $idNum = null;
 
-        $cont = substr($entStr, 0, 1);
+        if (isset($searchEntry) || !is_null($searchEntry))
+        {
+            $entStr = strtoupper($searchEntry);
 
-        $id = substr($entStr, 1);
-        $idNum = intval($id);
+            $cont = substr($entStr, 0, 1);
 
-        if (is_int($idNum) && $idNum != 0) {
-            switch ($cont) {
-                case "U":
-                    return $this->redirect(['controller' => 'Users', 'action' => 'view', $idNum]);
-                    break;
-                case "I":
-                    return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $idNum]);
-                    break;
-                case "A":
-                    return $this->redirect(['controller' => 'Applications', 'action' => 'view', $idNum]);
-                    break;
-                case "N":
-                    return $this->redirect(['controller' => 'Notes', 'action' => 'view', $idNum]);
-                    break;
-                case "P":
-                    return $this->redirect(['controller' => 'Payments', 'action' => 'view', $idNum]);
-                    break;
-                case "T":
-                    return $this->redirect(['controller' => 'Attendees', 'action' => 'view', $idNum]);
-                    break;
-                case "E":
-                    return $this->redirect(['controller' => 'Events', 'action' => 'full_view', $idNum]);
-                    break;
-                case "S":
-                    return $this->redirect(['controller' => 'Settings', 'action' => 'view', $idNum]);
-                    break;
-                default:
-                    return $this->redirect(['action' => 'admin_home']);
+            $id = substr($entStr, 1);
+            $idNum = intval($id);
+
+            if (is_int($idNum) && $idNum != 0) {
+                switch ($cont) {
+                    case "U":
+                        return $this->redirect(['controller' => 'Users', 'action' => 'view', $idNum]);
+                        break;
+                    case "I":
+                        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $idNum]);
+                        break;
+                    case "A":
+                        return $this->redirect(['controller' => 'Applications', 'action' => 'view', $idNum]);
+                        break;
+                    case "N":
+                        return $this->redirect(['controller' => 'Notes', 'action' => 'view', $idNum]);
+                        break;
+                    case "P":
+                        return $this->redirect(['controller' => 'Payments', 'action' => 'view', $idNum]);
+                        break;
+                    case "T":
+                        return $this->redirect(['controller' => 'Attendees', 'action' => 'view', $idNum]);
+                        break;
+                    case "E":
+                        return $this->redirect(['controller' => 'Events', 'action' => 'full_view', $idNum]);
+                        break;
+                    case "S":
+                        return $this->redirect(['controller' => 'Settings', 'action' => 'view', $idNum]);
+                        break;
+                    default:
+                        return $this->redirect(['action' => 'admin_home']);
+                }
             }
+        }
+
+        if (!is_int($idNum) || $idNum == 0 || is_null($idNum)) {
+
+            $this->Sections = TableRegistry::get('Sections');
+            $this->Users = TableRegistry::get('Users');
+            $section = $this->Sections->get($this->Auth->user('section_id'));
+
+            $userQuery = $this->Users
+                ->find('search', ['search' => $this->request->getQueryParams()])
+                ->contain(['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes', 'AuthRoles'])
+                ->where(['SectionTypes.id' => $section['section_type_id']]);
+
+            $this->set('users', $this->paginate($userQuery));
+
+            $this->paginate = [
+                'contain' => ['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes'],
+                'order' => ['last_login' => 'DESC'],
+                'limit' => 10,
+                'conditions' => ['SectionTypes.id' => $section['section_type_id']]
+            ];
+
+            $this->Scoutgroups = TableRegistry::get('Scoutgroups');
+
+            $sections = $this->Users->Sections
+                ->find( 'list',
+                    [
+                        'keyField' => 'id',
+                        'valueField' => 'section',
+                        'groupField' => 'scoutgroup.district.district'
+                    ]
+                )
+                ->where(['section_type_id' => $section['section_type_id']])
+                ->contain(['Scoutgroups.Districts']);
+            $roles = $this->Users->Roles->find('leaders')->find('list');
+            $authRoles = $this->Users->AuthRoles->find('list');
+            $districts = $this->Scoutgroups->Districts->find('list');
+            $this->set(compact('sections', 'roles', 'authRoles', 'districts'));
+
+            $groupQuery = $this->Scoutgroups
+                // Use the plugins 'search' custom finder and pass in the
+                // processed query params
+                ->find('search', ['search' => $this->request->getQueryParams()])
+                // You can add extra things to the query if you need to
+                ->contain(['Districts'])
+                ->orderDesc('district_id', 'number_stripped')
+                ->limit(10);
+
+            $this->set('scoutgroups', $groupQuery->toArray());
         }
     }
 }

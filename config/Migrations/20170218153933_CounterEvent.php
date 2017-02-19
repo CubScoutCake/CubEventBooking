@@ -39,14 +39,15 @@ class CounterEvent extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('application_ref_id', 'integer', [
-                'default' => null,
-                'null' => true,
+                'default' => 1,
+                'null' => false,
             ])
             ->addForeignKey(
                 'application_ref_id',
                 'settings',
                 'id'
                 )
+            ->addIndex('application_ref_id')
             ->update();
     }
 
@@ -68,7 +69,7 @@ class CounterEvent extends AbstractMigration
             ->removeColumn('leaders')
             ->removeColumn('leaders_value')
             ->removeColumn('leaders_text')
-            ->save();
+            ->update();
 
         $table = $this->table('applications');
         $table->changeColumn('eventname', 'string', [
@@ -76,7 +77,38 @@ class CounterEvent extends AbstractMigration
                 'null' => true,
                 'length' => 255,
             ])
-            ->save();
+            ->update();
+
+        $table = $this->table('event_types');
+        $table->changeColumn('team_leader', 'boolean', [
+                'default' => false,
+                'null' => false,
+            ])
+            ->changeColumn('permit_holder', 'boolean', [
+                'default' => false,
+                'null' => false,
+            ])
+            ->changeColumn('parent_applications', 'boolean', [
+                'default' => false,
+                'null' => false,
+            ])
+            ->changeColumn('dietary', 'boolean', [
+                'default' => false,
+                'null' => false,
+            ])
+            ->changeColumn('medical', 'boolean', [
+                'default' => false,
+                'null' => false,
+            ])
+            ->changeColumn('simple_booking', 'boolean', [
+                'default' => false,
+                'null' => false,
+            ])
+            ->changeColumn('date_of_birth', 'boolean', [
+                'default' => false,
+                'null' => false,
+            ])
+            ->update();
 
         parent::up();
     }

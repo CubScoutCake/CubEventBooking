@@ -40,6 +40,7 @@ class AttendeesFixture extends TestFixture
         'osm_sync_date' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'user_attendee' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+        'cc_apps' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         '_indexes' => [
             'attendees_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
             'attendees_section_id' => ['type' => 'index', 'columns' => ['section_id'], 'length' => []],

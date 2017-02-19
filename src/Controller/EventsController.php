@@ -5,7 +5,7 @@ use App\Controller\AppController;
 use App\Form\AttNumberForm;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
-
+use Cake\Utility\Inflector;
 /**
  * Events Controller
  *
@@ -79,38 +79,42 @@ class EventsController extends AppController
     public function book($eventID)
     {
         $event = $this->Events->get($eventID, [
-            'contain' => ['Settings', 'Discounts', 'Applications', 'EventTypes']
+            'contain' => ['Settings', 'Discounts', 'Applications', 'EventTypes.Settings']
         ]);
 
-        $this->set(compact('event'));
-    }
+        $settings = TableRegistry::get('Settings');
+        $term = $settings->get($event->event_type->application_ref_id);
+        //$term = $event->event_type->application_term->text;
+        $term->text;
 
-    public function bookProcess($eventID, $processType)
-    {
-        /*switch ($processType) {
-            case 1:*/
+        if (($event->max_apps - $event->cc_apps) > 1 )
+        {
+            $term = Inflector::pluralize($term);
+        }
 
-                $attForm = new AttNumberForm();
+        $attForm = new AttNumberForm();
 
-                $this->set(compact('attForm'));
+        //if ($this->request->is('post')) {
+            //if ($attForm->execute($this->request->getData())) {
 
-                if ($this->request->is('post')) {
-                    return $this->redirect([
+                $section = $this->request->getData('section');
+                $non_section = $this->request->getData('non_section');
+                $leaders = $this->request->getData('leaders');
+
+                if (!is_null($section)) {
+                    $this->redirect([
                         'controller' => 'Applications',
                         'action' => 'simple_book',
                         'prefix' => false,
-                        $eventID,
-                        $this->request->getData('section'),
-                        //$this->request->getData('yls'),
+                        $event->id,
+                        $section,
+                        $non_section,
+                        $leaders,
                     ]);
                 }
+            //}
+        //}
 
-                /*break;
-            case 2:
-                echo "i equals 1";
-                break;
-            default:
-                //return $this->redirect(['controller' => 'Events', 'action' => 'book', 'prefix' => false, $eventID]);
-        }*/
+        $this->set(compact('event', 'term', 'attForm', 'section', 'non_section', 'leaders'));
     }
 }
