@@ -5,6 +5,7 @@ use App\Controller\AppController;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 
+
 /**
  * Applications Controller
  *
@@ -276,11 +277,11 @@ class ApplicationsController extends AppController
             if ($this->Applications->save($application)) {
                 $appId = $application->get('id');
 
-                $this->loadComponent('Application');
+                $this->loadComponent('Availability');
 
                 //$this->loadComponent('Invoice');
 
-                $this->Application->getNumbers($appId);
+                $this->Availability->getNumbers($appId);
 
                 $this->Invoices = TableRegistry::get('Invoices');
 

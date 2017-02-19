@@ -18,8 +18,9 @@ class SettingsController extends AppController
      */
     public function index()
     {
+        $superAuth = bindec('1' . '0000');
         $this->paginate = [
-            'contain' => ['SettingTypes'], 'conditions' => ['setting_type_id !=' => '2']
+            'contain' => ['SettingTypes'], 'conditions' => ['SettingTypes.min_auth <=' => $superAuth]
         ];
         $this->set('settings', $this->paginate($this->Settings));
         $this->set('_serialize', ['settings']);

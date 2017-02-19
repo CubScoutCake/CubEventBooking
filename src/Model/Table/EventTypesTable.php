@@ -44,6 +44,10 @@ class EventTypesTable extends Table
         $this->belongsTo('Settings', [
             'foreignKey' => 'legal_text_id'
         ]);
+        $this->belongsTo('Settings', [
+            'foreignKey' => 'application_ref_id'
+        ]);
+
         $this->hasMany('Events', [
             'foreignKey' => 'event_type_id'
         ]);
@@ -99,6 +103,7 @@ class EventTypesTable extends Table
     {
         $rules->add($rules->existsIn(['invoice_text_id'], 'Settings'));
         $rules->add($rules->existsIn(['legal_text_id'], 'Settings'));
+        $rules->add($rules->existsIn(['application_ref_id'], 'Settings'));
 
         return $rules;
     }

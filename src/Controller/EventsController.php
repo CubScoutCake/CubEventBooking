@@ -2,8 +2,9 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\ORM\TableRegistry;
+use App\Form\AttNumberForm;
 use Cake\I18n\Time;
+use Cake\ORM\TableRegistry;
 
 /**
  * Events Controller
@@ -81,15 +82,35 @@ class EventsController extends AppController
             'contain' => ['Settings', 'Discounts', 'Applications', 'EventTypes']
         ]);
 
-        $eventTypes = TableRegistry::get('EventTypes');
-        $type = $eventTypes->get($event['event_type_id']);
-
-        $simple = $type->simple_booking;
-
-        if ($simple == false && isset($simple)) {
-            return $this->redirect(['controller' => 'Applications', 'action' => 'book', $eventID]);
-        }
-
         $this->set(compact('event'));
+    }
+
+    public function bookProcess($eventID, $processType)
+    {
+        /*switch ($processType) {
+            case 1:*/
+
+                $attForm = new AttNumberForm();
+
+                $this->set(compact('attForm'));
+
+                if ($this->request->is('post')) {
+                    return $this->redirect([
+                        'controller' => 'Applications',
+                        'action' => 'simple_book',
+                        'prefix' => false,
+                        $eventID,
+                        $this->request->getData('section'),
+                        //$this->request->getData('yls'),
+                    ]);
+                }
+
+                /*break;
+            case 2:
+                echo "i equals 1";
+                break;
+            default:
+                //return $this->redirect(['controller' => 'Events', 'action' => 'book', 'prefix' => false, $eventID]);
+        }*/
     }
 }

@@ -38,6 +38,15 @@ class CounterEvent extends AbstractMigration
                 'default' => false,
                 'null' => false,
             ])
+            ->addColumn('application_ref_id', 'integer', [
+                'default' => null,
+                'null' => true,
+            ])
+            ->addForeignKey(
+                'application_ref_id',
+                'settings',
+                'id'
+                )
             ->update();
     }
 
@@ -59,6 +68,14 @@ class CounterEvent extends AbstractMigration
             ->removeColumn('leaders')
             ->removeColumn('leaders_value')
             ->removeColumn('leaders_text')
+            ->save();
+
+        $table = $this->table('applications');
+        $table->changeColumn('eventname', 'string', [
+                'default' => null,
+                'null' => true,
+                'length' => 255,
+            ])
             ->save();
 
         parent::up();

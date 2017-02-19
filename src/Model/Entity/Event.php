@@ -98,5 +98,5 @@ class Event extends Entity
         return $value;
     }
 
-    protected $_virtual = ['appFull'];
+    protected $_virtual = ['app_full'];
 }

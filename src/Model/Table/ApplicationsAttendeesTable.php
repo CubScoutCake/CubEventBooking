@@ -47,10 +47,8 @@ class ApplicationsAttendeesTable extends Table
         ]);
 
         $this->addBehavior('CounterCache', [
-            'Applications' => [
-                'cc_att_total'
-            ],
-            'Attendees' => 'cc_apps'
+            'Applications' => ['cc_att_total'],
+            'Attendees' => ['cc_apps'],
         ]);
     }
 
