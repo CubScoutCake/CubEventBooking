@@ -85,7 +85,7 @@ class EventsController extends AppController
         $settings = TableRegistry::get('Settings');
         $term = $settings->get($event->event_type->application_ref_id);
         //$term = $event->event_type->application_term->text;
-        $term->text;
+        $term = $term->text;
 
         if (($event->max_apps - $event->cc_apps) > 1 )
         {

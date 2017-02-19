@@ -64,6 +64,74 @@
                 </div>
             </div>
         </div>
+        <?php if ($event->max) : ?>
+            <div class="row">
+                <?php if ($event->max_apps > 0 && !is_null($event->max_apps)) : ?>
+                    <?php if ($event->max_section == 0 || is_null($event->max_section)) : ?>
+                        <div class="col-lg-12">
+                    <?php endif; ?>
+                    <?php if ($event->max_section > 0 && !is_null($event->max_section)) : ?>
+                    <div class="col-lg-6">
+                <?php endif; ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="progress progress-striped active">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($event->cc_apps / $event->max_apps) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($event->cc_apps / $event->max_apps),1,['multiply' => true]); ?>">
+                                    <span class="sr-only"><?= $this->Number->toPercentage(($event->cc_apps / $event->max_apps),1,['multiply' => true]); ?> Complete</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-thermometer-half fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="large"><?= $this->Number->format($event->cc_apps) ?> <?= h($term) ?> of <?= $this->Number->format($event->max_apps) ?> Available</div>
+                                    <div class="huge"><?= $this->Number->toPercentage(($event->cc_apps / $event->max_apps),1,['multiply' => true]); ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php if ($event->max_section == 0 || is_null($event->max_section)) : ?>
+                    </div>
+                <?php endif; ?>
+                    <?php if ($event->max_section > 0 && !is_null($event->max_section)) : ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <?php if ($event->max_section > 0 && !is_null($event->max_section)) : ?>
+                    <?php if ($event->max_apps == 0 || is_null($event->max_apps)) : ?>
+                        <div class="col-lg-12">
+                    <?php endif; ?>
+                    <?php if ($event->max_apps > 0 && !is_null($event->max_apps)) : ?>
+                    <div class="col-lg-6">
+                <?php endif; ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="progress progress-striped active">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($event->cc_apps / $event->max_section) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($event->cc_apps / $event->max_section),1,['multiply' => true]); ?>">
+                                    <span class="sr-only"><?= $this->Number->toPercentage(($event->cc_apps / $event->max_section),1,['multiply' => true]); ?> Complete</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-thermometer-half fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div>Event Availability</div>
+                                    <div class="huge"><?= $this->Number->format($event->max_section - $event->cc_apps) ?> Attendee Slots Available</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php if ($event->max_apps == 0 || is_null($event->max_apps)) : ?>
+                    </div>
+                <?php endif; ?>
+                    <?php if ($event->max_apps > 0 && !is_null($event->max_apps)) : ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
     <?php if (!empty($lineArray)) : ?>
     <div class="col-lg-6">

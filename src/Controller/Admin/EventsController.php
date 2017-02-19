@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
+use Cake\Utility\Inflector;
 use Cake\Utility\Hash;
 
 /**
@@ -40,22 +41,23 @@ class EventsController extends AppController
     public function view($eventId = null)
     {
         $event = $this->Events->get($eventId, [
-            'contain' => ['Settings', 'Discounts', 'Applications']
+            'contain' => ['Settings', 'Discounts', 'Applications', 'EventTypes']
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);
 
         $lineQuery = $this->Events->Applications->find('all', ['contain' => ['Sections.Scoutgroups.Districts']])
             ->where(['event_id' => $eventId]);
+
         $lineQuery = $lineQuery->select([
                 'value' => $lineQuery->func()->count('*'),
                 'label' => 'Districts.district'
             ])
             ->group('Districts.district');
 
-        $lineArray = $lineQuery->toArray();
+        $lineArray = $lineQuery->hydrate(false)->toArray();
 
-        $lineArray = Hash::flatten($lineArray);
+        $lineArray = Hash::remove($lineArray, '[virtual]');
 
         $lineArray = json_encode($lineArray);
 
@@ -79,8 +81,16 @@ class EventsController extends AppController
             $invText = $sets->get($event->invtext_id);
         }
 
+        $term = $sets->get($event->event_type->application_ref_id);
+        //$term = $event->event_type->application_term->text;
+        $term = $term->text;
+
+        if ($event->cc_apps > 1) {
+            $term = Inflector::pluralize($term);
+        }
+
         // Pass to View
-        $this->set(compact('users', 'payments', 'discount', 'invText', 'legal'));
+        $this->set(compact('users', 'payments', 'term', 'discount', 'invText', 'legal'));
     }
 
     public function fullView($id = null)
@@ -503,7 +513,6 @@ class EventsController extends AppController
 
         $itemTypes = TableRegistry::get('ItemTypes');
         $itemTypeOptions = $itemTypes->find('list')->where(['available' => true]);
-
 
         $eventPrices = count($event->prices);
 

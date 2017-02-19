@@ -90,8 +90,7 @@ class Event extends Entity
     {
         $value = false;
 
-        if ($this->_properties['cc_apps'] >= $this->_properties['max_apps'])
-        {
+        if ($this->_properties['cc_apps'] >= $this->_properties['max_apps']) {
             $value = true;
         }
 

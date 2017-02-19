@@ -38,11 +38,17 @@ class Notification extends Entity
         'id' => false,
     ];
 
-    protected function _getLinkPrefix($link_prefix)
+    /**
+     * @param string $linkPrefix Link Prefix Variable
+     *
+     * @return bool
+     */
+    protected function _getLinkPrefix($linkPrefix)
     {
-        if ($link_prefix == '') {
+        if ($linkPrefix == '') {
             return false;
         }
-        return $link_prefix;
+
+        return $linkPrefix;
     }
 }

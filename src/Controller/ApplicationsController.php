@@ -230,6 +230,10 @@ class ApplicationsController extends AppController
         $this->Events = TableRegistry::get('Events');
         $event = $this->Events->get($eventId, ['contain' => ['EventTypes']]);
 
+        $settings = TableRegistry::get('Settings');
+        $term = $settings->get($event->event_type->application_ref_id);
+        $term = $term->text;
+
         if (isset($eventId)) {
             $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventId])->count('*');
 
@@ -259,7 +263,6 @@ class ApplicationsController extends AppController
                 'user_id' => $userId,
                 'section_id' => $sectionId,
                 'event_id' => $eventId,
-                'invoices.0.user_id' => $userId,
             ];
 
             $application = $this->Applications->patchEntity(
@@ -279,16 +282,10 @@ class ApplicationsController extends AppController
                 $attendee['section_id'] = $sectionId;
             }
 
-            foreach ($application->invoices as $invoice) {
-                $invoice['user_id'] = $userId;
-            }
-
             if ($this->Applications->save($application)) {
                 $appId = $application->get('id');
 
                 $this->loadComponent('Availability');
-
-                //$this->loadComponent('Invoice');
 
                 $this->Availability->getNumbers($appId);
 
@@ -296,9 +293,18 @@ class ApplicationsController extends AppController
 
                 $invoice = $this->Invoices->newEntity();
 
-                $this->Flash->success(__('The application has been saved.'));
+                $invoiceData = [
+                    'user_id' => $userId,
+                    'application_id' => $appId,
+                ];
 
-                return $this->redirect(['action' => 'view', $appId]);
+                $invoice = $this->Invoices->patchEntity($invoice, $invoiceData, ['validate' => false]);
+
+                if ($this->Invoices->save($invoice)) {
+                    $this->Flash->success(__('Your '. $term . ' has been registered.' ));
+
+                    return $this->redirect(['action' => 'view', $appId]);
+                }
             } else {
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
             }

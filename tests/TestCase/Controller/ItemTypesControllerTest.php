@@ -14,7 +14,7 @@ class ItemTypesControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.item_types',
         'app.invoice_items',
