@@ -20,22 +20,22 @@ class PasswordStatesSeed extends AbstractSeed
     {
         $data = [
             [
-                'id' => 1,
+                'id' => '1',
                 'password_state' => 'Active',
-                'active' => true,
-                'expired' => false,
+                'active' => '1',
+                'expired' => '0',
             ],
             [
-                'id' => 2,
+                'id' => '2',
                 'password_state' => 'Awaiting Reset',
-                'active' => true,
-                'expired' => false,
+                'active' => '1',
+                'expired' => '0',
             ],
             [
-                'id' => 3,
+                'id' => '3',
                 'password_state' => 'Expired',
-                'active' => false,
-                'expired' => true,
+                'active' => '0',
+                'expired' => '1',
             ],
         ];
 
