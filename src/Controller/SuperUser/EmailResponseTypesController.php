@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\SuperUser;
 
-use App\Controller\AppController;
+use App\Controller\SuperUser\AppController;
 
 /**
  * EmailResponseTypes Controller

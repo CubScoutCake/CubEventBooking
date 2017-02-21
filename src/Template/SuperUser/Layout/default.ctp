@@ -175,13 +175,13 @@ $cakeDescription = 'HertsCubs Booking System';
                                             <a href="<?php echo $this->Url->build([
                                         'controller' => 'Notes',
                                         'action' => 'index',
-                                        'prefix' => 'admin']); ?>">View All</a>
+                                        'prefix' => 'super_user']); ?>">View All</a>
                                         </li>
                                         <li>
                                             <a href="<?php echo $this->Url->build([
                                         'controller' => 'Notes',
                                         'action' => 'add',
-                                        'prefix' => 'admin']); ?>">New Note</a>
+                                        'prefix' => 'super_user']); ?>">New Note</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -192,13 +192,47 @@ $cakeDescription = 'HertsCubs Booking System';
                                             <a href="<?php echo $this->Url->build([
                                         'controller' => 'Notifications',
                                         'action' => 'index',
-                                        'prefix' => 'admin']); ?>">View All</a>
+                                        'prefix' => 'super_user']); ?>">View All</a>
                                         </li>
                                         <li>
                                             <a href="<?php echo $this->Url->build([
                                         'controller' => 'Notifications',
                                         'action' => 'unread',
-                                        'prefix' => 'admin']); ?>">View Unread</a>
+                                        'prefix' => 'super_user']); ?>">View Unread</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-envelope fa-fw"></i> Emails <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'EmailSends',
+                                                'action' => 'index',
+                                                'prefix' => 'super_user']); ?>"><i class="fa fa-paper-plane fa-fw"></i> View Email Sends</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'EmailResponses',
+                                                'action' => 'index',
+                                                'prefix' => 'super_user']); ?>"><i class="fa fa-envelope-open fa-fw"></i> View Email Responses</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-ticket fa-fw"></i> Tokens <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'Tokens',
+                                                'action' => 'index',
+                                                'prefix' => 'super_user']); ?>"> View Tokens </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'Tokens',
+                                                'action' => 'add',
+                                                'prefix' => 'super_user']); ?>"> Add a Token </a>
                                         </li>
                                     </ul>
                                 </li>
@@ -320,6 +354,57 @@ $cakeDescription = 'HertsCubs Booking System';
                                         'controller' => 'SettingTypes',
                                         'action' => 'add',
                                         'prefix' => 'super_user']); ?>">Add a Setting Type</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-unlock fa-fw"></i> Password States <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'PasswordStates',
+                                                'action' => 'index',
+                                                'prefix' => 'super_user']); ?>">View Password States</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'PasswordStates',
+                                                'action' => 'add',
+                                                'prefix' => 'super_user']); ?>">Add a Password State</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-envelope-square fa-fw"></i> Email Response Types <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'EmailResponseTypes',
+                                                'action' => 'index',
+                                                'prefix' => 'super_user']); ?>"> View Response Types</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'EmailResponseTypes',
+                                                'action' => 'add',
+                                                'prefix' => 'super_user']); ?>">Add a Response Type</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-bell-o fa-fw"></i> Notification Types <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'NotificationTypes',
+                                                'action' => 'index',
+                                                'prefix' => 'super_user']); ?>"> View Notification Types</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'NotificationTypes',
+                                                'action' => 'add',
+                                                'prefix' => 'super_user']); ?>">Add a Notification Type</a>
                                         </li>
                                     </ul>
                                 </li>

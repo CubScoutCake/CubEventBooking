@@ -43,11 +43,19 @@ class EmailSendsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->addBehavior('Timestamp');
-
-        $this->belongsTo('Messages', [
-            'foreignKey' => 'message_id'
+        $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created' => 'new',
+                    'modified' => 'always',
+                ]
+            ]
         ]);
+
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
+
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id'
         ]);
@@ -105,7 +113,6 @@ class EmailSendsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['message_id'], 'Messages'));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['notification_type_id'], 'NotificationTypes'));
         $rules->add($rules->existsIn(['notification_id'], 'Notifications'));

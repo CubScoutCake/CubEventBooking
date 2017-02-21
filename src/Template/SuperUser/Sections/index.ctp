@@ -29,8 +29,8 @@
                         <td><?= $section->has('section_type') ? $this->Html->link($section->section_type->section_type, ['controller' => 'SectionTypes', 'action' => 'view', $section->section_type->id]) : '' ?></td>
                         <td><?= $section->has('scoutgroup') ? $this->Html->link($section->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $section->scoutgroup->id]) : '' ?></td>
                         <td><?= $section->scoutgroup->has('district') ? $this->Html->link($section->scoutgroup->district->district, ['controller' => 'Districts', 'action' => 'view', $section->scoutgroup->district->id]) : '' ?></td>
-                        <td><?= h($section->created) ?></td>
-                        <td><?= h($section->modified) ?></td>
+                        <td><?= $this->Time->i18nformat($section->created,'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nformat($section->modified,'dd-MMM-yy HH:mm') ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -38,11 +38,13 @@
         </div>
         <div class="paginator">
             <ul class="pagination">
+                <?= $this->Paginator->first('<< ' . __('first')) ?>
                 <?= $this->Paginator->prev('< ' . __('previous')) ?>
                 <?= $this->Paginator->numbers() ?>
                 <?= $this->Paginator->next(__('next') . ' >') ?>
+                <?= $this->Paginator->last(__('last') . ' >>') ?>
             </ul>
-            <p><?= $this->Paginator->counter() ?></p>
+            <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
         </div>
     </div>
 </div>

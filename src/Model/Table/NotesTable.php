@@ -39,6 +39,7 @@ class NotesTable extends Table
                     ]
                 ]
             ]);
+
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);

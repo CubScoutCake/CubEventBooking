@@ -31,21 +31,15 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">
-                        Showing page <?= $this->Paginator->counter() ?>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="dataTables_paginate paginatior paging_simple_numbers" id="dataTables-example_paginate">
-                        <ul class="pagination">
-                            <?= $this->Paginator->prev(__('Previous')) ?>
-                            <?= $this->Paginator->numbers() ?>
-                            <?= $this->Paginator->next(__('Next')) ?>
-                        </ul>
-                    </div>
-                </div>
+            <div class="paginator">
+                <ul class="pagination">
+                    <?= $this->Paginator->first('<< ' . __('first')) ?>
+                    <?= $this->Paginator->prev('< ' . __('previous')) ?>
+                    <?= $this->Paginator->numbers() ?>
+                    <?= $this->Paginator->next(__('next') . ' >') ?>
+                    <?= $this->Paginator->last(__('last') . ' >>') ?>
+                </ul>
+                <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
             </div>
             <hr>
         </div>

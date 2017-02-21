@@ -39,7 +39,18 @@ class TokensTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->addBehavior('Timestamp');
+        $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created' => 'new',
+                    'modified' => 'always',
+                ]
+            ]
+        ]);
+
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
@@ -77,8 +88,7 @@ class TokensTable extends Table
 
         $validator
             ->boolean('active')
-            ->requirePresence('active', 'create')
-            ->notEmpty('active');
+            ->requirePresence('active', 'create');
 
         return $validator;
     }

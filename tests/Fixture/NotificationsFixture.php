@@ -30,6 +30,7 @@ class NotificationsFixture extends TestFixture
         'link_controller' => ['type' => 'string', 'length' => 45, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'link_prefix' => ['type' => 'string', 'length' => 45, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'link_action' => ['type' => 'string', 'length' => 45, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'notifications_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
             'notifications_notificationtype_id' => ['type' => 'index', 'columns' => ['notification_type_id'], 'length' => []],
@@ -55,13 +56,14 @@ class NotificationsFixture extends TestFixture
             'new' => 1,
             'notification_header' => 'Lorem ipsum dolor sit amet',
             'text' => 'Lorem ipsum dolor sit amet',
-            'created' => 1484490028,
-            'read_date' => 1484490028,
+            'created' => 1487718627,
+            'read_date' => 1487718627,
             'notification_source' => 'Lorem ipsum dolor sit amet',
             'link_id' => 1,
-            'link_controller' => 'Attendees',
-            'link_prefix' => false,
-            'link_action' => 'view'
+            'link_controller' => 'Lorem ipsum dolor sit amet',
+            'link_prefix' => 'Lorem ipsum dolor sit amet',
+            'link_action' => 'Lorem ipsum dolor sit amet',
+            'deleted' => null
         ],
     ];
 }

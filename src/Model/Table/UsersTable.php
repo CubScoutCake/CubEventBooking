@@ -74,10 +74,16 @@ class UsersTable extends Table
             'foreignKey' => 'role_id',
             'joinType' => 'INNER'
         ]);
+
         $this->belongsTo('AuthRoles', [
             'foreignKey' => 'auth_role_id',
             'joinType' => 'INNER'
         ]);
+
+        $this->belongsTo('PasswordStates', [
+            'foreignKey' => 'password_state_id'
+        ]);
+
         $this->belongsTo('Sections', [
             'foreignKey' => 'section_id'
         ]);
@@ -100,6 +106,12 @@ class UsersTable extends Table
             'foreignKey' => 'user_id'
         ]);
         $this->hasMany('Payments', [
+            'foreignKey' => 'user_id'
+        ]);
+        $this->hasMany('Tokens', [
+            'foreignKey' => 'user_id'
+        ]);
+        $this->hasMany('EmailSends', [
             'foreignKey' => 'user_id'
         ]);
     }
@@ -180,6 +192,7 @@ class UsersTable extends Table
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
         $rules->add($rules->existsIn(['auth_role_id'], 'AuthRoles'));
         $rules->add($rules->existsIn(['section_id'], 'Sections'));
+        $rules->add($rules->existsIn(['password_state_id'], 'PasswordStates'));
 
         return $rules;
     }

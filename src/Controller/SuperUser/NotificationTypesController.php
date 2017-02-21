@@ -1,14 +1,14 @@
 <?php
 namespace App\Controller\SuperUser;
 
-use App\Controller\Admin\AppController;
+use App\Controller\SuperUser\AppController;
 
 /**
- * Notificationtypes Controller
+ * NotificationTypes Controller
  *
- * @property \App\Model\Table\NotificationtypesTable $Notificationtypes
+ * @property \App\Model\Table\NotificationTypesTable $NotificationTypes
  */
-class NotificationtypesController extends AppController
+class NotificationTypesController extends AppController
 {
 
     /**
@@ -18,8 +18,8 @@ class NotificationtypesController extends AppController
      */
     public function index()
     {
-        $this->set('notificationtypes', $this->paginate($this->Notificationtypes));
-        $this->set('_serialize', ['notificationtypes']);
+        $this->set('notificationTypes', $this->paginate($this->NotificationTypes));
+        $this->set('_serialize', ['notification_types']);
     }
 
     /**
@@ -31,11 +31,11 @@ class NotificationtypesController extends AppController
      */
     public function view($id = null)
     {
-        $notificationtype = $this->Notificationtypes->get($id, [
+        $notificationType = $this->NotificationTypes->get($id, [
             'contain' => ['Notifications']
         ]);
-        $this->set('notificationtype', $notificationtype);
-        $this->set('_serialize', ['notificationtype']);
+        $this->set('notificationType', $notificationType);
+        $this->set('_serialize', ['notificationType']);
     }
 
     /**
@@ -45,10 +45,10 @@ class NotificationtypesController extends AppController
      */
     public function add()
     {
-        $notificationtype = $this->Notificationtypes->newEntity();
+        $notificationtype = $this->NotificationTypes->newEntity();
         if ($this->request->is('post')) {
-            $notificationtype = $this->Notificationtypes->patchEntity($notificationtype, $this->request->data);
-            if ($this->Notificationtypes->save($notificationtype)) {
+            $notificationtype = $this->NotificationTypes->patchEntity($notificationtype, $this->request->data);
+            if ($this->NotificationTypes->save($notificationtype)) {
                 $this->Flash->success(__('The notificationtype has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -69,12 +69,12 @@ class NotificationtypesController extends AppController
      */
     public function edit($id = null)
     {
-        $notificationtype = $this->Notificationtypes->get($id, [
+        $notificationtype = $this->NotificationTypes->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $notificationtype = $this->Notificationtypes->patchEntity($notificationtype, $this->request->data);
-            if ($this->Notificationtypes->save($notificationtype)) {
+            $notificationtype = $this->NotificationTypes->patchEntity($notificationtype, $this->request->data);
+            if ($this->NotificationTypes->save($notificationtype)) {
                 $this->Flash->success(__('The notificationtype has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -96,8 +96,8 @@ class NotificationtypesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $notificationtype = $this->Notificationtypes->get($id);
-        if ($this->Notificationtypes->delete($notificationtype)) {
+        $notificationtype = $this->NotificationTypes->get($id);
+        if ($this->NotificationTypes->delete($notificationtype)) {
             $this->Flash->success(__('The notificationtype has been deleted.'));
         } else {
             $this->Flash->error(__('The notificationtype could not be deleted. Please, try again.'));

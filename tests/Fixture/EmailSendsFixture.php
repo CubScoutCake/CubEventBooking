@@ -29,6 +29,7 @@ class EmailSendsFixture extends TestFixture
         'friendly_from' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'notification_type_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'notification_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'email_sends_message_id' => ['type' => 'index', 'columns' => ['message_id'], 'length' => []],
             'email_sends_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
@@ -51,9 +52,9 @@ class EmailSendsFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'created' => 1487630752,
-            'modified' => 1487630752,
-            'sent' => 1487630752,
+            'created' => 1487718602,
+            'modified' => 1487718602,
+            'sent' => 1487718602,
             'message_id' => 'Lorem ipsum dolor sit amet',
             'user_id' => 1,
             'subject' => 'Lorem ipsum dolor sit amet',
@@ -61,7 +62,8 @@ class EmailSendsFixture extends TestFixture
             'from_address' => 'Lorem ipsum dolor sit amet',
             'friendly_from' => 'Lorem ipsum dolor sit amet',
             'notification_type_id' => 1,
-            'notification_id' => 1
+            'notification_id' => 1,
+            'deleted' => null
         ],
     ];
 }

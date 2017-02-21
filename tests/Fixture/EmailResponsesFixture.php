@@ -26,6 +26,7 @@ class EmailResponsesFixture extends TestFixture
         'ip_address' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'bounce_reason' => ['type' => 'string', 'length' => 511, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'message_size' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'email_responses_email_send_id' => ['type' => 'index', 'columns' => ['email_send_id'], 'length' => []],
             'email_responses_email_response_type_id' => ['type' => 'index', 'columns' => ['email_response_type_id'], 'length' => []],
@@ -48,12 +49,13 @@ class EmailResponsesFixture extends TestFixture
             'id' => 1,
             'email_send_id' => 1,
             'email_response_type_id' => 1,
-            'created' => 1487630774,
-            'received' => 1487630774,
+            'created' => 1487718593,
+            'received' => 1487718593,
             'link_clicked' => 'Lorem ipsum dolor sit amet',
             'ip_address' => 'Lorem ipsum dolor sit amet',
             'bounce_reason' => 'Lorem ipsum dolor sit amet',
-            'message_size' => 1
+            'message_size' => 1,
+            'deleted' => null
         ],
     ];
 }
