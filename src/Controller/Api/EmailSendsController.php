@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller\SuperUser;
+namespace App\Controller\Api;
 
-use App\Controller\SuperUser\AppController;
+use App\Controller\Api\AppController;
 
 /**
  * EmailSends Controller
