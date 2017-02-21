@@ -30,6 +30,7 @@ class LandingControllerTest extends IntegrationTestCase
         'app.auth_roles',
         'app.invoices',
         'app.event_types',
+        'app.password_states',
     ];
 
     /**

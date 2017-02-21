@@ -263,6 +263,9 @@ class ApplicationsController extends AppController
                 'user_id' => $userId,
                 'section_id' => $sectionId,
                 'event_id' => $eventId,
+                'invoice' => [
+                    'user_id' => $userId,
+                ]
             ];
 
             $application = $this->Applications->patchEntity(
@@ -289,22 +292,10 @@ class ApplicationsController extends AppController
 
                 $this->Availability->getNumbers($appId);
 
-                $this->Invoices = TableRegistry::get('Invoices');
+                $this->Flash->success(__('Your '. $term . ' has been registered.' ));
 
-                $invoice = $this->Invoices->newEntity();
+                return $this->redirect(['action' => 'view', $appId]);
 
-                $invoiceData = [
-                    'user_id' => $userId,
-                    'application_id' => $appId,
-                ];
-
-                $invoice = $this->Invoices->patchEntity($invoice, $invoiceData, ['validate' => false]);
-
-                if ($this->Invoices->save($invoice)) {
-                    $this->Flash->success(__('Your '. $term . ' has been registered.' ));
-
-                    return $this->redirect(['action' => 'view', $appId]);
-                }
             } else {
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
             }

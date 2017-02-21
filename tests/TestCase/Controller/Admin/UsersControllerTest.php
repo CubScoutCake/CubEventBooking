@@ -24,6 +24,7 @@ class UsersControllerTest extends IntegrationTestCase
         'app.users',
         'app.roles',
         'app.attendees',
+        'app.password_states',
         'app.sections',
         'app.section_types',
         'app.scoutgroups',

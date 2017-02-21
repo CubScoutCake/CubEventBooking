@@ -23,6 +23,7 @@ class EventTypesControllerTest extends IntegrationTestCase
         'app.discounts',
         'app.users',
         'app.roles',
+        'app.password_states',
         'app.attendees',
         'app.sections',
         'app.section_types',

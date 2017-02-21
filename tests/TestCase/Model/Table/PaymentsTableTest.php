@@ -32,6 +32,7 @@ class PaymentsTableTest extends TestCase
         'app.sections',
         'app.section_types',
         'app.roles',
+        'app.password_states',
         'app.users',
     ];
 

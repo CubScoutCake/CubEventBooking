@@ -18,6 +18,7 @@ class AttendeesControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.attendees',
         'app.users',
+        'app.password_states',
         'app.roles',
         'app.scoutgroups',
         'app.districts',

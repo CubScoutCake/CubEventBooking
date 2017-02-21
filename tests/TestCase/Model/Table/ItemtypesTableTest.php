@@ -27,6 +27,7 @@ class ItemTypesTableTest extends TestCase
         'app.item_types',
         'app.invoice_items',
         'app.invoices',
+        'app.password_states',
         'app.users',
         'app.roles',
         'app.attendees',

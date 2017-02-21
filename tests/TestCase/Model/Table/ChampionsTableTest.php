@@ -26,6 +26,7 @@ class ChampionsTableTest extends TestCase
     public $fixtures = [
         'app.champions',
         'app.districts',
+        'app.password_states',
         'app.scoutgroups',
         'app.users',
         'app.roles',

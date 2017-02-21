@@ -30,6 +30,7 @@ class ApplicationsTableTest extends TestCase
         'app.setting_types',
         'app.discounts',
         'app.roles',
+        'app.password_states',
         'app.districts',
         'app.scoutgroups',
         'app.section_types',

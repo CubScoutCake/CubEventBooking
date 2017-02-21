@@ -24,6 +24,7 @@ class UsersSeed extends AbstractSeed
         $this->call('AuthRolesSeed');
         $this->call('SectionTypesSeed');
         $this->call('SectionsSeed');
+        $this->call('PasswordStatesSeed');
 
         $data = [
             [

@@ -24,6 +24,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
         'app.auth_roles',
         'app.attendees',
         'app.auth_roles',
+        'app.password_states',
         'app.sections',
         'app.section_types',
         'app.notifications',

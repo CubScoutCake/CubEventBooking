@@ -22,6 +22,7 @@ class UsersControllerTest extends IntegrationTestCase
         'app.section_types',
         'app.scoutgroups',
         'app.districts',
+        'app.password_states',
         'app.auth_roles',
         'app.notifications',
         'app.notification_types',

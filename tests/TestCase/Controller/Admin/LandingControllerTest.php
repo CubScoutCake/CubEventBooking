@@ -21,6 +21,7 @@ class LandingControllerTest extends IntegrationTestCase
         'app.scoutgroups',
         'app.roles',
         'app.users',
+        'app.password_states',
         'app.applications',
         'app.events',
         'app.discounts',

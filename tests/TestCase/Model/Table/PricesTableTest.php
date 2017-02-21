@@ -30,6 +30,7 @@ class PricesTableTest extends TestCase
         'app.invoices',
         'app.users',
         'app.roles',
+        'app.password_states',
         'app.attendees',
         'app.sections',
         'app.section_types',

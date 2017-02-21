@@ -25,6 +25,7 @@ class NotificationsControllerTest extends IntegrationTestCase
         'app.scoutgroups',
         'app.sections',
         'app.section_types',
+        'app.password_states',
     ];
 
     /**

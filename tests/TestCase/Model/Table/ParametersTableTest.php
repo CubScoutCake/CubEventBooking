@@ -31,6 +31,7 @@ class ParametersTableTest extends TestCase
         'app.section_types',
         'app.scoutgroups',
         'app.districts',
+        'app.password_states',
         'app.champions',
         'app.applications',
         'app.invoices',

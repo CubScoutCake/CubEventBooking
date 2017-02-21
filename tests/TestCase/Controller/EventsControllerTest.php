@@ -25,6 +25,7 @@ class EventsControllerTest extends IntegrationTestCase
         'app.scoutgroups',
         'app.districts',
         'app.auth_roles',
+        'app.password_states',
     ];
 
     /**

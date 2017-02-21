@@ -23,6 +23,7 @@ class AllergiesControllerTest extends IntegrationTestCase
         'app.districts',
         'app.scoutgroups',
         'app.users',
+        'app.password_states',
         'app.attendees_allergies',
         'app.sections',
         'app.section_types',

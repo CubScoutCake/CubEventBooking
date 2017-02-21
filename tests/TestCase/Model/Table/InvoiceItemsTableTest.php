@@ -30,6 +30,7 @@ class InvoiceItemsTableTest extends TestCase
         'app.roles',
         'app.attendees',
         'app.sections',
+        'app.password_states',
         'app.section_types',
         'app.scoutgroups',
         'app.districts',

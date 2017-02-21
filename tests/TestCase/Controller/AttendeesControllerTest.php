@@ -19,6 +19,7 @@ class AttendeesControllerTest extends IntegrationTestCase
         'app.attendees',
         'app.users',
         'app.roles',
+        'app.password_states',
         'app.scoutgroups',
         'app.districts',
         'app.champions',

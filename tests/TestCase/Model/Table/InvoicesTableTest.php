@@ -35,6 +35,7 @@ class InvoicesTableTest extends TestCase
         'app.settings',
         'app.settingtypes',
         'app.discounts',
+        'app.password_states',
         'app.auth_roles',
         'app.sections',
         'app.section_types',

@@ -24,6 +24,7 @@ class ParamsTableTest extends TestCase
         'app.settings',
         'app.setting_types',
         'app.discounts',
+        'app.password_states',
         'app.users',
         'app.roles',
         'app.attendees',

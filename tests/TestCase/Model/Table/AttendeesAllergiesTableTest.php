@@ -28,6 +28,7 @@ class AttendeesAllergiesTableTest extends TestCase
         'app.attendees',
         'app.allergies',
         'app.roles',
+        'app.password_states',
         'app.section_types',
         'app.sections',
         'app.scoutgroups',

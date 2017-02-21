@@ -26,6 +26,7 @@ class SettingsControllerTest extends IntegrationTestCase
         'app.attendees',
         'app.sections',
         'app.section_types',
+        'app.password_states',
         'app.scoutgroups',
         'app.districts',
         'app.champions',

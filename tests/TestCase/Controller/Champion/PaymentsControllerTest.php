@@ -23,6 +23,7 @@ class PaymentsControllerTest extends IntegrationTestCase
         'app.sections',
         'app.event_types',
         'app.roles',
+        'app.password_states',
         'app.attendees',
         'app.scoutgroups',
         'app.districts',

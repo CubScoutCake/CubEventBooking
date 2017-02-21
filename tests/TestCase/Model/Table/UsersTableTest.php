@@ -29,6 +29,7 @@ class UsersTableTest extends TestCase
         'app.users',
         'app.roles',
         'app.scoutgroups',
+        'app.password_states',
         'app.districts',
         'app.champions',
         'app.sections',
@@ -113,7 +114,7 @@ class UsersTableTest extends TestCase
                 'api_key_plain' => 'Lorem ipsum dolor sit amet',
                 'api_key' => 'Lorem ipsum dolor sit amet',
                 'auth_role_id' => 1,
-                'pw_state' => 1,
+                'password_state_id' => 1,
                 'membership_number' => 1,
                 'section_id' => 1
             ],
@@ -165,7 +166,7 @@ class UsersTableTest extends TestCase
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
             'auth_role_id' => 1,
-            'pw_state' => 1,
+            'password_state_id' => 1,
             'membership_number' => 123,
             'section_id' => 1
         ];
@@ -204,7 +205,7 @@ class UsersTableTest extends TestCase
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
             'auth_role_id' => 1,
-            'pw_state' => 1,
+            'password_state_id' => 1,
             'membership_number' => 123,
             'section_id' => 1
         ];
@@ -242,7 +243,7 @@ class UsersTableTest extends TestCase
                 'api_key_plain' => 'Lorem ipsum dolor sit amet',
                 'api_key' => 'Lorem ipsum dolor sit amet',
                 'auth_role_id' => 1,
-                'pw_state' => 1,
+                'password_state_id' => 1,
                 'membership_number' => 1,
                 'section_id' => 1
             ],
@@ -278,7 +279,7 @@ class UsersTableTest extends TestCase
                 'api_key_plain' => 'Lorem ipsum dolor sit amet',
                 'api_key' => 'Lorem ipsum dolor sit amet',
                 'auth_role_id' => 1,
-                'pw_state' => 1,
+                'password_state_id' => 1,
                 'membership_number' => 123,
                 'section_id' => 1
             ],
@@ -344,7 +345,7 @@ class UsersTableTest extends TestCase
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
             'auth_role_id' => 1,
-            'pw_state' => 1,
+            'password_state_id' => 1,
             'membership_number' => 123,
             'section_id' => 1
         ];
@@ -383,7 +384,7 @@ class UsersTableTest extends TestCase
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
             'auth_role_id' => 142,
-            'pw_state' => 1,
+            'password_state_id' => 1,
             'membership_number' => 123,
             'section_id' => 1
         ];
@@ -422,7 +423,7 @@ class UsersTableTest extends TestCase
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
             'auth_role_id' => 1,
-            'pw_state' => 1,
+            'password_state_id' => 1,
             'membership_number' => 123,
             'section_id' => 12342
         ];
@@ -461,7 +462,7 @@ class UsersTableTest extends TestCase
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
             'auth_role_id' => 1,
-            'pw_state' => 1,
+            'password_state_id' => 1,
             'membership_number' => 123,
             'section_id' => 1
         ];
@@ -500,7 +501,7 @@ class UsersTableTest extends TestCase
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
             'auth_role_id' => 1,
-            'pw_state' => 1,
+            'password_state_id' => 1,
             'membership_number' => 123,
             'section_id' => 1
         ];
@@ -539,7 +540,7 @@ class UsersTableTest extends TestCase
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
             'auth_role_id' => 1,
-            'pw_state' => 1,
+            'password_state_id' => 1,
             'membership_number' => 1,
             'section_id' => 1
         ];
@@ -578,7 +579,7 @@ class UsersTableTest extends TestCase
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
             'auth_role_id' => 1,
-            'pw_state' => 1,
+            'password_state_id' => 1,
             'membership_number' => 123,
             'section_id' => 1
         ];
@@ -616,7 +617,7 @@ class UsersTableTest extends TestCase
                 'api_key_plain' => 'Lorem ipsum dolor sit amet',
                 'api_key' => 'Lorem ipsum dolor sit amet',
                 'auth_role_id' => 1,
-                'pw_state' => 1,
+                'password_state_id' => 1,
                 'membership_number' => 1,
                 'section_id' => 1
             ],
@@ -652,7 +653,7 @@ class UsersTableTest extends TestCase
                 'api_key_plain' => 'Lorem ipsum dolor sit amet',
                 'api_key' => 'Lorem ipsum dolor sit amet',
                 'auth_role_id' => 1,
-                'pw_state' => 1,
+                'password_state_id' => 1,
                 'membership_number' => 123,
                 'section_id' => 1
             ],
@@ -735,7 +736,7 @@ class UsersTableTest extends TestCase
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
             'auth_role_id' => 1,
-            'pw_state' => 1,
+            'password_state_id' => 1,
             'membership_number' => 123,
             'section_id' => 1
         ];

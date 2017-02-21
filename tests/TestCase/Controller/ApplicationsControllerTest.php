@@ -21,6 +21,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         'app.settings',
         'app.discounts',
         'app.users',
+        'app.password_states',
         'app.scoutgroups',
         'app.sections',
         'app.section_types',

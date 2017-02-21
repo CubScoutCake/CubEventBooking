@@ -22,6 +22,7 @@ class SectionTypesControllerTest extends IntegrationTestCase
         'app.users',
         'app.roles',
         'app.sections',
+        'app.password_states',
         'app.section_types',
     ];
 

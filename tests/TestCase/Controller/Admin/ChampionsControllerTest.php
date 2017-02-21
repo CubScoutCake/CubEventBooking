@@ -20,6 +20,7 @@ class ChampionsControllerTest extends IntegrationTestCase
         'app.districts',
         'app.scoutgroups',
         'app.users',
+        'app.password_states',
         'app.roles',
         'app.auth_roles',
         'app.sections',

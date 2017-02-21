@@ -23,6 +23,7 @@ class SectionsControllerTest extends IntegrationTestCase
         'app.roles',
         'app.auth_roles',
         'app.users',
+        'app.password_states',
         'app.notification_types',
         'app.notifications',
     ];

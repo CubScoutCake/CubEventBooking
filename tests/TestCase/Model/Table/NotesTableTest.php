@@ -30,6 +30,7 @@ class NotesTableTest extends TestCase
         'app.users',
         'app.roles',
         'app.sections',
+        'app.password_states',
         'app.section_types',
         'app.auth_roles',
         'app.attendees',

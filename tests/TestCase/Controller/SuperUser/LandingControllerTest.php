@@ -23,6 +23,7 @@ class LandingControllerTest extends IntegrationTestCase
         'app.roles',
         'app.users',
         'app.auth_roles',
+        'app.password_states',
         'app.sections',
         'app.section_types',
         'app.setting_types',
