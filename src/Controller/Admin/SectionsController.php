@@ -64,13 +64,13 @@ class SectionsController extends AppController
         }
         $sectionTypes = $this->Sections->SectionTypes->find('list', ['limit' => 200]);
         $scoutgroups = $this->Sections->Scoutgroups->find(
-        'list',
-        [
+            'list',
+            [
             'keyField' => 'id',
             'valueField' => 'scoutgroup',
             'groupField' => 'district.district'
-        ]
-    )
+            ]
+        )
         ->contain(['Districts']);
         $this->set(compact('section', 'sectionTypes', 'scoutgroups'));
         $this->set('_serialize', ['section']);

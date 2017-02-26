@@ -96,7 +96,7 @@ class ProgressComponent extends Component
             $invItemCount = $itms->find('all')
                 ->contain(['Invoices.Applications'])
                 ->where(['Applications.id' => $appID])
-                ->count('*');
+                ->count();
 
             if ($invItemCount > 0) {
                 $invItemCounts = $itms->find('all')
@@ -105,9 +105,9 @@ class ProgressComponent extends Component
                     ->select(['sum' => $invoices->func()->sum('Quantity')])
                     ->group('item_type_id')->toArray();
 
-                $invCubs = $invItemCounts[1]->sum;
+                $invCubs = $invItemCounts[0]->sum;
                 $invYls = $invItemCounts[2]->sum;
-                $invLeaders = $invItemCounts[3]->sum;
+                $invLeaders = $invItemCounts[1]->sum;
             }
         }
 
@@ -117,8 +117,8 @@ class ProgressComponent extends Component
         $sumPayments = 0;
 
         if ($invCount > 0) {
-            $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->first();
-            $sumPaymentItem = $invoices->select(['sum' => $invoices->func()->sum('value')])->first();
+            $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->group('id')->first();
+            $sumPaymentItem = $invoices->select(['sum' => $invoices->func()->sum('value')])->group('id')->first();
 
             $sumValues = $sumValueItem->sum;
             $sumPayments = $sumPaymentItem->sum;

@@ -6,7 +6,6 @@ use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 
-
 /**
  * Applications Controller
  *
@@ -37,6 +36,15 @@ class ApplicationsController extends AppController
         ];
         $this->set('applications', $this->paginate($this->Applications->find('unarchived')->find('ownedBy', ['userId' => $this->Auth->user('id')])));
         $this->set('_serialize', ['applications']);
+    }
+
+    public function invoice($applicationID)
+    {
+        $this->loadComponent('Line');
+
+        $this->Line->populate($applicationID);
+
+        return $this->redirect(['action' => 'view', $applicationID]);
     }
 
     /**
@@ -292,10 +300,9 @@ class ApplicationsController extends AppController
 
                 $this->Availability->getNumbers($appId);
 
-                $this->Flash->success(__('Your '. $term . ' has been registered.' ));
+                $this->Flash->success(__('Your '. $term . ' has been registered.'));
 
                 return $this->redirect(['action' => 'view', $appId]);
-
             } else {
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
             }
@@ -310,7 +317,7 @@ class ApplicationsController extends AppController
         $teamLeaderBool = $event->event_type->team_leader;
         $permitHolderBool = $event->event_type->permit_holder;
 
-        $this->set(compact('application', 'teamLeaderBool', 'permitHolderBool', 'term',  'attendees', 'nonSectionAtts', 'leaderAtts', 'sectionType'));
+        $this->set(compact('application', 'teamLeaderBool', 'permitHolderBool', 'term', 'attendees', 'nonSectionAtts', 'leaderAtts', 'sectionType'));
 
         $sections = $this->Applications->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
         $sectionRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->where(['id' => $user->section->section_type->role_id]);
@@ -442,6 +449,7 @@ class ApplicationsController extends AppController
             if ($this->Applications->isOwnedBy($applicationId, $user['id'])) {
                 return true;
             }
+
                 return false;
         }
 

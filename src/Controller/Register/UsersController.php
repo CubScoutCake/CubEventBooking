@@ -95,7 +95,7 @@ class UsersController extends AppController
             }
         }
 
-        if($this->request->is('get')) {
+        if ($this->request->is('get')) {
             $this->request->data['section_id'] = $sectionId;
         }
 

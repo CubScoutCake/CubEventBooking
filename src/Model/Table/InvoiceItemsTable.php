@@ -44,6 +44,19 @@ class InvoiceItemsTable extends Table
         $this->belongsTo('ItemTypes', [
             'foreignKey' => 'item_type_id'
         ]);
+
+        $this->addBehavior('CounterCache', [
+            'Invoices' => [
+                'initialvalue' => function ($event, $entity, $table) {
+
+                    $query = $this->find()->where(['invoice_id' => $entity->invoice_id]);
+                    $query = $query->select(['sum' => $query->func()->sum('value')]);
+                    $query = $query->first();
+
+                    return $query->sum;
+                }
+            ]
+        ]);
     }
 
     /**

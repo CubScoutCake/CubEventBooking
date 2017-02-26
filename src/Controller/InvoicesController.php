@@ -62,7 +62,7 @@ class InvoicesController extends AppController
 
         $application = $applications->get($invoice->application_id);
 
-        $event = $events->get($application->event_id, ['contain' => ['Applications', 'Settings']]);
+        $event = $events->get($application->event_id, ['contain' => ['Applications']]);
 
         // Set Address Variables
         $eventName = $event->full_name;
@@ -76,12 +76,12 @@ class InvoicesController extends AppController
         $invDeadline = $event->deposit_date;
 
         // Set Prefix Variable
-        $invSetPre = $event->invtext_id;
-        $invSetting = $settings->get($invSetPre);
-        $invPrefix = $invSetting->text;
+        //$invSetPre = $event->invtext_id;
+        //$invSetting = $settings->get($invSetPre);
+        $invPrefix = '';
 
         // Set Payable Variable
-        $invPayable = $settings->get(4)->text;
+        $invPayable = '';
 
         $this->set(compact('invoice', 'invPayable', 'invPrefix', 'invDeadline'));
         $this->set('_serialize', ['invoice']);

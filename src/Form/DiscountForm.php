@@ -1,9 +1,9 @@
 <?php
 namespace App\Form;
 
+use Cake\Controller\Controller;
 use Cake\Form\Form;
 use Cake\Form\Schema;
-use Cake\Controller\Controller;
 use Cake\Validation\Validator;
 
 class DiscountForm extends Form

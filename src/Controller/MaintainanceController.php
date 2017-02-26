@@ -37,7 +37,6 @@ class MaintainanceController extends AppController
      */
     public function index()
     {
-
     }
 
     public function beforeFilter(\Cake\Event\Event $event)

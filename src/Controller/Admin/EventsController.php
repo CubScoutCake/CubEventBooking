@@ -35,7 +35,7 @@ class EventsController extends AppController
      *
      * @param string|null $eventId Event id.
      *
-*@return void
+     * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function view($eventId = null)
@@ -427,8 +427,6 @@ class EventsController extends AppController
         $event = $this->Events->patchEntity($event, $sectionType, ['validation' => false]);
 
         if ($this->request->is('post')) {
-
-
             $sectionType = [
                 'section_type_id' => $userSection->section_type_id
             ];

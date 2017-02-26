@@ -20,6 +20,8 @@ class RolesideCell extends Cell
     /**
      * Default display method.
      *
+     * @param int $userId The ID of the User to Display
+     *
      * @return void
      */
     public function display($userId = null)

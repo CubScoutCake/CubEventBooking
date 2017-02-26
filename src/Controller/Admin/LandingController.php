@@ -62,13 +62,13 @@ class LandingController extends AppController
 
         $user = $usrs->get($userId, ['contain' => ['Sections', 'AuthRoles']]);
         $sectionTypeId = $user->section->section_type_id;
-        $section_limited = $user->auth_role->section_limited;
+        $sectionLimited = $user->auth_role->section_limited;
 
         // Limited Table Entities
-        $applications = $apps->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->contain(['Users', 'Sections.Scoutgroups.Districts'])->order(['Applications.modified' => 'DESC'])->limit(10);
-        $events = $evs->find('upcoming')->find('eventSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
+        $applications = $apps->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->contain(['Users', 'Sections.Scoutgroups.Districts'])->order(['Applications.modified' => 'DESC'])->limit(10);
+        $events = $evs->find('upcoming')->find('eventSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
         $invoices = $invs->find()->contain(['Users', 'Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
-        $users = $usrs->find('userSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->contain(['Roles', 'Sections.Scoutgroups.Districts', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
+        $users = $usrs->find('userSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->contain(['Roles', 'Sections.Scoutgroups.Districts', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
         $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
         $notes = $nts->find()->contain(['Invoices', 'Applications', 'Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
         $notifications = $notifs->find()->contain(['NotificationTypes', 'Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
@@ -77,12 +77,12 @@ class LandingController extends AppController
         $this->set(compact('applications', 'events', 'invoices', 'users', 'payments', 'notes', 'notifications'));
 
         // Counts of Entities
-        $cntApplications = $apps->find('all')->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->count('*');
-        $cntEvents = $evs->find('eventSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->find('all')->count('*');
+        $cntApplications = $apps->find('all')->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->count('*');
+        $cntEvents = $evs->find('eventSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->find('all')->count('*');
         $cntInvoices = $invs->find('all')->count('*');
-        $cntUsers = $usrs->find('all')->find('userSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->count('*');
+        $cntUsers = $usrs->find('all')->find('userSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->count('*');
         $cntPayments = $pays->find('all')->count('*');
-        $cntAttendees = $atts->find('all')->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $section_limited])->count('*');
+        $cntAttendees = $atts->find('all')->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->count('*');
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));
@@ -100,8 +100,7 @@ class LandingController extends AppController
 
         $idNum = null;
 
-        if (isset($searchEntry) || !is_null($searchEntry))
-        {
+        if (isset($searchEntry) || !is_null($searchEntry)) {
             $entStr = strtoupper($searchEntry);
 
             $cont = substr($entStr, 0, 1);
@@ -142,7 +141,6 @@ class LandingController extends AppController
         }
 
         if (!is_int($idNum) || $idNum == 0 || is_null($idNum)) {
-
             $this->Sections = TableRegistry::get('Sections');
             $this->Users = TableRegistry::get('Users');
             $section = $this->Sections->get($this->Auth->user('section_id'));
@@ -164,7 +162,8 @@ class LandingController extends AppController
             $this->Scoutgroups = TableRegistry::get('Scoutgroups');
 
             $sections = $this->Users->Sections
-                ->find( 'list',
+                ->find(
+                    'list',
                     [
                         'keyField' => 'id',
                         'valueField' => 'section',

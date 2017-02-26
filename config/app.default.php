@@ -217,20 +217,19 @@ return [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => LOGS,
             'file' => 'debug',
-            'levels' => ['info', 'debug'],
+            'levels' => ['debug'],
         ],
-        'error' => [
-            'className' => 'Cake\Log\Engine\FileLog',
-            'path' => LOGS,
-            'file' => 'error',
-            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
+        'database' => [
+            'className' => 'DatabaseLog.Database',
+            'levels' => ['notice', 'info', 'warning', 'error', 'critical', 'alert', 'emergency'],
         ],
-        'flash' => [
-            'className' => 'Cake\Log\Engine\FileLog',
-            'path' => LOGS,
-            'file' => 'flash',
-            'levels' => ['notice'],
-        ],
+    ],
+
+    /**
+     * Configures Database Connection for Logs.
+     */
+    'DatabaseLog' => [
+        'datasource' => 'database_log', // DataSource to use
     ],
 
     /**

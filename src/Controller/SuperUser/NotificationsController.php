@@ -79,7 +79,7 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $notificationTypes = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
         $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }
@@ -520,14 +520,14 @@ class NotificationsController extends AppController
 
             $notification = $this->Notifications->newEntity();
 
-            $notification = $this->Notifications->patchEntity($notification, $welcomeData);
+            $notification = $this->Notifications->patchEntity($notification, $invQueryData);
 
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('Welcome to the Booking System. We have sent a welcome email.'));
 
                 $this->getMailer('User')->send('welcome', [$user, $group, $notification]);
 
-                return $this->redirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, $userId]);
+                return $this->redirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, $user->id]);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
             }
@@ -679,7 +679,7 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $notificationTypes = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
         $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }
@@ -698,7 +698,7 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $notificationTypes = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
         $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }
@@ -788,7 +788,7 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $notificationTypes = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
         $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }

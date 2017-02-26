@@ -2,15 +2,16 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use App\Form\ResetForm;
 use App\Form\PasswordForm;
+use App\Form\ResetForm;
 
 use Cake\I18n\Time;
 use Cake\Mailer\MailerAwareTrait;
 // use Cake\Utility\Hash;
-use Cake\Utility\Security;
-use Cake\ORM\TableRegistry;
 use Cake\Network\Http\Client;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Security;
+
 
 /**
  * Users Controller
@@ -66,7 +67,9 @@ class UsersController extends AppController
      * Edit method
      *
      * @param string|null $userID User id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     *
+     * @return \Cake\Network\Response|null Redirects on successful edit, renders view otherwise.
+     *
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($userID = null)
@@ -99,6 +102,11 @@ class UsersController extends AppController
         $this->set('_serialize', ['user']);
     }
 
+    /**
+     * Sync Function
+     *
+     * @return \Cake\Network\Response|null
+     */
     public function sync()
     {
 
@@ -142,7 +150,7 @@ class UsersController extends AppController
             $this->Flash->success(__('An Attendee for your User has been Synchronised.'));
         } else {
             $this->Flash->error(__('An Attendee for your User could not be Synchronised. Please, try again.'));
-            $this->log('Attendees:SYNC User:' . $user->id . ' Sync Error','notice');
+            $this->log('Attendees:SYNC User:' . $user->id . ' Sync Error', 'notice');
         }
 
         return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
@@ -154,7 +162,6 @@ class UsersController extends AppController
      * @return \Cake\Network\Response If Successful - redirects to landing.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-
     public function login()
     {
         // Set the layout.
@@ -218,7 +225,7 @@ class UsersController extends AppController
                     ];
 
                 $loggedInUser = $this->Users->patchEntity($loggedInUser, $loginPass, ['validate' => false]);
-                $loggedInUser->setDirty('modified',true);
+                $loggedInUser->setDirty('modified', true);
 
                 if ($this->Users->save($loggedInUser)) {
                     $sets = TableRegistry::get('Settings');
@@ -275,11 +282,9 @@ class UsersController extends AppController
                     }
 
                     return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
-
                 }
 
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
-
             }
             $tries = $tries + 1;
             $this->Flash->error('Your username or password is incorrect. Please try again.');
@@ -288,6 +293,11 @@ class UsersController extends AppController
         $this->set(compact('eventId'));
     }
 
+    /**
+     * Password Reset Function - Enables Resetting a User's Password via Email
+     *
+     * @return \Cake\Network\Response|null
+     */
     public function reset()
     {
         $this->viewBuilder()->layout('outside');
@@ -405,6 +415,15 @@ class UsersController extends AppController
         }
     }
 
+
+    /**
+     * Token - Completes Password Reset Function
+     *
+     * @param null $userid
+     * @param null $decryptor
+     *
+     * @return \Cake\Network\Response|null
+     */
     public function token($userid = null, $decryptor = null)
     {
 
@@ -458,6 +477,12 @@ class UsersController extends AppController
         }
     }
 
+
+    /**
+     * @param $userId
+     *
+     * @return \Cake\Network\Response|null
+     */
     public function validate($userId)
     {
         $this->viewBuilder()->layout('outside');

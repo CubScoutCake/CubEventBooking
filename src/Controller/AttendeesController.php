@@ -55,7 +55,6 @@ class AttendeesController extends AppController
         $attendee = $this->Attendees->newEntity();
 
         if ($this->request->is('post')) {
-
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
 
             $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))

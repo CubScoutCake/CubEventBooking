@@ -410,6 +410,24 @@ $cakeDescription = 'HertsCubs Booking System';
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            <a href="#"><i class="fa fa-tree fa-fw"></i> Logs <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Logs',
+                                        'action' => 'index',
+                                        'prefix' => 'super_user']); ?>">View Logs</a>
+                                </li>
+                                <li>
+                                    <?php echo $this->Form->postLink(__('Remove {0}', __('Duplicates')), [
+                                            'controller' => 'Logs',
+                                            'prefix' => 'super_user',
+                                            'action' => 'removeDuplicates'
+                                    ]); ?>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

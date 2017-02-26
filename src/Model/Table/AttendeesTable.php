@@ -3,6 +3,7 @@ namespace App\Model\Table;
 
 use App\Model\Entity\Attendee;
 use Cake\Event\Event;
+use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -220,5 +221,98 @@ class AttendeesTable extends Table
         $entity->postcode = strtoupper($entity->postcode);
 
         return true;
+    }
+
+    /**
+     * Merge Function
+     *
+     * @param int $attendeeId
+     *
+     * @return int;
+     */
+    public function removeDuplicate($attendeeId) {
+
+        $mrgAttendee = $this->get($attendeeId);
+
+        $options = [
+            //'fields' => [
+            //    'user_id',
+            //    'role_id',
+            //    'firstname',
+            //    'lastname',
+            //    'dateofbirth',
+            //    'osm_id',
+            //    'osm_sync_date',
+            //    'created',
+            //    'modified'
+            //],
+            'conditions' => [
+                'user_id' => $mrgAttendee->user_id,
+                'firstname' => $mrgAttendee->firstname,
+                'lastname' => $mrgAttendee->lastname,
+                'role_id' => $mrgAttendee->role_id,
+            ],
+        ];
+        $allAttendees = $this->find('all', $options);
+        $count = $allAttendees->count();
+
+        $osmId = $this->find('all', $options)->find('all', [
+            'fields' => [
+                'osm_id',
+                'osm_sync_date',
+                'modified'],
+            'conditions' => [
+                'osm_id IS NOT' => null
+            ]
+        ])->order([
+            'osm_sync_date' => 'DESC',
+            'modified' => 'DESC'
+        ])->first();
+
+        $address = $this->find('all', $options)->find('all', [
+            'fields' => [
+                'address_1',
+                'address_2',
+                'city',
+                'county',
+                'postcode',
+            ],
+            'conditions' => [
+                'address_1 IS NOT' => ''
+            ]
+        ])->order([
+            'modified' => 'DESC'
+        ])->first();
+
+        $userAttendee = $this->find('all', $options)->find('all', [
+            'fields' => [
+                'user_attendee'
+            ],
+            'conditions' => [
+                'user_attendee' => true
+            ]
+        ])->count();
+
+        if ($userAttendee > 0) {
+            $mrgAttendee = $this->patchEntity($mrgAttendee, ['user_attendee' => true], ['validate' => false]);
+        }
+
+        $finalData = [
+            'osm_id' => $osmId['osm_id'],
+            'osm_sync_date' => $osmId['osm_sync_date'],
+            'address_1' => $address['address_1'],
+            'address_2' => $address['address_2'],
+            'city' => $address['city'],
+            'county' => $address['county'],
+            'postcode' => $address['postcode'],
+        ];
+
+        $mrgAttendee = $this->patchEntity($mrgAttendee, $finalData);
+
+        if ($this->save($mrgAttendee)){
+            return $count;
+        }
+        Log::info('There was an error merging the attendee #' . $attendeeId);
+        return 0;
     }
 }

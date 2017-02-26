@@ -24,7 +24,7 @@ class SectionsController extends AppController
             $groupId = $this->request->data['scoutgroup_id'];
             $typeId = $this->request->data['section_type_id'];
 
-            $this->redirect(['action' => 'existing',$groupId, $typeId]);
+            $this->redirect(['action' => 'existing', $groupId, $typeId]);
         }
         $sectionTypes = $this->Sections->SectionTypes->find('list', ['limit' => 200])->order(['lower_age' => 'ASC']);
         $scoutgroups = $this->Sections->Scoutgroups->find(
@@ -51,7 +51,7 @@ class SectionsController extends AppController
      */
     public function existing($groupId = null, $typeId = null)
     {
-        if(!isset($groupId) || !isset($typeId)) {
+        if (!isset($groupId) || !isset($typeId)) {
             return $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
@@ -84,7 +84,7 @@ class SectionsController extends AppController
      */
     public function add($groupId = null, $typeId = null)
     {
-        if(!isset($groupId) || !isset($typeId)) {
+        if (!isset($groupId) || !isset($typeId)) {
             return $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
@@ -112,9 +112,9 @@ class SectionsController extends AppController
                 $this->Flash->success(__('The section has been saved.'));
                 $redir = $section->get('id');
                 if (is_null($this->Auth->user(['User.id']))) {
-                    $this->redirect(['controller' => 'Users','action' => 'register', $redir]);
+                    $this->redirect(['controller' => 'Users', 'action' => 'register', $redir]);
                 }
-                $this->redirect(['controller' => 'Sections', 'prefix' => false,'action' => 'view', $redir]);
+                $this->redirect(['controller' => 'Sections', 'prefix' => false, 'action' => 'view', $redir]);
             } else {
                 $this->Flash->error(__('The section could not be saved. Please, try again.'));
                 $this->log('Register:Sections:Add - Fail - Could not be saved.', 'notice');

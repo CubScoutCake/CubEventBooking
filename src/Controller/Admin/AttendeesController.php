@@ -109,6 +109,22 @@ class AttendeesController extends AppController
     }
 
     /**
+     * Call model removeDuplicate Function
+     *
+     * @param null $attendeeId The Attendee to be De-duplicated.
+     *
+     * @return \Cake\Network\Response|null
+     */
+    public function deduplicate($attendeeId = null)
+    {
+        $count = $this->Attendees->removeDuplicate($attendeeId);
+
+        $this->Flash->success($count . ' Duplicate Attendees Merged.');
+
+        return $this->redirect($this->referer(['controller' => 'Attendees', 'action' => 'view', $attendeeId]));
+    }
+
+    /**
      * Edit method
      *
      * @param string|null $id Attendee id.

@@ -186,12 +186,12 @@ Request::addDetector('tablet', function ($request) {
  */
 
 Plugin::load('Muffin/Trash');
+Plugin::load('DatabaseLog', ['bootstrap' => true, 'routes' => true]);
 Plugin::load('CsvView');
 Plugin::load('Migrations');
 Plugin::load('BootstrapUI');
 Plugin::load('Search');
 Plugin::load('SparkPost');
-Plugin::loadAll();
 
 //Plugin::load('Ajax', ['bootstrap' => true]);
 Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);
@@ -246,3 +246,5 @@ DispatcherFactory::add('ControllerFactory');
  * This is needed for matching the auto-localized string output of Time() class when parsing dates.
  */
 Type::build('datetime')->useLocaleParser();
+
+Plugin::load('DatabaseLog');

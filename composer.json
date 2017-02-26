@@ -22,7 +22,8 @@
         "php-http/httplug": "@stable",
         "php-http/client-common": "@stable",
         "php-http/socket-client": "@stable",
-        "robmorgan/phinx": "*"
+        "robmorgan/phinx": "*",
+        "dereuromark/cakephp-databaselog": "^2.2"
     },
     "require-dev": {
         "psy/psysh": "@stable",
@@ -45,7 +46,9 @@
     },
     "scripts": {
         "post-install-cmd": "App\\Console\\Installer::postInstall",
-        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump"
+        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
+        "cs-check": "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests ./src/Model ./src/ ./src/Network ./src/Shell ./src/Form ./src/Console ./src/Mailer",
+        "cs-fix": "vendor/bin/phpcbf -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests ./src/Model ./src/ ./src/Network ./src/Shell ./src/Form ./src/Console ./src/Mailer"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

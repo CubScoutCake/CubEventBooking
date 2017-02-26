@@ -63,5 +63,37 @@ return [
             'quoteIdentifiers' => false,
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
         ],
+
+        'database_log' => [
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Postgres',
+            'persistent' => false,
+            'host' => '127.0.0.1',
+            //'port' => 'nonstandard_port_number',
+            'username' => 'postgres',
+            'password' => '',
+            'database' => 'cake',
+            'encoding' => 'utf8',
+            'timezone' => 'UTC',
+            'cacheMetadata' => true,
+            'quoteIdentifiers' => false,
+            'log' => true, // DataSource to use
+        ],
+
+        'test_database_log' => [
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Postgres',
+            'persistent' => false,
+            'host' => '127.0.0.1',
+            //'port' => 'nonstandard_port_number',
+            'username' => 'postgres',
+            'password' => '',
+            'database' => 'cake',
+            'encoding' => 'utf8',
+            'timezone' => 'UTC',
+            'cacheMetadata' => true,
+            'quoteIdentifiers' => false,
+            'log' => true, // DataSource to use
+        ],
     ],
 ];

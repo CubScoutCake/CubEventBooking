@@ -6,6 +6,7 @@ use App\Form\AttNumberForm;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
+
 /**
  * Events Controller
  *
@@ -87,8 +88,7 @@ class EventsController extends AppController
         //$term = $event->event_type->application_term->text;
         $term = $term->text;
 
-        if (($event->max_apps - $event->cc_apps) > 1 )
-        {
+        if (($event->max_apps - $event->cc_apps) > 1) {
             $term = Inflector::pluralize($term);
         }
 
@@ -98,20 +98,20 @@ class EventsController extends AppController
             //if ($attForm->execute($this->request->getData())) {
 
                 $section = $this->request->getData('section');
-                $non_section = $this->request->getData('non_section');
+                $nonSection = $this->request->getData('non_section');
                 $leaders = $this->request->getData('leaders');
 
-                if (!is_null($section)) {
-                    $this->redirect([
-                        'controller' => 'Applications',
-                        'action' => 'simple_book',
-                        'prefix' => false,
-                        $event->id,
-                        $section,
-                        $non_section,
-                        $leaders,
-                    ]);
-                }
+        if (!is_null($section)) {
+            $this->redirect([
+            'controller' => 'Applications',
+            'action' => 'simple_book',
+            'prefix' => false,
+            $event->id,
+            $section,
+            $nonSection,
+            $leaders,
+            ]);
+        }
             //}
         //}
 

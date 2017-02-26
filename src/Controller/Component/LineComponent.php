@@ -13,22 +13,97 @@ use Cake\ORM\TableRegistry;
 
 class LineComponent extends Component
 {
-    public $components = ['Flash'];
+    public $components = ['Flash', 'Availability'];
 
-    public function populateInvoice($invoiceId, $Cubs = null, $Yls = null, $Leaders = null)
+    public function populate($applicationID)
     {
-        $this->Invoices = TableRegistry::get('Invoices');
-        $this->Events = TableRegistry::get('Events');
+        $this->Applications = TableRegistry::get('Applications');
+        $this->Events = TableRegistry::get('Invoices');
+        $this->InvoiceItems = TableRegistry::get('InvoiceItems');
         $this->Discounts = TableRegistry::get('Discounts');
 
-        $invoice = $this->Invoices->get($invoiceId, [
-            'contain' => ['Users', 'Payments', 'InvoiceItems', 'Applications']
+        $application = $this->Applications->get($applicationID, [
+            'contain' => ['Users', 'Invoices' => ['InvoiceItems.ItemTypes', 'Payments'], 'Events' => ['Prices.ItemTypes', 'EventTypes']]
         ]);
-        $event = $this->Events->get($application['event_id']);
 
-        $this->getLines($invoiceId);
+        $this->Flash->error(__('ONE.'));
 
-        if (isset($event->discount_id)) {
+        foreach ($application->event->prices as $price) {
+            $number = 3;
+
+            if (!is_null($price->item_type->role_id)) {
+                $query = $this->Applications->find('all')->contain([
+                    'Events.Prices.ItemTypes' => [
+                        'conditions' => ['Prices.id' => $price->id]
+                    ],
+                    'Attendees' => [
+                        'strategy' => 'subquery',
+                        'queryBuilder' => function ($q) {
+                            return $q->where(['Attendees.role_id' => 'ItemTypes.role_id']);
+                        }
+                    ]
+                ])->where(['Applications.id' => $applicationID]);
+
+                $number = $query->count();
+            }
+
+            $existing = $this->InvoiceItems->find('all')
+                ->contain([
+                    'Invoices.Applications'
+                ])
+                ->where([
+                    'Applications.id' => $applicationID,
+                    'InvoiceItems.item_type_id' => $price->item_type_id,
+                ])
+                ->first();
+
+            if ($existing) {
+                $data = [
+                    'invoice' => [
+                        'invoice_items' => [
+                            [
+                                'id' => $existing->id,
+                                'item_type_id' => $price->item_type_id,
+                                'value' => $price->value,
+                                'description' => $price->description,
+                                'quantity' => $number,
+                                'visible' => true,
+                            ]
+                        ]
+                    ]
+                ];
+            }
+
+            if (!$existing) {
+                $data = [
+                    'invoice' => [
+                        'invoice_items' => [
+                            [
+                                'item_type_id' => $price->item_type_id,
+                                'value' => $price->value,
+                                'description' => $price->description,
+                                'quantity' => $number,
+                                'visible' => true,
+                            ]
+                        ]
+                    ]
+                ];
+            }
+
+            $this->Flash->success(__('Price_' . $price->id));
+
+            $this->Applications->patchEntity($application, $data, ['associated' => 'Invoices.InvoiceItems']);
+            //$this->Applications->save($application);
+        }
+
+        $this->Applications->save($application);
+    }
+
+
+
+        //$this->getLines($invoiceId);
+
+        /*if (isset($event->discount_id)) {
             $discount = $discounts->get($event->discount_id);
         }
 
@@ -234,8 +309,7 @@ class LineComponent extends Component
             } else {
                 $this->Flash->error(__('There was an error.'));
             }
-        }
-    }
+        } */
 
     public function getLines($invoiceId)
     {
@@ -288,6 +362,7 @@ class LineComponent extends Component
 
         if ($quantity > $price->max_number && $event->max && !is_null($price->max_number)) {
             $this->Flash->error(__('The Number of ' . $itemType->item_type . ' is more than allowed.'));
+
             return false;
         }
 
@@ -313,7 +388,7 @@ class LineComponent extends Component
         }
 
         $this->Flash->error(__('There was an error Processing.'));
+
         return false;
     }
-
 }

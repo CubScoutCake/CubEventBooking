@@ -53,10 +53,11 @@ class SectionsController extends AppController
      */
     public function edit($sectionId = null)
     {
-        if($this->Auth->user('section_id') <> $sectionId) {
+        if ($this->Auth->user('section_id') <> $sectionId) {
             $this->Flash->error('You can only edit your own section');
             $errorMsg = 'SECTION:EDIT:' . $sectionId . ' edited without authorisation User:' . $this->Auth->user('id');
             $this->log($errorMsg, 'notice');
+
             return $this->redirect(['action' => 'view']);
         }
 
