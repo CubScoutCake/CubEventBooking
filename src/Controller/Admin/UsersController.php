@@ -137,7 +137,7 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('leaders')->find('list', ['limit' => 200]);
-        $auth_roles = $this->Users->AuthRoles->find('list')->where(['super_user' => false]);
+        $authRoles = $this->Users->AuthRoles->find('list')->where(['super_user' => false]);
         $sections = $this->Users->Sections->find(
             'list',
             [

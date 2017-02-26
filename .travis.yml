@@ -18,10 +18,9 @@ before_script:
   - psql -c 'create database cake;' -U postgres
   - sh -c "bin/cake migrations migrate"
   - sh -c "bin/cake database seed"
-  - sh -c "vendor/bin/phpcs --config-set installed_paths vendor/cakephp/cakephp-codesniffer"
 
 script:
-  - sh -c "vendor/bin/phpcs -p --extensions=php --standard=CakePHP ./tests ./src/Model"
+  - composer cs-check
   - sh -c "vendor/bin/phpunit"
 
 after_success:

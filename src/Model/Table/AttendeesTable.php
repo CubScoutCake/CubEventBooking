@@ -226,12 +226,12 @@ class AttendeesTable extends Table
     /**
      * Merge Function
      *
-     * @param int $attendeeId
+     * @param int $attendeeId The ID for the Attendee to be merged.
      *
      * @return int;
      */
-    public function removeDuplicate($attendeeId) {
-
+    public function removeDuplicate($attendeeId)
+    {
         $mrgAttendee = $this->get($attendeeId);
 
         $options = [
@@ -309,10 +309,11 @@ class AttendeesTable extends Table
 
         $mrgAttendee = $this->patchEntity($mrgAttendee, $finalData);
 
-        if ($this->save($mrgAttendee)){
+        if ($this->save($mrgAttendee)) {
             return $count;
         }
         Log::info('There was an error merging the attendee #' . $attendeeId);
+
         return 0;
     }
 }

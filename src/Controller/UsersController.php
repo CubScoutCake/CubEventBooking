@@ -12,7 +12,6 @@ use Cake\Network\Http\Client;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
 
-
 /**
  * Users Controller
  *
