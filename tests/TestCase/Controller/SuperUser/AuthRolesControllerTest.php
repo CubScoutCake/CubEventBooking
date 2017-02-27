@@ -7,7 +7,7 @@ use Cake\TestSuite\IntegrationTestCase;
 /**
  * App\Controller\SuperUser\AuthRolesController Test Case
  */
-class AuthRolesSuperUserControllerTest extends IntegrationTestCase
+class AuthRolesControllerTest extends IntegrationTestCase
 {
 
     /**
@@ -26,7 +26,14 @@ class AuthRolesSuperUserControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/super_user/auth-roles');
+
+        $this->assertResponseOk();
     }
 
     /**

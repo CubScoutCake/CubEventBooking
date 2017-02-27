@@ -108,7 +108,14 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
+        //$this->markTestSkipped();
+
+        $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
+        $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
+
         $countInitial = $this->Logs->find()->count();
+
+        $first = $this->Logs->find()->first()->id;
 
         $this->session([
             'Auth.User.id' => 1,
@@ -119,7 +126,7 @@ class LogsControllerTest extends IntegrationTestCase
         $this->enableSecurityToken();
 
         $this->post(
-            ['prefix' => 'super_user', 'controller' => 'Logs', 'action' => 'delete', 1]
+            ['prefix' => 'super_user', 'controller' => 'Logs', 'action' => 'delete', $first]
         );
         $count = $this->Logs->find()->count();
 
@@ -151,7 +158,13 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testRemoveDuplicates()
     {
+        //$this->markTestSkipped();
+
         $countInitial = $this->Logs->find()->count();
+
+        $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
+        $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
+        $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
 
         $this->session([
             'Auth.User.id' => 1,

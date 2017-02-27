@@ -1,4 +1,5 @@
-<?
+<?php
+
 namespace App\Controller\Champion;
 
 use App\Controller\Champion\AppController;
@@ -20,14 +21,14 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $scoutgroups = TableRegistry::get('Scoutgroups');
+        $user = $this->Users->get($this->Auth->user('id'), ['contain' => 'Sections.Scoutgroups.Districts']);
 
-        $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
+        $champD = $user->section->scoutgroup;
 
         //$champD->district_id;
 
         $this->paginate = [
-            'contain' => ['Roles', 'Scoutgroups'],
+            'contain' => ['Roles', 'Sections.Scoutgroups'],
             'conditions' => [
                 'Scoutgroups.district_id' => $champD->district_id]];
         $this->set('users', $this->paginate($this->Users));
@@ -44,7 +45,7 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => ['Roles', 'Scoutgroups', 'Applications', 'Attendees']
+            'contain' => ['Roles', 'Sections.Scoutgroups', 'Applications', 'Attendees']
         ]);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
@@ -57,9 +58,9 @@ class UsersController extends AppController
      */
     public function add()
     {
-        $scoutgroups = TableRegistry::get('Scoutgroups');
+        $user = $this->Users->get($this->Auth->user('id'), ['contain' => 'Sections.Scoutgroups.Districts']);
 
-        $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
+        $champD = $user->section->scoutgroup;
 
         $user = $this->Users->newEntity();
         
@@ -75,34 +76,34 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
+        $scoutgroups = $this->Users->Sections->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
     }
     
     public function register()
     {
-        $scoutgroups = TableRegistry::get('Scoutgroups');
+        $user = $this->Users->get($this->Auth->user('id'), ['contain' => 'Sections.Scoutgroups.Districts']);
 
-        $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
+        $champD = $user->section->scoutgroup;
 
         $user = $this->Users->newEntity();
 
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->data);
 
-            $newData = ['section' => 'Cubs', 'authrole' => 'user'];
+            $newData = ['section' => 'Cubs', 'auth_role_id' => 1];
             $user = $this->Users->patchEntity($user, $newData);
 
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('You have sucesfully registered!'));
+                $this->Flash->success(__('You have successfully registered!'));
                 return $this->redirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false]);
             } else {
                 $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));
             }
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
+        $scoutgroups = $this->Users->Sections->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
 
@@ -117,9 +118,9 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        $scoutgroups = TableRegistry::get('Scoutgroups');
+        $user = $this->Users->get($this->Auth->user('id'), ['contain' => 'Sections.Scoutgroups.Districts']);
 
-        $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
+        $champD = $user->section->scoutgroup;
 
         $user = $this->Users->get($id, [
             'contain' => []
@@ -142,7 +143,7 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
+        $scoutgroups = $this->Users->Sections->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
     }
@@ -171,25 +172,6 @@ class UsersController extends AppController
         }
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id User id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
-        if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
-        } else {
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
-        }
-        return $this->redirect(['action' => 'index']);
-    }
-
     public function login()
     {
         return $this->redirect([
@@ -203,11 +185,5 @@ class UsersController extends AppController
     {
         $this->Flash->success('You are now logged out.');
         return $this->redirect($this->Auth->logout());
-    }
-
-    public function beforeFilter(\Cake\Event\Event $event)
-    {
-        $this->Auth->allow(['register']);
-        $this->Auth->allow(['login']);
     }
 }

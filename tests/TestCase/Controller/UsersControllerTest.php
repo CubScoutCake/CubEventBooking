@@ -2,7 +2,6 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\UsersController;
-use App\Shell\DatabaseShell;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
