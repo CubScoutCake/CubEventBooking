@@ -4,6 +4,7 @@ namespace App\Mailer;
 
 use Cake\Mailer\Mailer;
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 
 class UserMailer extends Mailer
 {
@@ -74,30 +75,25 @@ class UserMailer extends Mailer
 
     /**
      * @param Entity $user The User Entity.
-     * @param string $random The Random Number Value.
+     * @param string $token The String of the Token Generated
      *
      * @return void
      */
-    public function passres($user, $random)
+    public function passwordReset($user, $token)
     {
-        $this->transport('sparkpost')
-            ->template('pwreset', 'default')
-            ->emailFormat('html')
-            ->to([$user->email => $user->full_name])
-            ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
-            ->subject('Reset password')
-            ->setHeaders(['X-MC-Tags' => 'PasswordReset,Type2,Request',
-                'X-MC-AutoText' => true,
-                'X-MC-GoogleAnalytics' => 'hertscubs100.uk,hertscubs.uk,hcbooking.uk,booking.hertscubs100.uk,champions.hertscubs100.uk,booking.hertscubs.uk',
-                'X-MC-GoogleAnalyticsCampaign' => 'Welcome_Email',
-                'X-MC-TrackingDomain' => 'track.hertscubs.uk'])
-            ->viewVars(['username' => $user->username,
+        $this->setTo($user->email, $user->full_name)
+            //->setTemplate('password_reset')
+            //->setLayout('default')
+            ->setTransport('sparkpost')
+            ->setEmailFormat('both')
+            ->setFrom('info@hertscubs.uk', 'HertsCubs Booking Site')
+            ->setSubject('Password Reset for ' . $user->full_name)
+            ->setViewVars(['username' => $user->username,
                 'date_created' => $user->created,
                 'full_name' => $user->full_name,
-                'token' => $random,
+                'token' => $token,
                 'uid' => $user->id,
             ])
-            ->helpers(['Html', 'Text', 'Time']);
-        //->send();
+            ->setHelpers(['Html', 'Text', 'Time']);
     }
 }

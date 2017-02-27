@@ -80,7 +80,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestSkipped('Travis Error Unreproducible');
         $this->session([
             'Auth.User.id' => 1,
             'Auth.User.auth_role_id' => 2
@@ -99,7 +98,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testDeleteWithoutPost()
     {
-        $this->markTestSkipped('Travis Error Unreproducible');
         $this->session([
             'Auth.User.id' => 1,
             'Auth.User.auth_role_id' => 2
@@ -118,7 +116,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestSkipped('Travis Error Unreproducible');
         $countInitial = $this->Logs->find()->count();
 
         $this->session([
@@ -144,7 +141,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testResetWithoutPost()
     {
-        $this->markTestSkipped('Travis Error Unreproducible');
         $this->session([
             'Auth.User.id' => 1,
             'Auth.User.auth_role_id' => 2
@@ -163,7 +159,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testRemoveDuplicates()
     {
-        $this->markTestSkipped('Travis Error Unreproducible');
         $countInitial = $this->Logs->find()->count();
 
         $this->session([
@@ -194,7 +189,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testReset()
     {
-        $this->markTestSkipped('Travis Error Unreproducible');
         $this->session([
             'Auth.User.id' => 1,
             'Auth.User.auth_role_id' => 2

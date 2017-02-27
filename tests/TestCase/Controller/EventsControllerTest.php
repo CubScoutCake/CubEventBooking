@@ -82,6 +82,27 @@ class EventsControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
+
+    /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testBookPost()
+    {
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/events/book/1',['section' => 1, 'non_section' => 1, 'leaders' => 1]);
+
+        $this->assertRedirect();
+    }
+
     /**
      * Test delete method
      *

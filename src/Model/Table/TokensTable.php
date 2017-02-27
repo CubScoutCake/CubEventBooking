@@ -1,9 +1,12 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Event\Event;
+use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Security;
 use Cake\Validation\Validator;
 
 /**
@@ -106,5 +109,118 @@ class TokensTable extends Table
         $rules->add($rules->existsIn(['email_send_id'], 'EmailSends'));
 
         return $rules;
+    }
+
+    /**
+     *
+     * @param Event       $event
+     * @param ArrayObject $data
+     * @param ArrayObject $options
+     *
+     */
+    public function beforeMarshal($event, $data, $options)
+    {
+
+        if (!isset($data['active'])) {
+            // Sets Active
+            $data['active'] = true;
+        }
+    }
+
+    /**
+     * Hashes the password before save
+     *
+     * @param \Cake\Event\Event $event The event trigger.
+     * @return true
+     */
+    public function beforeSave(Event $event)
+    {
+        $entity = $event->data['entity'];
+
+        if ($entity->isNew()) {
+            $entity->random_number = random_int(
+                1000000,
+                9999999
+            );
+
+            // Set Expiry Date
+            $now = Time::now();
+            $entity->expires = $now->addMonth(1);
+        }
+
+        return true;
+    }
+
+    /**
+     * @param int $tokenId The Id of the Token
+     *
+     * @return string
+     */
+    public function buildToken($tokenId)
+    {
+        $tokenRow = $this->get($tokenId, [
+            'contain' => 'Users'
+        ]);
+
+        $decrypter = Security::randomBytes(256);
+
+        $hash = $decrypter . $tokenRow->user->lastname . $tokenRow->created . $tokenRow['random_number'];
+
+        $hash = Security::hash($hash, 'sha256');
+
+        $hashData = [
+            'hash' => $hash
+        ];
+
+        $this->patchEntity($tokenRow, $hashData);
+
+        $this->save($tokenRow);
+
+        $tokenData = [
+            'id' => $tokenId,
+            'random_number' => $tokenRow['random_number'],
+        ];
+
+        $token = json_encode($tokenData);
+        $token = base64_encode($token);
+
+        $token = $decrypter . $token;
+
+        return $token;
+    }
+
+    /**
+     * @param string $token The Token to be Validated & Decrypted
+     *
+     * @return int|bool $validation Containing the validation state & id
+     */
+    public function validate($token)
+    {
+        $decrypter = substr($token,0,256);
+
+        $token = substr($token,256);
+        $token = base64_decode($token);
+        $token = json_decode($token);
+
+        $tokenRow = $this->get($token['id'], [
+            'contain' => 'Users'
+        ]);
+
+        if ($tokenRow['random_number'] <> $token['random_number'])
+        {
+            return false;
+        }
+
+        $testHash = $decrypter . $tokenRow->user->lastname . $tokenRow->created . $tokenRow['random_number'];
+        $testHash = Security::hash($testHash, 'sha256');
+
+        $tokenRowHash = $tokenRow['hash'];
+
+        if ($testHash === $tokenRowHash)
+        {
+            return $token['id'];
+        }
+
+        return false;
     }
 }

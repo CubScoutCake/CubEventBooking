@@ -6,7 +6,6 @@ use App\Form\PasswordForm;
 use App\Form\ResetForm;
 
 use Cake\I18n\Time;
-use Cake\Mailer\MailerAwareTrait;
 // use Cake\Utility\Hash;
 use Cake\Network\Http\Client;
 use Cake\ORM\TableRegistry;
@@ -19,8 +18,6 @@ use Cake\Utility\Security;
  */
 class UsersController extends AppController
 {
-    use MailerAwareTrait;
-
     /**
      * Index method
      *
@@ -304,15 +301,14 @@ class UsersController extends AppController
         $resForm = new ResetForm();
         $sets = TableRegistry::get('Settings');
 
-        $scoutgroups = $this->Users->Scoutgroups->find(
+        $scoutgroups = $this->Users->Sections->Scoutgroups->find(
             'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'scoutgroup',
                 'groupField' => 'district.district'
             ]
-        )
-            ->contain(['Districts']);
+        )->contain(['Districts']);
         $session = $this->request->session();
 
         $this->set(compact('scoutgroups', 'resForm'));
@@ -342,67 +338,24 @@ class UsersController extends AppController
                 $session->write('Reset.rsTries', $tries);
 
                 if ($count == 1) {
+
                     // Success in Resetting Triggering Reset - Bouncing to Reset.
                     $session->delete('Reset.lgTries');
                     $session->delete('Reset.rsTries');
 
-                    $user = $this->Users->get($user->id);
+                    $this->loadComponent('Password');
 
-                    $now = Time::now();
+                    if ($this->Password->sendReset($user->id)) {
 
-                    $rMax = $sets->get(16)->text;
-                    $rMin = $sets->get(17)->text;
-
-                    $random = rand($rMin, $rMax);
-
-                    $string = 'Reset Success' . ( $user->id * $now->day ) . $random . $now->year . $now->month;
-
-                    $token = Security::hash($string);
-
-                    $newToken = ['reset' => $token];
-
-                    $user = $this->Users->patchEntity($user, $newToken);
-
-                    if ($this->Users->save($user)) {
-                        $this->getMailer('User')->send('passres', [$user, $random]);
-
-                    /*$deleteEnt = [
-                        'Entity Id' => $notification->id,
-                        'Controller' => 'Notifications',
-                        'Action' => 'Delete',
-                        'User Id' => $this->Auth->user('id'),
-                        'Creation Date' => $notification->created,
-                        'Modified' => $notification->read_date,
-                        'Notification' => [
-                            'Type' => $notification->notificationtype_id,
-                            'Ref Id' => $notification->link_id,
-                            'Action' => $notification->link_action,
-                            'Controller' => $notification->link_controller,
-                            'Source' => $notification->notification_source,
-                            'Header' => $notification->notification_header
-                            ]
-                        ]
-
-                    $jsonWelcome = json_encode($welcomeData);
-                    $api_key = $sets->get(13)->text;
-                    $projectId = $sets->get(14)->text;
-                    $eventType = 'UserWelcome';
-
-                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $api_key;
-
-                    $http = new Client();
-                    $response = $http->post(
-                      $keenURL,
-                      $jsonWelcome,
-                      ['type' => 'json']
-                    );*/
-
-
+                        $this->Flash->success('We have sent a password reset token to your email. This is valid for a short period of time.');
 
                         return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
-                    } else {
-                        $this->Flash->error(__('The user could not be saved. Please, try again.'));
                     }
+
+                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+
+                    $this->log('Token Creation Error during Password Reset for user ' . $user->id, 'notice');
+
                 } else {
                     $this->Flash->error('This user was not found in the system.');
                 }

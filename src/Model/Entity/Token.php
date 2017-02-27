@@ -15,6 +15,10 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $expires
  * @property \Cake\I18n\Time $utilised
  * @property bool $active
+ * @property \Cake\I18n\Time $deleted
+ * @property string $hash
+ * @property int $random_number
+ * @property string $header
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\EmailSend $email_send
@@ -42,6 +46,6 @@ class Token extends Entity
      * @var array
      */
     protected $_hidden = [
-        'token'
+        'hash', 'token'
     ];
 }

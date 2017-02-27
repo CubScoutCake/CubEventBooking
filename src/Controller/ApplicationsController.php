@@ -227,12 +227,12 @@ class ApplicationsController extends AppController
      * @param null $eventId
      * @param null $attendees
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Network\Response|null Redirects on successful add, renders view otherwise.
      */
     public function simpleBook($eventId = null, $attendees = null, $nonSectionAtts = null, $leaderAtts = null)
     {
         if (!isset($eventId) || !isset($attendees)) {
-            //$this->redirect(['controller' => 'Events', 'action' => 'book', $eventId, $attendees]);
+            $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId, $attendees]);
         }
 
         $this->Events = TableRegistry::get('Events');
@@ -249,7 +249,9 @@ class ApplicationsController extends AppController
                 $this->Flash->error(__('Apologies this Event is Full.'));
 
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
-            } elseif (!$event->new_apps) {
+            }
+
+            if (!$event->new_apps) {
                 $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
 
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);

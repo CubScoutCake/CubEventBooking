@@ -2,7 +2,10 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\UsersController;
+use App\Shell\DatabaseShell;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
+
 
 /**
  * App\Admin\UsersController Test Case
@@ -96,5 +99,39 @@ class UsersControllerTest extends IntegrationTestCase
         $this->get('/users/sync');
 
         $this->assertRedirect(['controller' => 'Landing', 'action' => 'user_home']);
+    }
+
+    public function testReset()
+    {
+        $this->get('/users/reset');
+
+        $this->assertResponseOk();
+    }
+
+    public function testLogin()
+    {
+        $this->assertEquals(1,1);
+
+        $this->get('/users/login');
+
+        $this->assertResponseOk();
+
+        $this->get('/login');
+
+        $this->assertResponseOk();
+
+        $this->enableSecurityToken();
+        $this->enableCsrfToken();
+
+        $users = TableRegistry::get('Users');
+
+        $default = $users->findByUsername('Test')->first();
+        $default->password = 'TestMe';
+
+        $users->save($default);
+
+        $this->post(['controller' => 'Users', 'action' => 'login'], ['username' => 'Jacob', 'password' => 'TestMe']);
+
+        $this->assertResponseOk();
     }
 }

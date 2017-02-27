@@ -4,6 +4,7 @@ namespace App\Test\TestCase\Model\Table;
 use App\Model\Table\TokensTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Hash;
 
 /**
  * App\Model\Table\TokensTable Test Case
@@ -115,5 +116,141 @@ class TokensTableTest extends TestCase
     public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test the Build Token
+     */
+    public function testBuildToken()
+    {
+        $token = $this->Tokens->buildToken(1);
+
+        $this->assertGreaterThanOrEqual(256,strlen($token), 'Token is too short.');
+
+        $decrypter = substr($token,0,256);
+        $this->assertEquals(256,strlen($decrypter));
+
+        $token = substr($token,256);
+
+        $token = base64_decode($token);
+        $token = json_decode($token);
+
+        $data = [
+            'id' => 1,
+            'random_number' => 1,
+        ];
+
+        $this->assertEquals($data['id'], $token->id);
+
+        $this->assertEquals($data['random_number'], $token->random_number);
+        $this->assertTrue(is_numeric($token->random_number));
+    }
+
+    public function testBeforeSave()
+    {
+        $goodData = [
+            'id' => 2,
+            'user_id' => 1,
+            'email_send_id' => 1,
+            'active' => true,
+            'token' => 'GOAT',
+        ];
+
+        $expected = [
+            'id' => 2,
+            'user_id' => 1,
+            'email_send_id' => 1,
+            'active' => true,
+        ];
+
+        $goodEntity = $this->Tokens->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->Tokens->save($goodEntity);
+
+        $query = $this->Tokens->get(2, [
+            'fields' => [
+                'id',
+                'user_id',
+                'email_send_id',
+                'active',
+            ]
+        ]);
+
+        $result = $query->toArray();
+
+        $this->assertEquals($expected, $result);
+
+        $query = $this->Tokens->get(2, [
+            'fields' => [
+                'random_number',
+                'active'
+            ]
+        ]);
+
+        $result = $query->toArray();
+
+        $this->assertTrue(is_numeric($result['random_number']));
+        $this->assertTrue($result['active']);
+    }
+
+    public function validate()
+    {
+        $goodData = [
+            'id' => 2,
+            'user_id' => 1,
+            'email_send_id' => 1,
+            'active' => true,
+            'token' => 'GOAT',
+        ];
+
+        $expected = [
+            'id' => 2,
+            'user_id' => 1,
+            'email_send_id' => 1,
+            'active' => true,
+        ];
+
+        $goodEntity = $this->Tokens->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->Tokens->save($goodEntity);
+
+        $query = $this->Tokens->get(2, [
+            'fields' => [
+                'id',
+                'user_id',
+                'email_send_id',
+                'active',
+            ]
+        ]);
+
+        $result = $query->toArray();
+
+        $this->assertEquals($expected, $result);
+
+        $query = $this->Tokens->get(2, [
+            'fields' => [
+                'random_number',
+                'active'
+            ]
+        ]);
+
+        $result = $query->toArray();
+
+        $this->assertTrue(is_numeric($result['random_number']));
+        $this->assertTrue($result['active']);
+
+        $token = $this->Tokens->buildToken(2);
+
+        $result = $this->Tokens->validate($token);
+
+        $this->assertNotFalse($result);
+        $this->assertTrue(is_numeric($result));
+
+        $incorrectToken = substr($token, 25, 256);
+
+        $result = $this->Tokens->validate($incorrectToken);
+
+        $this->assertFalse($result);
+        $this->assertNotTrue(is_numeric($result));
     }
 }

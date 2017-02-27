@@ -117,6 +117,15 @@ Router::prefix('register', function ($routes) {
     $routes->fallbacks('DashedRoute');
 });
 
+Router::prefix('api', function ($routes) {
+    // Because you are in the admin scope,
+    // you do not need to include the /admin prefix
+    // or the admin route element.
+    $routes->connect('/', ['controller' => 'Users', 'action' => 'register']);
+
+    $routes->fallbacks('DashedRoute');
+});
+
 Router::connect('/login', ['controller' => 'Users', 'action' => 'login']);
 
 Router::connect('/register', ['controller' => 'Users', 'action' => 'register', 'prefix' => 'register']);

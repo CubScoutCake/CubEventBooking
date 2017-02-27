@@ -64,8 +64,8 @@ class UsersController extends AppController
             ]
         )->contain(['Scoutgroups.Districts']);
         $roles = $this->Users->Roles->find('leaders')->find('list');
-        $authRoles = $this->Users->AuthRoles->find('list');
-        $this->set(compact('sections', 'roles', 'authRoles'));
+        $auth_roles = $this->Users->AuthRoles->find('list');
+        $this->set(compact('sections', 'roles', 'auth_roles'));
     }
 
     /**
@@ -137,7 +137,7 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('leaders')->find('list', ['limit' => 200]);
-        $authRoles = $this->Users->AuthRoles->find('list')->where(['super_user' => false]);
+        $auth_roles = $this->Users->AuthRoles->find('list')->where(['super_user' => false]);
         $sections = $this->Users->Sections->find(
             'list',
             [

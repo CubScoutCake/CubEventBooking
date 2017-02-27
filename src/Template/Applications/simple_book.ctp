@@ -9,7 +9,7 @@
                         echo $this->Form->input('permit_holder', ['label' => 'The Name of the Nights Away Permit Holder']);
                     }
                     if ($teamLeaderBool) {
-                        echo $this->Form->input('permit_holder', ['label' => 'The Name of the ' . $term . ' Leader' ]);
+                        echo $this->Form->input('team_leader', ['label' => 'The Name of the ' . $term . ' Leader' ]);
                     }
                     echo '<div class="table-responsive"> <table class="table table-hover">';
                     for ($att = 0; $att < $attendees; $att ++) {
