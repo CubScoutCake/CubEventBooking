@@ -9,8 +9,8 @@
                         <th><?= $this->Paginator->sort('event_id') ?></th>
                         <th class="actions"><?= __('Actions') ?></th>
                         <th><?= $this->Paginator->sort('user_id') ?></th>
-                        <th><?= $this->Paginator->sort('scoutgroup_id') ?></th>
-                        <th><?= $this->Paginator->sort('permitholder', 'Permit Holder') ?></th>
+                        <th><?= $this->Paginator->sort('team_leader') ?></th>
+                        <th><?= $this->Paginator->sort('permit_holder') ?></th>
                         <th><?= $this->Paginator->sort('created', 'Date Created') ?></th>
                         
                     </tr>
@@ -34,9 +34,8 @@
                             </div>
                         </td>
                         <td><?= $application->has('user') ? $this->Html->link($application->user->full_name, ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></td>
-                        <td><?= $application->has('scoutgroup') ? $this->Html->link($this->Text->truncate($application->scoutgroup->scoutgroup,18), ['controller' => 'Scoutgroups', 'action' => 'view', $application->scoutgroup->id]) : '' ?></td>
-                        
-                        <td><?= h($application->permitholder) ?></td>
+                        <td><?= h($application->team_leader) ?></td>
+                        <td><?= h($application->permit_holder) ?></td>
                         <td><?= $this->Time->i18nformat($application->created,'dd-MMM-yy HH:mm') ?></td>
                     </tr>
                     <?php endforeach; ?>

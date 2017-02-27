@@ -113,14 +113,14 @@ class TokensTable extends Table
 
     /**
      *
-     * @param Event       $event
-     * @param ArrayObject $data
-     * @param ArrayObject $options
+     * @param Event       $event The Event to be processed
+     * @param ArrayObject $data The data to be modified
+     * @param ArrayObject $options The Options Contained
      *
+     * @return void
      */
-    public function beforeMarshal($event, $data, $options)
+    public function beforeMarshal(Event $event, $data, $options)
     {
-
         if (!isset($data['active'])) {
             // Sets Active
             $data['active'] = true;
@@ -196,9 +196,9 @@ class TokensTable extends Table
      */
     public function validate($token)
     {
-        $decrypter = substr($token,0,256);
+        $decrypter = substr($token, 0, 256);
 
-        $token = substr($token,256);
+        $token = substr($token, 256);
         $token = base64_decode($token);
         $token = json_decode($token);
 
@@ -206,8 +206,7 @@ class TokensTable extends Table
             'contain' => 'Users'
         ]);
 
-        if ($tokenRow['random_number'] <> $token['random_number'])
-        {
+        if ($tokenRow['random_number'] <> $token['random_number']) {
             return false;
         }
 
@@ -216,8 +215,7 @@ class TokensTable extends Table
 
         $tokenRowHash = $tokenRow['hash'];
 
-        if ($testHash === $tokenRowHash)
-        {
+        if ($testHash === $tokenRowHash) {
             return $token['id'];
         }
 

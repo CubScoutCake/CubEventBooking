@@ -6,7 +6,6 @@ use App\Shell\DatabaseShell;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
-
 /**
  * App\Admin\UsersController Test Case
  */
@@ -110,7 +109,7 @@ class UsersControllerTest extends IntegrationTestCase
 
     public function testLogin()
     {
-        $this->assertEquals(1,1);
+        $this->assertEquals(1, 1);
 
         $this->get('/users/login');
 

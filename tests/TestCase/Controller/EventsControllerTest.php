@@ -98,7 +98,7 @@ class EventsControllerTest extends IntegrationTestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $this->post('/events/book/1',['section' => 1, 'non_section' => 1, 'leaders' => 1]);
+        $this->post('/events/book/1', ['section' => 1, 'non_section' => 1, 'leaders' => 1]);
 
         $this->assertRedirect();
     }

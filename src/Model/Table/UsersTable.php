@@ -214,10 +214,10 @@ class UsersTable extends Table
             env('SERVER_NAME')
         );
 
-        $auth_role = $this->AuthRoles->get($entity->auth_role_id);
-        $super_user = bindec('10000');
+        $authRole = $this->AuthRoles->get($entity->auth_role_id);
+        $superUser = bindec('10000');
 
-        if ($auth_role->auth_value >= $super_user && $entity->isNew()) {
+        if ($authRole->auth_value >= $superUser && $entity->isNew()) {
             $hasher = new DefaultPasswordHasher();
 
             // Generate an API 'token'
