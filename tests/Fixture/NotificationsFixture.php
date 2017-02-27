@@ -60,9 +60,9 @@ class NotificationsFixture extends TestFixture
             'read_date' => 1487718627,
             'notification_source' => 'Lorem ipsum dolor sit amet',
             'link_id' => 1,
-            'link_controller' => 'Lorem ipsum dolor sit amet',
-            'link_prefix' => 'Lorem ipsum dolor sit amet',
-            'link_action' => 'Lorem ipsum dolor sit amet',
+            'link_controller' => 'Users',
+            'link_prefix' => 'super_user',
+            'link_action' => 'view',
             'deleted' => null
         ],
     ];

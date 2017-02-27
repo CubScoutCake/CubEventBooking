@@ -1,8 +1,8 @@
 <?php
 namespace App\TestCase\Controller\SuperUser;
 
-use Cake\ORM\TableRegistry;
 use App\Controller\SuperUser\LogsController;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -23,7 +23,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'plugin.database_log.database_logs',
-        'app.logs',
         'core.sessions',
         //'app.users',
         //'app.districts',
@@ -73,8 +72,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestSkipped('Possible Issue');
-
         $this->session([
             'Auth.User.id' => 1,
             'Auth.User.auth_role_id' => 2
@@ -93,8 +90,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testDeleteWithoutPost()
     {
-        $this->markTestSkipped('Possible Issue');
-
         $this->session([
             'Auth.User.id' => 1,
             'Auth.User.auth_role_id' => 2
@@ -113,8 +108,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestSkipped('Possible Issue');
-
         $countInitial = $this->Logs->find()->count();
 
         $this->session([
@@ -140,8 +133,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testResetWithoutPost()
     {
-        $this->markTestSkipped('Possible Issue');
-
         $this->session([
             'Auth.User.id' => 1,
             'Auth.User.auth_role_id' => 2
@@ -160,8 +151,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testRemoveDuplicates()
     {
-        $this->markTestSkipped('Possible Issue');
-
         $countInitial = $this->Logs->find()->count();
 
         $this->session([
@@ -192,8 +181,6 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testReset()
     {
-        $this->markTestSkipped('Possible Issue');
-
         $this->session([
             'Auth.User.id' => 1,
             'Auth.User.auth_role_id' => 2
