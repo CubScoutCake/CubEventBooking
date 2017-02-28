@@ -17,7 +17,15 @@ class DistrictsControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.districts',
-        'app.scoutgroups'
+        'app.scoutgroups',
+        'app.auth_roles',
+        'app.notifications',
+        'app.notification_types',
+        'app.users',
+        'app.sections',
+        'app.section_types',
+        'app.roles',
+        'app.password_states',
     ];
 
     public function testIndexUnauthenticatedFails()
@@ -25,7 +33,7 @@ class DistrictsControllerTest extends IntegrationTestCase
         $this->markTestIncomplete('SuperUser');
 
         // No session data set.
-        $this->get('/districts');
+        $this->get('/super_user/districts');
 
         $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
     }
@@ -37,18 +45,24 @@ class DistrictsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->get('/districts');
+        $this->get('/super_user/districts');
 
         $this->assertResponseOk();
     }
 
     public function testIndexQueryData()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->get('/districts?page=1');
+        $this->get('/super_user/districts?page=1');
 
         $this->assertResponseOk();
     }
@@ -60,9 +74,12 @@ class DistrictsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->get('/districts/view/1');
+        $this->get('/super_user/districts/view/1');
 
         $this->assertResponseOk();
     }
@@ -72,7 +89,7 @@ class DistrictsControllerTest extends IntegrationTestCase
         $this->markTestIncomplete('SuperUser');
 
         // No session data set.
-        $this->get('/districts/view/1');
+        $this->get('/super_user/districts/view/1');
 
         $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
     }

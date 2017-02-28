@@ -23,12 +23,14 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'plugin.database_log.database_logs',
-        'core.sessions',
-        //'app.users',
-        //'app.districts',
-        //'app.scoutgroups',
-        //'app.sections',
-        //'app.section_types',
+        //'core.sessions',
+        'app.users',
+        'app.districts',
+        'app.scoutgroups',
+        'app.sections',
+        'app.section_types',
+        'app.roles',
+        'app.password_states',
         'app.auth_roles',
     ];
 
@@ -108,7 +110,7 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestSkipped();
+        //$this->markTestSkipped();
 
         $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
         $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
@@ -158,7 +160,7 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testRemoveDuplicates()
     {
-        $this->markTestSkipped();
+        //$this->markTestSkipped();
 
         $countInitial = $this->Logs->find()->count();
 

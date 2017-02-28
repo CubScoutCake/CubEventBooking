@@ -1,13 +1,3 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    
-    <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/admin_view');
-    echo $this->element('Sidebar/admin');
-    $this->end(); ?>
-    
-    <?= $this->fetch('Sidebar') ?>
-    
-</nav>
 <div class="districts view large-9 medium-8 columns content">
     <h3><?= h($district->district) ?></h3>
     <table class="vertical-table">

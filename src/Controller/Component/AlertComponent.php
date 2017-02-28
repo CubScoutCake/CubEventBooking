@@ -15,22 +15,23 @@ class AlertComponent extends Component
 
     public function appLoad($userID)
     {
-        if ($userID !== null) {
+        if (!is_null($userID)) {
             $notificationTable = TableRegistry::get('Notifications');
             $controller = $this->_registry->getController();
 
             $notificationEnts = $notificationTable->find('unread')->where(['user_id' => $userID]);
             $notificationCount = $notificationEnts->count();
 
+            $unreadNotifications = false;
+
             if (isset($notificationCount) && $notificationCount > 0) {
                 $unreadNotifications = true;
-            } else {
-                $unreadNotifications = false;
             }
+
             $controller->set(compact('unreadNotifications'));
 
-            $userAppProgress = 'appProgress' . $userID;
-            $appProgress = Cache::read($userAppProgress);
+            //$userAppProgress = 'appProgress' . $userID;
+            //$appProgress = Cache::read($userAppProgress);
 
             if (empty($appProgress)) {
                 //$this->loadComponent('Progress');

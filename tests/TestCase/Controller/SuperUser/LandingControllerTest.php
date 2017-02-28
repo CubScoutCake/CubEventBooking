@@ -29,6 +29,16 @@ class LandingControllerTest extends IntegrationTestCase
         'app.setting_types',
         'app.notification_types',
         'app.notifications',
+        'app.events',
+        'app.event_types',
+        'app.setting_types',
+        'app.settings',
+        'app.discounts',
+        'app.applications',
+        'app.invoices',
+        'app.payments',
+        'app.invoices_payments',
+        'app.notes'
     ];
 
     /**

@@ -28,6 +28,8 @@ class AllergiesControllerTest extends IntegrationTestCase
         'app.sections',
         'app.section_types',
         'app.auth_roles',
+        'app.notifications',
+        'app.notification_types',
     ];
 
     public function testIndexUnauthenticatedFails()
