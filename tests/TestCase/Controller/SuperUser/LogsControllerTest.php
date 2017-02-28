@@ -110,7 +110,7 @@ class LogsControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        //$this->markTestSkipped();
+        $this->markTestSkipped();
 
         $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
         $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
