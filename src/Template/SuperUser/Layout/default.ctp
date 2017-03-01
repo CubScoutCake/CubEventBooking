@@ -408,6 +408,23 @@ $cakeDescription = 'HertsCubs Booking System';
                                         </li>
                                     </ul>
                                 </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-cubes fa-fw"></i> Item Types <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'ItemTypes',
+                                                'action' => 'index',
+                                                'prefix' => 'super_user']); ?>"> View Item Types</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'ItemTypes',
+                                                'action' => 'add',
+                                                'prefix' => 'super_user']); ?>">Add an Item Type</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li>

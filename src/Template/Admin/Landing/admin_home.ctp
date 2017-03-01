@@ -309,7 +309,7 @@
                                     <tr>
                                         <td><?= h($event->name) ?></td>
                                         <td class="actions">
-                                            <?= $this->Html->link('', ['controller' => 'Events', 'action' => 'full_view', $event->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
+                                            <?= $this->Html->link('', ['controller' => 'Events', 'action' => 'view', $event->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
                                         </td>
                                         <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
                                         <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
@@ -341,17 +341,7 @@
                                         <tr>
                                             <td>Invoice #<?= $this->Number->format($invoice->id) ?></td>
                                             <td class="actions">
-                                                <div class="dropdown btn-group">
-                                                    <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu " role="menu">
-                                                        <li><?= $this->Html->link(__('View'), ['prefix' => 'admin','controller' => 'Invoices','action' => 'view', $invoice->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('Update'), ['prefix' => 'admin','controller' => 'Invoices','action' => 'regenerate', $invoice->id]) ?></li>
-                                                        <li class="divider"></li>
-                                                        <li><?= $this->Html->link(__('Add Note'), ['prefix' => 'admin','controller' => 'Notes','action' => 'new_invoice', $invoice->id]) ?></li>
-                                                    </ul>
-                                                </div>
+                                                <?= $this->Html->link('', ['controller' => 'Invoices', 'action' => 'view', $invoice->id], ['title' => __('View'), 'class' => 'btn btn-warning fa fa-eye']) ?>
                                             </td>
                                             <td><?= $invoice->has('user') ? $this->Html->link($this->Text->truncate($invoice->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></td>
                                             <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
@@ -382,15 +372,7 @@
                                         <tr>
                                             <td><?= $this->Number->format($payment->id) ?></td>
                                             <td class="actions">
-                                                <div class="dropdown btn-group">
-                                                    <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu " role="menu">
-                                                        <li><?= $this->Html->link(__('View'), ['prefix' => 'admin','controller' => 'Payments','action' => 'view', $payment->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Payments','action' => 'edit', $payment->id]) ?></li>
-                                                    </ul>
-                                                </div>
+                                                <?= $this->Html->link('', ['controller' => 'Payments', 'action' => 'view', $payment->id], ['title' => __('View'), 'class' => 'btn btn-danger fa fa-eye']) ?>
                                             </td>
                                             <td><?= $this->Number->currency($payment->value,'GBP') ?></td>
                                             <td><?= $this->Time->i18nformat($payment->created,'dd-MMM-yy HH:mm') ?></td>
@@ -420,15 +402,7 @@
                                         <tr>
                                             <td><?= h($note->id) ?></td>
                                             <td class="actions">
-                                                <div class="dropdown btn-group">
-                                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu " role="menu">
-                                                        <li><?= $this->Html->link(__('View'), ['prefix' => 'admin','controller' => 'Notes','action' => 'view', $note->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Notes','action' => 'edit', $note->id]) ?></li>
-                                                    </ul>
-                                                </div>
+                                                <?= $this->Html->link('', ['controller' => 'Notes', 'action' => 'view', $note->id], ['title' => __('View'), 'class' => 'btn btn-success fa fa-eye']) ?>
                                             </td>
                                             <td><?= $this->Text->truncate($note->note_text,50) ?></td>
                                             <td><?= $note->has('user') ? $this->Html->link($this->Text->truncate($note->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $note->user->id]) : '' ?></td>
@@ -460,19 +434,10 @@
                                         <tr>
                                             <td><?= $this->Number->format($notification->id) ?></td>
                                             <td class="actions">
-                                                <div class="dropdown btn-group">
-                                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu " role="menu">
-                                                        <li><?= $this->Html->link(__('View Notification'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'view', $notification->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('View Subject'), ['prefix' => $notification->link_prefix,'controller' => $notification->link_controller,'action' => $notification->link_action, $notification->link_id]) ?></li>
-                                                        <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'edit', $notification->id]) ?></li>
-                                                    </ul>
-                                                </div>
+                                                <?= $this->Html->link('', ['controller' => 'Notifications', 'action' => 'view', $notification->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
                                             </td>
                                             <td><?= $notification->has('user') ? $this->Html->link($this->Text->truncate($notification->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $notification->user->id]) : '' ?></td>
-                                            <td><?= $notification->has('notificationtype') ? $notification->notificationtype->notification_type : '' ?></td>
+                                            <td><i class="fa <?= $notification->has('notification_type') ? $notification->notification_type->icon : '' ?> fa-fw fa-2x"></i></td>
                                             <td><?= h($notification->notification_source) ?></td>
                                             <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
                                             <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-yy HH:mm') ?></td>

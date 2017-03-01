@@ -18,6 +18,9 @@ class ItemTypesController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Roles']
+        ];
         $itemTypes = $this->paginate($this->ItemTypes);
 
         $this->set(compact('itemTypes'));
@@ -59,7 +62,10 @@ class ItemTypesController extends AppController
                 $this->Flash->error(__('The item type could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('itemType'));
+
+        $roles = $this->ItemTypes->Roles->find('list');
+
+        $this->set(compact('itemType', 'roles'));
         $this->set('_serialize', ['itemType']);
     }
 
@@ -85,7 +91,10 @@ class ItemTypesController extends AppController
                 $this->Flash->error(__('The item type could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('itemType'));
+
+        $roles = $this->ItemTypes->Roles->find('list');
+
+        $this->set(compact('itemType', 'roles'));
         $this->set('_serialize', ['itemType']);
     }
 

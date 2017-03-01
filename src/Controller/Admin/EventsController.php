@@ -554,12 +554,13 @@ class EventsController extends AppController
     {
         $events = $this->Events->Applications->find('all', ['contain' => ['Sections.Scoutgroups.Districts', 'Users']])->where(['Applications.event_id' => $eventID])->toArray();
         $_serialize = 'events';
-        $_header = ['App ID', 'Section', 'PermitHolder', 'Created', 'User', 'Email', 'Scout Group', 'District'];
+        $_header = ['App ID', 'Section', 'PermitHolder', 'TeamLeader', 'Created', 'User', 'Email', 'Scout Group', 'District'];
 
         $_extract = [
             'id',
             'section.section',
-            'permitholder',
+            'permit_holder',
+            'team_leader',
             'created',
             'user.full_name',
             'user.email',

@@ -28,8 +28,7 @@
         </br>-->
     </div>
     <div class="col-lg-2 col-md-2">
-        </br>
-        <div class="pull-right">
+        <div class="pull-right pull-down">
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     Actions
@@ -38,7 +37,7 @@
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Accounts View'), ['action' => 'accounts', $event->id]) ?></li>
-                    <li><?= $this->Html->link(__('Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Export Data'), ['controller' => 'Events','action' => 'export', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
@@ -48,7 +47,6 @@
                 </ul>
             </div>
         </div>
-        </br>
     </div> 
 </div>
 

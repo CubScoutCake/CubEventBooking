@@ -1,51 +1,45 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Item Type'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Invoice Items'), ['controller' => 'InvoiceItems', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Invoice Item'), ['controller' => 'InvoiceItems', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="itemTypes index large-9 medium-8 columns content">
-    <h3><?= __('Item Types') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('item_type') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('role_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('minor') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('cancelled') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('available') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($itemTypes as $itemType): ?>
-            <tr>
-                <td><?= $this->Number->format($itemType->id) ?></td>
-                <td><?= h($itemType->item_type) ?></td>
-                <td><?= $this->Number->format($itemType->role_id) ?></td>
-                <td><?= h($itemType->minor) ?></td>
-                <td><?= h($itemType->cancelled) ?></td>
-                <td><?= h($itemType->available) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $itemType->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $itemType->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $itemType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $itemType->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+<div class="row">
+    <div class="col-lg-12">
+        <h3><i class="fa fa-cubes fa-fw"></i> Item Types</h3>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('item_type') ?></th>
+                    <th scope="col" class="actions"><?= __('Actions') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('role_id') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('minor') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('cancelled') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('available') ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($itemTypes as $itemType): ?>
+                    <tr>
+                        <td><?= $this->Number->format($itemType->id) ?></td>
+                        <td><?= h($itemType->item_type) ?></td>
+                        <td class="actions">
+                            <?= $this->Html->link('', ['action' => 'view', $itemType->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
+                            <?= $this->Html->link('', ['action' => 'edit', $itemType->id], ['title' => __('Edit'), 'class' => 'btn btn-default fa fa-pencil']) ?>
+                            <?= $this->Form->postLink('', ['action' => 'delete', $itemType->id], ['confirm' => __('Are you sure you want to delete # {0}?', $itemType->id), 'title' => __('Delete'), 'class' => 'btn btn-default fa fa-trash-o']) ?>
+                        </td>
+                        <td><?= $itemType->has('role') ? $this->Html->link($itemType->role->role, ['controller' => 'Roles', 'action' => 'view', $itemType->role->id]) : '' ?></td>
+                        <td><?= $itemType->minor ? '<i class="fa fa-check fa-fw"></i>' : '' ?></td>
+                        <td><?= $itemType->cancelled ? '<i class="fa fa-check fa-fw"></i>' : '' ?></td>
+                        <td><?= $itemType->available ? '<i class="fa fa-check fa-fw"></i>' : '' ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="paginator">
+            <ul class="pagination">
+                <?= $this->Paginator->prev('< ' . __('previous')) ?>
+                <?= $this->Paginator->numbers() ?>
+                <?= $this->Paginator->next(__('next') . ' >') ?>
+            </ul>
+            <p><?= $this->Paginator->counter() ?></p>
+        </div>
     </div>
 </div>
