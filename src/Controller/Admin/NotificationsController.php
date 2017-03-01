@@ -155,7 +155,6 @@ class NotificationsController extends AppController
     {
         if (isset($payId)) {
             $users = TableRegistry::get('Users');
-            $groups = TableRegistry::get('Scoutgroups');
             $invoices = TableRegistry::get('Invoices');
             $payments = TableRegistry::get('Payments');
 
@@ -174,8 +173,8 @@ class NotificationsController extends AppController
 
             $invoice = $invoices->get($invoiceId);
 
-            $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
-            $group = $groups->get($user->scoutgroup_id);
+            $user = $users->get($invoice->user_id, ['contain' => ['Sections.Scoutgroups']]);
+            $group = $user->section->scoutgroup;
 
             $paymentData = [     'link_id' => $invoice->id
                                 , 'link_controller' => 'Invoices'
@@ -237,7 +236,6 @@ class NotificationsController extends AppController
     {
         if (isset($payId)) {
             $users = TableRegistry::get('Users');
-            $groups = TableRegistry::get('Scoutgroups');
             $invoices = TableRegistry::get('Invoices');
             $payments = TableRegistry::get('Payments');
 
@@ -256,8 +254,8 @@ class NotificationsController extends AppController
 
             $invoice = $invoices->get($invoiceId);
 
-            $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
-            $group = $groups->get($user->scoutgroup_id);
+            $user = $users->get($invoice->user_id, ['contain' => ['Sections.Scoutgroups']]);
+            $group = $user->section->scoutgroup;
 
             $paymentData = [     'link_id' => $invoice->id
                                 , 'link_controller' => 'Invoices'

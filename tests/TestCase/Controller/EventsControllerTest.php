@@ -26,6 +26,9 @@ class EventsControllerTest extends IntegrationTestCase
         'app.districts',
         'app.auth_roles',
         'app.password_states',
+        'app.notifications',
+        'app.notification_types',
+        'app.applications',
     ];
 
     /**
@@ -52,17 +55,14 @@ class EventsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
 
-    /**
-     * Test add method
-     *
-     * @return void
-     */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/events/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -70,7 +70,7 @@ class EventsControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testBook()
+    public function testBookGet()
     {
         $this->session([
            'Auth.User.id' => 1,
@@ -98,18 +98,8 @@ class EventsControllerTest extends IntegrationTestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $this->post('/events/book/1', ['section' => 1, 'non_section' => 1, 'leaders' => 1]);
+        $this->post('/events/book/1', ['section' => 1, 'non_section' => 2, 'leaders' => 3]);
 
-        $this->assertRedirect();
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertRedirect(['controller' => 'Applications', 'action' => 'simple_book', 1, 1, 2, 3]);
     }
 }

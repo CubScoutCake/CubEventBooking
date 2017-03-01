@@ -10,7 +10,7 @@
         echo '<div class="row"> <div class="col-lg-6">';
         echo $this->Form->input('start_date');
         echo $this->Form->input('deposit_date');
-        echo '</div> <div class="col-lg-6>"';
+        echo '</div> <div class="col-lg-6">';
         echo $this->Form->input('end_date');
         echo $this->Form->input('closing_date');
         echo '</div> </div>';

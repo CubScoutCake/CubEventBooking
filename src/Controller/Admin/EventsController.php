@@ -424,14 +424,14 @@ class EventsController extends AppController
         $sectionType = [
             'section_type_id' => $userSection->section_type_id
         ];
-        $event = $this->Events->patchEntity($event, $sectionType, ['validation' => false]);
+        //$event = $this->Events->patchEntity($event, $sectionType, ['validation' => false]);
 
         if ($this->request->is('post')) {
             $sectionType = [
                 'section_type_id' => $userSection->section_type_id
             ];
 
-            $event = $this->Events->patchEntity($event, $this->request->data);
+            $event = $this->Events->patchEntity($event, $this->request->getData());
             $event = $this->Events->patchEntity($event, $sectionType);
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
@@ -486,7 +486,7 @@ class EventsController extends AppController
      *
      * @param string|null $id Event id.
      * @param int $prices Number of Prices to be Created.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function prices($id = null, $prices = 2)
@@ -503,7 +503,14 @@ class EventsController extends AppController
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                if ($this->Events->determineComplete($event->id))
+                {
+                    $this->log('Event #' . $event->id . ' (' . $event->name . ') was completed.', 'info');
+
+                    $this->Flash->success('Event was marked Completed.');
+                }
+
+                return $this->redirect($this->referer(['action' => 'index']));
             } else {
                 $this->Flash->error(__('The event could not be saved. Please, try again.'));
             }

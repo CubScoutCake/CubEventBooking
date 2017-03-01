@@ -49,7 +49,7 @@ class InvoicesController extends AppController
 
         $application = $applications->get($invoice->application_id);
 
-        $event = $events->get($application->event_id, ['contain' => ['Applications', 'Settings']]);
+        $event = $events->get($application->event_id, ['contain' => ['Applications', 'Settings', 'EventTypes']]);
 
         // Set Address Variables
         $invAddress = $event->address;

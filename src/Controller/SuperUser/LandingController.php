@@ -27,6 +27,16 @@ use Cake\ORM\TableRegistry;
 class LandingController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Search.Prg', [
+            // This is default config. You can modify "actions" as needed to make
+            // the PRG component work only for specified methods.
+            'actions' => ['link']
+        ]);
+    }
+
     /**
      * Displays a view
      *
@@ -72,20 +82,22 @@ class LandingController extends AppController
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));
     }
 
-    public function link($ent = null)
+    public function link($linkEntry = null)
     {
-        $ent = $this->request->data['link'];
+        $searchEntry = $this->request->getQuery('q');
 
+        if (!is_null($linkEntry)) {
+            $searchEntry = $linkEntry;
+        }
 
-        if (is_null($ent)) {
-            return $this->redirect(['action' => 'admin_home']);
-        } else {
-            $entStr = strtoupper($ent);
+        $this->set(compact('searchEntry'));
+
+        $idNum = null;
+
+        if (isset($searchEntry) || !is_null($searchEntry)) {
+            $entStr = strtoupper($searchEntry);
 
             $cont = substr($entStr, 0, 1);
-
-            $len = strlen($entStr);
-            $numLen = $len - 1;
 
             $id = substr($entStr, 1);
             $idNum = intval($id);
@@ -120,6 +132,52 @@ class LandingController extends AppController
                         return $this->redirect(['action' => 'admin_home']);
                 }
             }
+        }
+
+        if (!is_int($idNum) || $idNum == 0 || is_null($idNum)) {
+            $this->Sections = TableRegistry::get('Sections');
+            $this->Users = TableRegistry::get('Users');
+            $section = $this->Sections->get($this->Auth->user('section_id'));
+
+            $userQuery = $this->Users
+                ->find('search', ['search' => $this->request->getQueryParams()])
+                ->contain(['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes', 'AuthRoles']);
+
+            $this->set('users', $this->paginate($userQuery));
+
+            $this->paginate = [
+                'contain' => ['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes'],
+                'order' => ['last_login' => 'DESC'],
+                'limit' => 10
+            ];
+
+            $this->Scoutgroups = TableRegistry::get('Scoutgroups');
+
+            $sections = $this->Users->Sections
+                ->find(
+                    'list',
+                    [
+                        'keyField' => 'id',
+                        'valueField' => 'section',
+                        'groupField' => 'scoutgroup.district.district'
+                    ]
+                )
+                ->contain(['Scoutgroups.Districts']);
+            $roles = $this->Users->Roles->find('leaders')->find('list');
+            $authRoles = $this->Users->AuthRoles->find('list');
+            $districts = $this->Scoutgroups->Districts->find('list');
+            $this->set(compact('sections', 'roles', 'authRoles', 'districts'));
+
+            $groupQuery = $this->Scoutgroups
+                // Use the plugins 'search' custom finder and pass in the
+                // processed query params
+                ->find('search', ['search' => $this->request->getQueryParams()])
+                // You can add extra things to the query if you need to
+                ->contain(['Districts'])
+                ->orderDesc('district_id', 'number_stripped')
+                ->limit(10);
+
+            $this->set('scoutgroups', $groupQuery->toArray());
         }
     }
 }

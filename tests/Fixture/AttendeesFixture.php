@@ -60,31 +60,35 @@ class AttendeesFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
-        [
-            'id' => 1,
-            'user_id' => 1,
-            'section_id' => 1,
-            'role_id' => 1,
-            'firstname' => 'Lorem ipsum dolor sit amet',
-            'lastname' => 'Lorem ipsum dolor sit amet',
-            'dateofbirth' => '2016-12-18',
-            'phone' => 'Lorem ipsum dolor sit amet',
-            'phone2' => 'Lorem ipsum dolor sit amet',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'Lorem ipsum dolor sit amet',
-            'nightsawaypermit' => 1,
-            'vegetarian' => 1,
-            'created' => 1482061379,
-            'modified' => 1482061379,
-            'osm_generated' => 1,
-            'osm_id' => 1,
-            'osm_sync_date' => 1482061379,
-            'user_attendee' => 1,
-            'deleted' => null
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'user_id' => 1,
+                'section_id' => 1,
+                'role_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'dateofbirth' => date_create('2016-12-26 00:00:00'),
+                'phone' => 'Lorem ipsum dolor sit amet',
+                'phone2' => 'Lorem ipsum dolor sit amet',
+                'address_1' => 'Lorem ipsum dolor sit amet',
+                'address_2' => 'Lorem ipsum dolor sit amet',
+                'city' => 'Lorem ipsum dolor sit amet',
+                'county' => 'Lorem ipsum dolor sit amet',
+                'postcode' => 'Lorem ipsum dolor sit amet',
+                'nightsawaypermit' => 1,
+                'vegetarian' => 1,
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'osm_generated' => 1,
+                'osm_id' => 1,
+                'osm_sync_date' => date_create('2016-12-26 23:22:30'),
+                'user_attendee' => 1,
+                'deleted' => null
+            ],
+        ];
+        parent::init();
+    }
 }

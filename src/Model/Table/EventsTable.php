@@ -11,7 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \Cake\ORM\Association\BelongsTo $Settings
  * @property \Cake\ORM\Association\BelongsTo $Discounts
- * @property \Cake\ORM\Association\BelongsTo $AdminUsers
+ * @property \Cake\ORM\Association\BelongsTo $Users
  * @property \Cake\ORM\Association\BelongsTo $EventTypes
  * @property \Cake\ORM\Association\BelongsTo $SectionTypes
  * @property \Cake\ORM\Association\HasMany $Applications
@@ -111,54 +111,39 @@ class EventsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('name', 'create')
+            //->requirePresence('name', 'create')
             ->notEmpty('name');
 
         $validator
-            ->requirePresence('full_name', 'create')
+            //->requirePresence('full_name', 'create')
             ->notEmpty('full_name');
 
         $validator
-            ->boolean('live')
-            ->requirePresence('live', 'create')
-            ->allowEmpty('live');
+            ->boolean('live');
 
         $validator
-            ->boolean('new_apps')
-            ->requirePresence('new_apps', 'create')
-            ->allowEmpty('new_apps');
+            ->boolean('new_apps');
 
         $validator
-            ->dateTime('start_date')
-            ->requirePresence('start_date', 'create')
-            ->notEmpty('start_date');
+            ->dateTime('start_date');
 
         $validator
-            ->dateTime('end_date')
-            ->requirePresence('end_date', 'create')
-            ->notEmpty('end_date');
+            ->dateTime('end_date');
 
         $validator
-            ->dateTime('deposit_date')
-            ->requirePresence('deposit_date', 'create')
-            ->allowEmpty('deposit_date');
+            ->dateTime('deposit_date');
 
         $validator
-            ->dateTime('closing_date')
-            ->requirePresence('closing_date', 'create')
-            ->allowEmpty('closing_date');
+            ->dateTime('closing_date');
 
         $validator
-            ->boolean('deposit')
-            ->allowEmpty('deposit');
+            ->boolean('deposit');
 
         $validator
-            ->dateTime('deposit_date')
-            ->allowEmpty('deposit_date');
+            ->dateTime('deposit_date');
 
         $validator
-            ->boolean('deposit_inc_leaders')
-            ->allowEmpty('deposit_inc_leaders');
+            ->boolean('deposit_inc_leaders');
 
         $validator
             ->allowEmpty('logo');
@@ -182,48 +167,30 @@ class EventsTable extends Table
             ->allowEmpty('tagline_text');
 
         $validator
-            ->requirePresence('location', 'create')
+            //->requirePresence('location', 'create')
             ->notEmpty('location');
 
         $validator
-            ->boolean('max')
-            ->requirePresence('max', 'create')
-            ->allowEmpty('max');
+            ->boolean('max');
 
         $validator
-            ->boolean('allow_reductions')
-            ->allowEmpty('allow_reductions');
+            ->boolean('allow_reductions');
 
         $validator
-            ->boolean('invoices_locked')
-            ->allowEmpty('invoices_locked');
+            ->boolean('invoices_locked');
 
         $validator
-            ->requirePresence('admin_firstname', 'create')
+            //->requirePresence('admin_firstname', 'create')
             ->notEmpty('admin_firstname');
 
         $validator
-            ->requirePresence('admin_lastname', 'create')
+            //->requirePresence('admin_lastname', 'create')
             ->notEmpty('admin_lastname');
 
         $validator
             ->add('admin_email', 'valid', ['rule' => 'email'])
-            ->requirePresence('admin_email', 'create')
+            //->requirePresence('admin_email', 'create')
             ->notEmpty('admin_email');
-
-        $validator
-            ->integer('admin_user_id')
-            ->requirePresence('admin_user_id', 'create')
-            ->notEmpty('admin_user_id');
-
-        $validator
-            ->integer('event_type_id')
-            ->requirePresence('event_type_id', 'create')
-            ->notEmpty('event_type_id');
-
-        $validator
-            ->integer('section_type_id')
-            ->requirePresence('section_type_id', 'create');
 
         return $validator;
     }
@@ -265,5 +232,41 @@ class EventsTable extends Table
     public function findUpcoming($query)
     {
         return $query->where(['Events.end_date >' => Time::now()]);
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $eventId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determineComplete($eventId)
+    {
+        $event = $this->get($eventId);
+
+        $prices = '0';
+        $name = '0';
+
+        if ($event->cc_prices > 0) {
+            $prices = '1';
+        }
+
+        if (!is_null($event->name)) {
+            $name = '1';
+        }
+
+        $bin = $name . $prices;
+        $def = '1' . '1';
+
+        if (bindec($name) == bindec($prices)) {
+            $event->complete = true;
+
+            $this->save($event);
+
+            return true;
+        }
+
+        return false;
     }
 }

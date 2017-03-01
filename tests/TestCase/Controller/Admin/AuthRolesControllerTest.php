@@ -7,7 +7,7 @@ use Cake\TestSuite\IntegrationTestCase;
 /**
  * App\Admin\AuthRolesController Test Case
  */
-class AuthRolesAdminControllerTest extends IntegrationTestCase
+class AuthRolesControllerTest extends IntegrationTestCase
 {
 
     /**

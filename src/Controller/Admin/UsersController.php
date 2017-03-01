@@ -56,16 +56,17 @@ class UsersController extends AppController
         $this->set('_serialize', ['users']);
 
         $sections = $this->Users->Sections->find(
-            'list',
-            [
-                'keyField' => 'id',
-                'valueField' => 'section',
-                'groupField' => 'scoutgroup.district.district'
-            ]
-        )->contain(['Scoutgroups.Districts']);
+                'list',
+                [
+                    'keyField' => 'id',
+                    'valueField' => 'section',
+                    'groupField' => 'scoutgroup.district.district'
+                ])
+            ->where(['section_type_id' => $section['section_type_id']])
+            ->contain(['Scoutgroups.Districts']);
         $roles = $this->Users->Roles->find('leaders')->find('list');
-        $auth_roles = $this->Users->AuthRoles->find('list');
-        $this->set(compact('sections', 'roles', 'auth_roles'));
+        $authRoles = $this->Users->AuthRoles->find('list');
+        $this->set(compact('sections', 'roles', 'authRoles'));
     }
 
     /**
@@ -290,7 +291,7 @@ class UsersController extends AppController
             }
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $authRoles = $this->Users->AuthRoles->find('list');
+        $auth_roles = $this->Users->AuthRoles->find('list');
         $sections = $this->Users->Sections->find(
             'list',
             [

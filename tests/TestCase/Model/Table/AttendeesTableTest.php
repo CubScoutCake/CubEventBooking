@@ -2,6 +2,8 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\AttendeesTable;
+use Cake\I18n\Date;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -47,6 +49,9 @@ class AttendeesTableTest extends TestCase
         parent::setUp();
         $config = TableRegistry::exists('Attendees') ? [] : ['className' => 'App\Model\Table\AttendeesTable'];
         $this->Attendees = TableRegistry::get('Attendees', $config);
+
+        $now = new Time('2016-12-26 23:22:30');
+        Time::setTestNow($now);
     }
 
     /**
@@ -68,7 +73,43 @@ class AttendeesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Attendees->find('all');
+
+        $startNow = Time::now();
+        $now = new Time('2016-12-26 00:00:00');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'county' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'user_id' => 1,
+                'section_id' => 1,
+                'role_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'dateofbirth' => $now,
+                'phone' => 'Lorem ipsum dolor sit amet',
+                'phone2' => 'Lorem ipsum dolor sit amet',
+                'address_1' => 'Lorem ipsum dolor sit amet',
+                'address_2' => 'Lorem ipsum dolor sit amet',
+                'city' => 'Lorem ipsum dolor sit amet',
+                'postcode' => 'Lorem ipsum dolor sit amet',
+                'nightsawaypermit' => true,
+                'vegetarian' => true,
+                'created' => $startNow,
+                'modified' => $startNow,
+                'osm_generated' => true,
+                'osm_id' => 1,
+                'osm_sync_date' => $startNow,
+                'user_attendee' => true,
+                'cc_apps' => null,
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -78,7 +119,131 @@ class AttendeesTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $startNow = Time::now();
+        $now = new Time('2016-12-26 00:00:00');
+        $nowDate = new Date('2016-12-26');
+
+        $badData = [
+            'id' => 2,
+            'county' => null,
+            'deleted' => null,
+            'user_id' => null,
+            'section_id' => null,
+            'role_id' => null,
+            'firstname' => null,
+            'lastname' => null,
+            'dateofbirth' => null,
+            'phone' => null,
+            'phone2' => null,
+            'address_1' => null,
+            'address_2' => null,
+            'city' => null,
+            'postcode' => null,
+            'nightsawaypermit' => null,
+            'vegetarian' => null,
+            'created' => null,
+            'modified' => null,
+            'osm_generated' => null,
+            'osm_id' => null,
+            'osm_sync_date' => null,
+            'user_attendee' => null,
+            'cc_apps' => null,
+        ];
+
+        $goodData = [
+            'id' => 2,
+            'county' => 'Lorem ipsum dolor sit amet',
+            'deleted' => null,
+            'user_id' => 1,
+            'section_id' => 1,
+            'role_id' => 1,
+            'firstname' => 'Lorem Joe dolor sit amet',
+            'lastname' => 'Lorem ipsum dolor sit amet',
+            'dateofbirth' => $now,
+            'phone' => 'Lorem ipsum dolor sit amet',
+            'phone2' => 'Lorem ipsum dolor sit amet',
+            'address_1' => 'Lorem ipsum dolor sit amet',
+            'address_2' => 'Lorem ipsum dolor sit amet',
+            'city' => 'Lorem ipsum dolor sit amet',
+            'postcode' => 'Lorem ipsum dolor sit amet',
+            'nightsawaypermit' => true,
+            'vegetarian' => true,
+            'created' => $startNow,
+            'modified' => $startNow,
+            'osm_generated' => true,
+            'osm_id' => 1,
+            'osm_sync_date' => $startNow,
+            'user_attendee' => true,
+            'cc_apps' => null,
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'county' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'user_id' => 1,
+                'section_id' => 1,
+                'role_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'dateofbirth' => $nowDate,
+                'phone' => 'Lorem ipsum dolor sit amet',
+                'phone2' => 'Lorem ipsum dolor sit amet',
+                'address_1' => 'Lorem ipsum dolor sit amet',
+                'address_2' => 'Lorem ipsum dolor sit amet',
+                'city' => 'Lorem ipsum dolor sit amet',
+                'postcode' => 'Lorem ipsum dolor sit amet',
+                'nightsawaypermit' => true,
+                'vegetarian' => true,
+                'created' => $startNow,
+                'modified' => $startNow,
+                'osm_generated' => true,
+                'osm_id' => 1,
+                'osm_sync_date' => $startNow,
+                'user_attendee' => true,
+                'cc_apps' => null,
+            ],
+            [
+                'id' => 2,
+                'county' => 'Lorem Ipsum Dolor Sit Amet',
+                'deleted' => null,
+                'user_id' => 1,
+                'section_id' => 1,
+                'role_id' => 1,
+                'firstname' => 'Lorem Joe Dolor Sit Amet',
+                'lastname' => 'Lorem Ipsum Dolor Sit Amet',
+                'dateofbirth' => $nowDate,
+                'phone' => 'Lorem ipsum dolor sit amet',
+                'phone2' => 'Lorem ipsum dolor sit amet',
+                'address_1' => 'Lorem Ipsum Dolor Sit Amet',
+                'address_2' => 'Lorem Ipsum Dolor Sit Amet',
+                'city' => 'Lorem Ipsum Dolor Sit Amet',
+                'postcode' => 'LOREM IPSUM DOLOR SIT AMET',
+                'nightsawaypermit' => true,
+                'vegetarian' => true,
+                'created' => $startNow,
+                'modified' => $startNow,
+                'osm_generated' => true,
+                'osm_id' => 1,
+                'osm_sync_date' => $startNow,
+                'user_attendee' => true,
+                'cc_apps' => null,
+            ],
+        ];
+
+        $badEntity = $this->Attendees->newEntity($badData);
+        $goodEntity = $this->Attendees->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Attendees->save($badEntity));
+        $this->Attendees->save($goodEntity);
+
+        $query = $this->Attendees->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -129,5 +294,291 @@ class AttendeesTableTest extends TestCase
     public function testFindUnattached()
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test findUnattached method
+     *
+     * @return void
+     */
+    public function testRemoveDuplicate()
+    {
+        $this->markTestIncomplete();
+
+        $nowDate = new Date('2016-12-26'); // Date Only
+
+        $earlierNow = new Time('2016-11-26 23:22:30'); // 1
+
+        $now = new Time('2016-12-26 23:22:30'); // 2
+
+        $laterNow = new Time('2017-01-26 23:22:30'); // 3
+
+        $goodData = [
+            'id' => 2,
+            'county' => 'OLD',
+            'deleted' => null,
+            'user_id' => 1,
+            'section_id' => 1,
+            'role_id' => 1,
+            'firstname' => 'Joe',
+            'lastname' => 'Bloggs',
+            'dateofbirth' => $earlierNow,
+            'phone' => 'OLD',
+            'phone2' => 'OLD',
+            'address_1' => 'OLD',
+            'address_2' => 'OLD',
+            'city' => 'OLD',
+            'postcode' => 'OLD',
+            'nightsawaypermit' => false,
+            'vegetarian' => false,
+            'created' => $earlierNow,
+            'modified' => $earlierNow,
+            'osm_generated' => false,
+            'osm_id' => null,
+            'osm_sync_date' => null,
+            'user_attendee' => false,
+            'cc_apps' => null,
+        ]; // Fully Old Base
+
+        $goodSecondData = [
+            'id' => 3,
+            'county' => 'Lorem ipsum dolor sit amet',
+            'deleted' => null,
+            'user_id' => 1,
+            'section_id' => 1,
+            'role_id' => 1,
+            'firstname' => 'Joe',
+            'lastname' => 'Bloggs',
+            'dateofbirth' => $now,
+            'phone' => '9901929',
+            'phone2' => '99912 09921',
+            'address_1' => 'RAW OLD',
+            'address_2' => 'Lorem OLD dolor sit amet',
+            'city' => 'Llama OLD',
+            'postcode' => 'MK09 OOK',
+            'nightsawaypermit' => false,
+            'vegetarian' => false,
+            'created' => $now,
+            'modified' => $now,
+            'osm_generated' => true,
+            'osm_id' => 5,
+            'osm_sync_date' => $laterNow,
+            'user_attendee' => false,
+            'cc_apps' => null,
+        ]; // New OSM - OLD Address
+
+        $goodThirdData = [
+            'id' => 4,
+            'county' => 'NEW LLAMA',
+            'deleted' => null,
+            'user_id' => 1,
+            'section_id' => 1,
+            'role_id' => 1,
+            'firstname' => 'Joe',
+            'lastname' => 'Bloggs',
+            'dateofbirth' => $laterNow,
+            'phone' => '1111',
+            'phone2' => '99912 1111',
+            'address_1' => 'RAW NEW',
+            'address_2' => 'NEW',
+            'city' => 'Llama NEW',
+            'postcode' => 'MK09 NEW',
+            'nightsawaypermit' => true,
+            'vegetarian' => true,
+            'created' => $now,
+            'modified' => $laterNow,
+            'osm_generated' => true,
+            'osm_id' => 9,
+            'osm_sync_date' => $now,
+            'user_attendee' => true,
+            'cc_apps' => null,
+        ]; // New Address - Old OSM
+
+        $expected = [
+            [
+                'id' => 1,
+                'county' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'user_id' => 1,
+                'section_id' => 1,
+                'role_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'dateofbirth' => $nowDate,
+                'phone' => 'Lorem ipsum dolor sit amet',
+                'phone2' => 'Lorem ipsum dolor sit amet',
+                'address_1' => 'Lorem ipsum dolor sit amet',
+                'address_2' => 'Lorem ipsum dolor sit amet',
+                'city' => 'Lorem ipsum dolor sit amet',
+                'postcode' => 'Lorem ipsum dolor sit amet',
+                'nightsawaypermit' => true,
+                'vegetarian' => true,
+                'created' => $now,
+                'modified' => $now,
+                'osm_generated' => true,
+                'osm_id' => 1,
+                'osm_sync_date' => $now,
+                'user_attendee' => true,
+                'cc_apps' => null,
+            ],
+            [
+                'id' => 2,
+                'county' => 'OLD',
+                'deleted' => null,
+                'user_id' => 1,
+                'section_id' => 1,
+                'role_id' => 1,
+                'firstname' => 'Joe',
+                'lastname' => 'Bloggs',
+                'dateofbirth' => $now,
+                'phone' => 'OLD',
+                'phone2' => 'OLD',
+                'address_1' => 'OLD',
+                'address_2' => 'OLD',
+                'city' => 'OLD',
+                'postcode' => 'OLD',
+                'nightsawaypermit' => false,
+                'vegetarian' => false,
+                'created' => $now,
+                'modified' => $now,
+                'osm_generated' => false,
+                'osm_id' => null,
+                'osm_sync_date' => null,
+                'user_attendee' => false,
+                'cc_apps' => null,
+            ],
+            [
+                'id' => 3,
+                'county' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'user_id' => 1,
+                'section_id' => 1,
+                'role_id' => 1,
+                'firstname' => 'Joe',
+                'lastname' => 'Bloggs',
+                'dateofbirth' => $now,
+                'phone' => '9901929',
+                'phone2' => '99912 09921',
+                'address_1' => 'RAW OLD',
+                'address_2' => 'Lorem OLD dolor sit amet',
+                'city' => 'Llama OLD',
+                'postcode' => 'MK09 OOK',
+                'nightsawaypermit' => true,
+                'vegetarian' => true,
+                'created' => $now,
+                'modified' => $now,
+                'osm_generated' => true,
+                'osm_id' => 5,
+                'osm_sync_date' => $now,
+                'user_attendee' => true,
+                'cc_apps' => null,
+            ],
+            [
+                'id' => 4,
+                'county' => 'OLD LLAMA',
+                'deleted' => null,
+                'user_id' => 1,
+                'section_id' => 1,
+                'role_id' => 1,
+                'firstname' => 'Joe',
+                'lastname' => 'Bloggs',
+                'dateofbirth' => $now,
+                'phone' => '9901929',
+                'phone2' => '99912 09921',
+                'address_1' => 'RAW OLD',
+                'address_2' => 'OLD',
+                'city' => 'Llama OLD',
+                'postcode' => 'MK09 OLD',
+                'nightsawaypermit' => false,
+                'vegetarian' => false,
+                'created' => $now,
+                'modified' => $laterNow,
+                'osm_generated' => true,
+                'osm_id' => 9,
+                'osm_sync_date' => $laterNow,
+                'user_attendee' => true,
+                'cc_apps' => null,
+            ],
+        ];
+
+        $goodEntity = $this->Attendees->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        $this->Attendees->save($goodEntity);
+
+        $goodSecondEntity = $this->Attendees->newEntity($goodSecondData, ['accessibleFields' => ['id' => true]]);
+        $this->Attendees->save($goodSecondEntity);
+
+        $goodThirdEntity = $this->Attendees->newEntity($goodThirdData, ['accessibleFields' => ['id' => true]]);
+        $this->Attendees->save($goodThirdEntity);
+
+        $query = $this->Attendees->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
+
+        $this->Attendees->removeDuplicate(2);
+
+        $query = $this->Attendees->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $expected = [
+            [
+                'id' => 1,
+                'county' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'user_id' => 1,
+                'section_id' => 1,
+                'role_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'dateofbirth' => $nowDate,
+                'phone' => 'Lorem ipsum dolor sit amet',
+                'phone2' => 'Lorem ipsum dolor sit amet',
+                'address_1' => 'Lorem ipsum dolor sit amet',
+                'address_2' => 'Lorem ipsum dolor sit amet',
+                'city' => 'Lorem ipsum dolor sit amet',
+                'postcode' => 'Lorem ipsum dolor sit amet',
+                'nightsawaypermit' => true,
+                'vegetarian' => true,
+                'created' => $startNow,
+                'modified' => $startNow,
+                'osm_generated' => true,
+                'osm_id' => 1,
+                'osm_sync_date' => $startNow,
+                'user_attendee' => true,
+                'cc_apps' => null,
+            ],
+            [
+                'id' => 2,
+                'county' => 'Lorem Ipsum Dolor Sit Amet',
+                'deleted' => null,
+                'user_id' => 1,
+                'section_id' => 1,
+                'role_id' => 1,
+                'firstname' => 'Lorem Joe Dolor Sit Amet',
+                'lastname' => 'Lorem Ipsum Dolor Sit Amet',
+                'dateofbirth' => $nowDate,
+                'phone' => 'Lorem ipsum dolor sit amet',
+                'phone2' => 'Lorem ipsum dolor sit amet',
+                'address_1' => 'Lorem Ipsum Dolor Sit Amet',
+                'address_2' => 'Lorem Ipsum Dolor Sit Amet',
+                'city' => 'Lorem Ipsum Dolor Sit Amet',
+                'postcode' => 'LOREM IPSUM DOLOR SIT AMET',
+                'nightsawaypermit' => true,
+                'vegetarian' => true,
+                'created' => $startNow,
+                'modified' => $startNow,
+                'osm_generated' => true,
+                'osm_id' => 1,
+                'osm_sync_date' => $startNow,
+                'user_attendee' => true,
+                'cc_apps' => null,
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 }

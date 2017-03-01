@@ -42,7 +42,7 @@ class EventsController extends AppController
     public function view($id = null)
     {
         $event = $this->Events->get($id, [
-            'contain' => ['Discounts', 'Users', 'EventTypes', 'Settings', 'Applications', 'Logistics']
+            'contain' => ['Discounts', 'Users', 'EventTypes', 'Settings', 'Applications']
         ]);
 
         $this->set('event', $event);

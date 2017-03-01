@@ -37,6 +37,10 @@ class PricesTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+        $this->addBehavior('CounterCache', [
+            'Events' => ['cc_prices'],
+        ]);
+
         $this->belongsTo('ItemTypes', [
             'foreignKey' => 'item_type_id'
         ]);
