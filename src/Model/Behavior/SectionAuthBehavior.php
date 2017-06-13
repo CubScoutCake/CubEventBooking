@@ -45,7 +45,6 @@ class SectionAuthBehavior extends Behavior
         return $query;
     }
 
-
     /**
      * Find Section Types Directly
      *

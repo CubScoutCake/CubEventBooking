@@ -227,7 +227,6 @@ class ChampionsTableTest extends TestCase
             ],
         ];
 
-
         $badEmailEntity = $this->Champions->newEntity($badEmailData, ['accessibleFields' => ['id' => true]]);
         $badUserEntity = $this->Champions->newEntity($badUserData, ['accessibleFields' => ['id' => true]]);
         $badDistrictEntity = $this->Champions->newEntity($badDistrictData, ['accessibleFields' => ['id' => true]]);

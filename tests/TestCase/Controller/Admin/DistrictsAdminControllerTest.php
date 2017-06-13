@@ -34,8 +34,6 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
         $this->assertRedirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user-home']);
     }
 
-
-
     public function testAddUnauthorisedFails()
     {
         $this->session(['Auth.User.auth_role_id' => 1]);

@@ -82,7 +82,6 @@ class EventsControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
-
     /**
      * Test edit method
      *
