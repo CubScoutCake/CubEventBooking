@@ -96,7 +96,7 @@ class ScoutgroupsTable extends Table
                 'before' => true,
                 'after' => true,
                 'fieldMode' => 'OR',
-                'comparison' => 'ILIKE',
+                'comparison' => 'LIKE',
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
                 'field' => ['scoutgroup']

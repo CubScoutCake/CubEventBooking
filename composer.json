@@ -23,7 +23,9 @@
         "php-http/client-common": "@stable",
         "php-http/socket-client": "@stable",
         "robmorgan/phinx": "@stable",
-        "dereuromark/cakephp-databaselog": "@stable"
+        "dereuromark/cakephp-databaselog": "@stable",
+        "josegonzalez/cakephp-upload": "^3.6",
+        "riesenia/cakephp-duplicatable": "^3.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",

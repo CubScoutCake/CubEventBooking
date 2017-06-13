@@ -342,7 +342,7 @@ class ApplicationsController extends AppController
         $evts = TableRegistry::get('Events');
 
         $application = $this->Applications->get($id, [
-            'contain' => ['Attendees', 'Sections.Scoutgroups']
+            'contain' => ['Attendees', 'Sections']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             // Check Max Applications
@@ -359,7 +359,7 @@ class ApplicationsController extends AppController
                     , 'prefix' => false
                     , $id]);
             } else {*/
-                $newData = ['user_id' => $this->Auth->user('id'), 'modification' => 'modification' + 1];
+                $newData = ['user_id' => $this->Auth->user('id'), 'modification' => $application->modification + 1];
                 $application = $this->Applications->patchEntity($application, $newData);
                 $application = $this->Applications->patchEntity($application, $this->request->data);
             if ($this->Applications->save($application)) {
@@ -371,10 +371,18 @@ class ApplicationsController extends AppController
             }
             // }
         }
-        $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200]);
+        $sections = $this->Applications->Sections->find(
+            'list',
+            [
+                'keyField' => 'id',
+                'valueField' => 'section',
+                'groupField' => 'scoutgroup.district.district'
+            ]
+        )
+            ->contain(['Scoutgroups.Districts']);
         $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
-        $events = $this->Applications->Events->find('list', ['limit' => 200]);
-        $this->set(compact('application', 'users', 'scoutgroups', 'events', 'attendees'));
+        $events = $this->Applications->Events->find('unarchived')->find('list', ['limit' => 200]);
+        $this->set(compact('application', 'users', 'sections', 'events', 'attendees'));
         $this->set('_serialize', ['application']);
     }
 
