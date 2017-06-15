@@ -1,14 +1,25 @@
 <?php
 namespace App\Controller\Component;
 
+use Cake\Cache\Cache;
 use Cake\Controller\Component;
 use Cake\ORM\TableRegistry;
-use Cake\Cache\Cache;
 
 class ProgressComponent extends Component
 {
     public $components = ['Flash'];
 
+    /**
+     * A Function to Determine the Application
+     *
+     * @param int $appID The Application ID
+     * @param bool $admin Is in Admin Scope (Reveal Others)
+     * @param int $userID The ID of the Viewing User
+     * @param bool $set Set Variables
+     * @param bool $full Full Output
+     * @param bool $flash Create Flash notifications
+     * @return array|void
+     */
     public function determineApp($appID, $admin = null, $userID = null, $set = true, $full = true, $flash = null)
     {
         if (!isset($set) || empty($set)) {
@@ -42,9 +53,9 @@ class ProgressComponent extends Component
                         'Attendees.role_id' => 'ASC',
                         'Attendees.lastname' => 'ASC'
                     ]
-                ]
-                , 'Attendees.Roles'
-                , 'Attendees.Sections.Scoutgroups'
+                ],
+                'Attendees.Roles',
+                'Attendees.Sections.Scoutgroups'
             ]
         ]);
 
@@ -209,26 +220,26 @@ class ProgressComponent extends Component
 
         if ($set == false && $full == true) {
             $results = [
-                'invCount' => $invCount
-                , 'invFirst' => $invFirst
-                , 'invCubs' => $invCubs
-                , 'invYls' => $invYls
-                , 'invLeaders' => $invLeaders
-                , 'invNotCubs' => $invNotCubs
-                , 'attCubs' => $attCubs
-                , 'attYls' => $attYls
-                , 'attLeaders' => $attLeaders
-                , 'attNotCubs' => $attNotCubs
-                , 'sumBalances' => $sumBalances
-                , 'sumPayments' => $sumPayments
-                , 'sumValues' => $sumValues
-                , 'appDone' => $appDone
-                , 'invDone' => $invDone
-                , 'cubsDone' => $cubsDone
-                , 'cubsNotDone' => $cubsNotDone
-                , 'payDone' => $payDone
-                , 'done' => $done
-                , 'status' => $status
+                'invCount' => $invCount,
+                'invFirst' => $invFirst,
+                'invCubs' => $invCubs,
+                'invYls' => $invYls,
+                'invLeaders' => $invLeaders,
+                'invNotCubs' => $invNotCubs,
+                'attCubs' => $attCubs,
+                'attYls' => $attYls,
+                'attLeaders' => $attLeaders,
+                'attNotCubs' => $attNotCubs,
+                'sumBalances' => $sumBalances,
+                'sumPayments' => $sumPayments,
+                'sumValues' => $sumValues,
+                'appDone' => $appDone,
+                'invDone' => $invDone,
+                'cubsDone' => $cubsDone,
+                'cubsNotDone' => $cubsNotDone,
+                'payDone' => $payDone,
+                'done' => $done,
+                'status' => $status,
             ];
 
             return $results;
@@ -236,19 +247,23 @@ class ProgressComponent extends Component
 
         if ($set == false && $full == false) {
             $simpleResults = [
-                'done' => $done
-                , 'appDone' => $appDone
-                , 'invDone' => $invDone
-                , 'cubsDone' => $cubsDone
-                , 'cubsNotDone' => $cubsNotDone
-                , 'payDone' => $payDone
-                , 'status' => $status
+                'done' => $done,
+                'appDone' => $appDone,
+                'invDone' => $invDone,
+                'cubsDone' => $cubsDone,
+                'cubsNotDone' => $cubsNotDone,
+                'payDone' => $payDone,
+                'status' => $status,
             ];
 
             return $simpleResults;
         }
     }
 
+    /**
+     * @param int $userID The ID of the User
+     * @return void
+     */
     public function cacheApps($userID)
     {
         $usrs = TableRegistry::get('Users');

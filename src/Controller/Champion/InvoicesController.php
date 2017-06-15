@@ -177,15 +177,11 @@ class InvoicesController extends AppController
             $this->request->data['application_id'] = $appId;
         }
 
-
-
-
             //$this->set(compact('application', 'attendees', 'invoice', 'invoiceitems','payments'));
             //$this->set('_serialize', ['invoice', 'invoiceItem']);
         //}     else {
         //    return $this->redirect(['action' => 'index']);
         //}
-
 
 
         //if ($this->request->is('post')) {

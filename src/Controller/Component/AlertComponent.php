@@ -1,11 +1,11 @@
 <?php
 namespace App\Controller\Component;
 
-use Cake\Controller\Component;
-use Cake\ORM\TableRegistry;
-use Cake\Mailer\MailerAwareTrait;
-use Cake\Mailer\Email;
 use Cake\Cache\Cache;
+use Cake\Controller\Component;
+use Cake\Mailer\Email;
+use Cake\Mailer\MailerAwareTrait;
+use Cake\ORM\TableRegistry;
 
 class AlertComponent extends Component
 {
@@ -13,6 +13,10 @@ class AlertComponent extends Component
 
     use MailerAwareTrait;
 
+    /**
+     * @param int $userID The User ID to be loaded
+     * @return void
+     */
     public function appLoad($userID)
     {
         if (!is_null($userID)) {
@@ -41,6 +45,12 @@ class AlertComponent extends Component
         }
     }
 
+    /**
+     * App Query
+     *
+     * @param int $appID to be Queried
+     * @return mixed
+     */
     public function queryApp($appID)
     {
         if (isset($appID)) {

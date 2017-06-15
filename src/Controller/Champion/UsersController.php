@@ -34,7 +34,7 @@ class UsersController extends AppController
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
     }
-    
+
     /**
      * View method
      *
@@ -63,13 +63,14 @@ class UsersController extends AppController
         $champD = $user->section->scoutgroup;
 
         $user = $this->Users->newEntity();
-        
+
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             $newData = ['authrole' => 'user'];
             $user = $this->Users->patchEntity($user, $newData);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -80,7 +81,7 @@ class UsersController extends AppController
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
     }
-    
+
     public function register()
     {
         $user = $this->Users->get($this->Auth->user('id'), ['contain' => 'Sections.Scoutgroups.Districts']);
@@ -97,6 +98,7 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('You have successfully registered!'));
+
                 return $this->redirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false]);
             } else {
                 $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));
@@ -106,7 +108,6 @@ class UsersController extends AppController
         $scoutgroups = $this->Users->Sections->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['district_id' => $champD->district_id]]);
         $this->set(compact('user', 'roles', 'scoutgroups'));
         $this->set('_serialize', ['user']);
-
     }
 
     /**
@@ -130,13 +131,15 @@ class UsersController extends AppController
 
         if ($usrRole !== 'user' && $user->id !== $this->Auth->user('id')) {
             $this->Flash->error(__('The user could not be edited.'));
+
             return $this->redirect(['action' => 'index']);
         }
-        
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -165,9 +168,11 @@ class UsersController extends AppController
 
         if ($this->Users->save($user)) {
             $this->Flash->success(__('The user has been updated.'));
+
             return $this->redirect(['action' => 'view', $user->id]);
         } else {
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
+
             return $this->redirect(['action' => 'view', $user->id]);
         }
     }
@@ -184,6 +189,7 @@ class UsersController extends AppController
     public function logout()
     {
         $this->Flash->success('You are now logged out.');
+
         return $this->redirect($this->Auth->logout());
     }
 }

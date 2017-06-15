@@ -88,7 +88,6 @@ class AttendeesController extends AppController
             $user = $usrs->get($userId);
             $grpId = $user->scoutgroup_id;
 
-
             $users = $this->Attendees->Users->find('list', ['limit' => 200, 'conditions' => ['id' => $userId]]);
             $applications = $this->Attendees->Applications->find('list', [
                 'limit' => 200,

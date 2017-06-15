@@ -14,6 +14,10 @@ class BookingComponent extends Component
 {
     public $components = ['Flash'];
 
+    /**
+     * @param int $max The Value Maximum
+     * @return void
+     */
     public function randomColour($max = null)
     {
     }

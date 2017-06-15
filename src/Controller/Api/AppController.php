@@ -26,6 +26,11 @@ use Cake\Controller\Controller;
  */
 class AppController extends Controller
 {
+    /**
+     * Setup the Config
+     *
+     * @return void
+     */
     public function initialize()
     {
         $this->loadComponent('Auth', [

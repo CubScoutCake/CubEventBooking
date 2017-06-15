@@ -25,8 +25,6 @@ class ApplicationsController extends AppController
             , 'order' => ['modified' => 'DESC']
         ];
 
-
-
         $this->set('applications', $this->paginate($this->Applications));
         $this->set('_serialize', ['applications']);
     }

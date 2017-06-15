@@ -26,7 +26,7 @@ class PasswordComponent extends Component
     /**
      * Generate a Password Reset Token and Dispatch the Email.
      *
-     * @param $userId
+     * @param int $userId The User ID to be Reset.
      *
      * @return bool
      */
@@ -60,7 +60,6 @@ class PasswordComponent extends Component
         $tokenEntity = $tokens->newEntity($data);
 
         if ($tokens->save($tokenEntity, ['associated' => 'EmailSends.Notifications'])) {
-
             $tokenId = $tokenEntity->get('id');
 
             $tokens = TableRegistry::get('Tokens');
@@ -73,6 +72,4 @@ class PasswordComponent extends Component
 
         return false;
     }
-
-
 }

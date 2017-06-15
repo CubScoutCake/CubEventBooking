@@ -126,7 +126,6 @@ class ApplicationsController extends AppController
             $invLeaders = 0;
         }
 
-
         $invNotCubs = $invYls + $invLeaders;
         $this->set(compact('invCubs', 'invYls', 'invLeaders', 'invNotCubs'));
 
@@ -188,7 +187,6 @@ class ApplicationsController extends AppController
         } else {
             $payDone = 0;
         }
-
 
         $this->set(compact('appDone', 'invDone', 'cubsDone', 'cubsNotDone', 'payDone'));
 

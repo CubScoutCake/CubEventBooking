@@ -2,12 +2,12 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
-use Cake\Mailer\MailerAwareTrait;
-use Cake\I18n\Time;
+use Cake\Cache\Cache;
 use Cake\Http\ServerRequest;
+use Cake\I18n\Time;
+use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
-use Cake\Cache\Cache;
 
 //use DataTables\Controller\Component;
 
@@ -20,6 +20,11 @@ class UsersController extends AppController
 {
     use MailerAwareTrait;
 
+    /**
+     * Setup the User Search Config
+     *
+     * @return void
+     */
     public function initialize()
     {
         parent::initialize();
@@ -56,12 +61,13 @@ class UsersController extends AppController
         $this->set('_serialize', ['users']);
 
         $sections = $this->Users->Sections->find(
-                'list',
-                [
+            'list',
+            [
                     'keyField' => 'id',
                     'valueField' => 'section',
                     'groupField' => 'scoutgroup.district.district'
-                ])
+            ]
+        )
             ->where(['section_type_id' => $section['section_type_id']])
             ->contain(['Scoutgroups.Districts']);
         $roles = $this->Users->Roles->find('leaders')->find('list');
@@ -73,20 +79,20 @@ class UsersController extends AppController
      * View method
      *
      * @param string|null $id User id.
-     * @return void|path
+     * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => ['Roles'
-                , 'Sections.Scoutgroups'
-                , 'Applications' => ['Sections.Scoutgroups', 'Events']
-                , 'Attendees' => ['Sections.Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']]
-                , 'Invoices.Applications.Events'
-                , 'AuthRoles'
-                , 'Notes' => ['Invoices' , 'Applications']
-                , 'Notifications' => ['NotificationTypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']]
+            'contain' => ['Roles',
+                'Sections.Scoutgroups',
+                'Applications' => ['Sections.Scoutgroups', 'Events'],
+                'Attendees' => ['Sections.Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']],
+                'Invoices.Applications.Events',
+                'AuthRoles',
+                'Notes' => ['Invoices', 'Applications'],
+                'Notifications' => ['NotificationTypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']],
             ]
         ]);
 
@@ -154,9 +160,14 @@ class UsersController extends AppController
 
     // use MailerAwareTrait;
 
+    /**
+     * Create & Sync the User Attendee and the User
+     *
+     * @param int $userId The ID of the User
+     * @return \Cake\Http\Response|null
+     */
     public function sync($userId)
     {
-
         $user = $this->Users->get($userId);
 
         $atts = TableRegistry::get('Attendees');
@@ -203,9 +214,13 @@ class UsersController extends AppController
         return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $user->id]);
     }
 
+    /**
+     * loop through all Users
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function syncAll()
     {
-
         $usrs = $this->Users->find('all');
 
         $success = 0;
@@ -264,13 +279,13 @@ class UsersController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id User id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @param int $userId The ID of the User to be Edited.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($userId = null)
     {
-        $user = $this->Users->get($id, [
+        $user = $this->Users->get($userId, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -305,18 +320,22 @@ class UsersController extends AppController
         $this->set('_serialize', ['user']);
     }
 
-    public function update($id = null)
+    /**
+     * @param int $UserId the ID of the User
+     * @return \Cake\Http\Response|null
+     */
+    public function update($UserId = null)
     {
         $user = $this->Users->get($id);
 
-        $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-            , 'lastname' => ucwords(strtolower($user->lastname))
-            , 'address_1' => ucwords(strtolower($user->address_1))
-            , 'address_2' => ucwords(strtolower($user->address_2))
-            , 'city' => ucwords(strtolower($user->city))
-            , 'county' => ucwords(strtolower($user->county))
-            , 'postcode' => strtoupper($user->postcode)
-            , 'section' => ucwords(strtolower($user->section))];
+        $upperUser = ['firstname' => ucwords(strtolower($user->firstname)),
+            'lastname' => ucwords(strtolower($user->lastname)),
+            'address_1' => ucwords(strtolower($user->address_1)),
+            'address_2' => ucwords(strtolower($user->address_2)),
+            'city' => ucwords(strtolower($user->city)),
+            'county' => ucwords(strtolower($user->county)),
+            'postcode' => strtoupper($user->postcode),
+            'section' => ucwords(strtolower($user->section))];
 
         $user = $this->Users->patchEntity($user, $upperUser);
 
@@ -331,6 +350,12 @@ class UsersController extends AppController
         }
     }
 
+    /**
+     * Reset a User's Password
+     *
+     * @param int $userId The ID of the User
+     * @return \Cake\Http\Response|null
+     */
     public function reset($userId)
     {
         $sets = TableRegistry::get('Settings');
@@ -366,14 +391,14 @@ class UsersController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id User id.
-     * @return void Redirects to index.
+     * @param string|null $userId User id.
+     * @return \Cake\Http\Response Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($userId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
+        $user = $this->Users->get($userId);
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {
@@ -383,6 +408,11 @@ class UsersController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
+    /**
+     * Login for Admin
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function login()
     {
         return $this->redirect([
@@ -392,6 +422,11 @@ class UsersController extends AppController
         ]);
     }
 
+    /**
+     * Log the User Out
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function logout()
     {
         $this->Flash->success('You are now logged out.');
@@ -399,6 +434,12 @@ class UsersController extends AppController
         return $this->redirect($this->Auth->logout());
     }
 
+    /**
+     * Authorisation Determination
+     *
+     * @param \Cake\Event\Event $event The Event Trigger
+     * @return void
+     */
     public function beforeFilter(\Cake\Event\Event $event)
     {
         $this->Auth->allow(['register']);

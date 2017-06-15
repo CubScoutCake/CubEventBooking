@@ -4,12 +4,22 @@ namespace App\Controller\Api;
 
 class ApplicationsController extends AppController
 {
+    /**
+     * Setup Config
+     *
+     * @return void
+     */
     public function initialize()
     {
         parent::initialize();
         $this->loadComponent('RequestHandler');
     }
 
+    /**
+     * Display a set of Applications in the Response
+     *
+     * @return void
+     */
     public function index()
     {
         $this->request->allowMethod('get');

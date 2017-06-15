@@ -15,6 +15,10 @@ class LineComponent extends Component
 {
     public $components = ['Flash', 'Availability'];
 
+    /**
+     * @param int $applicationID The Application to be populated.
+     * @return void
+     */
     public function populate($applicationID)
     {
         $this->Applications = TableRegistry::get('Applications');
@@ -98,8 +102,6 @@ class LineComponent extends Component
 
         $this->Applications->save($application);
     }
-
-
 
         //$this->getLines($invoiceId);
 
@@ -311,6 +313,10 @@ class LineComponent extends Component
             }
         } */
 
+    /**
+     * @param int $invoiceId The ID of the invoice line parent.
+     * @return void
+     */
     public function getLines($invoiceId)
     {
         $this->InvoiceItems = TableRegistry::get('InvoiceItems');
@@ -322,7 +328,6 @@ class LineComponent extends Component
         $existingLeader = $this->InvoiceItems->find()->where(['itemtype_id' => 4, 'invoice_id' => $invoiceId])->first();
         $existingDiscount = $this->InvoiceItems->find()->where(['itemtype_id' => 5, 'invoice_id' => $invoiceId])->first();
 
-
         // Retrive IDs
         $existingCubDepID = $existingCubDep->id;
         $existingCubID = $existingCub->id;
@@ -330,14 +335,12 @@ class LineComponent extends Component
         $existingLeaderID = $existingLeader->id;
         $existingDiscountID = $existingDiscount->id;
 
-
         // Get Existing Lines
         $existingCubDepItem = $this->InvoiceItems->get($existingCubDepID);
         $existingCubItem = $this->InvoiceItems->get($existingCubID);
         $existingYlItem = $this->InvoiceItems->get($existingYlID);
         $existingLeaderItem = $this->InvoiceItems->get($existingLeaderID);
         $existingDiscountItem = $this->InvoiceItems->get($existingDiscountID);
-
 
         // Retrive Quantity Values
         $existingCubDepQty = $existingCubDepItem->Quantity;
@@ -347,6 +350,14 @@ class LineComponent extends Component
         $existingDiscountQty = $existingDiscountItem->Quantity;
     }
 
+    /**
+     * A function to create Lines
+     *
+     * @param int $invoiceId Invoice for line to be created on
+     * @param int $itemTypeId The ItemType of the Line
+     * @param int $quantity The Quantity
+     * @return bool
+     */
     public function createLine($invoiceId, $itemTypeId, $quantity)
     {
         $this->Invoices = TableRegistry::get('Invoices');

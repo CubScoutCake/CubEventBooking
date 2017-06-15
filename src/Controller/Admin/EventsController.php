@@ -406,8 +406,6 @@ class EventsController extends AppController
         $this->set(compact('sumValues', 'sumBalances', 'sumPayments', 'outstanding', 'unpaid'));
     }
 
-
-
     /**
      * Add method
      *
@@ -503,8 +501,7 @@ class EventsController extends AppController
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
 
-                if ($this->Events->determineComplete($event->id))
-                {
+                if ($this->Events->determineComplete($event->id)) {
                     $this->log('Event #' . $event->id . ' (' . $event->name . ') was completed.', 'info');
 
                     $this->Flash->success('Event was marked Completed.');

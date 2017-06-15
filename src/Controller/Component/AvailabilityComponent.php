@@ -20,7 +20,7 @@ class AvailabilityComponent extends Component
     /**
      * Retrieve an Array of Numbers for the Number of Attendees.
      *
-     * @param $applicationId
+     * @param int $applicationId The application to be analysed
      * @return array
      */
     public function getNumbers($applicationId)

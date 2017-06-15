@@ -16,7 +16,7 @@ class SectionsController extends AppController
      *
      * @param int|null $eventId an Event Id to proceed with - will be set to the session.
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Network\Response|void Value to be returned
      */
     public function select($eventId = null)
     {
@@ -73,7 +73,6 @@ class SectionsController extends AppController
         $this->set('_serialize', ['section']);
     }
 
-
     /**
      * Add method
      *
@@ -126,11 +125,10 @@ class SectionsController extends AppController
         $this->set('_serialize', ['section']);
     }
 
-
     /**
      * Authorisation Function,
      *
-     * @param \Cake\Event\Event $event
+     * @param \Cake\Event\Event $event The CakePHP Event Trigger
      *
      * @return void
      */

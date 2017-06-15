@@ -14,7 +14,13 @@ use Cake\ORM\TableRegistry;
 class UsersController extends AppController
 {
 
-    public function register($sectionId = null, $eventId = null)
+    /**
+     * Register Function
+     *
+     * @param null $sectionId The ID of the Section Selected.
+     * @return \Cake\Http\Response|void
+     */
+    public function register($sectionId = null)
     {
         if (!isset($sectionId) || is_null($sectionId)) {
             $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
@@ -49,13 +55,13 @@ class UsersController extends AppController
                     'postcode', ]
             ]);
 
-            $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-                , 'lastname' => ucwords(strtolower($user->lastname))
-                , 'address_1' => ucwords(strtolower($user->address_1))
-                , 'address_2' => ucwords(strtolower($user->address_2))
-                , 'city' => ucwords(strtolower($user->city))
-                , 'county' => ucwords(strtolower($user->county))
-                , 'postcode' => strtoupper($user->postcode)];
+            $upperUser = ['firstname' => ucwords(strtolower($user->firstname)),
+                'lastname' => ucwords(strtolower($user->lastname)),
+                'address_1' => ucwords(strtolower($user->address_1)),
+                'address_2' => ucwords(strtolower($user->address_2)),
+                'city' => ucwords(strtolower($user->city)),
+                'county' => ucwords(strtolower($user->county)),
+                'postcode' => strtoupper($user->postcode)];
 
             $user = $this->Users->patchEntity($user, $upperUser, ['validate' => false]);
 
@@ -114,6 +120,12 @@ class UsersController extends AppController
         $this->set('_serialize', ['user']);
     }
 
+    /**
+     * Before Filter Function
+     *
+     * @param \Cake\Event\Event $event The Event to be modified
+     * @return void
+     */
     public function beforeFilter(\Cake\Event\Event $event)
     {
         $this->Auth->allow(['register']);

@@ -22,6 +22,4 @@ use Cake\Utility\Inflector;
 class AnalyticsComponent extends Component
 {
 
-
-
 }

@@ -426,7 +426,6 @@ class InvoiceItemsController extends AppController
             $discount = $discounts->get($event->discount_id);
         }
 
-
         // Set Item Description Text
         $depositDescription = $event->deposit_text;
         $cubsDescription = $event->cubs_text;

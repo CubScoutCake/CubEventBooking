@@ -61,7 +61,6 @@ class InvoicesController extends AppController
         $this->set('invCity', $invCity);
         $this->set('invPostcode', $invPostcode);
 
-
         // Set Variable Defaults
         $invPrefix = 'Inv';
         $invPayable = 'Hertfordshire Scouts';
@@ -147,8 +146,6 @@ class InvoicesController extends AppController
             $applications = TableRegistry::get('Applications');
 
             $event = $events->get($eventId, ['contain' => ['Applications.Invoices', 'Settings']]);
-
-
 
             foreach ($event->applications as $applications) {
                 $invoiceFirst = $this->Invoices->find('all')->where(['application_id' => $applications->id])->first();
@@ -291,7 +288,6 @@ class InvoicesController extends AppController
             $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
         }
 
-
         $this->set(compact('invoice', 'users', 'payments', 'applications'));
         $this->set('_serialize', ['invoice']);
 
@@ -360,7 +356,6 @@ class InvoicesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-
 
     public function generate($appId = null, $userId = null)
     {

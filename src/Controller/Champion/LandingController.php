@@ -62,7 +62,6 @@ class LandingController extends AppController
         $this->Sections = TableRegistry::get('Sections');
         $this->Scoutgroups = TableRegistry::get('Scoutgroups');
 
-
         $now = Time::now();
         $userId = $this->Auth->user('id');
         $user = $this->Users->get($userId);

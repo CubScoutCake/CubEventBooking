@@ -27,6 +27,10 @@ use Cake\Controller\Controller;
 class AppController extends Controller
 {
 
+    /**
+     * Initialise Function - Setup Application Config
+     * @return void
+     */
     public function initialize()
     {
         $this->loadComponent('Flash');
@@ -50,6 +54,12 @@ class AppController extends Controller
         ]);
     }
 
+    /**
+     * Determine Authorisation for User in /Register
+     *
+     * @param \App\Model\Entity\User $user The User to be Evaluated
+     * @return bool
+     */
     public function isAuthorized($user)
     {
         return true;

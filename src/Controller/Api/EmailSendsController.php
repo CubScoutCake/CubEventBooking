@@ -14,7 +14,7 @@ class EmailSendsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return void
      */
     public function update()
     {
