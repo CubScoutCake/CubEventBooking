@@ -54,26 +54,26 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "3.4.7",
+            "version": "3.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "b1aaa094894c020cd49d093bf5d6111fe26f5c45"
+                "reference": "143bf387be9150dac747f57b7e1af2dba731e6f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/b1aaa094894c020cd49d093bf5d6111fe26f5c45",
-                "reference": "b1aaa094894c020cd49d093bf5d6111fe26f5c45",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/143bf387be9150dac747f57b7e1af2dba731e6f4",
+                "reference": "143bf387be9150dac747f57b7e1af2dba731e6f4",
                 "shasum": ""
             },
             "require": {
                 "aura/intl": "^3.0.0",
-                "cakephp/chronos": "~1.0",
+                "cakephp/chronos": "^1.0.0",
                 "ext-intl": "*",
                 "ext-mbstring": "*",
                 "php": ">=5.6.0",
-                "psr/log": "^1.0",
-                "zendframework/zend-diactoros": "^1.4"
+                "psr/log": "^1.0.0",
+                "zendframework/zend-diactoros": "^1.4.0"
             },
             "conflict": {
                 "phpunit/phpunit": "<5.7"
@@ -126,9 +126,17 @@
             "description": "The CakePHP framework",
             "homepage": "https://cakephp.org",
             "keywords": [
-                "framework"
+                "conventions over configuration",
+                "dry",
+                "form",
+                "framework",
+                "mvc",
+                "orm",
+                "psr-7",
+                "rapid-development",
+                "validation"
             ],
-            "time": "2017-05-20T03:32:05+00:00"
+            "time": "2017-06-20T01:04:40+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -907,21 +915,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UseMuffin/Trash.git",
-                "reference": "510cf4f5fb970689f26b4418328719fa79af93a8"
+                "reference": "1606bd5e081a5cad7a85fdc88105cc76cf9004eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UseMuffin/Trash/zipball/510cf4f5fb970689f26b4418328719fa79af93a8",
-                "reference": "510cf4f5fb970689f26b4418328719fa79af93a8",
+                "url": "https://api.github.com/repos/UseMuffin/Trash/zipball/1606bd5e081a5cad7a85fdc88105cc76cf9004eb",
+                "reference": "1606bd5e081a5cad7a85fdc88105cc76cf9004eb",
                 "shasum": ""
             },
             "require": {
-                "cakephp/orm": "3.*"
+                "cakephp/orm": "^3.0"
             },
             "require-dev": {
-                "cakephp/cakephp": "3.*",
-                "cakephp/cakephp-codesniffer": "^2.1",
-                "phpunit/phpunit": "^4.8"
+                "cakephp/cakephp": "^3.0",
+                "phpunit/phpunit": "<6.0"
             },
             "type": "cakephp-plugin",
             "autoload": {
@@ -949,7 +956,7 @@
                     "homepage": "https://github.com/usemuffin/trash/graphs/contributors"
                 }
             ],
-            "description": "Adds soft delete support to CakePHP 3  ORM tables.",
+            "description": "Adds soft delete support to CakePHP 3 ORM tables.",
             "homepage": "https://github.com/usemuffin/trash",
             "keywords": [
                 "cakephp",
@@ -957,7 +964,7 @@
                 "orm",
                 "trash"
             ],
-            "time": "2016-09-02 10:31:37"
+            "time": "2017-06-20 15:25:34"
         },
         {
             "name": "phenx/php-font-lib",
@@ -1535,16 +1542,16 @@
         },
         {
             "name": "riesenia/cakephp-duplicatable",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/riesenia/cakephp-duplicatable.git",
-                "reference": "1ace65da6231224bfc4fab33ff45a449ab371420"
+                "reference": "988c4a98ed091b8ccf69950958b21230be0e1d95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/riesenia/cakephp-duplicatable/zipball/1ace65da6231224bfc4fab33ff45a449ab371420",
-                "reference": "1ace65da6231224bfc4fab33ff45a449ab371420",
+                "url": "https://api.github.com/repos/riesenia/cakephp-duplicatable/zipball/988c4a98ed091b8ccf69950958b21230be0e1d95",
+                "reference": "988c4a98ed091b8ccf69950958b21230be0e1d95",
                 "shasum": ""
             },
             "require": {
@@ -1578,19 +1585,19 @@
                 "duplicate",
                 "orm"
             ],
-            "time": "2017-06-12T15:08:43+00:00"
+            "time": "2017-06-21T07:41:07+00:00"
         },
         {
             "name": "robmorgan/phinx",
             "version": "v0.6.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/robmorgan/phinx.git",
+                "url": "https://github.com/cakephp/phinx.git",
                 "reference": "6943cb4bb78bf9d3964967a032220b7c793b97b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/robmorgan/phinx/zipball/6943cb4bb78bf9d3964967a032220b7c793b97b7",
+                "url": "https://api.github.com/repos/cakephp/phinx/zipball/6943cb4bb78bf9d3964967a032220b7c793b97b7",
                 "reference": "6943cb4bb78bf9d3964967a032220b7c793b97b7",
                 "shasum": ""
             },
@@ -2452,16 +2459,16 @@
         },
         {
             "name": "cakephp/debug_kit",
-            "version": "3.10.2",
+            "version": "3.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/debug_kit.git",
-                "reference": "a0583e2cb58e80940fd4aeb026be48d5f0000ff2"
+                "reference": "4249446a4a8ceea95d71e75e1c3fb7cfa1bca0a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/debug_kit/zipball/a0583e2cb58e80940fd4aeb026be48d5f0000ff2",
-                "reference": "a0583e2cb58e80940fd4aeb026be48d5f0000ff2",
+                "url": "https://api.github.com/repos/cakephp/debug_kit/zipball/4249446a4a8ceea95d71e75e1c3fb7cfa1bca0a8",
+                "reference": "4249446a4a8ceea95d71e75e1c3fb7cfa1bca0a8",
                 "shasum": ""
             },
             "require": {
@@ -2469,7 +2476,8 @@
                 "cakephp/chronos": "^1.0.0",
                 "cakephp/plugin-installer": "^1.0.0",
                 "composer/composer": "^1.3.0",
-                "jdorn/sql-formatter": "^1.2.0"
+                "jdorn/sql-formatter": "^1.2.0",
+                "php": ">=5.6.0"
             },
             "require-dev": {
                 "cakephp/cakephp-codesniffer": "^3.0",
@@ -2507,7 +2515,7 @@
                 "debug",
                 "kit"
             ],
-            "time": "2017-05-12T16:10:13+00:00"
+            "time": "2017-06-16T20:03:13+00:00"
         },
         {
             "name": "codeclimate/php-test-reporter",
@@ -4129,16 +4137,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.6",
+            "version": "v0.8.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "7028d6d525fb183d50b249b7c07598e3d386b27d"
+                "reference": "fe65c30cbc55c71e61ba3a38b5a581149be31b8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/7028d6d525fb183d50b249b7c07598e3d386b27d",
-                "reference": "7028d6d525fb183d50b249b7c07598e3d386b27d",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/fe65c30cbc55c71e61ba3a38b5a581149be31b8e",
+                "reference": "fe65c30cbc55c71e61ba3a38b5a581149be31b8e",
                 "shasum": ""
             },
             "require": {
@@ -4198,7 +4206,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-06-04T10:34:20+00:00"
+            "time": "2017-06-24T06:16:19+00:00"
         },
         {
             "name": "satooshi/php-coveralls",
@@ -4421,16 +4429,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "02b6b2c7aefe2cdb1185b8dbf8718b0bcedf3ab3"
+                "reference": "74776f8dbc081cab9287c2a601c0c1d842568744"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/02b6b2c7aefe2cdb1185b8dbf8718b0bcedf3ab3",
-                "reference": "02b6b2c7aefe2cdb1185b8dbf8718b0bcedf3ab3",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/74776f8dbc081cab9287c2a601c0c1d842568744",
+                "reference": "74776f8dbc081cab9287c2a601c0c1d842568744",
                 "shasum": ""
             },
             "require": {
@@ -4467,7 +4475,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2017-05-18T10:10:00+00:00"
+            "time": "2017-06-20T16:25:05+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -4867,16 +4875,16 @@
         },
         {
             "name": "seld/jsonlint",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/jsonlint.git",
-                "reference": "791f8c594f300d246cdf01c6b3e1e19611e301d8"
+                "reference": "50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/791f8c594f300d246cdf01c6b3e1e19611e301d8",
-                "reference": "791f8c594f300d246cdf01c6b3e1e19611e301d8",
+                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77",
+                "reference": "50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77",
                 "shasum": ""
             },
             "require": {
@@ -4912,7 +4920,7 @@
                 "parser",
                 "validator"
             ],
-            "time": "2017-03-06T16:42:24+00:00"
+            "time": "2017-06-18T15:11:04+00:00"
         },
         {
             "name": "seld/phar-utils",
