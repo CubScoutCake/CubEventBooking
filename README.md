@@ -1,6 +1,6 @@
 # Cub Scout CakePHP Booking System
 
-[![License](https://img.shields.io/packagist/l/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
+[![license](https://img.shields.io/github/license/CubScoutCake/CubEventBooking.svg)](https://github.com/CubScoutCake/CubEventBooking/blob/master/LICENSE)
 
 Master Build: [![Build Status](https://travis-ci.org/CubScoutCake/CubEventBooking.svg?branch=master)](https://travis-ci.org/CubScoutCake/CubEventBooking)
 [![Issue Count](https://codeclimate.com/github/CubScoutCake/CubEventBooking/badges/issue_count.svg)](https://codeclimate.com/github/CubScoutCake/CubEventBooking)
