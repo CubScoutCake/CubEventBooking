@@ -28,13 +28,13 @@ class PaymentsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Payment id.
+     * @param int $paymentId Payment id.
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($paymentId = null)
     {
-        $payment = $this->Payments->get($id, [
+        $payment = $this->Payments->get($paymentId, [
             'contain' => ['Invoices', 'Users', 'Invoices.Users']
         ]);
         $this->set('payment', $payment);
@@ -44,7 +44,8 @@ class PaymentsController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @param int $invs ?Unknown
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add($invs = null)
     {
@@ -87,13 +88,13 @@ class PaymentsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Payment id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @param int $paymentId Payment id.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($paymentId = null)
     {
-        $payment = $this->Payments->get($id, [
+        $payment = $this->Payments->get($paymentId, [
             'contain' => ['Invoices']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -114,14 +115,14 @@ class PaymentsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Payment id.
-     * @return void Redirects to index.
+     * @param string|null $paymentId Payment id.
+     * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($paymentId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $payment = $this->Payments->get($id);
+        $payment = $this->Payments->get($paymentId);
         if ($this->Payments->delete($payment)) {
             $this->Flash->success(__('The payment has been deleted.'));
         } else {

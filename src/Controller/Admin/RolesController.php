@@ -41,7 +41,7 @@ class RolesController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -64,7 +64,7 @@ class RolesController extends AppController
      * Edit method
      *
      * @param string|null $id Role id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
@@ -89,14 +89,14 @@ class RolesController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Role id.
-     * @return void Redirects to index.
+     * @param string|null $roleId Role id.
+     * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($roleId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $role = $this->Roles->get($id);
+        $role = $this->Roles->get($roleId);
         if ($this->Roles->delete($role)) {
             $this->Flash->success(__('The role has been deleted.'));
         } else {

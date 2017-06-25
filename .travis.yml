@@ -21,10 +21,11 @@ before_script:
 
 script:
   - composer cs-check
-  - sh -c "vendor/bin/phpunit"
+  - composer test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - vendor/bin/test-reporter
 
 notifications:
   email: true

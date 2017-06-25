@@ -15,13 +15,13 @@ class NotesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return void
      */
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Applications', 'Invoices', 'Users']
-            , 'order' => ['created' => 'DESC']
+            'contain' => ['Applications', 'Invoices', 'Users'],
+            'order' => ['created' => 'DESC']
         ];
         $notes = $this->paginate($this->Notes);
 
@@ -29,12 +29,15 @@ class NotesController extends AppController
         $this->set('_serialize', ['notes']);
     }
 
+    /**
+     * @return void
+     */
     public function visible()
     {
         $this->paginate = [
-            'contain' => ['Applications', 'Invoices', 'Users']
-            , 'order' => ['created' => 'DESC']
-            , 'conditions' => ['visible' => true]
+            'contain' => ['Applications', 'Invoices', 'Users'],
+            'order' => ['created' => 'DESC'],
+            'conditions' => ['visible' => true]
         ];
         $notes = $this->paginate($this->Notes);
 
@@ -46,7 +49,7 @@ class NotesController extends AppController
      * View method
      *
      * @param string|null $id Note id.
-     * @return \Cake\Network\Response|null
+     * @return void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -107,6 +110,10 @@ class NotesController extends AppController
         $this->set('_serialize', ['note']);
     }
 
+    /**
+     * @param int $invId the Invoice ID
+     * @return \Cake\Http\Response|null
+     */
     public function newInvoice($invId)
     {
         if (!is_null($invId)) {
@@ -140,6 +147,10 @@ class NotesController extends AppController
         }
     }
 
+    /**
+     * @param int $appId The Application ID
+     * @return \Cake\Http\Response|null
+     */
     public function newApplication($appId)
     {
         if (!is_null($appId)) {
@@ -176,6 +187,10 @@ class NotesController extends AppController
         }
     }
 
+    /**
+     * @param int $userId the ID of the User
+     * @return \Cake\Http\Response|null
+     */
     public function newUser($userId)
     {
         if (!is_null($userId)) {

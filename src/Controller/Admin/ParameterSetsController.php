@@ -14,7 +14,7 @@ class ParameterSetsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return void
      */
     public function index()
     {
@@ -28,7 +28,7 @@ class ParameterSetsController extends AppController
      * View method
      *
      * @param string|null $id Parameter Set id.
-     * @return \Cake\Network\Response|null
+     * @return void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)

@@ -409,6 +409,10 @@ class InvoicesController extends AppController
         }
     }
 
+    /**
+     * @param int $InvId The Invoice ID
+     * @return \Cake\Http\Response|null
+     */
     public function regenerate($InvId = null)
     {
         $invoiceItems = TableRegistry::get('InvoiceItems');
@@ -437,9 +441,13 @@ class InvoicesController extends AppController
         }
     }
 
-    public function sendFile($id)
+    /**
+     * @param int $invoiceId The Invoice ID
+     * @return \Cake\Http\Response
+     */
+    public function sendFile($invoiceId)
     {
-        $file = $this->Invoices->getFile($id);
+        $file = $this->Invoices->getFile($invoiceId);
         $this->response->file($file['path']);
         // Return response object to prevent controller from trying to render a view.
         return $this->response;

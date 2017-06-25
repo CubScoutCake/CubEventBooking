@@ -15,10 +15,10 @@
 namespace App\Controller\Admin;
 
 use Cake\Core\Configure;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
-use Cake\ORM\TableRegistry;
 use Cake\Mailer\Email;
+use Cake\Network\Exception\NotFoundException;
+use Cake\ORM\TableRegistry;
+use Cake\View\Exception\MissingTemplateException;
 
 /**
  * Static content controller
@@ -29,6 +29,11 @@ use Cake\Mailer\Email;
  */
 class LandingController extends AppController
 {
+    /**
+     * Setup Config
+     *
+     * @return void
+     */
     public function initialize()
     {
         parent::initialize();
@@ -42,7 +47,7 @@ class LandingController extends AppController
     /**
      * Displays a view
      *
-     * @return void|\Cake\Network\Response
+     * @return \Cake\Network\Response|void
      * @throws \Cake\Network\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
@@ -88,6 +93,10 @@ class LandingController extends AppController
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));
     }
 
+    /**
+     * @param int $linkEntry Search Parameter
+     * @return \Cake\Http\Response|null
+     */
     public function link($linkEntry = null)
     {
         $searchEntry = $this->request->getQuery('q');
@@ -112,28 +121,28 @@ class LandingController extends AppController
                 switch ($cont) {
                     case "U":
                         return $this->redirect(['controller' => 'Users', 'action' => 'view', $idNum]);
-                        break;
+//                        break;
                     case "I":
                         return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $idNum]);
-                        break;
+//                        break;
                     case "A":
                         return $this->redirect(['controller' => 'Applications', 'action' => 'view', $idNum]);
-                        break;
+//                        break;
                     case "N":
                         return $this->redirect(['controller' => 'Notes', 'action' => 'view', $idNum]);
-                        break;
+//                        break;
                     case "P":
                         return $this->redirect(['controller' => 'Payments', 'action' => 'view', $idNum]);
-                        break;
+//                        break;
                     case "T":
                         return $this->redirect(['controller' => 'Attendees', 'action' => 'view', $idNum]);
-                        break;
+//                        break;
                     case "E":
                         return $this->redirect(['controller' => 'Events', 'action' => 'full_view', $idNum]);
-                        break;
+//                        break;
                     case "S":
                         return $this->redirect(['controller' => 'Settings', 'action' => 'view', $idNum]);
-                        break;
+//                        break;
                     default:
                         return $this->redirect(['action' => 'admin_home']);
                 }

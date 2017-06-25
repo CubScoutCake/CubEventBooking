@@ -14,7 +14,7 @@ class LogisticsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return void
      */
     public function index()
     {
@@ -30,13 +30,13 @@ class LogisticsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Logistic id.
-     * @return \Cake\Network\Response|null
+     * @param string|null $logisticId Logistic id.
+     * @return void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($logisticId = null)
     {
-        $logistic = $this->Logistics->get($id, [
+        $logistic = $this->Logistics->get($logisticId, [
             'contain' => ['Applications', 'Logisticstypes', 'Parameters']
         ]);
 

@@ -11,6 +11,11 @@ use App\Controller\Admin\AppController;
 class ScoutgroupsController extends AppController
 {
 
+    /**
+     * setup config
+     *
+     * @return void
+     */
     public function initialize()
     {
         parent::initialize();
@@ -62,7 +67,7 @@ class ScoutgroupsController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -85,8 +90,8 @@ class ScoutgroupsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Scoutgroup id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @param int $id the ID of the Scout Group.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
@@ -111,7 +116,7 @@ class ScoutgroupsController extends AppController
      * Delete method
      *
      * @param string|null $id Scoutgroup id.
-     * @return void Redirects to index.
+     * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function delete($id = null)
