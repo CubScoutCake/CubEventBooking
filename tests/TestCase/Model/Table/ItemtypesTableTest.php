@@ -101,14 +101,16 @@ class ItemTypesTableTest extends TestCase
                 'role_id' => 1,
                 'cancelled' => true,
                 'available' => true,
+                'team_price' => true,
             ],
             [
                 'id' => 2,
                 'item_type' => 'Lorem dolor sit amet',
                 'role_id' => 1,
-                'minor' => 1,
-                'cancelled' => 1,
-                'available' => 1
+                'minor' => true,
+                'cancelled' => true,
+                'available' => true,
+                'team_price' => true,
             ],
         ];
 
@@ -128,6 +130,7 @@ class ItemTypesTableTest extends TestCase
             'roletype' => null,
             'minor' => null,
             'available' => null,
+            'team_price' => null,
         ];
 
         $goodData = [
@@ -137,6 +140,7 @@ class ItemTypesTableTest extends TestCase
             'role_id' => 1,
             'cancelled' => false,
             'available' => true,
+            'team_price' => false,
         ];
 
         $expected = [
@@ -147,6 +151,7 @@ class ItemTypesTableTest extends TestCase
                 'role_id' => 1,
                 'cancelled' => true,
                 'available' => true,
+                'team_price' => true,
             ],
             [
                 'id' => 2,
@@ -154,7 +159,8 @@ class ItemTypesTableTest extends TestCase
                 'role_id' => 1,
                 'minor' => 1,
                 'cancelled' => 1,
-                'available' => 1
+                'available' => 1,
+                'team_price' => 1,
             ],
             [
                 'id' => 3,
@@ -163,6 +169,7 @@ class ItemTypesTableTest extends TestCase
                 'role_id' => 1,
                 'cancelled' => false,
                 'available' => true,
+                'team_price' => false,
             ],
         ];
 

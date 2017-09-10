@@ -9,8 +9,9 @@ use Cake\Validation\Validator;
 /**
  * EventTypes Model
  *
- * @property \Cake\ORM\Association\BelongsTo $InvoiceTexts
  * @property \Cake\ORM\Association\BelongsTo $LegalTexts
+ * @property \Cake\ORM\Association\BelongsTo $InvoiceTexts
+ * @property \Cake\ORM\Association\BelongsTo $ApplicationRefs
  * @property \Cake\ORM\Association\HasMany $Events
  *
  * @method \App\Model\Entity\EventType get($primaryKey, $options = [])
@@ -38,20 +39,23 @@ class EventTypesTable extends Table
         $this->displayField('event_type');
         $this->primaryKey('id');
 
-        $this->belongsTo('Settings', [
+        $this->belongsTo('InvoiceTexts', [
+                'className' => 'Settings',
                 'foreignKey' => 'invoice_text_id',
                 'property' => 'invoice_text',
-                'conditions' => ['Settings.setting_type_id' => 4],
+                'conditions' => ['InvoiceTexts.setting_type_id' => 4],
             ]);
-        $this->belongsTo('Settings', [
+        $this->belongsTo('LegalTexts', [
+                'className' => 'Settings',
                 'foreignKey' => 'legal_text_id',
                 'property' => 'legal_text',
-                'conditions' => ['Settings.setting_type_id' => 3],
+                'conditions' => ['LegalTexts.setting_type_id' => 3],
             ]);
-        $this->belongsTo('Settings', [
+        $this->belongsTo('ApplicationRefs', [
+                'className' => 'Settings',
                 'foreignKey' => 'application_ref_id',
                 'property' => 'application_term',
-                'conditions' => ['Settings.setting_type_id' => 6],
+                'conditions' => ['ApplicationRefs.setting_type_id' => 6],
             ]);
 
         $this->hasMany('Events', [
@@ -107,9 +111,9 @@ class EventTypesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['invoice_text_id'], 'Settings'));
-        $rules->add($rules->existsIn(['legal_text_id'], 'Settings'));
-        $rules->add($rules->existsIn(['application_ref_id'], 'Settings'));
+        $rules->add($rules->existsIn(['invoice_text_id'], 'InvoiceTexts'));
+        $rules->add($rules->existsIn(['legal_text_id'], 'LegalTexts'));
+        $rules->add($rules->existsIn(['application_ref_id'], 'ApplicationRefs'));
 
         return $rules;
     }

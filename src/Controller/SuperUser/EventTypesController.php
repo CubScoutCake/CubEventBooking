@@ -19,7 +19,7 @@ class EventTypesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Settings']
+            'contain' => ['LegalTexts', 'InvoiceTexts', 'ApplicationRefs']
         ];
         $eventTypes = $this->paginate($this->EventTypes);
 
@@ -37,7 +37,7 @@ class EventTypesController extends AppController
     public function view($id = null)
     {
         $eventType = $this->EventTypes->get($id, [
-            'contain' => ['Settings', 'Events']
+            'contain' => ['LegalTexts', 'InvoiceTexts', 'ApplicationRefs', 'Events']
         ]);
 
         $this->set('eventType', $eventType);
@@ -64,7 +64,8 @@ class EventTypesController extends AppController
         }
         $invoiceTexts = $this->EventTypes->InvoiceTexts->find('list', ['limit' => 200]);
         $legalTexts = $this->EventTypes->LegalTexts->find('list', ['limit' => 200]);
-        $this->set(compact('eventType', 'invoiceTexts', 'legalTexts'));
+        $applicationRefs = $this->EventTypes->ApplicationRefs->find('list', ['limit' => 200]);
+        $this->set(compact('eventType', 'invoiceTexts', 'legalTexts', 'applicationRefs'));
         $this->set('_serialize', ['eventType']);
     }
 
@@ -78,7 +79,7 @@ class EventTypesController extends AppController
     public function edit($id = null)
     {
         $eventType = $this->EventTypes->get($id, [
-            'contain' => []
+            'contain' => ['InvoiceTexts', 'LegalTexts', 'ApplicationRefs']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $eventType = $this->EventTypes->patchEntity($eventType, $this->request->data);
@@ -92,7 +93,8 @@ class EventTypesController extends AppController
         }
         $invoiceTexts = $this->EventTypes->InvoiceTexts->find('list', ['limit' => 200]);
         $legalTexts = $this->EventTypes->LegalTexts->find('list', ['limit' => 200]);
-        $this->set(compact('eventType', 'invoiceTexts', 'legalTexts'));
+	    $applicationRefs = $this->EventTypes->ApplicationRefs->find('list',['limit' => 200]);
+        $this->set(compact('eventType', 'invoiceTexts', 'legalTexts', 'applicationRefs'));
         $this->set('_serialize', ['eventType']);
     }
 

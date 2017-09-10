@@ -439,12 +439,10 @@ class EventsController extends AppController
                 $this->Flash->error(__('The event could not be saved. Please, try again.'));
             }
         }
-        $inv = $this->Events->Settings->find('list', ['limit' => 200, 'conditions' => ['setting_type_id' => 4]]);
-        $legal = $this->Events->Settings->find('list', ['limit' => 200, 'conditions' => ['setting_type_id' => 3]]);
         $discounts = $this->Events->Discounts->find('list', ['limit' => 200]);
         $eventTypes = $this->Events->EventTypes->find('list', ['limit' => 200]);
         $sectionTypes = $this->Events->SectionTypes->find('list', ['limit' => 200]);
-        $users = $this->Events->Users->find('list', ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]);
+        $users = $this->Events->AdminUsers->find('list', ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]);
         $this->set(compact('event', 'eventTypes', 'inv', 'legal', 'discounts', 'users', 'sectionTypes'));
         $this->set('_serialize', ['event']);
     }
@@ -471,11 +469,11 @@ class EventsController extends AppController
                 $this->Flash->error(__('The event could not be saved. Please, try again.'));
             }
         }
-        $inv = $this->Events->Settings->find('list', ['limit' => 200, 'conditions' => ['setting_type_id' => 4]]);
-        $legal = $this->Events->Settings->find('list', ['limit' => 200, 'conditions' => ['setting_type_id' => 3]]);
-        $discounts = $this->Events->Discounts->find('list', ['limit' => 200]);
-        $users = $this->Events->Users->find('list', ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]);
-        $this->set(compact('event', 'inv', 'legal', 'discounts', 'users'));
+        $eventTypes = $this->Events->EventTypes->find('list', ['limit' => 200]);
+	    $sectionTypes = $this->Events->SectionTypes->find('list', ['limit' => 200]);
+	    $discounts = $this->Events->Discounts->find('list', ['limit' => 200]);
+        $users = $this->Events->AdminUsers->find('list', ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]);
+        $this->set(compact('event', 'eventTypes', 'sectionTypes', 'discounts', 'users'));
         $this->set('_serialize', ['event']);
     }
 

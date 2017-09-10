@@ -14,9 +14,11 @@ use Cake\ORM\Entity;
  * @property bool $parent_applications
  * @property int $invoice_text_id
  * @property int $legal_text_id
+ * @property int $application_ref_id
  *
- * @property \App\Model\Entity\InvoiceText $invoice_text
- * @property \App\Model\Entity\LegalText $legal_text
+ * @property \App\Model\Entity\Setting $invoice_text
+ * @property \App\Model\Entity\Setting $legal_text
+ * @property \App\Model\Entity\Setting $application_ref
  * @property \App\Model\Entity\Event[] $events
  */
 class EventType extends Entity

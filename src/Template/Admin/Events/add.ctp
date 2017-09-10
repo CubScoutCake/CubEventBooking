@@ -58,10 +58,6 @@
         echo '<p>Leave Blank for Infinite, does not include young leaders</p>';
         echo '</td></tr></table></div>';
 
-
-
-        echo $this->Form->input('invtext_id', ['options' => $inv, 'empty' => true]);
-        echo $this->Form->input('legaltext_id', ['options' => $legal, 'empty' => true]);
         echo $this->Form->input('discount_id', ['options' => $discounts, 'empty' => true]);
 
         ?>

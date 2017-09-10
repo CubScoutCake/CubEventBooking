@@ -23,6 +23,7 @@ class ItemTypesFixture extends TestFixture
         'minor' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null],
         'cancelled' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'available' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+        'team_price' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'item_types_role_id' => ['type' => 'index', 'columns' => ['role_id'], 'length' => []],
         ],
@@ -45,7 +46,8 @@ class ItemTypesFixture extends TestFixture
             'role_id' => 1,
             'minor' => 1,
             'cancelled' => 1,
-            'available' => 1
+            'available' => 1,
+            'team_price' => 1,
         ],
         [
             'id' => 2,
@@ -53,7 +55,8 @@ class ItemTypesFixture extends TestFixture
             'role_id' => 1,
             'minor' => 1,
             'cancelled' => 1,
-            'available' => 1
+            'available' => 1,
+            'team_price' => 1,
         ],
     ];
 }

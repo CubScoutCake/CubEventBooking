@@ -39,5 +39,35 @@ class SettingTypesFixture extends TestFixture
             'description' => 'Lorem ipsum dolor sit amet',
             'min_auth' => 1
         ],
+        [
+            'id' => 2,
+            'setting_type' => 'Lorem ipsum  sit amet',
+            'description' => 'Lorem ipsum dolor sit amet',
+            'min_auth' => 1
+        ],
+        [
+            'id' => 3,
+            'setting_type' => 'LegalText',
+            'description' => 'Lorem ipsum dolor sit amet',
+            'min_auth' => 1
+        ],
+        [
+            'id' => 4,
+            'setting_type' => 'InvText',
+            'description' => 'Lorem ipsum dolor sit amet',
+            'min_auth' => 1
+        ],
+        [
+            'id' => 5,
+            'setting_type' => 'Lorem ipsum dolor amet',
+            'description' => 'Lorem ipsum dolor sit amet',
+            'min_auth' => 1
+        ],
+        [
+            'id' => 6,
+            'setting_type' => 'AppRef',
+            'description' => 'Application Reference',
+            'min_auth' => 1
+        ],
     ];
 }

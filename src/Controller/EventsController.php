@@ -23,7 +23,7 @@ class EventsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Settings', 'Discounts', 'Users', 'EventTypes'],
+            'contain' => ['Settings', 'Discounts', 'AdminUsers', 'EventTypes'],
             'conditions' => ['live' => true]
         ];
         $events = $this->paginate($this->Events);
@@ -42,7 +42,7 @@ class EventsController extends AppController
     public function view($id = null)
     {
         $event = $this->Events->get($id, [
-            'contain' => ['Discounts', 'Users', 'EventTypes', 'Settings', 'Applications']
+            'contain' => ['Discounts', 'AdminUsers', 'EventTypes', 'Settings', 'Applications']
         ]);
 
         $this->set('event', $event);
@@ -67,7 +67,7 @@ class EventsController extends AppController
         }
 
         // Pass to View
-        $this->set(compact('users', 'payments', 'discount', 'invText', 'legal'));
+        $this->set(compact('AdminUsers', 'payments', 'discount', 'invText', 'legal'));
     }
 
     /**
@@ -80,13 +80,10 @@ class EventsController extends AppController
     public function book($eventID)
     {
         $event = $this->Events->get($eventID, [
-            'contain' => ['Settings', 'Discounts', 'Applications', 'EventTypes.Settings']
+            'contain' => ['Discounts', 'Applications', 'EventTypes.InvoiceTexts', 'EventTypes.LegalTexts', 'EventTypes.ApplicationRefs']
         ]);
 
-        $settings = TableRegistry::get('Settings');
-        $term = $settings->get($event->event_type->application_ref_id);
-        //$term = $event->event_type->application_term->text;
-        $term = $term->text;
+        $term = $event->event_type->invoice_text->text;
 
         if (($event->max_apps - $event->cc_apps) > 1) {
             $term = Inflector::pluralize($term);

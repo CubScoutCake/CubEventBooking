@@ -5,6 +5,8 @@
         <?php
             echo $this->Form->input('name');
             echo $this->Form->input('full_name');
+            echo $this->Form->input('event_type_id', ['options' => $eventTypes]);
+            echo $this->Form->input('section_type_id', ['options' => $sectionTypes]);
             echo '<div class="row"> <div class="col-lg-6">';
             echo $this->Form->input('start_date');
             echo $this->Form->input('deposit_date');
@@ -56,10 +58,6 @@
             echo '<p>Leave Blank for Infinite, does not include young leaders</p>';
             echo '</td></tr></table></div>';
 
-
-
-            echo $this->Form->input('invtext_id', ['options' => $inv, 'empty' => true]);
-            echo $this->Form->input('legaltext_id', ['options' => $legal, 'empty' => true]);
             echo $this->Form->input('discount_id', ['options' => $discounts, 'empty' => true]);
 
         ?>

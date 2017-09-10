@@ -36,8 +36,6 @@ use Cake\ORM\Entity;
  * @property string $city
  * @property string $county
  * @property string $postcode
- * @property int $invtext_id
- * @property int $legaltext_id
  * @property int $discount_id
  * @property string $intro_text
  * @property string $tagline_text
@@ -65,7 +63,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Setting[] $settings
  * @property \App\Model\Entity\Discount $discount
  * @property \App\Model\Entity\Application[] $applications
- * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\User $adminUser
  * @property \App\Model\Entity\Logistic[] $logistics
  */
 class Event extends Entity

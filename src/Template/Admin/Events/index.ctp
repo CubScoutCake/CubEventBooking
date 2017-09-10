@@ -19,6 +19,8 @@
                         <td><?= h($event->name) ?></td>
                         <td class="actions">
                             <?= $this->Html->link('', ['controller' => 'Events', 'action' => 'view', $event->id], ['title' => __('View'), 'class' => 'btn btn-default dropdown-toggle fa fa-eye']) ?>
+                            <?= $this->Html->link('', ['action' => 'edit', $event->id], ['title' => __('Edit'), 'class' => 'btn btn-default fa fa-pencil']) ?>
+                            <?= $this->Html->link('', ['action' => 'prices', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default fa fa-gbp']) ?>
                         </td>
                         <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
                         <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>

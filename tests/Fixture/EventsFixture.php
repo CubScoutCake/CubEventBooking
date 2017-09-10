@@ -63,16 +63,15 @@ class EventsFixture extends TestFixture
         'admin_email' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'admin_user_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'parent_applications' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
-        'available_apps' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'available_cubs' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'max_apps' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'max_section' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'event_type_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'section_type_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'cc_apps' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'complete' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+	    'team_price' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
-            'events_invtext_id' => ['type' => 'index', 'columns' => ['invtext_id'], 'length' => []],
-            'events_legaltext_id' => ['type' => 'index', 'columns' => ['legaltext_id'], 'length' => []],
             'events_discount_id' => ['type' => 'index', 'columns' => ['discount_id'], 'length' => []],
             'events_admin_user_id' => ['type' => 'index', 'columns' => ['admin_user_id'], 'length' => []],
             'events_event_type_id' => ['type' => 'index', 'columns' => ['event_type_id'], 'length' => []],
@@ -82,8 +81,6 @@ class EventsFixture extends TestFixture
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'events_discount_id' => ['type' => 'foreign', 'columns' => ['discount_id'], 'references' => ['discounts', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'events_event_type_id' => ['type' => 'foreign', 'columns' => ['event_type_id'], 'references' => ['event_types', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
-            'events_invtext_id' => ['type' => 'foreign', 'columns' => ['invtext_id'], 'references' => ['settings', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
-            'events_legaltext_id' => ['type' => 'foreign', 'columns' => ['legaltext_id'], 'references' => ['settings', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'events_section_type_id' => ['type' => 'foreign', 'columns' => ['section_type_id'], 'references' => ['section_types', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
         ],
     ];
@@ -145,6 +142,7 @@ class EventsFixture extends TestFixture
                 'event_type_id' => 1,
                 'section_type_id' => 1,
                 'complete' => 1,
+                'team_price' => 0,
             ],
             [
                 'id' => 2,
@@ -199,6 +197,7 @@ class EventsFixture extends TestFixture
                 'event_type_id' => 1,
                 'section_type_id' => 1,
                 'complete' => 1,
+                'team_price' => 0,
             ],
             [
                 'id' => 3,
@@ -253,6 +252,7 @@ class EventsFixture extends TestFixture
                 'event_type_id' => 1,
                 'section_type_id' => 1,
                 'complete' => 0,
+                'team_price' => 0,
             ],
         ];
         parent::init();

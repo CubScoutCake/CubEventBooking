@@ -86,6 +86,56 @@ class SettingsTableTest extends TestCase
                 'setting_type_id' => 1,
                 'number' => 1.0
             ],
+            [
+                'id' => 2,
+                'name' => 'Lorem dolor sit amet',
+                'text' => 'Lorem dolor sit amet',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => null,
+                'setting_type_id' => 2,
+                'number' => 1.0
+            ],
+            [
+                'id' => 3,
+                'name' => 'LegalTxt',
+                'text' => 'Legal Text',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 3,
+                'number' => 1.0
+            ],
+            [
+                'id' => 4,
+                'name' => 'InvTxt',
+                'text' => 'Invoice Text',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 4,
+                'number' => 1.0
+            ],
+            [
+                'id' => 5,
+                'name' => 'Lorem ipsum sit amet',
+                'text' => 'Lorem ipsum dolor sit amet',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 5,
+                'number' => 1.0
+            ],
+            [
+                'id' => 6,
+                'name' => 'Application Reference',
+                'text' => 'Team',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 6,
+                'number' => 1.0
+            ],
         ];
 
         $this->assertEquals($expected, $result);
@@ -110,7 +160,7 @@ class SettingsTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 2,
+            'id' => 7,
             'name' => 'Lorem Fishy dolor sit amet',
             'text' => 'Lorem ipsum Goaty sit amet',
             'created' => $timeNow,
@@ -133,6 +183,56 @@ class SettingsTableTest extends TestCase
             ],
             [
                 'id' => 2,
+                'name' => 'Lorem dolor sit amet',
+                'text' => 'Lorem dolor sit amet',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => null,
+                'setting_type_id' => 2,
+                'number' => 1.0
+            ],
+            [
+                'id' => 3,
+                'name' => 'LegalTxt',
+                'text' => 'Legal Text',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 3,
+                'number' => 1.0
+            ],
+            [
+                'id' => 4,
+                'name' => 'InvTxt',
+                'text' => 'Invoice Text',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 4,
+                'number' => 1.0
+            ],
+            [
+                'id' => 5,
+                'name' => 'Lorem ipsum sit amet',
+                'text' => 'Lorem ipsum dolor sit amet',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 5,
+                'number' => 1.0
+            ],
+            [
+                'id' => 6,
+                'name' => 'Application Reference',
+                'text' => 'Team',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 6,
+                'number' => 1.0
+            ],
+            [
+                'id' => 7,
                 'name' => 'Lorem Fishy dolor sit amet',
                 'text' => 'Lorem ipsum Goaty sit amet',
                 'created' => $timeNow,
@@ -162,7 +262,7 @@ class SettingsTableTest extends TestCase
         $timeNow = Time::now();
 
         $badData = [
-            'id' => 2,
+            'id' => 7,
             'name' => 'Lorem Fishy dolor sit amet',
             'text' => 'Lorem ipsum Goaty sit amet',
             'created' => $timeNow,
@@ -173,7 +273,7 @@ class SettingsTableTest extends TestCase
         ];
 
         $outData = [
-            'id' => 2,
+            'id' => 7,
             'name' => 'Lorem Fishy dolor sit amet',
             'text' => 'Lorem ipsum Goaty sit amet',
             'created' => $timeNow,
@@ -184,7 +284,7 @@ class SettingsTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 2,
+            'id' => 7,
             'name' => 'Lorem Fishy dolor sit amet',
             'text' => 'Lorem ipsum Goaty sit amet',
             'created' => $timeNow,
@@ -207,6 +307,56 @@ class SettingsTableTest extends TestCase
             ],
             [
                 'id' => 2,
+                'name' => 'Lorem dolor sit amet',
+                'text' => 'Lorem dolor sit amet',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => null,
+                'setting_type_id' => 2,
+                'number' => 1.0
+            ],
+            [
+                'id' => 3,
+                'name' => 'LegalTxt',
+                'text' => 'Legal Text',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 3,
+                'number' => 1.0
+            ],
+            [
+                'id' => 4,
+                'name' => 'InvTxt',
+                'text' => 'Invoice Text',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 4,
+                'number' => 1.0
+            ],
+            [
+                'id' => 5,
+                'name' => 'Lorem ipsum sit amet',
+                'text' => 'Lorem ipsum dolor sit amet',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 5,
+                'number' => 1.0
+            ],
+            [
+                'id' => 6,
+                'name' => 'Application Reference',
+                'text' => 'Team',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 6,
+                'number' => 1.0
+            ],
+            [
+                'id' => 7,
                 'name' => 'Lorem Fishy dolor sit amet',
                 'text' => 'Lorem ipsum Goaty sit amet',
                 'created' => $timeNow,

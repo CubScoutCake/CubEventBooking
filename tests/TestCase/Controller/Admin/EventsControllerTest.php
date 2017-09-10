@@ -64,7 +64,7 @@ class EventsControllerTest extends IntegrationTestCase
            'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/admin/events');
+        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'index']);
 
         $this->assertResponseOk();
     }
@@ -81,7 +81,7 @@ class EventsControllerTest extends IntegrationTestCase
            'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/admin/events/view/1');
+        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'view', 1]);
 
         $this->assertResponseOk();
     }
@@ -150,7 +150,7 @@ class EventsControllerTest extends IntegrationTestCase
             'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/admin/events/prices/1');
+        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'prices', 1]);
 
         $this->assertResponseOk();
     }

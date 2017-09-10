@@ -9,9 +9,8 @@ use Cake\Validation\Validator;
 /**
  * Events Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Settings
  * @property \Cake\ORM\Association\BelongsTo $Discounts
- * @property \Cake\ORM\Association\BelongsTo $Users
+ * @property \Cake\ORM\Association\BelongsTo $AdminUsers
  * @property \Cake\ORM\Association\BelongsTo $EventTypes
  * @property \Cake\ORM\Association\BelongsTo $SectionTypes
  * @property \Cake\ORM\Association\HasMany $Applications
@@ -60,16 +59,11 @@ class EventsTable extends Table
             'field' => 'deleted'
         ]);
 
-        $this->belongsTo('Settings', [
-            'foreignKey' => 'invtext_id'
-        ]);
-        $this->belongsTo('Settings', [
-            'foreignKey' => 'legaltext_id'
-        ]);
         $this->belongsTo('Discounts', [
             'foreignKey' => 'discount_id'
         ]);
-        $this->belongsTo('Users', [
+        $this->belongsTo('AdminUsers', [
+            'className' => 'Users',
             'foreignKey' => 'admin_user_id',
             'joinType' => 'INNER'
         ]);
@@ -91,9 +85,6 @@ class EventsTable extends Table
             'foreignKey' => 'event_id'
         ]);
         $this->hasMany('Prices', [
-            'foreignKey' => 'event_id'
-        ]);
-        $this->hasMany('Settings', [
             'foreignKey' => 'event_id'
         ]);
     }
@@ -205,7 +196,7 @@ class EventsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['discount_id'], 'Discounts'));
-        $rules->add($rules->existsIn(['admin_user_id'], 'Users'));
+        $rules->add($rules->existsIn(['admin_user_id'], 'AdminUsers'));
         $rules->add($rules->existsIn(['event_type_id'], 'EventTypes'));
         $rules->add($rules->existsIn(['section_type_id'], 'SectionTypes'));
 
