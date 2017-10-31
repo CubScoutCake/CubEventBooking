@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\TokensTable;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
@@ -74,6 +75,9 @@ class TokensTableTest extends TestCase
         parent::setUp();
         $config = TableRegistry::exists('Tokens') ? [] : ['className' => 'App\Model\Table\TokensTable'];
         $this->Tokens = TableRegistry::get('Tokens', $config);
+
+        $now = new Time('2016-12-26 23:22:30');
+        Time::setTestNow($now);
     }
 
     /**
@@ -95,7 +99,31 @@ class TokensTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $startNow = Time::now();
+
+        $query = $this->Tokens->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->enableHydration(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'token' => 'Lorem ipsum dolor sit amet',
+                'user_id' => 1,
+                'email_send_id' => 1,
+                'created' => $startNow,
+                'modified' => $startNow,
+                'expires' => $startNow,
+                'utilised' => $startNow,
+                'active' => 1,
+                'deleted' => null,
+                'hash' => 'Lorem ipsum dolor sit amet',
+                'random_number' => 1,
+                'header' => 'Lorem ipsum dolor sit amet'
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -105,7 +133,89 @@ class TokensTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $startNow = Time::now();
+
+        $badData = [
+            'id' => 6,
+            'token' => 'Lorem ipsum dolor sit',
+            'user_id' => null,
+            'email_send_id' => null,
+            'created' => $startNow,
+            'modified' => $startNow,
+            'deleted' => null,
+            'hash' => 'Lorem dolor sit amet',
+            'random_number' => 1,
+            'header' => 'Lorem ipsum dolor amet'
+        ];
+
+        $goodData = [
+            'id' => 7,
+            'token' => 'Lorem ipsum dolor sit',
+            'user_id' => 1,
+            'email_send_id' => 1,
+            'created' => $startNow,
+            'modified' => $startNow,
+            'deleted' => null,
+            'hash' => 'Lorem dolor sit amet',
+            'random_number' => 12,
+            'header' => 'Lorem ipsum sk sit amet'
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'token' => 'Lorem ipsum dolor sit amet',
+                'user_id' => 1,
+                'email_send_id' => 1,
+                'created' => $startNow,
+                'modified' => $startNow,
+                'utilised' => $startNow,
+                'active' => 1,
+                'deleted' => null,
+                'hash' => 'Lorem ipsum dolor sit amet',
+                'header' => 'Lorem ipsum dolor sit amet'
+            ],
+            [
+                'id' => 7,
+                'token' => 'Lorem ipsum dolor sit',
+                'user_id' => 1,
+                'email_send_id' => 1,
+                'created' => $startNow,
+                'modified' => $startNow,
+                'utilised' => null,
+                'active' => true,
+                'deleted' => null,
+                'hash' => 'Lorem dolor sit amet',
+                'header' => 'Lorem ipsum sk sit amet'
+            ],
+        ];
+
+        $badEntity = $this->Tokens->newEntity($badData);
+        $goodEntity = $this->Tokens->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Tokens->save($badEntity));
+        $this->Tokens->save($goodEntity);
+
+        $query = $this->Tokens->find('all', [
+            'fields' => [
+                'id',
+                'token',
+                'user_id',
+                'email_send_id',
+                'created',
+                'modified',
+                'utilised',
+                'active',
+                'deleted',
+                'hash',
+                'header',
+            ]
+        ]);
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -115,7 +225,89 @@ class TokensTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $startNow = Time::now();
+
+        $badData = [
+            'id' => 8,
+            'token' => 'Lorem dolor sit',
+            'user_id' => 109,
+            'email_send_id' => 109,
+            'created' => $startNow,
+            'modified' => $startNow,
+            'deleted' => null,
+            'hash' => 'Lorem dolor sit amet',
+            'random_number' => 12,
+            'header' => 'Lorem ipsum sk sit amet'
+        ];
+
+        $goodData = [
+            'id' => 9,
+            'token' => 'Lorem sit',
+            'user_id' => 1,
+            'email_send_id' => 1,
+            'created' => $startNow,
+            'modified' => $startNow,
+            'deleted' => null,
+            'hash' => 'Lorem dolor sit',
+            'random_number' => 12,
+            'header' => 'Lorem ipsum sk amet'
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'token' => 'Lorem ipsum dolor sit amet',
+                'user_id' => 1,
+                'email_send_id' => 1,
+                'created' => $startNow,
+                'modified' => $startNow,
+                'utilised' => $startNow,
+                'active' => 1,
+                'deleted' => null,
+                'hash' => 'Lorem ipsum dolor sit amet',
+                'header' => 'Lorem ipsum dolor sit amet'
+            ],
+            [
+                'id' => 9,
+                'token' => 'Lorem sit',
+                'user_id' => 1,
+                'email_send_id' => 1,
+                'created' => $startNow,
+                'modified' => $startNow,
+                'utilised' => null,
+                'active' => true,
+                'deleted' => null,
+                'hash' => 'Lorem dolor sit',
+                'header' => 'Lorem ipsum sk amet'
+            ],
+        ];
+
+        $badEntity = $this->Tokens->newEntity($badData);
+        $goodEntity = $this->Tokens->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Tokens->save($badEntity));
+        $this->Tokens->save($goodEntity);
+
+        $query = $this->Tokens->find('all', [
+            'fields' => [
+                'id',
+                'token',
+                'user_id',
+                'email_send_id',
+                'created',
+                'modified',
+                'utilised',
+                'active',
+                'deleted',
+                'hash',
+                'header',
+            ]
+        ]);
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -149,7 +341,7 @@ class TokensTableTest extends TestCase
     public function testBeforeSave()
     {
         $goodData = [
-            'id' => 2,
+            'id' => 3,
             'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,
@@ -157,7 +349,7 @@ class TokensTableTest extends TestCase
         ];
 
         $expected = [
-            'id' => 2,
+            'id' => 3,
             'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,
@@ -167,7 +359,7 @@ class TokensTableTest extends TestCase
 
         $this->Tokens->save($goodEntity);
 
-        $query = $this->Tokens->get(2, [
+        $query = $this->Tokens->get(3, [
             'fields' => [
                 'id',
                 'user_id',
@@ -180,7 +372,7 @@ class TokensTableTest extends TestCase
 
         $this->assertEquals($expected, $result);
 
-        $query = $this->Tokens->get(2, [
+        $query = $this->Tokens->get(3, [
             'fields' => [
                 'random_number',
                 'active'
@@ -196,7 +388,7 @@ class TokensTableTest extends TestCase
     public function validate()
     {
         $goodData = [
-            'id' => 2,
+            'id' => 4,
             'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,
@@ -204,7 +396,7 @@ class TokensTableTest extends TestCase
         ];
 
         $expected = [
-            'id' => 2,
+            'id' => 4,
             'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,

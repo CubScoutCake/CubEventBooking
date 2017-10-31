@@ -42,26 +42,41 @@ class TokensFixture extends TestFixture
     ];
     // @codingStandardsIgnoreEnd
 
-    /**
-     * Records
-     *
-     * @var array
-     */
-    public $records = [
-        [
-            'id' => 1,
-            'token' => 'Lorem ipsum dolor sit amet',
-            'user_id' => 1,
-            'email_send_id' => 1,
-            'created' => 1487718611,
-            'modified' => 1487718611,
-            'expires' => 1487718611,
-            'utilised' => 1487718611,
-            'active' => 1,
-            'deleted' => null,
-            'hash' => 'Lorem ipsum dolor sit amet',
-            'random_number' => 1,
-            'header' => 'Lorem ipsum dolor sit amet'
-        ],
-    ];
+
+    public function init()
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'token' => 'Lorem ipsum dolor sit amet',
+                'user_id' => 1,
+                'email_send_id' => 1,
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'expires' => date_create('2016-12-26 23:22:30'),
+                'utilised' => date_create('2016-12-26 23:22:30'),
+                'active' => 1,
+                'deleted' => null,
+                'hash' => 'Lorem ipsum dolor sit amet',
+                'random_number' => 1,
+                'header' => 'Lorem ipsum dolor sit amet'
+            ],
+            [
+                'id' => 2,
+                'token' => 'Lorem ipsum dolor sit amet',
+                'user_id' => 1,
+                'email_send_id' => 1,
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'expires' => date_create('2016-12-26 23:22:30'),
+                'utilised' => date_create('2016-12-26 23:22:30'),
+                'active' => 1,
+                'deleted' => date_create('2016-12-26 23:22:30'),
+                'hash' => 'Lorem ipsum dolor sit amet',
+                'random_number' => 1,
+                'header' => 'Lorem ipsum dolor sit amet'
+            ],
+        ];
+        parent::init();
+    }
 }

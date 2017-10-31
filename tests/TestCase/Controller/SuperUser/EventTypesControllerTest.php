@@ -15,42 +15,42 @@ class EventTypesControllerTest extends IntegrationTestCase
      *
      * @var array
      *
-	public $fixtures = [
-		'app.event_types',
-		'app.events',
-		'app.settings',
-		'app.setting_types',
-		'app.discounts',
-		'app.users',
-		'app.password_states',
-		'app.roles',
-		'app.attendees',
-		'app.sections',
-		'app.section_types',
-		'app.scoutgroups',
-		'app.districts',
-		'app.champions',
-		'app.applications',
-		'app.invoices',
-		'app.invoice_items',
-		'app.item_types',
-		'app.prices',
-		'app.notes',
-		'app.prices',
-		'app.payments',
-		'app.invoices_payments',
-		'app.logistic_items',
-		'app.logistics',
-		'app.parameters',
-		'app.parameter_sets',
-		'app.params',
-		'app.applications_attendees',
-		'app.allergies',
-		'app.attendees_allergies',
-		'app.auth_roles',
-		'app.notifications',
-		'app.notification_types'
-	];
+    public $fixtures = [
+        'app.event_types',
+        'app.events',
+        'app.settings',
+        'app.setting_types',
+        'app.discounts',
+        'app.users',
+        'app.password_states',
+        'app.roles',
+        'app.attendees',
+        'app.sections',
+        'app.section_types',
+        'app.scoutgroups',
+        'app.districts',
+        'app.champions',
+        'app.applications',
+        'app.invoices',
+        'app.invoice_items',
+        'app.item_types',
+        'app.prices',
+        'app.notes',
+        'app.prices',
+        'app.payments',
+        'app.invoices_payments',
+        'app.logistic_items',
+        'app.logistics',
+        'app.parameters',
+        'app.parameter_sets',
+        'app.params',
+        'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
+        'app.auth_roles',
+        'app.notifications',
+        'app.notification_types'
+    ];
 
     /**
      * Test index method
@@ -59,7 +59,7 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-    	$this->markTestSkipped('This has been skipped.');
+        $this->markTestSkipped('This has been skipped.');
 
         $this->session([
             'Auth.User.id' => 1,
@@ -78,7 +78,7 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-	    $this->markTestSkipped('This has been skipped.');
+        $this->markTestSkipped('This has been skipped.');
 
         $this->session([
             'Auth.User.id' => 1,
@@ -97,7 +97,7 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testAdd()
     {
-	    $this->markTestSkipped('This has been skipped.');
+        $this->markTestSkipped('This has been skipped.');
 
         $this->session([
             'Auth.User.id' => 1,
@@ -116,7 +116,7 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-	    $this->markTestSkipped('This has been skipped.');
+        $this->markTestSkipped('This has been skipped.');
 
         $this->session([
             'Auth.User.id' => 1,
@@ -135,7 +135,7 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-	    $this->markTestSkipped('This has been skipped.');
+        $this->markTestSkipped('This has been skipped.');
 
         $this->session([
             'Auth.User.id' => 1,
@@ -157,7 +157,7 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testIndexUnauthorised()
     {
-	    //$this->markTestSkipped('This has been skipped.');
+        //$this->markTestSkipped('This has been skipped.');
 
         $this->get(['prefix' => 'super_user', 'controller' => 'EventTypes', 'action' => 'index']);
 
@@ -171,7 +171,7 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testViewUnauthorised()
     {
-	    //$this->markTestSkipped('This has been skipped.');
+        //$this->markTestSkipped('This has been skipped.');
 
         $this->get(['prefix' => 'super_user', 'controller' => 'EventTypes', 'action' => 'view', 1]);
 
@@ -185,7 +185,7 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testAddUnauthorised()
     {
-	    //$this->markTestSkipped('This has been skipped.');
+        //$this->markTestSkipped('This has been skipped.');
 
         $this->get(['prefix' => 'super_user', 'controller' => 'EventTypes', 'action' => 'add']);
 
@@ -199,7 +199,7 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testEditUnauthorised()
     {
-	    //$this->markTestSkipped('This has been skipped.');
+        //$this->markTestSkipped('This has been skipped.');
 
         $this->get(['prefix' => 'super_user', 'controller' => 'EventTypes', 'action' => 'edit', 1]);
 
@@ -213,7 +213,7 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testDeleteUnauthorised()
     {
-	    //$this->markTestSkipped('This has been skipped.');
+        //$this->markTestSkipped('This has been skipped.');
 
         $this->post(['prefix' => 'super_user', 'controller' => 'EventTypes', 'action' => 'delete', 1]);
 

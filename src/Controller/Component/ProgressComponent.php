@@ -102,37 +102,37 @@ class ProgressComponent extends Component
         $invCubs = 0;
         $invYls = 0;
         $invLeaders = 0;
-	    $invNotCubs = 0;
+        $invNotCubs = 0;
 
         if ($invCount > 0) {
             $invMinorCount = $itms->find('all')
                 ->contain(['Invoices.Applications', 'ItemTypes'])
-	            ->where(['Applications.id' => $appID, 'ItemTypes.minor' => true])
-	            ->count();
+                ->where(['Applications.id' => $appID, 'ItemTypes.minor' => true])
+                ->count();
 
             if ($invMinorCount > 0) {
-	            $invItemMinorCounts = $itms->find( 'all' )
-                   ->contain( [ 'Invoices.Applications', 'ItemTypes' ] )
-                   ->where( [ 'Applications.id' => $appID, 'ItemTypes.minor' => true ] )
-                   ->select( [ 'sum' => $invoices->func()->sum( 'Quantity' ) ] )
+                $invItemMinorCounts = $itms->find('all')
+                   ->contain([ 'Invoices.Applications', 'ItemTypes' ])
+                   ->where([ 'Applications.id' => $appID, 'ItemTypes.minor' => true ])
+                   ->select([ 'sum' => $invoices->func()->sum('Quantity') ])
                    ->toArray();
 
-	            $invCubs = $invItemMinorCounts[0]->sum;
+                $invCubs = $invItemMinorCounts[0]->sum;
             }
 
-	        $invAdultCount = $itms->find('all')
-				->contain(['Invoices.Applications', 'ItemTypes'])
-				->where(['Applications.id' => $appID, 'ItemTypes.minor' => true])
-				->count();
+            $invAdultCount = $itms->find('all')
+                ->contain(['Invoices.Applications', 'ItemTypes'])
+                ->where(['Applications.id' => $appID, 'ItemTypes.minor' => true])
+                ->count();
 
             if ($invAdultCount > 0) {
-	            $invItemAdultCounts = $itms->find('all')
-	               ->contain(['Invoices.Applications', 'ItemTypes'])
-	               ->where(['Applications.id' => $appID, 'ItemTypes.minor' => false])
-	               ->select([ 'sum' => $invoices->func()->sum('Quantity')])
-	               ->toArray();
+                $invItemAdultCounts = $itms->find('all')
+                   ->contain(['Invoices.Applications', 'ItemTypes'])
+                   ->where(['Applications.id' => $appID, 'ItemTypes.minor' => false])
+                   ->select([ 'sum' => $invoices->func()->sum('Quantity')])
+                   ->toArray();
 
-	            $invNotCubs = $invItemAdultCounts[0]->sum;
+                $invNotCubs = $invItemAdultCounts[0]->sum;
             }
         }
 
