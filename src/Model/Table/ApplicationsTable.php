@@ -30,9 +30,9 @@ class ApplicationsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('applications');
-        $this->displayField('display_code');
-        $this->primaryKey('id');
+        $this->setTable('applications');
+        $this->setDisplayField('display_code');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp', [
             'events' => [

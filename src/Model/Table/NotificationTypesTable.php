@@ -25,9 +25,9 @@ class NotificationTypesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('notification_types');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('notification_types');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->hasMany('Notifications', [
             'foreignKey' => 'notification_type_id'

@@ -33,9 +33,9 @@ class InvoiceItemsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('invoice_items');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('invoice_items');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->belongsTo('Invoices', [
             'foreignKey' => 'invoice_id',

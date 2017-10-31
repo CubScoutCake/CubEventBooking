@@ -34,9 +34,9 @@ class ChampionsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('champions');
-        $this->displayField('firstname');
-        $this->primaryKey('id');
+        $this->setTable('champions');
+        $this->setDisplayField('firstname');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'

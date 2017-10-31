@@ -34,9 +34,9 @@ class ItemTypesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('item_types');
-        $this->displayField('item_type');
-        $this->primaryKey('id');
+        $this->setTable('item_types');
+        $this->setDisplayField('item_type');
+        $this->setPrimaryKey('id');
 
         $this->belongsTo('Roles', [
             'foreignKey' => 'role_id'

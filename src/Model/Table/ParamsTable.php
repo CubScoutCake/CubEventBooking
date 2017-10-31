@@ -26,9 +26,9 @@ class ParamsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('params');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('params');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->belongsTo('Parameters', [
             'foreignKey' => 'parameter_id'

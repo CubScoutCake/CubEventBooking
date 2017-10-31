@@ -27,9 +27,9 @@ class ScoutgroupsTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('scoutgroups');
-        $this->displayField('scoutgroup');
-        $this->primaryKey('id');
+        $this->setTable('scoutgroups');
+        $this->setDisplayField('scoutgroup');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'

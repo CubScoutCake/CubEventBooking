@@ -35,9 +35,9 @@ class EmailResponsesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('email_responses');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('email_responses');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp', [
             'events' => [

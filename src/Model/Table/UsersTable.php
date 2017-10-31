@@ -51,9 +51,9 @@ class UsersTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('users');
-        $this->displayField('full_name');
-        $this->primaryKey('id');
+        $this->setTable('users');
+        $this->setDisplayField('full_name');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('SectionAuth');
 

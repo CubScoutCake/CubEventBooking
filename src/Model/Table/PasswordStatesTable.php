@@ -32,9 +32,9 @@ class PasswordStatesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('password_states');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('password_states');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->hasMany('Users', [
             'foreignKey' => 'password_state_id'

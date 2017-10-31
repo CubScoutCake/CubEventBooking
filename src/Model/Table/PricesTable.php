@@ -33,9 +33,9 @@ class PricesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('prices');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('prices');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('CounterCache', [
             'Events' => ['cc_prices'],

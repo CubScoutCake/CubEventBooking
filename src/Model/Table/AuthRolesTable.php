@@ -32,9 +32,9 @@ class AuthRolesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('auth_roles');
-        $this->displayField('auth_role');
-        $this->primaryKey('id');
+        $this->setTable('auth_roles');
+        $this->setDisplayField('auth_role');
+        $this->setPrimaryKey('id');
 
         $this->hasMany('Users', [
             'foreignKey' => 'auth_role_id'

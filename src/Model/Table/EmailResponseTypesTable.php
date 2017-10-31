@@ -32,9 +32,9 @@ class EmailResponseTypesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('email_response_types');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('email_response_types');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->hasMany('EmailResponses', [
             'foreignKey' => 'email_response_type_id'

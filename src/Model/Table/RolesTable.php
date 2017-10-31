@@ -23,9 +23,9 @@ class RolesTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('roles');
-        $this->displayField('role');
-        $this->primaryKey('id');
+        $this->setTable('roles');
+        $this->setDisplayField('role');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'

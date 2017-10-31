@@ -25,9 +25,9 @@ class DiscountsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('discounts');
-        $this->displayField('discount');
-        $this->primaryKey('id');
+        $this->setTable('discounts');
+        $this->setDisplayField('discount');
+        $this->setPrimaryKey('id');
 
         $this->hasMany('Events', [
             'foreignKey' => 'discount_id'

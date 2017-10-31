@@ -34,9 +34,9 @@ class InvoicesPaymentsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('invoices_payments');
-        $this->displayField('payment_id');
-        $this->primaryKey(['payment_id', 'invoice_id']);
+        $this->setTable('invoices_payments');
+        $this->setDisplayField('payment_id');
+        $this->setPrimaryKey(['payment_id', 'invoice_id']);
 
         $this->belongsTo('Invoices', [
             'foreignKey' => 'invoice_id',

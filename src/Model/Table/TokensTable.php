@@ -38,9 +38,9 @@ class TokensTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('tokens');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('tokens');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp', [
             'events' => [

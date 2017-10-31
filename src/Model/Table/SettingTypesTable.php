@@ -25,9 +25,9 @@ class SettingTypesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('setting_types');
-        $this->displayField('setting_type');
-        $this->primaryKey('id');
+        $this->setTable('setting_types');
+        $this->setDisplayField('setting_type');
+        $this->setPrimaryKey('id');
 
         $this->hasMany('Settings', [
             'foreignKey' => 'setting_type_id'

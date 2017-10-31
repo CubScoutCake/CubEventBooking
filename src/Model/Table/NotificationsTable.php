@@ -27,9 +27,9 @@ class NotificationsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('notifications');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('notifications');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp', [
             'events' => [

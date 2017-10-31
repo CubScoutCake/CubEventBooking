@@ -33,9 +33,9 @@ class ApplicationsAttendeesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('applications_attendees');
-        $this->displayField('application_id');
-        $this->primaryKey(['application_id', 'attendee_id']);
+        $this->setTable('applications_attendees');
+        $this->setDisplayField('application_id');
+        $this->setPrimaryKey(['application_id', 'attendee_id']);
 
         $this->belongsTo('Applications', [
             'foreignKey' => 'application_id',

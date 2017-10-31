@@ -35,9 +35,9 @@ class EventTypesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('event_types');
-        $this->displayField('event_type');
-        $this->primaryKey('id');
+        $this->setTable('event_types');
+        $this->setDisplayField('event_type');
+        $this->setPrimaryKey('id');
 
         $this->belongsTo('InvoiceTexts', [
                 'className' => 'Settings',

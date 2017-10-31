@@ -27,9 +27,9 @@ class LogisticItemsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('logistic_items');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('logistic_items');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'

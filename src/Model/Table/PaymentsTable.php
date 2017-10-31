@@ -26,9 +26,9 @@ class PaymentsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('payments');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('payments');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp', [
             'events' => [

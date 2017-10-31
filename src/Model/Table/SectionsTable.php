@@ -38,9 +38,9 @@ class SectionsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('sections');
-        $this->displayField('section');
-        $this->primaryKey('id');
+        $this->setTable('sections');
+        $this->setDisplayField('section');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
 

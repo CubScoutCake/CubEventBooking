@@ -39,9 +39,9 @@ class EmailSendsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('email_sends');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('email_sends');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp', [
             'events' => [

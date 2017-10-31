@@ -23,9 +23,9 @@ class DistrictsTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('districts');
-        $this->displayField('district');
-        $this->primaryKey('id');
+        $this->setTable('districts');
+        $this->setDisplayField('district');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'

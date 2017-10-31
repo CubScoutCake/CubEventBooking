@@ -31,9 +31,9 @@ class AttendeesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('attendees');
-        $this->displayField('full_name');
-        $this->primaryKey('id');
+        $this->setTable('attendees');
+        $this->setDisplayField('full_name');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('SectionAuth');
 
