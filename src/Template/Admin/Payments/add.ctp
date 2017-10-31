@@ -8,7 +8,7 @@
             echo $this->Form->input('name_on_cheque');
             echo $this->Form->input('payment_notes');
 
-            for ($inv = 0; $inv < $invs; $inv ++) {
+            for ($inv = 0; $inv < $numberOfInvoiceAssocs; $inv ++) {
                 echo '<table class="table table-hover"> <tr> <td>';
                 echo '<p>Invoice ' . ($inv + 1) . '</p>';
                 echo '</td> <td>';

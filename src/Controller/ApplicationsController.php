@@ -66,7 +66,7 @@ class ApplicationsController extends AppController
         $application = $this->Applications->get($id, [
             'contain' => [
                 'Users',
-                'Sections.Scoutgroups',
+                'Sections.Scoutgroups.Districts',
                 'Events',
                 'Invoices',
                 'Attendees' => [

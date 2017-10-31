@@ -57,7 +57,9 @@
             <div class="panel-body">
                 <span><?= __('User') ?>: <?= $application->has('user') ? $this->Html->link($application->user->full_name, ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></span>
                 </br>
-                <span><?= __('Scoutgroup') ?>: <?= $application->has('section.scoutgroup') ? $this->Html->link($application->section->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $application->section->scoutgroup->id]) : '' ?></span>
+                <span><?= __('District') ?>: <?= $application->section->scoutgroup->has('district') ? $this->Html->link($application->section->scoutgroup->district->district, ['controller' => 'Scoutgroups', 'action' => 'view', $application->section->scoutgroup->district->id]) : '' ?></span>
+                </br>
+                <span><?= __('Scout Group') ?>: <?= $application->section->has('scoutgroup') ? $this->Html->link($application->section->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $application->section->scoutgroup->id]) : '' ?></span>
                 </br>
                 <span><?= __('Section') ?>: <?= $application->has('section') ? $this->Html->link($application->section->section, ['controller' => 'Sections', 'action' => 'view', $application->section->id]) : '' ?></span>
                 </br>

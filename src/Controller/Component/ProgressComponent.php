@@ -102,27 +102,39 @@ class ProgressComponent extends Component
         $invCubs = 0;
         $invYls = 0;
         $invLeaders = 0;
+	    $invNotCubs = 0;
 
         if ($invCount > 0) {
-            $invItemCount = $itms->find('all')
-                ->contain(['Invoices.Applications'])
-                ->where(['Applications.id' => $appID])
-                ->count();
+            $invMinorCount = $itms->find('all')
+                ->contain(['Invoices.Applications', 'ItemTypes'])
+	            ->where(['Applications.id' => $appID, 'ItemTypes.minor' => true])
+	            ->count();
 
-            if ($invItemCount > 0) {
-                $invItemCounts = $itms->find('all')
-                    ->contain(['Invoices.Applications'])
-                    ->where(['Applications.id' => $appID])
-                    ->select(['sum' => $invoices->func()->sum('Quantity')])
-                    ->group('item_type_id')->toArray();
+            if ($invMinorCount > 0) {
+	            $invItemMinorCounts = $itms->find( 'all' )
+                   ->contain( [ 'Invoices.Applications', 'ItemTypes' ] )
+                   ->where( [ 'Applications.id' => $appID, 'ItemTypes.minor' => true ] )
+                   ->select( [ 'sum' => $invoices->func()->sum( 'Quantity' ) ] )
+                   ->toArray();
 
-                $invCubs = $invItemCounts[0]->sum;
-                $invYls = $invItemCounts[2]->sum;
-                $invLeaders = $invItemCounts[1]->sum;
+	            $invCubs = $invItemMinorCounts[0]->sum;
+            }
+
+	        $invAdultCount = $itms->find('all')
+				->contain(['Invoices.Applications', 'ItemTypes'])
+				->where(['Applications.id' => $appID, 'ItemTypes.minor' => true])
+				->count();
+
+            if ($invAdultCount > 0) {
+	            $invItemAdultCounts = $itms->find('all')
+	               ->contain(['Invoices.Applications', 'ItemTypes'])
+	               ->where(['Applications.id' => $appID, 'ItemTypes.minor' => false])
+	               ->select([ 'sum' => $invoices->func()->sum('Quantity')])
+	               ->toArray();
+
+	            $invNotCubs = $invItemAdultCounts[0]->sum;
             }
         }
-
-        $invNotCubs = $invYls + $invLeaders;
 
         $sumValues = 0;
         $sumPayments = 0;
