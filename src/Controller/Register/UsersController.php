@@ -22,6 +22,8 @@ class UsersController extends AppController
      */
     public function register($sectionId = null)
     {
+        $this->viewBuilder()->setLayout('outside');
+
         if (!isset($sectionId) || is_null($sectionId)) {
             $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }

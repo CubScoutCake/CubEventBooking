@@ -52,6 +52,8 @@ class AppController extends Controller
                 'prefix' => false,
                 ]
         ]);
+
+        $this->viewBuilder()->setLayout('outside');
     }
 
     /**

@@ -1,4 +1,3 @@
-  
 <div class="users form large-10 medium-9 columns">
     <?= $this->Form->create($user) ?>
     <fieldset>

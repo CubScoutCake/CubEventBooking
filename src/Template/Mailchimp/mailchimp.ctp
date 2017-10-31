@@ -1,9 +1,6 @@
-<?= $this->assign('title', 'Hertfordshire Cubs Mailing List'); ?>
-
-<div class="landing user_home large-10 medium-9 columns signup">
-</br>
+<div class="mailchimp row">
     
-    <div id="mXc_embed_signup">
+    <div id="mXc_embed_signup" class="col-lg-12">
 
     	<!-- Begin MailChimp Signup Form
     	<link href="//cdn-images.mailchimp.com/embedcode/classic-081711.css" rel="stylesheet" type="text/css">
@@ -21,36 +18,36 @@
 
 	    			<div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
 
-	    			<div class="mc-field-group">
+	    			<div class="mc-field-group form-group">
 	    				<label for="mce-EMAIL">Email Address  <span class="asterisk">*</span>
 	    				</label>
 
-	    				<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+	    				<input type="email" value="" name="EMAIL" class="required email form-control" id="mce-EMAIL">
 	    			</div>
 
-	    			<div class="mc-field-group">
+	    			<div class="mc-field-group form-group">
 	    				<label for="mce-FNAME">First Name </label>
-	    				<input type="text" value="" name="FNAME" class="" id="mce-FNAME">
+	    				<input type="text" value="" name="FNAME" class="required form-control" id="mce-FNAME">
 	    			</div>
 
-	    			<div class="mc-field-group">
+	    			<div class="mc-field-group form-group">
 	    				<label for="mce-LNAME">Last Name </label>
-	    				<input type="text" value="" name="LNAME" class="" id="mce-LNAME">
+	    				<input type="text" value="" name="LNAME" class="required form-control" id="mce-LNAME">
 	    			</div>
 	    		
-		    		<div class="mc-field-group">
+		    		<div class="mc-field-group form-group">
 		    			<label for="mce-MMERGE5">Scouting Appointment </label>
-		    			<input type="text" value="" name="MMERGE5" class="" id="mce-MMERGE5">
+		    			<input type="text" value="" name="MMERGE5" class="required form-control" id="mce-MMERGE5">
 		    		</div>
 
-		    		<div class="mc-field-group">
+		    		<div class="mc-field-group form-group">
 		    			<label for="mce-MMERGE3">Scout Group </label>
-		    			<input type="text" value="" name="MMERGE3" class="" id="mce-MMERGE3">
+		    			<input type="text" value="" name="MMERGE3" class="form-control" id="mce-MMERGE3">
 		    		</div>
 
-		    		<div class="mc-field-group">
+		    		<div class="mc-field-group form-group">
 		    			<label for="mce-MMERGE7">District </label>
-		    			<input type="text" value="" name="MMERGE7" class="" id="mce-MMERGE7">
+		    			<input type="text" value="" name="MMERGE7" class="form-control" id="mce-MMERGE7">
 		    		</div>
 
 	    			<div id="mce-responses" class="clear">

@@ -83,7 +83,7 @@ class LandingController extends AppController
     public function welcome($eventId = null)
     {
         // Set the layout.
-        $this->viewBuilder()->layout('start');
+        $this->viewBuilder()->setLayout('outside');
 
         if ($this->request->is('get')) {
             $usr = $this->Auth->user('id');

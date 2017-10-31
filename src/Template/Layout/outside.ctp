@@ -25,8 +25,7 @@ $cakeDescription = 'HertsCubs Booking System';
     <?php echo $this->element('style'); ?>
 
     <title>
-        <?= $cakeDescription ?>:
-        <?= $this->fetch('title') ?>
+        <?= $cakeDescription ?>
     </title>
 
     <!-- Actual Fetch -->
@@ -50,29 +49,31 @@ $cakeDescription = 'HertsCubs Booking System';
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <?php 
+            <?php
+
+            $title = $cakeDescription;
 
             if (is_null($this->request->session()->read('Auth.User.username'))) {
 
-                echo $this->Html->link($this->fetch('title')
+                echo $this->Html->link($title
                     ,['controller' => 'Landing', 'action' => 'welcome', 'prefix' => false]
                     ,['class' => 'navbar-brand']);
 
             } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
 
-                echo $this->Html->link($this->fetch('title')
+                echo $this->Html->link($title
                     ,['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']
                     ,['class' => 'navbar-brand']);
 
             } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
 
-                echo $this->Html->link($this->fetch('title')
+                echo $this->Html->link($title
                     ,['controller' => 'Landing', 'action' => 'champion_home', 'prefix' => 'champion']
                     ,['class' => 'navbar-brand']);
 
             } else {
 
-                echo $this->Html->link($this->fetch('title')
+                echo $this->Html->link($title
                     ,['controller' => 'Landing', 'action' => 'user_home', 'prefix' => false]
                     ,['class' => 'navbar-brand']);
 
