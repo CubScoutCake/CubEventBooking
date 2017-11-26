@@ -1,15 +1,14 @@
-<?= $this->assign('title', 'Herts Cubs - User Home Page'); ?>
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header"><i class="fa fa-dashboard fa-fw"></i> User Home</h1>
-        </div>
-        <?php if (!empty($events)): ?>
-            <div class="col-lg-12">
-                <h4>Upcoming Events</h4>
-            </div>
-        <?php endif; ?>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><i class="fa fa-dashboard fa-fw"></i> User Home</h1>
     </div>
-    <div class="row">
+    <?php if (!empty($events)): ?>
+        <div class="col-lg-12">
+            <h4>Upcoming Events</h4>
+        </div>
+    <?php endif; ?>
+</div>
+<div class="row">
 <?php if (empty($events)): ?>
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-green">

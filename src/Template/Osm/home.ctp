@@ -1,4 +1,3 @@
-<?= $this->assign('title', 'OSM Integration'); ?>
 <div class="row">
     <div class="col-lg-1 col-md-2">
         <?= $this->Html->image('Logos/osmlogo.png', ['alt' => 'CakePHP', 'class' => 'img-responsive']); ?>

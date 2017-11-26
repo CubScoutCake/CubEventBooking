@@ -173,6 +173,24 @@ class UsersTable extends Table
             ->requirePresence('membership_number')
             ->notEmpty('membership_number');
 
+        $validator
+            ->integer('osm_user_id');
+
+        $validator
+            ->integer('osm_linked');
+
+        $validator
+            ->dateTime('osm_linkdate');
+
+        $validator
+            ->integer('osm_section_id');
+
+        $validator
+            ->integer('osm_current_term');
+
+        $validator
+            ->dateTime('osm_term_end');
+
         return $validator;
     }
 

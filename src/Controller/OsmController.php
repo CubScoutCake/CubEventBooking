@@ -4,7 +4,6 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Form\LinkForm;
 use App\Form\SectionForm;
-
 use Cake\ORM\TableRegistry;
 use Cake\Network\Http\Client;
 use Cake\I18n\Time;
@@ -14,6 +13,11 @@ use Cake\Error\Debugger;
 
 class OsmController extends AppController
 {
+	public function initialize()
+	{
+		parent::initialize();
+		$this->loadComponent('ScoutManager');
+	}
 
     public function index()
     {
@@ -22,246 +26,75 @@ class OsmController extends AppController
 
     public function home()
     {
-        $now = Time::now();
-        $users = TableRegistry::get('Users');
-        $atts = TableRegistry::get('Attendees');
+		$checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
 
-        $session = $this->request->session();
-
-        $user = $users->get($this->Auth->user('id'));
-
-        if (!empty($user->osm_user_id) && $session->check('OSM.Secret')) {
-            $linked = 1;
-        } else {
-            $linked = 0;
-        }
-
-        if (!empty($user->osm_section_id)) {
-            $sectionSet = 1;
-        } else {
-            $sectionSet = 0;
-        }
-
-        if (!empty($user->osm_current_term) && $user->osm_term_end > $now) {
-            $termCurrent = 1;
-        } else {
-            $termCurrent = 0;
-        }
-
-        $synced = $atts->find('osm')->where(['user_id' => $this->Auth->user('id')])->count();
-
-        $this->set(compact('linked', 'sectionSet', 'termCurrent', 'synced'));
+		$this->set('linked', $checkArray['linked']);
+	    $this->set('sectionSet', $checkArray['sectionSet']);
+	    $this->set('termCurrent', $checkArray['termCurrent']);
+	    $this->set('synced', $checkArray['attendee_count']);
     }
 
     public function link()
     {
-        $settings = TableRegistry::get('Settings');
-        $users = TableRegistry::get('Users');
-
-        $linkForm = new LinkForm();
-        $session = $this->request->session();
-
-        $user = $users->get($this->Auth->user('id'));
+    	$linkForm = new LinkForm();
 
         if ($this->request->is('post')) {
-            $now = Time::now();
+	        $linkArray = [
+		        'osm_email' => $this->request->getData('osm_email'),
+		        'osm_password' => $this->request->getData('osm_password'),
+		        'user_id' => $this->Auth->user('id'),
+	        ];
 
-            $apiId = $settings->get('10')->text;
-            $apiToken = $settings->get('11')->text;
-            $apiBase = $settings->get('12')->text;
+	        $linked = $this->ScoutManager->linkUser($linkArray);
 
-            $userEmail = $this->request->data['osm_email'];
-            $userPassword = $this->request->data['osm_password'];
-
-            $http = new Client([
-              'host' => $apiBase,
-              'scheme' => 'https'
-            ]);
-
-            $url = '/users.php?action=authorise';
-
-            $response = $http->post($url, [
-                'password' => $userPassword,
-                'email' => $userEmail,
-                'token' => $apiToken,
-                'apiid' => $apiId
-            ]);
-
-
-            if ($response->isOk()) {
-                $body = $response->body;
-                if ($body == '{"error":"Incorrect password - you have 5 more attempts before your account is locked for 15 minutes."}') {
-                    $this->Flash->error(__('Incorrect password - OSM will lock your account after 5 attempts.'));
-
-                    // KEEN IO REPORTING ENTRY
-
-                    $osmEnt = [
-                        'Entity Id' => null,
-                        'Controller' => 'OSM',
-                        'Action' => 'Link',
-                        'User Id' => $this->Auth->user('id'),
-                        'Creation Date' => $now,
-                        'Modified' => null,
-                        'OSM' => [
-                            'LinkStatus' => 'Fail'
-                            ]
-                        ];
-
-                    $sets = TableRegistry::get('Settings');
-
-                    $jsonOSM = json_encode($osmEnt);
-                    $apiKey = $sets->get(13)->text;
-                    $projectId = $sets->get(14)->text;
-                    $eventType = 'Action';
-
-                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-
-                    $http = new Client();
-                    $response = $http->post(
-                        $keenURL,
-                        $jsonOSM,
-                        ['type' => 'json']
-                    );
-
-                    return $this->redirect(['action' => 'link']);
-                } else {
-                    $userOsmId = str_replace("\"", "", substr($body, -8, 7));
-
-                    // Store Secret in Session
-                    $osmSecret = str_replace("\"", "", substr($body, 10, 34));
-                    $userOsmSecret = substr($osmSecret, 0, 17);
-                    $sessionOsmSecret = substr($osmSecret, 17);
-
-                    if (isset($user->osm_linked)) {
-                        $osmLink = ['osm_user_id' => $userOsmId, 'osm_secret' => $userOsmSecret, 'osm_linkdate' => $now];
-                    } else {
-                        $osmLink = ['osm_user_id' => $userOsmId, 'osm_secret' => $userOsmSecret, 'osm_linked' => 1, 'osm_linkdate' => $now];
-                    }
-
-                    $session->write('OSM.Secret', $sessionOsmSecret);
-
-                    $users->patchEntity($user, $osmLink);
-
-                    // SAVE ENTITY
-
-                    if ($users->save($user)) {
-                        $this->Flash->success(__('You have linked your OSM account.'));
-
-                        // KEEN IO REPORTING ENTRY
-
-                        $osmEnt = [
-                            'Entity Id' => null,
-                            'Controller' => 'OSM',
-                            'Action' => 'Link',
-                            'User Id' => $this->Auth->user('id'),
-                            'Creation Date' => $now,
-                            'Modified' => null,
-                            'OSM' => [
-                                'LinkStatus' => 'Success'
-                                ]
-                            ];
-
-                        $sets = TableRegistry::get('Settings');
-
-                        $jsonOSM = json_encode($osmEnt);
-                        $apiKey = $sets->get(13)->text;
-                        $projectId = $sets->get(14)->text;
-                        $eventType = 'Action';
-
-                        $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-
-                        $http = new Client();
-                        $response = $http->post(
-                            $keenURL,
-                            $jsonOSM,
-                            ['type' => 'json']
-                        );
-
-                        if (is_null($user->osm_section_id)) {
-                            return $this->redirect(['action' => 'section']);
-                        } else {
-                            return $this->redirect(['action' => 'home']);
-                        }
-                    } else {
-                        $this->Flash->error(__('The user could not be saved. Please, try again.'));
-                    }
-                }
-            } else {
-                $this->Flash->error(__('There was a request error, please try again.'));
-
-                return $this->redirect(['action' => 'link']);
-            }
+	        if ($linked) {
+	        	$this->redirect(['action' => 'home']);
+	        } else {
+	        	$this->redirect(['action' => 'link']);
+	        }
         }
-
         $this->set(compact('linkForm'));
     }
 
+	/**
+	 * Select OSM Section.
+	 *
+	 * @return \Cake\Http\Response|null
+	 */
     public function section()
     {
-        $settings = TableRegistry::get('Settings');
-        $users = TableRegistry::get('Users');
+    	$checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
+
+    	if (!$checkArray['linked']) {
+		    $this->Flash->error(__('Please link your account first'));
+		    return $this->redirect(['action' => 'link']);
+	    }
 
         $sectionForm = new SectionForm();
-        $session = $this->request->session();
 
         $now = Time::now();
 
-        $user = $users->get($this->Auth->user('id'));
-
         if ($this->request->is('get')) {
-            $apiId = $settings->get('10')->text;
-            $apiToken = $settings->get('11')->text;
-            $apiBase = $settings->get('12')->text;
 
-            if (empty($user->osm_secret) || !$session->check('OSM.Secret')) {
-                $this->Flash->error(__('Please link your account first'));
+	        $sections = $this->ScoutManager->getSectionIds($this->Auth->user('id'));
 
-                return $this->redirect(['action' => 'link']);
-            } else {
-                $userOsmId = $user->osm_user_id;
-                $userOsmSecret = $user->osm_secret . $session->read('OSM.Secret');
-                ;
-            }
+        	if (!is_array($sections)) {
+		        $this->Flash->error(__('There was a request error, please try again.'));
 
-            $http = new Client([
-              'host' => $apiBase,
-              'scheme' => 'https'
-            ]);
+		        return $this->redirect(['action' => 'home']);
+	        }
 
-            $url = '/api.php?action=getUserRoles';
-
-            $response = $http->post($url, [
-                'userid' => $userOsmId,
-                'secret' => $userOsmSecret,
-                'token' => $apiToken,
-                'apiid' => $apiId
-            ]);
-
-
-            if ($response->isOk()) {
-                $body = $response->json;
-
-                $this->set(compact('body'));
-
-                $body = Hash::remove($body, '{n}.sectionConfig');
-                $body = Hash::remove($body, '{n}.permissions');
-
-                $hsec = Hash::combine($body, '{n}.sectionid', '{n}.sectionname');
-
-                $this->set(compact('hsec'));
-            } else {
-                $this->Flash->error(__('There was a request error, please try again.'));
-
-                return $this->redirect(['action' => 'home']);
-            }
+            $this->set(compact('sections'));
         }
 
         if ($this->request->is('post')) {
-            $osmSection = $this->request->data['osm_section'];
+            $osmSection = $this->request->getData('osm_section');
 
-            $usrData = ['osm_section_id' => $osmSection, 'osm_linked' => 2];
+	        $users = TableRegistry::get('Users');
+	        $user = $users->get($this->Auth->user('id'));
 
-            $users->patchEntity($user, $usrData);
+	        $user->osm_section_id = $osmSection;
+	        $user->osm_linked = 2;
 
             if ($users->save($user)) {
                 $this->Flash->success(__('You have selected your OSM section.'));
@@ -278,106 +111,31 @@ class OsmController extends AppController
         $this->set(compact('sectionForm'));
     }
 
+	/**
+	 * Set OSM Terms.
+	 *
+	 * @return \Cake\Http\Response|null
+	 */
     public function term()
     {
-        $settings = TableRegistry::get('Settings');
-        $users = TableRegistry::get('Users');
+	    $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
 
-        $session = $this->request->session();
+	    if (!$checkArray['linked']) {
+		    $this->Flash->error(__('Please link your account first'));
+		    return $this->redirect(['action' => 'link']);
+	    }
 
-        $user = $users->get($this->Auth->user('id'));
+	    if (!$checkArray['sectionSet']) {
+		    $this->Flash->error(__('Please set your section first'));
+		    return $this->redirect(['action' => 'section']);
+	    }
 
-        $now = Time::now();
+	    $terms = $this->ScoutManager->setTerm($this->Auth->user('id'));
 
-        $apiId = $settings->get('10')->text;
-        $apiToken = $settings->get('11')->text;
-        $apiBase = $settings->get('12')->text;
-
-        if (is_null($user->osm_secret) || !$session->check('OSM.Secret')) {
-            $this->Flash->error(__('Please link your account first'));
-
-            return $this->redirect(['action' => 'link']);
-        } elseif (is_null($user->osm_section_id)) {
-            $this->Flash->error(__('Please set your section first'));
-
-            return $this->redirect(['action' => 'section']);
-        } else {
-            $userOsmId = $user->osm_user_id;
-            $userOsmSecret = $user->osm_secret . $session->read('OSM.Secret');
-            $userOsmSection = $user->osm_section_id;
-        }
-
-        $http = new Client([
-          'host' => $apiBase,
-          'scheme' => 'https'
-        ]);
-
-        $url = '/api.php?action=getTerms';
-
-        $response = $http->post($url, [
-            'userid' => $userOsmId,
-            'secret' => $userOsmSecret,
-            'token' => $apiToken,
-            'apiid' => $apiId
-        ]);
-
-
-        if ($response->isOk()) {
-            $preBody = $response->json;
-            // Debugger::dump($preBody);
-
-            $body = Hash::get($preBody, $user->osm_section_id);
-            // Debugger::dump($body);
-
-            $terms = Hash::combine($body, '{n}.termid', '{n}', '{n}.past');
-            // Debugger::dump($terms);
-
-            $term = Hash::get($terms, 1);
-            //Debugger::dump($term);
-
-            //$term_end = $term->enddate;
-
-            foreach ($term as $term) {
-                $startdate = Hash::get($term, 'startdate');
-                $start = Time::parse($startdate);
-
-                $enddate = Hash::get($term, 'enddate');
-                $end = Time::parse($enddate);
-
-                $count = 0;
-
-                if ($start < $now && $end > $now) {
-                    $count = $count + 1;
-                    $termSel = $term;
-                }
-            }
-
-            if ($count == 1) {
-                $termId = Hash::get($termSel, 'termid');
-                $termEndDate = Hash::get($termSel, 'enddate');
-                $termEnd = Time::parse($termEndDate);
-
-                $usrData = ['osm_current_term' => $termId, 'osm_term_end' => $termEnd, 'osm_linked' => 3];
-
-                $users->patchEntity($user, $usrData);
-
-                if ($users->save($user)) {
-                    $this->Flash->success(__('Your OSM Term has been set.'));
-
-                    return $this->redirect(['action' => 'home']);
-                } else {
-                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
-
-                    return $this->redirect(['action' => 'home']);
-                }
-            } else {
-                $this->Flash->error(__('More than 1 Term Applies.'));
-            }
-        } else {
-            $this->Flash->error(__('There was a request error, please try again.'));
-
-            return $this->redirect(['action' => 'home']);
-        }
+		if ($terms) {
+			return $this->redirect(['action' => 'home']);
+		}
+		return $this->redirect(['action' => 'home']);
     }
 
     public function sync()

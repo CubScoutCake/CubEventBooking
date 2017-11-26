@@ -1,4 +1,3 @@
-<?= $this->assign('title', 'OSM Integration'); ?>
 <div class="row">
     <div class="col-lg-12 col-md-12">
         <h1 class="page-header"><i class="fa fa-link fa-fw"></i> Create OSM Account Link</h1>

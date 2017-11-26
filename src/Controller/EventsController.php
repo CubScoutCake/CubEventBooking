@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use App\Form\AttNumberForm;
+use App\Form\SyncBookForm;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
@@ -74,13 +75,13 @@ class EventsController extends AppController
      * View method
      *
      * @param int|null $eventID Event id.
-     * @return \Cake\Network\Response|null
+     * @return null|\Cake\Network\Response
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function book($eventID)
     {
         $event = $this->Events->get($eventID, [
-            'contain' => ['Discounts', 'Applications', 'EventTypes.InvoiceTexts', 'EventTypes.LegalTexts', 'EventTypes.ApplicationRefs']
+            'contain' => ['Discounts', 'SectionTypes', 'Applications', 'EventTypes.InvoiceTexts', 'EventTypes.LegalTexts', 'EventTypes.ApplicationRefs']
         ]);
 
         $term = $event->event_type->invoice_text->text;
@@ -89,7 +90,18 @@ class EventsController extends AppController
             $term = Inflector::pluralize($term);
         }
 
+	    $this->loadComponent('ScoutManager');
+	    $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
+
+	    $readyForSync = false;
+
+	    if ($checkArray['linked'] && $checkArray['sectionSet'] && $checkArray['termCurrent']) {
+	    	$osmEvents = $this->ScoutManager->getEventList($this->Auth->user('id'));
+	    	$readyForSync = true;
+	    }
+
         $attForm = new AttNumberForm();
+		$syncForm = new SyncBookForm();
 
         //if ($this->request->is('post')) {
             //if ($attForm->execute($this->request->getData())) {
@@ -112,6 +124,6 @@ class EventsController extends AppController
             //}
         //}
 
-        $this->set(compact('event', 'term', 'attForm', 'section', 'non_section', 'leaders'));
+        $this->set(compact('event', 'term', 'attForm', 'syncForm', 'section', 'non_section', 'leaders', 'osmEvents', 'readyForSync'));
     }
 }

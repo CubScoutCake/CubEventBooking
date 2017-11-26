@@ -39,6 +39,5 @@ class MailChimpComponent extends Component
         }
 
         $api_key = $this->getConfig('OSM.api_key');
-
     }
 }
