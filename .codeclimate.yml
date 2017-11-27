@@ -35,7 +35,7 @@ checks:
 
 engines:
   csslint:
-    enabled: true
+    enabled: false
   duplication:
     enabled: true
     config:
@@ -45,6 +45,8 @@ engines:
     enabled: true
   fixme:
     enabled: true
+  phpmd:
+    enabled: false
 
 plugins:
   phpcodesniffer:

@@ -288,8 +288,8 @@ return [
      * Takes effect in the OSM controller.
      */
     'OSM' => [
-        'api_id' => 'secret id',
-        'api_token' => 'secret token',
+        'api_id' => 'osm_secret_id_travis',
+	        'api_token' => 'osm_secret_token_travis',
         'api_base' => 'www.onlinescoutmanager.co.uk'
     ],
 
