@@ -109,7 +109,7 @@ class ScoutManagerComponent extends Component
 
     /**
      * @param string $secret The Secret to be stored.
-     * @param int $userId The User Id associated.
+     * @param int $userId The User ID associated.
      *
      * @return bool
      */
@@ -201,33 +201,33 @@ class ScoutManagerComponent extends Component
 
                 /*// KEEN IO REPORTING ENTRY
 
-				$osmEnt = [
-					'Entity Id' => null,
-					'Controller' => 'OSM',
-					'Action' => 'Link',
-					'User Id' => $this->Auth->user('id'),
-					'Creation Date' => $now,
-					'Modified' => null,
-					'OSM' => [
-						'LinkStatus' => 'Fail'
-					]
-				];
+                $osmEnt = [
+                    'Entity Id' => null,
+                    'Controller' => 'OSM',
+                    'Action' => 'Link',
+                    'User Id' => $this->Auth->user('id'),
+                    'Creation Date' => $now,
+                    'Modified' => null,
+                    'OSM' => [
+                        'LinkStatus' => 'Fail'
+                    ]
+                ];
 
-				$sets = TableRegistry::get('Settings');
+                $sets = TableRegistry::get('Settings');
 
-				$jsonOSM = json_encode($osmEnt);
-				$apiKey = $sets->get(13)->text;
-				$projectId = $sets->get(14)->text;
-				$eventType = 'Action';
+                $jsonOSM = json_encode($osmEnt);
+                $apiKey = $sets->get(13)->text;
+                $projectId = $sets->get(14)->text;
+                $eventType = 'Action';
 
-				$keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
+                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
 
-				$http = new Client();
-				$response = $http->post(
-					$keenURL,
-					$jsonOSM,
-					['type' => 'json']
-				);*/
+                $http = new Client();
+                $response = $http->post(
+                    $keenURL,
+                    $jsonOSM,
+                    ['type' => 'json']
+                );*/
 
                 if (isset($controller)) {
                     $this->Flash->error(__($error_message));
@@ -264,32 +264,32 @@ class ScoutManagerComponent extends Component
                     // KEEN IO REPORTING ENTRY
 
                     /*$osmEnt = [
-						'Entity Id' => null,
-						'Controller' => 'OSM',
-						'Action' => 'Link',
-						'User Id' => $this->Auth->user('id'),
-						'Creation Date' => $now,
-						'Modified' => null,
-						'OSM' => [
-							'LinkStatus' => 'Success'
-						]
-					];
+                        'Entity Id' => null,
+                        'Controller' => 'OSM',
+                        'Action' => 'Link',
+                        'User Id' => $this->Auth->user('id'),
+                        'Creation Date' => $now,
+                        'Modified' => null,
+                        'OSM' => [
+                            'LinkStatus' => 'Success'
+                        ]
+                    ];
 
-					$sets = TableRegistry::get('Settings');
+                    $sets = TableRegistry::get('Settings');
 
-					$jsonOSM = json_encode($osmEnt);
-					$apiKey = $sets->get(13)->text;
-					$projectId = $sets->get(14)->text;
-					$eventType = 'Action';
+                    $jsonOSM = json_encode($osmEnt);
+                    $apiKey = $sets->get(13)->text;
+                    $projectId = $sets->get(14)->text;
+                    $eventType = 'Action';
 
-					$keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
+                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
 
-					$http = new Client();
-					$response = $http->post(
-						$keenURL,
-						$jsonOSM,
-						['type' => 'json']
-					);*/
+                    $http = new Client();
+                    $response = $http->post(
+                        $keenURL,
+                        $jsonOSM,
+                        ['type' => 'json']
+                    );*/
 
                     if (isset($controller)) {
                         $this->Flash->success(__('You have linked your OSM account.'));
@@ -643,6 +643,101 @@ class ScoutManagerComponent extends Component
             $events = Hash::combine($body, '{n}.eventid', '{n}.name');
 
             return $events;
+        }
+
+        $error_message = 'Response Error - Try again.';
+        $this->log($error_message);
+
+        if (isset($controller)) {
+            $this->Flash->error(__($error_message));
+
+            return $controller->redirect([ 'action' => 'link' ]);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param int $userId The ID of the Logged In User
+     * @param int $osmEventId The OSM Internal Event ID
+     *
+     * @return array|bool|\Cake\Http\Response|null
+     */
+    public function getEventAttendees($userId, $osmEventId)
+    {
+        $controller = $this->_registry->getController();
+
+        if (!($settingsArray = $this->getOsmSettings())) {
+            $error_message = 'Error retrieving OSM settings.';
+            $this->log($error_message);
+
+            if (isset($controller)) {
+                $this->Flash->error(__($error_message));
+
+                return $controller->redirect([ 'action' => 'section' ]);
+            }
+
+            return false;
+        }
+
+        $users = TableRegistry::get('Users');
+        $user = $users->get($userId, ['contain' => 'Sections.SectionTypes']);
+
+        $secret = $this->retrieveUserSecret($userId);
+
+        if (!is_string($secret) || is_bool($secret)) {
+            $error_message = 'Error retrieving OSM User Secret.';
+            $this->log($error_message);
+
+            if (isset($controller)) {
+                $this->Flash->error(__($error_message));
+
+                return $controller->redirect([ 'action' => 'section' ]);
+            }
+
+            return false;
+        }
+
+        $http = new Client([
+            'host' => $settingsArray['api_base'],
+            'scheme' => 'https'
+        ]);
+
+        if (!is_int($user->osm_user_id) || $user->osm_user_id == 0) {
+            $error_message = 'Error retrieving OSM User Id.';
+            $this->log($error_message);
+
+            if (isset($controller)) {
+                $this->Flash->error(__($error_message));
+
+                return $controller->redirect([ 'action' => 'link' ]);
+            }
+
+            return false;
+        }
+
+        $url = '/ext/events/event/?action=getAttendance&eventid=' . $osmEventId . '&sectionid=' . $user->osm_section_id . '&termid=' . $user->osm_current_term;
+
+        $response = $http->post($url, [
+            'userid' => $user->osm_user_id,
+            'secret' => $secret,
+            'token' => $settingsArray['api_token'],
+            'apiid' => $settingsArray['api_id']
+        ]);
+
+        if ($response->isOk()) {
+            $preBody = $response->json;
+            $body = Hash::get($preBody, 'items');
+
+            $items = [];
+
+            foreach ($body as $item) {
+                if ($item['attending'] == 'Yes') {
+                    array_push($items, $item);
+                }
+            }
+
+            return $items;
         }
 
         $error_message = 'Response Error - Try again.';

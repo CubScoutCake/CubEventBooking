@@ -65,18 +65,45 @@ class RolesTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'role' => 'Lorem ipsum dolor sit amet',
+                'role' => 'Leader',
                 'invested' => 1,
-                'minor' => 1,
-                'automated' => 1,
+                'minor' => 0,
+                'automated' => 0,
                 'deleted' => null,
                 'short_role' => 'Lorem',
             ],
             [
                 'id' => 2,
-                'role' => 'Lorem ipsum dasfasolor sit amet',
-                'invested' => 0,
-                'minor' => 0,
+                'role' => 'Beaver',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 3,
+                'role' => 'Cub',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 4,
+                'role' => 'Scout',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 5,
+                'role' => 'Explorer',
+                'invested' => 1,
+                'minor' => 1,
                 'automated' => 0,
                 'deleted' => null,
                 'short_role' => 'Lorem',
@@ -94,7 +121,6 @@ class RolesTableTest extends TestCase
     public function testValidationDefault()
     {
         $badData = [
-            'id' => 5,
             'role' => null,
             'invested' => 1,
             'minor' => 0,
@@ -104,7 +130,6 @@ class RolesTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 5,
             'role' => 'Lorem Goat dasfasolor sit amet',
             'invested' => 1,
             'minor' => 0,
@@ -116,31 +141,58 @@ class RolesTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'role' => 'Lorem ipsum dolor sit amet',
+                'role' => 'Leader',
                 'invested' => 1,
-                'minor' => 1,
-                'automated' => 1,
+                'minor' => 0,
+                'automated' => 0,
                 'deleted' => null,
                 'short_role' => 'Lorem',
             ],
             [
                 'id' => 2,
-                'role' => 'Lorem ipsum dasfasolor sit amet',
-                'invested' => 0,
-                'minor' => 0,
+                'role' => 'Beaver',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 3,
+                'role' => 'Cub',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 4,
+                'role' => 'Scout',
+                'invested' => 1,
+                'minor' => 1,
                 'automated' => 0,
                 'deleted' => null,
                 'short_role' => 'Lorem',
             ],
             [
                 'id' => 5,
+                'role' => 'Explorer',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 6,
                 'role' => 'Lorem Goat dasfasolor sit amet',
                 'invested' => 1,
                 'minor' => 0,
                 'automated' => 0,
                 'deleted' => null,
                 'short_role' => 'Lorem',
-            ],
+            ]
         ];
 
         $badEntity = $this->Roles->newEntity($badData, ['accessibleFields' => ['id' => true]]);

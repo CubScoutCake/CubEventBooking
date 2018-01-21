@@ -36,17 +36,33 @@ class SectionTypesFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
-            'section_type' => 'Lorem ips',
-            'upper_age' => 10,
-            'lower_age' => 8,
-            'role_id' => 1
+            'section_type' => 'Beavers',
+            'upper_age' => 8,
+            'lower_age' => 6,
+            'role_id' => 2
         ],
         [
-            'id' => 2,
-            'section_type' => 'Random ips',
+            'section_type' => 'Cubs',
             'upper_age' => 10,
             'lower_age' => 8,
+            'role_id' => 3
+        ],
+        [
+            'section_type' => 'Scouts',
+            'upper_age' => 14,
+            'lower_age' => 10,
+            'role_id' => 4
+        ],
+        [
+            'section_type' => 'Explorers',
+            'upper_age' => 18,
+            'lower_age' => 14,
+            'role_id' => 5
+        ],
+        [
+            'section_type' => 'Adults',
+            'upper_age' => 99,
+            'lower_age' => 18,
             'role_id' => 1
         ],
     ];

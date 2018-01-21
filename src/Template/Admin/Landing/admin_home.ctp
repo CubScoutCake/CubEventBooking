@@ -1,5 +1,3 @@
-<?= $this->assign('title', 'Herts Cubs - Admin Home Page'); ?>
-
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header"><i class='fa fa-rocket fa-fw'></i> Admin Home</h1>

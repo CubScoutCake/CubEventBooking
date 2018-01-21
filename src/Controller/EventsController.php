@@ -75,7 +75,7 @@ class EventsController extends AppController
      * View method
      *
      * @param int|null $eventID Event id.
-     * @return null|\Cake\Network\Response
+     * @return null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function book($eventID)
@@ -103,26 +103,35 @@ class EventsController extends AppController
         $attForm = new AttNumberForm();
 		$syncForm = new SyncBookForm();
 
-        //if ($this->request->is('post')) {
-            //if ($attForm->execute($this->request->getData())) {
+        if ($this->request->is('post')) {
 
-                $section = $this->request->getData('section');
-                $nonSection = $this->request->getData('non_section');
-                $leaders = $this->request->getData('leaders');
+            $section = $this->request->getData('section');
+            $nonSection = $this->request->getData('non_section');
+            $leaders = $this->request->getData('leaders');
+            $osm_event = $this->request->getData('osm_event');
 
-        if (!is_null($section)) {
-            $this->redirect([
-            'controller' => 'Applications',
-            'action' => 'simple_book',
-            'prefix' => false,
-            $event->id,
-            $section,
-            $nonSection,
-            $leaders,
-            ]);
+	        if (!is_null($section)) {
+		        $this->redirect([
+			        'controller' => 'Applications',
+			        'action' => 'simple_book',
+			        'prefix' => false,
+			        $event->id,
+			        $section,
+			        $nonSection,
+			        $leaders,
+		        ]);
+	        }
+
+	        if (!is_null($osm_event)) {
+	        	$this->redirect([
+	        		'controller' => 'Applications',
+			        'action' => 'sync_book',
+			        'prefix' => false,
+			        $event->id,
+			        $osm_event
+		        ]);
+	        }
         }
-            //}
-        //}
 
         $this->set(compact('event', 'term', 'attForm', 'syncForm', 'section', 'non_section', 'leaders', 'osmEvents', 'readyForSync'));
     }

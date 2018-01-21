@@ -18,7 +18,7 @@ class SyncBookForm extends Form
      */
     protected function _buildSchema(Schema $schema)
     {
-        $schema->addField('event', 'integer');
+        $schema->addField('osm_event', 'integer');
 
         return $schema;
     }
@@ -31,8 +31,8 @@ class SyncBookForm extends Form
      */
     protected function _buildValidator(Validator $validator)
     {
-        $validator->requirePresence('event', 'create')
-                  ->notEmpty('event');
+        $validator->requirePresence('osm_event', 'create')
+                  ->notEmpty('osm_event');
 
         return $validator;
     }

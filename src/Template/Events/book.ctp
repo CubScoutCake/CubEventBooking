@@ -212,7 +212,7 @@
                                     <div class="modal-header">
                                         <div class="row">
                                             <div class="col-xs-3">
-                                                <i class="fa fa-list fa-5x"></i>
+                                                <i class="fa fa-exchange fa-5x"></i>
                                             </div>
                                             <div class="col-xs-7 text-right">
                                                 <div class="huge">Sync Book</div>
@@ -230,7 +230,7 @@
                                                 <legend><?= __('Select Event') ?></legend>
                                                 <p>Please choose the OSM Event Associated.</p>
                                                 <?php
-                                                echo $this->Form->input('event', ['options' => $osmEvents]);
+                                                echo $this->Form->input('osm_event', ['options' => $osmEvents]);
                                                 ?>
                                                 <br/>
                                                 <br/>

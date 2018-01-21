@@ -1,5 +1,3 @@
-<?= $this->assign('title', 'Herts Cubs - SuperUser Home Page'); ?>
-
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header"><i class='fa fa-ravelry fa-fw'></i> SuperUser Home</h1>
