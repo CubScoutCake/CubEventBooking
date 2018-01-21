@@ -95,17 +95,17 @@ class InvoicesTableTest extends TestCase
                 'initialvalue' => 1,
                 'deleted' => null
             ],
-	        [
-		        'id' => 2,
-		        'user_id' => 1,
-		        'application_id' => 3,
-		        'value' => 1,
-		        'created' => $timeNow,
-		        'modified' => $timeNow,
-		        'paid' => 1,
-		        'initialvalue' => 1,
-		        'deleted' => null
-	        ],
+            [
+                'id' => 2,
+                'user_id' => 1,
+                'application_id' => 3,
+                'value' => 1,
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'paid' => 1,
+                'initialvalue' => 1,
+                'deleted' => null
+            ],
         ];
 
         $this->assertEquals($expected, $result);

@@ -68,16 +68,16 @@ class InvoicesFixture extends TestFixture
                 'initialvalue' => 1,
                 'deleted' => null
             ],
-	        [
-		        'user_id' => 1,
-		        'application_id' => 2,
-		        'value' => 1,
-		        'created' => date_create('2016-12-26 23:22:30'),
-		        'modified' => date_create('2016-12-26 23:22:30'),
-		        'paid' => 1,
-		        'initialvalue' => 1,
-		        'deleted' => date_create('2016-12-26 23:22:30')
-	        ],
+            [
+                'user_id' => 1,
+                'application_id' => 2,
+                'value' => 1,
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'paid' => 1,
+                'initialvalue' => 1,
+                'deleted' => date_create('2016-12-26 23:22:30')
+            ],
         ];
         parent::init();
     }

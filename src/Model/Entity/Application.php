@@ -78,15 +78,15 @@ class Application extends Entity
         'attendees' => true
     ];
 
-	/**
-	 * Specification of a standard method of building a display code.
-	 *
-	 * @return string
-	 */
-	protected function _getDisplayCode()
-	{
-		return 'E0' . $this->_properties['event_id'] . ' - APP#' . $this->_properties['id'];
-	}
+    /**
+     * Specification of a standard method of building a display code.
+     *
+     * @return string
+     */
+    protected function _getDisplayCode()
+    {
+        return 'E0' . $this->_properties['event_id'] . ' - APP#' . $this->_properties['id'];
+    }
 
-	protected $_virtual = ['display_code'];
+    protected $_virtual = ['display_code'];
 }
