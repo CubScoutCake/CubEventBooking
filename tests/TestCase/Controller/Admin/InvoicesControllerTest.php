@@ -45,7 +45,7 @@ class InvoicesControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/invoices');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/invoices']);
     }
 
     /**
@@ -69,7 +69,7 @@ class InvoicesControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/invoices/view/1');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/invoices/view/1']);
     }
 
     /**

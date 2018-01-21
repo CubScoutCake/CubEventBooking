@@ -14,36 +14,56 @@ class LandingControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
 
     public $fixtures = [
-    'app.settings',
-    'app.districts',
-    'app.scoutgroups',
-    'app.roles',
-    'app.users'
-    ];*/
+        'app.settings',
+        'app.districts',
+        'app.scoutgroups',
+        'app.roles',
+        'app.users',
+        'app.auth_roles',
+        'app.password_states',
+        'app.sections',
+        'app.section_types',
+        'app.setting_types',
+        'app.notification_types',
+        'app.notifications',
+        'app.events',
+        'app.event_types',
+        'app.setting_types',
+        'app.settings',
+        'app.discounts',
+        'app.applications',
+        'app.invoices',
+        'app.payments',
+        'app.invoices_payments',
+        'app.notes'
+    ];
 
     /**
      * Test userHome method
      *
      * @return void
      */
-    public function testUserHome()
+    public function testSuperUserHome()
     {
-        $this->markTestSkipped('Fixture Issue');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->session(['Auth.User.id' => 1]);
-
-        $this->get('/landing/user-home');
+        $this->get('/super_user');
 
         $this->assertResponseOk();
     }
 
     public function testUserHomeUnauthenticatedFails()
     {
+        $this->markTestIncomplete('SuperUser');
+
         // No session data set.
-        $this->get('/landing/user-home');
+        $this->get('/champion/landing/champion-home');
 
         $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
     }

@@ -15,10 +15,10 @@
 namespace App\Controller\Api;
 
 use Cake\Core\Configure;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
-use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
+use Cake\Network\Exception\NotFoundException;
+use Cake\ORM\TableRegistry;
+use Cake\View\Exception\MissingTemplateException;
 
 /**
  * Static content controller
@@ -29,11 +29,20 @@ use Cake\I18n\Time;
  */
 class LandingController extends AppController
 {
+    /**
+     * @param int $eventId The ID of the Event
+     * @return void
+     */
     public function welcome($eventId = null)
     {
-        
     }
 
+    /**
+     * Authorisation Filter
+     *
+     * @param \Cake\Event\Event $event The Event to be Processed
+     * @return void
+     */
     public function beforeFilter(\Cake\Event\Event $event)
     {
         $this->Auth->allow(['welcome']);

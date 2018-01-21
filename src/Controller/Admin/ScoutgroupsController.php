@@ -12,16 +12,39 @@ class ScoutgroupsController extends AppController
 {
 
     /**
+     * setup config
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Search.Prg', [
+            // This is default config. You can modify "actions" as needed to make
+            // the PRG component work only for specified methods.
+            'actions' => ['index', 'lookup']
+        ]);
+    }
+
+    /**
      * Index method
      *
      * @return void
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Districts']
-        ];
-        $this->set('scoutgroups', $this->paginate($this->Scoutgroups));
+        $query = $this->Scoutgroups
+            // Use the plugins 'search' custom finder and pass in the
+            // processed query params
+            ->find('search', ['search' => $this->request->query])
+            // You can add extra things to the query if you need to
+            ->contain(['Districts']);
+
+        $districts = $this->Scoutgroups->Districts->find('list');
+
+        $this->set(compact('districts'));
+
+        $this->set('scoutgroups', $this->paginate($query));
         $this->set('_serialize', ['scoutgroups']);
     }
 
@@ -35,7 +58,7 @@ class ScoutgroupsController extends AppController
     public function view($id = null)
     {
         $scoutgroup = $this->Scoutgroups->get($id, [
-            'contain' => ['Districts', 'Applications.Events', 'Applications.Users', 'Attendees.Roles', 'Attendees.Users', 'Users.Roles']
+            'contain' => ['Districts', 'Sections.Applications.Events', 'Sections.Applications.Users', 'Sections.Attendees.Roles', 'Sections.Attendees.Users', 'Sections.Users.Roles']
         ]);
         $this->set('scoutgroup', $scoutgroup);
         $this->set('_serialize', ['scoutgroup']);
@@ -44,7 +67,7 @@ class ScoutgroupsController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -53,6 +76,7 @@ class ScoutgroupsController extends AppController
             $scoutgroup = $this->Scoutgroups->patchEntity($scoutgroup, $this->request->data);
             if ($this->Scoutgroups->save($scoutgroup)) {
                 $this->Flash->success(__('The scoutgroup has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The scoutgroup could not be saved. Please, try again.'));
@@ -66,8 +90,8 @@ class ScoutgroupsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Scoutgroup id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @param int $id the ID of the Scout Group.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
@@ -77,6 +101,7 @@ class ScoutgroupsController extends AppController
             $scoutgroup = $this->Scoutgroups->patchEntity($scoutgroup, $this->request->data);
             if ($this->Scoutgroups->save($scoutgroup)) {
                 $this->Flash->success(__('The scoutgroup has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The scoutgroup could not be saved. Please, try again.'));
@@ -91,7 +116,7 @@ class ScoutgroupsController extends AppController
      * Delete method
      *
      * @param string|null $id Scoutgroup id.
-     * @return void Redirects to index.
+     * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function delete($id = null)
@@ -103,6 +128,7 @@ class ScoutgroupsController extends AppController
         } else {
             $this->Flash->error(__('The scoutgroup could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

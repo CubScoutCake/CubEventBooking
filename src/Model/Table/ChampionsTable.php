@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -33,9 +34,13 @@ class ChampionsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('champions');
-        $this->displayField('firstname');
-        $this->primaryKey('id');
+        $this->setTable('champions');
+        $this->setDisplayField('firstname');
+        $this->setPrimaryKey('id');
+
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
 
         $this->belongsTo('Districts', [
             'foreignKey' => 'district_id',
@@ -92,5 +97,20 @@ class ChampionsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
+    }
+
+    /**
+     * Stores emails as lower case.
+     *
+     * @param \Cake\Event\Event $event The event being processed.
+     * @return bool
+     */
+    public function beforeRules(Event $event)
+    {
+        $entity = $event->data['entity'];
+
+        $entity->email = strtolower($entity->email);
+
+        return true;
     }
 }

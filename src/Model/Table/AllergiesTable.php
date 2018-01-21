@@ -32,14 +32,12 @@ class AllergiesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('allergies');
-        $this->displayField('allergy');
-        $this->primaryKey('id');
+        $this->setTable('allergies');
+        $this->setDisplayField('allergy');
+        $this->setPrimaryKey('id');
 
         $this->belongsToMany('Attendees', [
-            'foreignKey' => 'allergy_id',
-            'targetForeignKey' => 'attendee_id',
-            'joinTable' => 'attendees_allergies'
+            'through' => 'AttendeesAllergies',
         ]);
     }
 

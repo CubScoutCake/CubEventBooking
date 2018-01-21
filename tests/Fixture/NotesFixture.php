@@ -48,17 +48,21 @@ class NotesFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
-        [
-            'id' => 1,
-            'application_id' => 1,
-            'invoice_id' => 1,
-            'user_id' => 1,
-            'visible' => 1,
-            'note_text' => 'Lorem ipsum dolor sit amet',
-            'deleted' => 1481496375,
-            'created' => 1481496375,
-            'modified' => 1481496375
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'application_id' => 1,
+                'invoice_id' => 1,
+                'user_id' => 1,
+                'visible' => 1,
+                'note_text' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+            ],
+        ];
+        parent::init();
+    }
 }

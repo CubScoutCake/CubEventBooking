@@ -32,6 +32,16 @@ use App\Controller\Champion\AppController;
 class LandingController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Search.Prg', [
+            // This is default config. You can modify "actions" as needed to make
+            // the PRG component work only for specified methods.
+            'actions' => ['link']
+        ]);
+    }
+
     /**
      * Displays a view
      *
@@ -42,48 +52,154 @@ class LandingController extends AppController
     public function championHome()
     {
         // Get Entities from Registry
-        $apps = TableRegistry::get('Applications');
-        $evs = TableRegistry::get('Events');
-        $invs = TableRegistry::get('Invoices');
-        $usrs = TableRegistry::get('Users');
-        $pays = TableRegistry::get('Payments');
-        $grps = TableRegistry::get('Scoutgroups');
-        $atts = TableRegistry::get('Attendees');
+        $this->Applications = TableRegistry::get('Applications');
+        $this->Events = TableRegistry::get('Events');
+        $this->Invoices = TableRegistry::get('Invoices');
+        $this->Users = TableRegistry::get('Users');
+        $this->Payments = TableRegistry::get('Payments');
+        $this->Districts = TableRegistry::get('Districts');
+        $this->Attendees = TableRegistry::get('Attendees');
+        $this->Sections = TableRegistry::get('Sections');
+        $this->Scoutgroups = TableRegistry::get('Scoutgroups');
 
         $now = Time::now();
         $userId = $this->Auth->user('id');
-        $champD = $grps->get($this->Auth->user('scoutgroup_id'));
+        $user = $this->Users->get($userId);
+        $section = $this->Sections->get($user->section_id);
+        $group = $this->Scoutgroups->get($section->scoutgroup_id);
+        $champD = $this->Districts->get($group->district_id);
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users', 'Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Applications.modified' => 'DESC'])->limit(15);
-        $events = $evs->find()->where(['end >' => $now])->contain(['Settings'])->order(['Events.start' => 'ASC']);
-        $invoices = $invs->find()->contain(['Users', 'Applications', 'Applications.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Invoices.modified' => 'DESC'])->limit(15);
-        $users = $usrs->find()->contain(['Roles', 'Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->order(['Users.modified' => 'DESC'])->limit(15);
-        $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(15);
+        $applications = $this->Applications->find()->contain(['Users', 'Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->id])->order(['Applications.modified' => 'DESC'])->limit(15);
+        $events = $this->Events->find('upcoming')->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
+        $invoices = $this->Invoices->find()->contain(['Users', 'Applications', 'Applications.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->id])->order(['Invoices.modified' => 'DESC'])->limit(15);
+        $users = $this->Users->find()->contain(['Roles', 'Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->id])->order(['Users.modified' => 'DESC'])->limit(15);
+        $payments = $this->Payments->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(15);
 
         // Pass to View
         $this->set(compact('applications', 'events', 'invoices', 'users', 'payments'));
 
         /*// Counts of Entities
-        $cntApplications = $apps->find('all')->count('*');
-        $cntEvents = $evs->find('all')->count('*');
-        $cntInvoices = $invs->find('all')->count('*');
+        $cntApplications = $this->Applications->find('all')->count('*');
+        $cntEvents = $this->Events->find('all')->count('*');
+        $cntInvoices = $this->Invoices->find('all')->count('*');
         $cntUsers = $usrs->find('all')->count('*');
-        $cntPayments = $pays->find('all')->count('*');
+        $cntPayments = $this->Payments->find('all')->count('*');
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents','cntInvoices','cntUsers','cntPayments','userId'));*/
 
         // Counts of Entities
-        $cntApplications = $apps->find('all')->contain(['Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
-        $cntEvents = $evs->find('all')->count('*');
-        $cntInvoices = $invs->find('all')->contain(['Applications.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
-        $cntUsers = $usrs->find('all')->contain(['Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
-        $cntPayments = $pays->find('all')->count('*');
-        $cntAttendees = $atts->find('all')->contain(['Users.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntApplications = $this->Applications->find('all')->contain(['Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntEvents = $this->Events->find('all')->count('*');
+        $cntInvoices = $this->Invoices->find('all')->contain(['Applications.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntUsers = $this->Users->find('all')->contain(['Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
+        $cntPayments = $this->Payments->find('all')->count('*');
+        $cntAttendees = $this->Attendees->find('all')->contain(['Users.Sections.Scoutgroups'])->where(['Scoutgroups.district_id' => $champD->district_id])->count('*');
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees'));
+    }
 
+    public function link($linkEntry = null)
+    {
+        $searchEntry = $this->request->getQuery('q');
+
+        if (!is_null($linkEntry)) {
+            $searchEntry = $linkEntry;
+        }
+
+        $this->set(compact('searchEntry'));
+
+        $idNum = null;
+
+        if (isset($searchEntry) || !is_null($searchEntry)) {
+            $entStr = strtoupper($searchEntry);
+
+            $cont = substr($entStr, 0, 1);
+
+            $id = substr($entStr, 1);
+            $idNum = intval($id);
+
+            if (is_int($idNum) && $idNum != 0) {
+                switch ($cont) {
+                    case "U":
+                        return $this->redirect(['controller' => 'Users', 'action' => 'view', $idNum]);
+                        break;
+                    case "I":
+                        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $idNum]);
+                        break;
+                    case "A":
+                        return $this->redirect(['controller' => 'Applications', 'action' => 'view', $idNum]);
+                        break;
+                    case "N":
+                        return $this->redirect(['controller' => 'Notes', 'action' => 'view', $idNum]);
+                        break;
+                    case "P":
+                        return $this->redirect(['controller' => 'Payments', 'action' => 'view', $idNum]);
+                        break;
+                    case "T":
+                        return $this->redirect(['controller' => 'Attendees', 'action' => 'view', $idNum]);
+                        break;
+                    case "E":
+                        return $this->redirect(['controller' => 'Events', 'action' => 'full_view', $idNum]);
+                        break;
+                    case "S":
+                        return $this->redirect(['controller' => 'Settings', 'action' => 'view', $idNum]);
+                        break;
+                    default:
+                        return $this->redirect(['action' => 'admin_home']);
+                }
+            }
+        }
+
+        if (!is_int($idNum) || $idNum == 0 || is_null($idNum)) {
+            $this->Sections = TableRegistry::get('Sections');
+            $this->Users = TableRegistry::get('Users');
+            $section = $this->Sections->get($this->Auth->user('section_id'));
+
+            $userQuery = $this->Users
+                ->find('search', ['search' => $this->request->getQueryParams()])
+                ->contain(['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes', 'AuthRoles'])
+                ->where(['SectionTypes.id' => $section['section_type_id']]);
+
+            $this->set('users', $this->paginate($userQuery));
+
+            $this->paginate = [
+                'contain' => ['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes'],
+                'order' => ['last_login' => 'DESC'],
+                'limit' => 10,
+                'conditions' => ['SectionTypes.id' => $section['section_type_id']]
+            ];
+
+            $this->Scoutgroups = TableRegistry::get('Scoutgroups');
+
+            $sections = $this->Users->Sections
+                ->find(
+                    'list',
+                    [
+                        'keyField' => 'id',
+                        'valueField' => 'section',
+                        'groupField' => 'scoutgroup.district.district'
+                    ]
+                )
+                ->where(['section_type_id' => $section['section_type_id']])
+                ->contain(['Scoutgroups.Districts']);
+            $roles = $this->Users->Roles->find('leaders')->find('list');
+            $authRoles = $this->Users->AuthRoles->find('list');
+            $districts = $this->Scoutgroups->Districts->find('list');
+            $this->set(compact('sections', 'roles', 'authRoles', 'districts'));
+
+            $groupQuery = $this->Scoutgroups
+                // Use the plugins 'search' custom finder and pass in the
+                // processed query params
+                ->find('search', ['search' => $this->request->getQueryParams()])
+                // You can add extra things to the query if you need to
+                ->contain(['Districts'])
+                ->orderDesc('district_id', 'number_stripped')
+                ->limit(10);
+
+            $this->set('scoutgroups', $groupQuery->toArray());
+        }
     }
 }

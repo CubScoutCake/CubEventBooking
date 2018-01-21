@@ -15,7 +15,7 @@
 namespace App\Controller\Admin;
 
 use Cake\Controller\Controller;
-use App\Form\AdminForm;
+use Cake\ORM\TableRegistry;
 
 /**
  * Application Controller
@@ -27,13 +27,6 @@ use App\Form\AdminForm;
  */
 class AppController extends Controller
 {
-
-    public $helpers = [
-        'DataTables' => [
-            'className' => 'DataTables.DataTables'
-        ]
-    ];
-
     public function initialize()
     {
         $this->loadComponent('Flash');
@@ -45,6 +38,7 @@ class AppController extends Controller
                 'action' => 'user_home'
                 ],
             'loginAction' => [
+                'prefix' => false,
                 'controller' => 'Users',
                 'action' => 'login'
                 ]
@@ -53,45 +47,24 @@ class AppController extends Controller
         $this->loadComponent('Security');
         $this->loadComponent('Csrf');
         $this->loadComponent('RequestHandler');
-        $this->loadComponent('DataTables.DataTables');
 
-        $adminFormLink = new AdminForm();
-        $this->set(compact('adminFormLink'));
-
-        $this->loadComponent('Notifications');
-        $this->Notifications->appLoad($this->Auth->user('id'));
+        $this->loadComponent('Alert');
+        $this->Alert->appLoad($this->Auth->user('id'));
     }
 
     public function isAuthorized($user)
     {
-        // Admin can access every action
-        if (isset($user['authrole']) && $user['authrole'] === 'admin') {
-            return true;
+        $auth = TableRegistry::get('AuthRoles');
+
+        $adminTrue = $auth->get($user['auth_role_id']);
+
+        if (!isset($user['auth_role_id'])) {
+            return false;
         }
 
-        $action = $this->request->params['action'];
-
-        //The add and index actions are always allowed.
-        if (in_array($action, ['index'])) {
-            return true;
+        if ($this->request->params['prefix'] === 'admin' && isset($user['auth_role_id'])) {
+            return (bool)($adminTrue['admin_access']);
         }
-
-        // Only admins can access admin functions
-        if ($this->request->params['prefix'] === 'admin') {
-            return (bool)($user['authrole'] === 'admin');
-        }
-
-        //Alternate Method
-        //if ($this->request->action === 'add') {
-        //        return true;
-        //    }
-
-        // All other actions require an id.
-        //if (empty($this->request->params['pass'][0])) {
-        //    return true;
-        //}
-
-        //return parent::isAuthorized($user);
 
         return false;
     }

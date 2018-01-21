@@ -23,7 +23,13 @@ class AllergiesControllerTest extends IntegrationTestCase
         'app.districts',
         'app.scoutgroups',
         'app.users',
-        'app.attendees_allergies'
+        'app.password_states',
+        'app.attendees_allergies',
+        'app.sections',
+        'app.section_types',
+        'app.auth_roles',
+        'app.notifications',
+        'app.notificationtypes',
     ];
 
     public function testIndexUnauthenticatedFails()
@@ -31,7 +37,7 @@ class AllergiesControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/allergies');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/allergies']);
     }
 
     /**
@@ -68,7 +74,7 @@ class AllergiesControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/allergies/view/1');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/allergies/view/1']);
     }
 
     public function testView()
@@ -85,7 +91,7 @@ class AllergiesControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/allergies/add');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/allergies/add']);
     }
 
     public function testAdd()

@@ -27,6 +27,10 @@ use Cake\Controller\Controller;
 class AppController extends Controller
 {
 
+    /**
+     * Initialise Function - Setup Application Config
+     * @return void
+     */
     public function initialize()
     {
         $this->loadComponent('Flash');
@@ -34,71 +38,32 @@ class AppController extends Controller
             'authorize' => 'Controller',
             'loginRedirect' => [
                 'controller' => 'Landing',
-                'action' => 'user_home'
+                'action' => 'user_home',
+                'prefix' => false
                 ],
             'logoutRedirect' => [
                 'controller' => 'Landing',
-                'action' => 'welcome'
+                'action' => 'welcome',
+                'prefix' => false
                 ],
-            //'authenticate' => [
-            //    'Form' => [
-            //        'fields' => [
-            //            'username' => 'username',
-            //            'password' => 'password'
-            //            ]
-            //        ]
-            //    ],
             'loginAction' => [
                 'controller' => 'Users',
-                'action' => 'login'
+                'action' => 'login',
+                'prefix' => false,
                 ]
         ]);
 
-        // Allow the display action so our pages controller
-        // continues to work.
-        //$this->Auth->allow(['display']);
-        //$this->Auth->allow(['index']);
-
+        $this->viewBuilder()->setLayout('outside');
     }
 
+    /**
+     * Determine Authorisation for User in /Register
+     *
+     * @param \App\Model\Entity\User $user The User to be Evaluated
+     * @return bool
+     */
     public function isAuthorized($user)
     {
-        // Admin can access every action
-        if (isset($user['authrole']) && $user['authrole'] === 'admin') {
-            return true;
-        }
-
-        if (isset($user['id'])) {
-            if (isset($this->request->params['prefix']) && $this->request->params['prefix'] === 'admin') {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-
-        //The add and index actions are always allowed.
-        if (isset($user['id']) && in_array($this->request->params['action'], ['register', 'index', 'add', 'admin-home'])) {
-            return true;
-        }
-
-        // Only admins can access admin functions
-        //if ($this->request->params['prefix'] === 'admin') {
-        //    return (bool)($user['authrole'] === 'admin');
-        //  }
-
-        //Alternate Method
-        //if ($this->request->action === 'add') {
-        //        return true;
-        //    }
-
-        // All other actions require an id.
-        //if (empty($this->request->params['pass'][0])) {
-        //    return true;
-        //}
-
-        //return parent::isAuthorized($user);
-
-        return false;
+        return true;
     }
 }

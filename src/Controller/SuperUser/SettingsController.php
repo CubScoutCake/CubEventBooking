@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\SuperUser;
 
-use App\Controller\Admin\AppController;
+use App\Controller\SuperUser\AppController;
 
 /**
  * Settings Controller
@@ -18,8 +18,9 @@ class SettingsController extends AppController
      */
     public function index()
     {
+        $superAuth = bindec('1' . '0000');
         $this->paginate = [
-            'contain' => ['Settingtypes'], 'conditions' => ['settingtype_id !=' => '2']
+            'contain' => ['SettingTypes'], 'conditions' => ['SettingTypes.min_auth <=' => $superAuth]
         ];
         $this->set('settings', $this->paginate($this->Settings));
         $this->set('_serialize', ['settings']);
@@ -35,7 +36,7 @@ class SettingsController extends AppController
     public function view($id = null)
     {
         $setting = $this->Settings->get($id, [
-            'contain' => ['Settingtypes']
+            'contain' => ['SettingTypes']
         ]);
         $this->set('setting', $setting);
         $this->set('_serialize', ['setting']);
@@ -53,13 +54,14 @@ class SettingsController extends AppController
             $setting = $this->Settings->patchEntity($setting, $this->request->data);
             if ($this->Settings->save($setting)) {
                 $this->Flash->success(__('The setting has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The setting could not be saved. Please, try again.'));
             }
         }
-        $settingtypes = $this->Settings->Settingtypes->find('list', ['limit' => 200]);
-        $this->set(compact('setting', 'settingtypes'));
+        $settingTypes = $this->Settings->SettingTypes->find('list', ['limit' => 200]);
+        $this->set(compact('setting', 'settingTypes'));
         $this->set('_serialize', ['setting']);
     }
 
@@ -79,13 +81,14 @@ class SettingsController extends AppController
             $setting = $this->Settings->patchEntity($setting, $this->request->data);
             if ($this->Settings->save($setting)) {
                 $this->Flash->success(__('The setting has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The setting could not be saved. Please, try again.'));
             }
         }
-        $settingtypes = $this->Settings->Settingtypes->find('list', ['limit' => 200]);
-        $this->set(compact('setting', 'settingtypes'));
+        $settingTypes = $this->Settings->SettingTypes->find('list', ['limit' => 200]);
+        $this->set(compact('setting', 'settingTypes'));
         $this->set('_serialize', ['setting']);
     }
 
@@ -105,6 +108,7 @@ class SettingsController extends AppController
         } else {
             $this->Flash->error(__('The setting could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

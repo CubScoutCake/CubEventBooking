@@ -14,37 +14,43 @@ class EventsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-
+     */
     public $fixtures = [
+        'app.event_types',
         'app.events',
         'app.settings',
-        'app.settingtypes',
+        'app.setting_types',
         'app.discounts',
-        'app.applications',
         'app.users',
+        'app.password_states',
         'app.roles',
         'app.attendees',
+        'app.sections',
+        'app.section_types',
         'app.scoutgroups',
         'app.districts',
         'app.champions',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notes',
+        'app.applications',
         'app.invoices',
         'app.invoice_items',
-        'app.itemtypes',
+        'app.item_types',
+        'app.prices',
+        'app.notes',
+        'app.prices',
         'app.payments',
         'app.invoices_payments',
-        'app.notifications',
-        'app.notificationtypes',
         'app.logistic_items',
         'app.logistics',
         'app.parameters',
         'app.parameter_sets',
-        'app.params'
+        'app.params',
+        'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
+        'app.auth_roles',
+        'app.notifications',
+        'app.notification_types'
     ];
-     */
 
     /**
      * Test index method
@@ -53,7 +59,14 @@ class EventsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'index']);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -63,7 +76,14 @@ class EventsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'view', 1]);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -73,6 +93,65 @@ class EventsControllerTest extends IntegrationTestCase
      */
     public function testFullView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/events/full-view/1');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test fullView method
+     *
+     * @return void
+     */
+    public function testAdd()
+    {
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2,
+            'Auth.User.section_id' => 1,
+        ]);
+
+        $this->get('/admin/events/add');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test fullView method
+     *
+     * @return void
+     */
+    public function testEdit()
+    {
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/events/edit/1');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test fullView method
+     *
+     * @return void
+     */
+    public function testPrices()
+    {
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'prices', 1]);
+
+        $this->assertResponseOk();
     }
 }

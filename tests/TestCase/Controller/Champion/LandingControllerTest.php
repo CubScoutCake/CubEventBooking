@@ -29,13 +29,15 @@ class LandingControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testUserHome()
+    public function testChampionHome()
     {
-        $this->markTestSkipped('Fixture Issue');
+        $this->markTestSkipped('Issue with Auth Roles');
+        $this->session([
+           'Auth.User.id' => 3,
+            'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->session(['Auth.User.id' => 1]);
-
-        $this->get('/landing/user-home');
+        $this->get('/champion/landing/champion-home');
 
         $this->assertResponseOk();
     }
@@ -45,7 +47,7 @@ class LandingControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/landing/user-home');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/landing/user-home']);
     }
 
     /**

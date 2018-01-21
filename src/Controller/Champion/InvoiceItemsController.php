@@ -36,6 +36,7 @@ class InvoiceItemsController extends AppController
 
         if ($event->invoices_locked) {
             $this->Flash->error(__($errorMsg));
+
             return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
         }
 
@@ -115,7 +116,7 @@ class InvoiceItemsController extends AppController
             } else {
                 $formNumCubs = 0;
             }
-            
+
             if ($event->yls) {
                 $formNumYls = $this->request->data['yls'];
             } else {
@@ -136,7 +137,6 @@ class InvoiceItemsController extends AppController
                 $numCubs = $formNumCubs;
             }
 
-
             // Compare Form Info - YLs
             if ($event->max && $formNumYls > $event->max_yls) {
                 $numYls = $event->max_yls;
@@ -144,7 +144,6 @@ class InvoiceItemsController extends AppController
             } else {
                 $numYls = $formNumYls;
             }
-
 
             // Compare Form Info - Leaders
             if ($event->max && $formNumLeaders > $event->max_leaders) {
@@ -232,6 +231,7 @@ class InvoiceItemsController extends AppController
             } else {
                 if ($this->InvoiceItems->save($depCubItem) && $this->InvoiceItems->save($cubItem) && $this->InvoiceItems->save($yLItem) && $this->InvoiceItems->save($leaderItem) && $this->InvoiceItems->save($disItem)) {
                     $this->Flash->success(__('The invoice has been populated.'));
+
                     return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
                 } else {
                     $this->Flash->error(__('There was an error.'));
@@ -242,14 +242,13 @@ class InvoiceItemsController extends AppController
         $this->set(compact('invoiceItem', 'invoices'));
         $this->set('_serialize', ['invoiceItem']);
         $this->set('invPop', $invPop);
-        
+
         if ($this->request->is('get')) {
             // Values from the User Model e.g.
             $this->request->data['cubs'] = $predictedCubs;
             $this->request->data['yls'] = $predictedYls;
             $this->request->data['leaders'] = $predictedLeaders;
         }
-        
     }
 
     public function repopulate($invID = null)
@@ -261,7 +260,6 @@ class InvoiceItemsController extends AppController
         $existingLeader = $this->InvoiceItems->find()->where(['itemtype_id' => 4, 'invoice_id' => $invID])->first();
         $existingDiscount = $this->InvoiceItems->find()->where(['itemtype_id' => 5, 'invoice_id' => $invID])->first();
 
-
         // Retrive IDs
         $existingCubDepID = $existingCubDep->id;
         $existingCubID = $existingCub->id;
@@ -269,14 +267,12 @@ class InvoiceItemsController extends AppController
         $existingLeaderID = $existingLeader->id;
         $existingDiscountID = $existingDiscount->id;
 
-
         // Get Existing Lines
         $existingCubDepItem = $this->InvoiceItems->get($existingCubDepID);
         $existingCubItem = $this->InvoiceItems->get($existingCubID);
         $existingYlItem = $this->InvoiceItems->get($existingYlID);
         $existingLeaderItem = $this->InvoiceItems->get($existingLeaderID);
         $existingDiscountItem = $this->InvoiceItems->get($existingDiscountID);
-
 
         // Retrive Quantity Values
         $existingCubDepQty = $existingCubDepItem->Quantity;
@@ -314,6 +310,7 @@ class InvoiceItemsController extends AppController
 
         if ($event->invoices_locked) {
             $this->Flash->error(__($errorMsg));
+
             return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
         }
 
@@ -327,7 +324,6 @@ class InvoiceItemsController extends AppController
         $LeadersVis = $event->leaders;
 
         $this->set(compact('CubsVis', 'YlsVis', 'LeadersVis'));
-        
 
         // Set Item Description Text
         $depositDescription = $event->deposit_text;
@@ -383,7 +379,7 @@ class InvoiceItemsController extends AppController
             } else {
                 $formNumCubs = 0;
             }
-            
+
             if ($event->yls) {
                 $formNumYls = $this->request->data['yls'];
             } else {
@@ -395,8 +391,6 @@ class InvoiceItemsController extends AppController
             } else {
                 $formNumLeaders = 0;
             }
-            
-
 
             // Compare Form Info - Cubs
             if ($event->max && $formNumCubs >= $event->max_cubs) {
@@ -411,7 +405,6 @@ class InvoiceItemsController extends AppController
                 $numCubs = $formNumCubs;
             }
 
-
             // Compare Form Info - YLs
             if ($event->max && $formNumYls >= $event->max_yls) {
                 $numYls = $event->max_yls;
@@ -424,7 +417,6 @@ class InvoiceItemsController extends AppController
             } else {
                 $numYls = $formNumYls;
             }
-
 
             // Compare Form Info - Leaders
             if ($event->max && $formNumLeaders >= $event->max_leaders) {
@@ -536,6 +528,7 @@ class InvoiceItemsController extends AppController
             } else {
                 if ($this->InvoiceItems->save($existingCubDepItem) && $this->InvoiceItems->save($existingCubItem) && $this->InvoiceItems->save($existingYlItem) && $this->InvoiceItems->save($existingLeaderItem) && $this->InvoiceItems->save($disItem) && $this->InvoiceItems->delete($existingDiscountItem)) {
                     $this->Flash->success(__('The invoice has been repopulated with updated values.'));
+
                     return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
                 } else {
                     $this->Flash->error(__('There was an error.'));

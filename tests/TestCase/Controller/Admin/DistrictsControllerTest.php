@@ -17,7 +17,21 @@ class DistrictsControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.districts',
-        'app.scoutgroups'
+        'app.scoutgroups',
+        'app.users',
+        'app.password_states',
+        'app.sections',
+        'app.notifications',
+        'app.notificationtypes',
+        'app.roles',
+        'app.section_types',
+        'app.auth_roles',
+        'app.applications',
+        'app.events',
+        'app.settings',
+        'app.setting_types',
+        'app.discounts',
+        'app.event_types',
     ];
 
     public function testIndexUnauthenticatedFails()
@@ -25,7 +39,7 @@ class DistrictsControllerTest extends IntegrationTestCase
         // No session data set.
         $this->get('/districts');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect('/login?redirect=%2Fdistricts');
     }
 
     /**
@@ -35,18 +49,24 @@ class DistrictsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->get('/districts');
+        $this->get('/admin/districts');
 
         $this->assertResponseOk();
     }
 
     public function testIndexQueryData()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->get('/districts?page=1');
+        $this->get('/admin/districts?page=1');
 
         $this->assertResponseOk();
     }
@@ -58,9 +78,12 @@ class DistrictsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->get('/districts/view/1');
+        $this->get('/admin/districts/view/1');
 
         $this->assertResponseOk();
     }
@@ -68,8 +91,8 @@ class DistrictsControllerTest extends IntegrationTestCase
     public function testViewUnauthenticatedFails()
     {
         // No session data set.
-        $this->get('/districts/view/1');
+        $this->get('/admin/districts/view/1');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, 'redirect' => '/admin/districts/view/1']);
     }
 }

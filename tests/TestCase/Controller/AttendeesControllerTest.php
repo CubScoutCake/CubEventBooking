@@ -14,19 +14,27 @@ class AttendeesControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-
+     */
     public $fixtures = [
         'app.attendees',
         'app.users',
         'app.roles',
+        'app.password_states',
         'app.scoutgroups',
         'app.districts',
         'app.champions',
         'app.applications',
         'app.events',
-        'app.applications_attendees'
+        'app.applications_attendees',
+        'app.sections',
+        'app.auth_roles',
+        'app.section_types',
+        'app.settings',
+        'app.settingtypes',
+        'app.discounts',
+        'app.event_types',
     ];
-     */
+
     /**
      * Test index method
      *
@@ -34,7 +42,14 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 1
+        ]);
+
+        $this->get('/attendees');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -44,7 +59,14 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -54,7 +76,14 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testAdult()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/adult');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -64,7 +93,14 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testCub()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/cub');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -74,7 +110,14 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/edit/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -84,7 +127,17 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/attendees/delete/1');
+
+        $this->assertRedirect();
     }
 
     /**
@@ -94,6 +147,22 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testIsAuthorized()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/edit/1');
+
+        $this->assertResponseOk();
+
+        $this->session([
+            'Auth.User.id' => 2,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/attendees/edit/1');
+
+        $this->assertRedirect();
     }
 }

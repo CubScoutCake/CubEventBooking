@@ -23,9 +23,9 @@ class RolesTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('roles');
-        $this->displayField('role');
-        $this->primaryKey('id');
+        $this->setTable('roles');
+        $this->setDisplayField('role');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
@@ -54,6 +54,10 @@ class RolesTable extends Table
         $validator
             ->requirePresence('role', 'create')
             ->notEmpty('role');
+
+        $validator
+            ->requirePresence('short_role', 'create')
+            ->notEmpty('short_role');
 
         $validator
             ->add('invested', 'valid', ['rule' => 'boolean'])

@@ -33,9 +33,9 @@ class AttendeesAllergiesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('attendees_allergies');
-        $this->displayField('attendee_id');
-        $this->primaryKey(['attendee_id', 'allergy_id']);
+        $this->setTable('attendees_allergies');
+        $this->setDisplayField('attendee_id');
+        $this->setPrimaryKey(['attendee_id', 'allergy_id']);
 
         $this->belongsTo('Attendees', [
             'foreignKey' => 'attendee_id',

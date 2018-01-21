@@ -57,9 +57,11 @@
             <div class="panel-body">
                 <span><?= __('User') ?>: <?= $application->has('user') ? $this->Html->link($application->user->full_name, ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></span>
                 </br>
-                <span><?= __('Scoutgroup') ?>: <?= $application->has('scoutgroup') ? $this->Html->link($application->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $application->scoutgroup->id]) : '' ?></span>
+                <span><?= __('District') ?>: <?= $application->section->scoutgroup->has('district') ? $this->Html->link($application->section->scoutgroup->district->district, ['controller' => 'Scoutgroups', 'action' => 'view', $application->section->scoutgroup->district->id]) : '' ?></span>
                 </br>
-                <span><?= __('Section') ?>: <?= h($application->section) ?></span>
+                <span><?= __('Scout Group') ?>: <?= $application->section->has('scoutgroup') ? $this->Html->link($application->section->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $application->section->scoutgroup->id]) : '' ?></span>
+                </br>
+                <span><?= __('Section') ?>: <?= $application->has('section') ? $this->Html->link($application->section->section, ['controller' => 'Sections', 'action' => 'view', $application->section->id]) : '' ?></span>
                 </br>
                 <span><?= __('Permitholder') ?>: <?= h($application->permitholder) ?></span>
 
@@ -279,7 +281,7 @@
 <hr>
 <div class="row">
     <div class="col-lg-12">
-        <?php if (!empty($application->invoices)): ?>
+        <?php if (!empty($application->invoice)): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-files-o fa-fw"></i> Invoices on this Application
@@ -291,33 +293,21 @@
                             <tr>
                                 <th><?= __('Id') ?></th>
                                 <th class="actions"><?= __('Actions') ?></th>
-                                <th><?= __('User Id') ?></th>
                                 <th><?= __('Sum Value') ?></th>
                                 <th><?= __('Received') ?></th>
                                 <th><?= __('Balance') ?></th>
                                 <th><?= __('Date Created') ?></th>
                             </tr>
-                            <?php foreach ($application->invoices as $invoices): ?>
                             <tr>
-                                <td><?= h($invoices->id) ?></td>
+                                <td><?= h($application->invoice->id) ?></td>
                                 <td class="actions">
-                                    <div class="dropdown btn-group">
-                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu " role="menu">
-                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?></li>
-                                            <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoices->id]) ?></li>
-                                        </ul>
-                                    </div>
+                                    <?= $this->Html->link(' View', ['controller' => 'Invoices','action' => 'view', $application->invoice->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
                                 </td>
-                                <td><?= h($invoices->user_id) ?></td>
-                                <td><?= $this->Number->currency($invoices->initialvalue,'GBP') ?></td>
-                                <td><?= $this->Number->currency($invoices->value,'GBP') ?></td>
-                                <td><?= $this->Number->currency($invoices->balance,'GBP') ?></td>
-                                <td><?= $this->Time->i18nformat($invoices->created,'dd-MMM-yy HH:mm') ?></td>
+                                <td><?= $this->Number->currency($application->invoice->initialvalue,'GBP') ?></td>
+                                <td><?= $this->Number->currency($application->invoice->value,'GBP') ?></td>
+                                <td><?= $this->Number->currency($application->invoice->balance,'GBP') ?></td>
+                                <td><?= $this->Time->i18nformat($application->invoice->created,'dd-MMM-yy HH:mm') ?></td>
                             </tr>
-                            <?php endforeach; ?>
                         </table>
                     </div>
                 </div>
@@ -355,7 +345,6 @@
                                 <th><?= __('Last Name') ?></th>
                                 <th class="actions"><?= __('Actions') ?></th>
                                 <th><?= __('Role') ?></th>
-                                <th><?= __('Group') ?></th>
                                 <th><?= __('Modified') ?></th>
                             </tr>
                             <?php foreach ($application->attendees as $attendees): ?>
@@ -373,8 +362,7 @@
                                             </ul>
                                         </div>
                                     </td>
-                                    <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
-                                    <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,10), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
+                                    <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,30), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
                                     <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
                                 </tr>
                             <?php endforeach; ?>

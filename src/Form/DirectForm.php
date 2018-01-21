@@ -7,13 +7,29 @@ use Cake\Validation\Validator;
 
 class DirectForm extends Form
 {
-
+    /**
+     * Basic schema definition
+     *
+     * @param Schema $schema The Schema to be extended.
+     *
+     * @return Schema
+     */
     protected function _buildSchema(Schema $schema)
     {
-        return $schema->addField('id', 'int');
-        return $schema->addField('controller', 'int');
+        $schema->addField('id', 'int');
+
+        $schema->addField('controller', 'int');
+
+        return $schema;
     }
 
+    /**
+     * Validator for validating the entered Data.
+     *
+     * @param Validator $validator The Validation Rules to be modified.
+     *
+     * @return Validator
+     */
     protected function _buildValidator(Validator $validator)
     {
         $validator
@@ -27,10 +43,5 @@ class DirectForm extends Form
             ->notEmpty('controller');
 
         return $validator;
-    }
-
-    protected function _execute(array $data)
-    {
-        // Send an email.
     }
 }

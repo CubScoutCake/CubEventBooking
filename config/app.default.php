@@ -11,6 +11,10 @@ return [
      */
     'debug' => true,
 
+	'maintenance' => false,
+
+	'travis' => true,
+
     /**
      * Configure basic information about the application.
      *
@@ -111,6 +115,14 @@ return [
             'serialize' => true,
             'duration' => '+2 minutes',
         ],
+
+        'cell_cache' => [
+            'className' => 'File',
+            'prefix' => 'myapp_cake_model_',
+            'path' => CACHE . 'cells/',
+            'serialize' => true,
+            'duration' => '+2 minutes',
+        ],
     ],
 
     /**
@@ -202,71 +214,6 @@ return [
     ],
 
     /**
-     * Connection information used by the ORM to connect
-     * to your application's datastores.
-     * Drivers include Mysql Postgres Sqlite Sqlserver
-     * See vendor\cakephp\cakephp\src\Database\Driver for complete list
-     */
-    'Datasources' => [
-        'default' => [
-            'className' => 'Cake\Database\Connection',
-            'driver' => 'Cake\Database\Driver\Postgres',
-            'persistent' => false,
-            'host' => '127.0.0.1',
-            /**
-             * CakePHP will use the default DB port based on the driver selected
-             * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
-             * the following line and set the port accordingly
-             */
-            //'port' => 'nonstandard_port_number',
-            'username' => 'postgres',
-            'password' => '',
-            'database' => 'cake',
-            'encoding' => 'utf8',
-            'timezone' => 'UTC',
-            'cacheMetadata' => true,
-
-            /**
-             * Set identifier quoting to true if you are using reserved words or
-             * special characters in your table or column names. Enabling this
-             * setting will result in queries built using the Query Builder having
-             * identifiers quoted when creating SQL. It should be noted that this
-             * decreases performance because each query needs to be traversed and
-             * manipulated before being executed.
-             */
-            'quoteIdentifiers' => false,
-
-            /**
-             * During development, if using MySQL < 5.6, uncommenting the
-             * following line could boost the speed at which schema metadata is
-             * fetched from the database. It can also be set directly with the
-             * mysql configuration directive 'innodb_stats_on_metadata = 0'
-             * which is the recommended value in production environments
-             */
-            //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
-        ],
-
-        /**
-         * The test connection is used during the test suite.
-         */
-        'test' => [
-            'className' => 'Cake\Database\Connection',
-            'driver' => 'Cake\Database\Driver\Postgres',
-            'persistent' => false,
-            'host' => '127.0.0.1',
-            //'port' => 'nonstandard_port_number',
-            'username' => 'postgres',
-            'password' => '',
-            'database' => 'cake',
-            'encoding' => 'utf8',
-            'timezone' => 'UTC',
-            'cacheMetadata' => true,
-            'quoteIdentifiers' => false,
-            //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
-        ],
-    ],
-
-    /**
      * Configures logging options
      */
     'Log' => [
@@ -274,14 +221,19 @@ return [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => LOGS,
             'file' => 'debug',
-            'levels' => ['notice', 'info', 'debug'],
+            'levels' => ['debug'],
         ],
-        'error' => [
-            'className' => 'Cake\Log\Engine\FileLog',
-            'path' => LOGS,
-            'file' => 'error',
-            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
+        'database' => [
+            'className' => 'DatabaseLog.Database',
+            'levels' => ['notice', 'info', 'warning', 'error', 'critical', 'alert', 'emergency'],
         ],
+    ],
+
+    /**
+     * Configures Database Connection for Logs.
+     */
+    'DatabaseLog' => [
+        'datasource' => 'database_log', // DataSource to use
     ],
 
     /**
@@ -332,5 +284,27 @@ return [
     'GA' => [
         'ua' => 'UA CODE',
         'userCode' => 'USR:'
+    ],
+
+    /**
+     * OSM API config.
+     *
+     * Takes effect in the OSM controller.
+     */
+    'OSM' => [
+        'api_id' => 'osm_secret_id_travis',
+	        'api_token' => 'osm_secret_token_travis',
+        'api_base' => 'www.onlinescoutmanager.co.uk'
+    ],
+
+    /**
+     * KeenIO Config
+     *
+     * Takes effect in reporting, enables real time transactional reporting.
+     */
+    'KeenIO' => [
+        'project_id' => 'secret project id',
+        'read_key' => 'the secret read key',
+        'write_key' => 'the secret write key'
     ]
 ];

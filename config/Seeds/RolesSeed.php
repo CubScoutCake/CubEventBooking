@@ -26,6 +26,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '1',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'Cub',
             ],
             [
                 'id' => '2',
@@ -34,6 +35,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'CSL',
             ],
             [
                 'id' => '3',
@@ -42,6 +44,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'ACSL',
             ],
             [
                 'id' => '4',
@@ -50,6 +53,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'Parent',
             ],
             [
                 'id' => '5',
@@ -58,6 +62,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'DCSL',
             ],
             [
                 'id' => '6',
@@ -66,6 +71,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'ADC',
             ],
             [
                 'id' => '7',
@@ -74,6 +80,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'DC',
             ],
             [
                 'id' => '8',
@@ -82,6 +89,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '1',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'Yl',
             ],
             [
                 'id' => '9',
@@ -90,6 +98,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '1',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'Scout',
             ],
             [
                 'id' => '10',
@@ -98,6 +107,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '1',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'Beaver',
             ],
             [
                 'id' => '11',
@@ -106,6 +116,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'Network',
             ],
             [
                 'id' => '12',
@@ -114,6 +125,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'GSL',
             ],
             [
                 'id' => '13',
@@ -122,6 +134,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'ACC',
             ],
             [
                 'id' => '14',
@@ -130,6 +143,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'BSL',
             ],
             [
                 'id' => '15',
@@ -138,6 +152,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'ABSL',
             ],
             [
                 'id' => '16',
@@ -146,6 +161,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'SL',
             ],
             [
                 'id' => '17',
@@ -154,6 +170,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'ESL',
             ],
             [
                 'id' => '18',
@@ -162,6 +179,7 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '0',
                 'deleted' => NULL,
+                'short_role' => 'ASU',
             ],
             [
                 'id' => '19',
@@ -170,6 +188,25 @@ class RolesSeed extends AbstractSeed
                 'minor' => '0',
                 'automated' => '1',
                 'deleted' => NULL,
+                'short_role' => 'Generic Leader',
+            ],
+            [
+                'id' => '20',
+                'role' => 'ASL - Assistant Scout Leader',
+                'invested' => '1',
+                'minor' => '0',
+                'automated' => '0',
+                'deleted' => NULL,
+                'short_role' => 'ASL',
+            ],
+            [
+                'id' => '21',
+                'role' => 'AESL - Assistant Explorer Scout Leader',
+                'invested' => '1',
+                'minor' => '0',
+                'automated' => '0',
+                'deleted' => NULL,
+                'short_role' => 'AESL',
             ],
         ];
 

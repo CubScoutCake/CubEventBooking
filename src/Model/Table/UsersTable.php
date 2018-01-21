@@ -10,15 +10,33 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Text;
 use Cake\Validation\Validator;
+use Search\Manager;
 
 /**
  * Users Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Roles
- * @property \Cake\ORM\Association\BelongsTo $Scoutgroups
+ * @property \Cake\ORM\Association\BelongsTo $OsmUsers
+ * @property \Cake\ORM\Association\BelongsTo $OsmSections
+ * @property \Cake\ORM\Association\BelongsTo $AuthRoles
+ * @property \Cake\ORM\Association\BelongsTo $Sections
  * @property \Cake\ORM\Association\HasMany $Applications
  * @property \Cake\ORM\Association\HasMany $Attendees
+ * @property \Cake\ORM\Association\HasMany $Champions
  * @property \Cake\ORM\Association\HasMany $Invoices
+ * @property \Cake\ORM\Association\HasMany $Notes
+ * @property \Cake\ORM\Association\HasMany $Notifications
+ * @property \Cake\ORM\Association\HasMany $Payments
+ *
+ * @method \App\Model\Entity\User get($primaryKey, $options = [])
+ * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\User|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\User findOrCreate($search, callable $callback = null)
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class UsersTable extends Table
 {
@@ -33,9 +51,11 @@ class UsersTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('users');
-        $this->displayField('full_name');
-        $this->primaryKey('id');
+        $this->setTable('users');
+        $this->setDisplayField('full_name');
+        $this->setPrimaryKey('id');
+
+        $this->addBehavior('SectionAuth');
 
         $this->addBehavior('Timestamp', [
             'events' => [
@@ -48,16 +68,35 @@ class UsersTable extends Table
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);
+        $this->addBehavior('Search.Search');
 
         $this->belongsTo('Roles', [
             'foreignKey' => 'role_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Scoutgroups', [
-            'foreignKey' => 'scoutgroup_id',
+
+        $this->belongsTo('AuthRoles', [
+            'foreignKey' => 'auth_role_id',
             'joinType' => 'INNER'
         ]);
+
+        $this->belongsTo('PasswordStates', [
+            'foreignKey' => 'password_state_id'
+        ]);
+
+        $this->belongsTo('Sections', [
+            'foreignKey' => 'section_id'
+        ]);
         $this->hasMany('Applications', [
+            'foreignKey' => 'user_id'
+        ]);
+        $this->hasMany('Attendees', [
+            'foreignKey' => 'user_id'
+        ]);
+        $this->hasMany('Champions', [
+            'foreignKey' => 'user_id'
+        ]);
+        $this->hasMany('Invoices', [
             'foreignKey' => 'user_id'
         ]);
         $this->hasMany('Notes', [
@@ -66,10 +105,13 @@ class UsersTable extends Table
         $this->hasMany('Notifications', [
             'foreignKey' => 'user_id'
         ]);
-        $this->hasMany('Attendees', [
+        $this->hasMany('Payments', [
             'foreignKey' => 'user_id'
         ]);
-        $this->hasMany('Invoices', [
+        $this->hasMany('Tokens', [
+            'foreignKey' => 'user_id'
+        ]);
+        $this->hasMany('EmailSends', [
             'foreignKey' => 'user_id'
         ]);
     }
@@ -83,59 +125,71 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('id', 'create');
-
-        $validator
-            ->allowEmpty('authrole');
-
-        $validator
+            ->requirePresence('firstname', 'create')
             ->notEmpty('firstname');
 
         $validator
+            ->requirePresence('lastname', 'create')
             ->notEmpty('lastname');
 
         $validator
-            ->add('email', 'valid', ['rule' => 'email'])
-            ->add('email', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
+            ->email('email')
+            ->requirePresence('email', 'create')
             ->notEmpty('email');
 
         $validator
+            ->requirePresence('password', 'create')
             ->notEmpty('password');
 
         $validator
+            ->requirePresence('phone', 'create')
             ->notEmpty('phone');
 
         $validator
+            ->requirePresence('address_1', 'create')
             ->notEmpty('address_1');
 
         $validator
             ->allowEmpty('address_2');
 
         $validator
+            ->requirePresence('city', 'create')
             ->notEmpty('city');
 
         $validator
+            ->requirePresence('county', 'create')
             ->notEmpty('county');
 
         $validator
+            ->requirePresence('postcode', 'create')
             ->notEmpty('postcode');
 
         $validator
-            ->allowEmpty('section');
-
-        $validator
-            ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
+            ->requirePresence('username', 'create')
             ->notEmpty('username');
 
         $validator
-            ->allowEmpty('osm_user_id');
+            ->integer('membership_number')
+            ->requirePresence('membership_number')
+            ->notEmpty('membership_number');
 
         $validator
-            ->allowEmpty('osm_secret');
+            ->integer('osm_user_id');
 
         $validator
-            ->allowEmpty('osm_section_id');
+            ->integer('osm_linked');
+
+        $validator
+            ->dateTime('osm_linkdate');
+
+        $validator
+            ->integer('osm_section_id');
+
+        $validator
+            ->integer('osm_current_term');
+
+        $validator
+            ->dateTime('osm_term_end');
 
         return $validator;
     }
@@ -151,8 +205,12 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['email']));
         $rules->add($rules->isUnique(['username']));
+        $rules->add($rules->isUnique(['membership_number']));
+
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
-        $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
+        $rules->add($rules->existsIn(['auth_role_id'], 'AuthRoles'));
+        $rules->add($rules->existsIn(['section_id'], 'Sections'));
+        $rules->add($rules->existsIn(['password_state_id'], 'PasswordStates'));
 
         return $rules;
     }
@@ -174,7 +232,10 @@ class UsersTable extends Table
             env('SERVER_NAME')
         );
 
-        if ($entity->authrole === 'admin') {
+        $authRole = $this->AuthRoles->get($entity->auth_role_id);
+        $superUser = bindec('10000');
+
+        if ($authRole->auth_value >= $superUser && $entity->isNew()) {
             $hasher = new DefaultPasswordHasher();
 
             // Generate an API 'token'
@@ -184,6 +245,56 @@ class UsersTable extends Table
             // it during login.
             $entity->api_key = $hasher->hash($entity->api_key_plain);
         }
+
+        return true;
+    }
+
+    /**
+     * Search configuration options
+     *
+     * @return Manager Search query.
+     */
+    public function searchConfiguration()
+    {
+        $search = new Manager($this);
+
+        $search->value('section_id')
+            // Here we will alias the 'q' query param to search the `Articles.title`
+            // field and the `Articles.content` field, using a LIKE match, with `%`
+            // both before and after.
+                ->value('role_id')
+                ->value('auth_role_id')
+                ->add('q', 'Search.Like', [
+                    'before' => true,
+                    'after' => true,
+                    'fieldMode' => 'OR',
+                    'comparison' => 'LIKE',
+                    'wildcardAny' => '*',
+                    'wildcardOne' => '?',
+                    'field' => ['firstname', 'lastname', 'email', 'username']
+                ]);
+
+        return $search;
+    }
+
+    /**
+     * Stores emails as lower case.
+     *
+     * @param \Cake\Event\Event $event The event being processed.
+     * @return bool
+     */
+    public function beforeRules(Event $event)
+    {
+        $entity = $event->data['entity'];
+
+        $entity->email = strtolower($entity->email);
+        $entity->firstname = ucwords(strtolower($entity->firstname));
+        $entity->lastname = ucwords(strtolower($entity->lastname));
+        $entity->address_1 = ucwords(strtolower($entity->address_1));
+        $entity->address_2 = ucwords(strtolower($entity->address_2));
+        $entity->city = ucwords(strtolower($entity->city));
+        $entity->county = ucwords(strtolower($entity->county));
+        $entity->postcode = strtoupper($entity->postcode);
 
         return true;
     }

@@ -27,9 +27,9 @@ class InvoicesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('invoices');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('invoices');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp', [
             'events' => [

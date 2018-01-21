@@ -14,7 +14,7 @@ class ParametersController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return void
      */
     public function index()
     {
@@ -28,7 +28,7 @@ class ParametersController extends AppController
      * View method
      *
      * @param string|null $id Parameter id.
-     * @return \Cake\Network\Response|null
+     * @return void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -53,6 +53,7 @@ class ParametersController extends AppController
             $parameter = $this->Parameters->patchEntity($parameter, $this->request->data);
             if ($this->Parameters->save($parameter)) {
                 $this->Flash->success(__('The parameter has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The parameter could not be saved. Please, try again.'));
@@ -79,6 +80,7 @@ class ParametersController extends AppController
             $parameter = $this->Parameters->patchEntity($parameter, $this->request->data);
             if ($this->Parameters->save($parameter)) {
                 $this->Flash->success(__('The parameter has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The parameter could not be saved. Please, try again.'));
@@ -104,6 +106,7 @@ class ParametersController extends AppController
         } else {
             $this->Flash->error(__('The parameter could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

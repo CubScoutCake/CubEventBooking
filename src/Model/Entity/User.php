@@ -9,9 +9,6 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $role_id
- * @property \App\Model\Entity\Role $role
- * @property int $scoutgroup_id
- * @property \App\Model\Entity\Scoutgroup $scoutgroup
  * @property string $authrole
  * @property string $firstname
  * @property string $lastname
@@ -23,15 +20,38 @@ use Cake\ORM\Entity;
  * @property string $city
  * @property string $county
  * @property string $postcode
- * @property string $section
- * @property int $osm_user_id
- * @property string $osm_secret
- * @property int $osm_section_id
+ * @property string $legacy_section
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  * @property string $username
+ * @property int $osm_user_id
+ * @property string $osm_secret
+ * @property int $osm_section_id
+ * @property int $osm_linked
+ * @property \Cake\I18n\Time $osm_linkdate
+ * @property int $osm_current_term
+ * @property \Cake\I18n\Time $osm_term_end
+ * @property string $pw_reset
+ * @property \Cake\I18n\Time $last_login
+ * @property int $logins
+ * @property bool $validated
+ * @property \Cake\I18n\Time $deleted
+ * @property string $digest_hash
+ * @property string $pw_salt
+ * @property string $api_key_plain
+ * @property string $api_key
+ * @property int $auth_role_id
+ * @property int $pw_state
+ * @property int $membership_number
+ * @property int $section_id
+ *
+ * @property \App\Model\Entity\Role $role
+ * @property \App\Model\Entity\Section $section
  * @property \App\Model\Entity\Application[] $applications
+ * @property \App\Model\Entity\Note[] $notes
+ * @property \App\Model\Entity\Notification[] $notifications
  * @property \App\Model\Entity\Attendee[] $attendees
+ * @property \App\Model\Entity\Invoice[] $invoices
  */
 class User extends Entity
 {
@@ -76,18 +96,4 @@ class User extends Entity
     }
 
     protected $_virtual = ['full_name'];
-
-    /*public function implementedEvents()
-    {
-        return [
-            'Model.afterSave' => 'onRegistration'
-        ];
-    }
-
-    public function onRegistration(Event $event, EntityInterface $entity, ArrayObject $options)
-    {
-        if ($entity->isNew()) {
-            $this->send('welcome', [$entity]);
-        }
-    }*/
 }

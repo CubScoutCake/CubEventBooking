@@ -14,35 +14,18 @@ class NotificationsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.notifications',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.scoutgroups',
+        'app.auth_roles',
+        'app.notification_types',
         'app.districts',
-        'app.champions',
-        'app.applications',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.notes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notificationtypes'
+        'app.roles',
+        'app.users',
+        'app.scoutgroups',
+        'app.sections',
+        'app.section_types',
+        'app.password_states',
     ];
 
     /**
@@ -52,7 +35,14 @@ class NotificationsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/notifications');
+
+        $this->assertResponseOk();
     }
 
     /**

@@ -12,19 +12,19 @@ class Authrole extends AbstractMigration
                 'limit' => 255,
                 'null' => false
             ])
-            ->addColumn('admin_access', 'integer', [
+            ->addColumn('admin_access', 'boolean', [
                 'default' => null,
-                'limit' => 10,
+                'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('champion_access', 'integer', [
+            ->addColumn('champion_access', 'boolean', [
                 'default' => null,
-                'limit' => 10,
+                'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('super_user', 'integer', [
+            ->addColumn('super_user', 'boolean', [
                 'default' => null,
-                'limit' => 10,
+                'limit' => null,
                 'null' => true,
             ])
             ->addColumn('auth', 'integer', [
@@ -40,6 +40,21 @@ class Authrole extends AbstractMigration
             )
             ->create();
 
+        $data = [
+            [
+                'id' => 1,
+                'auth_role' => 'User',
+                'admin_access' => 0,
+                'champion_access' => 0,
+                'super_user' => 0,
+                'auth' => 1,
+            ],
+        ];
+
+        $table = $this->table('auth_roles');
+        $table->insert($data)
+            ->save();
+
         $this->table('users')
             ->renameColumn('reset', 'pw_reset')
             ->addColumn('auth_role_id', 'integer', [
@@ -52,16 +67,17 @@ class Authrole extends AbstractMigration
                 'length' => 10,
                 'null' => true,
             ])
+            ->removeColumn('authrole')
             ->addColumn('membership_number', 'integer', [
                 'default' => null,
                 'length' => 10,
                 'null' => true,
             ])
+            ->renameColumn('section', 'legacy_section')
             ->addIndex(
                 [
                     'auth_role_id',
-                ],
-                ['unique' => true]
+                ]
             )
             ->update();
 
@@ -94,6 +110,7 @@ class Authrole extends AbstractMigration
             );
 
         $this->table('users')
+            ->renameColumn('legacy_section', 'section')
             ->renameColumn('pw_reset', 'reset')
             ->removeColumn('auth_role_id')
             ->removeColumn('pw_state')

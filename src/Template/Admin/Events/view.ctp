@@ -1,49 +1,28 @@
+<?php echo $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css'); ?>
 <div class="row">
-    <div class="col-lg-9 col-md-8">
+    <div class="col-lg-11 col-md-10">
         <h1 class="page-header"><i class="fa fa-calendar-o fa-fw"></i> <?= h($event->name) ?></h1>
     </div>
     <div class="col-lg-1 col-md-2">
-        </br>
-        <div class="pull-right">
+        <div class="pull-right pull-down">
             <div class="btn-group">
-                <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-envelope-o fa-fw"></i>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Notifications',
-                        'action' => 'welcome',
-                        'prefix' => 'admin',
-                        $user->id],['_full']); ?>">Send Welcome Email</a>
-                    </li>
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Users',
-                        'action' => 'reset',
-                        'prefix' => 'admin'],['_full']); ?>">++ Trigger Password Reset</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        </br>
-    </div>
-    <div class="col-lg-2 col-md-2">
-        </br>
-        <div class="pull-right">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     Actions
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu pull-right" role="menu">
-                    <li><?= $this->Html->link(__('Full View - Inc Bookings'), ['action' => 'full_view', $event->id]) ?></li>
-                    <li><?= $this->Html->link(__('View Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
+                <ul class="dropdown-menu pull-right pull-down" role="menu">
+                    <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Accounts View'), ['action' => 'accounts', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Export Data'), ['controller' => 'Events','action' => 'export', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
+                    <li class="divider"></li>
+                    <li><?= $this->Html->link(__('Parse Invoices'), ['controller' => 'Invoices','action' => 'event_pdf', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Parse Applications'), ['controller' => 'Applications','action' => 'event_pdf', $event->id]) ?></li>
                 </ul>
             </div>
         </div>
-        </br>
     </div> 
 </div>
 
@@ -73,14 +52,106 @@
                             <th><?= __('Event End') ?></th>
                         </tr>
                         <tr>
-                            <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-yy HH:mm') ?></td>
-                            <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Deposit Deadline') ?></th>
+                            <th><?= __('Closing Date') ?></th>
+                        </tr>
+                        <tr>
+                            <td><?= $event->deposit ? $this->Time->i18nFormat($event->deposit_date, 'dd-MMM-yy HH:mm') : __('No Deposit Date'); ?></td>
+                            <td><?= $this->Time->i18nFormat($event->closing_date, 'dd-MMM-yy HH:mm') ?></td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
+        <?php if ($event->max) : ?>
+            <div class="row">
+                <?php if ($event->max_apps > 0 && !is_null($event->max_apps)) : ?>
+                    <?php if ($event->max_section == 0 || is_null($event->max_section)) : ?>
+                        <div class="col-lg-12">
+                    <?php endif; ?>
+                    <?php if ($event->max_section > 0 && !is_null($event->max_section)) : ?>
+                    <div class="col-lg-6">
+                <?php endif; ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="progress progress-striped active">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($event->cc_apps / $event->max_apps) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($event->cc_apps / $event->max_apps),1,['multiply' => true]); ?>">
+                                    <span class="sr-only"><?= $this->Number->toPercentage(($event->cc_apps / $event->max_apps),1,['multiply' => true]); ?> Complete</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-thermometer-half fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="large"><?= $this->Number->format($event->cc_apps) ?> <?= h($term) ?> of <?= $this->Number->format($event->max_apps) ?> Available</div>
+                                    <div class="huge"><?= $this->Number->toPercentage(($event->cc_apps / $event->max_apps),1,['multiply' => true]); ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php if ($event->max_section == 0 || is_null($event->max_section)) : ?>
+                    </div>
+                <?php endif; ?>
+                    <?php if ($event->max_section > 0 && !is_null($event->max_section)) : ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <?php if ($event->max_section > 0 && !is_null($event->max_section)) : ?>
+                    <?php if ($event->max_apps == 0 || is_null($event->max_apps)) : ?>
+                        <div class="col-lg-12">
+                    <?php endif; ?>
+                    <?php if ($event->max_apps > 0 && !is_null($event->max_apps)) : ?>
+                    <div class="col-lg-6">
+                <?php endif; ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="progress progress-striped active">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($event->cc_apps / $event->max_section) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($event->cc_apps / $event->max_section),1,['multiply' => true]); ?>">
+                                    <span class="sr-only"><?= $this->Number->toPercentage(($event->cc_apps / $event->max_section),1,['multiply' => true]); ?> Complete</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-thermometer-half fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div>Event Availability</div>
+                                    <div class="huge"><?= $this->Number->format($event->max_section - $event->cc_apps) ?> Attendee Slots Available</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php if ($event->max_apps == 0 || is_null($event->max_apps)) : ?>
+                    </div>
+                <?php endif; ?>
+                    <?php if ($event->max_apps > 0 && !is_null($event->max_apps)) : ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
+    <?php if (!empty($lineArray)) : ?>
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                District Breakdown
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div id="district-chart"></div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <?php endif; ?>
+    <?php if (empty($lineArray)) : ?>
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -109,19 +180,7 @@
             </div>
         </div>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-            <?= $this->Html->image($event->logo, ['alt' => $event->alt_text, 'height' => $logoHeight, 'width' => $logoWidth, 'class' => 'img-responsive']); ?>
-            </div>
-            <div class="panel-footer">
-                <p><?= h($event->intro_text) ?></p>
-            </div>
-        </div>
-    </div>
+    <?php endif; ?>
 </div>
 
 <div class="row">
@@ -218,5 +277,30 @@
         </div>
     </div>
 </div>
+
+<!-- Morris Charts JavaScript -->
+<?php echo $this->Html->script('https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js');?>
+<?php echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js');?>
+<?php echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js');?>
+
+<script>
+    new Morris.Bar({
+        // ID of the element in which to draw the chart.
+        element: 'district-chart',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: <?php echo $lineArray; ?>,
+        // The name of the data record attribute that contains x-values.
+        xkey: 'label',
+        // A list of names of data record attributes that contain y-values.
+        ykeys: ['value'],
+        // Labels for the ykeys -- will be displayed when you hover over the
+        // chart.
+        labels: ['District'],
+        hideHover: 'auto',
+        resize: true
+    });
+</script>
+
 
 

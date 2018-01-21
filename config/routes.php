@@ -90,6 +90,15 @@ Router::prefix('admin', function ($routes) {
     $routes->fallbacks('DashedRoute');
 });
 
+Router::prefix('super_user', function ($routes) {
+    // Because you are in the admin scope,
+    // you do not need to include the /admin prefix
+    // or the admin route element.
+    $routes->connect('/', ['controller' => 'Landing', 'action' => 'superUserHome', 'super_user_home']);
+
+    $routes->fallbacks('DashedRoute');
+});
+
 Router::prefix('champion', function ($routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
@@ -100,6 +109,15 @@ Router::prefix('champion', function ($routes) {
 });
 
 Router::prefix('register', function ($routes) {
+    // Because you are in the admin scope,
+    // you do not need to include the /admin prefix
+    // or the admin route element.
+    $routes->connect('/', ['controller' => 'Users', 'action' => 'register']);
+
+    $routes->fallbacks('DashedRoute');
+});
+
+Router::prefix('api', function ($routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.

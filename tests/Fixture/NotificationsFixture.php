@@ -19,7 +19,7 @@ class NotificationsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 10, 'autoIncrement' => true, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
         'user_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'notificationtype_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'notification_type_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'new' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'notification_header' => ['type' => 'string', 'length' => 45, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'text' => ['type' => 'string', 'length' => 999, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
@@ -30,15 +30,14 @@ class NotificationsFixture extends TestFixture
         'link_controller' => ['type' => 'string', 'length' => 45, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'link_prefix' => ['type' => 'string', 'length' => 45, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'link_action' => ['type' => 'string', 'length' => 45, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'notifications_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
-            'noti_user_idx' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
-            'notifications_notificationtype_id' => ['type' => 'index', 'columns' => ['notificationtype_id'], 'length' => []],
-            'noti_notitype_idx' => ['type' => 'index', 'columns' => ['notificationtype_id'], 'length' => []],
+            'notifications_notificationtype_id' => ['type' => 'index', 'columns' => ['notification_type_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'notifications_notificationtype_id' => ['type' => 'foreign', 'columns' => ['notificationtype_id'], 'references' => ['notificationtypes', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
+            'notifications_notificationtype_id' => ['type' => 'foreign', 'columns' => ['notification_type_id'], 'references' => ['notification_types', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
             'notifications_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
         ],
     ];
@@ -53,17 +52,18 @@ class NotificationsFixture extends TestFixture
         [
             'id' => 1,
             'user_id' => 1,
-            'notificationtype_id' => 1,
+            'notification_type_id' => 1,
             'new' => 1,
             'notification_header' => 'Lorem ipsum dolor sit amet',
             'text' => 'Lorem ipsum dolor sit amet',
-            'created' => 1481496429,
-            'read_date' => 1481496429,
+            'created' => 1487718627,
+            'read_date' => 1487718627,
             'notification_source' => 'Lorem ipsum dolor sit amet',
             'link_id' => 1,
-            'link_controller' => 'Lorem ipsum dolor sit amet',
-            'link_prefix' => 'Lorem ipsum dolor sit amet',
-            'link_action' => 'Lorem ipsum dolor sit amet'
+            'link_controller' => 'Users',
+            'link_prefix' => 'super_user',
+            'link_action' => 'view',
+            'deleted' => null
         ],
     ];
 }

@@ -25,11 +25,6 @@ class Initial extends AbstractMigration
                 'limit' => 11,
                 'null' => false,
             ])
-            ->addColumn('scoutgroup_id', 'integer', [
-                'default' => null,
-                'limit' => 11,
-                'null' => false,
-            ])
             ->addColumn('section', 'string', [
                 'default' => 'Cubs',
                 'limit' => 10,
@@ -122,11 +117,6 @@ class Initial extends AbstractMigration
             )
             ->addIndex(
                 [
-                    'scoutgroup_id',
-                ]
-            )
-            ->addIndex(
-                [
                     'user_id',
                 ]
             )
@@ -169,11 +159,6 @@ class Initial extends AbstractMigration
                 'limit' => 11,
                 'null' => false,
             ])
-            ->addColumn('scoutgroup_id', 'integer', [
-                'default' => null,
-                'limit' => 11,
-                'null' => false,
-            ])
             ->addColumn('role_id', 'integer', [
                 'default' => null,
                 'limit' => 11,
@@ -192,7 +177,7 @@ class Initial extends AbstractMigration
             ->addColumn('dateofbirth', 'date', [
                 'default' => null,
                 'limit' => null,
-                'null' => false,
+                'null' => true,
             ])
             ->addColumn('phone', 'string', [
                 'default' => null,
@@ -262,11 +247,6 @@ class Initial extends AbstractMigration
             ->addIndex(
                 [
                     'role_id',
-                ]
-            )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
                 ]
             )
             ->addIndex(
@@ -681,17 +661,17 @@ class Initial extends AbstractMigration
                 'limit' => 11,
                 'null' => false,
             ])
-            ->addColumn('Value', 'float', [
+            ->addColumn('value', 'float', [
                 'default' => null,
                 'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('Description', 'string', [
+            ->addColumn('description', 'string', [
                 'default' => null,
                 'limit' => 255,
                 'null' => true,
             ])
-            ->addColumn('Quantity', 'integer', [
+            ->addColumn('quantity', 'integer', [
                 'default' => null,
                 'limit' => 11,
                 'null' => true,
@@ -779,7 +759,7 @@ class Initial extends AbstractMigration
                 'limit' => 11,
                 'null' => false,
             ])
-            ->addColumn('xValue', 'float', [
+            ->addColumn('x_value', 'float', [
                 'default' => null,
                 'limit' => null,
                 'null' => false,
@@ -1249,11 +1229,6 @@ class Initial extends AbstractMigration
                 'limit' => 11,
                 'null' => false,
             ])
-            ->addColumn('scoutgroup_id', 'integer', [
-                'default' => null,
-                'limit' => 11,
-                'null' => false,
-            ])
             ->addColumn('authrole', 'string', [
                 'default' => null,
                 'limit' => 20,
@@ -1388,26 +1363,12 @@ class Initial extends AbstractMigration
                     'role_id',
                 ]
             )
-            ->addIndex(
-                [
-                    'scoutgroup_id',
-                ]
-            )
             ->create();
 
         $this->table('applications')
             ->addForeignKey(
                 'event_id',
                 'events',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
                 'id',
                 [
                     'update' => 'CASCADE',
@@ -1450,15 +1411,6 @@ class Initial extends AbstractMigration
             ->addForeignKey(
                 'role_id',
                 'roles',
-                'id',
-                [
-                    'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
-                ]
-            )
-            ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
                 'id',
                 [
                     'update' => 'RESTRICT',
@@ -1783,15 +1735,6 @@ class Initial extends AbstractMigration
                     'delete' => 'RESTRICT'
                 ]
             )
-            ->addForeignKey(
-                'scoutgroup_id',
-                'scoutgroups',
-                'id',
-                [
-                    'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
-                ]
-            )
             ->update();
 
     }
@@ -1801,9 +1744,6 @@ class Initial extends AbstractMigration
         $this->table('applications')
             ->dropForeignKey(
                 'event_id'
-            )
-            ->dropForeignKey(
-                'scoutgroup_id'
             )
             ->dropForeignKey(
                 'user_id'
@@ -1820,9 +1760,6 @@ class Initial extends AbstractMigration
         $this->table('attendees')
             ->dropForeignKey(
                 'role_id'
-            )
-            ->dropForeignKey(
-                'scoutgroup_id'
             )
             ->dropForeignKey(
                 'user_id'
@@ -1945,9 +1882,6 @@ class Initial extends AbstractMigration
         $this->table('users')
             ->dropForeignKey(
                 'role_id'
-            )
-            ->dropForeignKey(
-                'scoutgroup_id'
             );
 
         $this->dropTable('Balances');

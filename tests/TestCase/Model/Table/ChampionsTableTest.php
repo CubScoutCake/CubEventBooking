@@ -22,35 +22,17 @@ class ChampionsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.champions',
         'app.districts',
+        'app.password_states',
         'app.scoutgroups',
-        'app.applications',
         'app.users',
         'app.roles',
-        'app.attendees',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notes',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.notifications',
-        'app.notificationtypes',
-        'app.events',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items'
+        'app.auth_roles',
+        'app.sections',
+        'app.section_types'
     ];
 
     /**
@@ -84,7 +66,23 @@ class ChampionsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Champions->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'district_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'email' => 'jacob@fish.com',
+                'user_id' => 1,
+                'deleted' => null
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -94,7 +92,71 @@ class ChampionsTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badData = [
+            'id' => 3,
+            'district_id' => null,
+            'firstname' => null,
+            'lastname' => null,
+            'email' => 'Jacob@Fish.com',
+            'user_id' => null,
+            'deleted' => null
+        ];
+
+        $badEmailData = [
+            'id' => 3,
+            'district_id' => null,
+            'firstname' => null,
+            'lastname' => null,
+            'email' => 'this is a goat',
+            'user_id' => null,
+            'deleted' => null
+        ];
+
+        $goodData = [
+            'id' => 3,
+            'district_id' => 1,
+            'firstname' => 'Lorem ipsum dolor sit amet',
+            'lastname' => 'Lorem ipsum dolor sit amet',
+            'email' => 'Jacob@GOAT.com',
+            'user_id' => 1,
+            'deleted' => null
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'district_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'email' => 'jacob@fish.com',
+                'user_id' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 3,
+                'district_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'email' => 'jacob@goat.com',
+                'user_id' => 1,
+                'deleted' => null
+            ],
+        ];
+
+        $badEntity = $this->Champions->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $badEmailEntity = $this->Champions->newEntity($badEmailData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Champions->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Champions->save($badEntity));
+        $this->assertFalse($this->Champions->save($badEmailEntity));
+        $this->Champions->save($goodEntity);
+
+        $query = $this->Champions->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -104,6 +166,83 @@ class ChampionsTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badEmailData = [
+            'id' => 3,
+            'district_id' => 1,
+            'firstname' => 'Lorem ipsum dolor sit amet',
+            'lastname' => 'Lorem ipsum dolor sit amet',
+            'email' => 'jacob@FISH.com',
+            'user_id' => 1,
+            'deleted' => null
+        ];
+
+        $badDistrictData = [
+            'id' => 3,
+            'district_id' => 12342,
+            'firstname' => 'Lorem ipsum dolor sit amet',
+            'lastname' => 'Lorem ipsum dolor sit amet',
+            'email' => 'jacob@goat.com',
+            'user_id' => 1,
+            'deleted' => null
+        ];
+
+        $badUserData = [
+            'id' => 3,
+            'district_id' => 1,
+            'firstname' => 'Lorem ipsum dolor sit amet',
+            'lastname' => 'Lorem ipsum dolor sit amet',
+            'email' => 'Jacob@Goat.com',
+            'user_id' => 2,
+            'deleted' => null
+        ];
+
+        $goodData = [
+            'id' => 3,
+            'district_id' => 1,
+            'firstname' => 'Lorem ipsum dolor sit amet',
+            'lastname' => 'Lorem ipsum dolor sit amet',
+            'email' => 'Jacob@goat.com',
+            'user_id' => 1,
+            'deleted' => null
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'district_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'email' => 'jacob@fish.com',
+                'user_id' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 3,
+                'district_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'email' => 'jacob@goat.com',
+                'user_id' => 1,
+                'deleted' => null
+            ],
+        ];
+
+        $badEmailEntity = $this->Champions->newEntity($badEmailData, ['accessibleFields' => ['id' => true]]);
+        $badUserEntity = $this->Champions->newEntity($badUserData, ['accessibleFields' => ['id' => true]]);
+        $badDistrictEntity = $this->Champions->newEntity($badDistrictData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Champions->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Champions->save($badEmailEntity));
+        $this->assertFalse($this->Champions->save($badUserEntity));
+        $this->assertFalse($this->Champions->save($badDistrictEntity));
+
+        $this->Champions->save($goodEntity);
+
+        $query = $this->Champions->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 }

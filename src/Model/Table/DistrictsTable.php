@@ -23,9 +23,9 @@ class DistrictsTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('districts');
-        $this->displayField('district');
-        $this->primaryKey('id');
+        $this->setTable('districts');
+        $this->setDisplayField('district');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
@@ -54,6 +54,10 @@ class DistrictsTable extends Table
         $validator
             ->requirePresence('district', 'create')
             ->notEmpty('district');
+
+        $validator
+            ->requirePresence('short_name', 'create')
+            ->notEmpty('short_name');
 
         $validator
             ->allowEmpty('county');

@@ -125,7 +125,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <p>Deposits for invoices should be made payable to <strong><?= h($invPayable) ?></strong> and sent to <strong><?= h($eventName) ?>, <?= h($invAddress) ?>, <?= h($invCity) ?>, <?= h($invPostcode) ?></strong> by <strong><?= $this->Time->i18nformat($invDeadline,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invPrefix) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
+                <p>Deposits for invoices should be made payable to <strong><?= h($invPayable) ?></strong> and sent to <strong><?= h($event->name) ?>, <?= h($event->admin_firstname) ?> <?= h($event->admin_lastname) ?>, <?= h($event->address) ?>, <?= h($event->city) ?>, <?= h($event->county) ?>, <?= h($event->postcode) ?></strong> by <strong><?= $this->Time->i18nformat($event->deposit_date,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invPrefix) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
             </div>
         </div>
     </div>
@@ -136,7 +136,7 @@
     <div class="col-lg-12">
         <div class="panel panel-yellow">
             <div class="panel-body">
-                <p>Deposits for invoices should be made payable to <strong><?= h($invPayable) ?></strong> and sent to <strong><?= h($eventName) ?>, <?= h($invAddress) ?>, <?= h($invCity) ?>, <?= h($invPostcode) ?></strong> by <strong><?= $this->Time->i18nformat($invDeadline,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invPrefix) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
+                <p>Deposits for invoices should be made payable to <strong><?= h($invPayable) ?></strong> and sent to <strong><?= h($event->name) ?>, <?= h($event->admin_firstname) ?> <?= h($event->admin_lastname) ?>, <?= h($event->address) ?>, <?= h($event->city) ?>, <?= h($event->county) ?>, <?= h($event->postcode) ?></strong> by <strong><?= $this->Time->i18nformat($event->deposit_date,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invPrefix) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
             </div>
         </div>
     </div>

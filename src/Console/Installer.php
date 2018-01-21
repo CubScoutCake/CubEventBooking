@@ -84,6 +84,13 @@ class Installer
             copy($defaultConfig, $appConfig);
             $io->write('Created `config/app.php` file');
         }
+
+        $appDBConfig = $dir . '/config/app_DB.php';
+        $defaultDBConfig = $dir . '/config/app_DB.default.php';
+        if (!file_exists($appDBConfig)) {
+            copy($defaultDBConfig, $appDBConfig);
+            $io->write('Created `config/app_DB.php` file');
+        }
     }
 
     /**
@@ -179,12 +186,14 @@ class Installer
 
         if ($count == 0) {
             $io->write('No Security.salt placeholder to replace.');
+
             return;
         }
 
         $result = file_put_contents($config, $content);
         if ($result) {
             $io->write('Updated Security.salt value in config/app.php');
+
             return;
         }
         $io->write('Unable to update Security.salt value.');

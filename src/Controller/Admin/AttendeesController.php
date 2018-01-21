@@ -20,17 +20,17 @@ class AttendeesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
             , 'order' => ['modified' => 'DESC']
         ];
-        $this->set('attendees', $this->paginate($this->Attendees->find('countIncluded')));
+        $this->set('attendees', $this->paginate($this->Attendees->find('all')));
         $this->set('_serialize', ['attendees']);
     }
 
     public function unattached()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
             , 'order' => ['modified' => 'DESC']
         ];
         $this->set('attendees', $this->paginate($this->Attendees->find('unattached')));
@@ -46,7 +46,7 @@ class AttendeesController extends AppController
     public function view($id = null)
     {
         $attendee = $this->Attendees->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);
@@ -64,6 +64,7 @@ class AttendeesController extends AppController
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
@@ -87,7 +88,6 @@ class AttendeesController extends AppController
             $user = $usrs->get($userId);
             $grpId = $user->scoutgroup_id;
 
-
             $users = $this->Attendees->Users->find('list', ['limit' => 200, 'conditions' => ['id' => $userId]]);
             $applications = $this->Attendees->Applications->find('list', [
                 'limit' => 200,
@@ -108,6 +108,22 @@ class AttendeesController extends AppController
     }
 
     /**
+     * Call model removeDuplicate Function
+     *
+     * @param null $attendeeId The Attendee to be De-duplicated.
+     *
+     * @return \Cake\Network\Response|null
+     */
+    public function deduplicate($attendeeId = null)
+    {
+        $count = $this->Attendees->removeDuplicate($attendeeId);
+
+        $this->Flash->success($count . ' Duplicate Attendees Merged.');
+
+        return $this->redirect($this->referer(['controller' => 'Attendees', 'action' => 'view', $attendeeId]));
+    }
+
+    /**
      * Edit method
      *
      * @param string|null $id Attendee id.
@@ -123,6 +139,7 @@ class AttendeesController extends AppController
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
@@ -131,18 +148,18 @@ class AttendeesController extends AppController
         $users = $this->Attendees->Users->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $attendee->user_id]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Attendees->Scoutgroups->find(
+        $sections = $this->Attendees->Sections->find(
             'list',
             [
                     'keyField' => 'id',
-                    'valueField' => 'scoutgroup',
-                    'groupField' => 'district.district'
+                    'valueField' => 'section',
+                    'groupField' => 'scoutgroup.district.district'
             ]
         )
-                ->contain(['Districts']);
+                ->contain(['Scoutgroups.Districts']);
         $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
 
-        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'scoutgroups', 'roles'));
+        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'sections', 'roles'));
         $this->set('_serialize', ['attendee']);
     }
 
@@ -184,9 +201,11 @@ class AttendeesController extends AppController
 
         if ($this->Attendees->save($attendee)) {
             $this->Flash->success(__('The attendee has been updated.'));
+
             return $this->redirect(['action' => 'view', $attendee->id]);
         } else {
             $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
+
             return $this->redirect(['action' => 'view', $attendee->id]);
         }
     }
@@ -207,6 +226,7 @@ class AttendeesController extends AppController
         } else {
             $this->Flash->error(__('The attendee could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

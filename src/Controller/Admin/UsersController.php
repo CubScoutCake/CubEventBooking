@@ -2,8 +2,10 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
-use Cake\Mailer\MailerAwareTrait;
+use Cake\Cache\Cache;
+use Cake\Http\ServerRequest;
 use Cake\I18n\Time;
+use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
 
@@ -19,18 +21,58 @@ class UsersController extends AppController
     use MailerAwareTrait;
 
     /**
+     * Setup the User Search Config
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Search.Prg', [
+            // This is default config. You can modify "actions" as needed to make
+            // the PRG component work only for specified methods.
+            'actions' => ['index', 'lookup']
+        ]);
+    }
+
+    /**
      * Index method
      *
      * @return void
      */
     public function index()
     {
+        $this->Sections = TableRegistry::get('Sections');
+        $section = $this->Sections->get($this->Auth->user('section_id'));
+
+        $query = $this->Users
+            ->find('search', ['search' => $this->request->getQueryParams()])
+            ->contain(['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes', 'AuthRoles'])
+            ->where(['SectionTypes.id' => $section['section_type_id']]);
+
+        $this->set('users', $this->paginate($query));
+
         $this->paginate = [
-            'contain' => ['Roles', 'Scoutgroups']
-            , 'order' => ['modified' => 'DESC']
+            'contain' => ['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes'],
+            'order' => ['last_login' => 'DESC'],
+            'conditions' => ['SectionTypes.id' => $section['section_type_id']]
         ];
-        $this->set('users', $this->paginate($this->Users));
+        //$this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
+
+        $sections = $this->Users->Sections->find(
+            'list',
+            [
+                    'keyField' => 'id',
+                    'valueField' => 'section',
+                    'groupField' => 'scoutgroup.district.district'
+            ]
+        )
+            ->where(['section_type_id' => $section['section_type_id']])
+            ->contain(['Scoutgroups.Districts']);
+        $roles = $this->Users->Roles->find('leaders')->find('list');
+        $authRoles = $this->Users->AuthRoles->find('list');
+        $this->set(compact('sections', 'roles', 'authRoles'));
     }
 
     /**
@@ -42,18 +84,15 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
-        if ($id == $this->Auth->user('id')) {
-            return $this->redirect(['controller' => 'Users', 'action' => 'view', 'prefix' => false, $id]);
-        }
-        
         $user = $this->Users->get($id, [
-            'contain' => ['Roles'
-                , 'Scoutgroups'
-                , 'Applications' => ['Scoutgroups', 'Events']
-                , 'Attendees' => ['Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']]
-                , 'Invoices.Applications.Events'
-                , 'Notes' => ['Invoices' , 'Applications']
-                , 'Notifications' => ['Notificationtypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']]
+            'contain' => ['Roles',
+                'Sections.Scoutgroups',
+                'Applications' => ['Sections.Scoutgroups', 'Events'],
+                'Attendees' => ['Sections.Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']],
+                'Invoices.Applications.Events',
+                'AuthRoles',
+                'Notes' => ['Invoices', 'Applications'],
+                'Notifications' => ['NotificationTypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']],
             ]
         ]);
 
@@ -68,52 +107,67 @@ class UsersController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Network\Response Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $user = $this->Users->newEntity();
-        
+
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->data);
+            $user = $this->Users->patchEntity($user, $this->request->data, [
+                'fieldList' => [
+                    'id',
+                    'role_id',
+                    'section_id',
+                    'auth_role_id',
+                    'firstname',
+                    'lastname',
+                    'username',
+                    'membership_number',
+                    'email',
+                    'password',
+                    'phone',
+                    'address_1',
+                    'address_2',
+                    'city',
+                    'county',
+                    'postcode'
+                ]
+            ]);
 
-            $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-                , 'lastname' => ucwords(strtolower($user->lastname))
-                , 'address_1' => ucwords(strtolower($user->address_1))
-                , 'address_2' => ucwords(strtolower($user->address_2))
-                , 'city' => ucwords(strtolower($user->city))
-                , 'county' => ucwords(strtolower($user->county))
-                , 'postcode' => strtoupper($user->postcode)
-                , 'section' => ucwords(strtolower($user->section))];
-
-            $user = $this->Users->patchEntity($user, $upperUser);
-            
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(['action' => 'index']);
+
+                return $this->redirect(['action' => 'view', $user->get('id')]);
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
         }
-        $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find(
+        $roles = $this->Users->Roles->find('leaders')->find('list', ['limit' => 200]);
+        $auth_roles = $this->Users->AuthRoles->find('list')->where(['super_user' => false]);
+        $sections = $this->Users->Sections->find(
             'list',
             [
-                'keyField' => 'id',
-                'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
-            ]
+                    'keyField' => 'id',
+                    'valueField' => 'section',
+                    'groupField' => 'scoutgroup.district.district'
+                ]
         )
-            ->contain(['Districts']);
-        $this->set(compact('user', 'roles', 'scoutgroups'));
+            ->contain(['Scoutgroups.Districts']);
+        $this->set(compact('user', 'roles', 'sections', 'auth_roles'));
         $this->set('_serialize', ['user']);
     }
 
     // use MailerAwareTrait;
 
+    /**
+     * Create & Sync the User Attendee and the User
+     *
+     * @param int $userId The ID of the User
+     * @return \Cake\Http\Response|null
+     */
     public function sync($userId)
     {
-
         $user = $this->Users->get($userId);
 
         $atts = TableRegistry::get('Attendees');
@@ -145,7 +199,7 @@ class UsersController extends AppController
             'user_attendee' => true,
             'postcode' => $user->postcode,
             'role_id' => $user->role_id,
-            'scoutgroup_id' => $user->scoutgroup_id,
+            'section_id' => $user->section_id,
             'phone' => $user->phone
         ];
 
@@ -156,12 +210,17 @@ class UsersController extends AppController
         } else {
             $this->Flash->error(__('An Attendee for the User could not be Syncronised. Please, try again.'));
         }
+
         return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $user->id]);
     }
 
+    /**
+     * loop through all Users
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function syncAll()
     {
-
         $usrs = $this->Users->find('all');
 
         $success = 0;
@@ -199,7 +258,7 @@ class UsersController extends AppController
                 'user_attendee' => true,
                 'postcode' => $user->postcode,
                 'role_id' => $user->role_id,
-                'scoutgroup_id' => $user->scoutgroup_id,
+                'section_id' => $user->section_id,
                 'phone' => $user->phone
             ];
 
@@ -213,80 +272,90 @@ class UsersController extends AppController
         }
         $this->Flash->error('There were ' . $error . ' Syncronisation Errors.');
         $this->Flash->success($success . ' Users were Syncronised.');
+
         return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'index']);
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id User id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @param int $userId The ID of the User to be Edited.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($userId = null)
     {
-        $user = $this->Users->get($id, [
+        $user = $this->Users->get($userId, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->data);
 
-            $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-                , 'lastname' => ucwords(strtolower($user->lastname))
-                , 'address_1' => ucwords(strtolower($user->address_1))
-                , 'address_2' => ucwords(strtolower($user->address_2))
-                , 'city' => ucwords(strtolower($user->city))
-                , 'county' => ucwords(strtolower($user->county))
-                , 'postcode' => strtoupper($user->postcode)
-                , 'section' => ucwords(strtolower($user->section))];
-
-            $user = $this->Users->patchEntity($user, $upperUser);
-
             if ($this->Users->save($user)) {
+                if ($this->Auth->user('id') == $user->id) {
+                    $this->Auth->setUser($user->toArray());
+                    $this->Flash->success(__('Your login session has been refreshed.'));
+                    Cache::clear(true);
+                }
+
                 $this->Flash->success(__('The user has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
         }
         $roles = $this->Users->Roles->find('list', ['limit' => 200]);
-        $scoutgroups = $this->Users->Scoutgroups->find(
+        $auth_roles = $this->Users->AuthRoles->find('list');
+        $sections = $this->Users->Sections->find(
             'list',
             [
                 'keyField' => 'id',
-                'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
+                'valueField' => 'section',
+                'groupField' => 'scoutgroup.scoutgroup'
             ]
         )
-            ->contain(['Districts']);
-        $this->set(compact('user', 'roles', 'scoutgroups'));
+            ->contain(['Scoutgroups']);
+        $this->set(compact('user', 'roles', 'sections', 'auth_roles'));
         $this->set('_serialize', ['user']);
     }
 
-    public function update($id = null)
+    /**
+     * @param int $UserId the ID of the User
+     * @return \Cake\Http\Response|null
+     */
+    public function update($UserId = null)
     {
         $user = $this->Users->get($id);
 
-        $upperUser = ['firstname' => ucwords(strtolower($user->firstname))
-            , 'lastname' => ucwords(strtolower($user->lastname))
-            , 'address_1' => ucwords(strtolower($user->address_1))
-            , 'address_2' => ucwords(strtolower($user->address_2))
-            , 'city' => ucwords(strtolower($user->city))
-            , 'county' => ucwords(strtolower($user->county))
-            , 'postcode' => strtoupper($user->postcode)
-            , 'section' => ucwords(strtolower($user->section))];
+        $upperUser = ['firstname' => ucwords(strtolower($user->firstname)),
+            'lastname' => ucwords(strtolower($user->lastname)),
+            'address_1' => ucwords(strtolower($user->address_1)),
+            'address_2' => ucwords(strtolower($user->address_2)),
+            'city' => ucwords(strtolower($user->city)),
+            'county' => ucwords(strtolower($user->county)),
+            'postcode' => strtoupper($user->postcode),
+            'section' => ucwords(strtolower($user->section))];
 
         $user = $this->Users->patchEntity($user, $upperUser);
 
         if ($this->Users->save($user)) {
             $this->Flash->success(__('The user has been updated.'));
+
             return $this->redirect(['action' => 'view', $user->id]);
         } else {
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
+
             return $this->redirect(['action' => 'view', $user->id]);
         }
     }
 
+    /**
+     * Reset a User's Password
+     *
+     * @param int $userId The ID of the User
+     * @return \Cake\Http\Response|null
+     */
     public function reset($userId)
     {
         $sets = TableRegistry::get('Settings');
@@ -322,22 +391,28 @@ class UsersController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id User id.
-     * @return void Redirects to index.
+     * @param string|null $userId User id.
+     * @return \Cake\Http\Response Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($userId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
+        $user = $this->Users->get($userId);
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 
+    /**
+     * Login for Admin
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function login()
     {
         return $this->redirect([
@@ -347,12 +422,24 @@ class UsersController extends AppController
         ]);
     }
 
+    /**
+     * Log the User Out
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function logout()
     {
         $this->Flash->success('You are now logged out.');
+
         return $this->redirect($this->Auth->logout());
     }
 
+    /**
+     * Authorisation Determination
+     *
+     * @param \Cake\Event\Event $event The Event Trigger
+     * @return void
+     */
     public function beforeFilter(\Cake\Event\Event $event)
     {
         $this->Auth->allow(['register']);

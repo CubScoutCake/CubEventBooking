@@ -297,7 +297,7 @@
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
                                                             <li><?= $this->Html->link(__('View Notification'), ['prefix' => false,'controller' => 'Notifications','action' => 'view', $notification->id]) ?></li>
-                                                            <li><?= $this->Html->link(__('View Subject'), ['prefix' => $notification->link_prefix,'controller' => $notification->link_controller,'action' => $notification->link_action, $notification->link_id]) ?></li>
+                                                            <li><?= $this->Html->link(__('View Subject'), ['controller' => $notification->link_controller,'action' => $notification->link_action, $notification->link_id]) ?></li>
                                                         </ul>
                                                     </div>
                                                 </td>

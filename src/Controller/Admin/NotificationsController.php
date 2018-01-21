@@ -2,11 +2,11 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
-use Cake\Mailer\Email;
 use Cake\I18n\Time;
-use Cake\ORM\TableRegistry;
+use Cake\Mailer\Email;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\Network\Http\Client;
+use Cake\ORM\TableRegistry;
 
 /**
  * Notifications Controller
@@ -33,6 +33,11 @@ class NotificationsController extends AppController
         $this->set('_serialize', ['notifications']);
     }
 
+    /**
+     * Display the index with Unread Notifications
+     *
+     * @return void
+     */
     public function unread()
     {
         $this->paginate = [
@@ -63,7 +68,7 @@ class NotificationsController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -72,6 +77,7 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $this->request->data);
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
@@ -83,6 +89,12 @@ class NotificationsController extends AppController
         $this->set('_serialize', ['notification']);
     }
 
+    /**
+     * Welcome Email Send - On Registration
+     *
+     * @param int $userId The ID of the User Registered
+     * @return \Cake\Http\Response|void
+     */
     public function welcome($userId = null)
     {
         if (isset($userId)) {
@@ -92,16 +104,16 @@ class NotificationsController extends AppController
             $user = $users->get($userId, ['contain' => ['Scoutgroups']]);
             $group = $groups->get($user->scoutgroup_id);
 
-            $welcomeData = [     'link_id' => $userId
-                                , 'link_controller' => 'Users'
-                                , 'link_action' => 'view'
-                                , 'link_prefix' => false
-                                , 'notificationtype_id' => 1
-                                , 'user_id' => $userId
-                                , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
-                                , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
-                                , 'notification_source' => 'Admin Triggered'
-                                , 'new' => 1];
+            $welcomeData = [ 'link_id' => $userId,
+                            'link_controller' => 'Users',
+                            'link_action' => 'view',
+                            'link_prefix' => false,
+                            'notificationtype_id' => 1,
+                            'user_id' => $userId,
+                            'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.',
+                            'notification_header' => 'Welcome to the Herts Cubs Booking System',
+                            'notification_source' => 'Admin Triggered',
+                            'new' => 1];
 
             $notification = $this->Notifications->newEntity();
 
@@ -139,21 +151,27 @@ class NotificationsController extends AppController
                     ['type' => 'json']
                 );
 
-                return $this->redirect(['prefix' => 'admin', 'controller' => 'Users',  'action' => 'view', $userId]);
+                return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $userId]);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
-            return $this->redirect(['prefix' => 'admin',  'controller' => 'Landing', 'action' => 'admin_home']);
+
+            return $this->redirect(['prefix' => 'admin', 'controller' => 'Landing', 'action' => 'admin_home']);
         }
     }
 
+    /**
+     * Notification of a New Payment Record
+     *
+     * @param int $payId The Payment ID to be Notified
+     * @return \Cake\Http\Response|void
+     */
     public function newPayment($payId = null)
     {
         if (isset($payId)) {
             $users = TableRegistry::get('Users');
-            $groups = TableRegistry::get('Scoutgroups');
             $invoices = TableRegistry::get('Invoices');
             $payments = TableRegistry::get('Payments');
 
@@ -172,18 +190,18 @@ class NotificationsController extends AppController
 
             $invoice = $invoices->get($invoiceId);
 
-            $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
-            $group = $groups->get($user->scoutgroup_id);
+            $user = $users->get($invoice->user_id, ['contain' => ['Sections.Scoutgroups']]);
+            $group = $user->section->scoutgroup;
 
-            $paymentData = [     'link_id' => $invoice->id
-                                , 'link_controller' => 'Invoices'
-                                , 'link_action' => 'view'
-                                , 'notificationtype_id' => 2
-                                , 'user_id' => $invoice->user_id
-                                , 'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.'
-                                , 'notification_header' => 'A payment has been recorded.'
-                                , 'notification_source' => 'System Generated'
-                                , 'new' => 1];
+            $paymentData = [ 'link_id' => $invoice->id,
+                            'link_controller' => 'Invoices',
+                            'link_action' => 'view',
+                            'notificationtype_id' => 2,
+                            'user_id' => $invoice->user_id,
+                            'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.',
+                            'notification_header' => 'A payment has been recorded.',
+                            'notification_source' => 'System Generated',
+                            'new' => 1];
 
             $notification = $this->Notifications->newEntity();
 
@@ -231,11 +249,14 @@ class NotificationsController extends AppController
         // }
     }
 
+    /**
+     * @param int $payId Payment ID to be notified
+     * @return \Cake\Http\Response|void
+     */
     public function notifyPayment($payId = null)
     {
         if (isset($payId)) {
             $users = TableRegistry::get('Users');
-            $groups = TableRegistry::get('Scoutgroups');
             $invoices = TableRegistry::get('Invoices');
             $payments = TableRegistry::get('Payments');
 
@@ -254,18 +275,18 @@ class NotificationsController extends AppController
 
             $invoice = $invoices->get($invoiceId);
 
-            $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
-            $group = $groups->get($user->scoutgroup_id);
+            $user = $users->get($invoice->user_id, ['contain' => ['Sections.Scoutgroups']]);
+            $group = $user->section->scoutgroup;
 
-            $paymentData = [     'link_id' => $invoice->id
-                                , 'link_controller' => 'Invoices'
-                                , 'link_action' => 'view'
-                                , 'notificationtype_id' => 2
-                                , 'user_id' => $invoice->user_id
-                                , 'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.'
-                                , 'notification_header' => 'A payment has been recorded.'
-                                , 'notification_source' => 'Admin Triggered'
-                                , 'new' => 1];
+            $paymentData = [ 'link_id' => $invoice->id,
+                            'link_controller' => 'Invoices',
+                            'link_action' => 'view',
+                            'notification_type_id' => 2,
+                            'user_id' => $invoice->user_id,
+                            'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.',
+                            'notification_header' => 'A payment has been recorded.',
+                            'notification_source' => 'Admin Triggered',
+                            'new' => 1];
 
             $notification = $this->Notifications->newEntity();
 
@@ -313,6 +334,10 @@ class NotificationsController extends AppController
         // }
     }
 
+    /**
+     * @param int $invoiceId ID of the Invoice
+     * @return \Cake\Http\Response|void
+     */
     public function outstanding($invoiceId = null)
     {
         if (isset($invoiceId)) {
@@ -327,15 +352,15 @@ class NotificationsController extends AppController
             $group = $groups->get($user->scoutgroup_id);
             $app = $applications->get($invoice->application_id);
 
-            $invoiceData = [     'link_id' => $invoice->id
-                                , 'link_controller' => 'Invoices'
-                                , 'link_action' => 'view'
-                                , 'notificationtype_id' => 8
-                                , 'user_id' => $invoice->user_id
-                                , 'text' => 'There is a balance outstanding on this Invoice.'
-                                , 'notification_header' => 'Balance Outstanding'
-                                , 'notification_source' => 'Admin Triggered'
-                                , 'new' => 1];
+            $invoiceData = [ 'link_id' => $invoice->id,
+                            'link_controller' => 'Invoices',
+                            'link_action' => 'view',
+                            'notificationtype_id' => 8,
+                            'user_id' => $invoice->user_id,
+                            'text' => 'There is a balance outstanding on this Invoice.',
+                            'notification_header' => 'Balance Outstanding',
+                            'notification_source' => 'Admin Triggered',
+                            'new' => 1];
 
             $notification = $this->Notifications->newEntity();
 
@@ -396,10 +421,16 @@ class NotificationsController extends AppController
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+
             return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']);
         }
     }
 
+    /**
+     * @param int $invoiceId The Id of the Invoice
+     * @param float $percentage The Surcharge Percentage Applied
+     * @return \Cake\Http\Response|void
+     */
     public function surcharge($invoiceId = null, $percentage = null)
     {
         if (isset($invoiceId) && isset($percentage)) {
@@ -416,15 +447,15 @@ class NotificationsController extends AppController
 
             $feePercentage = $percentage / 100;
 
-            $invoiceData = [     'link_id' => $invoice->id
-                                , 'link_controller' => 'Invoices'
-                                , 'link_action' => 'view'
-                                , 'notificationtype_id' => 9
-                                , 'user_id' => $invoice->user_id
-                                , 'text' => 'A Balance Surcharge of ' . $percentage . '% of Balance was added.'
-                                , 'notification_header' => 'Late Payment Surcharge Added'
-                                , 'notification_source' => 'Admin Triggered'
-                                , 'new' => 1];
+            $invoiceData = [ 'link_id' => $invoice->id,
+                            'link_controller' => 'Invoices',
+                            'link_action' => 'view',
+                            'notification_type_id' => 9,
+                            'user_id' => $invoice->user_id,
+                            'text' => 'A Balance Surcharge of ' . $percentage . '% of Balance was added.',
+                            'notification_header' => 'Late Payment Surcharge Added',
+                            'notification_source' => 'Admin Triggered',
+                            'new' => 1];
 
             $notification = $this->Notifications->newEntity();
 
@@ -433,8 +464,7 @@ class NotificationsController extends AppController
             if ($this->Notifications->save($notification)) {
                 $notificationId = $notification->get('id');
 
-                $noteData = [
-                    'note_text' => 'A Balance Surcharge of '. $percentage . '% was added to the Invoice. With notification #' . $notificationId,
+                $noteData = [ 'note_text' => 'A Balance Surcharge of ' . $percentage . '% was added to the Invoice. With notification #' . $notificationId,
                     'visible' => true,
                     'user_id' => $user->id,
                     'invoice_id' => $invoice->id,
@@ -488,11 +518,16 @@ class NotificationsController extends AppController
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+
             return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']);
         }
     }
 
-    public function deposit_query($invoiceId = null)
+    /**
+     * @param int $invoiceId The ID of the Invoice
+     * @return \Cake\Http\Response|void
+     */
+    public function depositQuery($invoiceId = null)
     {
         if (isset($invoiceId)) {
             $invs = TableRegistry::get('Invoices');
@@ -504,15 +539,15 @@ class NotificationsController extends AppController
             $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
             $group = $groups->get($user->scoutgroup_id);
 
-            $invQueryData = [     'link_id' => $user->id
-                                , 'link_controller' => 'Users'
-                                , 'link_action' => 'view'
-                                , 'notificationtype_id' => 1
-                                , 'user_id' => $user->id
-                                , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
-                                , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
-                                , 'notification_source' => 'System Generated'
-                                , 'new' => 1];
+            $invQueryData = ['link_id' => $user->id,
+                            'link_controller' => 'Users',
+                            'link_action' => 'view',
+                            'notification_type_id' => 1,
+                            'user_id' => $user->id,
+                            'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.',
+                            'notification_header' => 'Welcome to the Herts Cubs Booking System',
+                            'notification_source' => 'System Generated',
+                            'new' => 1];
 
             $notification = $this->Notifications->newEntity();
 
@@ -533,6 +568,12 @@ class NotificationsController extends AppController
         // }
     }
 
+    /**
+     * Notification where there is no Invoice
+     *
+     * @param int $appId Application ID
+     * @return \Cake\Http\Response|void
+     */
     public function noInv($appId = null)
     {
         if (isset($appId)) {
@@ -542,16 +583,16 @@ class NotificationsController extends AppController
             $user = $users->get($userId, ['contain' => ['Scoutgroups']]);
             $group = $groups->get($user->scoutgroup_id);
 
-            $welcomeData = [     'link_id' => $userId
-                                , 'link_controller' => 'Users'
-                                , 'link_action' => 'view'
-                                , 'link_prefix' => false
-                                , 'notificationtype_id' => 1
-                                , 'user_id' => $userId
-                                , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
-                                , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
-                                , 'notification_source' => 'System Generated'
-                                , 'new' => 1];
+            $welcomeData = ['link_id' => $userId,
+                            'link_controller' => 'Users',
+                            'link_action' => 'view',
+                            'link_prefix' => false,
+                            'notificationtype_id' => 1,
+                            'user_id' => $userId,
+                            'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.',
+                            'notification_header' => 'Welcome to the Herts Cubs Booking System',
+                            'notification_source' => 'System Generated',
+                            'new' => 1];
 
             $notification = $this->Notifications->newEntity();
 
@@ -592,10 +633,15 @@ class NotificationsController extends AppController
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+
             return $this->redirect(['action' => 'index']);
         }
     }
 
+    /**
+     * @param int $appId The Id of the Application
+     * @return \Cake\Http\Response|void
+     */
     public function multipleInv($appId = null)
     {
         if (isset($appId)) {
@@ -605,16 +651,16 @@ class NotificationsController extends AppController
             $user = $users->get($userId, ['contain' => ['Scoutgroups']]);
             $group = $groups->get($user->scoutgroup_id);
 
-            $welcomeData = [     'link_id' => $userId
-                                , 'link_controller' => 'Users'
-                                , 'link_action' => 'view'
-                                , 'link_prefix' => false
-                                , 'notificationtype_id' => 1
-                                , 'user_id' => $userId
-                                , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
-                                , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
-                                , 'notification_source' => 'System Generated'
-                                , 'new' => 1];
+            $welcomeData = ['link_id' => $userId,
+                            'link_controller' => 'Users',
+                            'link_action' => 'view',
+                            'link_prefix' => false,
+                            'notification_type_id' => 1,
+                            'user_id' => $userId,
+                            'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.',
+                            'notification_header' => 'Welcome to the Herts Cubs Booking System',
+                            'notification_source' => 'System Generated',
+                            'new' => 1];
 
             $notification = $this->Notifications->newEntity();
 
@@ -655,10 +701,16 @@ class NotificationsController extends AppController
             }
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+
             return $this->redirect(['action' => 'index']);
         }
     }
 
+    /**
+     * Create an Event Logistic
+     *
+     * @return \Cake\Http\Response|void
+     */
     public function newLogistic()
     {
         $notification = $this->Notifications->newEntity();
@@ -666,6 +718,7 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $this->request->data);
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
@@ -677,6 +730,11 @@ class NotificationsController extends AppController
         $this->set('_serialize', ['notification']);
     }
 
+    /**
+     * Create a Reset
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function newReset()
     {
         $notification = $this->Notifications->newEntity();
@@ -684,6 +742,7 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $this->request->data);
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
@@ -695,6 +754,12 @@ class NotificationsController extends AppController
         $this->set('_serialize', ['notification']);
     }
 
+    /**
+     * Notify Invoice
+     *
+     * @param int $invoiceId The ID of the Invoice to be Notified
+     * @return \Cake\Http\Response|void
+     */
     public function invoice($invoiceId = null)
     {
         if (isset($invoiceId)) {
@@ -708,15 +773,15 @@ class NotificationsController extends AppController
             $user = $users->get($invoice->user_id, ['contain' => ['Scoutgroups']]);
             $group = $groups->get($user->scoutgroup_id);
 
-            $invoiceData = [     'link_id' => $invoice->id
-                                , 'link_controller' => 'Invoices'
-                                , 'link_action' => 'view'
-                                , 'notificationtype_id' => 6
-                                , 'user_id' => $invoice->user_id
-                                , 'text' => 'Please see the attached invoice'
-                                , 'notification_header' => 'Invoice attached'
-                                , 'notification_source' => 'Admin Triggered'
-                                , 'new' => 1];
+            $invoiceData = ['link_id' => $invoice->id,
+                            'link_controller' => 'Invoices',
+                            'link_action' => 'view',
+                            'notificationtype_id' => 6,
+                            'user_id' => $invoice->user_id,
+                            'text' => 'Please see the attached invoice',
+                            'notification_header' => 'Invoice attached',
+                            'notification_source' => 'Admin Triggered',
+                            'new' => 1];
 
             $notification = $invoiceData;
 
@@ -752,6 +817,7 @@ class NotificationsController extends AppController
             $this->Flash->success(__('Invoice Delivered.'));
         } else {
             $this->Flash->error(__('Parameters were not set!'));
+
             return $this->redirect(['controller' => 'Landing', 'action' => 'admin_home']);
         }
     }
@@ -759,19 +825,20 @@ class NotificationsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Notification id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @param int $notificationId Notification id.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($notificationId = null)
     {
-        $notification = $this->Notifications->get($id, [
+        $notification = $this->Notifications->get($notificationId, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $notification = $this->Notifications->patchEntity($notification, $this->request->data);
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
@@ -786,19 +853,20 @@ class NotificationsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Notification id.
-     * @return void Redirects to index.
+     * @param int $notificationId Notification id.
+     * @return \Cake\Http\Response Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($notificationId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $notification = $this->Notifications->get($id);
+        $notification = $this->Notifications->get($notificationId);
         if ($this->Notifications->delete($notification)) {
             $this->Flash->success(__('The notification has been deleted.'));
         } else {
             $this->Flash->error(__('The notification could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

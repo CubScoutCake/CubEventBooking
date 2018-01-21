@@ -52,13 +52,161 @@ class RolesTableTest extends TestCase
     }
 
     /**
+     * Test initialize method
+     *
+     * @return void
+     */
+    public function testInitialize()
+    {
+        $query = $this->Roles->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'role' => 'Leader',
+                'invested' => 1,
+                'minor' => 0,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 2,
+                'role' => 'Beaver',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 3,
+                'role' => 'Cub',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 4,
+                'role' => 'Scout',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 5,
+                'role' => 'Explorer',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
      * Test validationDefault method
      *
      * @return void
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $badData = [
+            'role' => null,
+            'invested' => 1,
+            'minor' => 0,
+            'automated' => 0,
+            'deleted' => null,
+            'short_role' => 'Lorem',
+        ];
+
+        $goodData = [
+            'role' => 'Lorem Goat dasfasolor sit amet',
+            'invested' => 1,
+            'minor' => 0,
+            'automated' => 0,
+            'deleted' => null,
+            'short_role' => 'Lorem',
+        ];
+
+        $expected = [
+            [
+                'id' => 1,
+                'role' => 'Leader',
+                'invested' => 1,
+                'minor' => 0,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 2,
+                'role' => 'Beaver',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 3,
+                'role' => 'Cub',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 4,
+                'role' => 'Scout',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 5,
+                'role' => 'Explorer',
+                'invested' => 1,
+                'minor' => 1,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ],
+            [
+                'id' => 6,
+                'role' => 'Lorem Goat dasfasolor sit amet',
+                'invested' => 1,
+                'minor' => 0,
+                'automated' => 0,
+                'deleted' => null,
+                'short_role' => 'Lorem',
+            ]
+        ];
+
+        $badEntity = $this->Roles->newEntity($badData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Roles->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+
+        $this->assertFalse($this->Roles->save($badEntity));
+        $this->Roles->save($goodEntity);
+
+        $query = $this->Roles->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+
+        $this->assertEquals($expected, $result);
     }
 
     /**

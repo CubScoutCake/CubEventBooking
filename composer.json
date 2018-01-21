@@ -5,37 +5,35 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^7.0",
+        "php": "@stable",
         "cakephp/cakephp": "@stable",
-        "mobiledetect/mobiledetectlib": "2.*",
-        "cakephp/migrations": "dev-master",
-        "cakephp/plugin-installer": "*",
-        "dompdf/dompdf": "*",
-        "friendsofcake/cakepdf": "3.*",
+        "mobiledetect/mobiledetectlib": "@stable",
+        "cakephp/migrations": "@stable",
+        "cakephp/plugin-installer": "@stable",
+        "dompdf/dompdf": "@stable",
+        "friendsofcake/cakepdf": "@stable",
         "tecnickcom/tcpdf" : "@stable",
-        "mpdf/mpdf" : "^6.1",
-        "friendsofcake/bootstrap-ui": "*",
-        "fheider/cakephp-datatables": "dev-master",
-        "friendsofcake/cakephp-csvview": "*",
+        "mpdf/mpdf" : "@stable",
+        "friendsofcake/bootstrap-ui": "@stable",
+        "friendsofcake/cakephp-csvview": "@stable",
         "muffin/trash": "dev-master",
-        "friendsofcake/CakePdf": "*",
-        "friendsofcake/search": "^1.2",
-        "dereuromark/cakephp-ajax": "dev-master",
-        "syntaxera/cakephp-sparkpost-plugin": "^0.4.5",
+        "friendsofcake/search": "@stable",
+        "syntaxera/cakephp-sparkpost-plugin": "dev-develop",
         "php-http/httplug": "@stable",
         "php-http/client-common": "@stable",
         "php-http/socket-client": "@stable",
-        "SparkPost/php-sparkpost": "*",
-        "SparkPost/SparkPost": "*",
-        "robmorgan/phinx": "*"
+        "robmorgan/phinx": "@stable",
+        "dereuromark/cakephp-databaselog": "@stable",
+        "josegonzalez/cakephp-upload": "^3.6",
+        "riesenia/cakephp-duplicatable": "^3.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",
-        "cakephp/debug_kit": "~3.0",
-        "cakephp/cakephp-codesniffer": "2.*",
-        "phpunit/phpunit": "^5.4",
-        "cakephp/bake": "^1.2",
-        "codeclimate/php-test-reporter": "dev-master"
+        "cakephp/debug_kit": "@stable",
+        "cakephp/cakephp-codesniffer": "@stable",
+        "phpunit/phpunit": "@stable",
+        "cakephp/bake": "@stable",
+        "codeclimate/php-test-reporter": "@stable"
     },
     "autoload": {
         "psr-4": {
@@ -50,7 +48,10 @@
     },
     "scripts": {
         "post-install-cmd": "App\\Console\\Installer::postInstall",
-        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump"
+        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
+        "cs-check": "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests ./src/Model ./src/View ./src/Network ./src/Shell ./src/Form ./src/Console ./src/Mailer ./src/Controller/Register ./src/Controller/Component ./src/Controller/Api",
+        "cs-fix": "vendor/bin/phpcbf -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests ./src/Model ./src/View ./src/Network ./src/Shell ./src/Form ./src/Console ./src/Mailer ./src/Controller/Register ./src/Controller/Component ./src/Controller/Api",
+        "test": "phpunit --colors=always"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

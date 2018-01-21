@@ -156,51 +156,30 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane fade in active" id="pric-pills">
-                        </br>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <tr>
-                                    <th><?= __('Attendee Type'); ?></th>
-                                    <th><?= __('Booking Permited'); ?></th>
-                                    <th><?= __('Max Number'); ?></th>
-                                    <th><?= __('Price'); ?></th>
-                                    <th><?= __('Invoice Text'); ?></th>
-                                </tr>
-                                <tr>
-                                    <td><?= __('Cubs'); ?></td>
-                                    <td><?= $event->cubs ? __('Yes') : __('No'); ?></td>
-                                    <td><?php if (isset($event->max_cubs) && $event->max_cubs > 0) {
-                                            $this->Number->format($event->max_cubs);
-                                        } else {
-                                            echo 'Not Limited';
-                                        } ?></td>
-                                    <td><?= $this->Number->currency($event->cubs_value,'GBP') ?></td>
-                                    <td><?= h($event->cubs_text) ?></td>
-                                </tr>
-                                <tr>
-                                    <td><?= __('Young Leaders'); ?></td>
-                                    <td><?= $event->yls ? __('Yes') : __('No'); ?></td>
-                                    <td><?php if (isset($event->max_yls) && $event->max_yls > 0) {
-                                            $this->Number->format($event->max_yls);
-                                        } else {
-                                            echo 'Not Limited';
-                                        } ?></td>
-                                    <td><?= $this->Number->currency($event->yls_value,'GBP') ?></td>
-                                    <td><?= h($event->yls_text) ?></td>
-                                </tr>
-                                <tr>
-                                    <td><?= __('Leaders'); ?></td>
-                                    <td><?= $event->leaders ? __('Yes') : __('No'); ?></td>
-                                    <td><?php if (isset($event->max_leaders) && $event->max_leaders > 0) {
-                                            $this->Number->format($event->max_leaders);
-                                        } else {
-                                            echo 'Not Limited';
-                                        } ?></td>
-                                    <td><?= $this->Number->currency($event->leaders_value,'GBP') ?></td>
-                                    <td><?= h($event->leaders_text) ?></td>
-                                </tr>
-                            </table>
-                        </div>
+                        <br/>
+                        <?php if (!empty($event->prices)): ?>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th><?= __('Attendee Type'); ?></th>
+                                        <th><?= __('Max Number'); ?></th>
+                                        <th><?= __('Price'); ?></th>
+                                        <th><?= __('Invoice Text'); ?></th>
+                                    </tr>
+                                    <?php foreach ($event->prices as $price): ?>
+                                        <tr>
+                                            <td><?= $price->has('item_type') ? h($price->item_type->item_type) : '' ?></td>
+                                            <td><?= $this->Number->currency($price->max_number,'GBP') ?></td>
+                                            <td><?= $this->Number->currency($price->value,'GBP') ?></td>
+                                            <td><?= $this->Number->currency($price->description,'GBP') ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </table>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (empty($event->prices)): ?>
+                            <h2><i class="fa fa-exclamation-triangle fa-3x"></i> There are no prices set.</h2>
+                        <?php endif; ?>
                         <hr>
                         <div class="table-responsive">
                             <table class="table">
@@ -247,9 +226,9 @@
                                         <th><?= __('Id') ?></th>
                                         <th class="actions"><?= __('Actions') ?></th>
                                         <th><?= __('User') ?></th>
-                                        <th><?= __('Scoutgroup') ?></th>
+                                        <th><?= __('District') ?></th>
+                                        <th><?= __('Scout Group') ?></th>
                                         <th><?= __('Section') ?></th>
-                                        <th><?= __('Permitholder') ?></th>
                                         <th><?= __('Created') ?></th>
                                         <th><?= __('Modified') ?></th>
                                     </tr>
@@ -270,10 +249,10 @@
                                                     </ul>
                                                 </div>
                                             </td>
-                                            <td><?= $applications->has('user') ? $this->Html->link($this->Text->truncate($applications->user->full_name,12), ['controller' => 'Users', 'action' => 'view','prefix' => 'admin', $applications->user->id]) : '' ?></td>
-                                            <td><?= $applications->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->scoutgroup->scoutgroup,12), ['controller' => 'Scoutgroup', 'action' => 'view','prefix' => 'admin', $applications->scoutgroup->id]) : '' ?></td>
-                                            <td><?= h($applications->section) ?></td>
-                                            <td><?= $this->Text->truncate($applications->permitholder,12) ?></td>
+                                            <td><?= $applications->has('user') ? $this->Html->link($this->Text->truncate($applications->user->full_name,24), ['controller' => 'Users', 'action' => 'view','prefix' => 'admin', $applications->user->id]) : '' ?></td>
+                                            <td><?= $applications->section->scoutgroup->has('district') ? $this->Html->link($applications->section->scoutgroup->district->short_name, ['controller' => 'Districts', 'action' => 'view','prefix' => 'admin', $applications->section->scoutgroup->district->id]) : '' ?></td>
+                                            <td><?= $applications->section->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->section->scoutgroup->scoutgroup,24), ['controller' => 'Scoutgroups', 'action' => 'view','prefix' => 'admin', $applications->section->scoutgroup->id]) : '' ?></td>
+                                            <td><?= $applications->has('section') ? $this->Html->link($applications->section->section, ['controller' => 'Sections', 'action' => 'view','prefix' => 'admin', $applications->section->id]) : '' ?></td>
                                             <td><?= h($applications->created) ?></td>
                                             <td><?= h($applications->modified) ?></td>
                                         </tr>

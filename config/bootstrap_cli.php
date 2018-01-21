@@ -23,7 +23,7 @@ use Cake\Core\Plugin;
 
 // Set logs to different files so they don't have permission conflicts.
 Configure::write('Log.debug.file', 'cli-debug');
-Configure::write('Log.error.file', 'cli-error');
+//Configure::write('Log.error.file', 'cli-error');
 
 try {
     Plugin::load('Bake');

@@ -64,8 +64,8 @@
                 <p><?= h($user->username) ?></p>
                 <h5 class="subheader"><?= __('Role') ?></h5>
                 <p><?= $user->has('role') ? $this->Html->link($user->role->role, ['prefix' => 'admin', 'controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></p>
-                <h5 class="subheader"><?= __('Scoutgroup') ?></h5>
-                <p><?= $user->has('scoutgroup') ? $this->Html->link($user->scoutgroup->scoutgroup, ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $user->scoutgroup->id]) : '' ?></p>                
+                <h5 class="subheader"><?= __('Section') ?></h5>
+                <p><?= $user->has('section') ? $this->Html->link($user->section->section, ['prefix' => 'admin', 'controller' => 'Sections', 'action' => 'view', $user->section->id]) : '' ?></p>
             </div>
             <div class="panel-footer">
                 <div class="row">
@@ -83,7 +83,7 @@
                         <h5 class="subheader"><?= __('Id') ?></h5>
                         <p><?= $this->Number->format($user->id) ?></p>
                         <h5 class="subheader"><?= __('Auth Role') ?></h5>
-                        <p><?= strtoupper($user->authrole); ?></p>
+                        <p><?= $user->has('auth_role') ? $this->Html->link($user->auth_role->auth_role, ['prefix' => 'admin', 'controller' => 'AuthRoles', 'action' => 'view', $user->auth_role->id]) : '' ?></p>
                         <h5 class="subheader"><?= __('Logins') ?></h5>
                         <p><?= $this->Number->format($user->logins) ?></p>
                         <h5 class="subheader"><?= __('OSM Synced') ?></h5>
@@ -142,7 +142,8 @@
                         <li><a href="#note-pills" data-toggle="tab"><i class="fa fa-pencil-square-o fa-fw"></i> User Notes</a></li>
                     <?php endif; ?>
                     <?php if (!empty($user->notifications)): ?>
-                        <li><a href="#notif-pills" data-toggle="tab"><i class="fa fa-bell fa-fw"></i> User's Notifications</a></li>
+                        <li <?php if (empty($user->applications) && empty($user->attendees)) { echo 'class="active"'; } ?>>
+                            <a href="#notif-pills" data-toggle="tab"><i class="fa fa-bell fa-fw"></i> User's Notifications</a></li>
                     <?php endif; ?>
                 </ul>
 
@@ -155,10 +156,10 @@
                                     <tr>
                                         <th><?= __('Id') ?></th>
                                         <th class="actions"><?= __('Actions') ?></th>
-                                        <th><?= __('Scoutgroup') ?></th>
+                                        <th><?= __('Scout Group') ?></th>
                                         <th><?= __('Event') ?></th>
                                         <th><?= __('Section') ?></th>
-                                        <th><?= __('Permitholder') ?></th>
+                                        <th><?= __('Permit Holder') ?></th>
                                         <th><?= __('Created') ?></th>
                                         <th><?= __('Modified') ?></th>
                                     </tr>
@@ -181,10 +182,10 @@
                                                     </ul>
                                                 </div>
                                             </td>
-                                            <td><?= $applications->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->scoutgroup->scoutgroup,18), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $applications->scoutgroup->id]) : '' ?></td>
+                                            <td><?= $applications->section->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->section->scoutgroup->scoutgroup,18), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $applications->section->scoutgroup->id]) : '' ?></td>
                                             <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['prefix' => 'admin', 'controller' => 'Events', 'action' => 'view', $applications->event->id]) : '' ?></td>
-                                            <td><?= h($applications->section) ?></td>
-                                            <td><?= h($applications->permitholder) ?></td>
+                                            <td><?= $applications->section->has('section') ? $this->Html->link($applications->section->section, ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $applications->section->id]) : '' ?></td>
+                                            <td><?= is_null($applications->permit_holder) ? $applications->team_leader : $applications->permit_holder ?></td>
                                             <td><?= h($applications->created) ?></td>
                                             <td><?= h($applications->modified) ?></td>
                                         </tr>
@@ -272,12 +273,12 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,12), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
+                                                <td><?= $attendees->has('section') ? $this->Html->link($this->Text->truncate($attendees->section->section,12), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $attendees->section->id]) : '' ?></td>
                                                 <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['prefix' => 'admin', 'controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
                                                 <td><?= h($attendees->firstname) ?></td>    
                                                 <td><?= h($attendees->lastname) ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->dateofbirth, 'dd-MMM-yy') ?></td>
-                                                <td><?= h($attendees->nightsawaypermit) ?></td>
+                                                <td><?= $attendees->nightsawaypermit ? 'Yes' : 'No' ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->created, 'dd-MMM-yy HH:mm') ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
                                             </tr>
@@ -355,12 +356,12 @@
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
                                                             <li><?= $this->Html->link(__('View Notification'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'view', $notification->id]) ?></li>
-                                                            <li><?= $this->Html->link(__('View Subject'), ['prefix' => $notification->link_prefix,'controller' => $notification->link_controller,'action' => $notification->link_action, $notification->link_id]) ?></li>
+                                                            <li><?= $this->Html->link(__('View Subject'), ['controller' => $notification->link_controller,'action' => $notification->link_action, $notification->link_id]) ?></li>
                                                             <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'edit', $notification->id]) ?></li>
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $notification->has('notificationtype') ? $notification->notificationtype->notification_type : '' ?></td>
+                                                <td><?= $notification->has('notification_type') ? $notification->notification_type->notification_type : '' ?></td>
                                                 <td><?= h($notification->notification_source) ?></td>
                                                 <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
                                                 <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-yy HH:mm') ?></td>

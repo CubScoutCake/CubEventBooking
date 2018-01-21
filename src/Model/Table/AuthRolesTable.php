@@ -32,9 +32,9 @@ class AuthRolesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('auth_roles');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('auth_roles');
+        $this->setDisplayField('auth_role');
+        $this->setPrimaryKey('id');
 
         $this->hasMany('Users', [
             'foreignKey' => 'auth_role_id'
@@ -54,27 +54,38 @@ class AuthRolesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('auth_role')
             ->requirePresence('auth_role', 'create')
             ->notEmpty('auth_role')
             ->add('auth_role', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
-            ->integer('admin_access')
+            ->boolean('admin_access')
             ->allowEmpty('admin_access');
 
         $validator
-            ->integer('champion_access')
+            ->boolean('champion_access')
             ->allowEmpty('champion_access');
 
         $validator
-            ->integer('super_user')
+            ->boolean('super_user')
             ->allowEmpty('super_user');
 
         $validator
             ->integer('auth')
             ->requirePresence('auth', 'create')
             ->notEmpty('auth');
+
+        $validator
+            ->boolean('parent_access')
+            ->allowEmpty('parent_access');
+
+        $validator
+            ->boolean('user_access')
+            ->allowEmpty('user_access');
+
+        $validator
+            ->boolean('section_limited')
+            ->allowEmpty('section_limited');
 
         return $validator;
     }

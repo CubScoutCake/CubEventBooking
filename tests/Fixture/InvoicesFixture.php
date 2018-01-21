@@ -45,17 +45,40 @@ class InvoicesFixture extends TestFixture
      *
      * @var array
      */
-    public $records = [
-        [
-            'id' => 1,
-            'user_id' => 1,
-            'application_id' => 1,
-            'value' => 1,
-            'created' => 1481496353,
-            'modified' => 1481496353,
-            'paid' => 1,
-            'initialvalue' => 1,
-            'deleted' => 1481496353
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'user_id' => 1,
+                'application_id' => 1,
+                'value' => 1,
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'paid' => 1,
+                'initialvalue' => 1,
+                'deleted' => null
+            ],
+            [
+                'user_id' => 1,
+                'application_id' => 3,
+                'value' => 1,
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'paid' => 1,
+                'initialvalue' => 1,
+                'deleted' => null
+            ],
+            [
+                'user_id' => 1,
+                'application_id' => 2,
+                'value' => 1,
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'paid' => 1,
+                'initialvalue' => 1,
+                'deleted' => date_create('2016-12-26 23:22:30')
+            ],
+        ];
+        parent::init();
+    }
 }

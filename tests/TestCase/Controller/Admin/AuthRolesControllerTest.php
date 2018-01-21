@@ -7,7 +7,7 @@ use Cake\TestSuite\IntegrationTestCase;
 /**
  * App\Admin\AuthRolesController Test Case
  */
-class AuthRolesAdminControllerTest extends IntegrationTestCase
+class AuthRolesControllerTest extends IntegrationTestCase
 {
 
     /**
@@ -26,7 +26,14 @@ class AuthRolesAdminControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/admin/auth-roles');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -36,36 +43,13 @@ class AuthRolesAdminControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
 
-    /**
-     * Test add method
-     *
-     * @return void
-     */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $this->get('/admin/auth-roles/view/1');
 
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertResponseOk();
     }
 }

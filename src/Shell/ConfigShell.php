@@ -23,14 +23,4 @@ class ConfigShell extends Shell
 
         return $parser;
     }
-
-    /**
-     * main() method.
-     *
-     * @return bool|int Success or error code.
-     */
-    public function main() 
-    {
-
-    }
 }

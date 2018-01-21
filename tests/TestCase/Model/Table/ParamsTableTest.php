@@ -18,39 +18,40 @@ class ParamsTableTest extends TestCase
      */
     public $Params;
 
-    /**
-     * Fixtures
-     *
-     * @var array
-     *
     public $fixtures = [
-        'app.params',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.logistics',
+        'app.event_types',
         'app.events',
         'app.settings',
-        'app.settingtypes',
+        'app.setting_types',
         'app.discounts',
-        'app.applications',
+        'app.password_states',
         'app.users',
         'app.roles',
         'app.attendees',
+        'app.sections',
+        'app.section_types',
         'app.scoutgroups',
         'app.districts',
         'app.champions',
+        'app.applications',
+        'app.invoices',
+        'app.invoice_items',
+        'app.item_types',
+        'app.prices',
+        'app.notes',
+        'app.payments',
+        'app.invoices_payments',
+        'app.logistic_items',
+        'app.logistics',
+        'app.parameters',
+        'app.parameter_sets',
+        'app.params',
         'app.applications_attendees',
         'app.allergies',
         'app.attendees_allergies',
-        'app.notes',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.payments',
-        'app.invoices_payments',
+        'app.auth_roles',
         'app.notifications',
-        'app.notificationtypes',
-        'app.logistic_items'
+        'app.notification_types'
     ];
 
     /**
@@ -84,7 +85,19 @@ class ParamsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Params->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'parameter_id' => 1,
+                'constant' => 'Lorem ipsum dolor sit amet'
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**

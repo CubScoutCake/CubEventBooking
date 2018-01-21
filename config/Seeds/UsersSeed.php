@@ -22,16 +22,18 @@ class UsersSeed extends AbstractSeed
         $this->call('ScoutgroupsSeed');
         $this->call('RolesSeed');
         $this->call('AuthRolesSeed');
+        $this->call('SectionTypesSeed');
+        $this->call('SectionsSeed');
+        $this->call('PasswordStatesSeed');
 
         $data = [
             [
                 'id' => '1',
                 'role_id' => '2',
-                'scoutgroup_id' => '106',
-                'authrole' => 'admin',
+                'section_id' => '1',
                 'firstname' => 'Jacob',
                 'lastname' => 'Tyler',
-                'email' => 'j.a.g.tyler@me.com',
+                'email' => 'jacob@hertscubs.com',
                 'password' => 'TestMe',
                 'digest_hash' => 'b517225d7899cbd7d4c675b053d8f444',
                 'pw_salt' => 'dev.hertscubs.uk',
@@ -43,7 +45,6 @@ class UsersSeed extends AbstractSeed
                 'city' => 'ADDRESS 2',
                 'county' => 'COUNTY',
                 'postcode' => 'POSTCODE',
-                'section' => '',
                 'created' => '2015-08-01 21:38:23',
                 'modified' => '2016-11-02 23:41:16',
                 'username' => 'Jacob',
@@ -54,12 +55,13 @@ class UsersSeed extends AbstractSeed
                 'osm_linkdate' => '2016-10-09 06:28:03',
                 'osm_current_term' => '000',
                 'osm_term_end' => '2016-12-31 00:00:00',
-                'pw_reset' => 'No Longer Active',
+                'pw_reset' => NULL,
                 'last_login' => '2016-12-11 15:11:02',
                 'logins' => '0',
                 'validated' => NULL,
                 'deleted' => NULL,
-                'auth_role_id' => '2',
+                'auth_role_id' => '3',
+                'password_state_id' => 1,
             ]
         ];
 

@@ -2,8 +2,11 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\ORM\TableRegistry;
+use App\Form\AttNumberForm;
+use App\Form\SyncBookForm;
 use Cake\I18n\Time;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
 
 /**
  * Events Controller
@@ -16,183 +19,120 @@ class EventsController extends AppController
     /**
      * Index method
      *
-     * @return void
+     * @return \Cake\Network\Response|null
      */
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Settings', 'Discounts'],
+            'contain' => ['Settings', 'Discounts', 'AdminUsers', 'EventTypes'],
             'conditions' => ['live' => true]
         ];
-        $this->set('events', $this->paginate($this->Events));
+        $events = $this->paginate($this->Events);
+
+        $this->set(compact('events'));
         $this->set('_serialize', ['events']);
     }
 
     /**
      * View method
      *
-     * @param string|null $id Event id.
-     * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param int|null $id Event id.
+     * @return \Cake\Network\Response|null
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
         $event = $this->Events->get($id, [
-            'contain' => ['Settings', 'Discounts', 'Applications']
+            'contain' => ['Discounts', 'AdminUsers', 'EventTypes', 'Settings', 'Applications']
         ]);
+
         $this->set('event', $event);
         $this->set('_serialize', ['event']);
 
         // Get Entities from Registry
-        $sets = TableRegistry::get('Settings');
-        $dscs = TableRegistry::get('Discounts');
+        $settings = TableRegistry::get('Settings');
+        $discounts = TableRegistry::get('Discounts');
 
         $now = Time::now();
         $userId = $this->Auth->user('id');
 
         // Table Entities
         if (isset($event->discount_id)) {
-            $discount = $dscs->get($event->discount_id);
+            $discount = $discounts->get($event->discount_id);
         }
         if (isset($event->legaltext_id)) {
-            $legal = $sets->get($event->legaltext_id);
+            $legal = $settings->get($event->legaltext_id);
         }
         if (isset($event->invtext_id)) {
-            $invText = $sets->get($event->invtext_id);
+            $invText = $settings->get($event->invtext_id);
         }
 
         // Pass to View
-        $this->set(compact('users', 'payments', 'discount', 'invText', 'legal'));
-
-        // Set Logo Dimensions
-        $setting = $sets->get(7);
-        $logoSet = $setting->text;
-        $logoHeight = $logoSet;
-        $logoWidth = $logoSet / $event->logo_ratio;
-        $this->set(compact('logoWidth', 'logoHeight'));
+        $this->set(compact('AdminUsers', 'payments', 'discount', 'invText', 'legal'));
     }
 
-    public function fullView($id = null)
+    /**
+     * View method
+     *
+     * @param int|null $eventID Event id.
+     * @return null
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function book($eventID)
     {
-        $event = $this->Events->get($id, [
-            'contain' => ['Settings', 'Discounts', 'Applications', 'Applications.Users', 'Applications.Scoutgroups']
+        $event = $this->Events->get($eventID, [
+            'contain' => ['Discounts', 'SectionTypes', 'Applications', 'EventTypes.InvoiceTexts', 'EventTypes.LegalTexts', 'EventTypes.ApplicationRefs']
         ]);
-        $this->set('event', $event);
-        $this->set('_serialize', ['event']);
 
-        // Get Entities from Registry
-        $apps = TableRegistry::get('Applications');
-        $invs = TableRegistry::get('Invoices');
-        $itms = TableRegistry::get('InvoiceItems');
-        $atts = TableRegistry::get('Attendees');
-        $sets = TableRegistry::get('Settings');
-        $dscs = TableRegistry::get('Discounts');
-        $usrs = TableRegistry::get('Users');
+        $term = $event->event_type->invoice_text->text;
 
-        $now = Time::now();
-        $userId = $this->Auth->user('id');
-
-        // Table Entities
-        $applications = $apps->find('all')->where(['event_id' => $event->id]);
-        $invoices = $invs->find('all')->contain(['Applications'])->where(['Applications.event_id' => $event->id]);
-        $allInvoices = $invs->find('all')->contain(['Applications'])->where(['Applications.event_id' => $event->id]);
-        
-        if (isset($event->discount_id)) {
-            $discount = $dscs->get($event->discount_id);
-        }
-        if (isset($event->legaltext_id)) {
-            $legal = $sets->get($event->legaltext_id);
-        }
-        if (isset($event->invtext_id)) {
-            $invText = $sets->get($event->invtext_id);
-        }
-        if (isset($event->admin_user_id)) {
-            $administrator = $usrs->get($event->admin_user_id);
+        if (($event->max_apps - $event->cc_apps) > 1) {
+            $term = Inflector::pluralize($term);
         }
 
-        // Pass to View
-        $this->set(compact('applications', 'users', 'payments', 'discount', 'invText', 'legal', 'administrator'));
-        $this->set('invoices', $allInvoices);
+	    $this->loadComponent('ScoutManager');
+	    $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
 
-        // Counts of Entities
-        $cntApplications = $applications->count('*');
-        $cntInvoices = $invoices->count('*');
+	    $readyForSync = false;
 
-        $this->set(compact('cntApplications', 'cntInvoices'));
+	    if ($checkArray['linked'] && $checkArray['sectionSet'] && $checkArray['termCurrent']) {
+	    	$osmEvents = $this->ScoutManager->getEventList($this->Auth->user('id'));
+	    	$readyForSync = true;
+	    }
 
-        if ($cntInvoices < 1) {
-            $sumValues = 0;
-            $sumPayments = 0;
-            $sumBalances = 0;
+        $attForm = new AttNumberForm();
+		$syncForm = new SyncBookForm();
 
-            $invCubs = 0;
-            $invYls = 0;
-            $invLeaders = 0;
-        } else {
-            // Sum Values & Calculate Balances
-            $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->group('Applications.event_id')->first();
-            $sumPaymentItem = $invoices->select(['sum' => $invoices->func()->sum('value')])->group('Applications.event_id')->first();
+        if ($this->request->is('post')) {
 
-            $sumValues = $sumValueItem->sum;
-            $sumPayments = $sumPaymentItem->sum;
+            $section = $this->request->getData('section');
+            $nonSection = $this->request->getData('non_section');
+            $leaders = $this->request->getData('leaders');
+            $osm_event = $this->request->getData('osm_event');
 
-            $sumBalances = $sumValues - $sumPayments;
+	        if (!is_null($section)) {
+		        $this->redirect([
+			        'controller' => 'Applications',
+			        'action' => 'simple_book',
+			        'prefix' => false,
+			        $event->id,
+			        $section,
+			        $nonSection,
+			        $leaders,
+		        ]);
+	        }
 
-            // Count of Line Items
-            $invItemCounts = $itms->find('all')->contain(['Invoices.Applications'])->where(['Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity')])->group('itemtype_id')->toArray();
-
-            $invCubs = $invItemCounts[1]->sum;
-            $invYls = $invItemCounts[2]->sum;
-            $invLeaders = $invItemCounts[3]->sum;
+	        if (!is_null($osm_event)) {
+	        	$this->redirect([
+	        		'controller' => 'Applications',
+			        'action' => 'sync_book',
+			        'prefix' => false,
+			        $event->id,
+			        $osm_event
+		        ]);
+	        }
         }
 
-        $this->set(compact('sumValues', 'sumBalances', 'sumPayments'));
-        $this->set(compact('invCubs', 'invYls', 'invLeaders'));
-
-        if ($cntApplications < 1) {
-            $appCubs = 0;
-            $appYls = 0;
-            $appLeaders = 0;
-        } else {
-            // Set Attendee Counts
-            $attendeeCubCount = $apps->find('all')
-                ->hydrate(false)
-                ->join([
-                    'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
-                    't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
-                    'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
-                ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.event_id' => $id, 't.deleted IS' => null]);
-
-            $attendeeYlCount = $apps->find('all')
-                ->hydrate(false)
-                ->join([
-                    'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
-                    't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
-                    'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
-                ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.event_id' => $id, 't.deleted IS' => null]);
-
-            $attendeeLeaderCount = $apps->find('all')
-                ->hydrate(false)
-                ->join([
-                    'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
-                    't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
-                    'r' => ['table' => 'roles', 'type' => 'INNER', 'conditions' => 'r.id = t.role_id']
-                ])->where(['r.minor' => 0, 'Applications.event_id' => $id, 't.deleted IS' => null]);
-
-            // Count of Attendees
-            $appCubs = $attendeeCubCount->count('*');
-            $appYls = $attendeeYlCount->count('*');
-            $appLeaders = $attendeeLeaderCount->count('*');
-        }
-
-        $this->set(compact('appCubs', 'appYls', 'appLeaders'));
-
-        // Set Logo Dimensions
-        $setting = $sets->get(7);
-        $logoSet = $setting->text;
-        $logoHeight = $logoSet;
-        $logoWidth = $logoSet / $event->logo_ratio;
-        $this->set(compact('logoWidth', 'logoHeight'));
-
+        $this->set(compact('event', 'term', 'attForm', 'syncForm', 'section', 'non_section', 'leaders', 'osmEvents', 'readyForSync'));
     }
 }

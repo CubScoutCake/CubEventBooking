@@ -24,9 +24,9 @@ class ParameterSetsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('parameter_sets');
-        $this->displayField('name');
-        $this->primaryKey('id');
+        $this->setTable('parameter_sets');
+        $this->setDisplayField('name');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'

@@ -27,9 +27,9 @@ class NotesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('notes');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('notes');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp', [
             'events' => [
@@ -39,6 +39,7 @@ class NotesTable extends Table
                     ]
                 ]
             ]);
+
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);

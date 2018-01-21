@@ -12,9 +12,9 @@ use Cake\Validation\Validator;
  * Applications Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsTo $Scoutgroups
+ * @property \Cake\ORM\Association\BelongsTo $Sections
  * @property \Cake\ORM\Association\BelongsTo $Events
- * @property \Cake\ORM\Association\HasMany $Invoices
+ * @property \Cake\ORM\Association\HasOne $Invoices
  * @property \Cake\ORM\Association\BelongsToMany $Attendees
  */
 class ApplicationsTable extends Table
@@ -30,9 +30,9 @@ class ApplicationsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('applications');
-        $this->displayField('display_code');
-        $this->primaryKey('id');
+        $this->setTable('applications');
+        $this->setDisplayField('display_code');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp', [
             'events' => [
@@ -42,24 +42,36 @@ class ApplicationsTable extends Table
                     ]
                 ]
             ]);
+
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
+        ]);
+
+        $this->addBehavior('SectionAuth');
+
+        $this->addBehavior('CounterCache', [
+            'Events' => [
+                'cc_apps'
+            ]
         ]);
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Scoutgroups', [
-            'foreignKey' => 'scoutgroup_id',
+        $this->belongsTo('Sections', [
+            'foreignKey' => 'section_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id'
         ]);
-        $this->hasMany('Invoices', [
-            'foreignKey' => 'application_id'
-        ]);
+        $this->hasOne('Invoices', [
+                'foreignKey' => 'application_id',
+            ])
+            ->setDependent(true)
+            ->setCascadeCallbacks(true);
+
         $this->hasMany('LogisticItems', [
             'foreignKey' => 'application_id'
         ]);
@@ -67,9 +79,7 @@ class ApplicationsTable extends Table
             'foreignKey' => 'application_id'
         ]);
         $this->belongsToMany('Attendees', [
-            'foreignKey' => 'application_id',
-            'targetForeignKey' => 'attendee_id',
-            'joinTable' => 'applications_attendees'
+            'through' => 'ApplicationsAttendees',
         ]);
     }
 
@@ -92,8 +102,10 @@ class ApplicationsTable extends Table
             ->allowEmpty('modification');
 
         $validator
-            ->requirePresence('permitholder', 'create')
-            ->notEmpty('permitholder');
+            ->notEmpty('permit_holder');
+
+        $validator
+            ->notEmpty('team_leader');
 
         return $validator;
     }
@@ -108,7 +120,7 @@ class ApplicationsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
+        $rules->add($rules->existsIn(['sections_id'], 'Sections'));
         $rules->add($rules->existsIn(['event_id'], 'Events'));
 
         return $rules;
@@ -199,6 +211,26 @@ class ApplicationsTable extends Table
             'Attendees.Roles',
             function ($q) {
                 return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => false]);
+            }
+        );
+
+        return $query;
+    }
+
+    /**
+     * Finds the attendees, which are Adult Leaders on the Application.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param int $roleId The Role ID to be Searched For
+     *
+     * @return \Cake\ORM\Query The modified query.
+     */
+    public function findRoles($query, $roleId)
+    {
+        $query = $query->matching(
+            'Attendees.Roles',
+            function ($q) {
+                return $q->where(['Attendees.deleted IS' => null, 'Roles.id' => $roleId]);
             }
         );
 

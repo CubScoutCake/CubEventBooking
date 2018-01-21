@@ -219,8 +219,10 @@ $cakeDescription = 'HertsCubs Booking System';
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
                         <?php   $usr = $this->request->session()->read('Auth.User.id');
-                                $cell = $this->cell('Notifications', [$usr]); 
-                                echo $cell; ?>
+                        $cell = $this->cell('Bell', [$usr], [
+                            'cache' => ['config' => 'cell_cache', 'key' => 'bell_' . $usr]
+                        ]);
+                        echo $cell; ?>
                         <li>
                             <a class="text-center" href="<?php echo $this->Url->build([
                                 'controller' => 'Notifications', 
@@ -234,78 +236,11 @@ $cakeDescription = 'HertsCubs Booking System';
                     <!-- /.dropdown-alerts -->
                 </li>
                 <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li>
-                        </li>
-                        <li><a href="<?php
-
-                        if (is_null($this->request->session()->read('Auth.User.username'))) {
-
-                            echo $this->Url->build([
-                                'controller' => 'Landing', 
-                                'action' => 'welcome'
-                            ]);
-
-                        } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
-
-                            echo $this->Url->build([
-                                'controller' => 'Users', 
-                                'action' => 'view',
-                                'prefix' => 'admin',
-                                $this->request->session()->read('Auth.User.id'
-                            )]);
-
-                        } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
-
-                            echo $this->Url->build([
-                                'controller' => 'Users', 
-                                'action' => 'view',
-                                'prefix' => 'champion',
-                                $this->request->session()->read('Auth.User.id'
-                            )]);
-
-                        } else {
-
-                            echo $this->Url->build([
-                                'controller' => 'Users', 
-                                'action' => 'view',
-                                'prefix' => false,
-                                $this->request->session()->read('Auth.User.id'
-                            )]);
-
-                        } ?>"><i class="fa fa-user fa-fw"></i> <?php
-
-                        if (is_null($this->request->session()->read('Auth.User.username'))) {
-
-                            echo " Not Logged In";
-
-                        } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
-
-                            echo " " . $this->request->session()->read('Auth.User.full_name') . " Profile";
-
-                        } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
-
-                            echo " " . $this->request->session()->read('Auth.User.full_name') . " Profile";
-
-                        } else {
-
-                            echo " " . $this->request->session()->read('Auth.User.full_name') . " Profile";
-
-                        } ?></a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="<?php echo $this->Url->build([
-                            'controller' => 'Users',
-                            'action' => 'logout',
-                            'prefix' => false]); ?>"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
+                <?php   $usr = $this->request->session()->read('Auth.User.id');
+                $cell = $this->cell('Profile', [$usr], [
+                    'cache' => ['config' => 'cell_cache', 'key' => 'profile_' . $usr]
+                ]);
+                echo $cell; ?>
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
@@ -313,16 +248,6 @@ $cakeDescription = 'HertsCubs Booking System';
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <!--<li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                            </div> 
-                        </li>-->
                         <!-- <?php
                             echo $this->Html->getCrumbList(
                                 [
@@ -333,93 +258,62 @@ $cakeDescription = 'HertsCubs Booking System';
                                 'Home'
                             );
                         ?> -->
-                        <?php if ($this->request->session()->read('Auth.User.authrole') === 'admin'): ?>
+                        <?php   $usr = $this->request->session()->read('Auth.User.id');
+                        $cell = $this->cell('Roleside', [$usr], [
+                            'cache' => ['config' => 'cell_cache', 'key' => 'roleside_' . $usr]
+                        ]);
+                        echo $cell; ?>
                         <li>
                             <a href="<?php echo $this->Url->build([
-                                'controller' => 'Landing',
-                                'action' => 'admin_home',
-                                'prefix' => 'admin']); ?>"><i class="fa fa-rocket fa-fw"></i> Admin Home</a>
-                        </li>
-                        <?php endif ?>
-                        <?php $r = $this->request->session()->read('Auth.User.authrole');
-                        if ( $r === 'admin' || $r === 'champion'): ?>
-                        <li>
-                            <a href="<?php echo $this->Url->build([
-                                'controller' => 'Landing',
-                                'action' => 'champion_home',
-                                'prefix' => 'champion']); ?>"><i class="fa fa-life-ring fa-fw"></i> Champion Home</a>
-                        </li>
-                        <?php endif ?>
-                        <li>
-                            <a href="<?php echo $this->Url->build([
-                                'controller' => 'Landing',
-                                'action' => 'user_home',
-                                'prefix' => false]); ?>"><i class="fa fa-dashboard fa-fw"></i> User Home</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-calendar-o fa-fw"></i> Events<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
                                 'controller' => 'Events',
                                 'action' => 'index',
-                                'prefix' => false]); ?>">View Events</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-tasks fa-fw"></i> Applications<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
-                                'controller' => 'Applications',
-                                'action' => 'index',
-                                'prefix' => false]); ?>">View Applications</a>
-                                </li>
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
-                                'controller' => 'Applications',
-                                'action' => 'add',  
-                                'prefix' => false]); ?>">Add New Application</a>
-                                </li>
-                            </ul>
+                                'prefix' => false]); ?>">
+                                <i class="fa fa-calendar-o fa-fw"></i> Events</a>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
+                            <a href="<?php echo $this->Url->build([
+                                'controller' => 'Applications',
+                                'action' => 'index',
+                                'prefix' => false]); ?>">
+                                <i class="fa fa-tasks fa-fw"></i> Applications</a>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <!--<li>
                             <a href="#"><i class="fa fa-group fa-fw"></i> Attendees<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="<?php echo $this->Url->build([
+                                    <a href="<?php /*echo $this->Url->build([
                                 'controller' => 'Attendees',
                                 'action' => 'index',
-                                'prefix' => false]); ?>">View Attendees</a>
+                                'prefix' => false]); */?>">View Attendees</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo $this->Url->build([
+                                    <a href="<?php /*echo $this->Url->build([
                                 'controller' => 'Attendees',
                                 'action' => 'cub',
-                                'prefix' => false]); ?>">Add New Young Person</a>
+                                'prefix' => false]); */?>">Add New Young Person</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo $this->Url->build([
+                                    <a href="<?php /*echo $this->Url->build([
                                 'controller' => 'Attendees',
                                 'action' => 'adult',
-                                'prefix' => false]); ?>">Add New Adult</a>
+                                'prefix' => false]); */?>">Add New Adult</a>
                                 </li>
                                 <li>
                                     <a href="#"><i class="fa fa-exclamation fa-fw"></i> Allergies <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo $this->Url->build([
+                                            <a href="<?php /*echo $this->Url->build([
                                         'controller' => 'Allergies',
                                         'action' => 'index',
-                                        'prefix' => false]); ?>">View Allergies</a>
+                                        'prefix' => false]); */?>">View Allergies</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo $this->Url->build([
+                                            <a href="<?php /*echo $this->Url->build([
                                         'controller' => 'Allergies',
                                         'action' => 'add',
-                                        'prefix' => false]); ?>">Add an Allergy</a>
+                                        'prefix' => false]); */?>">Add an Allergy</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -427,16 +321,15 @@ $cakeDescription = 'HertsCubs Booking System';
                                     <a href="#"><i class="fa fa-child fa-fw"></i> Roles <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo $this->Url->build([
+                                            <a href="<?php /*echo $this->Url->build([
                                         'controller' => 'Roles',
                                         'action' => 'index',
-                                        'prefix' => false]); ?>">View Roles</a>
+                                        'prefix' => false]); */?>">View Roles</a>
                                         </li>
                                     </ul>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
+                        </li>-->
                         <li>
                             <a href="<?php echo $this->Url->build([
                                 'controller' => 'Osm',
@@ -446,33 +339,20 @@ $cakeDescription = 'HertsCubs Booking System';
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Invoices<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
+                            <a href="<?php echo $this->Url->build([
                                 'controller' => 'Invoices',
                                 'action' => 'index',
-                                'prefix' => false]); ?>">View Invoices</a>
-                                </li>
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
-                                'controller' => 'Invoices',
-                                'action' => 'generate',
-                                'prefix' => false]); ?>">Generate New Invoice</a>
-                                </li>
-                            </ul>
+                                'prefix' => false]); ?>">
+                                <i class="fa fa-files-o fa-fw"></i> Invoices</a>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-gbp fa-fw"></i> Payments<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
+                            <a href="<?php echo $this->Url->build([
                                 'controller' => 'Payments',
                                 'action' => 'index',
-                                'prefix' => false]); ?>">View Payments</a>
-                                </li>
-                            </ul>
+                                'prefix' => false]); ?>">
+                                <i class="fa fa-gbp fa-fw"></i> Payments</a>
+                            <!-- /.nav-second-level -->
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> More<span class="fa arrow"></span></a>

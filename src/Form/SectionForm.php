@@ -7,12 +7,27 @@ use Cake\Validation\Validator;
 
 class SectionForm extends Form
 {
-
+    /**
+     * Build the Schema of the form.
+     *
+     * @param Schema $schema The basic Schema to be Extended
+     *
+     * @return Schema $schema
+     */
     protected function _buildSchema(Schema $schema)
     {
-        return $schema->addField('osm_section', 'int');
+        $schema->addField('osm_section', 'int');
+
+        return $schema;
     }
 
+    /**
+     * Function to Validate the Form
+     *
+     * @param Validator $validator The basic Validation to be extended.
+     *
+     * @return Validator $validator
+     */
     protected function _buildValidator(Validator $validator)
     {
         $validator
@@ -21,11 +36,5 @@ class SectionForm extends Form
             ->notEmpty('osm_section');
 
         return $validator;
-    }
-
-    protected function _execute(array $data)
-    {
-        // Send an email.
-        return true;
     }
 }

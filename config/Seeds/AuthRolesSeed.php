@@ -20,20 +20,26 @@ class AuthRolesSeed extends AbstractSeed
     {
         $data = [
             [
-                'id' => 1,
-                'auth_role' => 'User',
-                'admin_access' => 0,
-                'champion_access' => 0,
-                'super_user' => 0,
-                'auth' => 1,
-            ],
-            [
                 'id' => 2,
                 'auth_role' => 'Admin',
                 'admin_access' => 1,
                 'champion_access' => 1,
-                'super_user' => 1,
+                'super_user' => 0,
+                'user_access' => 1,
+                'parent_access' => 0,
                 'auth' => 150,
+                'section_limited' => 1,
+            ],
+            [
+                'id' => 3,
+                'auth_role' => 'SuperUser',
+                'admin_access' => 1,
+                'champion_access' => 1,
+                'super_user' => 1,
+                'user_access' => 1,
+                'parent_access' => 0,
+                'auth' => 150,
+                'section_limited' => 0,
             ],
         ];
 

@@ -20,9 +20,9 @@ class AttendeesController extends AppController
      */
     public function index()
     {
-        
+
         $this->paginate = [
-            'contain' => ['Users', 'Scoutgroups', 'Roles'],
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles'],
             'conditions' => ['user_id' => $this->Auth->user('id')]
         ];
         $this->set('attendees', $this->paginate($this->Attendees));
@@ -32,14 +32,14 @@ class AttendeesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Attendee id.
+     * @param string|null $AttID Attendee id.
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($AttID = null)
     {
-        $attendee = $this->Attendees->get($id, [
-            'contain' => ['Users', 'Scoutgroups', 'Roles', 'Applications.Scoutgroups', 'Applications.Events', 'Allergies']
+        $attendee = $this->Attendees->get($AttID, [
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);
@@ -52,9 +52,9 @@ class AttendeesController extends AppController
      */
     public function adult($appId = null)
     {
-        if ($this->request->is('post')) {
-            $attendee = $this->Attendees->newEntity();
+        $attendee = $this->Attendees->newEntity();
 
+        if ($this->request->is('post')) {
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
 
             $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
@@ -94,7 +94,7 @@ class AttendeesController extends AppController
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The Adult has been saved.'));
 
-                $adult = $this->Attendees->get($attendee->id, ['contain' => ['Roles', 'Scoutgroups.Districts']]);
+                $adult = $this->Attendees->get($attendee->id, ['contain' => ['Roles', 'Sections.Scoutgroups.Districts']]);
 
                 $adultEnt = [
                     'Entity Id' => $adult->id,
@@ -108,20 +108,20 @@ class AttendeesController extends AppController
                         'Invested' => $adult->role->invested,
                         'Minor' => $adult->role->minor,
                         'Last Name' => $adult->lastname,
-                        'Scoutgroup' => $adult->scoutgroup->scoutgroup,
-                        'District' => $adult->scoutgroup->district->district
+                        'Scoutgroup' => $adult->sections->scoutgroup->scoutgroup,
+                        'District' => $adult->sections->scoutgroup->district->district
                         ]
                     ];
 
                 $sets = TableRegistry::get('Settings');
-                
+
                 $jsonAdd = json_encode($adultEnt);
                 $apiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'Action';
-                
+
                 $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-                
+
                 $http = new Client();
                 $response = $http->post(
                     $keenURL,
@@ -135,22 +135,27 @@ class AttendeesController extends AppController
             }
         }
 
-        $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('scoutgroup_id')]]);
+        $sections = $this->Attendees->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
         $roles = $this->Attendees->Roles->find('nonAuto')->find('adults')->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
-        $this->set(compact('attendee', 'users', 'scoutgroups', 'roles', 'applications', 'allergies'));
+        $this->set(compact('attendee', 'users', 'sections', 'roles', 'applications', 'allergies'));
         $this->set('_serialize', ['attendee']);
 
         if ($this->request->is('get')) {
             // Values from the Model e.g.
             $this->request->data['application_id'] = $appId;
         }
-              
     }
 
-
+    /**
+     * Create a Young Person
+     *
+     * @param null $appId
+     *
+     * @return \Cake\Network\Response|null
+     */
     public function cub($appId = null)
     {
         $attendee = $this->Attendees->newEntity();
@@ -208,20 +213,20 @@ class AttendeesController extends AppController
                         'Invested' => $cub->role->invested,
                         'Minor' => $cub->role->minor,
                         'Last Name' => $cub->lastname,
-                        'Scoutgroup' => $cub->scoutgroup->scoutgroup,
-                        'District' => $cub->scoutgroup->district->district
+                        'Scoutgroup' => $cub->sections->scoutgroup->scoutgroup,
+                        'District' => $cub->sections->scoutgroup->district->district
                         ]
                     ];
 
                 $sets = TableRegistry::get('Settings');
-                
+
                 $jsonAdd = json_encode($cubEnt);
                 $apiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'Action';
-                
+
                 $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-                
+
                 $http = new Client();
                 $response = $http->post(
                     $keenURL,
@@ -235,12 +240,12 @@ class AttendeesController extends AppController
             }
         }
 
-        $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('scoutgroup_id')]]);
+        $sections = $this->Attendees->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
         $roles = $this->Attendees->Roles->find('nonAuto')->find('minors')->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
-        $this->set(compact('attendee', 'users', 'scoutgroups', 'roles', 'applications', 'allergies'));
+        $this->set(compact('attendee', 'users', 'sections', 'roles', 'applications', 'allergies'));
         $this->set('_serialize', ['attendee']);
 
         if ($this->request->is('get')) {
@@ -252,14 +257,14 @@ class AttendeesController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Attendee id.
+     * @param string|null $AttID Attendee id.
      * @return void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($AttID = null)
     {
-        $attendee = $this->Attendees->get($id, [
-            'contain' => ['Applications', 'Allergies', 'Users', 'Scoutgroups', 'Roles']
+        $attendee = $this->Attendees->get($AttID, [
+            'contain' => ['Applications', 'Allergies', 'Users', 'Sections', 'Roles']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
@@ -295,36 +300,37 @@ class AttendeesController extends AppController
                 ];
 
             $attendee = $this->Attendees->patchEntity($attendee, $phoneAttendee);
-            
+
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
             }
         }
-        $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200]);
+        $sections = $this->Attendees->Sections->find('list', ['limit' => 200]);
         $roles = $this->Attendees->Roles->find('nonAuto')->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
-        $this->set(compact('attendee', 'users', 'scoutgroups', 'roles', 'applications', 'allergies'));
+        $this->set(compact('attendee', 'users', 'sections', 'roles', 'applications', 'allergies'));
         $this->set('_serialize', ['attendee']);
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Attendee id.
-     * @return void Redirects to index.
+     * @param string|null $AttID Attendee id.
+     * @return \Cake\Network\Response Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($AttID = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $attendee = $this->Attendees->get($id, ['contain' => ['Roles', 'Scoutgroups.Districts']]);
+        $attendee = $this->Attendees->get($AttID, ['contain' => ['Roles', 'Sections.Scoutgroups.Districts']]);
         if ($this->Attendees->delete($attendee)) {
-            $deleteEnt = [
-                'Entity Id' => $id,
+            /*$deleteEnt = [
+                'Entity Id' => $AttID,
                 'Controller' => 'Attendees',
                 'Action' => 'Delete',
                 'User Id' => $this->Auth->user('id'),
@@ -335,32 +341,33 @@ class AttendeesController extends AppController
                     'Invested' => $attendee->role->invested,
                     'Minor' => $attendee->role->minor,
                     'Last Name' => $attendee->lastname,
-                    'Scoutgroup' => $attendee->scoutgroup->scoutgroup,
-                    'District' => $attendee->scoutgroup->district->district
+                    'Scoutgroup' => $attendee->sections->scoutgroup->scoutgroup,
+                    'District' => $attendee->sections->scoutgroup->district->district
                     ]
                 ];
 
             $sets = TableRegistry::get('Settings');
-            
+
             $jsonDelete = json_encode($deleteEnt);
             $apiKey = $sets->get(13)->text;
             $projectId = $sets->get(14)->text;
             $eventType = 'Action';
-            
+
             $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-            
+
             $http = new Client();
             $response = $http->post(
                 $keenURL,
                 $jsonDelete,
                 ['type' => 'json']
-            );
+            ); */
 
 
             $this->Flash->success(__('The attendee has been deleted.'));
         } else {
             $this->Flash->error(__('The attendee could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 

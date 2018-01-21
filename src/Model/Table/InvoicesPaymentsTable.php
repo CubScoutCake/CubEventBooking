@@ -34,9 +34,9 @@ class InvoicesPaymentsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('invoices_payments');
-        $this->displayField('payment_id');
-        $this->primaryKey(['payment_id', 'invoice_id']);
+        $this->setTable('invoices_payments');
+        $this->setDisplayField('payment_id');
+        $this->setPrimaryKey(['payment_id', 'invoice_id']);
 
         $this->belongsTo('Invoices', [
             'foreignKey' => 'invoice_id',
@@ -48,9 +48,21 @@ class InvoicesPaymentsTable extends Table
         ]);
         $this->addBehavior('CounterCache', [
             'Invoices' => [
-                'rating_avg' => function ($event, $entity, $table) {
-                    $query = $entity->find()->contain(['Payments']);
-                    $query->select(['sum' => $query->func()->sum('payments.value')]);
+                'value' => function ($event, $entity, $table) {
+
+                    $query = $this->find()->where(['invoice_id' => $entity->invoice_id]);
+                    $query = $query->select(['sum' => $query->func()->sum('x_value')]);
+                    $query = $query->first();
+
+                    return $query->sum;
+                }
+            ],
+            'Payments' => [
+                'value' => function ($event, $entity, $table) {
+
+                    $query = $this->find()->where(['payment_id' => $entity->payment_id]);
+                    $query = $query->select(['sum' => $query->func()->sum('x_value')]);
+                    $query = $query->first();
 
                     return $query->sum;
                 }
@@ -67,9 +79,9 @@ class InvoicesPaymentsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->numeric('xValue')
-            ->requirePresence('xValue', 'create')
-            ->notEmpty('xValue');
+            ->numeric('x_value')
+            ->requirePresence('x_value', 'create')
+            ->notEmpty('x_value');
 
         return $validator;
     }

@@ -34,7 +34,7 @@ class AllergiesController extends AppController
         $scoutgroups = TableRegistry::get('Scoutgroups');
 
         $champD = $scoutgroups->get($this->Auth->user('scoutgroup_id'));
-        
+
         $allergy = $this->Allergies->get($id, [
             'contain' => ['Attendees.Users', 'Attendees.Scoutgroups', 'Attendees.Roles']
             , 'conditions' => ['Scoutgroups.district_id' => $champD->district_id]
@@ -51,11 +51,12 @@ class AllergiesController extends AppController
     public function add()
     {
         $allergy = $this->Allergies->newEntity();
-        
+
         if ($this->request->is('post')) {
             $allergy = $this->Allergies->patchEntity($allergy, $this->request->data);
             if ($this->Allergies->save($allergy)) {
                 $this->Flash->success(__('The allergy has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The allergy could not be saved. Please, try again.'));
@@ -82,6 +83,7 @@ class AllergiesController extends AppController
             $allergy = $this->Allergies->patchEntity($allergy, $this->request->data);
             if ($this->Allergies->save($allergy)) {
                 $this->Flash->success(__('The allergy has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The allergy could not be saved. Please, try again.'));
@@ -108,6 +110,7 @@ class AllergiesController extends AppController
         } else {
             $this->Flash->error(__('The allergy could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

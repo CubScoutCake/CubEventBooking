@@ -27,9 +27,9 @@ class NotificationsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('notifications');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('notifications');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp', [
             'events' => [
@@ -39,11 +39,15 @@ class NotificationsTable extends Table
                 ]
             ]);
 
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
+
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id'
         ]);
-        $this->belongsTo('Notificationtypes', [
-            'foreignKey' => 'notificationtype_id'
+        $this->belongsTo('NotificationTypes', [
+            'foreignKey' => 'notification_type_id'
         ]);
     }
 

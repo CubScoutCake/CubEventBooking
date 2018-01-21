@@ -1,7 +1,7 @@
 <?php
 namespace App\Test\TestCase\Controller\Champion;
 
-use App\Controller\UsersController;
+use App\Controller\Champion\UsersController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -14,7 +14,7 @@ class UsersControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.users',
         'app.roles',
@@ -22,7 +22,15 @@ class UsersControllerTest extends IntegrationTestCase
         'app.scoutgroups',
         'app.districts',
         'app.applications',
-        'app.allergies'
+        'app.sections',
+        'app.section_types',
+        'app.auth_roles',
+        'app.password_states',
+        'app.events',
+        'app.event_types',
+        'app.discounts',
+        'app.settings',
+        'app.setting_types',
     ];
 
     /**
@@ -32,7 +40,14 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/champion/users');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -42,7 +57,14 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/champion/users/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -52,7 +74,14 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/champion/users/add');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -62,16 +91,13 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
 
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/champion/users/edit/1');
+
+        $this->assertResponseOk();
     }
 }

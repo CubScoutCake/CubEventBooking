@@ -14,11 +14,16 @@ class PaymentsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.payments',
         'app.users',
+        'app.auth_roles',
+        'app.section_types',
+        'app.sections',
+        'app.event_types',
         'app.roles',
+        'app.password_states',
         'app.attendees',
         'app.scoutgroups',
         'app.districts',
@@ -53,9 +58,9 @@ class PaymentsControllerTest extends IntegrationTestCase
     public function testIndexUnauthenticatedFails()
     {
         // No session data set.
-        $this->get('/Payments');
+        $this->get('/champion/payments');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'prefix' => false, 'redirect' => '/champion/payments']);
     }
 
     public function testIndex()

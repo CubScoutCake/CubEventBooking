@@ -25,7 +25,7 @@ class NotificationsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Notificationtypes'],
+            'contain' => ['Users', 'NotificationTypes'],
             'conditions' => ['user_id' => $this->Auth->user('id')]
         ];
         $this->set('notifications', $this->paginate($this->Notifications));
@@ -35,7 +35,7 @@ class NotificationsController extends AppController
     public function unread()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Notificationtypes'],
+            'contain' => ['Users', 'NotificationTypes'],
             'conditions' => ['user_id' => $this->Auth->user('id'), 'new' => 1]
         ];
         $this->set('notifications', $this->paginate($this->Notifications));
@@ -52,7 +52,7 @@ class NotificationsController extends AppController
     public function view($id = null)
     {
         $notification = $this->Notifications->get($id, [
-            'contain' => ['Users', 'Notificationtypes']
+            'contain' => ['Users', 'NotificationTypes']
         ]);
         $this->set('notification', $notification);
         $this->set('_serialize', ['notification']);
@@ -72,7 +72,7 @@ class NotificationsController extends AppController
                     'Creation Date' => $notification->created,
                     'Modified' => $notification->read_date,
                     'Notification' => [
-                        'Type' => $notification->notificationtype_id,
+                        'Type' => $notification->notification_type_id,
                         'Ref Id' => $notification->link_id,
                         'Action' => $notification->link_action,
                         'Controller' => $notification->link_controller,
@@ -82,14 +82,14 @@ class NotificationsController extends AppController
                     ];
 
                 $sets = TableRegistry::get('Settings');
-                
+
                 $jsonView = json_encode($viewEnt);
                 $apiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'Action';
-                
+
                 $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-                
+
                 $http = new Client();
                 $response = $http->post(
                     $keenURL,
@@ -118,7 +118,7 @@ class NotificationsController extends AppController
     // public function clean($userId = null)
     // {
     //     $this->request->allowMethod('delete');
-        
+
     //     $notifications = $this->Notifications->find('all')->where(['user_id' => $userId]);
 
     //     $count = 0;
@@ -133,7 +133,7 @@ class NotificationsController extends AppController
 
     //     $this->Flash->success(__($count . ' notifications were cleaned.'));
     //     return $this->redirect(['action' => 'index']);
-        
+
     // }
 
     // /**
@@ -154,8 +154,8 @@ class NotificationsController extends AppController
     //         }
     //     }
     //     $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-    //     $notificationtypes = $this->Notifications->Notificationtypes->find('list', ['limit' => 200]);
-    //     $this->set(compact('notification', 'users', 'notificationtypes'));
+    //     $NotificationTypes = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+    //     $this->set(compact('notification', 'users', 'NotificationTypes'));
     //     $this->set('_serialize', ['notification']);
     // }
 
@@ -171,7 +171,7 @@ class NotificationsController extends AppController
             $welcomeData = [     'link_id' => $userId
                                 , 'link_controller' => 'Users'
                                 , 'link_action' => 'view'
-                                , 'notificationtype_id' => 1
+                                , 'notification_type_id' => 1
                                 , 'user_id' => $userId
                                 , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
                                 , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
@@ -236,7 +236,7 @@ class NotificationsController extends AppController
             $welcomeData = [     'link_id' => $userId
                                 , 'link_controller' => 'Users'
                                 , 'link_action' => 'view'
-                                , 'notificationtype_id' => 1
+                                , 'notification_type_id' => 1
                                 , 'user_id' => $userId
                                 , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
                                 , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
@@ -291,7 +291,6 @@ class NotificationsController extends AppController
 
     public function new_logistic()
     {
-        
     }
 
     public function new_reset()
@@ -301,14 +300,15 @@ class NotificationsController extends AppController
             $notification = $this->Notifications->patchEntity($notification, $this->request->data);
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notificationtypes = $this->Notifications->Notificationtypes->find('list', ['limit' => 200]);
-        $this->set(compact('notification', 'users', 'notificationtypes'));
+        $NotificationTypes = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $this->set(compact('notification', 'users', 'NotificationTypes'));
         $this->set('_serialize', ['notification']);
     }
 
@@ -326,7 +326,7 @@ class NotificationsController extends AppController
                     'Creation Date' => $notification->created,
                     'Modified' => $notification->read_date,
                     'Notification' => [
-                        'Type' => $notification->notificationtype_id,
+                        'Type' => $notification->notification_type_id,
                         'Ref Id' => $notification->link_id,
                         'Action' => $notification->link_action,
                         'Controller' => $notification->link_controller,
@@ -336,14 +336,14 @@ class NotificationsController extends AppController
                     ];
 
                 $sets = TableRegistry::get('Settings');
-                
+
                 $jsonDelete = json_encode($deleteEnt);
                 $apiKey = $sets->get(13)->text;
                 $projectId = $sets->get(14)->text;
                 $eventType = 'Action';
-                
+
                 $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-                
+
                 $http = new Client();
                 $response = $http->post(
                     $keenURL,
@@ -358,7 +358,7 @@ class NotificationsController extends AppController
         } else {
             $this->Flash->error(__('You do not have permission to delete this notification.'));
         }
-        
+
         return $this->redirect(['action' => 'index']);
     }
 

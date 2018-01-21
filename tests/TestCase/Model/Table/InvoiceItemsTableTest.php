@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\InvoiceItemsTable Test Case
+ * App\Model\Table\InvoiceItemsTable Test Case
  */
 class InvoiceItemsTableTest extends TestCase
 {
@@ -22,20 +22,23 @@ class InvoiceItemsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.invoice_items',
         'app.invoices',
         'app.users',
         'app.roles',
         'app.attendees',
+        'app.sections',
+        'app.password_states',
+        'app.section_types',
         'app.scoutgroups',
         'app.districts',
         'app.champions',
         'app.applications',
         'app.events',
         'app.settings',
-        'app.settingtypes',
+        'app.setting_types',
         'app.discounts',
         'app.logistics',
         'app.parameters',
@@ -46,11 +49,14 @@ class InvoiceItemsTableTest extends TestCase
         'app.applications_attendees',
         'app.allergies',
         'app.attendees_allergies',
+        'app.auth_roles',
         'app.notifications',
-        'app.notificationtypes',
+        'app.notification_types',
         'app.payments',
         'app.invoices_payments',
-        'app.itemtypes'
+        'app.item_types',
+        'app.prices',
+        'app.event_types',
     ];
 
     /**
@@ -84,7 +90,23 @@ class InvoiceItemsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->InvoiceItems->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->hydrate(false)->toArray();
+        $expected = [
+            [
+                'id' => 1,
+                'invoice_id' => 1,
+                'value' => 1.0,
+                'description' => 'Lorem ipsum dolor sit amet',
+                'quantity' => 1,
+                'item_type_id' => 1,
+                'visible' => 1
+            ],
+        ];
+
+        $this->assertEquals($expected, $result);
     }
 
     /**

@@ -52,6 +52,8 @@ class PaymentsControllerTest extends IntegrationTestCase
      */
     public function testIndexUnauthenticatedFails()
     {
+        $this->markTestIncomplete('SuperUser');
+
         // No session data set.
         $this->get('/Payments');
 

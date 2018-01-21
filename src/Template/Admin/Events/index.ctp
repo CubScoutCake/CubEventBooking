@@ -18,45 +18,26 @@
                     <tr>
                         <td><?= h($event->name) ?></td>
                         <td class="actions">
-                            <div class="dropdown btn-group">
-                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu " role="menu">
-                                    <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>
-                                    <li><?= $this->Html->link(__('Full View - inc Bookings'), ['action' => 'full_view', $event->id]) ?></li>
-                                    <li><?= $this->Html->link(__('Accounts View'), ['action' => 'accounts', $event->id]) ?></li>
-                                    <li><?= $this->Html->link(__('Unpaid Invoices'), ['controller' => 'invoices', 'action' => 'unpaid', $event->id]) ?></li>
-                                    <li class="divider"></li>
-                                    <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
-                                </ul>
-                            </div>
+                            <?= $this->Html->link('', ['controller' => 'Events', 'action' => 'view', $event->id], ['title' => __('View'), 'class' => 'btn btn-default dropdown-toggle fa fa-eye']) ?>
+                            <?= $this->Html->link('', ['action' => 'edit', $event->id], ['title' => __('Edit'), 'class' => 'btn btn-default fa fa-pencil']) ?>
+                            <?= $this->Html->link('', ['action' => 'prices', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default fa fa-gbp']) ?>
                         </td>
-                        <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
                         <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
                         <td><?= h($event->location) ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">
-                        Showing page <?= $this->Paginator->counter() ?>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="dataTables_paginate paginatior paging_simple_numbers" id="dataTables-example_paginate">
-                        <ul class="pagination">
-                            <?= $this->Paginator->prev(__('Previous')) ?>
-                            <?= $this->Paginator->numbers() ?>
-                            <?= $this->Paginator->next(__('Next')) ?>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <hr>
+        </div>
+        <div class="paginator">
+            <ul class="pagination">
+                <?= $this->Paginator->prev('< ' . __('previous')) ?>
+                <?= $this->Paginator->numbers() ?>
+                <?= $this->Paginator->next(__('next') . ' >') ?>
+            </ul>
+            <p><?= $this->Paginator->counter() ?></p>
         </div>
     </div>
 </div>

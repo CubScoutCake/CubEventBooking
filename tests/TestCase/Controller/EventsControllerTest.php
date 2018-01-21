@@ -2,49 +2,34 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\EventsController;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Admin\EventsController Test Case
+ * App\Controller\EventsController Test Case
  */
 class EventsControllerTest extends IntegrationTestCase
 {
 
-    /**
-     * Fixtures
-     *
-     * @var array
-
     public $fixtures = [
+        'app.event_types',
         'app.events',
         'app.settings',
-        'app.settingtypes',
+        'app.setting_types',
         'app.discounts',
-        'app.applications',
         'app.users',
         'app.roles',
         'app.attendees',
+        'app.sections',
+        'app.section_types',
         'app.scoutgroups',
         'app.districts',
-        'app.champions',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notes',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.payments',
-        'app.invoices_payments',
+        'app.auth_roles',
+        'app.password_states',
         'app.notifications',
-        'app.notificationtypes',
-        'app.logistic_items',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params'
+        'app.notification_types',
+        'app.applications',
     ];
-     */
 
     /**
      * Test index method
@@ -53,7 +38,14 @@ class EventsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/events');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -63,16 +55,50 @@ class EventsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/events/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test fullView method
+     * Test edit method
      *
      * @return void
      */
-    public function testFullView()
+    public function testBookGet()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+           'Auth.User.id' => 1,
+           'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get('/events/book/1');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testBookPost()
+    {
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/events/book/1', ['section' => 1, 'non_section' => 2, 'leaders' => 3]);
+
+        $this->assertRedirect(['controller' => 'Applications', 'action' => 'simple_book', 1, 1, 2, 3]);
     }
 }

@@ -7,11 +7,11 @@
         </tr>
         <tr>
             <th><?= __('Description') ?></th>
-            <td><?= h($invoiceItem->Description) ?></td>
+            <td><?= h($invoiceItem->description) ?></td>
         </tr>
         <tr>
-            <th><?= __('Itemtype') ?></th>
-            <td><?= $invoiceItem->has('itemtype') ? $this->Html->link($invoiceItem->itemtype->id, ['controller' => 'Itemtypes', 'action' => 'view', $invoiceItem->itemtype->id]) : '' ?></td>
+            <th><?= __('Item Type') ?></th>
+            <td><?= $invoiceItem->has('item_type') ? $this->Html->link($invoiceItem->item_type->item_type, ['controller' => 'ItemTypes', 'action' => 'view', $invoiceItem->item_type->id]) : '' ?></td>
         </tr>
         <tr>
             <th><?= __('Id') ?></th>
@@ -19,11 +19,11 @@
         </tr>
         <tr>
             <th><?= __('Value') ?></th>
-            <td><?= $this->Number->currency($invoiceItem->Value,GBP) ?></td>
+            <td><?= $this->Number->currency($invoiceItem->value,GBP) ?></td>
         </tr>
         <tr>
             <th><?= __('Quantity') ?></th>
-            <td><?= $this->Number->currency($invoiceItem->Quantity,GBP) ?></td>
+            <td><?= $this->Number->format($invoiceItem->quantity) ?></td>
         </tr>
         <tr>
             <th><?= __('Quantity Price') ?></th>

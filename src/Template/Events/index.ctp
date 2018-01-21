@@ -18,19 +18,10 @@
                     <tr>
                         <td><?= h($event->name) ?></td>
                         <td class="actions">
-                            <div class="dropdown btn-group">
-                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu " role="menu">
-                                    <li><?= $this->Html->link(__('View'), ['action' => 'view', $event->id]) ?></li>
-                                    <li><?= $this->Html->link(__('Book'), ['controller' => 'Applications', 'action' => 'book', $event->id]) ?></li>
-                                    </li>
-                                </ul>
-                            </div>
+                            <?= $this->Html->link('Book', ['action' => 'book', $event->id], ['title' => __('Book'), 'class' => 'btn btn-default']) ?>
                         </td>
-                        <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
                         <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
                         <td><?= h($event->location) ?></td>
                     </tr>

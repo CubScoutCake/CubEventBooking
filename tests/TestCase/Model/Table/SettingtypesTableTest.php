@@ -16,7 +16,7 @@ class SettingtypesTableTest extends TestCase
      *
      * @var \App\Model\Table\SettingtypesTable
      */
-    public $Settingtypes;
+    public $SettingTypes;
 
     /**
      * Fixtures
@@ -24,7 +24,7 @@ class SettingtypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.settingtypes'
+        'app.setting_types'
     ];
 
     /**
@@ -35,8 +35,8 @@ class SettingtypesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Settingtypes') ? [] : ['className' => 'App\Model\Table\SettingtypesTable'];
-        $this->Settingtypes = TableRegistry::get('Settingtypes', $config);
+        $config = TableRegistry::exists('SettingTypes') ? [] : ['className' => 'App\Model\Table\SettingTypesTable'];
+        $this->Settingtypes = TableRegistry::get('SettingTypes', $config);
     }
 
     /**
@@ -65,9 +65,40 @@ class SettingtypesTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'settingtype' => 'Lorem ipsum dolor sit amet',
-                'description' => 'Lorem ipsum dolor sit amet'
-            ]
+                'setting_type' => 'Lorem ipsum dolor sit amet',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'id' => 2,
+                'setting_type' => 'Lorem ipsum  sit amet',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'id' => 3,
+                'setting_type' => 'LegalText',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'id' => 4,
+                'setting_type' => 'InvText',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'id' => 5,
+                'setting_type' => 'Lorem ipsum dolor amet',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'id' => 6,
+                'setting_type' => 'AppRef',
+                'description' => 'Application Reference',
+                'min_auth' => 1
+            ],
         ];
 
         $this->assertEquals($expected, $result);
@@ -87,21 +118,54 @@ class SettingtypesTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 2,
-            'settingtype' => 'Lorem Fish dolor sit amet',
-            'description' => 'Lorem Monkey dolor sit amet'
+            'id' => 7,
+            'setting_type' => 'Lorem Fish dolor sit amet',
+            'description' => 'Lorem Monkey dolor sit amet',
+            'min_auth' => 1
         ];
 
         $expected = [
             [
                 'id' => 1,
-                'settingtype' => 'Lorem ipsum dolor sit amet',
-                'description' => 'Lorem ipsum dolor sit amet'
+                'setting_type' => 'Lorem ipsum dolor sit amet',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
             ],
             [
                 'id' => 2,
-                'settingtype' => 'Lorem Fish dolor sit amet',
-                'description' => 'Lorem Monkey dolor sit amet'
+                'setting_type' => 'Lorem ipsum  sit amet',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'id' => 3,
+                'setting_type' => 'LegalText',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'id' => 4,
+                'setting_type' => 'InvText',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'id' => 5,
+                'setting_type' => 'Lorem ipsum dolor amet',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'id' => 6,
+                'setting_type' => 'AppRef',
+                'description' => 'Application Reference',
+                'min_auth' => 1
+            ],
+            [
+                'id' => 7,
+                'setting_type' => 'Lorem Fish dolor sit amet',
+                'description' => 'Lorem Monkey dolor sit amet',
+                'min_auth' => 1
             ]
         ];
 

@@ -18,5 +18,6 @@ class District extends Entity
         'id' => false,
         'district' => true,
         'county' => true,
+        'short_name' => true,
     ];
 }

@@ -1,5 +1,3 @@
-<?= $this->assign('title', 'Herts Cubs - Admin Home Page'); ?>
-
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header"><i class='fa fa-rocket fa-fw'></i> Admin Home</h1>
@@ -234,6 +232,7 @@
                                         <th><?= h('Full Name') ?></th>
                                         <th class="actions"><?= __('Actions') ?></th>
                                         <th><?= h('Scout Group') ?></th>
+                                        <th><?= h('District') ?></th>
                                         <th><?= h('Role') ?></th>
                                         <th><?= h('Username') ?></th>
                                         <th><?= h('Auth Role') ?></th>
@@ -244,22 +243,13 @@
                                         <tr>
                                             <td><?= h($this->Text->truncate($user->full_name,18)) ?></td>
                                             <td class="actions">
-                                                <div class="dropdown btn-group">
-                                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu " role="menu">
-                                                        <li><?= $this->Html->link(__('View User'), ['prefix' => 'admin','controller' => 'Users','action' => 'view', $user->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Users','action' => 'edit', $user->id]) ?></li>
-                                                        <li class="divider"></li>
-                                                        <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'action' => 'new_user', $user->id]) ?></li>
-                                                    </ul>
-                                                </div>
+                                                <?= $this->Html->link('', ['controller' => 'Users', 'action' => 'view', $user->id], ['title' => __('View'), 'class' => 'btn btn-primary fa fa-eye']) ?>
                                             </td>
-                                            <td><?= $user->has('scoutgroup') ? $this->Html->link($this->Text->truncate($user->scoutgroup->scoutgroup,18), ['controller' => 'Scoutgroups', 'action' => 'view', $user->scoutgroup->id]) : '' ?></td>
-                                            <td><?= $user->has('role') ? $this->Html->link($this->Text->truncate($user->role->role,18), ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></td>
+                                            <td><?= $user->section->has('scoutgroup') ? $this->Html->link($this->Text->truncate($user->section->scoutgroup->scoutgroup,30), ['controller' => 'Scoutgroups', 'action' => 'view', $user->section->scoutgroup->id]) : '' ?></td>
+                                            <td><?= $user->section->scoutgroup->has('district') ? $this->Html->link($user->section->scoutgroup->district->short_name, ['controller' => 'Districts', 'action' => 'view', $user->section->scoutgroup->district->id]) : '' ?></td>
+                                            <td><?= $user->has('role') ? $this->Html->link($user->role->short_role, ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></td>
                                             <td><?= h($this->Text->truncate($user->username,18)) ?></td>
-                                            <td><?= h(strtoupper($user->authrole)) ?></td>
+                                            <td><?= $user->has('auth_role') ? $this->Html->link($user->auth_role->auth_role, ['controller' => 'AuthRoles', 'action' => 'view', $user->auth_role->id]) : '' ?></td>
                                         </tr>
 
                                     <?php endforeach; ?>
@@ -275,9 +265,9 @@
                                         <th><?= h('Application') ?></th>
                                         <th class="actions"><?= __('Actions') ?></th>
                                         <th><?= h('User') ?></th>
-                                        <th><?= h('Scout Group') ?></th>
                                         <th><?= h('Section') ?></th>
-                                        <th><?= h('Permit Holder') ?></th>
+                                        <th><?= h('Scout Group') ?></th>
+                                        <th><?= h('District') ?></th>
                                         <th><?= h('Last Modified') ?></th>
                                     </tr>
                                 </thead>
@@ -286,23 +276,12 @@
                                         <tr>
                                             <td><?= h($application->display_code) ?></td>
                                             <td class="actions">
-                                                <div class="dropdown btn-group">
-                                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu " role="menu">
-                                                        <li><?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $application->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('Edit'), ['controller' => 'Applications', 'action' => 'edit', $application->id]) ?></li>
-                                                        <li class="divider"></li>
-                                                        <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'action' => 'new_application', $application->id]) ?></li>
-                                                        <li><?= $this->Form->postLink(__('++ Query'), ['controller' => 'Applications','action' => 'query', $application->id], ['confirm' => __('Are you sure you want to query the user of application # {0}?', $application->id)]) ?></li>
-                                                    </ul>
-                                                </div>
+                                                <?= $this->Html->link('', ['controller' => 'Applications', 'action' => 'view', $application->id], ['title' => __('View'), 'class' => 'btn btn-success fa fa-eye']) ?>
                                             </td>
-                                            <td><?= $application->has('user') ? $this->Html->link($this->Text->truncate($application->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></td>
-                                            <td><?= $application->has('scoutgroup') ? $this->Html->link($this->Text->truncate($application->scoutgroup->scoutgroup,18), ['controller' => 'Scoutgroups', 'action' => 'view', $application->scoutgroup->id]) : '' ?></td>
-                                            <td><?= $this->Text->truncate($application->section,18) ?></td>
-                                            <td><?= $this->Text->truncate($application->permitholder,18) ?></td>
+                                            <td><?= $application->has('user') ? $this->Html->link($this->Text->truncate($application->user->full_name,30), ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></td>
+                                            <td><?= $application->has('section') ? $this->Html->link($this->Text->truncate($application->section->section,30), ['controller' => 'Sections', 'action' => 'view', $application->section->id]) : '' ?></td>
+                                            <td><?= $application->section->has('scoutgroup') ? $this->Html->link($this->Text->truncate($application->section->scoutgroup->scoutgroup,30), ['controller' => 'Scoutgroups', 'action' => 'view', $application->section->scoutgroup->id]) : '' ?></td>
+                                            <td><?= $application->section->scoutgroup->has('district') ? $this->Html->link($this->Text->truncate($application->section->scoutgroup->district->short_name,16), ['controller' => 'Districts', 'action' => 'view', $application->section->scoutgroup->district->id]) : '' ?></td>
                                             <td><?= $this->Time->i18nFormat($application->modified, 'dd-MMM-yy HH:mm') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -328,24 +307,10 @@
                                     <tr>
                                         <td><?= h($event->name) ?></td>
                                         <td class="actions">
-                                            <div class="dropdown btn-group">
-                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu " role="menu">
-                                                    <li><?= $this->Html->link(__('Preview - User View'), ['controller' => 'Events', 'action' => 'view', $event->id]) ?></li>
-                                                    <li><?= $this->Html->link(__('Full View - Inc Bookings'), ['controller' => 'Events', 'action' => 'full_view', $event->id]) ?></li>
-                                                    <li><?= $this->Html->link(__('Accounts View'), ['controller' => 'Events', 'action' => 'accounts', $event->id]) ?></li>
-                                                    <li><?= $this->Html->link(__('View Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
-                                                    <li><?= $this->Html->link(__('View Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>
-                                                    <li class="divider"></li>
-                                                    <li><?= $this->Html->link(__('Edit'), ['controller' => 'Events', 'action' => 'edit', $event->id]) ?></li>
-                                                    
-                                                </ul>
-                                            </div>
+                                            <?= $this->Html->link('', ['controller' => 'Events', 'action' => 'view', $event->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
                                         </td>
-                                        <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-yy HH:mm') ?></td>
-                                        <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-yy HH:mm') ?></td>
+                                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
+                                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
                                         <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
                                         <td><?= h($event->location) ?></td>
                                     </tr>
@@ -374,17 +339,7 @@
                                         <tr>
                                             <td>Invoice #<?= $this->Number->format($invoice->id) ?></td>
                                             <td class="actions">
-                                                <div class="dropdown btn-group">
-                                                    <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu " role="menu">
-                                                        <li><?= $this->Html->link(__('View'), ['prefix' => 'admin','controller' => 'Invoices','action' => 'view', $invoice->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('Update'), ['prefix' => 'admin','controller' => 'Invoices','action' => 'regenerate', $invoice->id]) ?></li>
-                                                        <li class="divider"></li>
-                                                        <li><?= $this->Html->link(__('Add Note'), ['prefix' => 'admin','controller' => 'Notes','action' => 'new_invoice', $invoice->id]) ?></li>
-                                                    </ul>
-                                                </div>
+                                                <?= $this->Html->link('', ['controller' => 'Invoices', 'action' => 'view', $invoice->id], ['title' => __('View'), 'class' => 'btn btn-warning fa fa-eye']) ?>
                                             </td>
                                             <td><?= $invoice->has('user') ? $this->Html->link($this->Text->truncate($invoice->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></td>
                                             <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
@@ -415,15 +370,7 @@
                                         <tr>
                                             <td><?= $this->Number->format($payment->id) ?></td>
                                             <td class="actions">
-                                                <div class="dropdown btn-group">
-                                                    <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu " role="menu">
-                                                        <li><?= $this->Html->link(__('View'), ['prefix' => 'admin','controller' => 'Payments','action' => 'view', $payment->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Payments','action' => 'edit', $payment->id]) ?></li>
-                                                    </ul>
-                                                </div>
+                                                <?= $this->Html->link('', ['controller' => 'Payments', 'action' => 'view', $payment->id], ['title' => __('View'), 'class' => 'btn btn-danger fa fa-eye']) ?>
                                             </td>
                                             <td><?= $this->Number->currency($payment->value,'GBP') ?></td>
                                             <td><?= $this->Time->i18nformat($payment->created,'dd-MMM-yy HH:mm') ?></td>
@@ -453,15 +400,7 @@
                                         <tr>
                                             <td><?= h($note->id) ?></td>
                                             <td class="actions">
-                                                <div class="dropdown btn-group">
-                                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu " role="menu">
-                                                        <li><?= $this->Html->link(__('View'), ['prefix' => 'admin','controller' => 'Notes','action' => 'view', $note->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Notes','action' => 'edit', $note->id]) ?></li>
-                                                    </ul>
-                                                </div>
+                                                <?= $this->Html->link('', ['controller' => 'Notes', 'action' => 'view', $note->id], ['title' => __('View'), 'class' => 'btn btn-success fa fa-eye']) ?>
                                             </td>
                                             <td><?= $this->Text->truncate($note->note_text,50) ?></td>
                                             <td><?= $note->has('user') ? $this->Html->link($this->Text->truncate($note->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $note->user->id]) : '' ?></td>
@@ -493,19 +432,10 @@
                                         <tr>
                                             <td><?= $this->Number->format($notification->id) ?></td>
                                             <td class="actions">
-                                                <div class="dropdown btn-group">
-                                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu " role="menu">
-                                                        <li><?= $this->Html->link(__('View Notification'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'view', $notification->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('View Subject'), ['prefix' => $notification->link_prefix,'controller' => $notification->link_controller,'action' => $notification->link_action, $notification->link_id]) ?></li>
-                                                        <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'edit', $notification->id]) ?></li>
-                                                    </ul>
-                                                </div>
+                                                <?= $this->Html->link('', ['controller' => 'Notifications', 'action' => 'view', $notification->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
                                             </td>
                                             <td><?= $notification->has('user') ? $this->Html->link($this->Text->truncate($notification->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $notification->user->id]) : '' ?></td>
-                                            <td><?= $notification->has('notificationtype') ? $notification->notificationtype->notification_type : '' ?></td>
+                                            <td><i class="fa <?= $notification->has('notification_type') ? $notification->notification_type->icon : '' ?> fa-fw fa-2x"></i></td>
                                             <td><?= h($notification->notification_source) ?></td>
                                             <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
                                             <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-yy HH:mm') ?></td>

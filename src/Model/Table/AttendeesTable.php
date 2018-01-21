@@ -2,6 +2,8 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\Attendee;
+use Cake\Event\Event;
+use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -11,7 +13,7 @@ use Cake\Validation\Validator;
  * Attendees Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsTo $Scoutgroups
+ * @property \Cake\ORM\Association\BelongsTo $Sections
  * @property \Cake\ORM\Association\BelongsTo $Roles
  * @property \Cake\ORM\Association\BelongsToMany $Applications
  * @property \Cake\ORM\Association\BelongsToMany $Allergies
@@ -29,9 +31,11 @@ class AttendeesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('attendees');
-        $this->displayField('full_name');
-        $this->primaryKey('id');
+        $this->setTable('attendees');
+        $this->setDisplayField('full_name');
+        $this->setPrimaryKey('id');
+
+        $this->addBehavior('SectionAuth');
 
         $this->addBehavior('Timestamp', [
             'events' => [
@@ -49,8 +53,8 @@ class AttendeesTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Scoutgroups', [
-            'foreignKey' => 'scoutgroup_id',
+        $this->belongsTo('Sections', [
+            'foreignKey' => 'section_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Roles', [
@@ -58,21 +62,11 @@ class AttendeesTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsToMany('Applications', [
-            'foreignKey' => 'attendee_id',
-            'targetForeignKey' => 'application_id',
-            'joinTable' => 'applications_attendees'
+            'through' => 'ApplicationsAttendees',
         ]);
         $this->belongsToMany('Allergies', [
-            'foreignKey' => 'attendee_id',
-            'targetForeignKey' => 'allergy_id',
-            'joinTable' => 'attendees_allergies'
+            'through' => 'AttendeesAllergies',
         ]);
-
-        // Adding Counter Caches
-
-        /*$this->addBehavior('CounterCache', [
-            'Applications' => ['cc_att_total']
-        ]);*/
     }
 
     /**
@@ -94,11 +88,10 @@ class AttendeesTable extends Table
             ->notEmpty('lastname');
 
         $validator
-            ->add('dateofbirth', 'valid', ['rule' => 'date'])
-            ->notEmpty('dateofbirth');
+            ->allowEmpty('dateofbirth');
 
         $validator
-            ->notEmpty('phone');
+            ->allowEmpty('phone');
 
         $validator
             ->allowEmpty('phone2');
@@ -139,7 +132,7 @@ class AttendeesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['scoutgroup_id'], 'Scoutgroups'));
+        $rules->add($rules->existsIn(['section_id'], 'Sections'));
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
 
         return $rules;
@@ -207,5 +200,120 @@ class AttendeesTable extends Table
             ->group(['Attendees.id'])
             ->having(['total_applications <' => 1])
             ->autoFields(true);
+    }
+
+    /**
+     * Stores emails as lower case.
+     *
+     * @param \Cake\Event\Event $event The event being processed.
+     * @return bool
+     */
+    public function beforeRules(Event $event)
+    {
+        $entity = $event->data['entity'];
+
+        $entity->firstname = ucwords(strtolower($entity->firstname));
+        $entity->lastname = ucwords(strtolower($entity->lastname));
+        $entity->address_1 = ucwords(strtolower($entity->address_1));
+        $entity->address_2 = ucwords(strtolower($entity->address_2));
+        $entity->city = ucwords(strtolower($entity->city));
+        $entity->county = ucwords(strtolower($entity->county));
+        $entity->postcode = strtoupper($entity->postcode);
+
+        return true;
+    }
+
+    /**
+     * Merge Function
+     *
+     * @param int $attendeeId The ID for the Attendee to be merged.
+     *
+     * @return int;
+     */
+    public function removeDuplicate($attendeeId)
+    {
+        $mrgAttendee = $this->get($attendeeId);
+
+        $options = [
+            //'fields' => [
+            //    'user_id',
+            //    'role_id',
+            //    'firstname',
+            //    'lastname',
+            //    'dateofbirth',
+            //    'osm_id',
+            //    'osm_sync_date',
+            //    'created',
+            //    'modified'
+            //],
+            'conditions' => [
+                'user_id' => $mrgAttendee->user_id,
+                'firstname' => $mrgAttendee->firstname,
+                'lastname' => $mrgAttendee->lastname,
+                'role_id' => $mrgAttendee->role_id,
+            ],
+        ];
+        $allAttendees = $this->find('all', $options);
+        $count = $allAttendees->count();
+
+        $osmId = $this->find('all', $options)->find('all', [
+            'fields' => [
+                'osm_id',
+                'osm_sync_date',
+                'modified'],
+            'conditions' => [
+                'osm_id IS NOT' => null
+            ]
+        ])->order([
+            'osm_sync_date' => 'DESC',
+            'modified' => 'DESC'
+        ])->first();
+
+        $address = $this->find('all', $options)->find('all', [
+            'fields' => [
+                'address_1',
+                'address_2',
+                'city',
+                'county',
+                'postcode',
+            ],
+            'conditions' => [
+                'address_1 IS NOT' => ''
+            ]
+        ])->order([
+            'modified' => 'DESC'
+        ])->first();
+
+        $userAttendee = $this->find('all', $options)->find('all', [
+            'fields' => [
+                'user_attendee'
+            ],
+            'conditions' => [
+                'user_attendee' => true
+            ]
+        ])->count();
+
+        if ($userAttendee > 0) {
+            $mrgAttendee = $this->patchEntity($mrgAttendee, ['user_attendee' => true], ['validate' => false]);
+        }
+
+        $finalData = [
+            'osm_id' => $osmId['osm_id'],
+            'osm_sync_date' => $osmId['osm_sync_date'],
+            'address_1' => $address['address_1'],
+            'address_2' => $address['address_2'],
+            'city' => $address['city'],
+            'county' => $address['county'],
+            'postcode' => $address['postcode'],
+        ];
+
+        $mrgAttendee = $this->patchEntity($mrgAttendee, $finalData);
+
+        if ($this->save($mrgAttendee)) {
+            return $count;
+        }
+        Log::info('There was an error merging the attendee #' . $attendeeId);
+
+        return 0;
     }
 }

@@ -14,7 +14,7 @@ class LogisticsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return void
      */
     public function index()
     {
@@ -30,13 +30,13 @@ class LogisticsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Logistic id.
-     * @return \Cake\Network\Response|null
+     * @param string|null $logisticId Logistic id.
+     * @return void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($logisticId = null)
     {
-        $logistic = $this->Logistics->get($id, [
+        $logistic = $this->Logistics->get($logisticId, [
             'contain' => ['Applications', 'Logisticstypes', 'Parameters']
         ]);
 
@@ -56,6 +56,7 @@ class LogisticsController extends AppController
             $logistic = $this->Logistics->patchEntity($logistic, $this->request->data);
             if ($this->Logistics->save($logistic)) {
                 $this->Flash->success(__('The logistic has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The logistic could not be saved. Please, try again.'));
@@ -84,6 +85,7 @@ class LogisticsController extends AppController
             $logistic = $this->Logistics->patchEntity($logistic, $this->request->data);
             if ($this->Logistics->save($logistic)) {
                 $this->Flash->success(__('The logistic has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The logistic could not be saved. Please, try again.'));
@@ -112,6 +114,7 @@ class LogisticsController extends AppController
         } else {
             $this->Flash->error(__('The logistic could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
     }
 }

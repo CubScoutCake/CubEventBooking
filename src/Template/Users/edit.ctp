@@ -4,8 +4,7 @@
         <legend><?= __('Edit User') ?></legend>
         <?php
             echo $this->Form->input('role_id', ['options' => $roles]);
-            echo $this->Form->input('scoutgroup_id', ['options' => $scoutgroups]);
-            echo $this->Form->input('section', ['label' => 'Any Specific Section Name, e.g. Wednesdays - Leave this blank if you are the only Cub Section in the Scout Group.']);
+            echo $this->Form->input('section', ['options' => $sections]);
             echo $this->Form->input('username');
             echo $this->Form->input('firstname');
             echo $this->Form->input('lastname');
