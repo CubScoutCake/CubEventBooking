@@ -65,10 +65,9 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testGetSettings()
     {
-    	if ($this->passthrough) {
-    		$this->markTestSkipped('Skipped for Travis until Mocked.');
-	    }
-
+        if ($this->passthrough) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
         $component = $this->ScoutManager->getOsmSettings();
 
@@ -86,9 +85,9 @@ class ScoutManagerComponentTest extends TestCase
      */
     public function testCheckOsmStatus()
     {
-	    if ($this->passthrough) {
-		    $this->markTestSkipped('Skipped for Travis until Mocked.');
-	    }
+        if ($this->passthrough) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
         $component = $this->ScoutManager->checkOsmStatus(1);
 
@@ -125,9 +124,9 @@ class ScoutManagerComponentTest extends TestCase
      */
     public function testLinkUser()
     {
-	    if ($this->passthrough) {
-		    $this->markTestSkipped('Skipped for Travis until Mocked.');
-	    }
+        if ($this->passthrough) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
@@ -145,9 +144,9 @@ class ScoutManagerComponentTest extends TestCase
      */
     public function testLinkUserWrongPassword()
     {
-	    if ($this->passthrough) {
-		    $this->markTestSkipped('Skipped for Travis until Mocked.');
-	    }
+        if ($this->passthrough) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
@@ -162,9 +161,9 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testStoreUserSecret()
     {
-	    if ($this->passthrough) {
-		    $this->markTestSkipped('Skipped for Travis until Mocked.');
-	    }
+        if ($this->passthrough) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
         $secret = 'MyGoatIsNewPasswordSecret';
         $component = $this->ScoutManager->storeUserSecret($secret, 1);
@@ -179,9 +178,9 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testStoreAndRetrieveUserSecret()
     {
-	    if ($this->passthrough) {
-		    $this->markTestSkipped('Skipped for Travis until Mocked.');
-	    }
+        if ($this->passthrough) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
         $secret = 'MyGoatIsNewPasswordSecret';
         $component = $this->ScoutManager->storeUserSecret($secret, 1);
@@ -197,9 +196,9 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testGetSectionIds()
     {
-	    if ($this->passthrough) {
-		    $this->markTestSkipped('Skipped for Travis until Mocked.');
-	    }
+        if ($this->passthrough) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
@@ -218,9 +217,9 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testSetTerm()
     {
-	    if ($this->passthrough) {
-		    $this->markTestSkipped('Skipped for Travis until Mocked.');
-	    }
+        if ($this->passthrough) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
@@ -252,9 +251,9 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testGetEvents()
     {
-	    if ($this->passthrough) {
-		    $this->markTestSkipped('Skipped for Travis until Mocked.');
-	    }
+        if ($this->passthrough) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
@@ -284,9 +283,9 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testGetEventAttendees()
     {
-	    if ($this->passthrough) {
-		    $this->markTestSkipped('Skipped for Travis until Mocked.');
-	    }
+        if ($this->passthrough) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
