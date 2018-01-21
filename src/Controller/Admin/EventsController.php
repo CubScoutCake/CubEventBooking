@@ -352,7 +352,7 @@ class EventsController extends AppController
             $sumBalances = $sumValues - $sumPayments;
 
             // Count of Line Items
-            $invItemCounts = $itms->find('all')->contain(['Invoices.Applications'])->where(['Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity'), 'value' => $invoices->func()->max('InvoiceItems.Value')])->group('item_type_id')->toArray();
+            $invItemCounts = $itms->find('all')->contain(['Invoices.Applications'])->where(['Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('quantity'), 'value' => $invoices->func()->max('InvoiceItems.value')])->group('item_type_id')->toArray();
 
             $invCubs = $invItemCounts[1]->sum;
             $invYls = $invItemCounts[2]->sum;
@@ -493,7 +493,7 @@ class EventsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $event = $this->Events->patchEntity(
                 $event,
-                $this->request->data,
+                $this->request->getData(),
                 ['associated' => [ 'Prices']]
             );
             if ($this->Events->save($event)) {
@@ -512,7 +512,7 @@ class EventsController extends AppController
         }
 
         $itemTypes = TableRegistry::get('ItemTypes');
-        $itemTypeOptions = $itemTypes->find('list')->where(['available' => true]);
+        $itemTypeOptions = $itemTypes->find('list');
 
         $eventPrices = count($event->prices);
 

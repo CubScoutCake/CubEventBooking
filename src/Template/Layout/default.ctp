@@ -279,41 +279,41 @@ $cakeDescription = 'HertsCubs Booking System';
                                 <i class="fa fa-tasks fa-fw"></i> Applications</a>
                             <!-- /.nav-second-level -->
                         </li>
-                        <li>
+                        <!--<li>
                             <a href="#"><i class="fa fa-group fa-fw"></i> Attendees<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="<?php echo $this->Url->build([
+                                    <a href="<?php /*echo $this->Url->build([
                                 'controller' => 'Attendees',
                                 'action' => 'index',
-                                'prefix' => false]); ?>">View Attendees</a>
+                                'prefix' => false]); */?>">View Attendees</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo $this->Url->build([
+                                    <a href="<?php /*echo $this->Url->build([
                                 'controller' => 'Attendees',
                                 'action' => 'cub',
-                                'prefix' => false]); ?>">Add New Young Person</a>
+                                'prefix' => false]); */?>">Add New Young Person</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo $this->Url->build([
+                                    <a href="<?php /*echo $this->Url->build([
                                 'controller' => 'Attendees',
                                 'action' => 'adult',
-                                'prefix' => false]); ?>">Add New Adult</a>
+                                'prefix' => false]); */?>">Add New Adult</a>
                                 </li>
                                 <li>
                                     <a href="#"><i class="fa fa-exclamation fa-fw"></i> Allergies <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo $this->Url->build([
+                                            <a href="<?php /*echo $this->Url->build([
                                         'controller' => 'Allergies',
                                         'action' => 'index',
-                                        'prefix' => false]); ?>">View Allergies</a>
+                                        'prefix' => false]); */?>">View Allergies</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo $this->Url->build([
+                                            <a href="<?php /*echo $this->Url->build([
                                         'controller' => 'Allergies',
                                         'action' => 'add',
-                                        'prefix' => false]); ?>">Add an Allergy</a>
+                                        'prefix' => false]); */?>">Add an Allergy</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -321,16 +321,15 @@ $cakeDescription = 'HertsCubs Booking System';
                                     <a href="#"><i class="fa fa-child fa-fw"></i> Roles <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo $this->Url->build([
+                                            <a href="<?php /*echo $this->Url->build([
                                         'controller' => 'Roles',
                                         'action' => 'index',
-                                        'prefix' => false]); ?>">View Roles</a>
+                                        'prefix' => false]); */?>">View Roles</a>
                                         </li>
                                     </ul>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
+                        </li>-->
                         <li>
                             <a href="<?php echo $this->Url->build([
                                 'controller' => 'Osm',

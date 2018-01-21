@@ -226,16 +226,10 @@ class ApplicationsController extends AppController
             }
         }
 
-        $scoutgroups = $this->Applications->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('scoutgroup_id')]]);
         $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $events = $this->Applications->Events->find('list', ['limit' => 200, 'conditions' => ['end >' => $now, 'live' => 1]]);
-        $this->set(compact('application', 'users', 'Sections.Scoutgroups', 'events', 'attendees'));
+        $this->set(compact('application', 'users', 'events', 'attendees'));
         $this->set('_serialize', ['application']);
-
-        if ($this->request->is('get')) {
-            // Values from the Model e.g.
-            $this->request->data['event_id'] = $eventID;
-        }
     }
 
     /**
@@ -317,11 +311,17 @@ class ApplicationsController extends AppController
             if ($this->Applications->save($application)) {
                 $appId = $application->get('id');
 
-                $this->loadComponent('Availability');
+                $this->loadComponent('Line');
+                $parse = $this->Line->parseInvoice($application->invoice->id);
 
+                $this->loadComponent('Availability');
                 $this->Availability->getNumbers($appId);
 
                 $this->Flash->success(__('Your '. $term . ' has been registered.'));
+
+                if ($parse) {
+                	$this->Flash->success(__('Your Invoice has been created automatically.'));
+                }
 
                 return $this->redirect(['action' => 'view', $appId]);
             } else {
@@ -395,6 +395,7 @@ class ApplicationsController extends AppController
 		    'user_id' => $user->id,
 		    'section_id' => $user->section_id,
 		    'event_id' => $eventID,
+		    'osm_event_id' => $osmEvent,
 		    'invoice' => [
 			    'user_id' => $user->id,
 		    ]
@@ -545,7 +546,9 @@ class ApplicationsController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
 
-            $newData = ['user_id' => $this->Auth->user('id'), 'modification' => 'modification' + 1];
+        	$mod = $application->modification + 1;
+
+            $newData = ['user_id' => $this->Auth->user('id'), 'modification' => $mod];
             $application = $this->Applications->patchEntity($application, $newData);
             $application = $this->Applications->patchEntity($application, $this->request->data);
 

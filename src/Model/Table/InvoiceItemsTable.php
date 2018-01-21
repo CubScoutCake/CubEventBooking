@@ -50,7 +50,7 @@ class InvoiceItemsTable extends Table
                 'initialvalue' => function ($event, $entity, $table) {
 
                     $query = $this->find()->where(['invoice_id' => $entity->invoice_id]);
-                    $query = $query->select(['sum' => $query->func()->sum('value')]);
+                    $query = $query->select(['sum' => $query->func()->sum('(value * quantity)')]);
                     $query = $query->first();
 
                     return $query->sum;

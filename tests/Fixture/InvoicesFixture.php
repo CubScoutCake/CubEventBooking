@@ -49,7 +49,6 @@ class InvoicesFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'user_id' => 1,
                 'application_id' => 1,
                 'value' => 1,
@@ -60,16 +59,25 @@ class InvoicesFixture extends TestFixture
                 'deleted' => null
             ],
             [
-                'id' => 2,
                 'user_id' => 1,
-                'application_id' => 1,
+                'application_id' => 3,
                 'value' => 1,
                 'created' => date_create('2016-12-26 23:22:30'),
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'paid' => 1,
                 'initialvalue' => 1,
-                'deleted' => date_create('2016-12-26 23:22:30')
+                'deleted' => null
             ],
+	        [
+		        'user_id' => 1,
+		        'application_id' => 2,
+		        'value' => 1,
+		        'created' => date_create('2016-12-26 23:22:30'),
+		        'modified' => date_create('2016-12-26 23:22:30'),
+		        'paid' => 1,
+		        'initialvalue' => 1,
+		        'deleted' => date_create('2016-12-26 23:22:30')
+	        ],
         ];
         parent::init();
     }

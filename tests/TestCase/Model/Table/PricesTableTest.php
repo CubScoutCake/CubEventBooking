@@ -96,12 +96,60 @@ class PricesTableTest extends TestCase
         $result = $query->hydrate(false)->toArray();
         $expected = [
             [
-                'id' => 1,
-                'item_type_id' => 1,
-                'event_id' => 1,
-                'max_number' => 1,
-                'value' => 1,
-                'description' => 'Lorem ipsum dolor sit amet'
+            	'id' => 1,
+	            'item_type_id' => 1,
+	            'event_id' => 1,
+	            'max_number' => 1,
+	            'value' => 20.0,
+	            'description' => 'Team Booking Price'
+            ],
+            [
+	            'id' => 2,
+	            'item_type_id' => 2,
+	            'event_id' => 3,
+	            'max_number' => 5,
+	            'value' => 25.0,
+	            'description' => 'Cub Price'
+            ],
+            [
+	            'id' => 3,
+	            'item_type_id' => 3,
+	            'event_id' => 3,
+	            'max_number' => 2,
+	            'value' => 30.0,
+	            'description' => 'Beaver Price'
+            ],
+            [
+	            'id' => 4,
+	            'item_type_id' => 4,
+	            'event_id' => 3,
+	            'max_number' => 3,
+	            'value' => 35.0,
+	            'description' => 'Scout Price'
+            ],
+            [
+	            'id' => 5,
+	            'item_type_id' => 1,
+	            'event_id' => 1,
+	            'max_number' => 1,
+	            'value' => 100.0,
+	            'description' => 'Second Team Price'
+            ],
+            [
+	            'id' => 6,
+	            'item_type_id' => 5,
+	            'event_id' => 3,
+	            'max_number' => 3,
+	            'value' => 10.0,
+	            'description' => 'Explorer Price'
+            ],
+            [
+	            'id' => 7,
+	            'item_type_id' => 6,
+	            'event_id' => 3,
+	            'max_number' => 10,
+	            'value' => 15.0,
+	            'description' => 'Adult Price'
             ],
         ];
 

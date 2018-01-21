@@ -42,12 +42,53 @@ class PricesFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
             'item_type_id' => 1,
             'event_id' => 1,
             'max_number' => 1,
-            'value' => 1,
-            'description' => 'Lorem ipsum dolor sit amet'
+            'value' => 20,
+            'description' => 'Team Booking Price'
         ],
+	    [
+		    'item_type_id' => 2,
+		    'event_id' => 3,
+		    'max_number' => 5,
+		    'value' => 25,
+		    'description' => 'Cub Price'
+	    ],
+	    [
+		    'item_type_id' => 3,
+		    'event_id' => 3,
+		    'max_number' => 2,
+		    'value' => 30,
+		    'description' => 'Beaver Price'
+	    ],
+	    [
+		    'item_type_id' => 4,
+		    'event_id' => 3,
+		    'max_number' => 3,
+		    'value' => 35,
+		    'description' => 'Scout Price'
+	    ],
+	    [
+		    'item_type_id' => 1,
+		    'event_id' => 1,
+		    'max_number' => 1,
+		    'value' => 100,
+		    'description' => 'Second Team Price'
+	    ],
+	    [
+		    'item_type_id' => 5,
+		    'event_id' => 3,
+		    'max_number' => 3,
+		    'value' => 10,
+		    'description' => 'Explorer Price'
+	    ],
+	    [
+		    'item_type_id' => 6,
+		    'event_id' => 3,
+		    'max_number' => 10,
+		    'value' => 15,
+		    'description' => 'Adult Price'
+	    ],
     ];
 }

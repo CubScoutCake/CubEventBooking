@@ -19,8 +19,8 @@ class ApplicationsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 10, 'autoIncrement' => true, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
         'user_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'section_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'permitholder' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'legacy_section' => ['type' => 'string', 'length' => 10, 'default' => 'Cubs', 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'permit_holder' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'created' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'modified' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'modification' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
@@ -36,10 +36,13 @@ class ApplicationsFixture extends TestFixture
         'cc_inv_yls' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'cc_inv_leaders' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+        'section_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'team_leader' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         '_indexes' => [
             'applications_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
+            'applications_event_id' => ['type' => 'index', 'columns' => ['event_id'], 'length' => []],
             'applications_section_id' => ['type' => 'index', 'columns' => ['section_id'], 'length' => []],
-            'applications_event_id' => ['type' => 'index', 'columns' => ['event_id'], 'length' => []],],
+        ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'applications_event_id' => ['type' => 'foreign', 'columns' => ['event_id'], 'references' => ['events', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
@@ -58,10 +61,10 @@ class ApplicationsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'user_id' => 1,
                 'section_id' => 1,
-                'permitholder' => 'Lorem as dolor sit amet',
+                'permit_holder' => 'Lorem as dolor sit amet',
+                'team_leader' => 'Lorem as dolor sit amet',
                 'created' => date_create('2016-12-26 23:22:30'),
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'modification' => 1,
@@ -79,10 +82,10 @@ class ApplicationsFixture extends TestFixture
                 'deleted' => null
             ],
             [
-                'id' => 2,
                 'user_id' => 1,
                 'section_id' => 1,
-                'permitholder' => 'Lorem dolor sit amet',
+                'permit_holder' => 'Lorem dolor sit amet',
+                'team_leader' => 'Lorem as dolor sit amet',
                 'created' => date_create('2016-12-26 23:22:30'),
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'modification' => 1,
@@ -100,14 +103,14 @@ class ApplicationsFixture extends TestFixture
                 'deleted' => 1481841289
             ],
             [
-                'id' => 3,
                 'user_id' => 1,
                 'section_id' => 1,
-                'permitholder' => 'Lorem as dolor sit amet',
+                'permit_holder' => 'Lorem as dolor sit amet',
+                'team_leader' => 'Lorem as dolor sit amet',
                 'created' => date_create('2016-12-26 23:22:30'),
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'modification' => 1,
-                'event_id' => 1,
+                'event_id' => 3,
                 'osm_event_id' => 1,
                 'cc_att_total' => 1,
                 'cc_att_cubs' => 1,

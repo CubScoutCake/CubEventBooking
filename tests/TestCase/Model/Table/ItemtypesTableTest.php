@@ -94,24 +94,60 @@ class ItemTypesTableTest extends TestCase
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->hydrate(false)->toArray();
         $expected = [
-            [
-                'id' => 1,
-                'minor' => true,
-                'item_type' => 'Lorem ipsum dolor sit amet',
-                'role_id' => 1,
-                'cancelled' => true,
-                'available' => true,
-                'team_price' => true,
-            ],
-            [
-                'id' => 2,
-                'item_type' => 'Lorem dolor sit amet',
-                'role_id' => 1,
-                'minor' => true,
-                'cancelled' => true,
-                'available' => true,
-                'team_price' => true,
-            ],
+	        [
+	        	'id' => 1,
+		        'item_type' => 'Team Booking',
+		        'role_id' => null,
+		        'minor' => false,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => true,
+	        ],
+	        [
+		        'id' => 2,
+		        'item_type' => 'Cub Item Type',
+		        'role_id' => 3,
+		        'minor' => true,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => false,
+	        ],
+	        [
+		        'id' => 3,
+		        'item_type' => 'Beaver Item Type',
+		        'role_id' => 2,
+		        'minor' => true,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => false,
+	        ],
+	        [
+		        'id' => 4,
+		        'item_type' => 'Scout Item Type',
+		        'role_id' => 4,
+		        'minor' => true,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => false,
+	        ],
+	        [
+		        'id' => 5,
+		        'item_type' => 'YL Item Type',
+		        'role_id' => 5,
+		        'minor' => true,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => false,
+	        ],
+	        [
+		        'id' => 6,
+		        'item_type' => 'Adult Item Type',
+		        'role_id' => 1,
+		        'minor' => false,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => false,
+	        ],
         ];
 
         $this->assertEquals($expected, $result);
@@ -125,7 +161,6 @@ class ItemTypesTableTest extends TestCase
     public function testValidationDefault()
     {
         $badData = [
-            'id' => 3,
             'itemtype' => null,
             'roletype' => null,
             'minor' => null,
@@ -134,7 +169,6 @@ class ItemTypesTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 3,
             'minor' => true,
             'item_type' => 'Lorem dolor goat amet',
             'role_id' => 1,
@@ -144,26 +178,62 @@ class ItemTypesTableTest extends TestCase
         ];
 
         $expected = [
+	        [
+		        'id' => 1,
+		        'item_type' => 'Team Booking',
+		        'role_id' => null,
+		        'minor' => false,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => true,
+	        ],
+	        [
+		        'id' => 2,
+		        'item_type' => 'Cub Item Type',
+		        'role_id' => 3,
+		        'minor' => true,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => false,
+	        ],
+	        [
+		        'id' => 3,
+		        'item_type' => 'Beaver Item Type',
+		        'role_id' => 2,
+		        'minor' => true,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => false,
+	        ],
+	        [
+		        'id' => 4,
+		        'item_type' => 'Scout Item Type',
+		        'role_id' => 4,
+		        'minor' => true,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => false,
+	        ],
+	        [
+		        'id' => 5,
+		        'item_type' => 'YL Item Type',
+		        'role_id' => 5,
+		        'minor' => true,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => false,
+	        ],
+	        [
+		        'id' => 6,
+		        'item_type' => 'Adult Item Type',
+		        'role_id' => 1,
+		        'minor' => false,
+		        'cancelled' => false,
+		        'available' => true,
+		        'team_price' => false,
+	        ],
             [
-                'id' => 1,
-                'minor' => true,
-                'item_type' => 'Lorem ipsum dolor sit amet',
-                'role_id' => 1,
-                'cancelled' => true,
-                'available' => true,
-                'team_price' => true,
-            ],
-            [
-                'id' => 2,
-                'item_type' => 'Lorem dolor sit amet',
-                'role_id' => 1,
-                'minor' => 1,
-                'cancelled' => 1,
-                'available' => 1,
-                'team_price' => 1,
-            ],
-            [
-                'id' => 3,
+                'id' => 7,
                 'minor' => true,
                 'item_type' => 'Lorem dolor goat amet',
                 'role_id' => 1,

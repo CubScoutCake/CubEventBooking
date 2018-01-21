@@ -43,7 +43,6 @@ class InvoiceItemsFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 3,
             'invoice_id' => 1,
             'value' => 1,
             'description' => 'Lorem ipsum dolor sit amet',

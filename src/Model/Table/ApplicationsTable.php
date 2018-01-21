@@ -217,6 +217,26 @@ class ApplicationsTable extends Table
         return $query;
     }
 
+	/**
+	 * Finds the attendees, which are Adult Leaders on the Application.
+	 *
+	 * @param \Cake\ORM\Query $query The original query to be modified.
+	 * @param int $roleId The Role ID to be Searched For
+	 *
+	 * @return \Cake\ORM\Query The modified query.
+	 */
+    public function findRoles($query, $roleId)
+    {
+	    $query = $query->matching(
+		    'Attendees.Roles',
+		    function ($q) {
+			    return $q->where(['Attendees.deleted IS' => null, 'Roles.id' => $roleId]);
+		    }
+	    );
+
+	    return $query;
+    }
+
     /*public function isChampedBy($applicationId, $userId)
     {
         $scoutgroups = TableRegistry::get('Scoutgroups');

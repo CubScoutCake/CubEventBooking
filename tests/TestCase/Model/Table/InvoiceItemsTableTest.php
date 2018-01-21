@@ -96,9 +96,9 @@ class InvoiceItemsTableTest extends TestCase
         $result = $query->hydrate(false)->toArray();
         $expected = [
             [
-                'id' => 3,
+                'id' => 1,
                 'invoice_id' => 1,
-                'value' => 1,
+                'value' => 1.0,
                 'description' => 'Lorem ipsum dolor sit amet',
                 'quantity' => 1,
                 'item_type_id' => 1,

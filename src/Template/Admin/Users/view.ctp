@@ -142,7 +142,8 @@
                         <li><a href="#note-pills" data-toggle="tab"><i class="fa fa-pencil-square-o fa-fw"></i> User Notes</a></li>
                     <?php endif; ?>
                     <?php if (!empty($user->notifications)): ?>
-                        <li><a href="#notif-pills" data-toggle="tab"><i class="fa fa-bell fa-fw"></i> User's Notifications</a></li>
+                        <li <?php if (empty($user->applications) && empty($user->attendees)) { echo 'class="active"'; } ?>>
+                            <a href="#notif-pills" data-toggle="tab"><i class="fa fa-bell fa-fw"></i> User's Notifications</a></li>
                     <?php endif; ?>
                 </ul>
 
@@ -155,10 +156,10 @@
                                     <tr>
                                         <th><?= __('Id') ?></th>
                                         <th class="actions"><?= __('Actions') ?></th>
-                                        <th><?= __('Scoutgroup') ?></th>
+                                        <th><?= __('Scout Group') ?></th>
                                         <th><?= __('Event') ?></th>
                                         <th><?= __('Section') ?></th>
-                                        <th><?= __('Permitholder') ?></th>
+                                        <th><?= __('Permit Holder') ?></th>
                                         <th><?= __('Created') ?></th>
                                         <th><?= __('Modified') ?></th>
                                     </tr>
@@ -181,10 +182,10 @@
                                                     </ul>
                                                 </div>
                                             </td>
-                                            <td><?= $applications->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->scoutgroup->scoutgroup,18), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $applications->scoutgroup->id]) : '' ?></td>
+                                            <td><?= $applications->section->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->section->scoutgroup->scoutgroup,18), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $applications->section->scoutgroup->id]) : '' ?></td>
                                             <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['prefix' => 'admin', 'controller' => 'Events', 'action' => 'view', $applications->event->id]) : '' ?></td>
-                                            <td><?= h($applications->section) ?></td>
-                                            <td><?= h($applications->permitholder) ?></td>
+                                            <td><?= $applications->section->has('section') ? $this->Html->link($applications->section->section, ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $applications->section->id]) : '' ?></td>
+                                            <td><?= is_null($applications->permit_holder) ? $applications->team_leader : $applications->permit_holder ?></td>
                                             <td><?= h($applications->created) ?></td>
                                             <td><?= h($applications->modified) ?></td>
                                         </tr>
@@ -277,7 +278,7 @@
                                                 <td><?= h($attendees->firstname) ?></td>    
                                                 <td><?= h($attendees->lastname) ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->dateofbirth, 'dd-MMM-yy') ?></td>
-                                                <td><?= h($attendees->nightsawaypermit) ?></td>
+                                                <td><?= $attendees->nightsawaypermit ? 'Yes' : 'No' ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->created, 'dd-MMM-yy HH:mm') ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
                                             </tr>
