@@ -53,7 +53,7 @@ class UserMailer extends Mailer
     public function validate($user, $group, $notification)
     {
         // $email = new Email('default');
-        $this->transport('sparkpost')
+        $this->setTransport('sparkpost')
             ->template('validate', 'default')
             ->emailFormat('html')
             ->to([$user->email => $user->full_name])
@@ -82,8 +82,8 @@ class UserMailer extends Mailer
     public function passwordReset($user, $token)
     {
         $this->setTo($user->email, $user->full_name)
-            //->setTemplate('password_reset')
-            //->setLayout('default')
+            ->setTemplate('password_reset')
+            ->setLayout('default')
             ->setTransport('sparkpost')
             ->setEmailFormat('both')
             ->setFrom('info@hertscubs.uk', 'HertsCubs Booking Site')

@@ -316,6 +316,7 @@ class TokensTableTest extends TestCase
     public function testBuildToken()
     {
         $token = $this->Tokens->buildToken(1);
+        $token = urldecode($token);
 
         $this->assertGreaterThanOrEqual(256, strlen($token), 'Token is too short.');
 

@@ -185,6 +185,7 @@ class TokensTable extends Table
         $token = base64_encode($token);
 
         $token = $decrypter . $token;
+        $token = urlencode($token);
 
         return $token;
     }
@@ -196,6 +197,7 @@ class TokensTable extends Table
      */
     public function validate($token)
     {
+        $token = urldecode($token);
         $decrypter = substr($token, 0, 256);
 
         $token = substr($token, 256);

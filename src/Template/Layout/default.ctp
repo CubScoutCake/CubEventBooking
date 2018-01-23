@@ -215,7 +215,7 @@ $cakeDescription = 'HertsCubs Booking System';
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw <?php if ($unreadNotifications == true) : ?> text-danger animated swing infinite <?php endif; ?>"></i>  <i class="fa fa-caret-down <?php if ($unreadNotifications == true) : ?> text-danger <?php endif; ?>"></i>
+                        <i class="fa fa-bell fa-fw <?php if (isset($unreadNotifications) && $unreadNotifications) : ?> text-danger animated swing infinite <?php endif; ?>"></i>  <i class="fa fa-caret-down <?php if (isset($unreadNotifications) && $unreadNotifications) : ?> text-danger <?php endif; ?>"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
                         <?php   $usr = $this->request->session()->read('Auth.User.id');

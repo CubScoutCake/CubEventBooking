@@ -16,43 +16,34 @@ class TokensController extends AppController
      *
      * @param null $token
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|null
      */
     public function validate($token = null)
     {
-        // Token uses $userid = null, $decryptor = null
-
         if (is_null($token)) {
             return $this->redirect($this->referer('/'));
         }
 
-        $token = base64_decode($token);
-        $token = json_decode($token);
+        $validated = $this->Tokens->validate($token);
 
-        $tokenId = $token['id'];
-        $tokenDecrypter = $token['decrypter'];
-        $randomNumber = $token['random_number'];
+        if (!is_numeric($validated) || (!$validated && is_bool($validated))) {
+        	return $this->redirect($this->referer('/'));
+        }
 
-        $resettor = $this->Users->get($userid);
+        $tokenRow = $this->Tokens->get($validated);
 
-        $cipher = $resettor->reset;
+        $resettor = $this->Users->get($tokenRow->user_id);
 
-        $now = Time::now();
-
-        $string = 'Reset Success' . ( $resettor->id * $now->day ) . $decryptor . $now->year . $now->month;
-
-        $test = Security::hash($string);
-
-        if ($cipher == $test) {
+        if (is_numeric($validated)) {
             $PasswordForm = new PasswordForm();
             $this->set(compact('PasswordForm'));
 
             if ($this->request->is('post')) {
-                $fmPassword = $this->request->data['newpw'];
-                $fmConfirm = $this->request->data['confirm'];
+                $fmPassword = $this->request->getData('newpw');
+                $fmConfirm = $this->request->getData('confirm');
 
                 if ($fmConfirm == $fmPassword) {
-                    $fmPostcode = $this->request->data['postcode'];
+                    $fmPostcode = $this->request->getData('postcode');
                     $fmPostcode = str_replace(" ", "", strtoupper($fmPostcode));
 
                     $usPostcode = $resettor->postcode;
