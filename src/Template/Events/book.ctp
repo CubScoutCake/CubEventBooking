@@ -269,7 +269,7 @@
                                         <div class="row">
                                             <br/>
                                             <div class="col-lg-offset-1 col-lg-3">
-	                                            <?= $this->Html->link('Setup OSM', ['controller' => 'OSM', 'action' => 'home'], ['title' => __('SetupOSM'), 'class' => 'btn btn-default btm-large']) ?>
+	                                            <?= $this->Html->link('Setup OSM', ['controller' => 'Osm', 'action' => 'home'], ['title' => __('SetupOSM'), 'class' => 'btn btn-default btm-large']) ?>
                                             </div>
                                             <div class="col-lg-7">
                                                 <p>You have not yet setup your OSM for use with the booking system. Please do this and then return to this page.</p>

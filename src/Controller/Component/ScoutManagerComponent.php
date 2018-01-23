@@ -500,6 +500,19 @@ class ScoutManagerComponent extends Component
             $preBody = $response->json;
             $body = Hash::get($preBody, $user->osm_section_id);
 
+            if (is_null($body)) {
+                $error_message = 'No OSM Response Received - access confirmation required.';
+                $this->log($error_message);
+
+                if (isset($controller)) {
+                    $this->Flash->error(__($error_message));
+
+                    return $controller->redirect([ 'action' => 'access' ]);
+                }
+
+                return false;
+            }
+
             $terms = Hash::combine($body, '{n}.termid', '{n}', '{n}.past');
             $term = Hash::get($terms, 1);
 
