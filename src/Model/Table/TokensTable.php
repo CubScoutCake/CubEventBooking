@@ -162,7 +162,9 @@ class TokensTable extends Table
             'contain' => 'Users'
         ]);
 
-        $decrypter = Security::randomBytes(256);
+        $decrypter = Security::randomBytes(64);
+        $decrypter = base64_encode($decrypter);
+        $decrypter = substr($decrypter, 0, 32);
 
         $hash = $decrypter . $tokenRow->user->lastname . $tokenRow->created . $tokenRow['random_number'];
 
@@ -185,6 +187,7 @@ class TokensTable extends Table
         $token = base64_encode($token);
 
         $token = $decrypter . $token;
+        $token = gzcompress($token, 9);
         $token = urlencode($token);
 
         return $token;
@@ -198,9 +201,10 @@ class TokensTable extends Table
     public function validateToken($token)
     {
         $token = urldecode($token);
-        $decrypter = substr($token, 0, 256);
+        $token = gzuncompress($token);
+        $decrypter = substr($token, 0, 32);
 
-        $token = substr($token, 256);
+        $token = substr($token, 32);
         $token = base64_decode($token);
         $token = json_decode($token);
 
@@ -221,10 +225,10 @@ class TokensTable extends Table
 
         $tokenRowHash = $tokenRow['hash'];
 
-//        if ($testHash == $tokenRowHash) {
+        if ($testHash == $tokenRowHash) {
             return $token->id;
-//        }
+        }
 
-//        return false;
+        return false;
     }
 }

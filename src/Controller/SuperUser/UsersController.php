@@ -330,37 +330,25 @@ class UsersController extends AppController
         }
     }
 
-    public function reset($userId)
-    {
-        $sets = TableRegistry::get('Settings');
+	/**
+	 * Reset a User's Password
+	 *
+	 * @param int $userId The ID of the User
+	 * @return \Cake\Http\Response
+	 */
+	public function reset($userId)
+	{
+		$this->loadComponent('Password');
 
-        $user = $this->Users->get($userId);
+		if ($this->Password->sendReset($userId)) {
 
-        $now = Time::now();
+			$this->Flash->success('User Reset Email Sent.');
+			return $this->redirect($this->referer(['controller' => 'Users', 'action' => 'view', $userId]));
+		}
 
-        $rMax = $sets->get(16)->text;
-        $rMin = $sets->get(17)->text;
-
-        $random = rand($rMin, $rMax);
-
-        $string = 'Reset Success' . ( $user->id * $now->day ) . $random . $now->year . $now->month;
-
-        $token = Security::hash($string);
-
-        $newToken = ['reset' => $token];
-
-        $user = $this->Users->patchEntity($user, $newToken);
-
-        if ($this->Users->save($user)) {
-            $this->getMailer('User')->send('passres', [$user, $random]);
-
-            $this->Flash->success(__('A Password Reset was generated.'));
-
-            return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $userId]);
-        } else {
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
-        }
-    }
+		$this->Flash->error('Reset Email could not be sent.');
+		return $this->redirect($this->referer(['controller' => 'Users', 'action' => 'view', $userId]));
+	}
 
     /**
      * Delete method

@@ -34,7 +34,7 @@
             <tr>
                 <td><?= h($notifications->id) ?></td>
                 <td><?= h($notifications->user_id) ?></td>
-                <td><?= h($notifications->notificationtype_id) ?></td>
+                <td><?= h($notifications->notification_type_id) ?></td>
                 <td><?= h($notifications->new) ?></td>
                 <td><?= h($notifications->header) ?></td>
                 <td><?= h($notifications->text) ?></td>
