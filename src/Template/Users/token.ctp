@@ -6,7 +6,7 @@
                     <h3 class="panel-title">Enter details to request a password reset.</h3>
                 </div>
                 <div class="panel-body">
-					<?= $this->Form->create($PasswordForm); ?>
+					<?= $this->Form->create($passwordForm); ?>
 					<?= $this->Form->input('newpw', ['label' => 'Enter a New Password.', 'type' => 'password']); ?>
 					<?= $this->Form->input('confirm', ['label' => 'Confirm Password.', 'type' => 'password']); ?>
 					<?= $this->Form->input('postcode', ['label' => 'Enter Postcode.']); ?>

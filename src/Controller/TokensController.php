@@ -14,7 +14,7 @@ class TokensController extends AppController
     /**
      * Validation of a Token
      *
-     * @param null $token
+     * @param string $token The Token for deciphering.
      *
      * @return \Cake\Http\Response|null
      */
@@ -24,7 +24,7 @@ class TokensController extends AppController
             return $this->redirect($this->referer('/'));
         }
 
-        $validated = $this->Tokens->validate($token);
+        $validated = $this->Tokens->validateToken($token);
 
         if (!is_numeric($validated) || (!$validated && is_bool($validated))) {
         	return $this->redirect($this->referer('/'));

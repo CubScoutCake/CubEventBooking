@@ -52,7 +52,12 @@ class PasswordComponent extends Component
                 'subject' => 'Password Reset for ' . $user->full_name,
                 'notification_type_id' => $notification_type_id,
                 'notification' => [
-                    'notification_header' => 'User Password Reset'
+                    'notification_header' => 'User Password Reset',
+                    'notification_type_id' => $notification_type_id,
+                    'user_id' => $user->id,
+                    'new' => true,
+                    'notification_source' => 'User',
+                    'text' => 'User Password Reset Email Sent for user ' . $user->full_name,
                 ]
             ]
         ];

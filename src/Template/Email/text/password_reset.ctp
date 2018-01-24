@@ -13,7 +13,6 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 ?>
-<?php $content = explode("\n", $content); ?>
 <h2>Hertfordshire Cubs Booking System - Password Reset</h2>
 
 <p>You are receiving this email because someone requested a password reset on your account.</p>
@@ -22,7 +21,7 @@
 <p><strong>Full Name:</strong> <?= h($full_name) ?></p>
 <h3>Actions</h3>
 <ul>
-	<li><?= $this->Html->link('Reset Password', ['_full' => true, 'controller' => 'Users', 'action' => 'token', 'prefix' => false, $uid, $token]) ?></li>
+	<li><?= $this->Html->link('Reset Password', ['_full' => true, 'controller' => 'Users', 'action' => 'token', 'prefix' => false, $token]) ?></li>
 </ul>
 
 <p>This link will work until 23:59 on the day it was triggered.</p>

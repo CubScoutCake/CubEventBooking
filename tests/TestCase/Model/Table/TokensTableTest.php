@@ -386,10 +386,9 @@ class TokensTableTest extends TestCase
         $this->assertTrue($result['active']);
     }
 
-    public function validate()
+    public function testValidateToken()
     {
         $goodData = [
-            'id' => 4,
             'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,
@@ -397,7 +396,7 @@ class TokensTableTest extends TestCase
         ];
 
         $expected = [
-            'id' => 4,
+            'id' => 3,
             'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,
@@ -407,7 +406,7 @@ class TokensTableTest extends TestCase
 
         $this->Tokens->save($goodEntity);
 
-        $query = $this->Tokens->get(2, [
+        $query = $this->Tokens->get(3, [
             'fields' => [
                 'id',
                 'user_id',
@@ -420,7 +419,7 @@ class TokensTableTest extends TestCase
 
         $this->assertEquals($expected, $result);
 
-        $query = $this->Tokens->get(2, [
+        $query = $this->Tokens->get(3, [
             'fields' => [
                 'random_number',
                 'active'
@@ -432,16 +431,16 @@ class TokensTableTest extends TestCase
         $this->assertTrue(is_numeric($result['random_number']));
         $this->assertTrue($result['active']);
 
-        $token = $this->Tokens->buildToken(2);
+        $token = $this->Tokens->buildToken(3);
 
-        $result = $this->Tokens->validate($token);
+        $result = $this->Tokens->validateToken($token);
 
         $this->assertNotFalse($result);
         $this->assertTrue(is_numeric($result));
 
         $incorrectToken = substr($token, 25, 256);
 
-        $result = $this->Tokens->validate($incorrectToken);
+        $result = $this->Tokens->validateToken($incorrectToken);
 
         $this->assertFalse($result);
         $this->assertNotTrue(is_numeric($result));

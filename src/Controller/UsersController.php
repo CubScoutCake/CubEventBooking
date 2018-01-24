@@ -296,7 +296,7 @@ class UsersController extends AppController
      */
     public function reset()
     {
-        $this->viewBuilder()->layout('outside');
+        $this->viewBuilder()->setLayout('outside');
 
         $resForm = new ResetForm();
         $sets = TableRegistry::get('Settings');
@@ -371,61 +371,60 @@ class UsersController extends AppController
     /**
      * Token - Completes Password Reset Function
      *
-     * @param null $userid
-     * @param null $decryptor
+     * @param string $token The String to Be Validated
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|null
      */
-    public function token($userid = null, $decryptor = null)
+    public function token($token = null)
     {
+        $tokenTable = TableRegistry::get('Tokens');
 
-        $resettor = $this->Users->get($userid);
+	    $this->viewBuilder()->setLayout('outside');
 
-        $cipher = $resettor->reset;
+	    $valid = $tokenTable->validateToken($token);
+        if (!$valid) {
+        	$this->Flash->error('Password Reset Token could not be validated.');
 
-        $now = Time::now();
+	        return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
+        }
 
-        $string = 'Reset Success' . ( $resettor->id * $now->day ) . $decryptor . $now->year . $now->month;
+        if (is_numeric($valid)) {
 
-        $test = Security::hash($string);
+        	$tokenRow = $tokenTable->get($valid);
+	        $resetUser = $this->Users->get($tokenRow->user_id);
 
-        if ($cipher == $test) {
-            $PasswordForm = new PasswordForm();
-            $this->set(compact('PasswordForm'));
+            $passwordForm = new PasswordForm();
+            $this->set(compact('passwordForm'));
 
             if ($this->request->is('post')) {
-                $fmPassword = $this->request->data['newpw'];
-                $fmConfirm = $this->request->data['confirm'];
+                $fmPassword = $this->request->getData('newpw');
+                $fmConfirm = $this->request->getData('confirm');
 
                 if ($fmConfirm == $fmPassword) {
-                    $fmPostcode = $this->request->data['postcode'];
+                    $fmPostcode = $this->request->getData('postcode');
                     $fmPostcode = str_replace(" ", "", strtoupper($fmPostcode));
 
-                    $usPostcode = $resettor->postcode;
+                    $usPostcode = $resetUser->postcode;
                     $usPostcode = str_replace(" ", "", strtoupper($usPostcode));
 
                     if ($usPostcode == $fmPostcode) {
                         $newPw = ['password' => $fmPassword
                             , 'reset' => 'No Longer Active'];
 
-                        $resettor = $this->Users->patchEntity($resettor, $newPw);
+                        $resetUser = $this->Users->patchEntity($resetUser, $newPw, [ 'fields' => ['password'], 'validate' => false ]);
 
-                        if ($this->Users->save($resettor)) {
+                        if ($this->Users->save($resetUser)) {
                             return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'login']);
                         } else {
-                            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                            $this->Flash->error(__('The user could not be saved. Please try again.'));
                         }
                     } else {
-                        $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                        $this->Flash->error(__('Your postcode could not be validated. Please try again.'));
                     }
                 } else {
-                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                    $this->Flash->error(__('The passwords you have entered do not match. Please try again.'));
                 }
             }
-        } else {
-            $this->Flash->success(__('The user has been saved.'));
-
-            return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
         }
     }
 

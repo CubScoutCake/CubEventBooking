@@ -134,16 +134,16 @@ if (!Configure::read('App.fullBaseUrl')) {
     unset($httpHost, $s);
 }
 
-Cache::config(Configure::consume('Cache'));
-ConnectionManager::config(Configure::consume('Datasources'));
-Email::configTransport(Configure::consume('EmailTransport'));
-Email::config(Configure::consume('Email'));
-Email::configTransport('sparkpost', [
-    'className' => 'SparkPost.SparkPost',
+Cache::setConfig(Configure::consume('Cache'));
+ConnectionManager::setConfig(Configure::consume('Datasources'));
+Email::setConfigTransport(Configure::consume('EmailTransport'));
+Email::setConfig(Configure::consume('Email'));
+Email::setConfigTransport('sparkpost', [
+    'className' => 'SparkPost',
     'apiKey' => Configure::read('SparkPost.Api.key')
 ]);
-Log::config(Configure::consume('Log'));
-Security::salt(Configure::consume('Security.salt'));
+Log::setConfig(Configure::consume('Log'));
+Security::setSalt(Configure::consume('Security.salt'));
 
 /**
  * The default crypto extension in 3.0 is OpenSSL.
@@ -191,7 +191,6 @@ Plugin::load('CsvView');
 Plugin::load('Migrations');
 Plugin::load('BootstrapUI');
 Plugin::load('Search');
-Plugin::load('SparkPost');
 
 //Plugin::load('Ajax', ['bootstrap' => true]);
 Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);
@@ -246,5 +245,3 @@ DispatcherFactory::add('ControllerFactory');
  * This is needed for matching the auto-localized string output of Time() class when parsing dates.
  */
 Type::build('datetime')->useLocaleParser();
-
-Plugin::load('DatabaseLog');

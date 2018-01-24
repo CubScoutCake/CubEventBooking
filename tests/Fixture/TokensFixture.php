@@ -47,7 +47,6 @@ class TokensFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'token' => 'Lorem ipsum dolor sit amet',
                 'user_id' => 1,
                 'email_send_id' => 1,
@@ -62,7 +61,6 @@ class TokensFixture extends TestFixture
                 'header' => 'Lorem ipsum dolor sit amet'
             ],
             [
-                'id' => 2,
                 'token' => 'Lorem ipsum dolor sit amet',
                 'user_id' => 1,
                 'email_send_id' => 1,

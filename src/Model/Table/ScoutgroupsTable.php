@@ -43,6 +43,18 @@ class ScoutgroupsTable extends Table
         $this->hasMany('Sections', [
             'foreignKey' => 'scoutgroup_id'
         ]);
+
+        $this->searchManager()
+            ->value('district_id')
+            ->add('q', 'Search.Like', [
+                'before' => true,
+                'after' => true,
+                'fieldMode' => 'OR',
+                'comparison' => 'LIKE',
+                'wildcardAny' => '*',
+                'wildcardOne' => '?',
+                'field' => ['scoutgroup']
+            ]);
     }
 
     /**
@@ -80,28 +92,5 @@ class ScoutgroupsTable extends Table
         $rules->add($rules->existsIn(['district_id'], 'Districts'));
 
         return $rules;
-    }
-
-    /**
-     * Search configuration options
-     *
-     * @return Manager Search query.
-     */
-    public function searchConfiguration()
-    {
-        $search = new Manager($this);
-
-        $search->value('district_id')
-            ->add('q', 'Search.Like', [
-                'before' => true,
-                'after' => true,
-                'fieldMode' => 'OR',
-                'comparison' => 'LIKE',
-                'wildcardAny' => '*',
-                'wildcardOne' => '?',
-                'field' => ['scoutgroup']
-            ]);
-
-        return $search;
     }
 }
