@@ -2,16 +2,20 @@
 
 namespace App\Mailer;
 
+use App\Model\Entity\Notification;
+use App\Model\Entity\Scoutgroup;
+use App\Model\Entity\User;
+use Cake\Core\Configure;
+use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
 use Cake\ORM\Entity;
-use Cake\ORM\TableRegistry;
 
 class UserMailer extends Mailer
 {
     /**
-     * @param Entity $user The User Entity
-     * @param Entity $group The Scoutgroup associated
-     * @param Entity $notification The Notification Entity.
+     * @param User $user The User Entity
+     * @param Scoutgroup $group The Scoutgroup associated
+     * @param Notification $notification The Notification Entity.
      *
      * @return void
      */
@@ -45,7 +49,7 @@ class UserMailer extends Mailer
 
     /**
      * @param Entity $user The User Entity
-     * @param Entity $group The Scoutgroup associated
+     * @param Scoutgroup $group The Scoutgroup associated
      * @param Entity $notification The Notification Entity.
      *
      * @return void
@@ -74,7 +78,7 @@ class UserMailer extends Mailer
     }
 
     /**
-     * @param Entity $user The User Entity.
+     * @param User $user The User Entity.
      * @param string $token The String of the Token Generated
      *
      * @return void
@@ -86,13 +90,12 @@ class UserMailer extends Mailer
             ->setLayout('default')
             ->setTransport('sparkpost')
             ->setEmailFormat('both')
-            ->setFrom('info@hertscubs.uk', 'HertsCubs Booking Site')
+            ->setSender('info@hertscubs.uk', 'HertsCubs Booking Site')
             ->setSubject('Password Reset for ' . $user->full_name)
             ->setViewVars(['username' => $user->username,
                 'date_created' => $user->created,
                 'full_name' => $user->full_name,
                 'token' => $token,
-                'uid' => $user->id,
             ])
             ->setHelpers(['Html', 'Text', 'Time']);
     }

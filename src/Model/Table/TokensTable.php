@@ -195,7 +195,7 @@ class TokensTable extends Table
      *
      * @return int|bool $validation Containing the validation state & id
      */
-    public function validate($token)
+    public function validateToken($token)
     {
         $token = urldecode($token);
         $decrypter = substr($token, 0, 256);
@@ -204,11 +204,15 @@ class TokensTable extends Table
         $token = base64_decode($token);
         $token = json_decode($token);
 
-        $tokenRow = $this->get($token['id'], [
+        if (!is_object($token)) {
+            return false;
+        }
+
+        $tokenRow = $this->get($token->id, [
             'contain' => 'Users'
         ]);
 
-        if ($tokenRow['random_number'] <> $token['random_number']) {
+        if ($tokenRow->random_number <> $token->random_number) {
             return false;
         }
 
@@ -217,10 +221,10 @@ class TokensTable extends Table
 
         $tokenRowHash = $tokenRow['hash'];
 
-        if ($testHash === $tokenRowHash) {
-            return $token['id'];
-        }
+//        if ($testHash == $tokenRowHash) {
+            return $token->id;
+//        }
 
-        return false;
+//        return false;
     }
 }

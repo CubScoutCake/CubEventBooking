@@ -18,14 +18,15 @@
         "friendsofcake/cakephp-csvview": "@stable",
         "muffin/trash": "dev-master",
         "friendsofcake/search": "@stable",
-        "syntaxera/cakephp-sparkpost-plugin": "dev-develop",
-        "php-http/httplug": "@stable",
+        "php-http/httplug": "^1.1",
         "php-http/client-common": "@stable",
         "php-http/socket-client": "@stable",
         "robmorgan/phinx": "@stable",
         "dereuromark/cakephp-databaselog": "@stable",
         "josegonzalez/cakephp-upload": "^3.6",
-        "riesenia/cakephp-duplicatable": "^3.0"
+        "riesenia/cakephp-duplicatable": "^3.0",
+        "sparkpost/sparkpost": "^2.1",
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "psy/psysh": "@stable",

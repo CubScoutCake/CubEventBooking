@@ -114,6 +114,23 @@ class UsersTable extends Table
         $this->hasMany('EmailSends', [
             'foreignKey' => 'user_id'
         ]);
+
+        $this->searchManager()
+             ->value('section_id')
+            // Here we will alias the 'q' query param to search the `Articles.title`
+            // field and the `Articles.content` field, using a LIKE match, with `%`
+            // both before and after.
+             ->value('role_id')
+             ->value('auth_role_id')
+             ->add('q', 'Search.Like', [
+                 'before' => true,
+                 'after' => true,
+                 'fieldMode' => 'OR',
+                 'comparison' => 'ILIKE',
+                 'wildcardAny' => '*',
+                 'wildcardOne' => '?',
+                 'field' => ['firstname', 'lastname', 'email', 'username']
+             ]);
     }
 
     /**
@@ -174,22 +191,28 @@ class UsersTable extends Table
             ->notEmpty('membership_number');
 
         $validator
-            ->integer('osm_user_id');
+            ->integer('osm_user_id')
+            ->requirePresence('osm_user_id', false);
 
         $validator
-            ->integer('osm_linked');
+            ->integer('osm_linked')
+            ->requirePresence('osm_linked', false);
 
         $validator
-            ->dateTime('osm_linkdate');
+            ->dateTime('osm_linkdate')
+            ->requirePresence('osm_linkdate', false);
 
         $validator
-            ->integer('osm_section_id');
+            ->integer('osm_section_id')
+            ->requirePresence('osm_section_id', false);
 
         $validator
-            ->integer('osm_current_term');
+            ->integer('osm_current_term')
+            ->requirePresence('osm_current_term', false);
 
         $validator
-            ->dateTime('osm_term_end');
+            ->dateTime('osm_term_end')
+            ->requirePresence('osm_term_end', false);
 
         return $validator;
     }
@@ -247,34 +270,6 @@ class UsersTable extends Table
         }
 
         return true;
-    }
-
-    /**
-     * Search configuration options
-     *
-     * @return Manager Search query.
-     */
-    public function searchConfiguration()
-    {
-        $search = new Manager($this);
-
-        $search->value('section_id')
-            // Here we will alias the 'q' query param to search the `Articles.title`
-            // field and the `Articles.content` field, using a LIKE match, with `%`
-            // both before and after.
-                ->value('role_id')
-                ->value('auth_role_id')
-                ->add('q', 'Search.Like', [
-                    'before' => true,
-                    'after' => true,
-                    'fieldMode' => 'OR',
-                    'comparison' => 'LIKE',
-                    'wildcardAny' => '*',
-                    'wildcardOne' => '?',
-                    'field' => ['firstname', 'lastname', 'email', 'username']
-                ]);
-
-        return $search;
     }
 
     /**
