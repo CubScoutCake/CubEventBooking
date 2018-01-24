@@ -6,7 +6,7 @@
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('user_id') ?></th>
-                <th><?= $this->Paginator->sort('notificationtype_id', 'Type') ?></th>
+                <th><?= $this->Paginator->sort('notification_type_id', 'Type') ?></th>
                 <th><?= $this->Paginator->sort('new', 'Read') ?></th>
                 <th><?= $this->Paginator->sort('notification_header', 'Header') ?></th>
                 <th><?= $this->Paginator->sort('created') ?></th>

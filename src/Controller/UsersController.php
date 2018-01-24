@@ -414,6 +414,9 @@ class UsersController extends AppController
                         $resetUser = $this->Users->patchEntity($resetUser, $newPw, [ 'fields' => ['password'], 'validate' => false ]);
 
                         if ($this->Users->save($resetUser)) {
+
+                        	$this->Flash->success('Your password was saved successfully.');
+
                             return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'login']);
                         } else {
                             $this->Flash->error(__('The user could not be saved. Please try again.'));

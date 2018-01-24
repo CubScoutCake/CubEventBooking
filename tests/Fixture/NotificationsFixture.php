@@ -33,11 +33,11 @@ class NotificationsFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'notifications_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
-            'notifications_notificationtype_id' => ['type' => 'index', 'columns' => ['notification_type_id'], 'length' => []],
+            'notifications_notification_type_id' => ['type' => 'index', 'columns' => ['notification_type_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'notifications_notificationtype_id' => ['type' => 'foreign', 'columns' => ['notification_type_id'], 'references' => ['notification_types', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
+            'notifications_notification_type_id' => ['type' => 'foreign', 'columns' => ['notification_type_id'], 'references' => ['notification_types', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
             'notifications_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
         ],
     ];

@@ -8,7 +8,7 @@
                         <th><?= $this->Paginator->sort('id') ?></th>
                         <th class="actions"><?= __('Actions') ?></th>
                         <th><?= $this->Paginator->sort('user_id', 'User') ?></th>
-                        <th><?= $this->Paginator->sort('notificationtype_id', 'Type') ?></th>
+                        <th><?= $this->Paginator->sort('notification_type_id', 'Type') ?></th>
                         <th><?= $this->Paginator->sort('created') ?></th>
                     </tr>
                 </thead>

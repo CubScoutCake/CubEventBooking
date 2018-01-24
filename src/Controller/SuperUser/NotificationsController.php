@@ -97,7 +97,7 @@ class NotificationsController extends AppController
                                 , 'link_controller' => 'Users'
                                 , 'link_action' => 'view'
                                 , 'link_prefix' => false
-                                , 'notificationtype_id' => 1
+                                , 'notification_type_id' => 1
                                 , 'user_id' => $userId
                                 , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
                                 , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
@@ -180,7 +180,7 @@ class NotificationsController extends AppController
             $paymentData = [     'link_id' => $invoice->id
                                 , 'link_controller' => 'Invoices'
                                 , 'link_action' => 'view'
-                                , 'notificationtype_id' => 2
+                                , 'notification_type_id' => 2
                                 , 'user_id' => $invoice->user_id
                                 , 'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.'
                                 , 'notification_header' => 'A payment has been recorded.'
@@ -262,7 +262,7 @@ class NotificationsController extends AppController
             $paymentData = [     'link_id' => $invoice->id
                                 , 'link_controller' => 'Invoices'
                                 , 'link_action' => 'view'
-                                , 'notificationtype_id' => 2
+                                , 'notification_type_id' => 2
                                 , 'user_id' => $invoice->user_id
                                 , 'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.'
                                 , 'notification_header' => 'A payment has been recorded.'
@@ -332,7 +332,7 @@ class NotificationsController extends AppController
             $invoiceData = [     'link_id' => $invoice->id
                                 , 'link_controller' => 'Invoices'
                                 , 'link_action' => 'view'
-                                , 'notificationtype_id' => 8
+                                , 'notification_type_id' => 8
                                 , 'user_id' => $invoice->user_id
                                 , 'text' => 'There is a balance outstanding on this Invoice.'
                                 , 'notification_header' => 'Balance Outstanding'
@@ -422,7 +422,7 @@ class NotificationsController extends AppController
             $invoiceData = [     'link_id' => $invoice->id
                                 , 'link_controller' => 'Invoices'
                                 , 'link_action' => 'view'
-                                , 'notificationtype_id' => 9
+                                , 'notification_type_id' => 9
                                 , 'user_id' => $invoice->user_id
                                 , 'text' => 'A Balance Surcharge of ' . $percentage . '% of Balance was added.'
                                 , 'notification_header' => 'Late Payment Surcharge Added'
@@ -511,7 +511,7 @@ class NotificationsController extends AppController
             $invQueryData = [     'link_id' => $user->id
                                 , 'link_controller' => 'Users'
                                 , 'link_action' => 'view'
-                                , 'notificationtype_id' => 1
+                                , 'notification_type_id' => 1
                                 , 'user_id' => $user->id
                                 , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
                                 , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
@@ -550,7 +550,7 @@ class NotificationsController extends AppController
                                 , 'link_controller' => 'Users'
                                 , 'link_action' => 'view'
                                 , 'link_prefix' => false
-                                , 'notificationtype_id' => 1
+                                , 'notification_type_id' => 1
                                 , 'user_id' => $userId
                                 , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
                                 , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
@@ -614,7 +614,7 @@ class NotificationsController extends AppController
                                 , 'link_controller' => 'Users'
                                 , 'link_action' => 'view'
                                 , 'link_prefix' => false
-                                , 'notificationtype_id' => 1
+                                , 'notification_type_id' => 1
                                 , 'user_id' => $userId
                                 , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
                                 , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
@@ -719,7 +719,7 @@ class NotificationsController extends AppController
             $invoiceData = [     'link_id' => $invoice->id
                                 , 'link_controller' => 'Invoices'
                                 , 'link_action' => 'view'
-                                , 'notificationtype_id' => 6
+                                , 'notification_type_id' => 6
                                 , 'user_id' => $invoice->user_id
                                 , 'text' => 'Please see the attached invoice'
                                 , 'notification_header' => 'Invoice attached'
