@@ -330,25 +330,26 @@ class UsersController extends AppController
         }
     }
 
-	/**
-	 * Reset a User's Password
-	 *
-	 * @param int $userId The ID of the User
-	 * @return \Cake\Http\Response
-	 */
-	public function reset($userId)
-	{
-		$this->loadComponent('Password');
+    /**
+     * Reset a User's Password
+     *
+     * @param int $userId The ID of the User
+     * @return \Cake\Http\Response
+     */
+    public function reset($userId)
+    {
+        $this->loadComponent('Password');
 
-		if ($this->Password->sendReset($userId)) {
+        if ($this->Password->sendReset($userId)) {
+            $this->Flash->success('User Reset Email Sent.');
 
-			$this->Flash->success('User Reset Email Sent.');
-			return $this->redirect($this->referer(['controller' => 'Users', 'action' => 'view', $userId]));
-		}
+            return $this->redirect($this->referer(['controller' => 'Users', 'action' => 'view', $userId]));
+        }
 
-		$this->Flash->error('Reset Email could not be sent.');
-		return $this->redirect($this->referer(['controller' => 'Users', 'action' => 'view', $userId]));
-	}
+        $this->Flash->error('Reset Email could not be sent.');
+
+        return $this->redirect($this->referer(['controller' => 'Users', 'action' => 'view', $userId]));
+    }
 
     /**
      * Delete method

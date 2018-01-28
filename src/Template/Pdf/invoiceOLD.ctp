@@ -64,9 +64,9 @@
                     </tr>
                     <?php foreach ($invoice->invoice_items as $invoiceItems): ?>
                     <tr>
-                        <td><?= h($invoiceItems->Description) ?></td>
-                        <td><?= h($invoiceItems->Quantity) ?></td>
-                        <td><?= h($this->number->currency($invoiceItems->Value,'GBP')) ?></td>
+                        <td><?= h($invoiceItems->description) ?></td>
+                        <td><?= h($invoiceItems->quantity) ?></td>
+                        <td><?= h($this->number->currency($invoiceItems->value,'GBP')) ?></td>
                         <td><?= h($this->number->currency($invoiceItems->quantity_price,'GBP')) ?></td>
                     </tr>
                     <?php endforeach; ?>

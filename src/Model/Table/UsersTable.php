@@ -69,6 +69,11 @@ class UsersTable extends Table
             'field' => 'deleted'
         ]);
         $this->addBehavior('Search.Search');
+        $this->addBehavior('CounterCache', [
+            'Sections' => [
+                'cc_users'
+            ]
+        ]);
 
         $this->belongsTo('Roles', [
             'foreignKey' => 'role_id',

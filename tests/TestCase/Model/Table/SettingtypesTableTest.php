@@ -99,6 +99,12 @@ class SettingtypesTableTest extends TestCase
                 'description' => 'Application Reference',
                 'min_auth' => 1
             ],
+            [
+                'id' => 7,
+                'setting_type' => 'Payable',
+                'description' => 'Payable Reference',
+                'min_auth' => 8
+            ],
         ];
 
         $this->assertEquals($expected, $result);
@@ -118,7 +124,6 @@ class SettingtypesTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 7,
             'setting_type' => 'Lorem Fish dolor sit amet',
             'description' => 'Lorem Monkey dolor sit amet',
             'min_auth' => 1
@@ -163,6 +168,12 @@ class SettingtypesTableTest extends TestCase
             ],
             [
                 'id' => 7,
+                'setting_type' => 'Payable',
+                'description' => 'Payable Reference',
+                'min_auth' => 8
+            ],
+            [
+                'id' => 8,
                 'setting_type' => 'Lorem Fish dolor sit amet',
                 'description' => 'Lorem Monkey dolor sit amet',
                 'min_auth' => 1
@@ -171,7 +182,7 @@ class SettingtypesTableTest extends TestCase
 
         $badEntity = $this->Settingtypes->newEntity($badData);
         //$inaccessibleEntity = $this->Settingtypes->newEntity($goodData);
-        $goodEntity = $this->Settingtypes->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Settingtypes->newEntity($goodData);
 
         $this->assertFalse($this->Settingtypes->save($badEntity));
         //$this->assertFalse($this->Settingtypes->save($inaccessibleEntity));

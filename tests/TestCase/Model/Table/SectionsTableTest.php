@@ -83,7 +83,11 @@ class SectionsTableTest extends TestCase
                 'deleted' => null,
                 'section' => 'Lorem ipsum dolor sit amet',
                 'section_type_id' => 1,
-                'scoutgroup_id' => 1
+                'scoutgroup_id' => 1,
+                'validated' => true,
+                'cc_users' => null,
+                'cc_atts' => null,
+                'cc_apps' => null,
             ],
         ];
 
@@ -102,7 +106,6 @@ class SectionsTableTest extends TestCase
         $createdDate = $startNow->modify('-2 hours');
 
         $badData = [
-            'id' => 4,
             'created' => $createdDate,
             'modified' => $modifiedDate,
             'deleted' => null,
@@ -112,7 +115,6 @@ class SectionsTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 3,
             'created' => $createdDate,
             'modified' => $modifiedDate,
             'deleted' => null,
@@ -129,7 +131,11 @@ class SectionsTableTest extends TestCase
                 'deleted' => null,
                 'section' => 'Lorem ipsum dolor sit amet',
                 'section_type_id' => 1,
-                'scoutgroup_id' => 1
+                'scoutgroup_id' => 1,
+                'validated' => true,
+                'cc_users' => null,
+                'cc_atts' => null,
+                'cc_apps' => null,
             ],
             [
                 'id' => 3,
@@ -138,7 +144,11 @@ class SectionsTableTest extends TestCase
                 'deleted' => null,
                 'section' => 'Lorem LASO sit amet',
                 'section_type_id' => 1,
-                'scoutgroup_id' => 1
+                'scoutgroup_id' => 1,
+                'validated' => false,
+                'cc_users' => null,
+                'cc_atts' => null,
+                'cc_apps' => null,
             ],
         ];
 
@@ -168,7 +178,6 @@ class SectionsTableTest extends TestCase
         $createdDate = $startNow->modify('-2 hours');
 
         $badData = [
-            'id' => 4,
             'created' => $createdDate,
             'modified' => $modifiedDate,
             'deleted' => null,
@@ -178,7 +187,6 @@ class SectionsTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 3,
             'created' => $createdDate,
             'modified' => $modifiedDate,
             'deleted' => null,
@@ -195,7 +203,11 @@ class SectionsTableTest extends TestCase
                 'deleted' => null,
                 'section' => 'Lorem ipsum dolor sit amet',
                 'section_type_id' => 1,
-                'scoutgroup_id' => 1
+                'scoutgroup_id' => 1,
+                'validated' => true,
+                'cc_users' => null,
+                'cc_atts' => null,
+                'cc_apps' => null,
             ],
             [
                 'id' => 3,
@@ -204,7 +216,11 @@ class SectionsTableTest extends TestCase
                 'deleted' => null,
                 'section' => 'Lorem LASO sit amet',
                 'section_type_id' => 1,
-                'scoutgroup_id' => 1
+                'scoutgroup_id' => 1,
+                'validated' => false,
+                'cc_users' => null,
+                'cc_atts' => null,
+                'cc_apps' => null,
             ],
         ];
 

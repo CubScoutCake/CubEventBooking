@@ -84,53 +84,52 @@ class EventsController extends AppController
             'contain' => ['Discounts', 'SectionTypes', 'Applications', 'EventTypes.InvoiceTexts', 'EventTypes.LegalTexts', 'EventTypes.ApplicationRefs']
         ]);
 
-        $term = $event->event_type->invoice_text->text;
+        $term = $event->event_type->application_ref->text;
 
         if (($event->max_apps - $event->cc_apps) > 1) {
             $term = Inflector::pluralize($term);
         }
 
-	    $this->loadComponent('ScoutManager');
-	    $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
+        $this->loadComponent('ScoutManager');
+        $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
 
-	    $readyForSync = false;
+        $readyForSync = false;
 
-	    if ($checkArray['linked'] && $checkArray['sectionSet'] && $checkArray['termCurrent']) {
-	    	$osmEvents = $this->ScoutManager->getEventList($this->Auth->user('id'));
-	    	$readyForSync = true;
-	    }
+        if ($checkArray['linked'] && $checkArray['sectionSet'] && $checkArray['termCurrent']) {
+            $osmEvents = $this->ScoutManager->getEventList($this->Auth->user('id'));
+            $readyForSync = true;
+        }
 
         $attForm = new AttNumberForm();
-		$syncForm = new SyncBookForm();
+        $syncForm = new SyncBookForm();
 
         if ($this->request->is('post')) {
-
             $section = $this->request->getData('section');
             $nonSection = $this->request->getData('non_section');
             $leaders = $this->request->getData('leaders');
             $osm_event = $this->request->getData('osm_event');
 
-	        if (!is_null($section)) {
-		        $this->redirect([
-			        'controller' => 'Applications',
-			        'action' => 'simple_book',
-			        'prefix' => false,
-			        $event->id,
-			        $section,
-			        $nonSection,
-			        $leaders,
-		        ]);
-	        }
+            if (!is_null($section)) {
+                $this->redirect([
+                    'controller' => 'Applications',
+                    'action' => 'simple_book',
+                    'prefix' => false,
+                    $event->id,
+                    $section,
+                    $nonSection,
+                    $leaders,
+                ]);
+            }
 
-	        if (!is_null($osm_event)) {
-	        	$this->redirect([
-	        		'controller' => 'Applications',
-			        'action' => 'sync_book',
-			        'prefix' => false,
-			        $event->id,
-			        $osm_event
-		        ]);
-	        }
+            if (!is_null($osm_event)) {
+                $this->redirect([
+                    'controller' => 'Applications',
+                    'action' => 'sync_book',
+                    'prefix' => false,
+                    $event->id,
+                    $osm_event
+                ]);
+            }
         }
 
         $this->set(compact('event', 'term', 'attForm', 'syncForm', 'section', 'non_section', 'leaders', 'osmEvents', 'readyForSync'));

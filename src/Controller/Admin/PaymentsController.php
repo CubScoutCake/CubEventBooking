@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
+use App\Form\PaymentAssocationForm;
 
 /**
  * Payments Controller
@@ -44,46 +45,65 @@ class PaymentsController extends AppController
     /**
      * Add method
      *
-     * @param int $invId a suggested invoice to associate
      * @param int $numberOfInvoiceAssocs a number for the amount of invoice lines available.
+     * @param int $invId a suggested invoice to association
+     *
      * @return \Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
-    public function add($invId = null, $numberOfInvoiceAssocs = null)
+    public function add($numberOfInvoiceAssocs = null, $invId = null)
     {
-        $payment = $this->Payments->newEntity();
-        if ($this->request->is('post')) {
-            $newData = ['user_id' => $this->Auth->user('id')];
-            $payment = $this->Payments->patchEntity($payment, $newData);
+    	if ( is_null($numberOfInvoiceAssocs) || $numberOfInvoiceAssocs < 1 ) {
+    		$paymentAssociationForm = new PaymentAssocationForm();
+		    $this->set(compact('paymentAssociationForm', 'invId', 'numberOfInvoiceAssocs'));
 
-            $payment = $this->Payments->patchEntity($payment, $this->request->data, [
-                'associated' => [
-                    'Invoices'
-                ]
-            ]);
+		    if ( $this->request->is( 'post' ) ) {
+		    	$requested = $this->request->getData('payment_assoc_count');
 
-            if ($this->Payments->save($payment)) {
-                $redir = $payment->get('id');
+		    	$this->redirect(['action' => 'add', $requested, $invId]);
+		    }
+	    }
 
-                $this->Flash->success(__('The payment has been saved.'));
+	    if ( !is_null($numberOfInvoiceAssocs) && $numberOfInvoiceAssocs > 1 ) {
 
-                return $this->redirect(['controller' => 'Notifications', 'action' => 'new_payment', 'prefix' => 'admin', $redir]);
-            } else {
-                $this->Flash->error(__('The payment could not be saved. Please, try again.'));
-            }
-        }
+		    $payment = $this->Payments->newEntity();
+		    if ( $this->request->is( 'post' ) ) {
+			    $newData = [ 'user_id' => $this->Auth->user( 'id' ) ];
+			    $payment = $this->Payments->patchEntity( $payment, $newData );
 
-        $invoices = $this->Payments->Invoices->find('unarchived')->find('list', ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]);
+			    $payment = $this->Payments->patchEntity( $payment, $this->request->data, [
+				    'associated' => [
+					    'Invoices'
+				    ]
+			    ] );
 
-        if (isset($invId)) {
-            $invoices = $this->Payments->Invoices->find('list', ['conditions' => ['Invoices.id' => $invId]]);
-        }
+			    if ( $this->Payments->save( $payment ) ) {
+				    $redir = $payment->get( 'id' );
 
-        if (is_null( $numberOfInvoiceAssocs)) {
-	        $numberOfInvoiceAssocs = 1;
-        }
+				    $this->Flash->success( __( 'The payment has been saved.' ) );
 
-        $this->set(compact('payment', 'invoices', 'numberOfInvoiceAssocs' ));
-        $this->set('_serialize', ['payment']);
+				    return $this->redirect( [
+					    'controller' => 'Notifications',
+					    'action'     => 'new_payment',
+					    'prefix'     => 'admin',
+					    $redir
+				    ] );
+			    } else {
+				    $this->Flash->error( __( 'The payment could not be saved. Please, try again.' ) );
+			    }
+		    }
+
+		    $invoices = $this->Payments->Invoices->find( 'unarchived' )->find( 'list', [
+			    'limit' => 200,
+			    'order' => [ 'Invoices.id' => 'DESC' ]
+		    ] );
+
+		    if ( isset( $invId ) ) {
+			    $invoices = $this->Payments->Invoices->find( 'list', [ 'conditions' => [ 'Invoices.id' => $invId ] ] );
+		    }
+
+		    $this->set( compact( 'payment', 'invoices', 'numberOfInvoiceAssocs' ) );
+		    $this->set( '_serialize', [ 'payment' ] );
+	    }
     }
 
     /**
@@ -102,11 +122,11 @@ class PaymentsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $payment = $this->Payments->patchEntity($payment, $this->request->data);
 
-	        $payment = $this->Payments->patchEntity($payment, $this->request->data, [
-		        'associated' => [
-			        'Invoices'
-		        ]
-	        ]);
+            $payment = $this->Payments->patchEntity($payment, $this->request->data, [
+                'associated' => [
+                    'Invoices'
+                ]
+            ]);
 
             if ($this->Payments->save($payment)) {
                 $this->Flash->success(__('The payment has been saved.'));
@@ -116,14 +136,14 @@ class PaymentsController extends AppController
                 $this->Flash->error(__('The payment could not be saved. Please, try again.'));
             }
         }
-	    $invoices = $this->Payments->Invoices->find('unarchived')->find('list', ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]);
+        $invoices = $this->Payments->Invoices->find('unarchived')->find('list', ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]);
 
-        if (is_null( $numberOfInvoiceAssocs)) {
-		    $numberOfInvoiceAssocs = 1;
-	    }
+        if (is_null($numberOfInvoiceAssocs)) {
+            $numberOfInvoiceAssocs = 1;
+        }
 
-	    $this->set(compact('payment', 'invoices', 'numberOfInvoiceAssocs' ));
-	    $this->set('_serialize', ['payment']);
+        $this->set(compact('payment', 'invoices', 'numberOfInvoiceAssocs'));
+        $this->set('_serialize', ['payment']);
     }
 
     /**

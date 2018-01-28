@@ -41,9 +41,9 @@ class ScoutgroupsController extends AppController
         $this->set('_serialize', ['scoutgroup']);
     }
 
-    /**
-     * Add method
-     *
-     * @return void Redirects on successful add, renders view otherwise.
-     */
+/**
+ * Add method
+ *
+ * @return void Redirects on successful add, renders view otherwise.
+ */
 }

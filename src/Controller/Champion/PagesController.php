@@ -40,11 +40,11 @@ class PagesController extends AppController
     {
         //$path = func_get_args();
 
-        /**$count = count($path);
-        *if (!$count) {
-        *    return $this->redirect('/');
-        *}
-        *$page = $subpage = null;
+    /**$count = count($path);
+     *if (!$count) {
+     *    return $this->redirect('/');
+     *}
+     *$page = $subpage = null;
 
         if (!empty($path[0])) {
             $page = $path[0];
@@ -61,7 +61,7 @@ class PagesController extends AppController
                 throw $e;
             }
             throw new NotFoundException();
-        }**/
+             **/
     }
 
     public function user_home()

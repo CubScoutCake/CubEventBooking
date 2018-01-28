@@ -50,9 +50,9 @@ echo $this->Html->tag('h2', $invoice['id']);
             <?php foreach ($invoice->invoice_items as $invoiceItems): ?>
             <tr>
                 <td><?= h($invoiceItems->id) ?></td>
-                <td><?= h($this->number->currency($invoiceItems->Value,'GBP')) ?></td>
-                <td><?= h($invoiceItems->Description) ?></td>
-                <td><?= h($invoiceItems->Quantity) ?></td>
+                <td><?= h($this->number->currency($invoiceItems->value,'GBP')) ?></td>
+                <td><?= h($invoiceItems->description) ?></td>
+                <td><?= h($invoiceItems->quantity) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'InvoiceItems', 'action' => 'view', $invoiceItems->id]) ?>
 

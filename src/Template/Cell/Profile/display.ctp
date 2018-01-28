@@ -9,7 +9,6 @@
                     echo $this->Url->build([
                         'controller' => 'Users',
                         'action' => 'view',
-                        'prefix' => $prefix,
                         $userId
                         ]); ?>"><i class="fa fa-user fa-fw"></i> <?php echo $name; ?> Profile</a>
             </li>

@@ -8,19 +8,25 @@
                         <th><?= $this->Paginator->sort('id', 'Payment Id') ?></th>
                         <th><?= $this->Paginator->sort('value', 'Payment Value') ?></th>
                         <th><?= $this->Paginator->sort('created', 'Date Recorded') ?></th>
-                        <th><?= $this->Paginator->sort('paid', 'Date Paid') ?></th>
                         <th><?= $this->Paginator->sort('name_on_cheque', 'Name on Cheque') ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($payments as $payment): ?>
-                    <tr>
-                        <td><?= $this->Number->format($payment->id) ?></td>
-                        <td><?= $this->Number->currency($payment->value,'GBP') ?></td>
-                        <td><?= $this->Time->i18nFormat($payment->created, 'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nFormat($payment->paid, 'dd-MMM-yy') ?></td>
-                        <td><?= h($payment->name_on_cheque) ?></td>
-                    </tr>
+                        <tr class="danger">
+                            <td><?= $this->Number->format($payment->id) ?></td>
+                            <td><?= $this->Number->currency($payment->value,'GBP') ?></td>
+                            <td><?= $this->Time->i18nFormat($payment->created, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= h($payment->name_on_cheque) ?></td>
+                        </tr>
+                        <?php foreach ($payment->invoices as $invoice): ?>
+                            <tr>
+                                <td class="text-right"><?= $this->Html->link('Invoice #' . $invoice->id, [] ) ?></td>
+                                <td class="text-right"><?= $this->Number->currency($invoice->_joinData->x_value,'GBP') ?></td>
+                                <td class="text-right"><?= $this->Time->i18nFormat($invoice->created, 'dd-MMM-yy HH:mm') ?></td>
+                                <td></td>
+                            </tr>
+                        <?php endforeach; ?>
                     <?php endforeach; ?>
                 </tbody>
             </table>

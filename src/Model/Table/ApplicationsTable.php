@@ -52,6 +52,9 @@ class ApplicationsTable extends Table
         $this->addBehavior('CounterCache', [
             'Events' => [
                 'cc_apps'
+            ],
+            'Sections' => [
+                'cc_apps'
             ]
         ]);
 

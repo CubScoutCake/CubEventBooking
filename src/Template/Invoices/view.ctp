@@ -1,24 +1,9 @@
 <div class="row">
-    <div class="col-lg-10 col-md-10">
+    <div class="col-lg-11 col-md-11">
         <h1 class="page-header"><i class="fa fa-file-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
     <div class="col-lg-1 col-md-1">
-        </br>
-        <div class="pull-right pull-down">
-            <div class="btn-group">
-                <button type="button" class="btn btn-warning">
-                    <a href="<?php echo $this->Url->build([
-                        'controller' => 'Invoices',
-                        'action' => 'pdfView',
-                        'prefix' => false,
-                        $invoice->id]); ?>"><i class="fa fa-file-pdf-o fa-fw"></i> Download</a></span>
-                </button>
-            </div>
-        </div>
-        </br>
-    </div>
-    <div class="col-lg-1 col-md-1">
-        </br>
+        <br/>
         <div class="pull-right pull-down">
             <div class="btn-group">
                 <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
@@ -32,10 +17,18 @@
                         'prefix' => false,
                         $invoice->id],['_full']); ?>">Update Invoice</a>
                     </li>
+                    <li><a href="<?php echo $this->Url->build([
+		                    'controller' => 'Invoices',
+		                    'action' => 'view',
+		                    'prefix' => false,
+		                    $invoice->id,
+		                    '_ext' => 'pdf',
+                        ]); ?>"><span><i class="fa fa-file-pdf-o fa-fw"></i> Download</span></a>
+                    </li>
                 </ul>
             </div>
         </div>
-        </br>
+        <br/>
     </div>
 </div>
 
@@ -44,7 +37,7 @@
         <div class="panel panel-yellow">
             <div class="panel-body">
                 <span><?= __('User') ?>: <?= $invoice->has('user') ? $this->Html->link($invoice->user->full_name, ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></span>
-                </br>
+                <br/>
                 <span><?= __('Application') ?>: <?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></span>
             </div>
         </div>
@@ -53,7 +46,7 @@
         <div class="panel panel-yellow">
             <div class="panel-body">
                 <span><?= __('Date Created') ?>: <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YYYY HH:mm')) ?></span>
-                </br>
+                <br/>
                 <span><?= __('Date Last Modified') ?>: <?= h($this->Time->i18nFormat($invoice->modified,'dd-MMM-YYYY HH:mm')) ?></span>
             </div>
         </div>

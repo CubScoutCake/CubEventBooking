@@ -101,9 +101,9 @@
                     </tr>
                     <?php foreach ($invoice->invoice_items as $invoiceItems): ?>
                     <tr>
-                        <td><span><?= h($invoiceItems->Description) ?></span></td>
-                        <td><span><?= h($invoiceItems->Quantity) ?></span></td>
-                        <td><span><?= h($this->number->currency($invoiceItems->Value,'GBP')) ?></span></td>
+                        <td><span><?= h($invoiceItems->description) ?></span></td>
+                        <td><span><?= h($invoiceItems->quantity) ?></span></td>
+                        <td><span><?= h($this->number->currency($invoiceItems->value,'GBP')) ?></span></td>
                         <td><span><?= h($this->number->currency($invoiceItems->quantity_price,'GBP')) ?></span></td>
                     </tr>
                     <?php endforeach; ?>

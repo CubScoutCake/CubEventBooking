@@ -29,9 +29,9 @@ class ApplicationsController extends AppController
         $this->set('_serialize', ['applications']);
     }
 
-	/**
-	 * @param int $eventID The ID of the Event
-	 */
+    /**
+     * @param int $eventID The ID of the Event
+     */
     public function bookings($eventID = null)
     {
         $this->paginate = [
@@ -42,11 +42,11 @@ class ApplicationsController extends AppController
         $this->set('_serialize', ['applications']);
     }
 
-	/**
-	 * @param int $applicationID The Application ID
-	 *
-	 * @return \Cake\Http\Response|null
-	 */
+    /**
+     * @param int $applicationID The Application ID
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function invoice($applicationID)
     {
         $this->loadComponent('Line');
@@ -105,9 +105,9 @@ class ApplicationsController extends AppController
         $this->Progress->determineApp($application->id, false, $this->Auth->user('id'), true);
     }
 
-	/**
-	 * @param int $id The ID of the Event
-	 */
+    /**
+     * @param int $id The ID of the Event
+     */
     public function pdfView($id = null)
     {
         // Instantiate Objects
@@ -165,11 +165,11 @@ class ApplicationsController extends AppController
         $this->redirect(['controller' => 'Applications', 'action' => 'view', $application->id, '_ext' => 'pdf']);
     }
 
-	/**
-	 * @param int $eventID The ID of the event to be booked.
-	 *
-	 * @return \Cake\Http\Response|null
-	 */
+    /**
+     * @param int $eventID The ID of the event to be booked.
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function book($eventID = null)
     {
         $now = Time::now();
@@ -320,7 +320,7 @@ class ApplicationsController extends AppController
                 $this->Flash->success(__('Your '. $term . ' has been registered.'));
 
                 if ($parse) {
-                	$this->Flash->success(__('Your Invoice has been created automatically.'));
+                    $this->Flash->success(__('Your Invoice has been created automatically.'));
                 }
 
                 return $this->redirect(['action' => 'view', $appId]);
@@ -349,133 +349,132 @@ class ApplicationsController extends AppController
         $this->set('_serialize', ['application']);
     }
 
-	/**
-	 * @param int $eventID The Internal Event ID
-	 * @param int $osmEvent The External Online ScoutManager Event ID
-	 *
-	 * @return null|\Cake\Http\Response
-	 */
+    /**
+     * @param int $eventID The Internal Event ID
+     * @param int $osmEvent The External Online ScoutManager Event ID
+     *
+     * @return null|\Cake\Http\Response
+     */
     public function syncBook($eventID, $osmEvent)
     {
-	    $this->Events = TableRegistry::get('Events');
-	    $event = $this->Events->get($eventID, ['contain' => ['EventTypes']]);
+        $this->Events = TableRegistry::get('Events');
+        $event = $this->Events->get($eventID, ['contain' => ['EventTypes']]);
 
-	    if (isset($eventID)) {
-		    $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventID])->count('*');
+        if (isset($eventID)) {
+            $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventID])->count('*');
 
-		    if ($applicationCount > $event->available_apps && isset($event->available_apps)) {
-			    $this->Flash->error(__('Apologies this Event is Full.'));
+            if ($applicationCount > $event->available_apps && isset($event->available_apps)) {
+                $this->Flash->error(__('Apologies this Event is Full.'));
 
-			    return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
-		    }
+                return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
+            }
 
-		    if (!$event->new_apps) {
-			    $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
+            if (!$event->new_apps) {
+                $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
 
-			    return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
-		    }
-	    }
+                return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
+            }
+        }
 
-	    $users = TableRegistry::get('Users');
-	    $user = $users->get($this->Auth->user('id'), ['contain' => ['Sections.SectionTypes.Roles']]);
+        $users = TableRegistry::get('Users');
+        $user = $users->get($this->Auth->user('id'), ['contain' => ['Sections.SectionTypes.Roles']]);
 
-	    $sectionType = Inflector::singularize($user->section->section_type->section_type);
+        $sectionType = Inflector::singularize($user->section->section_type->section_type);
 
-	    $settings = TableRegistry::get('Settings');
-	    $termSetting = $settings->get($event->event_type->application_ref_id);
+        $settings = TableRegistry::get('Settings');
+        $termSetting = $settings->get($event->event_type->application_ref_id);
 
-	    $term = $termSetting->text;
-	    $teamLeaderBool = $event->event_type->team_leader;
-	    $permitHolderBool = $event->event_type->permit_holder;
+        $term = $termSetting->text;
+        $teamLeaderBool = $event->event_type->team_leader;
+        $permitHolderBool = $event->event_type->permit_holder;
 
-	    $application = $this->Applications->newEntity(['contain' => 'Attendees']);
+        $application = $this->Applications->newEntity(['contain' => 'Attendees']);
 
-	    $newData = [
-		    'modification' => 0,
-		    'user_id' => $user->id,
-		    'section_id' => $user->section_id,
-		    'event_id' => $eventID,
-		    'osm_event_id' => $osmEvent,
-		    'invoice' => [
-			    'user_id' => $user->id,
-		    ]
-	    ];
+        $newData = [
+            'modification' => 0,
+            'user_id' => $user->id,
+            'section_id' => $user->section_id,
+            'event_id' => $eventID,
+            'osm_event_id' => $osmEvent,
+            'invoice' => [
+                'user_id' => $user->id,
+            ]
+        ];
 
-	    $application = $this->Applications->patchEntity(
-		    $application,
-		    $newData,
-		    ['associated' => [ 'Invoices', 'Attendees' ]]
-	    );
+        $application = $this->Applications->patchEntity(
+            $application,
+            $newData,
+            ['associated' => [ 'Invoices', 'Attendees' ]]
+        );
 
-	    $this->loadComponent('ScoutManager');
-	    $attendees = $this->ScoutManager->getEventAttendees($this->Auth->user(['id']), $osmEvent);
+        $this->loadComponent('ScoutManager');
+        $attendees = $this->ScoutManager->getEventAttendees($this->Auth->user(['id']), $osmEvent);
 
-	    $data = [];
-	    $this->loadComponent('Booking');
+        $data = [];
+        $this->loadComponent('Booking');
 
-	    foreach ($attendees as $key => $attendee) {
+        foreach ($attendees as $key => $attendee) {
+            $leaderPatrol = false;
+            if ($attendee['patrolid'] == -2) {
+                $leaderPatrol = true;
+            }
 
-	    	$leaderPatrol = false;
-	    	if ($attendee['patrolid'] == -2) {
-	    		$leaderPatrol = true;
-		    }
+            $attendeeArr = [
+                'user_id' => $user->id,
+                'role_id' => $this->Booking->guessRole($attendee['dob'], $leaderPatrol),
+                'firstname' => $attendee['firstname'],
+                'lastname' => $attendee['lastname'],
+                'osm_id' => $attendee['scoutid'],
+                'osm_sync_date' => Time::now(),
+                'dateofbirth' => $attendee['dob'],
+                'section_id' => $user->section_id
+            ];
 
-	    	$attendeeArr = [
-	    		'user_id' => $user->id,
-			    'role_id' => $this->Booking->guessRole($attendee['dob'], $leaderPatrol),
-			    'firstname' => $attendee['firstname'],
-			    'lastname' => $attendee['lastname'],
-			    'osm_id' => $attendee['scoutid'],
-			    'osm_sync_date' => Time::now(),
-			    'dateofbirth' => $attendee['dob'],
-			    'section_id' => $user->section_id
-		    ];
+            array_push($data, $attendeeArr);
+        }
 
-	    	array_push($data, $attendeeArr);
-	    }
+        $appData = ['attendees' => $data];
+        $this->Applications->patchEntity($application, $appData, ['associated' => ['Invoices', 'Attendees']]);
 
-	    $appData = ['attendees' => $data];
-	    $this->Applications->patchEntity($application, $appData, ['associated' => ['Invoices', 'Attendees']]);
+        $attendeeCount = count($data);
 
-	    $attendeeCount = count($data);
+        $this->set(compact('application', 'attendees', 'attendeeCount', 'teamLeaderBool', 'permitHolderBool', 'term', 'sectionType'));
 
-	    $this->set(compact('application', 'attendees', 'attendeeCount', 'teamLeaderBool', 'permitHolderBool', 'term', 'sectionType'));
+        if ($this->request->is('post')) {
+            // Patch Data
+            $application = $this->Applications->patchEntity(
+                $application,
+                $this->request->getData(),
+                [
+                    'associated' => [ 'Attendees', 'Invoices' ],
+                    'fields' => [
+                        'permit_holder',
+                        'team_leader',
+                        'attendees.role_id'
+                    ]
+                ]
+            );
 
-	    if ($this->request->is('post')) {
-		    // Patch Data
-		    $application = $this->Applications->patchEntity(
-			    $application,
-			    $this->request->getData(),
-			    [
-			    	'associated' => [ 'Attendees', 'Invoices' ],
-				    'fields' => [
-					    'permit_holder',
-					    'team_leader',
-				    	'attendees.role_id'
-				    ]
-			    ]
-		    );
+            if ($this->Applications->save($application)) {
+                $appId = $application->get('id');
 
-		    if ($this->Applications->save($application)) {
-			    $appId = $application->get('id');
+                $this->loadComponent('Availability');
 
-			    $this->loadComponent('Availability');
+                $this->Availability->getNumbers($appId);
 
-			    $this->Availability->getNumbers($appId);
+                $this->Flash->success(__('Your '. $term . ' has been registered.'));
 
-			    $this->Flash->success(__('Your '. $term . ' has been registered.'));
+                return $this->redirect(['action' => 'view', $appId]);
+            } else {
+                $this->Flash->error(__('The application could not be saved. Please, try again.'));
+            }
+        }
 
-			    return $this->redirect(['action' => 'view', $appId]);
-		    } else {
-			    $this->Flash->error(__('The application could not be saved. Please, try again.'));
-		    }
-	    }
+        $sections = $this->Applications->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
+        $roles = $this->Applications->Attendees->Roles->find('nonAuto')->find('list', ['limit' => 200]);
 
-	    $sections = $this->Applications->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
-	    $roles = $this->Applications->Attendees->Roles->find('nonAuto')->find('list', ['limit' => 200]);
-
-	    $this->set(compact('application', 'term', 'roles', 'sections', 'sectionType'));
-	    $this->set('_serialize', ['application']);
+        $this->set(compact('application', 'term', 'roles', 'sections', 'sectionType'));
+        $this->set('_serialize', ['application']);
     }
 
     /**
@@ -534,19 +533,18 @@ class ApplicationsController extends AppController
         $this->set('_serialize', ['application']);
     }
 
-	/**
-	 * @param int $id The ID of the Event to be linked.
-	 *
-	 * @return \Cake\Http\Response|null
-	 */
+    /**
+     * @param int $id The ID of the Event to be linked.
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function link($id = null)
     {
         $application = $this->Applications->get($id, [
             'contain' => ['Attendees', 'Sections.Scoutgroups']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-
-        	$mod = $application->modification + 1;
+            $mod = $application->modification + 1;
 
             $newData = ['user_id' => $this->Auth->user('id'), 'modification' => $mod];
             $application = $this->Applications->patchEntity($application, $newData);
@@ -587,11 +585,11 @@ class ApplicationsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-	/**
-	 * @param \Cake\ORM\Entity $user User Entity
-	 *
-	 * @return bool
-	 */
+    /**
+     * @param \Cake\ORM\Entity $user User Entity
+     *
+     * @return bool
+     */
     public function isAuthorized($user)
     {
         // All registered users can add articles

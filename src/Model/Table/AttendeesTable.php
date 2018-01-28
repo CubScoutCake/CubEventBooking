@@ -49,6 +49,12 @@ class AttendeesTable extends Table
             'field' => 'deleted'
         ]);
 
+        $this->addBehavior('CounterCache', [
+            'Sections' => [
+                'cc_atts'
+            ]
+        ]);
+
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'

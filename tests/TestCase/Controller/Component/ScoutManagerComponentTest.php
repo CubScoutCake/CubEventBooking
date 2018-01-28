@@ -314,6 +314,15 @@ class ScoutManagerComponentTest extends TestCase
 
         $expectedResponse = [
             [
+                'scoutid' => '399683',
+                'attending' => 'Yes',
+                'payment' => 'Automatic',
+                'firstname' => 'Joshua',
+                'lastname' => 'Beardsall',
+                'dob' => '2007-11-03',
+                'patrolid' => '18238',
+            ],
+            [
                 'scoutid' => '343558',
                 'attending' => 'Yes',
                 'payment' => 'Automatic',
@@ -348,6 +357,24 @@ class ScoutManagerComponentTest extends TestCase
                 'lastname' => 'Kersley-Allinson',
                 'dob' => '2008-07-06',
                 'patrolid' => '59853'
+            ],
+            [
+                'scoutid' => '230067',
+                'attending' => 'Yes',
+                'payment' => 'Automatic',
+                'firstname' => 'Samuel',
+                'lastname' => 'Money',
+                'dob' => '2008-03-09',
+                'patrolid' => '30479',
+            ],
+            [
+                'scoutid' => '755153',
+                'attending' => 'Yes',
+                'payment' => 'Automatic',
+                'firstname' => 'Iason',
+                'lastname' => 'Shearstone',
+                'dob' => '2008-04-25',
+                'patrolid' => '30479',
             ],
             [
                 'scoutid' => '525654',

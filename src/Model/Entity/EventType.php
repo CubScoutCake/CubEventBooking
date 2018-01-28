@@ -15,10 +15,12 @@ use Cake\ORM\Entity;
  * @property int $invoice_text_id
  * @property int $legal_text_id
  * @property int $application_ref_id
+ * @property int $payable_setting_id
  *
  * @property \App\Model\Entity\Setting $invoice_text
  * @property \App\Model\Entity\Setting $legal_text
  * @property \App\Model\Entity\Setting $application_ref
+ * @property \App\Model\Entity\Setting $payable
  * @property \App\Model\Entity\Event[] $events
  */
 class EventType extends Entity

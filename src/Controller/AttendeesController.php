@@ -2,8 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\ORM\TableRegistry;
 use Cake\Network\Http\Client;
+use Cake\ORM\TableRegistry;
 
 /**
  * Attendees Controller
@@ -20,7 +20,6 @@ class AttendeesController extends AppController
      */
     public function index()
     {
-
         $this->paginate = [
             'contain' => ['Users', 'Sections.Scoutgroups', 'Roles'],
             'conditions' => ['user_id' => $this->Auth->user('id')]
@@ -48,7 +47,9 @@ class AttendeesController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @param int $appId The ID of the Application to attach the Adult
+     *
+     * @return mixed - Redirects on successful add, renders view otherwise.
      */
     public function adult($appId = null)
     {
@@ -56,16 +57,6 @@ class AttendeesController extends AppController
 
         if ($this->request->is('post')) {
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
-
-            $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
-                , 'lastname' => ucwords(strtolower($attendee->lastname))
-                , 'address_1' => ucwords(strtolower($attendee->address_1))
-                , 'address_2' => ucwords(strtolower($attendee->address_2))
-                , 'city' => ucwords(strtolower($attendee->city))
-                , 'county' => ucwords(strtolower($attendee->county))
-                , 'postcode' => strtoupper($attendee->postcode)];
-
-            $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 
             $phone1 = $attendee->phone;
             $phone2 = $attendee->phone2;
@@ -152,7 +143,7 @@ class AttendeesController extends AppController
     /**
      * Create a Young Person
      *
-     * @param null $appId
+     * @param null $appId The Application to add the Attendee to
      *
      * @return \Cake\Network\Response|null
      */
@@ -163,16 +154,6 @@ class AttendeesController extends AppController
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
 
             $attendee->user_id = $this->Auth->user('id');
-
-            $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
-                , 'lastname' => ucwords(strtolower($attendee->lastname))
-                , 'address_1' => ucwords(strtolower($attendee->address_1))
-                , 'address_2' => ucwords(strtolower($attendee->address_2))
-                , 'city' => ucwords(strtolower($attendee->city))
-                , 'county' => ucwords(strtolower($attendee->county))
-                , 'postcode' => strtoupper($attendee->postcode)];
-
-            $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 
             $phone1 = $attendee->phone;
             $phone2 = $attendee->phone2;
@@ -257,8 +238,10 @@ class AttendeesController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $AttID Attendee id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @param int $AttID The ID of the Attendee.
+     *
+     * @return mixed Redirects on successful edit, renders view otherwise.
+     *
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($AttID = null)
@@ -268,16 +251,6 @@ class AttendeesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
-
-            $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
-                , 'lastname' => ucwords(strtolower($attendee->lastname))
-                , 'address_1' => ucwords(strtolower($attendee->address_1))
-                , 'address_2' => ucwords(strtolower($attendee->address_2))
-                , 'city' => ucwords(strtolower($attendee->city))
-                , 'county' => ucwords(strtolower($attendee->county))
-                , 'postcode' => strtoupper($attendee->postcode)];
-
-            $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 
             $phone1 = $attendee->phone;
             $phone2 = $attendee->phone2;
@@ -321,7 +294,9 @@ class AttendeesController extends AppController
      * Delete method
      *
      * @param string|null $AttID Attendee id.
-     * @return \Cake\Network\Response Redirects to index.
+     *
+     * @return \Cake\Http\Response Redirects to index.
+     *
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function delete($AttID = null)
@@ -329,40 +304,6 @@ class AttendeesController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $attendee = $this->Attendees->get($AttID, ['contain' => ['Roles', 'Sections.Scoutgroups.Districts']]);
         if ($this->Attendees->delete($attendee)) {
-            /*$deleteEnt = [
-                'Entity Id' => $AttID,
-                'Controller' => 'Attendees',
-                'Action' => 'Delete',
-                'User Id' => $this->Auth->user('id'),
-                'Creation Date' => $attendee->created,
-                'Modified' => $attendee->modified,
-                'Attendee' => [
-                    'Role' => $attendee->role->role,
-                    'Invested' => $attendee->role->invested,
-                    'Minor' => $attendee->role->minor,
-                    'Last Name' => $attendee->lastname,
-                    'Scoutgroup' => $attendee->sections->scoutgroup->scoutgroup,
-                    'District' => $attendee->sections->scoutgroup->district->district
-                    ]
-                ];
-
-            $sets = TableRegistry::get('Settings');
-
-            $jsonDelete = json_encode($deleteEnt);
-            $apiKey = $sets->get(13)->text;
-            $projectId = $sets->get(14)->text;
-            $eventType = 'Action';
-
-            $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-
-            $http = new Client();
-            $response = $http->post(
-                $keenURL,
-                $jsonDelete,
-                ['type' => 'json']
-            ); */
-
-
             $this->Flash->success(__('The attendee has been deleted.'));
         } else {
             $this->Flash->error(__('The attendee could not be deleted. Please, try again.'));
@@ -371,6 +312,11 @@ class AttendeesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
+    /**
+     * @param \App\Model\Entity\User $user The Logged in User
+     *
+     * @return bool
+     */
     public function isAuthorized($user)
     {
         // All registered users can add articles

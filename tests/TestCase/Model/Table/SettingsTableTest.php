@@ -136,6 +136,16 @@ class SettingsTableTest extends TestCase
                 'setting_type_id' => 6,
                 'number' => 1.0
             ],
+            [
+                'id' => 7,
+                'name' => 'Payment Reference',
+                'text' => 'Payable to Cubs',
+                'created' => $timeNow,
+                'modified' => $timeNow,
+                'event_id' => 1,
+                'setting_type_id' => 7,
+                'number' => 1.0
+            ],
         ];
 
         $this->assertEquals($expected, $result);

@@ -114,10 +114,10 @@
                         </tr>
                         <?php foreach ($invoice->invoice_items as $invoiceItems): ?>
                         <tr>
-                            <td><?= h($invoiceItems->Description) ?></td>
-                            <td><?= h($invoiceItems->Quantity) ?></td>
-                            <td><?= h($this->number->currency($invoiceItems->Value,'GBP')) ?></td>
-                            <td><?= (strpos($invoiceItems->Description, 'CANCELLED') !== false)  ? $this->Html->link($this->number->currency($invoiceItems->quantity_price,'GBP'),['controller' => 'InvoiceItems', 'action' => 'edit', $invoiceItems->id, 'prefix' => 'admin' ]) : $this->number->currency($invoiceItems->quantity_price,'GBP'); ?></td>
+                            <td><?= h($invoiceItems->description) ?></td>
+                            <td><?= h($invoiceItems->quantity) ?></td>
+                            <td><?= h($this->number->currency($invoiceItems->value,'GBP')) ?></td>
+                            <td><?= (strpos($invoiceItems->description, 'CANCELLED') !== false)  ? $this->Html->link($this->number->currency($invoiceItems->quantity_price,'GBP'),['controller' => 'InvoiceItems', 'action' => 'edit', $invoiceItems->id, 'prefix' => 'admin' ]) : $this->number->currency($invoiceItems->quantity_price,'GBP'); ?></td>
                             <td><?= $invoiceItems->visible ? __('Yes') : __('No'); ?>
                         </tr>
                         <?php endforeach; ?>

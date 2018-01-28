@@ -93,7 +93,7 @@ class EventTypesController extends AppController
         }
         $invoiceTexts = $this->EventTypes->InvoiceTexts->find('list', ['limit' => 200]);
         $legalTexts = $this->EventTypes->LegalTexts->find('list', ['limit' => 200]);
-	    $applicationRefs = $this->EventTypes->ApplicationRefs->find('list',['limit' => 200]);
+        $applicationRefs = $this->EventTypes->ApplicationRefs->find('list', ['limit' => 200]);
         $this->set(compact('eventType', 'invoiceTexts', 'legalTexts', 'applicationRefs'));
         $this->set('_serialize', ['eventType']);
     }
