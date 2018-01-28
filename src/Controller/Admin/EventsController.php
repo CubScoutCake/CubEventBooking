@@ -470,8 +470,8 @@ class EventsController extends AppController
             }
         }
         $eventTypes = $this->Events->EventTypes->find('list', ['limit' => 200]);
-	    $sectionTypes = $this->Events->SectionTypes->find('list', ['limit' => 200]);
-	    $discounts = $this->Events->Discounts->find('list', ['limit' => 200]);
+        $sectionTypes = $this->Events->SectionTypes->find('list', ['limit' => 200]);
+        $discounts = $this->Events->Discounts->find('list', ['limit' => 200]);
         $users = $this->Events->AdminUsers->find('list', ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]);
         $this->set(compact('event', 'eventTypes', 'sectionTypes', 'discounts', 'users'));
         $this->set('_serialize', ['event']);

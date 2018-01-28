@@ -13,6 +13,10 @@ use Cake\ORM\Entity;
  * @property string $section
  * @property int $section_type_id
  * @property int $scoutgroup_id
+ * @property boolean $validated
+ * @property int $cc_users
+ * @property int $cc_atts
+ * @property int $cc_apps
  *
  * @property \App\Model\Entity\SectionType $section_type
  * @property \App\Model\Entity\Scoutgroup $scoutgroup

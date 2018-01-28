@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12 col-md-12">
-        <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
+        <h1 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
 </div>
 
@@ -8,15 +8,26 @@
     <div class="col-lg-12 col-md-12">
         <div class="panel panel-warning">
             <div class="panel-body">
-                <span><strong><?= __('User') ?>:</strong> <?= $invoice->has('user') ? $invoice->user->full_name : '' ?></span>
-                </br>
-                <span><strong><?= __('Application') ?>:</strong> <?= $invoice->has('application') ? $invoice->application->display_code : '' ?></span>
-                </br>
-                <span><strong><?= __('Event') ?>:</strong> <?= h($eventName) ?></span>
-                </br>
-                <span><strong><?= __('Date Created') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YYYY HH:mm')) ?></span>
-                </br>
-                <span><strong><?= __('Date Last Modified') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->modified,'dd-MMM-YYYY HH:mm')) ?></span>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <span><strong><?= __('Application') ?>:</strong> <?= $invoice->has('application') ? $invoice->application->display_code : '' ?></span>
+                        <br/>
+                        <span><strong><?= __('Event') ?>:</strong> <?= h($eventName) ?></span>
+                        <br/>
+                        <span><strong><?= __('Date Created') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YYYY HH:mm')) ?></span>
+                        <br/>
+                        <span><strong><?= __('Date Last Modified') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->modified,'dd-MMM-YYYY HH:mm')) ?></span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <span><strong><?= __('User') ?>:</strong> <?= $invoice->has('user') ? $invoice->user->full_name : '' ?></span>
+                        <br/>
+                        <span><strong><?= __('Section') ?>:</strong> <?= $invoice->application->has('section') ? $this->Text->truncate($invoice->application->section->section,30) : '' ?></span>
+                        <br/>
+                        <span><strong><?= __('Scout Group') ?>:</strong> <?= $invoice->application->has('section') ? $this->Text->truncate($invoice->application->section->scoutgroup->scoutgroup,30) : '' ?></span>
+                        <br/>
+                        <span><strong><?= __('District') ?>:</strong> <?= $invoice->application->has('section') ? $this->Text->truncate($invoice->application->section->scoutgroup->district->district,30) : '' ?></span>
+                    </div>
+                </div>
             </div>
             <div class="panel-footer">
                 <p>Deposits for invoices should be made payable to <strong><?= h($invPayable) ?></strong> and sent to <strong><?= h($eventName) ?>, <?= h($invAddress) ?>, <?= h($invCity) ?>, <?= h($invPostcode) ?></strong> by <strong><?= $this->Time->i18nformat($invDeadline,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invPrefix) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
@@ -31,8 +42,8 @@
                 <i class="fa fa-files-o fa-fw"></i> Balance
             </div>
             <div class="panel-body">
-                <table class="table">  
-                    <tr class="active">
+                <table class="table table-condensed">
+                    <tr>
                         <th><?= __('Initial Value') ?></th>
                         <th><?= __('Payments Recieved') ?></th>
                         <th><?= __('Balance') ?></th>          
@@ -55,8 +66,8 @@
                 <i class="fa fa-files-o fa-fw"></i> Invoice Line Items
             </div>
             <div class="panel-body">
-                <table class="table">
-                    <tr class="active">
+                <table class="table table-condensed">
+                    <tr>
                         <th><?= __('Description') ?></th>
                         <th><?= __('Quantity') ?></th>
                         <th><?= __('Value') ?></th>
@@ -64,9 +75,9 @@
                     </tr>
                     <?php foreach ($invoice->invoice_items as $invoiceItems): ?>
                     <tr>
-                        <td><?= h($invoiceItems->Description) ?></td>
-                        <td><?= h($invoiceItems->Quantity) ?></td>
-                        <td><?= h($this->number->currency($invoiceItems->Value,'GBP')) ?></td>
+                        <td><?= h($invoiceItems->description) ?></td>
+                        <td><?= h($invoiceItems->quantity) ?></td>
+                        <td><?= h($this->number->currency($invoiceItems->value,'GBP')) ?></td>
                         <td><?= h($this->number->currency($invoiceItems->quantity_price,'GBP')) ?></td>
                     </tr>
                     <?php endforeach; ?>
@@ -85,8 +96,8 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <table class="table">
-                        <tr class="active">
+                    <table class="table table-condensed">
+                        <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Value') ?></th>
                             <th><?= __('Created') ?></th>

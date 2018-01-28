@@ -38,9 +38,9 @@ class DistrictsController extends AppController
         $this->set('_serialize', ['district']);
     }
 
-    /**
-     * Add method
-     *
-     * @return void Redirects on successful add, renders view otherwise.
-     */
+/**
+ * Add method
+ *
+ * @return void Redirects on successful add, renders view otherwise.
+ */
 }

@@ -50,7 +50,10 @@ class UsersController extends AppController
                 'Invoices.Applications',
                 'Applications.Sections.Scoutgroups',
                 'Applications.Events',
-                'Attendees.Sections.Scoutgroups',
+                'Attendees' => [
+                    'Sections.Scoutgroups',
+                    'Roles'
+                ],
                 'Notes' => ['conditions' => ['visible' => true]],
                 'Notifications.NotificationTypes'
             ]
@@ -338,7 +341,6 @@ class UsersController extends AppController
                 $session->write('Reset.rsTries', $tries);
 
                 if ($count == 1) {
-
                     // Success in Resetting Triggering Reset - Bouncing to Reset.
                     $session->delete('Reset.lgTries');
                     $session->delete('Reset.rsTries');
@@ -346,7 +348,6 @@ class UsersController extends AppController
                     $this->loadComponent('Password');
 
                     if ($this->Password->sendReset($user->id)) {
-
                         $this->Flash->success('We have sent a password reset token to your email. This is valid for a short period of time.');
 
                         return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
@@ -355,7 +356,6 @@ class UsersController extends AppController
                     $this->Flash->error(__('The user could not be saved. Please, try again.'));
 
                     $this->log('Token Creation Error during Password Reset for user ' . $user->id, 'notice');
-
                 } else {
                     $this->Flash->error('This user was not found in the system.');
                 }
@@ -366,7 +366,6 @@ class UsersController extends AppController
             }
         }
     }
-
 
     /**
      * Token - Completes Password Reset Function
@@ -379,19 +378,18 @@ class UsersController extends AppController
     {
         $tokenTable = TableRegistry::get('Tokens');
 
-	    $this->viewBuilder()->setLayout('outside');
+        $this->viewBuilder()->setLayout('outside');
 
-	    $valid = $tokenTable->validateToken($token);
+        $valid = $tokenTable->validateToken($token);
         if (!$valid) {
-        	$this->Flash->error('Password Reset Token could not be validated.');
+            $this->Flash->error('Password Reset Token could not be validated.');
 
-	        return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
+            return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
         }
 
         if (is_numeric($valid)) {
-
-        	$tokenRow = $tokenTable->get($valid);
-	        $resetUser = $this->Users->get($tokenRow->user_id);
+            $tokenRow = $tokenTable->get($valid);
+            $resetUser = $this->Users->get($tokenRow->user_id);
 
             $passwordForm = new PasswordForm();
             $this->set(compact('passwordForm'));
@@ -414,8 +412,7 @@ class UsersController extends AppController
                         $resetUser = $this->Users->patchEntity($resetUser, $newPw, [ 'fields' => ['password'], 'validate' => false ]);
 
                         if ($this->Users->save($resetUser)) {
-
-                        	$this->Flash->success('Your password was saved successfully.');
+                            $this->Flash->success('Your password was saved successfully.');
 
                             return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'login']);
                         } else {
@@ -430,7 +427,6 @@ class UsersController extends AppController
             }
         }
     }
-
 
     /**
      * @param $userId
@@ -473,7 +469,6 @@ class UsersController extends AppController
         $this->Auth->allow(['reset']);
         $this->Auth->allow(['token']);
     }
-
 
     public function isAuthorized($user)
     {

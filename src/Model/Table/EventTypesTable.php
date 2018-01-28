@@ -57,6 +57,12 @@ class EventTypesTable extends Table
                 'property' => 'application_term',
                 'conditions' => ['ApplicationRefs.setting_type_id' => 6],
             ]);
+        $this->belongsTo('Payable', [
+            'className' => 'Settings',
+            'foreignKey' => 'payable_setting_id',
+            'property' => 'payable',
+            'conditions' => ['Payable.setting_type_id' => 7],
+        ]);
 
         $this->hasMany('Events', [
             'foreignKey' => 'event_type_id'
@@ -114,6 +120,7 @@ class EventTypesTable extends Table
         $rules->add($rules->existsIn(['invoice_text_id'], 'InvoiceTexts'));
         $rules->add($rules->existsIn(['legal_text_id'], 'LegalTexts'));
         $rules->add($rules->existsIn(['application_ref_id'], 'ApplicationRefs'));
+        $rules->add($rules->existsIn(['payable_setting_id'], 'Payable'));
 
         return $rules;
     }

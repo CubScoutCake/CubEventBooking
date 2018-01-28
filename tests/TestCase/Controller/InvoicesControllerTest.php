@@ -14,20 +14,35 @@ class InvoicesControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
-
+     */
     public $fixtures = [
         'app.invoices',
         'app.users',
         'app.roles',
+        'app.applications',
+        'app.setting_types',
+        'app.settings',
+        'app.event_types',
+        'app.events',
         'app.attendees',
         'app.scoutgroups',
         'app.districts',
+        'app.section_types',
+        'app.sections',
         'app.notes',
         'app.invoice_items',
-        'app.itemtypes',
+        'app.item_types',
         'app.payments',
-        'app.invoices_payments'
+        'app.prices',
+        'app.invoices_payments',
+        'app.discounts',
+        'app.notifications',
+        'app.notification_types',
+        'app.password_states',
+        'app.allergies',
+        'app.applications_attendees',
+        'app.attendees_allergies',
+        'app.auth_roles',
     ];
 
     /**
@@ -55,13 +70,11 @@ class InvoicesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-        /*
         $this->session(['Auth.User.id' => 1]);
 
         $this->get('/invoices');
 
-        $this->assertResponseOk();*/
+        $this->assertResponseOk();
     }
 
     public function testViewUnauthenticatedFails()
@@ -79,7 +92,11 @@ class InvoicesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session(['Auth.User.id' => 1]);
+
+        $this->get('/invoices/view/1');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -159,7 +176,9 @@ class InvoicesControllerTest extends IntegrationTestCase
      */
     public function testIsAuthorized()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session(['Auth.User.id' => 1]);
+        $this->get('/invoices/view/1');
+        $this->assertResponseOk();
     }
 
     /**
@@ -169,6 +188,8 @@ class InvoicesControllerTest extends IntegrationTestCase
      */
     public function testIsAuthorizedFails()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session(['Auth.User.id' => 2]);
+        $this->get('/invoices/view/2');
+        $this->assertRedirect();
     }
 }

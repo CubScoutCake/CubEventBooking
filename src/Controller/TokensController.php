@@ -27,7 +27,7 @@ class TokensController extends AppController
         $validated = $this->Tokens->validateToken($token);
 
         if (!is_numeric($validated) || (!$validated && is_bool($validated))) {
-        	return $this->redirect($this->referer('/'));
+            return $this->redirect($this->referer('/'));
         }
 
         $tokenRow = $this->Tokens->get($validated);

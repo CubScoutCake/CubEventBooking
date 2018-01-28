@@ -141,10 +141,10 @@
                                                     </ul>
                                                 </div>
                                             </td>
-                                            <td><?= $applications->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->scoutgroup->scoutgroup,18), ['controller' => 'Scoutgroups', 'action' => 'view', $applications->scoutgroup->id]) : '' ?></td>
-                                            <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['controller' => 'Events', 'action' => 'view', $applications->event->id]) : '' ?></td>
-                                            <td><?= h($applications->section) ?></td>
-                                            <td><?= h($applications->permitholder) ?></td>
+                                            <td><?= $applications->section->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->section->scoutgroup->scoutgroup,18), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $applications->section->scoutgroup->id]) : '' ?></td>
+                                            <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['prefix' => 'admin', 'controller' => 'Events', 'action' => 'view', $applications->event->id]) : '' ?></td>
+                                            <td><?= $applications->has('section') ? $this->Html->link($applications->section->section, ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $applications->section->id]) : '' ?></td>
+                                            <td><?= is_null($applications->permit_holder) ? $applications->team_leader : $applications->permit_holder ?></td>
                                             <td><?= h($applications->created) ?></td>
                                             <td><?= h($applications->modified) ?></td>
                                         </tr>
@@ -203,13 +203,11 @@
                                         <tr>
                                             <th><?= __('Id') ?></th>
                                             <th class="actions"><?= __('Actions') ?></th>
-                                            <th><?= __('Scoutgroup') ?></th>
+                                            <th><?= __('Section') ?></th>
                                             <th><?= __('Role') ?></th>
-                                            <th><?= __('Firstname') ?></th>
-                                            <th><?= __('Lastname') ?></th>
+                                            <th><?= __('Name') ?></th>
                                             <th><?= __('Dateofbirth') ?></th>
                                             <th><?= __('N.A.P.') ?></th>
-                                            <th><?= __('Created') ?></th>
                                             <th><?= __('Modified') ?></th>
                                         </tr>
                                     </thead>
@@ -229,13 +227,11 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $attendees->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendees->scoutgroup->scoutgroup,12), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->scoutgroup->id]) : '' ?></td>
+                                                <td><?= $attendees->has('section') ? $this->Html->link($this->Text->truncate($attendees->section->section,12), ['controller' => 'Scoutgroups', 'action' => 'view', $attendees->section->id]) : '' ?></td>
                                                 <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
-                                                <td><?= h($attendees->firstname) ?></td>    
-                                                <td><?= h($attendees->lastname) ?></td>
+                                                <td><?= h($attendees->full_name) ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->dateofbirth, 'dd-MMM-yy') ?></td>
-                                                <td><?= h($attendees->nightsawaypermit) ?></td>
-                                                <td><?= $this->Time->i18nFormat($attendees->created, 'dd-MMM-yy HH:mm') ?></td>
+                                                <td><?= $attendees->nightsawaypermit ? 'Yes' : 'No' ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -301,7 +297,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $notification->has('notificationtype') ? $notification->notificationtype->notification_type : '' ?></td>
+                                                <td><?= $notification->has('notification_type') ? $notification->notification_type->notification_type : '' ?></td>
                                                 <td><?= h($notification->notification_source) ?></td>
                                                 <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
                                                 <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-yy HH:mm') ?></td>

@@ -76,7 +76,6 @@ class AppController extends Controller
             }
         }
 
-
         //The add and index actions are always allowed.
         if (isset($user['id']) && in_array($this->request->params['action'], ['index', 'add', 'admin-home'])) {
             return true;

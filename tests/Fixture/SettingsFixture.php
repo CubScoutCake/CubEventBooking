@@ -44,7 +44,6 @@ class SettingsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'name' => 'Lorem ipsum dolor sit amet',
                 'text' => 'Lorem ipsum dolor sit amet',
                 'created' => date_create('2016-12-26 23:22:30'),
@@ -54,7 +53,6 @@ class SettingsFixture extends TestFixture
                 'number' => 1
             ],
             [
-                'id' => 2,
                 'name' => 'Lorem dolor sit amet',
                 'text' => 'Lorem dolor sit amet',
                 'created' => date_create('2016-12-26 23:22:30'),
@@ -64,7 +62,6 @@ class SettingsFixture extends TestFixture
                 'number' => 1
             ],
             [
-                'id' => 3,
                 'name' => 'LegalTxt',
                 'text' => 'Legal Text',
                 'created' => date_create('2016-12-26 23:22:30'),
@@ -74,7 +71,6 @@ class SettingsFixture extends TestFixture
                 'number' => 1
             ],
             [
-                'id' => 4,
                 'name' => 'InvTxt',
                 'text' => 'Invoice Text',
                 'created' => date_create('2016-12-26 23:22:30'),
@@ -84,7 +80,6 @@ class SettingsFixture extends TestFixture
                 'number' => 1
             ],
             [
-                'id' => 5,
                 'name' => 'Lorem ipsum sit amet',
                 'text' => 'Lorem ipsum dolor sit amet',
                 'created' => date_create('2016-12-26 23:22:30'),
@@ -94,13 +89,21 @@ class SettingsFixture extends TestFixture
                 'number' => 1
             ],
             [
-                'id' => 6,
                 'name' => 'Application Reference',
                 'text' => 'Team',
                 'created' => date_create('2016-12-26 23:22:30'),
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'event_id' => 1,
                 'setting_type_id' => 6,
+                'number' => 1
+            ],
+            [
+                'name' => 'Payment Reference',
+                'text' => 'Payable to Cubs',
+                'created' => date_create('2016-12-26 23:22:30'),
+                'modified' => date_create('2016-12-26 23:22:30'),
+                'event_id' => 1,
+                'setting_type_id' => 7,
                 'number' => 1
             ],
         ];

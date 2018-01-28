@@ -108,6 +108,17 @@ class ScoutManagerComponent extends Component
     }
 
     /**
+     * Check Access
+     *
+     * @param int $userId The ID of the User
+     *
+     * @return void
+     */
+    public function checkAccess($userId)
+    {
+    }
+
+    /**
      * @param string $secret The Secret to be stored.
      * @param int $userId The User ID associated.
      *
@@ -121,7 +132,7 @@ class ScoutManagerComponent extends Component
 
         $user->osm_secret = $secret;
 
-        if ($users->save($user)) {
+        if ($users->save($user, ['validation' => false])) {
             return true;
         } else {
             $error_message = 'Problem Storing User Secret in Database.';
@@ -260,7 +271,7 @@ class ScoutManagerComponent extends Component
 
                 // SAVE ENTITY
 
-                if ($users->save($user)) {
+                if ($users->save($user, ['validation' => false])) {
                     // KEEN IO REPORTING ENTRY
 
                     /*$osmEnt = [
@@ -407,7 +418,7 @@ class ScoutManagerComponent extends Component
                 $user->osm_section_id = $sectionSelected['sectionid'];
                 $user->osm_linked = 2;
 
-                if ($users->save($user)) {
+                if ($users->save($user, ['validation' => false])) {
                     return $controller->redirect([ 'action' => 'term' ]);
                 }
             }
@@ -541,7 +552,7 @@ class ScoutManagerComponent extends Component
 
                 $user->osm_linked = 3;
 
-                if ($users->save($user)) {
+                if ($users->save($user, ['validation' => false])) {
                     $successMessage = 'Your OSM Term has been set.';
                     $this->log($successMessage);
 
@@ -651,6 +662,18 @@ class ScoutManagerComponent extends Component
 
         if ($response->isOk()) {
             $preBody = $response->json;
+            if (is_null($preBody)) {
+                $error_message = 'OSM User is incorrectly set, please re-validate.';
+                $this->log($error_message);
+
+                if (isset($controller)) {
+                    $this->Flash->error(__($error_message));
+
+                    return $controller->redirect([ 'action' => 'link' ]);
+                }
+
+                return false;
+            }
             $body = Hash::get($preBody, 'items');
 
             $events = Hash::combine($body, '{n}.eventid', '{n}.name');

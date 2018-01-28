@@ -29,6 +29,7 @@ class EventTypesFixture extends TestFixture
         'permit_holder' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'display_availability' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'application_ref_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+	    'payable_setting_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'sync_book' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'event_types_invoice_text_id' => ['type' => 'index', 'columns' => ['invoice_text_id'], 'length' => []],
@@ -64,6 +65,7 @@ class EventTypesFixture extends TestFixture
             'permit_holder' => 1,
             'team_leader' => 1,
             'sync_book' => 1,
+            'payable_setting_id' => 7,
         ],
         [
             'id' => 2,
@@ -79,6 +81,7 @@ class EventTypesFixture extends TestFixture
             'permit_holder' => 1,
             'team_leader' => 1,
             'sync_book' => 1,
+            'payable_setting_id' => 7,
         ],
     ];
 }

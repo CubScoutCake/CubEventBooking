@@ -43,6 +43,10 @@ class SettingTypesSeed extends AbstractSeed
                 'setting_type' => 'Application Term',
                 'description' => 'A term for an application. E.g. Team.',
             ],
+	        [
+		        'setting_type' => 'Payable',
+		        'description' => 'The Account Payable for Invoices.',
+	        ],
         ];
 
         $table = $this->table('setting_types');

@@ -13,11 +13,11 @@ use Cake\Error\Debugger;
 
 class OsmController extends AppController
 {
-	public function initialize()
-	{
-		parent::initialize();
-		$this->loadComponent('ScoutManager');
-	}
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('ScoutManager');
+    }
 
     public function index()
     {
@@ -26,63 +26,63 @@ class OsmController extends AppController
 
     public function home()
     {
-		$checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
+        $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
 
-		$this->set('linked', $checkArray['linked']);
-	    $this->set('sectionSet', $checkArray['sectionSet']);
-	    $this->set('termCurrent', $checkArray['termCurrent']);
-	    $this->set('synced', $checkArray['attendee_count']);
+        $this->set('linked', $checkArray['linked']);
+        $this->set('sectionSet', $checkArray['sectionSet']);
+        $this->set('termCurrent', $checkArray['termCurrent']);
+        $this->set('synced', $checkArray['attendee_count']);
     }
 
     public function link()
     {
-    	$linkForm = new LinkForm();
+        $linkForm = new LinkForm();
 
         if ($this->request->is('post')) {
-	        $linkArray = [
-		        'osm_email' => $this->request->getData('osm_email'),
-		        'osm_password' => $this->request->getData('osm_password'),
-		        'user_id' => $this->Auth->user('id'),
-	        ];
+            $linkArray = [
+                'osm_email' => $this->request->getData('osm_email'),
+                'osm_password' => $this->request->getData('osm_password'),
+                'user_id' => $this->Auth->user('id'),
+            ];
 
-	        $linked = $this->ScoutManager->linkUser($linkArray);
+            $linked = $this->ScoutManager->linkUser($linkArray);
 
-	        if ($linked) {
-	        	$this->redirect(['action' => 'home']);
-	        } else {
-	        	$this->redirect(['action' => 'link']);
-	        }
+            if ($linked) {
+                $this->redirect(['action' => 'home']);
+            } else {
+                $this->redirect(['action' => 'link']);
+            }
         }
         $this->set(compact('linkForm'));
     }
 
-	/**
-	 * Select OSM Section.
-	 *
-	 * @return \Cake\Http\Response|null
-	 */
+    /**
+     * Select OSM Section.
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function section()
     {
-    	$checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
+        $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
 
-    	if (!$checkArray['linked']) {
-		    $this->Flash->error(__('Please link your account first'));
-		    return $this->redirect(['action' => 'link']);
-	    }
+        if (!$checkArray['linked']) {
+            $this->Flash->error(__('Please link your account first'));
+
+            return $this->redirect(['action' => 'link']);
+        }
 
         $sectionForm = new SectionForm();
 
         $now = Time::now();
 
         if ($this->request->is('get')) {
+            $sections = $this->ScoutManager->getSectionIds($this->Auth->user('id'));
 
-	        $sections = $this->ScoutManager->getSectionIds($this->Auth->user('id'));
+            if (!is_array($sections)) {
+                $this->Flash->error(__('There was a request error, please try again.'));
 
-        	if (!is_array($sections)) {
-		        $this->Flash->error(__('There was a request error, please try again.'));
-
-		        return $this->redirect(['action' => 'home']);
-	        }
+                return $this->redirect(['action' => 'home']);
+            }
 
             $this->set(compact('sections'));
         }
@@ -90,11 +90,11 @@ class OsmController extends AppController
         if ($this->request->is('post')) {
             $osmSection = $this->request->getData('osm_section');
 
-	        $users = TableRegistry::get('Users');
-	        $user = $users->get($this->Auth->user('id'));
+            $users = TableRegistry::get('Users');
+            $user = $users->get($this->Auth->user('id'));
 
-	        $user->osm_section_id = $osmSection;
-	        $user->osm_linked = 2;
+            $user->osm_section_id = $osmSection;
+            $user->osm_linked = 2;
 
             if ($users->save($user)) {
                 $this->Flash->success(__('You have selected your OSM section.'));
@@ -111,31 +111,34 @@ class OsmController extends AppController
         $this->set(compact('sectionForm'));
     }
 
-	/**
-	 * Set OSM Terms.
-	 *
-	 * @return \Cake\Http\Response|null
-	 */
+    /**
+     * Set OSM Terms.
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function term()
     {
-	    $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
+        $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
 
-	    if (!$checkArray['linked']) {
-		    $this->Flash->error(__('Please link your account first'));
-		    return $this->redirect(['action' => 'link']);
-	    }
+        if (!$checkArray['linked']) {
+            $this->Flash->error(__('Please link your account first'));
 
-	    if (!$checkArray['sectionSet']) {
-		    $this->Flash->error(__('Please set your section first'));
-		    return $this->redirect(['action' => 'section']);
-	    }
+            return $this->redirect(['action' => 'link']);
+        }
 
-	    $terms = $this->ScoutManager->setTerm($this->Auth->user('id'));
+        if (!$checkArray['sectionSet']) {
+            $this->Flash->error(__('Please set your section first'));
 
-		if ($terms) {
-			return $this->redirect(['action' => 'home']);
-		}
-		return $this->redirect(['action' => 'home']);
+            return $this->redirect(['action' => 'section']);
+        }
+
+        $terms = $this->ScoutManager->setTerm($this->Auth->user('id'));
+
+        if ($terms) {
+            return $this->redirect(['action' => 'home']);
+        }
+
+        return $this->redirect(['action' => 'home']);
     }
 
     public function sync()

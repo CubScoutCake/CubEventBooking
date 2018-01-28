@@ -78,7 +78,6 @@ class UsersFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'role_id' => 1,
                 'authrole' => 'Lorem ipsum dolor sit amet',
                 'firstname' => 'Lorem ipsum dolor sit amet',
@@ -117,7 +116,6 @@ class UsersFixture extends TestFixture
                 'section_id' => 1
             ],
             [
-                'id' => 2,
                 'role_id' => 2,
                 'section_id' => 1,
                 'authrole' => 'admin',

@@ -317,14 +317,14 @@ class TokensTableTest extends TestCase
     {
         $token = $this->Tokens->buildToken(1);
         $token = urldecode($token);
-        $token = gzuncompress($token);
+        //$token = gzuncompress($token);
 
         $this->assertGreaterThanOrEqual(32, strlen($token), 'Token is too short.');
 
-        $decrypter = substr($token, 0, 32);
-        $this->assertEquals(32, strlen($decrypter));
+        $decrypter = substr($token, 0, 8);
+        $this->assertEquals(8, strlen($decrypter));
 
-        $token = substr($token, 32);
+        $token = substr($token, 8);
 
         $token = base64_decode($token);
         $token = json_decode($token);

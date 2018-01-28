@@ -2,11 +2,12 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Mailer\Email;
+use Cake\Event\Event;
 use Cake\I18n\Time;
-use Cake\ORM\TableRegistry;
+use Cake\Mailer\Email;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\Network\Http\Client;
+use Cake\ORM\TableRegistry;
 
 /**
  * Notifications Controller
@@ -17,11 +18,11 @@ class NotificationsController extends AppController
 {
     use MailerAwareTrait;
 
-    // /**
-    //  * Index method
-    //  *
-    //  * @return void
-    //  */
+    /**
+     * Index Function
+     *
+     * @return void
+     */
     public function index()
     {
         $this->paginate = [
@@ -32,6 +33,11 @@ class NotificationsController extends AppController
         $this->set('_serialize', ['notifications']);
     }
 
+    /**
+     * Returns the Index with only Unread Notifications
+     *
+     * @return void
+     */
     public function unread()
     {
         $this->paginate = [
@@ -42,13 +48,13 @@ class NotificationsController extends AppController
         $this->set('_serialize', ['notifications']);
     }
 
-    // /**
-    //  * View method
-    //  *
-    //  * @param string|null $id Notification id.
-    //  * @return void
-    //  * @throws \Cake\Network\Exception\NotFoundException When record not found.
-    //  */
+    /**
+     * View method
+     *
+     * @param string|null $id Notification id.
+     * @return void
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
     public function view($id = null)
     {
         $notification = $this->Notifications->get($id, [
@@ -115,50 +121,11 @@ class NotificationsController extends AppController
         $this->set(compact('unreadNotifications'));
     }
 
-    // public function clean($userId = null)
-    // {
-    //     $this->request->allowMethod('delete');
-
-    //     $notifications = $this->Notifications->find('all')->where(['user_id' => $userId]);
-
-    //     $count = 0;
-
-    //     foreach ($notifications as $notification) {
-    //         if ($this->Notifications->delete($notification)) {
-    //             $count = $count + 1;
-    //         } else {
-    //             $this->Flash->error(__('There was an error.'));
-    //         }
-    //     }
-
-    //     $this->Flash->success(__($count . ' notifications were cleaned.'));
-    //     return $this->redirect(['action' => 'index']);
-
-    // }
-
-    // /**
-    //  * Add method
-    //  *
-    //  * @return void Redirects on successful add, renders view otherwise.
-    //  */
-    // public function add()
-    // {
-    //     $notification = $this->Notifications->newEntity();
-    //     if ($this->request->is('post')) {
-    //         $notification = $this->Notifications->patchEntity($notification, $this->request->data);
-    //         if ($this->Notifications->save($notification)) {
-    //             $this->Flash->success(__('The notification has been saved.'));
-    //             return $this->redirect(['action' => 'index']);
-    //         } else {
-    //             $this->Flash->error(__('The notification could not be saved. Please, try again.'));
-    //         }
-    //     }
-    //     $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-    //     $NotificationTypes = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
-    //     $this->set(compact('notification', 'users', 'NotificationTypes'));
-    //     $this->set('_serialize', ['notification']);
-    // }
-
+    /**
+     * @param int $userId The User ID
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function welcome($userId = null)
     {
         if (isset($userId)) {
@@ -168,15 +135,17 @@ class NotificationsController extends AppController
             $user = $users->get($userId, ['contain' => ['Scoutgroups']]);
             $group = $groups->get($user->scoutgroup_id);
 
-            $welcomeData = [     'link_id' => $userId
-                                , 'link_controller' => 'Users'
-                                , 'link_action' => 'view'
-                                , 'notification_type_id' => 1
-                                , 'user_id' => $userId
-                                , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
-                                , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
-                                , 'notification_source' => 'System Generated'
-                                , 'new' => 1];
+            $welcomeData = [
+                'link_id' => $userId,
+                'link_controller' => 'Users',
+                'link_action' => 'view',
+                'notification_type_id' => 1,
+                'user_id' => $userId,
+                'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.',
+                'notification_header' => 'Welcome to the Herts Cubs Booking System',
+                'notification_source' => 'System Generated',
+                'new' => 1,
+            ];
 
             $notification = $this->Notifications->newEntity();
 
@@ -224,6 +193,11 @@ class NotificationsController extends AppController
         // }
     }
 
+    /**
+     * @param null $userId The User ID
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function validate($userId = null)
     {
         if (isset($userId)) {
@@ -233,15 +207,17 @@ class NotificationsController extends AppController
             $user = $users->get($userId, ['contain' => ['Scoutgroups']]);
             $group = $groups->get($user->scoutgroup_id);
 
-            $welcomeData = [     'link_id' => $userId
-                                , 'link_controller' => 'Users'
-                                , 'link_action' => 'view'
-                                , 'notification_type_id' => 1
-                                , 'user_id' => $userId
-                                , 'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.'
-                                , 'notification_header' => 'Welcome to the Herts Cubs Booking System'
-                                , 'notification_source' => 'System Generated'
-                                , 'new' => 1];
+            $welcomeData = [
+                'link_id' => $userId,
+                'link_controller' => 'Users',
+                'link_action' => 'view',
+                'notification_type_id' => 1,
+                'user_id' => $userId,
+                'text' => 'This system has been designed to take bookings for Hertfordshire Cubs. Thank-you for signing up.',
+                'notification_header' => 'Welcome to the Herts Cubs Booking System',
+                'notification_source' => 'System Generated',
+                'new' => 1
+            ];
 
             $notification = $this->Notifications->newEntity();
 
@@ -289,11 +265,10 @@ class NotificationsController extends AppController
         // }
     }
 
-    public function new_logistic()
-    {
-    }
-
-    public function new_reset()
+    /**
+     * @return \Cake\Http\Response|null
+     */
+    public function newReset()
     {
         $notification = $this->Notifications->newEntity();
         if ($this->request->is('post')) {
@@ -312,6 +287,11 @@ class NotificationsController extends AppController
         $this->set('_serialize', ['notification']);
     }
 
+    /**
+     * @param int $id The Notification ID to Delete
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
@@ -362,11 +342,25 @@ class NotificationsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function beforeFilter(\Cake\Event\Event $event)
+    /**
+     * Returning
+     *
+     * @param \Cake\Event\Event $event The Event that Triggered the Function
+     *
+     * @return \Cake\Http\Response|null|void
+     */
+    public function beforeFilter(Event $event)
     {
         $this->Auth->allow(['welcome', 'delete']);
     }
 
+    /**
+     * Returns a boolean for whether a logged in user is authorised to view a specific record.
+     *
+     * @param \App\Model\Entity\User $user The Logged In User
+     *
+     * @return bool
+     */
     public function isAuthorized($user)
     {
         // All registered users can add articles

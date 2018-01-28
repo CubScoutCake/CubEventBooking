@@ -78,11 +78,11 @@ class PaymentsController extends AppController
             $invoices = $this->Payments->Invoices->find('list', ['conditions' => ['Invoices.id' => $invId]]);
         }
 
-        if (is_null( $numberOfInvoiceAssocs)) {
-	        $numberOfInvoiceAssocs = 1;
+        if (is_null($numberOfInvoiceAssocs)) {
+            $numberOfInvoiceAssocs = 1;
         }
 
-        $this->set(compact('payment', 'invoices', 'numberOfInvoiceAssocs' ));
+        $this->set(compact('payment', 'invoices', 'numberOfInvoiceAssocs'));
         $this->set('_serialize', ['payment']);
     }
 
@@ -102,11 +102,11 @@ class PaymentsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $payment = $this->Payments->patchEntity($payment, $this->request->data);
 
-	        $payment = $this->Payments->patchEntity($payment, $this->request->data, [
-		        'associated' => [
-			        'Invoices'
-		        ]
-	        ]);
+            $payment = $this->Payments->patchEntity($payment, $this->request->data, [
+                'associated' => [
+                    'Invoices'
+                ]
+            ]);
 
             if ($this->Payments->save($payment)) {
                 $this->Flash->success(__('The payment has been saved.'));
@@ -116,14 +116,14 @@ class PaymentsController extends AppController
                 $this->Flash->error(__('The payment could not be saved. Please, try again.'));
             }
         }
-	    $invoices = $this->Payments->Invoices->find('unarchived')->find('list', ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]);
+        $invoices = $this->Payments->Invoices->find('unarchived')->find('list', ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]);
 
-        if (is_null( $numberOfInvoiceAssocs)) {
-		    $numberOfInvoiceAssocs = 1;
-	    }
+        if (is_null($numberOfInvoiceAssocs)) {
+            $numberOfInvoiceAssocs = 1;
+        }
 
-	    $this->set(compact('payment', 'invoices', 'numberOfInvoiceAssocs' ));
-	    $this->set('_serialize', ['payment']);
+        $this->set(compact('payment', 'invoices', 'numberOfInvoiceAssocs'));
+        $this->set('_serialize', ['payment']);
     }
 
     /**

@@ -24,6 +24,10 @@ class SectionsFixture extends TestFixture
         'section' => ['type' => 'string', 'length' => 255, 'default' => 'Cubs', 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'section_type_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'scoutgroup_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'validated' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
+        'cc_users' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'cc_atts' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'cc_apps' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         '_indexes' => [
             'sections_section_type_id' => ['type' => 'index', 'columns' => ['section_type_id'], 'length' => []],
         ],
@@ -45,22 +49,28 @@ class SectionsFixture extends TestFixture
         $this->records = [
 
             [
-                'id' => 1,
                 'created' => date_format(date_sub(date_create('2016-12-26 21:22:30'), date_interval_create_from_date_string("3 days")), 'Y-m-d H:i:s'),
                 'modified' => date_format(date_sub(date_create('2016-12-26 21:22:30'), date_interval_create_from_date_string("3 days")), 'Y-m-d H:i:s'),
                 'deleted' => null,
                 'section' => 'Lorem ipsum dolor sit amet',
                 'section_type_id' => 1,
-                'scoutgroup_id' => 1
+                'scoutgroup_id' => 1,
+                'validated' => true,
+                'cc_users' => null,
+                'cc_atts' => null,
+                'cc_apps' => null,
             ],
             [
-                'id' => 2,
                 'created' => date_format(date_sub(date_create('2016-12-26 20:22:30'), date_interval_create_from_date_string("3 days")), 'Y-m-d H:i:s'),
                 'modified' => date_format(date_sub(date_create('2016-12-26 21:22:30'), date_interval_create_from_date_string("2 days")), 'Y-m-d H:i:s'),
                 'deleted' => date_format(date_sub(date_create('2016-12-26 21:22:30'), date_interval_create_from_date_string("1 days")), 'Y-m-d H:i:s'),
                 'section' => 'Lorem ipsum uj sit amet',
                 'section_type_id' => 1,
-                'scoutgroup_id' => 1
+                'scoutgroup_id' => 1,
+                'validated' => true,
+                'cc_users' => null,
+                'cc_atts' => null,
+                'cc_apps' => null,
             ],
         ];
         parent::init();

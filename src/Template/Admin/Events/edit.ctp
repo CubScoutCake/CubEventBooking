@@ -51,10 +51,10 @@
             echo '<div class="table-responsive"> <table class="table table-hover"> <tr> <td>';
             echo $this->Form->input('max', ['label' => 'Limit Numbers (will enforce limits to the left)']);
             echo '</td> <td>';
-            echo $this->Form->input('available_apps', ['label' => 'Maximum Applications Available']);
+            echo $this->Form->input('max_apps', ['label' => 'Maximum Applications Available']);
             echo '<p>Leave Blank for Infinite</p>';
             echo '</td> <td>';
-            echo $this->Form->input('available_cubs', ['label' => 'Maximum Young Person Spaces Available']);
+            echo $this->Form->input('max_section', ['label' => 'Maximum Young Person Spaces Available']);
             echo '<p>Leave Blank for Infinite, does not include young leaders</p>';
             echo '</td></tr></table></div>';
 

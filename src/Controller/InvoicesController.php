@@ -2,8 +2,9 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\ORM\TableRegistry;
 use App\Form\DiscountForm;
+use App\Model\Entity\User;
+use Cake\ORM\TableRegistry;
 
 /**
  * Invoices Controller
@@ -13,10 +14,15 @@ use App\Form\DiscountForm;
 class InvoicesController extends AppController
 {
 
+    /**
+     * Initialisation - Load Component
+     *
+     * @return void
+     */
     public function initialize()
     {
-            parent::initialize();
-            $this->loadComponent('RequestHandler');
+        parent::initialize();
+        $this->loadComponent('RequestHandler');
     }
 
     /**
@@ -43,12 +49,7 @@ class InvoicesController extends AppController
      */
     public function view($id = null)
     {
-        // Connect Registry
-        $settings = TableRegistry::get('Settings');
-        $events = TableRegistry::get('Events');
-        $applications = TableRegistry::get('Applications');
-
-        $this->viewBuilder()->options([
+        $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
                    'filename' => 'Invoice_' . $id
@@ -57,70 +58,114 @@ class InvoicesController extends AppController
 
         // Insantiate Objects
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications', 'Notes' => ['conditions' => ['visible' => true]]]
+            'contain' => [
+                'Users',
+                'Payments',
+                'InvoiceItems' => [
+                    'conditions' => [
+                        'visible' => 1
+                    ]
+                ],
+                'Applications' => [
+                    'Events' => [
+                        'EventTypes' => [
+                            'LegalTexts', 'InvoiceTexts'
+                        ]
+                    ],
+                    'Sections.Scoutgroups.Districts',
+                ],
+                'Notes' => [
+                    'conditions' => [
+                        'visible' => true
+                    ]
+                ]
+            ]
         ]);
 
-        $application = $applications->get($invoice->application_id);
-
-        $event = $events->get($application->event_id, ['contain' => ['Applications']]);
-
         // Set Address Variables
-        $eventName = $event->full_name;
-        $invAddress = $event->address;
-        $invCity = $event->city;
-        $invPostcode = $event->postcode;
+        $eventName = $invoice->application->event->full_name;
+        $invAddress = $invoice->application->event->address;
+        $invCity = $invoice->application->event->city;
+        $invPostcode = $invoice->application->event->postcode;
 
         $this->set(compact('eventName', 'invAddress', 'invCity', 'invPostcode'));
 
         // Set Deadline Variable
-        $invDeadline = $event->deposit_date;
+        $invDeadline = $invoice->application->event->deposit_date;
 
         // Set Prefix Variable
         //$invSetPre = $event->invtext_id;
         //$invSetting = $settings->get($invSetPre);
-        $invPrefix = '';
+        $invPrefix = 'INV #';
 
         // Set Payable Variable
-        $invPayable = '';
+        $invPayable = $invoice->application->event->event_type->invoice_text->text;
+        //$invoice->application->event->event_type->legal_text->text;
 
         $this->set(compact('invoice', 'invPayable', 'invPrefix', 'invDeadline'));
         $this->set('_serialize', ['invoice']);
     }
 
+    /**
+     * @param int $id The ID of the Invoice to be Viewed
+     *
+     * @return \Cake\Http\Response
+     */
     public function pdfView($id = null)
     {
         // Insantiate Objects
-        $invoice = $this->Invoices->get($id, [
-            'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
+        $this->viewBuilder()->setOptions([
+            'pdfConfig' => [
+                'orientation' => 'portrait',
+                'filename' => 'Invoice_' . $id
+            ]
         ]);
 
-        // Connect Registry
-        $settings = TableRegistry::get('Settings');
-        $events = TableRegistry::get('Events');
-        $applications = TableRegistry::get('Applications');
-
-        $application = $applications->get($invoice->application_id);
-
-        $event = $events->get($application->event_id, ['contain' => ['Applications', 'Settings']]);
+        // Insantiate Objects
+        $invoice = $this->Invoices->get($id, [
+            'contain' => [
+                'Users',
+                'Payments',
+                'InvoiceItems' => [
+                    'conditions' => [
+                        'visible' => 1
+                    ]
+                ],
+                'Applications' => [
+                    'Events' => [
+                        'EventTypes' => [
+                            'LegalTexts', 'InvoiceTexts'
+                        ]
+                    ],
+                    'Sections.Scoutgroups.Districts',
+                ],
+                'Notes' => [
+                    'conditions' => [
+                        'visible' => true
+                    ]
+                ]
+            ]
+        ]);
 
         // Set Address Variables
-        $eventName = $event->full_name;
-        $invAddress = $event->address;
-        $invCity = $event->city;
-        $invPostcode = $event->postcode;
+        $eventName = $invoice->application->event->full_name;
+        $invAddress = $invoice->application->event->address;
+        $invCity = $invoice->application->event->city;
+        $invPostcode = $invoice->application->event->postcode;
 
         $this->set(compact('eventName', 'invAddress', 'invCity', 'invPostcode'));
 
         // Set Deadline Variable
-        $invDeadline = $event->deposit_date;
+        $invDeadline = $invoice->application->event->deposit_date;
 
         // Set Prefix Variable
-        $invSetPre = $event->invtext_id;
-        $invSetting = $settings->get($invSetPre);
-        $invPrefix = $invSetting->text;
+        //$invSetPre = $event->invtext_id;
+        //$invSetting = $settings->get($invSetPre);
+        $invPrefix = 'INV #';
 
         // Set Payable Variable
-        $invPayable = $settings->get(4)->text;
+        $invPayable = $invoice->application->event->event_type->invoice_text->text;
+        //$invoice->application->event->event_type->legal_text->text;
 
         $this->set(compact('invoice', 'invPayable', 'invPrefix', 'invDeadline'));
         $this->set('_serialize', ['invoice']);
@@ -131,83 +176,16 @@ class InvoicesController extends AppController
         // Get the PDF string returned
         $pdf = $CakePdf->output();
         // Or write it to file directly
-        $pdf = $CakePdf->write(FILES . DS . 'Event ' . $event->id . DS . 'Invoices' . DS . 'Invoice #' . $id . '.pdf');
+        $CakePdf->write(FILES . DS . 'Event ' . $invoice->application->event->id . DS . 'Invoices' . DS . 'Invoice #' . $invoice->id . '.pdf');
 
-        $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invoice->id, '_ext' => 'pdf']);
+        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invoice->id, '_ext' => 'pdf']);
     }
 
     /**
-     * Add method
+     * @param int|null $appId The ID of the Application
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null
      *
-     * public function add()
-     * {
-     *    $invoice = $this->Invoices->newEntity();
-     *    if ($this->request->is('post')) {
-     *        $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
-     *        if ($this->Invoices->save($invoice)) {
-     *            $this->Flash->success(__('The invoice has been saved.'));
-     *            return $this->redirect(['action' => 'index']);
-     *        } else {
-     *            $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
-     *        }
-     *    }
-     *    $users = $this->Invoices->Users->find('list', ['limit' => 200]);
-     *    $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
-     *    $this->set(compact('invoice', 'users', 'payments'));
-     *    $this->set('_serialize', ['invoice']);
-     * }*/
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Invoice id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $invoice = $this->Invoices->get($id, [
-            'contain' => ['Payments']
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
-            if ($this->Invoices->save($invoice)) {
-                $this->Flash->success(__('The invoice has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
-            }
-        }
-        $users = $this->Invoices->Users->find('list', ['limit' => 200]);
-        $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
-        $this->set(compact('invoice', 'users', 'payments'));
-        $this->set('_serialize', ['invoice']);
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Invoice id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $invoice = $this->Invoices->get($id);
-        if ($this->Invoices->delete($invoice)) {
-            $this->Flash->success(__('The invoice has been deleted.'));
-        } else {
-            $this->Flash->error(__('The invoice could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
-    }
-
-
     public function generate($appId = null)
     {
         $apps = TableRegistry::get('Applications');
@@ -299,36 +277,6 @@ class InvoicesController extends AppController
             // Values from the Model e.g.
             $this->request->data['application_id'] = $appId;
         }
-
-
-
-
-            //$this->set(compact('application', 'attendees', 'invoice', 'invoiceitems','payments'));
-            //$this->set('_serialize', ['invoice', 'invoiceItem']);
-        //}     else {
-        //    return $this->redirect(['action' => 'index']);
-        //}
-
-
-
-        //if ($this->request->is('post')) {
-        //    $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
-        //    if ($this->Invoices->save($invoice)) {
-        //        $this->Flash->success(__('The invoice has been saved.'));
-        //        return $this->redirect(['action' => 'index']);
-        //    } else {
-        //        $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
-        //    }
-        //}
-
-        /*
-
-        $users = $this->Invoices->Users->find('list', ['limit' => 200]);
-        $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
-
-        $this->set(compact('invoice', 'users', 'payments'));
-
-        $this->set('_serialize', ['invoice']);*/
     }
 
     public function regenerate($InvId = null)
@@ -421,8 +369,15 @@ class InvoicesController extends AppController
         // Return response object to prevent controller from trying to render
         // a view.
         return $this->response;
-    }
+    } */
 
+    /**
+     * Determine Authorisation
+     *
+     * @param User $user the Logged In User
+     *
+     * @return bool - Can the User access the Invoice
+     */
     public function isAuthorized($user)
     {
         // All registered users can add articles

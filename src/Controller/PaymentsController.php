@@ -19,9 +19,20 @@ class PaymentsController extends AppController
     public function index()
     {
         $payments = $this->Payments;
-        $myPayments = $this->paginate($payments->find()->matching('Invoices', function ($q) {
-                return $q->where(['Invoices.user_id' => $this->Auth->user('id')]);
-        })->contain(['Invoices', 'Invoices.Users']));
+//        $myPayments = $this->paginate($payments->find()->matching('Invoices', function ($q) {
+//                return $q->where(['Invoices.user_id' => $this->Auth->user('id')]);
+//        })->distinct()->contain(['Invoices']));
+
+
+        $myPayments = $this->paginate($payments->find()->contain(['Invoices']));
+
+        /*$matchingComment = $this->Payments->association('Invoices')->find()
+                                    ->select(['article_id'])
+                                    ->distinct()
+                                    ->where(['Invoices.user_id' => $this->Auth->user('id')]);
+
+        $query = $this->Payments->find()
+                          ->where(['id IN' => $matchingComment]);*/
 
         $this->set('payments', $myPayments);
         $this->set('_serialize', ['payments']);
