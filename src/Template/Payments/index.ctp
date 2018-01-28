@@ -20,7 +20,7 @@
                             <td><?= h($payment->name_on_cheque) ?></td>
                         </tr>
                         <?php foreach ($payment->invoices as $invoice): ?>
-                            <tr class="warning">
+                            <tr>
                                 <td class="text-right"><?= $this->Html->link('Invoice #' . $invoice->id, [] ) ?></td>
                                 <td class="text-right"><?= $this->Number->currency($invoice->_joinData->x_value,'GBP') ?></td>
                                 <td class="text-right"><?= $this->Time->i18nFormat($invoice->created, 'dd-MMM-yy HH:mm') ?></td>

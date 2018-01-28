@@ -5,7 +5,7 @@ use App\Controller\InvoicesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Admin\InvoicesController Test Case
+ * App\Controller\InvoicesController Test Case
  */
 class InvoicesControllerTest extends IntegrationTestCase
 {
@@ -14,35 +14,45 @@ class InvoicesControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.invoices',
         'app.users',
         'app.roles',
-        'app.applications',
-        'app.setting_types',
-        'app.settings',
-        'app.event_types',
-        'app.events',
         'app.attendees',
+        'app.sections',
+        'app.section_types',
         'app.scoutgroups',
         'app.districts',
-        'app.section_types',
-        'app.sections',
-        'app.notes',
-        'app.invoice_items',
-        'app.item_types',
-        'app.payments',
-        'app.prices',
-        'app.invoices_payments',
+        'app.champions',
+        'app.applications',
+        'app.events',
         'app.discounts',
+        'app.auth_roles',
+        'app.password_states',
+        'app.notes',
         'app.notifications',
         'app.notification_types',
-        'app.password_states',
-        'app.allergies',
+        'app.payments',
+        'app.invoices_payments',
+        'app.tokens',
+        'app.email_sends',
+        'app.email_responses',
+        'app.email_response_types',
+        'app.event_types',
+        'app.setting_types',
+        'app.settings',
+        'app.logistics',
+        'app.parameters',
+        'app.parameter_sets',
+        'app.params',
+        'app.logistic_items',
+        'app.prices',
+        'app.item_types',
+        'app.invoice_items',
         'app.applications_attendees',
-        'app.attendees_allergies',
-        'app.auth_roles',
+        'app.allergies',
+        'app.attendees_allergies'
     ];
 
     /**
@@ -53,14 +63,6 @@ class InvoicesControllerTest extends IntegrationTestCase
     public function testInitialize()
     {
         $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    public function testIndexUnauthenticatedFails()
-    {
-        // No session data set.
-        $this->get('/invoices');
-
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/invoices']);
     }
 
     /**
@@ -96,7 +98,7 @@ class InvoicesControllerTest extends IntegrationTestCase
 
         $this->get('/invoices/view/1');
 
-        $this->assertResponseOk();
+        $this->assertRedirect();
     }
 
     /**
@@ -178,7 +180,7 @@ class InvoicesControllerTest extends IntegrationTestCase
     {
         $this->session(['Auth.User.id' => 1]);
         $this->get('/invoices/view/1');
-        $this->assertResponseOk();
+        $this->assertRedirect();
     }
 
     /**
