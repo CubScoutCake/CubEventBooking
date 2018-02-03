@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Invoice;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -10,9 +9,21 @@ use Cake\Validation\Validator;
 /**
  * Invoices Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\HasMany $InvoiceItems
- * @property \Cake\ORM\Association\BelongsToMany $Payments
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\BelongsTo $Applications
+ * @property \App\Model\Table\InvoiceItemsTable|\Cake\ORM\Association\HasMany $InvoiceItems
+ * @property \App\Model\Table\NotesTable|\Cake\ORM\Association\HasMany $Notes
+ * @property \App\Model\Table\PaymentsTable|\Cake\ORM\Association\BelongsToMany $Payments
+ *
+ * @method \App\Model\Entity\Invoice get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Invoice newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Invoice[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Invoice|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Invoice patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Invoice[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Invoice findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class InvoicesTable extends Table
 {
@@ -31,6 +42,7 @@ class InvoicesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('SectionAuth');
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [
@@ -76,19 +88,19 @@ class InvoicesTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->integer('id')
             ->allowEmpty('id', 'create');
 
         $validator
-            ->add('value', 'valid', ['rule' => 'numeric'])
+            ->numeric('value')
             ->allowEmpty('value');
 
         $validator
-            ->add('paid', 'valid', ['rule' => 'boolean'])
+            ->boolean('paid')
             ->allowEmpty('paid');
 
         $validator
-            ->add('initialvalue', 'valid', ['rule' => 'numeric'])
+            ->numeric('initialvalue')
             ->allowEmpty('initialvalue');
 
         return $validator;

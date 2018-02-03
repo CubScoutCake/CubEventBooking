@@ -13,6 +13,7 @@ use Cake\ORM\Entity;
  * @property int $quantity
  * @property int $item_type_id
  * @property bool $visible
+ * @property float $quantity_price
  *
  * @property \App\Model\Entity\Invoice $invoice
  * @property \App\Model\Entity\ItemType $item_type

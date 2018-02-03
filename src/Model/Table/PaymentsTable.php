@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Payment;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -10,8 +9,18 @@ use Cake\Validation\Validator;
 /**
  * Payments Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsToMany $Invoices
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\BelongsToMany $Invoices
+ *
+ * @method \App\Model\Entity\Payment get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Payment newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Payment[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Payment|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Payment patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Payment[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Payment findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class PaymentsTable extends Table
 {
@@ -30,6 +39,7 @@ class PaymentsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('SectionAuth');
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [
@@ -58,17 +68,31 @@ class PaymentsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->integer('id')
             ->allowEmpty('id', 'create');
 
         $validator
+            ->numeric('value')
+            ->allowEmpty('value');
+
+        $validator
+            ->dateTime('paid')
+            ->allowEmpty('paid');
+
+        $validator
+            ->scalar('cheque_number')
+            ->maxLength('cheque_number', 255)
             ->allowEmpty('cheque_number');
 
         $validator
-            ->allowEmpty('payment_notes');
+            ->scalar('name_on_cheque')
+            ->maxLength('name_on_cheque', 255)
+            ->allowEmpty('name_on_cheque');
 
         $validator
-            ->allowEmpty('name_on_cheque');
+            ->scalar('payment_notes')
+            ->maxLength('payment_notes', 255)
+            ->allowEmpty('payment_notes');
 
         return $validator;
     }
