@@ -1,3 +1,22 @@
+<?php
+/**
+ * @var \App\Model\Entity\User $users
+ * @var \App\Model\Entity\Application $applications
+ * @var \App\Model\Entity\Notification $notifications
+ * @var \App\Model\Entity\Note $notes
+ * @var \App\Model\Entity\Payment $payments
+ * @var \App\Model\Entity\Invoice $invoices
+ * @var \App\Model\Entity\Event $events
+ *
+ * @var int $cntUsers
+ * @var int $cntApplications
+ * @var int $cntEvents
+ * @var int $cntInvoices
+ * @var int $cntPayments
+ * @var int $cntAttendees
+ *
+ */
+?>
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header"><i class='fa fa-rocket fa-fw'></i> Admin Home</h1>

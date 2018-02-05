@@ -25,37 +25,33 @@ class SectionAuthBehavior extends Behavior
      */
     public function findSameSection(Query $query, array $options)
     {
-        $query = $query->contain('Users.Sections')->where(['Sections.id' => $options['section_type_id']]);
+        $assoc = $query->repository()->associations();
 
-        return $query;
-    }
+        if ($options['section_limited'] || is_null($options['section_limited'])) {
+            if ($assoc->has('SectionTypes')) {
+                $query = $query->contain('SectionTypes')->where(['SectionTypes.id' => $options['section_type_id']]);
 
-    /**
-     * Find Section Types Directly
-     *
-     * @param Query $query The Query to be returned.
-     * @param array $options Options for the query etc.
-     *
-     * @return Query
-     */
-    public function findUserSection(Query $query, array $options)
-    {
-        $query = $query->contain('Sections')->where(['Sections.id' => $options['section_type_id']]);
+                return $query;
+            }
 
-        return $query;
-    }
+            if ($assoc->has('Sections')) {
+                $query = $query->contain('Sections.SectionTypes')->where(['SectionTypes.id' => $options['section_type_id']]);
 
-    /**
-     * Find Section Types Directly
-     *
-     * @param Query $query The Query to be returned.
-     * @param array $options Options for the query etc.
-     *
-     * @return Query
-     */
-    public function findEventSection(Query $query, array $options)
-    {
-        $query = $query->where(['section_type_id' => $options['section_type_id']]);
+                return $query;
+            }
+
+            if ($assoc->has('Applications')) {
+                $query = $query->contain('Applications.Sections.SectionTypes')->where(['SectionTypes.id' => $options['section_type_id']]);
+
+                return $query;
+            }
+
+            if ($assoc->has('Users')) {
+                $query = $query->contain('Users.Sections.SectionTypes')->where(['SectionTypes.id' => $options['section_type_id']]);
+
+                return $query;
+            }
+        }
 
         return $query;
     }

@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Sections Controller
@@ -18,10 +19,18 @@ class SectionsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['SectionTypes', 'Scoutgroups.Districts']
+    	$users = TableRegistry::get('Users');
+    	$users->get($this->Auth->user('id'));
+
+
+        $arr = [
+        	'section_type_id' => 1,
+	        'section_limited' => true,
         ];
-        $sections = $this->paginate($this->Sections);
+
+        $query = $this->Sections->find('sameSection', $arr)->contain(['SectionTypes', 'Scoutgroups.Districts']);
+
+        $sections = $this->paginate($query);
 
         $this->set(compact('sections'));
         $this->set('_serialize', ['sections']);
@@ -47,7 +56,7 @@ class SectionsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {

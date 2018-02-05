@@ -15,18 +15,21 @@ use Search\Manager;
 /**
  * Users Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Roles
- * @property \Cake\ORM\Association\BelongsTo $OsmUsers
- * @property \Cake\ORM\Association\BelongsTo $OsmSections
- * @property \Cake\ORM\Association\BelongsTo $AuthRoles
- * @property \Cake\ORM\Association\BelongsTo $Sections
- * @property \Cake\ORM\Association\HasMany $Applications
- * @property \Cake\ORM\Association\HasMany $Attendees
- * @property \Cake\ORM\Association\HasMany $Champions
- * @property \Cake\ORM\Association\HasMany $Invoices
- * @property \Cake\ORM\Association\HasMany $Notes
- * @property \Cake\ORM\Association\HasMany $Notifications
- * @property \Cake\ORM\Association\HasMany $Payments
+ * @property \App\Model\Table\RolesTable|\Cake\ORM\Association\BelongsTo $Roles
+ * @property |\Cake\ORM\Association\BelongsTo $OsmUsers
+ * @property |\Cake\ORM\Association\BelongsTo $OsmSections
+ * @property \App\Model\Table\AuthRolesTable|\Cake\ORM\Association\BelongsTo $AuthRoles
+ * @property \App\Model\Table\PasswordStatesTable|\Cake\ORM\Association\BelongsTo $PasswordStates
+ * @property \App\Model\Table\SectionsTable|\Cake\ORM\Association\BelongsTo $Sections
+ * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\HasMany $Applications
+ * @property \App\Model\Table\AttendeesTable|\Cake\ORM\Association\HasMany $Attendees
+ * @property \App\Model\Table\ChampionsTable|\Cake\ORM\Association\HasMany $Champions
+ * @property \App\Model\Table\EmailSendsTable|\Cake\ORM\Association\HasMany $EmailSends
+ * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\HasMany $Invoices
+ * @property \App\Model\Table\NotesTable|\Cake\ORM\Association\HasMany $Notes
+ * @property \App\Model\Table\NotificationsTable|\Cake\ORM\Association\HasMany $Notifications
+ * @property \App\Model\Table\PaymentsTable|\Cake\ORM\Association\HasMany $Payments
+ * @property \App\Model\Table\TokensTable|\Cake\ORM\Association\HasMany $Tokens
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
@@ -34,7 +37,7 @@ use Search\Manager;
  * @method \App\Model\Entity\User|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\User findOrCreate($search, callable $callback = null)
+ * @method \App\Model\Entity\User findOrCreate($search, callable $callback = null, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
@@ -84,11 +87,9 @@ class UsersTable extends Table
             'foreignKey' => 'auth_role_id',
             'joinType' => 'INNER'
         ]);
-
         $this->belongsTo('PasswordStates', [
             'foreignKey' => 'password_state_id'
         ]);
-
         $this->belongsTo('Sections', [
             'foreignKey' => 'section_id'
         ]);
@@ -99,6 +100,9 @@ class UsersTable extends Table
             'foreignKey' => 'user_id'
         ]);
         $this->hasMany('Champions', [
+            'foreignKey' => 'user_id'
+        ]);
+        $this->hasMany('EmailSends', [
             'foreignKey' => 'user_id'
         ]);
         $this->hasMany('Invoices', [
@@ -114,9 +118,6 @@ class UsersTable extends Table
             'foreignKey' => 'user_id'
         ]);
         $this->hasMany('Tokens', [
-            'foreignKey' => 'user_id'
-        ]);
-        $this->hasMany('EmailSends', [
             'foreignKey' => 'user_id'
         ]);
 
@@ -147,10 +148,18 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
+
+        $validator
+            ->scalar('firstname')
+            ->maxLength('firstname', 125)
             ->requirePresence('firstname', 'create')
             ->notEmpty('firstname');
 
         $validator
+            ->scalar('lastname')
+            ->maxLength('lastname', 125)
             ->requirePresence('lastname', 'create')
             ->notEmpty('lastname');
 
@@ -160,35 +169,115 @@ class UsersTable extends Table
             ->notEmpty('email');
 
         $validator
+            ->scalar('password')
+            ->maxLength('password', 255)
+            ->minLength('password', 6)
             ->requirePresence('password', 'create')
             ->notEmpty('password');
 
         $validator
+            ->scalar('phone')
+            ->maxLength('phone', 12)
             ->requirePresence('phone', 'create')
             ->notEmpty('phone');
 
         $validator
+            ->scalar('address_1')
+            ->maxLength('address_1', 255)
             ->requirePresence('address_1', 'create')
             ->notEmpty('address_1');
 
         $validator
+            ->scalar('address_2')
+            ->maxLength('address_2', 255)
             ->allowEmpty('address_2');
 
         $validator
+            ->scalar('city')
+            ->maxLength('city', 125)
             ->requirePresence('city', 'create')
             ->notEmpty('city');
 
         $validator
+            ->scalar('county')
+            ->maxLength('county', 125)
             ->requirePresence('county', 'create')
             ->notEmpty('county');
 
         $validator
+            ->scalar('postcode')
+            ->maxLength('postcode', 8)
             ->requirePresence('postcode', 'create')
             ->notEmpty('postcode');
 
         $validator
+            ->scalar('username')
+            ->maxLength('username', 45)
             ->requirePresence('username', 'create')
-            ->notEmpty('username');
+            ->notEmpty('username')
+            ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->scalar('osm_secret')
+            ->maxLength('osm_secret', 255)
+            ->allowEmpty('osm_secret');
+
+        $validator
+            ->integer('osm_linked')
+            ->allowEmpty('osm_linked');
+
+        $validator
+            ->dateTime('osm_linkdate')
+            ->allowEmpty('osm_linkdate');
+
+        $validator
+            ->integer('osm_current_term')
+            ->allowEmpty('osm_current_term');
+
+        $validator
+            ->dateTime('osm_term_end')
+            ->allowEmpty('osm_term_end');
+
+        $validator
+            ->scalar('pw_reset')
+            ->maxLength('pw_reset', 255)
+            ->allowEmpty('pw_reset');
+
+        $validator
+            ->dateTime('last_login')
+            ->allowEmpty('last_login');
+
+        $validator
+            ->integer('logins')
+            ->allowEmpty('logins');
+
+        $validator
+            ->boolean('validated')
+            ->allowEmpty('validated');
+
+        $validator
+            ->dateTime('deleted')
+            ->allowEmpty('deleted');
+
+        $validator
+            ->scalar('digest_hash')
+            ->maxLength('digest_hash', 255)
+            ->allowEmpty('digest_hash');
+
+        $validator
+            ->scalar('pw_salt')
+            ->maxLength('pw_salt', 255)
+            ->allowEmpty('pw_salt');
+
+        $validator
+            ->scalar('api_key_plain')
+            ->maxLength('api_key_plain', 999)
+            ->allowEmpty('api_key_plain');
+
+        $validator
+            ->scalar('api_key')
+            ->maxLength('api_key', 999)
+            ->allowEmpty('api_key');
 
         $validator
             ->integer('membership_number')
@@ -196,28 +285,16 @@ class UsersTable extends Table
             ->notEmpty('membership_number');
 
         $validator
-            ->integer('osm_user_id')
-            ->requirePresence('osm_user_id', false);
+            ->boolean('section_validated')
+            ->allowEmpty('section_validated');
 
         $validator
-            ->integer('osm_linked')
-            ->requirePresence('osm_linked', false);
+            ->boolean('email_validated')
+            ->allowEmpty('email_validated');
 
         $validator
-            ->dateTime('osm_linkdate')
-            ->requirePresence('osm_linkdate', false);
-
-        $validator
-            ->integer('osm_section_id')
-            ->requirePresence('osm_section_id', false);
-
-        $validator
-            ->integer('osm_current_term')
-            ->requirePresence('osm_current_term', false);
-
-        $validator
-            ->dateTime('osm_term_end')
-            ->requirePresence('osm_term_end', false);
+            ->boolean('simple_attendees')
+            ->allowEmpty('simple_attendees');
 
         return $validator;
     }
@@ -237,8 +314,8 @@ class UsersTable extends Table
 
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
         $rules->add($rules->existsIn(['auth_role_id'], 'AuthRoles'));
-        $rules->add($rules->existsIn(['section_id'], 'Sections'));
         $rules->add($rules->existsIn(['password_state_id'], 'PasswordStates'));
+        $rules->add($rules->existsIn(['section_id'], 'Sections'));
 
         return $rules;
     }

@@ -31,6 +31,7 @@ class NotificationsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('SectionAuth');
         $this->addBehavior('Timestamp', [
             'events' => [
                 'Model.beforeSave' => [

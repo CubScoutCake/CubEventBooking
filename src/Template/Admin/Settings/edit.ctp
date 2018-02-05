@@ -5,7 +5,7 @@
         <?php
             echo $this->Form->input('name');
             echo $this->Form->input('text');
-            echo $this->Form->input('setting_type_id', ['options' => $settingTypes, 'empty' => true]);
+            echo $this->Form->input('setting_type_id', ['options' => $settingTypes, 'empty' => false]);
             echo $this->Form->input('number');
         ?>
     </fieldset>

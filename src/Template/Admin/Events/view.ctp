@@ -11,7 +11,6 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right pull-down" role="menu">
-                    <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Accounts View'), ['action' => 'accounts', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Export Data'), ['controller' => 'Events','action' => 'export', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>
@@ -188,53 +187,60 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="fa fa-gbp fa-fw"></i> Prices
+                <div class="pull-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                            Price Actions
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right" role="menu">
+                            <li><?= $this->Html->link(__('Edit Prices'), ['controller' => 'Events', 'action' => 'prices', $event->id]) ?></li>
+                            <li class="divider"></li>
+                            <li><?= $this->Html->link(__('Add Price'), ['controller' => 'Prices', 'action' => 'add']) ?></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <tr>
-                            <th><?= __('Attendee Type'); ?></th>
-                            <th><?= __('Booking Permited'); ?></th>
-                            <th><?= __('Max Number'); ?></th>
-                            <th><?= __('Price'); ?></th>
-                            <th><?= __('Invoice Text'); ?></th>
-                        </tr>
-                        <tr>
-                            <td><?= __('Cubs'); ?></td>
-                            <td><?= $event->cubs ? __('Yes') : __('No'); ?></td>
-                            <td><?php if (isset($event->max_cubs) && $event->max_cubs > 0) {
-                                    $this->Number->format($event->max_cubs);
-                                } else {
-                                    echo 'Not Limited';
-                                } ?></td>
-                            <td><?= $this->Number->currency($event->cubs_value,'GBP') ?></td>
-                            <td><?= h($event->cubs_text) ?></td>
-                        </tr>
-                        <tr>
-                            <td><?= __('Young Leaders'); ?></td>
-                            <td><?= $event->yls ? __('Yes') : __('No'); ?></td>
-                            <td><?php if (isset($event->max_yls) && $event->max_yls > 0) {
-                                    $this->Number->format($event->max_yls);
-                                } else {
-                                    echo 'Not Limited';
-                                } ?></td>
-                            <td><?= $this->Number->currency($event->yls_value,'GBP') ?></td>
-                            <td><?= h($event->yls_text) ?></td>
-                        </tr>
-                        <tr>
-                            <td><?= __('Leaders'); ?></td>
-                            <td><?= $event->leaders ? __('Yes') : __('No'); ?></td>
-                            <td><?php if (isset($event->max_leaders) && $event->max_leaders > 0) {
-                                    $this->Number->format($event->max_leaders);
-                                } else {
-                                    echo 'Not Limited';
-                                } ?></td>
-                            <td><?= $this->Number->currency($event->leaders_value,'GBP') ?></td>
-                            <td><?= h($event->leaders_text) ?></td>
-                        </tr>
-                    </table>
-                </div>
+				<?php if (!empty($event->prices)): ?>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tr>
+                                <th><?= __('Attendee Type'); ?></th>
+                                <th><?= __('Qualifying Role'); ?></th>
+                                <th class="actions"><?= __('Actions') ?></th>
+                                <th><?= __('Max Number'); ?></th>
+                                <th><?= __('Price'); ?></th>
+                                <th><?= __('Invoice Text'); ?></th>
+
+                            </tr>
+							<?php foreach ($event->prices as $price): ?>
+                                <tr>
+                                    <td><?= $price->has('item_type') ? h($price->item_type->item_type) : '' ?></td>
+                                    <td><?= $price->has('item_type') ? $price->item_type->has('role') ? $this->Html->link($price->item_type->role->role, ['controller' => 'Roles', 'action' => 'view', $price->item_type->role->id]) : 'Multiple' : '' ?></td>
+                                    <td class="actions">
+                                        <div class="dropdown btn-group">
+                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu " role="menu">
+                                                <li><?= $this->Html->link(__('Edit'), ['controller' => 'Prices', 'action' => 'Edit', $price->id]) ?></li>
+                                                <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Prices', 'action' => 'delete', $price->id], ['confirm' => __('Are you sure you want to delete # {0}?', $price->id)]) ?></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td><?= $this->Number->format($price->max_number) ?></td>
+                                    <td><?= $this->Number->currency($price->value,'GBP') ?></td>
+                                    <td><?= h($price->description) ?></td>
+                                </tr>
+							<?php endforeach; ?>
+                        </table>
+                    </div>
+				<?php endif; ?>
+				<?php if (empty($event->prices)): ?>
+                    <h2><i class="fa fa-exclamation-triangle fa-3x"></i> There are no prices set.</h2>
+				<?php endif; ?>
             </div>
             <div class="panel-footer">
                 <div class="table-responsive">

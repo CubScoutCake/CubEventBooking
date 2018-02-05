@@ -41,7 +41,19 @@ class EventsController extends AppController
     public function view($eventId = null)
     {
         $event = $this->Events->get($eventId, [
-            'contain' => ['Settings', 'Discounts', 'Applications', 'EventTypes']
+            'contain' => [
+            	'Discounts',
+	            'Applications' => [
+	            	'Sections.Scoutgroups.Districts'
+	            ],
+	            'EventTypes' => [
+	            	'LegalTexts',
+		            'Payable',
+		            'ApplicationRefs',
+		            'InvoiceTexts'
+	            ],
+	            'Prices.ItemTypes.Roles'
+            ]
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);
@@ -61,30 +73,9 @@ class EventsController extends AppController
 
         $lineArray = json_encode($lineArray);
 
-        $this->set(compact('lineArray', 'arrayCount', 'arrayDistrict'));
+        $this->set(compact('lineArray'));
 
-        // Get Entities from Registry
-        $sets = TableRegistry::get('Settings');
-        $dscs = TableRegistry::get('Discounts');
-
-        $now = Time::now();
-        $userId = $this->Auth->user('id');
-
-        // Table Entities
-        if (isset($event->discount_id)) {
-            $discount = $dscs->get($event->discount_id);
-        }
-        if (isset($event->legaltext_id)) {
-            $legal = $sets->get($event->legaltext_id);
-        }
-        if (isset($event->invtext_id)) {
-            $invText = $sets->get($event->invtext_id);
-        }
-
-        $term = $sets->get($event->event_type->application_ref_id);
-        //$term = $event->event_type->application_term->text;
-        $term = $term->text;
-
+        $term = $event->event_type->application_ref->text;
         if ($event->cc_apps > 1) {
             $term = Inflector::pluralize($term);
         }
@@ -482,7 +473,7 @@ class EventsController extends AppController
      *
      * @param string|null $id Event id.
      * @param int $prices Number of Prices to be Created.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function prices($id = null, $prices = 2)
@@ -517,7 +508,7 @@ class EventsController extends AppController
         $eventPrices = count($event->prices);
 
         if ($eventPrices > 0) {
-            $prices = $eventPrices + 1;
+            $prices = $eventPrices;
         }
 
         $this->set(compact('prices', 'event', 'itemTypeOptions'));

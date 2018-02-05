@@ -9,13 +9,14 @@ use Cake\Validation\Validator;
 /**
  * Events Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Discounts
- * @property \Cake\ORM\Association\BelongsTo $AdminUsers
- * @property \Cake\ORM\Association\BelongsTo $EventTypes
- * @property \Cake\ORM\Association\BelongsTo $SectionTypes
- * @property \Cake\ORM\Association\HasMany $Applications
- * @property \Cake\ORM\Association\HasMany $Logistics
- * @property \Cake\ORM\Association\HasMany $Prices
+ * @property \App\Model\Table\DiscountsTable|\Cake\ORM\Association\BelongsTo $Discounts
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $AdminUsers
+ * @property \App\Model\Table\EventTypesTable|\Cake\ORM\Association\BelongsTo $EventTypes
+ * @property \App\Model\Table\SectionTypesTable|\Cake\ORM\Association\BelongsTo $SectionTypes
+ * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\HasMany $Applications
+ * @property \App\Model\Table\LogisticsTable|\Cake\ORM\Association\HasMany $Logistics
+ * @property \App\Model\Table\PricesTable|\Cake\ORM\Association\HasMany $Prices
+ * @property \App\Model\Table\SettingsTable|\Cake\ORM\Association\HasMany $Settings
  *
  * @method \App\Model\Entity\Event get($primaryKey, $options = [])
  * @method \App\Model\Entity\Event newEntity($data = null, array $options = [])
@@ -78,13 +79,13 @@ class EventsTable extends Table
         $this->hasMany('Applications', [
             'foreignKey' => 'event_id'
         ]);
-        $this->hasMany('Settings', [
-            'foreignKey' => 'event_id'
-        ]);
         $this->hasMany('Logistics', [
             'foreignKey' => 'event_id'
         ]);
         $this->hasMany('Prices', [
+            'foreignKey' => 'event_id'
+        ]);
+        $this->hasMany('Settings', [
             'foreignKey' => 'event_id'
         ]);
     }
@@ -102,86 +103,147 @@ class EventsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            //->requirePresence('name', 'create')
+            ->scalar('name')
+            ->maxLength('name', 18)
+            ->requirePresence('name', 'create')
             ->notEmpty('name');
 
         $validator
-            //->requirePresence('full_name', 'create')
+            ->scalar('full_name')
+            ->maxLength('full_name', 255)
+            ->requirePresence('full_name', 'create')
             ->notEmpty('full_name');
 
         $validator
-            ->boolean('live');
+            ->boolean('live')
+            ->allowEmpty('live');
 
         $validator
-            ->boolean('new_apps');
+            ->boolean('new_apps')
+            ->allowEmpty('new_apps');
 
         $validator
-            ->dateTime('start_date');
+            ->dateTime('start_date')
+            ->requirePresence('start_date', 'create')
+            ->notEmpty('start_date');
 
         $validator
-            ->dateTime('end_date');
+            ->dateTime('end_date')
+            ->requirePresence('end_date', 'create')
+            ->notEmpty('end_date');
 
         $validator
-            ->dateTime('deposit_date');
+            ->boolean('deposit')
+            ->allowEmpty('deposit');
 
         $validator
-            ->dateTime('closing_date');
+            ->dateTime('deposit_date')
+            ->allowEmpty('deposit_date');
 
         $validator
-            ->boolean('deposit');
+            ->numeric('deposit_value')
+            ->allowEmpty('deposit_value');
 
         $validator
-            ->dateTime('deposit_date');
+            ->boolean('deposit_inc_leaders')
+            ->allowEmpty('deposit_inc_leaders');
 
         $validator
-            ->boolean('deposit_inc_leaders');
+            ->scalar('deposit_text')
+            ->maxLength('deposit_text', 45)
+            ->allowEmpty('deposit_text');
 
         $validator
-            ->allowEmpty('logo');
+            ->scalar('logo')
+            ->maxLength('logo', 255)
+            ->requirePresence('logo', 'create')
+            ->notEmpty('logo');
 
         $validator
+            ->scalar('address')
+            ->maxLength('address', 45)
             ->allowEmpty('address');
 
         $validator
+            ->scalar('city')
+            ->maxLength('city', 45)
             ->allowEmpty('city');
 
         $validator
+            ->scalar('county')
+            ->maxLength('county', 45)
             ->allowEmpty('county');
 
         $validator
+            ->scalar('postcode')
+            ->maxLength('postcode', 45)
             ->allowEmpty('postcode');
 
         $validator
+            ->scalar('intro_text')
+            ->maxLength('intro_text', 999)
             ->allowEmpty('intro_text');
 
         $validator
+            ->scalar('tagline_text')
+            ->maxLength('tagline_text', 125)
             ->allowEmpty('tagline_text');
 
         $validator
-            //->requirePresence('location', 'create')
+            ->scalar('location')
+            ->maxLength('location', 45)
+            ->requirePresence('location', 'create')
             ->notEmpty('location');
 
         $validator
-            ->boolean('max');
+            ->boolean('max')
+            ->allowEmpty('max');
 
         $validator
-            ->boolean('allow_reductions');
+            ->boolean('allow_reductions')
+            ->allowEmpty('allow_reductions');
 
         $validator
-            ->boolean('invoices_locked');
+            ->boolean('invoices_locked')
+            ->allowEmpty('invoices_locked');
 
         $validator
-            //->requirePresence('admin_firstname', 'create')
+            ->scalar('admin_firstname')
+            ->maxLength('admin_firstname', 45)
+            ->requirePresence('admin_firstname', 'create')
             ->notEmpty('admin_firstname');
 
         $validator
-            //->requirePresence('admin_lastname', 'create')
+            ->scalar('admin_lastname')
+            ->maxLength('admin_lastname', 45)
+            ->requirePresence('admin_lastname', 'create')
             ->notEmpty('admin_lastname');
 
         $validator
-            ->add('admin_email', 'valid', ['rule' => 'email'])
-            //->requirePresence('admin_email', 'create')
+            ->email('admin_email')
+            ->maxLength('admin_email', 255)
+            ->requirePresence('admin_email', 'create')
             ->notEmpty('admin_email');
+
+        $validator
+            ->integer('max_apps')
+            ->allowEmpty('max_apps');
+
+        $validator
+            ->integer('max_section')
+            ->allowEmpty('max_section');
+
+        $validator
+            ->dateTime('closing_date')
+            ->allowEmpty('closing_date');
+
+        $validator
+            ->boolean('complete')
+            ->allowEmpty('complete');
+
+        $validator
+            ->boolean('team_price')
+            ->allowEmpty('team_price');
 
         return $validator;
     }

@@ -5,11 +5,10 @@ use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Entity;
 
 /**
- * User Entity.
+ * User Entity
  *
  * @property int $id
  * @property int $role_id
- * @property string $authrole
  * @property string $firstname
  * @property string $lastname
  * @property string $email
@@ -20,7 +19,7 @@ use Cake\ORM\Entity;
  * @property string $city
  * @property string $county
  * @property string $postcode
- * @property string $legacy_section
+ * @property-read string $legacy_section
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  * @property string $username
@@ -41,17 +40,27 @@ use Cake\ORM\Entity;
  * @property string $api_key_plain
  * @property string $api_key
  * @property int $auth_role_id
- * @property int $pw_state
+ * @property int $password_state_id
  * @property int $membership_number
  * @property int $section_id
+ * @property bool $section_validated
+ * @property bool $email_validated
+ * @property bool $simple_attendees
+ * @property string $full_name
  *
  * @property \App\Model\Entity\Role $role
+ * @property \App\Model\Entity\AuthRole $auth_role
+ * @property \App\Model\Entity\PasswordState $password_state
  * @property \App\Model\Entity\Section $section
  * @property \App\Model\Entity\Application[] $applications
+ * @property \App\Model\Entity\Attendee[] $attendees
+ * @property \App\Model\Entity\Champion[] $champions
+ * @property \App\Model\Entity\Invoice[] $invoices
  * @property \App\Model\Entity\Note[] $notes
  * @property \App\Model\Entity\Notification[] $notifications
- * @property \App\Model\Entity\Attendee[] $attendees
- * @property \App\Model\Entity\Invoice[] $invoices
+ * @property \App\Model\Entity\Payment[] $payments
+ * @property \App\Model\Entity\Token[] $tokens
+ * @property \App\Model\Entity\EmailSend[] $email_sends
  */
 class User extends Entity
 {
@@ -66,8 +75,57 @@ class User extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false,
+        'role_id' => true,
+        'firstname' => true,
+        'lastname' => true,
+        'email' => true,
+        'password' => true,
+        'phone' => true,
+        'address_1' => true,
+        'address_2' => true,
+        'city' => true,
+        'county' => true,
+        'postcode' => true,
+        'legacy_section' => true,
+        'created' => true,
+        'modified' => true,
+        'username' => true,
+        'osm_user_id' => true,
+        'osm_secret' => true,
+        'osm_section_id' => true,
+        'osm_linked' => true,
+        'osm_linkdate' => true,
+        'osm_current_term' => true,
+        'osm_term_end' => true,
+        'pw_reset' => true,
+        'last_login' => true,
+        'logins' => true,
+        'validated' => true,
+        'deleted' => true,
+        'digest_hash' => true,
+        'pw_salt' => true,
+        'api_key_plain' => true,
+        'api_key' => true,
+        'auth_role_id' => true,
+        'password_state_id' => true,
+        'membership_number' => true,
+        'section_id' => true,
+        'section_validated' => true,
+        'email_validated' => true,
+        'simple_attendees' => true,
+        'role' => true,
+        'auth_role' => true,
+        'password_state' => true,
+        'section' => true,
+        'applications' => true,
+        'attendees' => true,
+        'champions' => true,
+        'invoices' => true,
+        'notes' => true,
+        'notifications' => true,
+        'payments' => true,
+        'tokens' => true,
+        'email_sends' => true
     ];
 
     /**
@@ -83,6 +141,11 @@ class User extends Entity
         return $hasher->hash($value);
     }
 
+    /**
+     * Fields that are excluded from JSON versions of the entity.
+     *
+     * @var array
+     */
     protected $_hidden = ['password'];
 
     /**
@@ -95,5 +158,10 @@ class User extends Entity
         return $this->_properties['firstname'] . ' ' . $this->_properties['lastname'];
     }
 
+    /**
+     * Exposed Virtual Properties
+     *
+     * @var array
+     */
     protected $_virtual = ['full_name'];
 }

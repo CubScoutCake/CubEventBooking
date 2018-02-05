@@ -63,7 +63,7 @@ class PaymentsController extends AppController
 		    }
 	    }
 
-	    if ( !is_null($numberOfInvoiceAssocs) && $numberOfInvoiceAssocs > 1 ) {
+	    if ( !is_null($numberOfInvoiceAssocs) && $numberOfInvoiceAssocs > 0 ) {
 
 		    $payment = $this->Payments->newEntity();
 		    if ( $this->request->is( 'post' ) ) {

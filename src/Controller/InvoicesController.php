@@ -56,7 +56,6 @@ class InvoicesController extends AppController
                ]
            ]);
 
-        // Insantiate Objects
         $invoice = $this->Invoices->get($id, [
             'contain' => [
                 'Users',
@@ -69,7 +68,7 @@ class InvoicesController extends AppController
                 'Applications' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts'
+                            'LegalTexts', 'InvoiceTexts', 'Payable'
                         ]
                     ],
                     'Sections.Scoutgroups.Districts',
@@ -82,27 +81,7 @@ class InvoicesController extends AppController
             ]
         ]);
 
-        // Set Address Variables
-        $eventName = $invoice->application->event->full_name;
-        $invAddress = $invoice->application->event->address;
-        $invCity = $invoice->application->event->city;
-        $invPostcode = $invoice->application->event->postcode;
-
-        $this->set(compact('eventName', 'invAddress', 'invCity', 'invPostcode'));
-
-        // Set Deadline Variable
-        $invDeadline = $invoice->application->event->deposit_date;
-
-        // Set Prefix Variable
-        //$invSetPre = $event->invtext_id;
-        //$invSetting = $settings->get($invSetPre);
-        $invPrefix = 'INV #';
-
-        // Set Payable Variable
-        $invPayable = $invoice->application->event->event_type->invoice_text->text;
-        //$invoice->application->event->event_type->legal_text->text;
-
-        $this->set(compact('invoice', 'invPayable', 'invPrefix', 'invDeadline'));
+        $this->set(compact('invoice'));
         $this->set('_serialize', ['invoice']);
     }
 

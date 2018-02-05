@@ -66,28 +66,30 @@ class LandingController extends AppController
         $userId = $this->Auth->user('id');
 
         $user = $usrs->get($userId, ['contain' => ['Sections', 'AuthRoles']]);
-        $sectionTypeId = $user->section->section_type_id;
-        $sectionLimited = $user->auth_role->section_limited;
+        $authArray = [
+        	'section_type_id' => $user->section->section_type_id,
+	        'section_limited' => $user->auth_role->section_limited,
+        ];
 
         // Limited Table Entities
-        $applications = $apps->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->contain(['Users', 'Sections.Scoutgroups.Districts'])->order(['Applications.modified' => 'DESC'])->limit(10);
-        $events = $evs->find('upcoming')->find('eventSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
-        $invoices = $invs->find()->contain(['Users', 'Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
-        $users = $usrs->find('userSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->contain(['Roles', 'Sections.Scoutgroups.Districts', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
-        $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
-        $notes = $nts->find()->contain(['Invoices', 'Applications', 'Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
-        $notifications = $notifs->find()->contain(['NotificationTypes', 'Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
+        $applications = $apps->find('sameSection', $authArray)->contain(['Users', 'Sections.Scoutgroups.Districts'])->order(['Applications.modified' => 'DESC'])->limit(10);
+        $events = $evs->find('upcoming')->find('sameSection', $authArray)->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
+        $invoices = $invs->find('sameSection', $authArray)->contain(['Users', 'Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
+        $users = $usrs->find('sameSection', $authArray)->contain(['Roles', 'Sections.Scoutgroups.Districts', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
+        $payments = $pays->find('sameSection', $authArray)->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
+        $notes = $nts->find('sameSection', $authArray)->contain(['Invoices', 'Applications', 'Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
+        $notifications = $notifs->find('sameSection', $authArray)->contain(['NotificationTypes', 'Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
 
         // Pass to View
         $this->set(compact('applications', 'events', 'invoices', 'users', 'payments', 'notes', 'notifications'));
 
         // Counts of Entities
-        $cntApplications = $apps->find('all')->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->count('*');
-        $cntEvents = $evs->find('eventSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->find('all')->count('*');
-        $cntInvoices = $invs->find('all')->count('*');
-        $cntUsers = $usrs->find('all')->find('userSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->count('*');
-        $cntPayments = $pays->find('all')->count('*');
-        $cntAttendees = $atts->find('all')->find('sameSection', ['section_type_id' => $sectionTypeId, 'section_limited' => $sectionLimited])->count('*');
+        $cntApplications = $apps->find('sameSection', $authArray)->count();
+        $cntEvents = $evs->find('sameSection', $authArray)->find('all')->count();
+        $cntInvoices = $invs->find('sameSection', $authArray)->count();
+        $cntUsers = $usrs->find('sameSection', $authArray)->count();
+        $cntPayments = $pays->find('sameSection', $authArray)->count();
+        $cntAttendees = $atts->find('sameSection', $authArray)->count();
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));

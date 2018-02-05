@@ -15,28 +15,35 @@ class ApplicationsController extends AppController
     /**
      * Index method
      *
+     * @param int $eventID The ID of an Event
+     *
      * @return void
      */
-    public function index()
+    public function index($eventID = null)
     {
-        $this->paginate = [
-            'contain' => ['Users', 'Sections.Scoutgroups', 'Events', 'Attendees']
-            , 'conditions' => ['Events.live' => true]
-            , 'order' => ['modified' => 'DESC']
-        ];
+    	$query = $this->Applications->find('all');
 
-        $this->set('applications', $this->paginate($this->Applications));
-        $this->set('_serialize', ['applications']);
-    }
+    	if (!is_null($eventID)) {
+    		$query->where(['event_id' => $eventID]);
 
-    public function bookings($eventID = null)
-    {
-        $this->paginate = [
-            'contain' => ['Users', 'Sections.Scoutgroups', 'Events', 'Attendees', 'Invoices'],
-            'conditions' => ['event_id' => $eventID]
-        ];
-        $this->set('applications', $this->paginate($this->Applications));
+    		$events = TableRegistry::get('Events');
+    		$event = $events->get($eventID);
+
+    		$title = $event->name . ' Bookings';
+
+	    } else {
+    		$query->where(['Events.live' => true]);
+
+    		$title = 'All Applications';
+	    }
+
+	    $query
+		    ->contain(['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Attendees'])
+		    ->orderDesc('Applications.modified');
+
+        $this->set('applications', $this->paginate($query));
         $this->set('_serialize', ['applications']);
+        $this->set('page_title', $title);
     }
 
     /**
@@ -167,15 +174,17 @@ class ApplicationsController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @param int $userId The Id of the User to be have the Application Created for
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add($userId = null)
     {
         if (isset($userId)) {
             $usrs = TableRegistry::get('Users');
 
-            $user = $usrs->get($userId, ['contain' => ['Roles', 'Applications', 'Scoutgroups']]);
-            $userScoutGroup = $user->scoutgroup_id;
+            $user = $usrs->get($userId, ['contain' => ['Roles', 'Applications', 'Sections.Scoutgroups']]);
+	        $userSectionId = $user->section_id;
         }
 
         $application = $this->Applications->newEntity();
@@ -228,8 +237,8 @@ class ApplicationsController extends AppController
         if ($this->request->is('get')) {
             // Values from the Model e.g.
             $this->request->data['user_id'] = $userId;
-            if (isset($userScoutGroup)) {
-                $this->request->data['scoutgroup_id'] = $userScoutGroup;
+            if (isset($userSectionId)) {
+                $this->request->withData('section', $userSectionId);
             }
         }
     }
@@ -238,17 +247,18 @@ class ApplicationsController extends AppController
      * Edit method
      *
      * @param string|null $id Application id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
         $application = $this->Applications->get($id, [
-            'contain' => ['Attendees', 'Events', 'Sections.Scoutgroups', 'Users']
+            'contain' => ['Attendees', 'Events.EventTypes.ApplicationRefs', 'Sections.Scoutgroups', 'Users']
         ]);
 
-        $users = TableRegistry::get('Users');
-        $user = $users->get($application->user_id);
+	    $permitHolderBool = $application->event->event_type->permit_holder;
+	    $teamLeaderBool = $application->event->event_type->team_leader;
+	    $term = $application->event->event_type->application_ref->text;
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $application = $this->Applications->patchEntity($application, $this->request->data);
@@ -280,10 +290,16 @@ class ApplicationsController extends AppController
             ]
         )
             ->contain(['Scoutgroups.Districts']);
-        $this->set(compact('application', 'users', 'attendees', 'events', 'sections'));
+        $this->set(compact('application', 'users', 'attendees', 'events', 'sections', 'permitHolderBool', 'teamLeaderBool', 'term'));
         $this->set('_serialize', ['application']);
     }
 
+
+	/**
+	 * @param int $id LinkID
+	 *
+	 * @return \Cake\Http\Response|null
+	 */
     public function link($id = null)
     {
         $application = $this->Applications->get($id, [
@@ -309,7 +325,7 @@ class ApplicationsController extends AppController
      * Delete method
      *
      * @param string|null $id Application id.
-     * @return void Redirects to index.
+     * @return \Cake\Http\Response Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function delete($id = null)

@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\Model\Entity\Invoice $invoice
+ */
+?>
 <div class="row">
     <div class="col-lg-12 col-md-12">
         <h1 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
@@ -12,7 +17,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <span><strong><?= __('Application') ?>:</strong> <?= $invoice->has('application') ? $invoice->application->display_code : '' ?></span>
                         <br/>
-                        <span><strong><?= __('Event') ?>:</strong> <?= h($eventName) ?></span>
+                        <span><strong><?= __('Event') ?>:</strong> <?= h($invoice->application->event->full_name) ?></span>
                         <br/>
                         <span><strong><?= __('Date Created') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YYYY HH:mm')) ?></span>
                         <br/>
@@ -30,7 +35,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <p>Deposits for invoices should be made payable to <strong><?= h($invPayable) ?></strong> and sent to <strong><?= h($eventName) ?>, <?= h($invAddress) ?>, <?= h($invCity) ?>, <?= h($invPostcode) ?></strong> by <strong><?= $this->Time->i18nformat($invDeadline,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invPrefix) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
+                <p>Deposits for invoices should be made payable to <strong><?= h($invPayable) ?></strong> and sent to <strong><?= h($invoice->application->event->full_name) ?>, , C/O: <?= h($invoice->application->event->admin_firstname) ?> <?= h($invoice->application->event->admin_lastname) ?> <?= h($invoice->application->event->address) ?>, <?= h($invoice->application->event->city) ?>, <?= h($invoice->application->event->postcode) ?></strong> by <strong><?= $this->Time->i18nformat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invoice->application->event->event_type->invoice_text->text) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
             </div>
         </div>
     </div>

@@ -4,12 +4,19 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Payment Entity.
+ * Payment Entity
  *
  * @property int $id
  * @property float $value
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $paid
+ * @property string $cheque_number
+ * @property string $name_on_cheque
+ * @property int $user_id
+ * @property string $payment_notes
+ * @property \Cake\I18n\Time $deleted
+ *
+ * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Invoice[] $invoices
  */
 class Payment extends Entity
@@ -25,7 +32,15 @@ class Payment extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false,
+        'value' => true,
+        'created' => true,
+        'paid' => true,
+        'cheque_number' => true,
+        'name_on_cheque' => true,
+        'user_id' => true,
+        'payment_notes' => true,
+        'deleted' => true,
+        'user' => true,
+        'invoices' => true
     ];
 }

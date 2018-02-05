@@ -43,7 +43,7 @@ class SectionsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
-
+        $this->addBehavior('SectionAuth');
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);

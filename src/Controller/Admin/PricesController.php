@@ -47,7 +47,7 @@ class PricesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -57,7 +57,7 @@ class PricesController extends AppController
             if ($this->Prices->save($price)) {
                 $this->Flash->success(__('The price has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+	            return $this->redirect(['controller' => 'Events', 'action' => 'view', $price->event_id]);
             } else {
                 $this->Flash->error(__('The price could not be saved. Please, try again.'));
             }
@@ -72,7 +72,7 @@ class PricesController extends AppController
      * Edit method
      *
      * @param string|null $id Price id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
@@ -81,11 +81,11 @@ class PricesController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $price = $this->Prices->patchEntity($price, $this->request->data);
+            $price = $this->Prices->patchEntity($price, $this->request->getData());
             if ($this->Prices->save($price)) {
                 $this->Flash->success(__('The price has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Events', 'action' => 'view', $price->event_id]);
             } else {
                 $this->Flash->error(__('The price could not be saved. Please, try again.'));
             }
@@ -100,19 +100,22 @@ class PricesController extends AppController
      * Delete method
      *
      * @param string|null $id Price id.
-     * @return \Cake\Network\Response|null Redirects to index.
+     * @return \Cake\Http\Response Redirects to Event View.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $price = $this->Prices->get($id);
+
+        $eventId = $price->event_id;
+
         if ($this->Prices->delete($price)) {
             $this->Flash->success(__('The price has been deleted.'));
         } else {
             $this->Flash->error(__('The price could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Events', 'action' => 'view', $eventId]);
     }
 }
