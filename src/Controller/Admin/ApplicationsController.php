@@ -253,10 +253,12 @@ class ApplicationsController extends AppController
     public function edit($id = null)
     {
         $application = $this->Applications->get($id, [
-            'contain' => ['Attendees', 'Events', 'Sections.Scoutgroups', 'Users']
+            'contain' => ['Attendees', 'Events.EventTypes.ApplicationRefs', 'Sections.Scoutgroups', 'Users']
         ]);
 
-        $user = $application->user;
+	    $permitHolderBool = $application->event->event_type->permit_holder;
+	    $teamLeaderBool = $application->event->event_type->team_leader;
+	    $term = $application->event->event_type->application_ref->text;
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $application = $this->Applications->patchEntity($application, $this->request->data);
@@ -288,7 +290,7 @@ class ApplicationsController extends AppController
             ]
         )
             ->contain(['Scoutgroups.Districts']);
-        $this->set(compact('application', 'users', 'attendees', 'events', 'sections'));
+        $this->set(compact('application', 'users', 'attendees', 'events', 'sections', 'permitHolderBool', 'teamLeaderBool', 'term'));
         $this->set('_serialize', ['application']);
     }
 

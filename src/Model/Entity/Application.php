@@ -88,5 +88,33 @@ class Application extends Entity
         return 'E0' . $this->_properties['event_id'] . ' - APP#' . $this->_properties['id'];
     }
 
-    protected $_virtual = ['display_code'];
+    /**
+     * Specification of a standard method of building a display code.
+     *
+     * @return string
+     */
+    protected function _getPermitholder()
+    {
+        if (is_null($this->_properties['team_leader'])) {
+            return $this->_properties['permit_holder'];
+        }
+
+        return $this->_properties['team_leader'];
+    }
+
+    /**
+     * Specification of a standard method of building a display code.
+     *
+     * @return string
+     */
+    protected function _getLeader()
+    {
+        if (is_null($this->_properties['team_leader'])) {
+            return $this->_properties['permit_holder'];
+        }
+
+        return $this->_properties['team_leader'];
+    }
+
+    protected $_virtual = ['display_code', 'permitholder', 'leader'];
 }
