@@ -4,18 +4,14 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Attendee Entity.
+ * Attendee Entity
  *
  * @property int $id
  * @property int $user_id
- * @property \App\Model\Entity\User $user
- * @property int $scoutgroup_id
- * @property \App\Model\Entity\Scoutgroup $scoutgroup
  * @property int $role_id
- * @property \App\Model\Entity\Role $role
  * @property string $firstname
  * @property string $lastname
- * @property \Cake\I18n\Time $dateofbirth
+ * @property \Cake\I18n\Date $dateofbirth
  * @property string $phone
  * @property string $phone2
  * @property string $address_1
@@ -24,8 +20,20 @@ use Cake\ORM\Entity;
  * @property string $county
  * @property string $postcode
  * @property bool $nightsawaypermit
+ * @property bool $vegetarian
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
+ * @property bool $osm_generated
+ * @property int $osm_id
+ * @property \Cake\I18n\Time $osm_sync_date
+ * @property bool $user_attendee
+ * @property \Cake\I18n\Time $deleted
+ * @property int $section_id
+ * @property int $cc_apps
+ *
+ * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\Section $section
+ * @property \App\Model\Entity\Role $role
  * @property \App\Model\Entity\Application[] $applications
  * @property \App\Model\Entity\Allergy[] $allergies
  */
@@ -42,8 +50,34 @@ class Attendee extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false,
+        'user_id' => true,
+        'role_id' => true,
+        'firstname' => true,
+        'lastname' => true,
+        'dateofbirth' => true,
+        'phone' => true,
+        'phone2' => true,
+        'address_1' => true,
+        'address_2' => true,
+        'city' => true,
+        'county' => true,
+        'postcode' => true,
+        'nightsawaypermit' => true,
+        'vegetarian' => true,
+        'created' => true,
+        'modified' => true,
+        'osm_generated' => true,
+        'osm_id' => true,
+        'osm_sync_date' => true,
+        'user_attendee' => true,
+        'deleted' => true,
+        'section_id' => true,
+        'cc_apps' => true,
+        'user' => true,
+        'section' => true,
+        'role' => true,
+        'applications' => true,
+        'allergies' => true
     ];
 
     /**

@@ -12,11 +12,21 @@ use Cake\Validation\Validator;
 /**
  * Attendees Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsTo $Sections
- * @property \Cake\ORM\Association\BelongsTo $Roles
- * @property \Cake\ORM\Association\BelongsToMany $Applications
- * @property \Cake\ORM\Association\BelongsToMany $Allergies
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\RolesTable|\Cake\ORM\Association\BelongsTo $Roles
+ * @property \App\Model\Table\SectionsTable|\Cake\ORM\Association\BelongsTo $Sections
+ * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\BelongsToMany $Applications
+ * @property \App\Model\Table\AllergiesTable|\Cake\ORM\Association\BelongsToMany $Allergies
+ *
+ * @method \App\Model\Entity\Attendee get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Attendee newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Attendee[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Attendee|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Attendee patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Attendee[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Attendee findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class AttendeesTable extends Table
 {
@@ -84,46 +94,79 @@ class AttendeesTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->integer('id')
             ->allowEmpty('id', 'create');
 
         $validator
+            ->scalar('firstname')
+            ->maxLength('firstname', 255)
+            ->requirePresence('firstname', 'create')
             ->notEmpty('firstname');
 
         $validator
+            ->scalar('lastname')
+            ->maxLength('lastname', 255)
+            ->requirePresence('lastname', 'create')
             ->notEmpty('lastname');
 
         $validator
+            ->date('dateofbirth')
             ->allowEmpty('dateofbirth');
 
         $validator
+            ->scalar('phone')
+            ->maxLength('phone', 12)
             ->allowEmpty('phone');
 
         $validator
+            ->scalar('phone2')
+            ->maxLength('phone2', 12)
             ->allowEmpty('phone2');
 
         $validator
+            ->scalar('address_1')
+            ->maxLength('address_1', 255)
             ->allowEmpty('address_1');
 
         $validator
+            ->scalar('address_2')
+            ->maxLength('address_2', 255)
             ->allowEmpty('address_2');
 
         $validator
+            ->scalar('city')
+            ->maxLength('city', 125)
             ->allowEmpty('city');
 
         $validator
+            ->scalar('county')
+            ->maxLength('county', 125)
             ->allowEmpty('county');
 
         $validator
+            ->scalar('postcode')
+            ->maxLength('postcode', 8)
             ->allowEmpty('postcode');
 
         $validator
-            ->add('nightsawaypermit', 'valid', ['rule' => 'boolean'])
+            ->boolean('nightsawaypermit')
             ->allowEmpty('nightsawaypermit');
 
         $validator
-            ->add('vegetarian', 'valid', ['rule' => 'boolean'])
+            ->boolean('vegetarian')
             ->allowEmpty('vegetarian');
+
+        $validator
+            ->boolean('osm_generated')
+            ->allowEmpty('osm_generated');
+
+        $validator
+            ->dateTime('osm_sync_date')
+            ->allowEmpty('osm_sync_date');
+
+        $validator
+            ->boolean('user_attendee')
+            ->allowEmpty('user_attendee');
 
         return $validator;
     }
@@ -140,6 +183,9 @@ class AttendeesTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['section_id'], 'Sections'));
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
+
+        $rules->add($rules->isUnique(['osm_id', 'user_id'], 'This attendee already exists'));
+        $rules->add($rules->isUnique(['firstname', 'lastname', 'user_id'], 'This attendee already exists'));
 
         return $rules;
     }
@@ -205,28 +251,141 @@ class AttendeesTable extends Table
             ])
             ->group(['Attendees.id'])
             ->having(['total_applications <' => 1])
-            ->autoFields(true);
+            ->enableAutoFields(true);
     }
 
     /**
-     * Stores emails as lower case.
+     * Case Rules - Applied before Rules
      *
      * @param \Cake\Event\Event $event The event being processed.
+     * @param \App\Model\Entity\Attendee $entity The Attendee being Processed
      * @return bool
      */
-    public function beforeRules(Event $event)
+    public function beforeRules(Event $event, $entity)
     {
-        $entity = $event->data['entity'];
+//      $entity = $this->changeCase($entity);
 
-        $entity->firstname = ucwords(strtolower($entity->firstname));
-        $entity->lastname = ucwords(strtolower($entity->lastname));
-        $entity->address_1 = ucwords(strtolower($entity->address_1));
-        $entity->address_2 = ucwords(strtolower($entity->address_2));
-        $entity->city = ucwords(strtolower($entity->city));
-        $entity->county = ucwords(strtolower($entity->county));
-        $entity->postcode = strtoupper($entity->postcode);
+        $newEntity = $this->checkDuplicate($entity);
+
+        if (!$newEntity->isNew()) {
+            $entity->id = $newEntity->id;
+            $entity->isNew(false);
+        }
+
+        foreach ($entity->getDirty() as $changed) {
+            $entity = $entity->set($changed, $newEntity->get($changed));
+        }
+
+//      $entity = $this->changeCase($entity);
 
         return true;
+    }
+
+    /**
+     * @param Event $event The Event Lifecycle
+     * @param array $data The Data Present
+     *
+     * @return void
+     */
+    public function beforeMarshal($event, $data)
+    {
+        $data = $this->changeArrayCase($data);
+    }
+
+    /**
+     * Check for Duplicate Attendee
+     *
+     * @param Attendee $entity The Entity for DeDuplication
+     *
+     * @return Attendee
+     */
+    public function checkDuplicate($entity)
+    {
+        $original = $this->find('all')->where([
+            'user_id' => $entity->user_id,
+            'OR' => [
+                [
+                    'firstname' => $entity->firstname,
+                    'lastname' => $entity->lastname,
+                ],
+                [
+                    'osm_id' => $entity->osm_id,
+                    'osm_generated' => true,
+                ],
+            ]
+        ]);
+
+        $countOriginal = $original;
+        $countOriginal = $countOriginal->count();
+
+        if ($countOriginal > 0) {
+            $originalEnt = $original->first();
+
+            $changedValues = $entity->getDirty();
+            $newData = [];
+
+            foreach ($changedValues as $changed_value) {
+                $value = $entity->get($changed_value);
+
+                $newData = array_merge($newData, [$changed_value => $value]);
+            }
+
+            $originalEnt = $this->patchEntity($originalEnt, $newData);
+
+            return $originalEnt;
+        }
+
+        return $entity;
+    }
+
+    /**
+     * @var array The Array for Uppercase Conversion
+     */
+    public $upperCase = ['postcode'];
+
+    /**
+     * @var array The Array for Title Case Conversion
+     */
+    public $initCase = ['firstname', 'lastname', 'address_1', 'address_2', 'city', 'county'];
+
+    /**
+     * @param array $array The Array for Case Normalisation
+     *
+     * @return array
+     */
+    public function changeArrayCase($array)
+    {
+        foreach ($this->initCase as $initValue) {
+            if (key_exists($initValue, $array)) {
+                $array[$initValue] = ucwords(strtolower($array[$initValue]));
+            }
+        }
+
+        foreach ($this->upperCase as $upperValue) {
+            if (key_exists($upperValue, $array)) {
+                $array[$upperValue] = strtoupper($array[$upperValue]);
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * @param Attendee $entity The Attendee Entity to be Case Fixed
+     *
+     * @return Attendee
+     */
+    public function changeCase($entity)
+    {
+        foreach ($this->initCase as $initValue) {
+            $entity = $entity->set($initValue, ucwords(strtolower($entity->get($initValue))));
+        }
+
+        foreach ($this->upperCase as $upperValue) {
+            $entity = $entity->set($upperValue, strtoupper($entity->get($upperValue)));
+        }
+
+        return $entity;
     }
 
     /**

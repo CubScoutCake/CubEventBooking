@@ -25,7 +25,10 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
 
     public function testIndexUnauthorisedFails()
     {
-        $this->session(['Auth.User.auth_role_id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1
+        ]);
 
         $this->get('/admin/districts');
 
@@ -36,7 +39,10 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
 
     public function testAddUnauthorisedFails()
     {
-        $this->session(['Auth.User.auth_role_id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1
+        ]);
 
         $this->get('/admin/districts/add');
 
@@ -47,7 +53,10 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
 
     public function testAddAuthorisedLoads()
     {
-        $this->session(['Auth.User.auth_role_id' => 2]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
 
         $this->get('/admin/districts/add');
 

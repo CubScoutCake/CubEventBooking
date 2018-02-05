@@ -119,6 +119,68 @@ class EventsControllerTest extends IntegrationTestCase
         $this->get('/admin/events/add');
 
         $this->assertResponseOk();
+
+        /*$this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'add'],[
+            'name' => 'Cyclocross',
+            'full_name' => 'County Cub Cyclocross',
+            'event_type_id' => 1,
+            'section_type_id' => 1,
+            'start_date' => [
+                'year' => 2018,
+                'month' => 02,
+                'day' => 05,
+                'hour' => 00,
+                'minute' => 15,
+            ],
+            'deposit_date' => [
+                'year' => 2018,
+                'month' => 02,
+                'day' => 05,
+                'hour' => 00,
+                'minute' => 15,
+            ],
+            'end_date' => [
+                'year' => 2018,
+                'month' => 02,
+                'day' => 05,
+                'hour' => 00,
+                'minute' => 15,
+            ],
+            'closing_date' => [
+                'year' => 2018,
+                'month' => 02,
+                'day' => 05,
+                'hour' => 00,
+                'minute' => 15,
+            ],
+            'live' => 1,
+            'new_apps' => 1,
+            'team_price' => 0,
+            'allow_reductions' => 0,
+            'invoices_locked' => 0,
+            'location' => 'Well End',
+            'intro_text' => 'Jacob',
+            'tagline_text' => 'This',
+            'logo' => '/Monkey.png',
+            'admin_firstname' => 'Joe',
+            'admin_lastname' => 'Bloggs',
+            'admin_email' => 'fish@sig.com',
+            'admin_user_id' => 1,
+            'address' => '17 Appleton Mead',
+            'city' => 'Biggleswade',
+            'county' => 'Hertfordshire',
+            'postcode' => 'SG18 8HS',
+            'max' => 1,
+            'max_apps' => '36',
+            'max_section' => null,
+            'discount_id' => null,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertRedirect();*/
     }
 
     /**

@@ -1,171 +1,103 @@
-<div class="panel panel-default">
-    <!-- Panel header -->
-    <div class="panel-heading">
-        <h3 class="panel-title"><?= h($eventType->id) ?></h3>
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\EventType $eventType
+ */
+?>
+<div class="eventTypes view large-9 medium-8 columns content">
+    <h3><?= h($eventType->event_type) ?></h3>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Booking Methods</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p><strong><?= __('Simple Booking') ?>:</strong> <?= $eventType->simple_booking ? __('Yes') : __('No'); ?></p>
+                            <p><strong><?= __('Sync Book') ?>:</strong> <?= $eventType->sync_book ? __('Yes') : __('No'); ?></p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p><strong><?= __('Parent Applications') ?>:</strong> <?= $eventType->parent_applications ? __('Yes') : __('No'); ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Required Fields</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p><strong><?= __('Date Of Birth') ?>:</strong> <?= $eventType->date_of_birth ? __('Yes') : __('No'); ?></p>
+                            <p><strong><?= __('Medical') ?>:</strong> <?= $eventType->medical ? __('Yes') : __('No'); ?></p>
+                            <p><strong><?= __('Dietary') ?>:</strong> <?= $eventType->dietary ? __('Yes') : __('No'); ?></p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p><strong><?= __('Team Leader') ?>:</strong> <?= $eventType->team_leader ? __('Yes') : __('No'); ?></p>
+                            <p><strong><?= __('Permit Holder') ?>:</strong> <?= $eventType->permit_holder ? __('Yes') : __('No'); ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <table class="table table-striped" cellpadding="0" cellspacing="0">
-        <tr>
-            <td><?= __('Event Type') ?></td>
-            <td><?= h($eventType->event_type) ?></td>
-        </tr>
-        <tr>
-            <td><?= __('Setting') ?></td>
-            <td><?= $eventType->has('setting') ? $this->Html->link($eventType->setting->name, ['controller' => 'Settings', 'action' => 'view', $eventType->setting->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <td><?= __('Id') ?></td>
-            <td><?= $this->Number->format($eventType->id) ?></td>
-        </tr>
-        <tr>
-            <td><?= __('Invoice Text Id') ?></td>
-            <td><?= $this->Number->format($eventType->invoice_text_id) ?></td>
-        </tr>
-        <tr>
-            <td><?= __('Simple Booking') ?></td>
-            <td><?= $eventType->simple_booking ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <td><?= __('Date Of Birth') ?></td>
-            <td><?= $eventType->date_of_birth ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <td><?= __('Medical') ?></td>
-            <td><?= $eventType->medical ? __('Yes') : __('No'); ?></td>
-        </tr>
-        <tr>
-            <td><?= __('Parent Applications') ?></td>
-            <td><?= $eventType->parent_applications ? __('Yes') : __('No'); ?></td>
-        </tr>
-    </table>
-</div>
-
-<div class="panel panel-default">
-    <!-- Panel header -->
-    <div class="panel-heading">
-        <h3 class="panel-title"><?= __('Related Events') ?></h3>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Display Options</h4>
+        </div>
+        <div class="panel-body">
+            <p><strong><?= __('Display Availability') ?>:</strong> <?= $eventType->display_availability ? __('Yes') : __('No'); ?></p>
+            <br/>
+            <p><strong><?= __('Invoice Text') ?>:</strong> <?= $eventType->has('invoice_text') ? $this->Html->link($eventType->invoice_text->text, ['controller' => 'Settings', 'action' => 'view', $eventType->invoice_text->id]) : '' ?></p>
+            <p><strong><?= __('Legal Text') ?>:</strong> <?= $eventType->has('legal_text') ? $this->Html->link($eventType->legal_text->text, ['controller' => 'Settings', 'action' => 'view', $eventType->legal_text->id]) : '' ?></p>
+            <p><strong><?= __('Application Reference') ?>:</strong> <?= $eventType->has('application_ref') ? $this->Html->link($eventType->application_ref->text, ['controller' => 'Settings', 'action' => 'view', $eventType->application_ref->id]) : '' ?></p>
+            <p><strong><?= __('Payable') ?>:</strong> <?= $eventType->has('payable') ? $this->Html->link($eventType->payable->text, ['controller' => 'Settings', 'action' => 'view', $eventType->payable->id]) : '' ?></p>
+        </div>
     </div>
-    <?php if (!empty($eventType->events)): ?>
-        <table class="table table-striped">
-            <thead>
+	<?php if (!empty($eventType->events)): ?>
+    <div class="related">
+        <h4><?= __('Related Events') ?></h4>
+        <table cellpadding="0" cellspacing="0">
             <tr>
-                <th><?= __('Id') ?></th>
-                <th><?= __('Name') ?></th>
-                <th><?= __('Full Name') ?></th>
-                <th><?= __('Live') ?></th>
-                <th><?= __('New Apps') ?></th>
-                <th><?= __('Start Date') ?></th>
-                <th><?= __('End Date') ?></th>
-                <th><?= __('Created') ?></th>
-                <th><?= __('Modified') ?></th>
-                <th><?= __('Deposit') ?></th>
-                <th><?= __('Deposit Date') ?></th>
-                <th><?= __('Deposit Value') ?></th>
-                <th><?= __('Deposit Inc Leaders') ?></th>
-                <th><?= __('Deposit Text') ?></th>
-                <th><?= __('Cubs') ?></th>
-                <th><?= __('Cubs Value') ?></th>
-                <th><?= __('Cubs Text') ?></th>
-                <th><?= __('Yls') ?></th>
-                <th><?= __('Yls Value') ?></th>
-                <th><?= __('Yls Text') ?></th>
-                <th><?= __('Leaders') ?></th>
-                <th><?= __('Leaders Value') ?></th>
-                <th><?= __('Leaders Text') ?></th>
-                <th><?= __('Logo') ?></th>
-                <th><?= __('Address') ?></th>
-                <th><?= __('City') ?></th>
-                <th><?= __('County') ?></th>
-                <th><?= __('Postcode') ?></th>
-                <th><?= __('Invtext Id') ?></th>
-                <th><?= __('Legaltext Id') ?></th>
-                <th><?= __('Discount Id') ?></th>
-                <th><?= __('Intro Text') ?></th>
-                <th><?= __('Tagline Text') ?></th>
-                <th><?= __('Location') ?></th>
-                <th><?= __('Max') ?></th>
-                <th><?= __('Max Cubs') ?></th>
-                <th><?= __('Max Yls') ?></th>
-                <th><?= __('Max Leaders') ?></th>
-                <th><?= __('Allow Reductions') ?></th>
-                <th><?= __('Logo Ratio') ?></th>
-                <th><?= __('Invoices Locked') ?></th>
-                <th><?= __('Admin Firstname') ?></th>
-                <th><?= __('Admin Lastname') ?></th>
-                <th><?= __('Admin Email') ?></th>
-                <th><?= __('Admin User Id') ?></th>
-                <th><?= __('Parent Applications') ?></th>
-                <th><?= __('Available Apps') ?></th>
-                <th><?= __('Available Cubs') ?></th>
-                <th><?= __('Deleted') ?></th>
-                <th><?= __('Event Type Id') ?></th>
-                <th><?= __('Section Type Id') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
+                <th scope="col"><?= __('ID') ?></th>
+                <th scope="col"><?= __('Name') ?></th>
+                <th scope="col"><?= __('Section') ?></th>
+                <th scope="col"><?= __('Live') ?></th>
+                <th scope="col"><?= __('New Apps') ?></th>
+                <th scope="col"><?= __('Complete') ?></th>
+                <th scope="col"><?= __('Team Price') ?></th>
+                <th scope="col"><?= __('Start Date') ?></th>
+                <th scope="col"><?= __('Max Apps') ?></th>
+                <th scope="col"><?= __('# Apps') ?></th>
+                <th scope="col"><?= __('# Prices') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
-            </thead>
-            <tbody>
             <?php foreach ($eventType->events as $events): ?>
-                <tr>
-                    <td><?= h($events->id) ?></td>
-                    <td><?= h($events->name) ?></td>
-                    <td><?= h($events->full_name) ?></td>
-                    <td><?= h($events->live) ?></td>
-                    <td><?= h($events->new_apps) ?></td>
-                    <td><?= h($events->start_date) ?></td>
-                    <td><?= h($events->end_date) ?></td>
-                    <td><?= h($events->created) ?></td>
-                    <td><?= h($events->modified) ?></td>
-                    <td><?= h($events->deposit) ?></td>
-                    <td><?= h($events->deposit_date) ?></td>
-                    <td><?= h($events->deposit_value) ?></td>
-                    <td><?= h($events->deposit_inc_leaders) ?></td>
-                    <td><?= h($events->deposit_text) ?></td>
-                    <td><?= h($events->cubs) ?></td>
-                    <td><?= h($events->cubs_value) ?></td>
-                    <td><?= h($events->cubs_text) ?></td>
-                    <td><?= h($events->yls) ?></td>
-                    <td><?= h($events->yls_value) ?></td>
-                    <td><?= h($events->yls_text) ?></td>
-                    <td><?= h($events->leaders) ?></td>
-                    <td><?= h($events->leaders_value) ?></td>
-                    <td><?= h($events->leaders_text) ?></td>
-                    <td><?= h($events->logo) ?></td>
-                    <td><?= h($events->address) ?></td>
-                    <td><?= h($events->city) ?></td>
-                    <td><?= h($events->county) ?></td>
-                    <td><?= h($events->postcode) ?></td>
-                    <td><?= h($events->invtext_id) ?></td>
-                    <td><?= h($events->legaltext_id) ?></td>
-                    <td><?= h($events->discount_id) ?></td>
-                    <td><?= h($events->intro_text) ?></td>
-                    <td><?= h($events->tagline_text) ?></td>
-                    <td><?= h($events->location) ?></td>
-                    <td><?= h($events->max) ?></td>
-                    <td><?= h($events->max_cubs) ?></td>
-                    <td><?= h($events->max_yls) ?></td>
-                    <td><?= h($events->max_leaders) ?></td>
-                    <td><?= h($events->allow_reductions) ?></td>
-                    <td><?= h($events->logo_ratio) ?></td>
-                    <td><?= h($events->invoices_locked) ?></td>
-                    <td><?= h($events->admin_firstname) ?></td>
-                    <td><?= h($events->admin_lastname) ?></td>
-                    <td><?= h($events->admin_email) ?></td>
-                    <td><?= h($events->admin_user_id) ?></td>
-                    <td><?= h($events->parent_applications) ?></td>
-                    <td><?= h($events->available_apps) ?></td>
-                    <td><?= h($events->available_cubs) ?></td>
-                    <td><?= h($events->deleted) ?></td>
-                    <td><?= h($events->event_type_id) ?></td>
-                    <td><?= h($events->section_type_id) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link('', ['controller' => 'Events', 'action' => 'view', $events->id], ['title' => __('View'), 'class' => 'btn btn-default glyphicon glyphicon-eye-open']) ?>
-                        <?= $this->Html->link('', ['controller' => 'Events', 'action' => 'edit', $events->id], ['title' => __('Edit'), 'class' => 'btn btn-default glyphicon glyphicon-pencil']) ?>
-                        <?= $this->Form->postLink('', ['controller' => 'Events', 'action' => 'delete', $events->id], ['confirm' => __('Are you sure you want to delete # {0}?', $events->id), 'title' => __('Delete'), 'class' => 'btn btn-default glyphicon glyphicon-trash']) ?>
-                    </td>
-                </tr>
+            <tr>
+                <td><?= h($events->id) ?></td>
+                <td><?= h($events->name) ?></td>
+                <td><?= h($events->section_type_id) ?></td>
+                <td><?= h($events->live) ?></td>
+                <td><?= h($events->new_apps) ?></td>
+                <td><?= h($events->complete) ?></td>
+                <td><?= h($events->team_price) ?></td>
+                <td><?= $this->Time->format($events->start_date, 'dd-MMM-yy') ?></td>
+                <td><?= $this->Number->format($events->max_apps) ?></td>
+                <td><?= $this->Number->format($events->cc_apps) ?></td>
+                <td><?= $this->Number->format($events->cc_prices) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['controller' => 'Events', 'action' => 'view', $events->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'Events', 'action' => 'edit', $events->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Events', 'action' => 'delete', $events->id], ['confirm' => __('Are you sure you want to delete # {0}?', $events->id)]) ?>
+                </td>
+            </tr>
             <?php endforeach; ?>
-            </tbody>
         </table>
-    <?php else: ?>
-        <p class="panel-body">no related Events</p>
-    <?php endif; ?>
+        <?php endif; ?>
+    </div>
 </div>

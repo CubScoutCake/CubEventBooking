@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\EventType[]|\Cake\Collection\CollectionInterface $eventTypes
+ */
+?>
 <div class="row">
     <div class="col-lg-12">
         <h3><i class="fa fa-calendar-check-o fa-fw"></i> Event Types</h3>

@@ -58,7 +58,14 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get(['controller' => 'EventTypes', 'prefix' => 'admin', 'action' => 'index']);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -68,7 +75,14 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get(['controller' => 'EventTypes', 'prefix' => 'admin', 'action' => 'view', 1]);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -78,7 +92,14 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get(['controller' => 'EventTypes', 'prefix' => 'admin', 'action' => 'add']);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -88,7 +109,14 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 2,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get(['controller' => 'EventTypes', 'prefix' => 'admin', 'action' => 'edit', 1]);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -98,6 +126,16 @@ class EventTypesControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post(['controller' => 'EventTypes', 'prefix' => 'admin', 'action' => 'delete', 2]);
+
+        $this->assertRedirect();
     }
 }

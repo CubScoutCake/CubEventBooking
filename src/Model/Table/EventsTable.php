@@ -220,7 +220,7 @@ class EventsTable extends Table
             ->notEmpty('admin_lastname');
 
         $validator
-            ->scalar('admin_email')
+            ->email('admin_email')
             ->maxLength('admin_email', 255)
             ->requirePresence('admin_email', 'create')
             ->notEmpty('admin_email');
@@ -239,13 +239,11 @@ class EventsTable extends Table
 
         $validator
             ->boolean('complete')
-            ->requirePresence('complete', 'create')
-            ->notEmpty('complete');
+            ->allowEmpty('complete');
 
         $validator
             ->boolean('team_price')
-            ->requirePresence('team_price', 'create')
-            ->notEmpty('team_price');
+            ->allowEmpty('team_price');
 
         return $validator;
     }

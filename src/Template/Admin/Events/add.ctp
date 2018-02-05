@@ -21,6 +21,8 @@
         echo '</td> <td>';
         echo $this->Form->input('new_apps', ['label' => 'Accepting New Applications']);
         echo '</td> <td>';
+        echo $this->Form->input('team_price', ['label' => 'Price per Team']);
+        echo '</td> <td>';
         echo $this->Form->input('allow_reductions', ['label' => 'Allow invoices to be reduced']);
         echo '</td> <td>';
         echo $this->Form->input('invoices_locked', ['label' => 'Lock Invoices (will prevent updates by users)']);
