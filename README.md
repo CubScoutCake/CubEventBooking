@@ -18,3 +18,5 @@ This is part of the CubScoutCake Organisation.
 The booking site is used for adding Leaders booking their sections onto events. It syncronises with Online Scout Manager and can output applications and invoices in PDFs.
 
 The application also relies on SparkPost for SMTP transport.
+
+Repo is using the awesome [![BrowserStack.com](https://p3.zdusercontent.com/attachment/1015988/3spQJNxZqwf0p8wlx0Ey9Zqcn?token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..zwbjhQoQkp_XiJ0daVcp5A.eow0YjdnYLDWxR5lXKqcf-YqYdZi8rkDHMc-b-uQbiQYEvZGSFnomjeEIxSgi8KgQNRKs3JVOkNyHFmpDGf-CxIZrVFqPXupdHcouuaACR62TZzqCrUD_RphFyTkw_cQi_M2IwEA303wR7jgX-TRQDhP4d6MofzWIWE4kBbgcPGEFsbAsGs4pQnBuTInjtfITL92ZQz9BFN-zxk-e6xsc49S_6D0WaCTsqCS-oTADqykLXjVpdj0NqYu3JErZxAgCggC7ihblikvJJSxMKNTbPxwZDctvqXMXfhm7wcfRXQ.HBJie-8ATgXZJ0o0AG66tA)](http://browserstack.com/) to automate browser testing.
