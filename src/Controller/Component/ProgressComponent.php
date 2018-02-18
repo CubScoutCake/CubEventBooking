@@ -18,7 +18,8 @@ class ProgressComponent extends Component
      * @param bool $set Set Variables
      * @param bool $full Full Output
      * @param bool $flash Create Flash notifications
-     * @return array|void
+     *
+     * @return array|bool
      */
     public function determineApp($appID, $admin = null, $userID = null, $set = true, $full = true, $flash = null)
     {
@@ -89,13 +90,13 @@ class ProgressComponent extends Component
         $invFirst = $invs->find('all')->where(['application_id' => $appID])->first();
 
         // Find Cub, YL & Leader Counts
-        $attendeeCubCount = $apps->find('cubs')->where(['Applications.id' => $appID])->all();
-        $attendeeYlCount = $apps->find('youngLeaders')->where(['Applications.id' => $appID])->all();
-        $attendeeLeaderCount = $apps->find('leaders')->where(['Applications.id' => $appID])->all();
+        $attendeeCubCount = $apps->find('cubs')->where(['Applications.id' => $appID]);
+        $attendeeYlCount = $apps->find('youngLeaders')->where(['Applications.id' => $appID]);
+        $attendeeLeaderCount = $apps->find('leaders')->where(['Applications.id' => $appID]);
 
-        $attCubs = $attendeeCubCount->count(['t.id']);
-        $attYls = $attendeeYlCount->count(['t.id']);
-        $attLeaders = $attendeeLeaderCount->count(['t.id']);
+        $attCubs = $attendeeCubCount->count();
+        $attYls = $attendeeYlCount->count();
+        $attLeaders = $attendeeLeaderCount->count();
 
         $attNotCubs = $attYls + $attLeaders;
 
@@ -114,7 +115,7 @@ class ProgressComponent extends Component
                 $invItemMinorCounts = $itms->find('all')
                    ->contain([ 'Invoices.Applications', 'ItemTypes' ])
                    ->where([ 'Applications.id' => $appID, 'ItemTypes.minor' => true ])
-                   ->select([ 'sum' => $invoices->func()->sum('Quantity') ])
+                   ->select([ 'sum' => $invoices->func()->sum('quantity') ])
                    ->toArray();
 
                 $invCubs = $invItemMinorCounts[0]->sum;
@@ -129,7 +130,7 @@ class ProgressComponent extends Component
                 $invItemAdultCounts = $itms->find('all')
                    ->contain(['Invoices.Applications', 'ItemTypes'])
                    ->where(['Applications.id' => $appID, 'ItemTypes.minor' => false])
-                   ->select([ 'sum' => $invoices->func()->sum('Quantity')])
+                   ->select([ 'sum' => $invoices->func()->sum('quantity')])
                    ->toArray();
 
                 $invNotCubs = $invItemAdultCounts[0]->sum;

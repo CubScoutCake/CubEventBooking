@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\Model\Entity\Application $application
+ */
+?>
 <div class="row">
     <div class="col-lg-10 col-md-10">
         <h1 class="page-header"><i class="fa fa-tasks fa-fw"></i> Application <?= h($application->display_code) ?></h1>
@@ -23,13 +28,22 @@
                         'prefix' => false,
                         $application->id],['_full']); ?>">Download Application</a>
                     </li>
+                    <li><a href="<?php echo $this->Url->build([
+			                'controller' => 'Applications',
+			                'action' => 'sync_book',
+			                'prefix' => false,
+			                $application->event_id,
+			                $application->osm_event_id,
+			                $application->id
+                        ],['_full']); ?>">Re-sync with OSM Event</a>
+                    </li>
                     <li><a href="<?php 
                         if ($invDone < 0.5) :
                             echo $this->Url->build([
                             'controller' => 'Invoices',
                             'action' => 'generate',
                             'prefix' => false,
-                            $application->id],['_full']); ?>">Add an Invoice
+                            $application->id],['_full']); ?>">Update Application
 
                         <?php else : 
                             echo $this->Url->build([
@@ -39,12 +53,6 @@
                             $invFirst->id],['_full']); ?>">Update Invoice
 
                         <?php endif ?></a></li>
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Applications',
-                        'action' => 'link',
-                        'prefix' => false,
-                        $application->id],['_full']); ?>">Link Attendees</a>
-                    </li>
                 </ul>
             </div>
         </div>

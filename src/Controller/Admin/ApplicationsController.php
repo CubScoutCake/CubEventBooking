@@ -232,13 +232,11 @@ class ApplicationsController extends AppController
         $this->set(compact('application', 'users', 'attendees', 'sections', 'events'));
         $this->set('_serialize', ['application']);
 
-        //$startuser = $this->Applications->Users->find('all',['conditions' => ['user_id' => $userId]])->first()->user_id;
-
         if ($this->request->is('get')) {
             // Values from the Model e.g.
-            $this->request->data['user_id'] = $userId;
+	        $this->request = $this->request->withData('user_id', $userId);
             if (isset($userSectionId)) {
-                $this->request->withData('section', $userSectionId);
+                $this->request = $this->request->withData('section', $userSectionId);
             }
         }
     }

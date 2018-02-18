@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\Form\AttNumberForm;
+use App\Form\SyncBookForm;
 use Cake\I18n\Date;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
@@ -11,6 +13,14 @@ use CakePdf\Pdf;
  * Applications Controller
  *
  * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Model\Table\EventsTable $Events
+ * @property \App\Model\Table\UsersTable $Users
+ *
+ * @property \App\Controller\Component\ScoutManagerComponent $ScoutManager
+ * @property \App\Controller\Component\AvailabilityComponent $Availability
+ * @property \App\Controller\Component\ProgressComponent $Progress
+ * @property \App\Controller\Component\LineComponent $Line
+ * @property \App\Controller\Component\BookingComponent $Booking
  */
 class ApplicationsController extends AppController
 {
@@ -51,7 +61,7 @@ class ApplicationsController extends AppController
     {
         $this->loadComponent('Line');
 
-        $this->Line->populate($applicationID);
+//        $this->Line->parseLine($applicationID));
 
         return $this->redirect(['action' => 'view', $applicationID]);
     }
@@ -65,7 +75,7 @@ class ApplicationsController extends AppController
      */
     public function view($id = null)
     {
-        $this->viewBuilder()->options([
+        $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
                    'filename' => 'Application_' . $id
@@ -136,7 +146,7 @@ class ApplicationsController extends AppController
                 , 'Notes' => ['conditions' => ['visible' => true]]]
         ]);
 
-        $this->viewBuilder()->options([
+        $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
                    'filename' => 'Invoice_' . $id
@@ -158,9 +168,9 @@ class ApplicationsController extends AppController
         $CakePdf->template('application', 'default');
         $CakePdf->viewVars($this->viewVars);
         // Get the PDF string returned
-        $pdf = $CakePdf->output();
+//        $CakePdf->output();
         // Or write it to file directly
-        $pdf = $CakePdf->write(FILES . DS . 'Event ' . $event->id . DS . 'Applications' . DS . 'Application #' . $id . '.pdf');
+        $CakePdf->write(FILES . DS . 'Event ' . $event->id . DS . 'Applications' . DS . 'Application #' . $id . '.pdf');
 
         $this->redirect(['controller' => 'Applications', 'action' => 'view', $application->id, '_ext' => 'pdf']);
     }
@@ -177,7 +187,7 @@ class ApplicationsController extends AppController
         $evts = TableRegistry::get('Events');
 
         if (isset($eventID)) {
-            $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventID])->count('*');
+            $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventID])->count();
             $event = $evts->get($eventID);
 
             if ($applicationCount > $event->available_apps && isset($event->available_apps)) {
@@ -195,9 +205,9 @@ class ApplicationsController extends AppController
         if ($this->request->is('post')) {
             // Check Max Applications
 
-            $evtID = $this->request->data['event_id'];
+            $evtID = $this->request->getData('event_id');
 
-            $appCount = $this->Applications->find('all')->where(['event_id' => $evtID])->count('*');
+            $appCount = $this->Applications->find('all')->where(['event_id' => $evtID])->count();
             $event = $evts->get($evtID);
 
             if ($appCount > $event->available_apps && isset($event->available_apps)) {
@@ -213,7 +223,7 @@ class ApplicationsController extends AppController
                 $newData = ['modification' => 0, 'user_id' => $this->Auth->user('id')];
                 $application = $this->Applications->patchEntity($application, $newData);
 
-                $application = $this->Applications->patchEntity($application, $this->request->data);
+                $application = $this->Applications->patchEntity($application, $this->request->getData());
 
                 if ($this->Applications->save($application)) {
                     $redir = $application->get('id');
@@ -249,14 +259,14 @@ class ApplicationsController extends AppController
         }
 
         $this->Events = TableRegistry::get('Events');
-        $event = $this->Events->get($eventId, ['contain' => ['EventTypes']]);
+        $event = $this->Events->get($eventId, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
 
         $settings = TableRegistry::get('Settings');
         $term = $settings->get($event->event_type->application_ref_id);
         $term = $term->text;
 
         if (isset($eventId)) {
-            $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventId])->count('*');
+            $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventId])->count();
 
             if ($applicationCount > $event->available_apps && isset($event->available_apps)) {
                 $this->Flash->error(__('Apologies this Event is Full.'));
@@ -274,8 +284,8 @@ class ApplicationsController extends AppController
         $application = $this->Applications->newEntity();
 
         $userId = $this->Auth->user('id');
-        $users = TableRegistry::get('Users');
-        $user = $users->get($userId, ['contain' => ['Sections.SectionTypes.Roles']]);
+        $this->Users = TableRegistry::get('Users');
+        $user = $this->Users->get($userId, ['contain' => ['Sections.SectionTypes.Roles']]);
         $sectionId = $user['section_id'];
 
         if ($this->request->is('post')) {
@@ -331,10 +341,7 @@ class ApplicationsController extends AppController
 
         $sectionType = Inflector::singularize($user->section->section_type->section_type);
 
-        $settings = TableRegistry::get('Settings');
-        $termSetting = $settings->get($event->event_type->application_ref_id);
-
-        $term = $termSetting->text;
+        $term = $event->event_type->application_ref->text;
         $teamLeaderBool = $event->event_type->team_leader;
         $permitHolderBool = $event->event_type->permit_holder;
 
@@ -352,23 +359,26 @@ class ApplicationsController extends AppController
     /**
      * @param int $eventID The Internal Event ID
      * @param int $osmEvent The External Online ScoutManager Event ID
+     * @param int|null $appID The ID of the app already existing
      *
      * @return null|\Cake\Http\Response
      */
-    public function syncBook($eventID, $osmEvent)
+    public function syncBook($eventID, $osmEvent = null, $appID = null)
     {
         $this->Events = TableRegistry::get('Events');
-        $event = $this->Events->get($eventID, ['contain' => ['EventTypes']]);
+	    $this->Users = TableRegistry::get('Users');
+	    /**
+	     * @var \App\Model\Entity\Event $event
+	     * @var \App\Model\Table\EventsTable $this->Events
+	     */
+        $event = $this->Events->get($eventID, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
 
-        if (isset($eventID)) {
-            $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventID])->count('*');
-
-            if ($applicationCount > $event->available_apps && isset($event->available_apps)) {
+        if (isset($eventID) && is_null($appID)) {
+            if ($event->app_full) {
                 $this->Flash->error(__('Apologies this Event is Full.'));
 
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
             }
-
             if (!$event->new_apps) {
                 $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
 
@@ -376,42 +386,60 @@ class ApplicationsController extends AppController
             }
         }
 
-        $users = TableRegistry::get('Users');
-        $user = $users->get($this->Auth->user('id'), ['contain' => ['Sections.SectionTypes.Roles']]);
+        $user = $this->Users->get($this->Auth->user('id'), ['contain' => ['Sections.SectionTypes.Roles']]);
 
         $sectionType = Inflector::singularize($user->section->section_type->section_type);
 
-        $settings = TableRegistry::get('Settings');
-        $termSetting = $settings->get($event->event_type->application_ref_id);
-
-        $term = $termSetting->text;
+        $term = $event->event_type->application_ref->text;
         $teamLeaderBool = $event->event_type->team_leader;
         $permitHolderBool = $event->event_type->permit_holder;
 
-        $application = $this->Applications->newEntity(['contain' => 'Attendees']);
+	    /**
+	     * @var \App\Model\Entity\Application $application
+	     */
 
-        $newData = [
-            'modification' => 0,
-            'user_id' => $user->id,
-            'section_id' => $user->section_id,
-            'event_id' => $eventID,
-            'osm_event_id' => $osmEvent,
-            'invoice' => [
-                'user_id' => $user->id,
-            ]
-        ];
+        if (is_null($appID)) {
+	        $application = $this->Applications->newEntity(['contain' => 'Attendees']);
 
-        $application = $this->Applications->patchEntity(
-            $application,
-            $newData,
-            ['associated' => [ 'Invoices', 'Attendees' ]]
-        );
+	        $newData = [
+		        'modification' => 0,
+		        'user_id' => $user->id,
+		        'section_id' => $user->section_id,
+		        'event_id' => $eventID,
+		        'osm_event_id' => $osmEvent,
+		        'invoice' => [
+			        'user_id' => $user->id,
+		        ]
+	        ];
+
+	        $application = $this->Applications->patchEntity(
+		        $application,
+		        $newData,
+		        ['associated' => [ 'Invoices', 'Attendees' ]]
+	        );
+
+        } else {
+        	$application = $this->Applications->get($appID, ['contain' => 'Attendees']);
+        	if (is_null($osmEvent)) {
+		        $osmEvent = $application->osm_event_id;
+	        }
+        }
+
+        if (!isset($osmEvent) || is_null($osmEvent)) {
+        	$this->Flash->error('OSM Event Not Selected.');
+        	if (!is_null($appID)) {
+		        return $this->redirect(['action' => 'choose_osm_event']);
+	        }
+        	return $this->redirect(['controller' => 'Events', 'action' => 'book', $eventID]);
+        }
 
         $this->loadComponent('ScoutManager');
         $attendees = $this->ScoutManager->getEventAttendees($this->Auth->user(['id']), $osmEvent);
 
         $data = [];
         $this->loadComponent('Booking');
+
+        $application->set('attendees', []);
 
         foreach ($attendees as $key => $attendee) {
             $leaderPatrol = false;
@@ -440,8 +468,10 @@ class ApplicationsController extends AppController
 
         $this->set(compact('application', 'attendees', 'attendeeCount', 'teamLeaderBool', 'permitHolderBool', 'term', 'sectionType'));
 
-        if ($this->request->is('post')) {
+        if ($this->request->is(['post', 'put'])) {
             // Patch Data
+	        debug($this->request->getData());
+
             $application = $this->Applications->patchEntity(
                 $application,
                 $this->request->getData(),
@@ -475,6 +505,42 @@ class ApplicationsController extends AppController
 
         $this->set(compact('application', 'term', 'roles', 'sections', 'sectionType'));
         $this->set('_serialize', ['application']);
+    }
+
+	/**
+	 * @param int $eventId The ID of the Event booking onto
+	 * @param int|null $applicationId The Application being booked
+	 */
+    public function chooseOsmEvent($eventId, $applicationId = null)
+    {
+	    $this->loadComponent('ScoutManager');
+	    $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
+
+	    $readyForSync = false;
+
+	    if ($checkArray['linked'] && $checkArray['sectionSet'] && $checkArray['termCurrent']) {
+		    $osmEvents = $this->ScoutManager->getEventList($this->Auth->user('id'));
+		    $readyForSync = true;
+	    }
+
+	    $syncForm = new SyncBookForm();
+
+	    if ($this->request->is('post')) {
+		    $osm_event = $this->request->getData('osm_event');
+
+		    if (!is_null($osm_event)) {
+			    $this->redirect([
+				    'controller' => 'Applications',
+				    'action' => 'sync_book',
+				    'prefix' => false,
+				    $eventId,
+				    $osm_event,
+				    $applicationId
+			    ]);
+		    }
+	    }
+
+	    $this->set(compact('syncForm', 'osmEvents', 'readyForSync'));
     }
 
     /**

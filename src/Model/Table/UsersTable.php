@@ -16,8 +16,6 @@ use Search\Manager;
  * Users Model
  *
  * @property \App\Model\Table\RolesTable|\Cake\ORM\Association\BelongsTo $Roles
- * @property |\Cake\ORM\Association\BelongsTo $OsmUsers
- * @property |\Cake\ORM\Association\BelongsTo $OsmSections
  * @property \App\Model\Table\AuthRolesTable|\Cake\ORM\Association\BelongsTo $AuthRoles
  * @property \App\Model\Table\PasswordStatesTable|\Cake\ORM\Association\BelongsTo $PasswordStates
  * @property \App\Model\Table\SectionsTable|\Cake\ORM\Association\BelongsTo $Sections
