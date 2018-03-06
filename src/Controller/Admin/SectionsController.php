@@ -19,13 +19,12 @@ class SectionsController extends AppController
      */
     public function index()
     {
-    	$users = TableRegistry::get('Users');
-    	$users->get($this->Auth->user('id'));
-
+        $users = TableRegistry::get('Users');
+        $users->get($this->Auth->user('id'));
 
         $arr = [
-        	'section_type_id' => 1,
-	        'section_limited' => true,
+            'section_type_id' => 1,
+            'section_limited' => true,
         ];
 
         $query = $this->Sections->find('sameSection', $arr)->contain(['SectionTypes', 'Scoutgroups.Districts']);

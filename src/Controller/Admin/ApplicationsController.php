@@ -21,25 +21,24 @@ class ApplicationsController extends AppController
      */
     public function index($eventID = null)
     {
-    	$query = $this->Applications->find('all');
+        $query = $this->Applications->find('all');
 
-    	if (!is_null($eventID)) {
-    		$query->where(['event_id' => $eventID]);
+        if (!is_null($eventID)) {
+            $query->where(['event_id' => $eventID]);
 
-    		$events = TableRegistry::get('Events');
-    		$event = $events->get($eventID);
+            $events = TableRegistry::get('Events');
+            $event = $events->get($eventID);
 
-    		$title = $event->name . ' Bookings';
+            $title = $event->name . ' Bookings';
+        } else {
+            $query->where(['Events.live' => true]);
 
-	    } else {
-    		$query->where(['Events.live' => true]);
+            $title = 'All Applications';
+        }
 
-    		$title = 'All Applications';
-	    }
-
-	    $query
-		    ->contain(['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Attendees'])
-		    ->orderDesc('Applications.modified');
+        $query
+            ->contain(['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Attendees'])
+            ->orderDesc('Applications.modified');
 
         $this->set('applications', $this->paginate($query));
         $this->set('_serialize', ['applications']);
@@ -184,7 +183,7 @@ class ApplicationsController extends AppController
             $usrs = TableRegistry::get('Users');
 
             $user = $usrs->get($userId, ['contain' => ['Roles', 'Applications', 'Sections.Scoutgroups']]);
-	        $userSectionId = $user->section_id;
+            $userSectionId = $user->section_id;
         }
 
         $application = $this->Applications->newEntity();
@@ -232,13 +231,11 @@ class ApplicationsController extends AppController
         $this->set(compact('application', 'users', 'attendees', 'sections', 'events'));
         $this->set('_serialize', ['application']);
 
-        //$startuser = $this->Applications->Users->find('all',['conditions' => ['user_id' => $userId]])->first()->user_id;
-
         if ($this->request->is('get')) {
             // Values from the Model e.g.
-            $this->request->data['user_id'] = $userId;
+            $this->request = $this->request->withData('user_id', $userId);
             if (isset($userSectionId)) {
-                $this->request->withData('section', $userSectionId);
+                $this->request = $this->request->withData('section', $userSectionId);
             }
         }
     }
@@ -256,9 +253,9 @@ class ApplicationsController extends AppController
             'contain' => ['Attendees', 'Events.EventTypes.ApplicationRefs', 'Sections.Scoutgroups', 'Users']
         ]);
 
-	    $permitHolderBool = $application->event->event_type->permit_holder;
-	    $teamLeaderBool = $application->event->event_type->team_leader;
-	    $term = $application->event->event_type->application_ref->text;
+        $permitHolderBool = $application->event->event_type->permit_holder;
+        $teamLeaderBool = $application->event->event_type->team_leader;
+        $term = $application->event->event_type->application_ref->text;
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $application = $this->Applications->patchEntity($application, $this->request->data);
@@ -294,12 +291,11 @@ class ApplicationsController extends AppController
         $this->set('_serialize', ['application']);
     }
 
-
-	/**
-	 * @param int $id LinkID
-	 *
-	 * @return \Cake\Http\Response|null
-	 */
+    /**
+     * @param int $id LinkID
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function link($id = null)
     {
         $application = $this->Applications->get($id, [

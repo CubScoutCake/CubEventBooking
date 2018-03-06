@@ -20,38 +20,38 @@ use Cake\ORM\Entity;
  * @property float $deposit_value
  * @property bool $deposit_inc_leaders
  * @property string $deposit_text
- * @deprecated bool $cubs
- * @deprecated float $cubs_value
- * @deprecated string $cubs_text
- * @deprecated bool $yls
- * @deprecated float $yls_value
- * @deprecated string $yls_text
- * @deprecated bool $leaders
- * @deprecated float $leaders_value
- * @deprecated string $leaders_text
+ * @property bool $cubs
+ * @property float $cubs_value
+ * @property string $cubs_text
+ * @property bool $yls
+ * @property float $yls_value
+ * @property string $yls_text
+ * @property bool $leaders
+ * @property float $leaders_value
+ * @property string $leaders_text
  * @property string $logo
  * @property string $address
  * @property string $city
  * @property string $county
  * @property string $postcode
- * @deprecated  int $invtext_id
- * @deprecated int $legaltext_id
+ * @property  int $invtext_id
+ * @property int $legaltext_id
  * @property int $discount_id
  * @property string $intro_text
  * @property string $tagline_text
  * @property string $location
  * @property bool $max
- * @deprecated  int $max_cubs
- * @deprecated  int $max_yls
- * @deprecated  int $max_leaders
+ * @property int $max_cubs
+ * @property int $max_yls
+ * @property int $max_leaders
  * @property bool $allow_reductions
- * @deprecated float $logo_ratio
+ * @property float $logo_ratio
  * @property bool $invoices_locked
  * @property string $admin_firstname
  * @property string $admin_lastname
  * @property string $admin_email
  * @property int $admin_user_id
- * @deprecated bool $parent_applications
+ * @property bool $parent_applications
  * @property int $max_apps
  * @property int $max_section
  * @property \Cake\I18n\Time $deleted
@@ -62,7 +62,9 @@ use Cake\ORM\Entity;
  * @property bool $complete
  * @property int $cc_prices
  * @property bool $team_price
+ *
  * @property bool $app_full
+ * @property string $admin_full_name
  *
  * @property \App\Model\Entity\Discount $discount
  * @property \App\Model\Entity\User $admin_user
@@ -158,16 +160,24 @@ class Event extends Entity
      */
     protected function _getAppFull()
     {
-        $value = false;
-
         if (isset($this->_properties['cc_apps']) && isset($this->_properties['max_apps'])) {
             if ($this->_properties['cc_apps'] >= $this->_properties['max_apps'] && $this->_properties['max']) {
-                $value = true;
+                return true;
             }
         }
 
-        return $value;
+        return false;
     }
 
-    protected $_virtual = ['app_full'];
+    /**
+     * Specifies the Admin Full Name
+     *
+     * @return string
+     */
+    protected function _getAdminFullName()
+    {
+        return $this->_properties['admin_firstname'] . ' ' . $this->_properties['admin_lastname'];
+    }
+
+    protected $_virtual = ['app_full', 'admin_full_name'];
 }

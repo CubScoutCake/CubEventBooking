@@ -4,7 +4,7 @@
         <fieldset>
             <legend><i class="fa fa-group fa-fw"></i><?= __(' Add a New Young Person') ?></legend>
             <?php
-                echo $this->Form->input('scoutgroup_id');
+                echo $this->Form->input('section_id');
                 echo $this->Form->input('role_id');
                 echo $this->Form->input('firstname');
                 echo $this->Form->input('lastname');

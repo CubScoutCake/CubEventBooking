@@ -120,12 +120,12 @@ class User extends Entity
         'applications' => true,
         'attendees' => true,
         'champions' => true,
+        'email_sends' => true,
         'invoices' => true,
         'notes' => true,
         'notifications' => true,
         'payments' => true,
-        'tokens' => true,
-        'email_sends' => true
+        'tokens' => true
     ];
 
     /**

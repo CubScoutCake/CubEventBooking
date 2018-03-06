@@ -11,10 +11,15 @@ use Cake\ORM\Entity;
  * @property bool $simple_booking
  * @property bool $date_of_birth
  * @property bool $medical
+ * @property bool $dietary
  * @property bool $parent_applications
  * @property int $invoice_text_id
  * @property int $legal_text_id
+ * @property bool $team_leader
+ * @property bool $permit_holder
+ * @property bool $display_availability
  * @property int $application_ref_id
+ * @property bool $sync_book
  * @property int $payable_setting_id
  *
  * @property \App\Model\Entity\Setting $invoice_text
@@ -36,7 +41,24 @@ class EventType extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false
+        'event_type' => true,
+        'simple_booking' => true,
+        'date_of_birth' => true,
+        'medical' => true,
+        'dietary' => true,
+        'parent_applications' => true,
+        'invoice_text_id' => true,
+        'legal_text_id' => true,
+        'team_leader' => true,
+        'permit_holder' => true,
+        'display_availability' => true,
+        'application_ref_id' => true,
+        'sync_book' => true,
+        'payable_setting_id' => true,
+        'invoice_text' => true,
+        'legal_text' => true,
+        'application_ref' => true,
+        'payable' => true,
+        'events' => true
     ];
 }

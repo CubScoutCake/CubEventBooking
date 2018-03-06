@@ -42,17 +42,17 @@ class EventsController extends AppController
     {
         $event = $this->Events->get($eventId, [
             'contain' => [
-            	'Discounts',
-	            'Applications' => [
-	            	'Sections.Scoutgroups.Districts'
-	            ],
-	            'EventTypes' => [
-	            	'LegalTexts',
-		            'Payable',
-		            'ApplicationRefs',
-		            'InvoiceTexts'
-	            ],
-	            'Prices.ItemTypes.Roles'
+                'Discounts',
+                'Applications' => [
+                    'Sections.Scoutgroups.Districts'
+                ],
+                'EventTypes' => [
+                    'LegalTexts',
+                    'Payable',
+                    'ApplicationRefs',
+                    'InvoiceTexts'
+                ],
+                'Prices.ItemTypes.Roles'
             ]
         ]);
         $this->set('event', $event);

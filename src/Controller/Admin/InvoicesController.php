@@ -8,6 +8,8 @@ use Cake\ORM\TableRegistry;
  * Invoices Controller
  *
  * @property \App\Model\Table\InvoicesTable $Invoices
+ *
+ * @property \App\Controller\Component\LineComponent $Line
  */
 class InvoicesController extends AppController
 {
@@ -326,10 +328,10 @@ class InvoicesController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'full_name',
-                'groupField' => 'scoutgroup.district.district'
+                'groupField' => 'section.scoutgroup.district.district'
             ]
         )
-            ->contain(['Scoutgroups.Districts']);
+            ->contain(['Sections.Scoutgroups.Districts']);
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
         $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'order' => ['modified' => 'DESC']]);
 
@@ -357,88 +359,24 @@ class InvoicesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function generate($appId = null, $userId = null)
-    {
-        $apps = TableRegistry::get('Applications');
-
-        //Create Entities
-
-        $invoice = $this->Invoices->newEntity();
-
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
-
-            if (!isset($userId)) {
-                $appId = $this->request->data['application_id'];
-                $application = $apps->get($appId);
-
-                $userId = $application->user_id;
-            }
-
-            $newData = ['user_id' => $userId];
-
-            $invoice = $this->Invoices->patchEntity($invoice, $newData);
-
-            if ($this->Invoices->save($invoice)) {
-                $redir = $invoice->get('id');
-
-                $this->Flash->success(__('An invoice has been generated. Please enter the number of Attendees you are bringing.'));
-
-                return $this->redirect(['controller' => 'InvoiceItems', 'action' => 'populate', $redir]);
-            } else {
-                $this->Flash->error(__('The invoice could not be generated. Please, try again.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-        }
-
-        $applications = $this->Invoices->Applications->find('list', ['limit' => 200]);
-        if (isset($appId)) {
-            $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['id' => $appId]]);
-        }
-        if (isset($userId)) {
-            $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
-        }
-
-        $this->set('_serialize', ['invoice']);
-        $this->set(compact('applications', 'invoice'));
-
-        if ($this->request->is('get')) {
-            // Values from the Model e.g.
-            $this->request->data['application_id'] = $appId;
-        }
-    }
-
     /**
      * @param int $InvId The Invoice ID
      * @return \Cake\Http\Response|null
      */
     public function regenerate($InvId = null)
     {
-        $invoiceItems = TableRegistry::get('InvoiceItems');
+        $this->loadComponent('Line');
+        $parse = $this->Line->parseInvoice($InvId);
 
-        //Get Entity
-        $invoice = $this->Invoices->get($InvId, [
-            'contain' => ['Users', 'Payments', 'InvoiceItems', 'Applications']
-        ]);
+        if ($parse) {
+            $this->Flash->success('Invoice Regenerated from Application.');
 
-        $itemCount = $invoiceItems->find()->where(['invoice_id' => $InvId])->count(['id']);
-
-        if ($this->Invoices->save($invoice)) {
-            if ($itemCount >= 5) {
-                $this->Flash->success(__('The invoice is valid. Please enter the number of Attendees you are bringing.'));
-
-                return $this->redirect(['prefix' => 'admin', 'controller' => 'InvoiceItems', 'action' => 'repopulate', $InvId]);
-            } else {
-                $this->Flash->success(__('An invoice has been generated. Please enter the number of Attendees you are bringing.'));
-
-                return $this->redirect(['prefix' => 'admin', 'controller' => 'InvoiceItems', 'action' => 'populate', $InvId]);
-            }
-        } else {
-            $this->Flash->error(__('The invoice could not be regenerated. Please, try again.'));
-
-            return $this->redirect(['Controller' => 'Invoices', 'action' => 'view', $InvId]);
+            return $this->redirect($this->referer(['action' => 'view']));
         }
+
+        $this->Flash->error('Issue Regenerating Invoice.');
+
+        return $this->redirect($this->referer(['action' => 'view', $InvId]));
     }
 
     /**
