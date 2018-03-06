@@ -46,7 +46,7 @@
         "post-install-cmd": "App\\Console\\Installer::postInstall",
         "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
         "cs-check": "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests ./src/Model ./src/View ./src/Network ./src/Shell ./src/Form ./src/Console ./src/Mailer ./src/Controller/Register ./src/Controller/Component ./src/Controller/Api",
-        "cs-fix": "vendor/bin/phpcbf -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests ./src/Model ./src/View ./src/Network ./src/Shell ./src/Form ./src/Console ./src/Mailer ./src/Controller/Register ./src/Controller/Component ./src/Controller/Api",
+        "cs-fix": "vendor/bin/phpcbf -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests ./src",
         "test": "phpunit --colors=always"
     },
     "minimum-stability": "dev",

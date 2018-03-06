@@ -52,58 +52,59 @@ class PaymentsController extends AppController
      */
     public function add($numberOfInvoiceAssocs = null, $invId = null)
     {
-    	if ( is_null($numberOfInvoiceAssocs) || $numberOfInvoiceAssocs < 1 ) {
-    		$paymentAssociationForm = new PaymentAssocationForm();
-		    $this->set(compact('paymentAssociationForm', 'invId', 'numberOfInvoiceAssocs'));
+        if (is_null($numberOfInvoiceAssocs) || $numberOfInvoiceAssocs < 1) {
+            $paymentAssociationForm = new PaymentAssocationForm();
+            $this->set(compact('paymentAssociationForm', 'invId', 'numberOfInvoiceAssocs'));
 
-		    if ( $this->request->is( 'post' ) ) {
-		    	$requested = $this->request->getData('payment_assoc_count');
+            if ($this->request->is('post')) {
+                $requested = $this->request->getData('payment_assoc_count');
 
-		    	$this->redirect(['action' => 'add', $requested, $invId]);
-		    }
-	    }
+                $this->redirect(['action' => 'add', $requested, $invId]);
+            }
+        }
 
-	    if ( !is_null($numberOfInvoiceAssocs) && $numberOfInvoiceAssocs > 0 ) {
+        if (!is_null($numberOfInvoiceAssocs) && $numberOfInvoiceAssocs > 0) {
+            $payment = $this->Payments->newEntity();
+            if ($this->request->is('post')) {
+                $newData = [ 'user_id' => $this->Auth->user('id') ];
+                $payment = $this->Payments->patchEntity($payment, $newData);
 
-		    $payment = $this->Payments->newEntity();
-		    if ( $this->request->is( 'post' ) ) {
-			    $newData = [ 'user_id' => $this->Auth->user( 'id' ) ];
-			    $payment = $this->Payments->patchEntity( $payment, $newData );
+                $payment = $this->Payments->patchEntity($payment, $this->request->data, [
+                    'associated' => [
+                        'Invoices'
+                    ]
+                ]);
 
-			    $payment = $this->Payments->patchEntity( $payment, $this->request->data, [
-				    'associated' => [
-					    'Invoices'
-				    ]
-			    ] );
+                if ($this->Payments->save($payment)) {
+                    $redir = $payment->get('id');
 
-			    if ( $this->Payments->save( $payment ) ) {
-				    $redir = $payment->get( 'id' );
+                    $this->Flash->success(__('The payment has been saved.'));
 
-				    $this->Flash->success( __( 'The payment has been saved.' ) );
+                    return $this->redirect([
+                        'controller' => 'Notifications',
+                        'action'     => 'new_payment',
+                        'prefix'     => 'admin',
+                        $redir
+                    ]);
+                } else {
+                    $this->Flash->error(__('The payment could not be saved. Please, try again.'));
+                }
+            }
 
-				    return $this->redirect( [
-					    'controller' => 'Notifications',
-					    'action'     => 'new_payment',
-					    'prefix'     => 'admin',
-					    $redir
-				    ] );
-			    } else {
-				    $this->Flash->error( __( 'The payment could not be saved. Please, try again.' ) );
-			    }
-		    }
+            $invoices = $this->Payments->Invoices->find('unarchived')->find('list', [
+                'limit' => 200,
+                'order' => [ 'Invoices.id' => 'DESC' ]
+            ]);
 
-		    $invoices = $this->Payments->Invoices->find( 'unarchived' )->find( 'list', [
-			    'limit' => 200,
-			    'order' => [ 'Invoices.id' => 'DESC' ]
-		    ] );
+            $invDefault = $invId;
 
-		    if ( isset( $invId ) ) {
-			    $invoices = $this->Payments->Invoices->find( 'list', [ 'conditions' => [ 'Invoices.id' => $invId ] ] );
-		    }
+            if (!isset($invId)) {
+                $invDefault = 'empty';
+            }
 
-		    $this->set( compact( 'payment', 'invoices', 'numberOfInvoiceAssocs' ) );
-		    $this->set( '_serialize', [ 'payment' ] );
-	    }
+            $this->set(compact('payment', 'invoices', 'numberOfInvoiceAssocs', 'invId', 'invDefault'));
+            $this->set('_serialize', [ 'payment' ]);
+        }
     }
 
     /**

@@ -56,73 +56,14 @@ class AttendeesController extends AppController
         $attendee = $this->Attendees->newEntity();
 
         if ($this->request->is('post')) {
-            $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
-
-            $phone1 = $attendee->phone;
-            $phone2 = $attendee->phone2;
-
-            $phone1 = str_replace(' ', '', $phone1);
-            $phone1 = str_replace('-', '', $phone1);
-            $phone1 = str_replace('/', '', $phone1);
-            $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
-
-            if (!empty($phone2)) {
-                $phone2 = str_replace(' ', '', $phone2);
-                $phone2 = str_replace('-', '', $phone2);
-                $phone2 = str_replace('/', '', $phone2);
-                $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
-            }
-
-            $phoneAttendee = [
-                'phone' => $phone1,
-                'phone2' => $phone2
-                ];
-
-            $attendee = $this->Attendees->patchEntity($attendee, $phoneAttendee);
-
-            $attendee->user_id = $this->Auth->user('id');
+            $attendee = $this->Attendees->patchEntity($attendee, $this->request->getData());
 
             if ($this->Attendees->save($attendee)) {
-                $this->Flash->success(__('The Adult has been saved.'));
-
-                $adult = $this->Attendees->get($attendee->id, ['contain' => ['Roles', 'Sections.Scoutgroups.Districts']]);
-
-                $adultEnt = [
-                    'Entity Id' => $adult->id,
-                    'Controller' => 'Attendees',
-                    'Action' => 'Add',
-                    'User Id' => $this->Auth->user('id'),
-                    'Creation Date' => $adult->created,
-                    'Modified' => $adult->modified,
-                    'Attendee' => [
-                        'Role' => $adult->role->role,
-                        'Invested' => $adult->role->invested,
-                        'Minor' => $adult->role->minor,
-                        'Last Name' => $adult->lastname,
-                        'Scoutgroup' => $adult->sections->scoutgroup->scoutgroup,
-                        'District' => $adult->sections->scoutgroup->district->district
-                        ]
-                    ];
-
-                $sets = TableRegistry::get('Settings');
-
-                $jsonAdd = json_encode($adultEnt);
-                $apiKey = $sets->get(13)->text;
-                $projectId = $sets->get(14)->text;
-                $eventType = 'Action';
-
-                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-
-                $http = new Client();
-                $response = $http->post(
-                    $keenURL,
-                    $jsonAdd,
-                    ['type' => 'json']
-                );
+                $this->Flash->success(__('The Cub has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__('The Adult could not be saved. Please, try again.'));
+                $this->Flash->error(__('The Cub could not be saved. Please, try again.'));
             }
         }
 
@@ -136,7 +77,7 @@ class AttendeesController extends AppController
 
         if ($this->request->is('get')) {
             // Values from the Model e.g.
-            $this->request->data['application_id'] = $appId;
+            $this->request->withData('application_id', $appId);
         }
     }
 
@@ -145,75 +86,19 @@ class AttendeesController extends AppController
      *
      * @param null $appId The Application to add the Attendee to
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|null
      */
     public function cub($appId = null)
     {
         $attendee = $this->Attendees->newEntity();
+
+        $attendee->set('user_id', $this->Auth->user('id'));
+
         if ($this->request->is('post')) {
-            $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
-
-            $attendee->user_id = $this->Auth->user('id');
-
-            $phone1 = $attendee->phone;
-            $phone2 = $attendee->phone2;
-
-            $phone1 = str_replace(' ', '', $phone1);
-            $phone1 = str_replace('-', '', $phone1);
-            $phone1 = str_replace('/', '', $phone1);
-            $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
-
-            if (!empty($phone2)) {
-                $phone2 = str_replace(' ', '', $phone2);
-                $phone2 = str_replace('-', '', $phone2);
-                $phone2 = str_replace('/', '', $phone2);
-                $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
-            }
-
-            $phoneAttendee = [
-                'phone' => $phone1,
-                'phone2' => $phone2
-                ];
-
-            $attendee = $this->Attendees->patchEntity($attendee, $phoneAttendee);
+            $attendee = $this->Attendees->patchEntity($attendee, $this->request->getData());
 
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The Cub has been saved.'));
-
-                $cub = $this->Attendees->get($attendee->id, ['contain' => ['Roles', 'Scoutgroups.Districts']]);
-
-                $cubEnt = [
-                    'Entity Id' => $cub->id,
-                    'Controller' => 'Attendees',
-                    'Action' => 'Add',
-                    'User Id' => $this->Auth->user('id'),
-                    'Creation Date' => $cub->created,
-                    'Modified' => $cub->modified,
-                    'Attendee' => [
-                        'Role' => $cub->role->role,
-                        'Invested' => $cub->role->invested,
-                        'Minor' => $cub->role->minor,
-                        'Last Name' => $cub->lastname,
-                        'Scoutgroup' => $cub->sections->scoutgroup->scoutgroup,
-                        'District' => $cub->sections->scoutgroup->district->district
-                        ]
-                    ];
-
-                $sets = TableRegistry::get('Settings');
-
-                $jsonAdd = json_encode($cubEnt);
-                $apiKey = $sets->get(13)->text;
-                $projectId = $sets->get(14)->text;
-                $eventType = 'Action';
-
-                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-
-                $http = new Client();
-                $response = $http->post(
-                    $keenURL,
-                    $jsonAdd,
-                    ['type' => 'json']
-                );
 
                 return $this->redirect(['action' => 'index']);
             } else {
@@ -231,7 +116,7 @@ class AttendeesController extends AppController
 
         if ($this->request->is('get')) {
             // Values from the Model e.g.
-            $this->request->data['application_id'] = $appId;
+            $this->request->withData('application_id', $appId);
         }
     }
 

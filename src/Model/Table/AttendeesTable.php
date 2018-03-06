@@ -388,6 +388,23 @@ class AttendeesTable extends Table
         return $entity;
     }
 
+    /* Phone Change Code
+     * $phone1 = $attendee->phone;
+            $phone2 = $attendee->phone2;
+
+            $phone1 = str_replace(' ', '', $phone1);
+            $phone1 = str_replace('-', '', $phone1);
+            $phone1 = str_replace('/', '', $phone1);
+            $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
+
+            if (!empty($phone2)) {
+                $phone2 = str_replace(' ', '', $phone2);
+                $phone2 = str_replace('-', '', $phone2);
+                $phone2 = str_replace('/', '', $phone2);
+                $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
+            }
+     */
+
     /**
      * Merge Function
      *

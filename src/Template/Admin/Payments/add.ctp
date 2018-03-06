@@ -1,3 +1,12 @@
+<?php
+/**
+ *
+ * @var $numberOfInvoiceAssocs int
+ * @var $invId int
+ * @var $invDefault int|string
+ *
+ */
+?>
 <div class="row">
     <div class="col-md-12">
         <?php if (is_null($numberOfInvoiceAssocs) || $numberOfInvoiceAssocs < 1 || !isset($numberOfInvoiceAssocs) ): ?>
@@ -29,7 +38,7 @@
                         echo '<table class="table table-hover"> <tr> <td>';
                         echo '<p>Invoice ' . ($inv + 1) . '</p>';
                         echo '</td> <td>';
-                        echo $this->Form->input('invoices.' . $inv . '.id', ['options' => $invoices, 'type' => 'select', 'empty' => true, 'label' => 'Invoice Associated']);
+                        echo $this->Form->input('invoices.' . $inv . '.id', ['options' => $invoices, 'type' => 'select', 'default' => $invDefault, 'empty' => true, 'label' => 'Invoice Associated']);
                         echo '</td> <td>';
                         echo $this->Form->input('invoices.' . $inv . '._joinData.x_value', ['label' => 'Value to Invoice']);
                         echo '</td></tr></table>';

@@ -57,7 +57,7 @@ class PricesController extends AppController
             if ($this->Prices->save($price)) {
                 $this->Flash->success(__('The price has been saved.'));
 
-	            return $this->redirect(['controller' => 'Events', 'action' => 'view', $price->event_id]);
+                return $this->redirect(['controller' => 'Events', 'action' => 'view', $price->event_id]);
             } else {
                 $this->Flash->error(__('The price could not be saved. Please, try again.'));
             }

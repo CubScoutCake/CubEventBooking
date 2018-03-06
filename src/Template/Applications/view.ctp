@@ -28,12 +28,19 @@
                         'prefix' => false,
                         $application->id],['_full']); ?>">Download Application</a>
                     </li>
-                    <li><a href="<?php echo $this->Url->build([
+                    <li><a href="<?php
+
+                        $osm_event_id = $application->osm_event_id;
+                        if (is_null($osm_event_id)) {
+                            $osm_event_id = 0;
+                        }
+
+                        echo $this->Url->build([
 			                'controller' => 'Applications',
 			                'action' => 'sync_book',
 			                'prefix' => false,
 			                $application->event_id,
-			                $application->osm_event_id,
+			                $osm_event_id,
 			                $application->id
                         ],['_full']); ?>">Re-sync with OSM Event</a>
                     </li>

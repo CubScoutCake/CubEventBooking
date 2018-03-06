@@ -408,13 +408,13 @@ class ScoutManagerComponent extends Component
             foreach ($selectArray as $key => $section) {
                 if ($section['section'] == $sectionType) {
                     $sectionArray = Hash::insert($sectionArray, $section['sectionid'], $section['groupname'] . ': ' . $section['sectionname']);
+                    $sectionSelected = $section;
                 }
             }
 
-            if (count($sectionArray) == 1 && isset($controller)) {
-                $this->Flash->error(__('Only one section of section type ' . $sectionType . ' found. Section assigned.'));
+            if (count($sectionArray) == 1 && isset($controller) && isset($sectionSelected)) {
+                $this->Flash->success(__('Only one section of section type ' . $sectionType . ' found. Section assigned.'));
 
-                $sectionSelected = $sectionArray[0];
                 $user->osm_section_id = $sectionSelected['sectionid'];
                 $user->osm_linked = 2;
 
@@ -763,17 +763,20 @@ class ScoutManagerComponent extends Component
 
         if ($response->isOk()) {
             $preBody = $response->json;
-            $body = Hash::get($preBody, 'items');
+            if (is_array($preBody)) {
+                $body = Hash::get($preBody, 'items');
 
-            $items = [];
-
-            foreach ($body as $item) {
-                if ($item['attending'] == 'Yes') {
-                    array_push($items, $item);
+                $items = [];
+                foreach ($body as $item) {
+                    if ($item['attending'] == 'Yes') {
+                        array_push($items, $item);
+                    }
                 }
+
+                return $items;
             }
 
-            return $items;
+            return false;
         }
 
         $error_message = 'Response Error - Try again.';

@@ -67,8 +67,8 @@ class LandingController extends AppController
 
         $user = $usrs->get($userId, ['contain' => ['Sections', 'AuthRoles']]);
         $authArray = [
-        	'section_type_id' => $user->section->section_type_id,
-	        'section_limited' => $user->auth_role->section_limited,
+            'section_type_id' => $user->section->section_type_id,
+            'section_limited' => $user->auth_role->section_limited,
         ];
 
         // Limited Table Entities

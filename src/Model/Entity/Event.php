@@ -41,9 +41,9 @@ use Cake\ORM\Entity;
  * @property string $tagline_text
  * @property string $location
  * @property bool $max
- * @property  int $max_cubs
- * @property  int $max_yls
- * @property  int $max_leaders
+ * @property int $max_cubs
+ * @property int $max_yls
+ * @property int $max_leaders
  * @property bool $allow_reductions
  * @property float $logo_ratio
  * @property bool $invoices_locked
@@ -62,7 +62,9 @@ use Cake\ORM\Entity;
  * @property bool $complete
  * @property int $cc_prices
  * @property bool $team_price
+ *
  * @property bool $app_full
+ * @property string $admin_full_name
  *
  * @property \App\Model\Entity\Discount $discount
  * @property \App\Model\Entity\User $admin_user
@@ -163,8 +165,19 @@ class Event extends Entity
                 return true;
             }
         }
+
         return false;
     }
 
-    protected $_virtual = ['app_full'];
+    /**
+     * Specifies the Admin Full Name
+     *
+     * @return string
+     */
+    protected function _getAdminFullName()
+    {
+        return $this->_properties['admin_firstname'] . ' ' . $this->_properties['admin_lastname'];
+    }
+
+    protected $_virtual = ['app_full', 'admin_full_name'];
 }
