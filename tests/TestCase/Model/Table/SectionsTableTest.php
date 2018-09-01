@@ -69,7 +69,7 @@ class SectionsTableTest extends TestCase
         $query = $this->Sections->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $startNow = Time::now();
         $modifiedDate = $startNow->modify('-3 days');
@@ -161,7 +161,7 @@ class SectionsTableTest extends TestCase
         $query = $this->Sections->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }
@@ -233,7 +233,7 @@ class SectionsTableTest extends TestCase
         $query = $this->Sections->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }

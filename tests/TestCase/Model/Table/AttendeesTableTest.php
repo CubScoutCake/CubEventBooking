@@ -940,7 +940,7 @@ class AttendeesTableTest extends TestCase
         $query = $this->Attendees->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
 
@@ -949,7 +949,7 @@ class AttendeesTableTest extends TestCase
         $query = $this->Attendees->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }

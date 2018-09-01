@@ -213,7 +213,7 @@ class TokensTableTest extends TestCase
         ]);
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }
@@ -305,7 +305,7 @@ class TokensTableTest extends TestCase
         ]);
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }

@@ -69,7 +69,7 @@ class ChampionsTableTest extends TestCase
         $query = $this->Champions->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
         $expected = [
             [
                 'id' => 1,
@@ -154,7 +154,7 @@ class ChampionsTableTest extends TestCase
         $query = $this->Champions->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }
@@ -241,7 +241,7 @@ class ChampionsTableTest extends TestCase
         $query = $this->Champions->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }

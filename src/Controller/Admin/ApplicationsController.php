@@ -69,24 +69,21 @@ class ApplicationsController extends AppController
     {
         // Insantiate Objects
         $application = $this->Applications->get($id, [
-            'contain' => ['Users', 'Sections.Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes']
+            'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes']
         ]);
+        $this->set('application', $application);
+        $this->set('_serialize', ['application']);
 
-        $this->viewBuilder()->options([
+        $this->loadComponent('Progress');
+
+        $this->Progress->determineApp($application->id, true, $this->Auth->user('id'), true);
+
+        $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
                    'filename' => 'Invoice_' . $id
                ]
            ]);
-
-        $this->set('application', $application);
-        $this->set('_serialize', ['application']);
-
-        $evts = TableRegistry::get('Events');
-
-        $event = $evts->get($application->event_id);
-
-        $this->loadComponent('Progress');
 
         $this->Progress->determineApp($application->id, true, $this->Auth->user('id'), true);
 
@@ -104,9 +101,6 @@ class ApplicationsController extends AppController
     public function eventPdf($eventId = null)
     {
         if (isset($eventId)) {
-            $invs = TableRegistry::get('Invoices');
-            $atts = TableRegistry::get('Attendees');
-            $itms = TableRegistry::get('InvoiceItems');
             $evts = TableRegistry::get('Events');
 
             $event = $evts->get($eventId, ['contain' => ['Applications']]);
@@ -114,8 +108,10 @@ class ApplicationsController extends AppController
             foreach ($event->applications as $applications) {
                 // Insantiate Objects
                 $application = $this->Applications->get($applications->id, [
-                    'contain' => ['Users', 'Scoutgroups', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Scoutgroups', 'Allergies'], 'Notes']
+                    'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes']
                 ]);
+                $this->set('application', $application);
+                $this->set('_serialize', ['application']);
 
                 $this->viewBuilder()->options([
                        'pdfConfig' => [

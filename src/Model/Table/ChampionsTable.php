@@ -107,7 +107,7 @@ class ChampionsTable extends Table
      */
     public function beforeRules(Event $event)
     {
-        $entity = $event->data['entity'];
+        $entity = $event->getData('entity');
 
         $entity->email = strtolower($entity->email);
 

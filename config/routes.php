@@ -146,7 +146,6 @@ Router::connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
 */
 
 
-Plugin::routes();
 Router::defaultRouteClass('DashedRoute');
 
 // Router::mapResources(array('Invoices'));

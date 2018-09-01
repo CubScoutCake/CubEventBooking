@@ -178,7 +178,7 @@ class NotificationsController extends AppController
             $payment = $payments->get($payId);
 
             $invoiceSel = $invoices->find('all')
-            ->hydrate(true)
+            ->enableHydration(true)
             ->join([
                 'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id', ],
                 't' => ['table' => 'payments', 'type' => 'INNER', 'conditions' => 't.id = x.payment_id', ]
@@ -263,7 +263,7 @@ class NotificationsController extends AppController
             $payment = $payments->get($payId);
 
             $invoiceSel = $invoices->find('all')
-            ->hydrate(true)
+            ->enableHydration(true)
             ->join([
                 'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id', ],
                 't' => ['table' => 'payments', 'type' => 'INNER', 'conditions' => 't.id = x.payment_id', ]

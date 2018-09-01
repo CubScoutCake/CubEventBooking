@@ -61,7 +61,7 @@ class SessionsTableTest extends TestCase
         $query = $this->Sessions->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
         $expected = [
             [
                 'id' => 'd982ca23-c9b1-4e49-815c-a9c115943ade',
@@ -114,7 +114,7 @@ class SessionsTableTest extends TestCase
         $query = $this->Sessions->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }

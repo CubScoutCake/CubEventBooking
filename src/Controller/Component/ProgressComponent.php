@@ -201,7 +201,7 @@ class ProgressComponent extends Component
             if ($invCount > 1) {
                 $invDone = 0.5;
             } elseif ($invCount == 1) {
-                $invDone = 0.5;
+                $invDone = 1; //0.5;
             }
             $cubsNotDone = 1;
         }

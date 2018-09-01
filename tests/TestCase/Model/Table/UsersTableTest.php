@@ -78,7 +78,7 @@ class UsersTableTest extends TestCase
         $query = $this->Users->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
         $expected = [
             [
                 'id' => 1,
@@ -281,7 +281,7 @@ class UsersTableTest extends TestCase
         $query = $this->Users->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $result = Hash::remove($result, '{n}.password');
         $result = Hash::remove($result, '{n}.digest_hash');
@@ -614,7 +614,7 @@ class UsersTableTest extends TestCase
         $query = $this->Users->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $result = Hash::remove($result, '{n}.password');
         $result = Hash::remove($result, '{n}.digest_hash');
