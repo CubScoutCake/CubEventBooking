@@ -25,7 +25,7 @@ class ApplicationsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.applications',
+        'app.applications', 'app.application_statuses',
         'app.settings',
         'app.setting_types',
         'app.discounts',
@@ -36,7 +36,7 @@ class ApplicationsTableTest extends TestCase
         'app.section_types',
         'app.sections',
         'app.users',
-        'app.events',
+        'app.events', 'app.event_statuses',
         'app.event_types',
         'app.auth_roles',
     ];
@@ -86,6 +86,7 @@ class ApplicationsTableTest extends TestCase
                 'id' => 1,
                 'user_id' => 1,
                 'section_id' => 1,
+                'application_status_id' => 1,
                 'legacy_section' => 'Cubs',
                 'permit_holder' => 'Lorem as dolor sit amet',
                 'team_leader' => 'Lorem as dolor sit amet',
@@ -109,6 +110,7 @@ class ApplicationsTableTest extends TestCase
                 'id' => 3,
                 'user_id' => 1,
                 'section_id' => 1,
+                'application_status_id' => 1,
                 'legacy_section' => 'Cubs',
                 'permit_holder' => 'Lorem as dolor sit amet',
                 'team_leader' => 'Lorem as dolor sit amet',

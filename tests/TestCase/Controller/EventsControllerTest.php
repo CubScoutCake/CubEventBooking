@@ -13,7 +13,7 @@ class EventsControllerTest extends IntegrationTestCase
 
     public $fixtures = [
         'app.event_types',
-        'app.events',
+        'app.events', 'app.event_statuses',
         'app.settings',
         'app.setting_types',
         'app.discounts',
@@ -28,7 +28,7 @@ class EventsControllerTest extends IntegrationTestCase
         'app.password_states',
         'app.notifications',
         'app.notification_types',
-        'app.applications',
+        'app.applications', 'app.application_statuses',
     ];
 
     /**

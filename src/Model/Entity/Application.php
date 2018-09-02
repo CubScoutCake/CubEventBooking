@@ -29,6 +29,7 @@ use Cake\ORM\Entity;
  * @property string $team_leader
  *
  * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\ApplicationStatus $application_status
  * @property \App\Model\Entity\Section $section
  * @property \App\Model\Entity\Event $event
  * @property \App\Model\Entity\Invoice $invoice

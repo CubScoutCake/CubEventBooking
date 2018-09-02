@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\DiscountsTable|\Cake\ORM\Association\BelongsTo $Discounts
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $AdminUsers
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $EventStatuses
  * @property \App\Model\Table\EventTypesTable|\Cake\ORM\Association\BelongsTo $EventTypes
  * @property \App\Model\Table\SectionTypesTable|\Cake\ORM\Association\BelongsTo $SectionTypes
  * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\HasMany $Applications
@@ -62,6 +63,10 @@ class EventsTable extends Table
 
         $this->belongsTo('Discounts', [
             'foreignKey' => 'discount_id'
+        ]);
+        $this->belongsTo('EventStatuses', [
+            'foreignKey' => 'event_status_id',
+            'joinType' => 'INNER'
         ]);
         $this->belongsTo('AdminUsers', [
             'className' => 'Users',

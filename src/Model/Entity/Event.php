@@ -67,6 +67,7 @@ use Cake\ORM\Entity;
  * @property string $admin_full_name
  *
  * @property \App\Model\Entity\Discount $discount
+ * @property \App\Model\Entity\EventStatus $event_status
  * @property \App\Model\Entity\User $admin_user
  * @property \App\Model\Entity\EventType $event_type
  * @property \App\Model\Entity\SectionType $section_type

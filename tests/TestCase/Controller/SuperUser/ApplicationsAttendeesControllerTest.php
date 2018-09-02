@@ -17,7 +17,7 @@ class ApplicationsAttendeesControllerTest extends IntegrationTestCase
 
     public $fixtures = [
         'app.applications_attendees',
-        'app.applications',
+        'app.applications', 'app.application_statuses',
         'app.users',
         'app.roles',
         'app.attendees',

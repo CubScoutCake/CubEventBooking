@@ -16,8 +16,8 @@ class OsmControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.applications',
-        'app.events',
+        'app.applications', 'app.application_statuses',
+        'app.events', 'app.event_statuses',
         'app.settings',
         'app.discounts',
         'app.users',

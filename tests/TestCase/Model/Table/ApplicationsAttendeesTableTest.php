@@ -25,7 +25,7 @@ class ApplicationsAttendeesTableTest extends TestCase
      */
     public $fixtures = [
         'app.applications_attendees',
-        'app.applications',
+        'app.applications', 'app.application_statuses',
         'app.users',
         'app.roles',
         'app.attendees',
@@ -41,7 +41,7 @@ class ApplicationsAttendeesTableTest extends TestCase
         'app.notes',
         'app.payments',
         'app.invoices_payments',
-        'app.events',
+        'app.events', 'app.event_statuses',
         'app.event_types',
         'app.settings',
         'app.setting_types',

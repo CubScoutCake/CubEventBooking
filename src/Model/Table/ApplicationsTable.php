@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * Applications Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Users
+ * @property \Cake\ORM\Association\BelongsTo $ApplicationStatuses
  * @property \Cake\ORM\Association\BelongsTo $Sections
  * @property \Cake\ORM\Association\BelongsTo $Events
  * @property \Cake\ORM\Association\HasOne $Invoices
@@ -65,6 +66,10 @@ class ApplicationsTable extends Table
         ]);
         $this->belongsTo('Sections', [
             'foreignKey' => 'section_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('ApplicationStatuses', [
+            'foreignKey' => 'application_status_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Events', [

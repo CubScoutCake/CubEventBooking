@@ -21,7 +21,7 @@ class UsersControllerTest extends IntegrationTestCase
         'app.attendees',
         'app.scoutgroups',
         'app.districts',
-        'app.applications',
+        'app.applications', 'app.application_statuses',
         'app.allergies'
     ];
 

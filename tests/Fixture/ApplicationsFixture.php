@@ -38,15 +38,18 @@ class ApplicationsFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'section_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'team_leader' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'application_status_id' => ['type' => 'integer', 'length' => 10, 'default' => 1, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         '_indexes' => [
             'applications_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
             'applications_event_id' => ['type' => 'index', 'columns' => ['event_id'], 'length' => []],
             'applications_section_id' => ['type' => 'index', 'columns' => ['section_id'], 'length' => []],
+            'applications_status_id' => ['type' => 'index', 'columns' => ['application_status_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'applications_event_id' => ['type' => 'foreign', 'columns' => ['event_id'], 'references' => ['events', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'applications_section_id' => ['type' => 'foreign', 'columns' => ['section_id'], 'references' => ['sections', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
+            'applications_status_id' => ['type' => 'foreign', 'columns' => ['application_status_id'], 'references' => ['application_statuses', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
             'applications_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
     ];
@@ -63,6 +66,7 @@ class ApplicationsFixture extends TestFixture
             [
                 'user_id' => 1,
                 'section_id' => 1,
+	            'application_status_id' => 1,
                 'permit_holder' => 'Lorem as dolor sit amet',
                 'team_leader' => 'Lorem as dolor sit amet',
                 'created' => date_create('2016-12-26 23:22:30'),
@@ -84,6 +88,7 @@ class ApplicationsFixture extends TestFixture
             [
                 'user_id' => 1,
                 'section_id' => 1,
+                'application_status_id' => 1,
                 'permit_holder' => 'Lorem dolor sit amet',
                 'team_leader' => 'Lorem as dolor sit amet',
                 'created' => date_create('2016-12-26 23:22:30'),
@@ -105,6 +110,7 @@ class ApplicationsFixture extends TestFixture
             [
                 'user_id' => 1,
                 'section_id' => 1,
+                'application_status_id' => 1,
                 'permit_holder' => 'Lorem as dolor sit amet',
                 'team_leader' => 'Lorem as dolor sit amet',
                 'created' => date_create('2016-12-26 23:22:30'),
