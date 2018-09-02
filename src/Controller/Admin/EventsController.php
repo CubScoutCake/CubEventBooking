@@ -220,9 +220,6 @@ class EventsController extends AppController
         $sets = TableRegistry::get('Settings');
         $dscs = TableRegistry::get('Discounts');
 
-        $now = Time::now();
-        $userId = $this->Auth->user('id');
-
         // Table Entities
         if (isset($event->discount_id)) {
             $discount = $dscs->get($event->discount_id);
@@ -257,13 +254,9 @@ class EventsController extends AppController
         $apps = TableRegistry::get('Applications');
         $invs = TableRegistry::get('Invoices');
         $itms = TableRegistry::get('InvoiceItems');
-        $atts = TableRegistry::get('Attendees');
         $sets = TableRegistry::get('Settings');
         $dscs = TableRegistry::get('Discounts');
         $usrs = TableRegistry::get('Users');
-
-        $now = Time::now();
-        $userId = $this->Auth->user('id');
 
         // Table Entities
         $applications = $apps->find('all')->where(['event_id' => $event->id]);
@@ -287,8 +280,8 @@ class EventsController extends AppController
         $this->set('invoices', $allInvoices);
 
         // Counts of Entities
-        $cntApplications = $applications->count('*');
-        $cntInvoices = $invoices->count('*');
+        $cntApplications = $applications->count();
+        $cntInvoices = $invoices->count();
 
         $this->set(compact('cntApplications', 'cntInvoices'));
 
@@ -303,9 +296,9 @@ class EventsController extends AppController
             $attendeeLeaderCount = $apps->find('leaders')->where(['event_id' => $event->id]);
 
             // Count of Attendees
-            $appCubs = $attendeeCubCount->count('*');
-            $appYls = $attendeeYlCount->count('*');
-            $appLeaders = $attendeeLeaderCount->count('*');
+            $appCubs = $attendeeCubCount->count();
+            $appYls = $attendeeYlCount->count();
+            $appLeaders = $attendeeLeaderCount->count();
         }
 
         $this->set(compact('appCubs', 'appYls', 'appLeaders'));
@@ -406,22 +399,9 @@ class EventsController extends AppController
     {
         $event = $this->Events->newEntity();
 
-        $sections = TableRegistry::get('Sections');
-
-        $userSection = $sections->get($this->Auth->user('section_id'));
-
-        $sectionType = [
-            'section_type_id' => $userSection->section_type_id
-        ];
-        //$event = $this->Events->patchEntity($event, $sectionType, ['validation' => false]);
-
         if ($this->request->is('post')) {
-            $sectionType = [
-                'section_type_id' => $userSection->section_type_id
-            ];
-
-            $event = $this->Events->patchEntity($event, $this->request->getData());
-            $event = $this->Events->patchEntity($event, $sectionType);
+            $event_data = $this->request->getData();
+            $event = $this->Events->patchEntity($event, $event_data);
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
 
@@ -469,6 +449,31 @@ class EventsController extends AppController
     }
 
     /**
+     * Team Prices Function
+     * @param int $id The ID of the event to be set to Event
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function teamPrices($id = null)
+    {
+        if (is_null($id)) {
+            return $this->redirect($this->referer(['action' => 'prices']));
+        }
+
+        $event = $this->Events->get($id);
+        $event->set('team_price', true);
+
+        if ($this->Events->save($event)) {
+            $this->Flash->success(__('The Event is Set to Team Pricing.'));
+
+            return $this->redirect(['action' => 'prices']);
+        }
+        $this->Flash->error(__('The Event could not be set to Team Pricing.'));
+
+        return $this->redirect($this->referer(['action' => 'prices']));
+    }
+
+    /**
      * Edit method
      *
      * @param string|null $id Event id.
@@ -502,8 +507,10 @@ class EventsController extends AppController
             }
         }
 
-        $itemTypes = TableRegistry::get('ItemTypes');
-        $itemTypeOptions = $itemTypes->find('list');
+        $itemTypeOptions = $this->Events->Prices->ItemTypes->find('list')->where(['team_price' => false]);
+        if ($event->team_price) {
+            $itemTypeOptions = $this->Events->Prices->ItemTypes->find('list')->where(['team_price' => true]);
+        }
 
         $eventPrices = count($event->prices);
 

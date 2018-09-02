@@ -90,7 +90,6 @@ class EventsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'name' => 'Lorem New dolo',
                 'full_name' => 'Lorem Octopus dolor sit amet',
                 'live' => 0,
@@ -145,7 +144,6 @@ class EventsFixture extends TestFixture
                 'team_price' => 0,
             ],
             [
-                'id' => 2,
                 'name' => 'Lorem ipsum dolo',
                 'full_name' => 'Lorem ipsum dolor sit amet',
                 'live' => 1,
@@ -200,7 +198,6 @@ class EventsFixture extends TestFixture
                 'team_price' => 0,
             ],
             [
-                'id' => 3,
                 'name' => 'OLD dolo',
                 'full_name' => 'Lorem Goat dolor sit amet',
                 'live' => 1,

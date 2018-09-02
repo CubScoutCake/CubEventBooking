@@ -261,6 +261,22 @@ class ApplicationsController extends AppController
         $this->Events = TableRegistry::get('Events');
         $event = $this->Events->get($eventId, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
 
+        if ($event->team_price) {
+            $team_price = $this->Events->Prices
+                ->find('all')
+                ->where([
+                    'event_id' => $event->id,
+                    'ItemTypes.team_price' => true
+                ])
+                ->contain('ItemTypes')
+                ->first();
+            if ($attendees > $team_price->max_number) {
+                $this->Flash->error(__('To many attendees for the team.'));
+
+                return $this->redirect($this->referer(['controller' => 'Events', 'action' => 'book', $event->id]));
+            }
+        }
+
         $settings = TableRegistry::get('Settings');
         $term = $settings->get($event->event_type->application_ref_id);
         $term = $term->text;
@@ -474,6 +490,22 @@ class ApplicationsController extends AppController
         }
 
         $attendeeCount = count($data);
+
+        if ($event->team_price) {
+            $team_price = $this->Events->Prices
+                ->find('all')
+                ->where([
+                    'event_id' => $event->id,
+                    'ItemTypes.team_price' => true
+                ])
+                ->contain('ItemTypes')
+                ->first();
+            if ($attendeeCount > $team_price->max_number) {
+                $this->Flash->error(__('To many attendees for the team.'));
+
+                return $this->redirect($this->referer(['controller' => 'Events', 'action' => 'book', $event->id]));
+            }
+        }
 
         $this->set(compact('application', 'attendeeCount', 'teamLeaderBool', 'permitHolderBool', 'term', 'sectionType'));
 
