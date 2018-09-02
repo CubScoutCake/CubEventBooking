@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\Model\Entity\Payment $payment
+ * @var array $payments
+ */
+?>
 <div class="row">
     <div class="col-lg-12">
         <h3><i class="fa fa-gbp fa-fw"></i> Your Payments</h3>
@@ -21,7 +27,7 @@
                         </tr>
                         <?php foreach ($payment->invoices as $invoice): ?>
                             <tr>
-                                <td class="text-right"><?= $this->Html->link('Invoice #' . $invoice->id, [] ) ?></td>
+                                <td class="text-right"><?= $this->Html->link('Invoice #' . $invoice->id, ['controller' => 'Invoices', 'action' => 'view', $invoice->id] ) ?></td>
                                 <td class="text-right"><?= $this->Number->currency($invoice->_joinData->x_value,'GBP') ?></td>
                                 <td class="text-right"><?= $this->Time->i18nFormat($invoice->created, 'dd-MMM-yy HH:mm') ?></td>
                                 <td></td>

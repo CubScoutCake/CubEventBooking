@@ -92,7 +92,7 @@ class ItemTypesTableTest extends TestCase
         $query = $this->ItemTypes->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
         $expected = [
             [
                 'id' => 1,
@@ -252,7 +252,7 @@ class ItemTypesTableTest extends TestCase
         $query = $this->ItemTypes->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }

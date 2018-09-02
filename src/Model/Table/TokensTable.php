@@ -135,7 +135,7 @@ class TokensTable extends Table
      */
     public function beforeSave(Event $event)
     {
-        $entity = $event->data['entity'];
+        $entity = $event->getData('entity');
 
         if ($entity->isNew()) {
             $entity->random_number = random_int(

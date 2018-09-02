@@ -67,7 +67,7 @@ class EventsController extends AppController
             ])
             ->group('Districts.district');
 
-        $lineArray = $lineQuery->hydrate(false)->toArray();
+        $lineArray = $lineQuery->enableHydration(false)->toArray();
 
         $lineArray = Hash::remove($lineArray, '[virtual]');
 

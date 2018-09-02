@@ -3,6 +3,8 @@ namespace App\Test\TestCase\Controller\Component;
 
 use App\Controller\Component\BookingComponent;
 use Cake\Controller\ComponentRegistry;
+use Cake\I18n\Date;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -64,20 +66,42 @@ class BookingComponentTest extends TestCase
      */
     public function testGuessSectionType()
     {
-        $response = $this->Booking->guessRole('2010-03-09');
-        $this->assertEquals(2, $response);
+        $roles = TableRegistry::get('Roles');
 
-        $response = $this->Booking->guessRole('2008-03-09');
-        $this->assertEquals(3, $response);
+        // Six Year Old Beaver
+        $sixYearOld = Date::now();
+        $sixYearOld = $sixYearOld->subYears(6);
+        $response = $this->Booking->guessRole($sixYearOld->format('Y-m-d'));
+        $beaver = $roles->get($response);
+        $this->assertEquals('Beaver', $beaver->role);
 
-        $response = $this->Booking->guessRole('2005-03-09');
-        $this->assertEquals(4, $response);
+        // Nine Year Old Cub
+        $nineYearOld = Date::now();
+        $nineYearOld = $nineYearOld->subYears(9);
+        $response = $this->Booking->guessRole($nineYearOld->format('Y-m-d'));
+        $beaver = $roles->get($response);
+        $this->assertEquals('Cub', $beaver->role);
 
-        $response = $this->Booking->guessRole('2003-03-09');
-        $this->assertEquals(5, $response);
+        // Twelve Year Old Scout
+        $twelveYearOld = Date::now();
+        $twelveYearOld = $twelveYearOld->subYears(12);
+        $response = $this->Booking->guessRole($twelveYearOld->format('Y-m-d'));
+        $beaver = $roles->get($response);
+        $this->assertEquals('Scout', $beaver->role);
 
-        $response = $this->Booking->guessRole('1990-03-09');
-        $this->assertEquals(1, $response);
+        // Fifteen Year Old Explorer
+        $fifteenYearOld = Date::now();
+        $fifteenYearOld = $fifteenYearOld->subYears(15);
+        $response = $this->Booking->guessRole($fifteenYearOld->format('Y-m-d'));
+        $beaver = $roles->get($response);
+        $this->assertEquals('Explorer', $beaver->role);
+
+        // Twenty Year Old Leader
+        $twentyYearOld = Date::now();
+        $twentyYearOld = $twentyYearOld->subYears(20);
+        $response = $this->Booking->guessRole($twentyYearOld->format('Y-m-d'));
+        $beaver = $roles->get($response);
+        $this->assertEquals('Leader', $beaver->role);
 
         $response = $this->Booking->guessRole('8sajgs');
         $this->assertFalse($response);

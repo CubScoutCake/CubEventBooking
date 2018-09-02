@@ -73,7 +73,7 @@ class AttendeesAllergiesTableTest extends TestCase
         $query = $this->AttendeesAllergies->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
         $expected = [
             [
                 'attendee_id' => 1,
@@ -121,7 +121,7 @@ class AttendeesAllergiesTableTest extends TestCase
         $query = $this->AttendeesAllergies->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }

@@ -151,7 +151,7 @@ class EventsController extends AppController
         } else {
             // Set Attendee Counts
             $attendeeCubCount = $apps->find('all')
-                ->hydrate(false)
+                ->enableHydration(false)
                 ->join([
                     'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
                     't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
@@ -159,7 +159,7 @@ class EventsController extends AppController
                 ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.event_id' => $id, 't.deleted IS' => null]);
 
             $attendeeYlCount = $apps->find('all')
-                ->hydrate(false)
+                ->enableHydration(false)
                 ->join([
                     'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
                     't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
@@ -167,7 +167,7 @@ class EventsController extends AppController
                 ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.event_id' => $id, 't.deleted IS' => null]);
 
             $attendeeLeaderCount = $apps->find('all')
-                ->hydrate(false)
+                ->enableHydration(false)
                 ->join([
                     'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
                     't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],

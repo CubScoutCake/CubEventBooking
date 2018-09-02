@@ -251,11 +251,12 @@ class Email extends AbstractMigration
 
         $table = $this->table('users');
 
-        $table->renameColumn('pw_state', 'password_state_id')
-            ->changeColumn('password_state_id', 'integer', [
-                'default' => null,
-                'null' => true,
-            ])
+        $table
+	        ->changeColumn('pw_state', 'integer', [
+		        'default' => null,
+		        'null' => true,
+	        ])
+	        ->renameColumn('pw_state', 'password_state_id')
             ->addIndex('password_state_id')
             ->addForeignKey(
                 'password_state_id',
@@ -265,6 +266,6 @@ class Email extends AbstractMigration
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
                 ])
-            ->update();
+            ->save();
     }
 }

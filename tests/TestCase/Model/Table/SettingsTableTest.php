@@ -71,7 +71,7 @@ class SettingsTableTest extends TestCase
         $query = $this->Settings->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $timeNow = Time::now();
 
@@ -262,7 +262,7 @@ class SettingsTableTest extends TestCase
         $query = $this->Settings->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }
@@ -388,7 +388,7 @@ class SettingsTableTest extends TestCase
         $query = $this->Settings->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $this->assertEquals($expected, $result);
     }

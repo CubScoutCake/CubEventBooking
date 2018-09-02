@@ -326,7 +326,7 @@ class UsersTable extends Table
      */
     public function beforeSave(Event $event)
     {
-        $entity = $event->data['entity'];
+        $entity = $event->getData('entity');
 
         // Make a password for digest auth.
         $entity->digest_hash = DigestAuthenticate::password(
@@ -360,7 +360,7 @@ class UsersTable extends Table
      */
     public function beforeRules(Event $event)
     {
-        $entity = $event->data['entity'];
+        $entity = $event->getData('entity');
 
         $entity->email = strtolower($entity->email);
         $entity->firstname = ucwords(strtolower($entity->firstname));

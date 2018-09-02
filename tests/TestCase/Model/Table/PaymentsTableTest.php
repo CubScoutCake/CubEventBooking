@@ -73,7 +73,7 @@ class PaymentsTableTest extends TestCase
         $query = $this->Payments->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
 
         $startNow = Time::now();
 

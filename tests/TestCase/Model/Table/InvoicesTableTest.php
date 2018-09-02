@@ -82,7 +82,7 @@ class InvoicesTableTest extends TestCase
         $query = $this->Invoices->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->hydrate(false)->toArray();
+        $result = $query->enableHydration(false)->toArray();
         $expected = [
             [
                 'id' => 1,

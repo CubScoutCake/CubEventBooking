@@ -32,6 +32,8 @@ class LogsControllerTest extends IntegrationTestCase
         'app.roles',
         'app.password_states',
         'app.auth_roles',
+        'app.notifications',
+        'app.notification_types',
     ];
 
     /**
@@ -201,8 +203,10 @@ class LogsControllerTest extends IntegrationTestCase
             'Auth.User.auth_role_id' => 2
         ]);
 
-        $count = $this->Logs->find()->count();
+        $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
+        $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
 
+        $count = $this->Logs->find()->count();
         $this->assertGreaterThanOrEqual(1, $count);
 
         $this->enableCsrfToken();
@@ -215,6 +219,6 @@ class LogsControllerTest extends IntegrationTestCase
 
         $count = $this->Logs->find()->count();
 
-        $this->assertSame(0, $count);
+        $this->assertEquals(0, $count);
     }
 }

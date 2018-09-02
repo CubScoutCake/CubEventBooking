@@ -64,7 +64,7 @@ class InvoiceItemsController extends AppController
 
         // Set Attendee Counts
         $attendeeCubCount = $applications->find()
-            ->hydrate(false)
+            ->enableHydration(false)
             ->join([
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
                 't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
@@ -72,7 +72,7 @@ class InvoiceItemsController extends AppController
             ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeYlCount = $applications->find()
-            ->hydrate(false)
+            ->enableHydration(false)
             ->join([
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
                 't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
@@ -80,7 +80,7 @@ class InvoiceItemsController extends AppController
             ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeLeaderCount = $applications->find()
-            ->hydrate(false)
+            ->enableHydration(false)
             ->join([
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
                 't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
@@ -342,7 +342,7 @@ class InvoiceItemsController extends AppController
 
         // Set Attendee Counts
         $attendeeCubCount = $applications->find()
-            ->hydrate(false)
+            ->enableHydration(false)
             ->join([
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
                 't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
@@ -350,7 +350,7 @@ class InvoiceItemsController extends AppController
             ])->where(['r.minor' => 1, 't.role_id' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeYlCount = $applications->find()
-            ->hydrate(false)
+            ->enableHydration(false)
             ->join([
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
                 't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
@@ -358,7 +358,7 @@ class InvoiceItemsController extends AppController
             ])->where(['r.minor' => 1, 't.role_id <>' => 1, 'Applications.id' => $appID, 't.deleted IS' => null]);
 
         $attendeeLeaderCount = $applications->find()
-            ->hydrate(false)
+            ->enableHydration(false)
             ->join([
                 'x' => ['table' => 'applications_attendees', 'type' => 'LEFT', 'conditions' => 'x.application_id = Applications.id', ],
                 't' => ['table' => 'attendees', 'type' => 'INNER', 'conditions' => 't.id = x.attendee_id', ],
