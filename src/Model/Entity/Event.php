@@ -57,6 +57,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $deleted
  * @property int $event_type_id
  * @property int $section_type_id
+ * @property int $event_status_id
  * @property \Cake\I18n\Time $closing_date
  * @property int $cc_apps
  * @property bool $complete

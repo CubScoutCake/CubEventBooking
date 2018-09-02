@@ -266,6 +266,7 @@ class EventsTable extends Table
         $rules->add($rules->existsIn(['admin_user_id'], 'AdminUsers'));
         $rules->add($rules->existsIn(['event_type_id'], 'EventTypes'));
         $rules->add($rules->existsIn(['section_type_id'], 'SectionTypes'));
+        $rules->add($rules->existsIn(['event_status_id'], 'EventStatuses'));
 
         return $rules;
     }
@@ -278,7 +279,7 @@ class EventsTable extends Table
      */
     public function findUnarchived($query)
     {
-        return $query->where(['Events.live' => true]);
+        return $query->contain('EventStatuses')->where(['EventStatuses.live' => true]);
     }
 
     /**
@@ -318,8 +319,9 @@ class EventsTable extends Table
         $def = '1' . '1';
 
         if (bindec($name) == bindec($prices)) {
-            $event->complete = true;
-
+            $activeStatus = $this->EventStatuses->find()->where(['event_status' => 'Active'])->first();
+            $event->set('application_status_id', $activeStatus->id);
+            $event->set('complete', true);
             $this->save($event);
 
             return true;

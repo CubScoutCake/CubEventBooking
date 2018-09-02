@@ -130,6 +130,7 @@ class ApplicationsTable extends Table
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['sections_id'], 'Sections'));
+        $rules->add($rules->existsIn(['application_status_id'], 'ApplicationStatuses'));
         $rules->add($rules->existsIn(['event_id'], 'Events'));
 
         return $rules;
@@ -169,7 +170,7 @@ class ApplicationsTable extends Table
      */
     public function findUnarchived($query)
     {
-        return $query->contain('Events')->where(['Events.live' => true]);
+        return $query->contain('Events.EventStatuses')->where(['EventStatuses.live' => true]);
     }
 
     /**

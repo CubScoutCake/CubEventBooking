@@ -1,7 +1,7 @@
 <?php
-namespace App\Test\TestCase\Controller;
+namespace App\Test\TestCase\Controller\SuperUser;
 
-use App\Controller\ApplicationStatusesController;
+use App\Controller\SuperUser\ApplicationStatusesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -16,8 +16,20 @@ class ApplicationStatusesControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.application_statuses',
-        'app.applications'
+        'app.applications', 'app.application_statuses',
+        'app.settings',
+        'app.setting_types',
+        'app.discounts',
+        'app.roles',
+        'app.password_states',
+        'app.districts',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.users',
+        'app.events', 'app.event_statuses',
+        'app.event_types',
+        'app.auth_roles',
     ];
 
     /**

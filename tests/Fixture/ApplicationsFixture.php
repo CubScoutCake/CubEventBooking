@@ -66,7 +66,7 @@ class ApplicationsFixture extends TestFixture
             [
                 'user_id' => 1,
                 'section_id' => 1,
-	            'application_status_id' => 1,
+                'application_status_id' => 1,
                 'permit_holder' => 'Lorem as dolor sit amet',
                 'team_leader' => 'Lorem as dolor sit amet',
                 'created' => date_create('2016-12-26 23:22:30'),
