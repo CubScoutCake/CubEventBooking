@@ -130,6 +130,23 @@ $cakeDescription = 'HertsCubs Booking System';
                                     </ul>
                                 </li>
                                 <li>
+                                    <a href="#"><i class="fa fa-signal fa-fw"></i> Event Statuses <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+					                            'controller' => 'EventStatuses',
+					                            'action' => 'index',
+					                            'prefix' => 'super_user']); ?>">View Event Statuses</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+					                            'controller' => 'EventStatuses',
+					                            'action' => 'add',
+					                            'prefix' => 'super_user']); ?>">Add an Event Status</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
                                     <a href="#"><i class="fa fa-chevron-circle-down fa-fw"></i> Discounts <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
@@ -405,6 +422,23 @@ $cakeDescription = 'HertsCubs Booking System';
                                                 'controller' => 'NotificationTypes',
                                                 'action' => 'add',
                                                 'prefix' => 'super_user']); ?>">Add a Notification Type</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-line-chart fa-fw"></i> Application Statuses <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+					                            'controller' => 'ApplicationStatuses',
+					                            'action' => 'index',
+					                            'prefix' => 'super_user']); ?>"> View Application Statuses</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+					                            'controller' => 'ApplicationStatuses',
+					                            'action' => 'add',
+					                            'prefix' => 'super_user']); ?>">Add an Application Status</a>
                                         </li>
                                     </ul>
                                 </li>

@@ -71,16 +71,19 @@ class EventsFixture extends TestFixture
         'cc_apps' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'complete' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
 	    'team_price' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+        'event_status_id' => ['type' => 'integer', 'length' => 10, 'default' => 1, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         '_indexes' => [
             'events_discount_id' => ['type' => 'index', 'columns' => ['discount_id'], 'length' => []],
             'events_admin_user_id' => ['type' => 'index', 'columns' => ['admin_user_id'], 'length' => []],
             'events_event_type_id' => ['type' => 'index', 'columns' => ['event_type_id'], 'length' => []],
+            'events_event_status_id' => ['type' => 'index', 'columns' => ['event_status_id'], 'length' => []],
             'events_section_type_id' => ['type' => 'index', 'columns' => ['section_type_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'events_discount_id' => ['type' => 'foreign', 'columns' => ['discount_id'], 'references' => ['discounts', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'events_event_type_id' => ['type' => 'foreign', 'columns' => ['event_type_id'], 'references' => ['event_types', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
+            'events_event_status_id' => ['type' => 'foreign', 'columns' => ['event_status_id'], 'references' => ['event_statuses', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
             'events_section_type_id' => ['type' => 'foreign', 'columns' => ['section_type_id'], 'references' => ['section_types', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
         ],
     ];
@@ -90,7 +93,6 @@ class EventsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'name' => 'Lorem New dolo',
                 'full_name' => 'Lorem Octopus dolor sit amet',
                 'live' => 0,
@@ -140,12 +142,12 @@ class EventsFixture extends TestFixture
                 'available_cubs' => 1,
                 'deleted' => null,
                 'event_type_id' => 1,
+                'event_status_id' => 1,
                 'section_type_id' => 1,
                 'complete' => 1,
                 'team_price' => 0,
             ],
             [
-                'id' => 2,
                 'name' => 'Lorem ipsum dolo',
                 'full_name' => 'Lorem ipsum dolor sit amet',
                 'live' => 1,
@@ -176,6 +178,7 @@ class EventsFixture extends TestFixture
                 'invtext_id' => 1,
                 'legaltext_id' => 1,
                 'discount_id' => 1,
+                'event_status_id' => 1,
                 'intro_text' => 'Lorem ipsum dolor sit amet',
                 'tagline_text' => 'Lorem ipsum dolor sit amet',
                 'location' => 'Lorem ipsum dolor sit amet',
@@ -200,7 +203,6 @@ class EventsFixture extends TestFixture
                 'team_price' => 0,
             ],
             [
-                'id' => 3,
                 'name' => 'OLD dolo',
                 'full_name' => 'Lorem Goat dolor sit amet',
                 'live' => 1,
@@ -219,6 +221,7 @@ class EventsFixture extends TestFixture
                 'cubs_text' => 'Lorem ipsum dolor sit amet',
                 'yls' => 1,
                 'yls_value' => 1,
+                'event_status_id' => 1,
                 'yls_text' => 'Lorem ipsum dolor sit amet',
                 'leaders' => 1,
                 'leaders_value' => 1,

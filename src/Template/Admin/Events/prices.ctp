@@ -49,8 +49,9 @@
             <p><?= __('Remove all variable prices and set single price to application.') ?></p>
             <a href="<?php echo $this->Url->build([
 		        'controller' => 'Events',
-		        'action' => 'team_price',
-		        'prefix' => 'admin']); ?>">
+		        'action' => 'team_prices',
+		        'prefix' => 'admin',
+	            $event->id ]); ?>">
                 <button type="button" class="btn btn-outline btn-lg btn-warning"><i class="fa fa-object-group fa-fw"></i> Convert to Application Pricing.</button>
             </a>
         </div>

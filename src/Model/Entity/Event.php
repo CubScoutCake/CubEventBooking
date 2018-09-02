@@ -57,6 +57,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $deleted
  * @property int $event_type_id
  * @property int $section_type_id
+ * @property int $event_status_id
  * @property \Cake\I18n\Time $closing_date
  * @property int $cc_apps
  * @property bool $complete
@@ -67,6 +68,7 @@ use Cake\ORM\Entity;
  * @property string $admin_full_name
  *
  * @property \App\Model\Entity\Discount $discount
+ * @property \App\Model\Entity\EventStatus $event_status
  * @property \App\Model\Entity\User $admin_user
  * @property \App\Model\Entity\EventType $event_type
  * @property \App\Model\Entity\SectionType $section_type

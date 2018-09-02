@@ -3,6 +3,8 @@ namespace App\Test\TestCase\Controller\Admin;
 
 use App\Controller\Admin\EventsController;
 use Cake\TestSuite\IntegrationTestCase;
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * App\Admin\EventsController Test Case
@@ -17,7 +19,7 @@ class EventsControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.event_types',
-        'app.events',
+        'app.events', 'app.event_statuses',
         'app.settings',
         'app.setting_types',
         'app.discounts',
@@ -30,7 +32,7 @@ class EventsControllerTest extends IntegrationTestCase
         'app.scoutgroups',
         'app.districts',
         'app.champions',
-        'app.applications',
+        'app.applications', 'app.application_statuses',
         'app.invoices',
         'app.invoice_items',
         'app.item_types',
@@ -120,10 +122,10 @@ class EventsControllerTest extends IntegrationTestCase
 
         $this->assertResponseOk();
 
-        /*$this->enableCsrfToken();
+        $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $this->post(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'add'],[
+        $this->post(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'add'], [
             'name' => 'Cyclocross',
             'full_name' => 'County Cub Cyclocross',
             'event_type_id' => 1,
@@ -158,7 +160,6 @@ class EventsControllerTest extends IntegrationTestCase
             ],
             'live' => 1,
             'new_apps' => 1,
-            'team_price' => 0,
             'allow_reductions' => 0,
             'invoices_locked' => 0,
             'location' => 'Well End',
@@ -179,8 +180,7 @@ class EventsControllerTest extends IntegrationTestCase
             'discount_id' => null,
         ]);
 
-        $this->assertResponseOk();
-        $this->assertRedirect();*/
+        $this->assertRedirect();
     }
 
     /**

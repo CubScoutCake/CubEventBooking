@@ -17,7 +17,7 @@ class SettingsControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.settings',
-        'app.events',
+        'app.events', 'app.event_statuses',
         'app.discounts',
         'app.users',
         'app.roles',

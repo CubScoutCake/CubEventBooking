@@ -26,9 +26,11 @@ use Cake\ORM\Entity;
  * @property int $cc_inv_leaders
  * @property \Cake\I18n\Time $deleted
  * @property int $section_id
+ * @property int $application_status_id
  * @property string $team_leader
  *
  * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\ApplicationStatus $application_status
  * @property \App\Model\Entity\Section $section
  * @property \App\Model\Entity\Event $event
  * @property \App\Model\Entity\Invoice $invoice

@@ -27,7 +27,7 @@ class SettingsTableTest extends TestCase
     public $fixtures = [
         'app.settings',
         'app.setting_types',
-        'app.events',
+        'app.events', 'app.event_statuses',
         'app.discounts',
         'app.event_types',
         'app.section_types',

@@ -243,7 +243,7 @@
 <hr>
 <div class="row">
     <div class="col-lg-12">
-        <?php if (!empty($application->invoices)): ?>
+	    <?php if (!empty($application->invoice)): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-files-o fa-fw"></i> Invoices on this Application
@@ -255,39 +255,26 @@
                             <tr>
                                 <th><?= __('Id') ?></th>
                                 <th class="actions"><?= __('Actions') ?></th>
-                                <th><?= __('User Id') ?></th>
                                 <th><?= __('Sum Value') ?></th>
                                 <th><?= __('Received') ?></th>
                                 <th><?= __('Balance') ?></th>
                                 <th><?= __('Date Created') ?></th>
                             </tr>
-                            <?php foreach ($application->invoices as $invoices): ?>
                             <tr>
-                                <td><?= h($invoices->id) ?></td>
+                                <td><?= h($application->invoice->id) ?></td>
                                 <td class="actions">
-                                    <div class="dropdown btn-group">
-                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu " role="menu">
-                                            <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?></li>
-                                            <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoices->id]) ?></li>
-                                            <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete', $invoices->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $invoices->id)]) ?></li>
-                                        </ul>
-                                    </div>
+	                                <?= $this->Html->link('', ['controller' => 'Invoices', 'action' => 'view', $application->invoice->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
                                 </td>
-                                <td><?= h($invoices->user_id) ?></td>
-                                <td><?= $this->Number->currency($invoices->initialvalue,'GBP') ?></td>
-                                <td><?= $this->Number->currency($invoices->value,'GBP') ?></td>
-                                <td><?= $this->Number->currency($invoices->balance,'GBP') ?></td>
-                                <td><?= $this->Time->i18nformat($invoices->created,'dd-MMM-yy HH:mm') ?></td>
+                                <td><?= $this->Number->currency($application->invoice->initialvalue,'GBP') ?></td>
+                                <td><?= $this->Number->currency($application->invoice->value,'GBP') ?></td>
+                                <td><?= $this->Number->currency($application->invoice->balance,'GBP') ?></td>
+                                <td><?= $this->Time->i18nformat($application->invoice->created,'dd-MMM-yy HH:mm') ?></td>
                             </tr>
-                            <?php endforeach; ?>
                         </table>
                     </div>
                 </div>
-            </div>      
-        <?php endif; ?>
+            </div>
+	    <?php endif; ?>
     </div>
 </div>
 <div class="row">

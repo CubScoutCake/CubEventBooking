@@ -12,9 +12,11 @@ use Cake\Validation\Validator;
  * Applications Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Users
+ * @property \Cake\ORM\Association\BelongsTo $ApplicationStatuses
  * @property \Cake\ORM\Association\BelongsTo $Sections
  * @property \Cake\ORM\Association\BelongsTo $Events
  * @property \Cake\ORM\Association\HasOne $Invoices
+ * @property \Cake\ORM\Association\HasMany $Notes
  * @property \Cake\ORM\Association\BelongsToMany $Attendees
  */
 class ApplicationsTable extends Table
@@ -64,6 +66,10 @@ class ApplicationsTable extends Table
         ]);
         $this->belongsTo('Sections', [
             'foreignKey' => 'section_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('ApplicationStatuses', [
+            'foreignKey' => 'application_status_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Events', [
@@ -124,6 +130,7 @@ class ApplicationsTable extends Table
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['sections_id'], 'Sections'));
+        $rules->add($rules->existsIn(['application_status_id'], 'ApplicationStatuses'));
         $rules->add($rules->existsIn(['event_id'], 'Events'));
 
         return $rules;
@@ -163,7 +170,7 @@ class ApplicationsTable extends Table
      */
     public function findUnarchived($query)
     {
-        return $query->contain('Events')->where(['Events.live' => true]);
+        return $query->contain('Events.EventStatuses')->where(['EventStatuses.live' => true]);
     }
 
     /**

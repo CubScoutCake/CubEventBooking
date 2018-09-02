@@ -29,7 +29,7 @@ class LogisticsTableTest extends TestCase
         'app.parameter_sets',
         'app.params',
         'app.logistic_items',
-        'app.applications',
+        'app.applications', 'app.application_statuses',
         'app.users',
         'app.roles',
         'app.attendees',
@@ -47,7 +47,7 @@ class LogisticsTableTest extends TestCase
         'app.invoices_payments',
         'app.notifications',
         'app.notificationtypes',
-        'app.events',
+        'app.events', 'app.event_statuses',
         'app.settings',
         'app.settingtypes',
         'app.discounts'

@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\DiscountsTable|\Cake\ORM\Association\BelongsTo $Discounts
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $AdminUsers
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $EventStatuses
  * @property \App\Model\Table\EventTypesTable|\Cake\ORM\Association\BelongsTo $EventTypes
  * @property \App\Model\Table\SectionTypesTable|\Cake\ORM\Association\BelongsTo $SectionTypes
  * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\HasMany $Applications
@@ -62,6 +63,10 @@ class EventsTable extends Table
 
         $this->belongsTo('Discounts', [
             'foreignKey' => 'discount_id'
+        ]);
+        $this->belongsTo('EventStatuses', [
+            'foreignKey' => 'event_status_id',
+            'joinType' => 'INNER'
         ]);
         $this->belongsTo('AdminUsers', [
             'className' => 'Users',
@@ -261,6 +266,7 @@ class EventsTable extends Table
         $rules->add($rules->existsIn(['admin_user_id'], 'AdminUsers'));
         $rules->add($rules->existsIn(['event_type_id'], 'EventTypes'));
         $rules->add($rules->existsIn(['section_type_id'], 'SectionTypes'));
+        $rules->add($rules->existsIn(['event_status_id'], 'EventStatuses'));
 
         return $rules;
     }
@@ -273,7 +279,7 @@ class EventsTable extends Table
      */
     public function findUnarchived($query)
     {
-        return $query->where(['Events.live' => true]);
+        return $query->contain('EventStatuses')->where(['EventStatuses.live' => true]);
     }
 
     /**
@@ -313,8 +319,9 @@ class EventsTable extends Table
         $def = '1' . '1';
 
         if (bindec($name) == bindec($prices)) {
-            $event->complete = true;
-
+            $activeStatus = $this->EventStatuses->find()->where(['event_status' => 'Active'])->first();
+            $event->set('application_status_id', $activeStatus->id);
+            $event->set('complete', true);
             $this->save($event);
 
             return true;

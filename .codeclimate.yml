@@ -52,7 +52,7 @@ plugins:
   phpcodesniffer:
       enabled: true
       config:
-      	standard: "PHPCS"
+      	standard: PHPCS
   sonar-php:
         enabled: true
         config:

@@ -16,11 +16,11 @@ class EventsControllerTest extends IntegrationTestCase
      * @var array
 
     public $fixtures = [
-        'app.events',
+        'app.events', 'app.event_statuses',
         'app.settings',
         'app.settingtypes',
         'app.discounts',
-        'app.applications',
+        'app.applications', 'app.application_statuses',
         'app.users',
         'app.roles',
         'app.attendees',

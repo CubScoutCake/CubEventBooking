@@ -12,6 +12,7 @@
                     <th scope="col"><?= $this->Paginator->sort('minor') ?></th>
                     <th scope="col"><?= $this->Paginator->sort('cancelled') ?></th>
                     <th scope="col"><?= $this->Paginator->sort('available') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('team_price') ?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -28,6 +29,7 @@
                         <td><?= $itemType->minor ? '<i class="fa fa-check fa-fw"></i>' : '' ?></td>
                         <td><?= $itemType->cancelled ? '<i class="fa fa-check fa-fw"></i>' : '' ?></td>
                         <td><?= $itemType->available ? '<i class="fa fa-check fa-fw"></i>' : '' ?></td>
+                        <td><?= $itemType->team_price ? '<i class="fa fa-check fa-fw"></i>' : '' ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
