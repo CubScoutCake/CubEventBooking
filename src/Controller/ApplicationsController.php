@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Form\AttNumberForm;
 use App\Form\SyncBookForm;
+use App\Form\CancellationForm;
 use Cake\I18n\Date;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
@@ -70,7 +71,7 @@ class ApplicationsController extends AppController
      * View method - Displays the Application to the User
      *
      * @param string|null $id Application id.
-     * @return void
+     * @return \Cake\Http\Response|null
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
@@ -109,6 +110,37 @@ class ApplicationsController extends AppController
 
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
+
+        $cancellationForm = new CancellationForm();
+        $this->set(compact('cancellationForm'));
+
+        if ($this->request->is('post')) {
+            $reason = $this->request->getData('reason');
+            $otherApps = $this->request->getData('other_team_added');
+            $others = 'No';
+            if ($otherApps) {
+                $others = 'Yes';
+            }
+
+            $note = $this->Applications->Notes->newEntity();
+            $content = 'Cancellation Requested: "' . $reason . '" [Other Apps: ' . $others . ']';
+            $note_data = [
+                'visible' => true,
+                'user_id' => $application->user->id,
+                'invoice_id' => $application->invoice->id,
+                'application_id' => $application->id,
+                'note_text' => $content
+            ];
+            $note = $this->Applications->Notes->patchEntity($note, $note_data);
+            if ($this->Applications->Notes->save($note)) {
+                $this->Flash->success(__('Cancellation Submitted Successfully.'));
+
+                return $this->redirect($this->referer(['action' => 'view', $application->id]));
+            }
+            $this->Flash->error(__('Cancellation Request Failed.'));
+
+            return $this->redirect($this->referer(['action' => 'view', $application->id]));
+        }
 
         $this->loadComponent('Progress');
 

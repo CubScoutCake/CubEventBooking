@@ -60,12 +60,63 @@
                             $invFirst->id],['_full']); ?>">Update Invoice
 
                         <?php endif ?></a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#cancellation">Request Cancellation</a></li>
                 </ul>
             </div>
         </div>
         </br>
     </div>
 </div>
+
+<div class="modal fade" id="cancellation" tabindex="-1" role="dialog" aria-labelledby="listModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-ban fa-5x"></i>
+                    </div>
+                    <div class="col-xs-7 text-right">
+                        <div class="huge">Cancellation</div>
+                    </div>
+                    <div class="col-xs-2">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <br/>
+                    <div class="col-lg-offset-1 col-lg-10">
+	                    <?= $this->Form->create($cancellationForm); ?>
+                        <legend><?= __('Request Application Cancellation') ?></legend>
+                        <p>Please enter a reason that you would like to cancel this application.</p>
+                        <p>Where requests are received too close to the event, cancellation may not be possible.</p>
+	                    <?php
+	                    echo $this->Form->input('reason', ['label' => 'Reason for Cancellation Request.']);
+	                    echo $this->Form->input('other_team_added', [ 'label' => 'Have you got another team entered?']);
+	                    ?>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <p>Step 1 of 1</p>
+                    </div>
+                    <div class="col-xs-9 pull-right">
+				        <?php echo $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary']); ?>
+				        <?php echo $this->Form->end(); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 <div class="row">
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-green">

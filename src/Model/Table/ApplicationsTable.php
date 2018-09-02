@@ -15,6 +15,7 @@ use Cake\Validation\Validator;
  * @property \Cake\ORM\Association\BelongsTo $Sections
  * @property \Cake\ORM\Association\BelongsTo $Events
  * @property \Cake\ORM\Association\HasOne $Invoices
+ * @property \Cake\ORM\Association\HasMany $Notes
  * @property \Cake\ORM\Association\BelongsToMany $Attendees
  */
 class ApplicationsTable extends Table
