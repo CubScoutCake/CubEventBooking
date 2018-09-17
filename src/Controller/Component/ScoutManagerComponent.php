@@ -179,7 +179,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'section' ]);
+                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
             }
 
             return false;
@@ -243,7 +243,7 @@ class ScoutManagerComponent extends Component
                 if (isset($controller)) {
                     $this->Flash->error(__($error_message));
 
-                    return $controller->redirect([ 'action' => 'link' ]);
+                    return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
                 } else {
                     return false;
                 }
@@ -305,9 +305,9 @@ class ScoutManagerComponent extends Component
                     if (isset($controller)) {
                         $this->Flash->success(__('You have linked your OSM account.'));
                         if (is_null($user->osm_section_id)) {
-                            return $controller->redirect([ 'action' => 'section' ]);
+                            return $controller->redirect(['controller' => 'Osm', 'action' => 'section' ]);
                         } else {
-                            return $controller->redirect([ 'action' => 'home' ]);
+                            return $controller->redirect(['controller' => 'Osm', 'action' => 'home' ]);
                         }
                     } else {
                         return true;
@@ -318,7 +318,7 @@ class ScoutManagerComponent extends Component
                     if (isset($controller)) {
                         $this->Flash->error(__($error_message));
 
-                        return $controller->redirect(['action' => 'link']);
+                        return $controller->redirect(['controller' => 'Osm', 'action' => 'link']);
                     } else {
                         return false;
                     }
@@ -345,7 +345,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'section' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'section' ]);
             }
 
             return false;
@@ -363,7 +363,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'section' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'section' ]);
             }
 
             return false;
@@ -383,7 +383,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'link' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'link' ]);
             }
 
             return false;
@@ -431,7 +431,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'home' ]);
+                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'home' ]);
             }
 
             return false;
@@ -454,7 +454,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'section' ]);
+                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
             }
 
             return false;
@@ -472,7 +472,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'section' ]);
+                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
             }
 
             return false;
@@ -490,7 +490,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'link' ]);
+                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
             }
 
             return false;
@@ -518,7 +518,7 @@ class ScoutManagerComponent extends Component
                 if (isset($controller)) {
                     $this->Flash->error(__($error_message));
 
-                    return $controller->redirect([ 'action' => 'access' ]);
+                    return $controller->redirect([ 'controller' => 'Osm', 'action' => 'access' ]);
                 }
 
                 return false;
@@ -609,7 +609,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'section' ]);
+                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
             }
 
             return false;
@@ -627,7 +627,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'section' ]);
+                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
             }
 
             return false;
@@ -645,7 +645,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'link' ]);
+                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
             }
 
             return false;
@@ -669,7 +669,7 @@ class ScoutManagerComponent extends Component
                 if (isset($controller)) {
                     $this->Flash->error(__($error_message));
 
-                    return $controller->redirect([ 'action' => 'link' ]);
+                    return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
                 }
 
                 return false;
@@ -687,7 +687,7 @@ class ScoutManagerComponent extends Component
         if (isset($controller)) {
             $this->Flash->error(__($error_message));
 
-            return $controller->redirect([ 'action' => 'link' ]);
+            return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
         }
 
         return false;
@@ -710,7 +710,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'section' ]);
+                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
             }
 
             return false;
@@ -728,7 +728,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'section' ]);
+                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
             }
 
             return false;
@@ -746,7 +746,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($error_message));
 
-                return $controller->redirect([ 'action' => 'link' ]);
+                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
             }
 
             return false;
@@ -785,7 +785,7 @@ class ScoutManagerComponent extends Component
         if (isset($controller)) {
             $this->Flash->error(__($error_message));
 
-            return $controller->redirect([ 'action' => 'link' ]);
+            return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
         }
 
         return false;
