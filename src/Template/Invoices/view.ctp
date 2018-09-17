@@ -105,7 +105,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <p>Deposits for invoices should be made payable to <strong><?= h($invoice->application->event->event_type->payable->text) ?></strong> and sent to <strong><?= h($invoice->application->event->full_name) ?>, <?= h($invoice->application->event->address) ?>, <?= h($invoice->application->event->city) ?>, <?= h($invoice->application->event->postcode) ?></strong> by <strong><?= $this->Time->i18nformat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invoice->application->event->event_type->invoice_text->text) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
+                <p>Deposits for invoices should be made payable to <strong><?= h($invoice->application->event->event_type->payable->text) ?></strong> and sent to <strong><?= h($invoice->application->event->name) ?>, <?= h($invoice->application->event->address) ?>, <?= h($invoice->application->event->city) ?>, <?= h($invoice->application->event->postcode) ?></strong> by <strong><?= $this->Time->i18nformat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invoice->application->event->event_type->invoice_text->text) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
             </div>
         </div>
     </div>
@@ -116,7 +116,7 @@
     <div class="col-lg-12">
         <div class="panel panel-yellow">
             <div class="panel-body">
-                <p>Deposits for invoices should be made payable to <strong><?= h($invoice->application->event->event_type->payable->text) ?></strong> and sent to <strong><?= h($invoice->application->event->full_name) ?>, C/O: <?= h($invoice->application->event->admin_firstname) ?> <?= h($invoice->application->event->admin_lastname) ?> <?= h($invoice->application->event->address) ?>, <?= h($invoice->application->event->city) ?>, <?= h($invoice->application->event->postcode) ?></strong> by <strong><?= $this->Time->i18nformat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invoice->application->event->event_type->invoice_text->text) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
+                <p>Deposits for invoices should be made payable to <strong><?= h($invoice->application->event->event_type->payable->text) ?></strong> and sent to <strong><?= h($invoice->application->event->name) ?>, C/O: <?= h($invoice->application->event->admin_firstname) ?> <?= h($invoice->application->event->admin_lastname) ?> <?= h($invoice->application->event->address) ?>, <?= h($invoice->application->event->city) ?>, <?= h($invoice->application->event->postcode) ?></strong> by <strong><?= $this->Time->i18nformat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invoice->application->event->event_type->invoice_text->text) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
             </div>
         </div>
     </div>
