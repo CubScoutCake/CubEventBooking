@@ -663,16 +663,14 @@ class ScoutManagerComponent extends Component
         if ($response->isOk()) {
             $preBody = $response->json;
             if (is_null($preBody)) {
-                $error_message = 'OSM User is incorrectly set, please re-validate.';
-                $this->log($error_message);
+                $error_message = 'No events found';
+                $this->log($error_message . ' SM - EVENT LIST');
 
                 if (isset($controller)) {
                     $this->Flash->error(__($error_message));
-
-                    return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
                 }
 
-                return false;
+                return [];
             }
             $body = Hash::get($preBody, 'items');
 
@@ -687,7 +685,7 @@ class ScoutManagerComponent extends Component
         if (isset($controller)) {
             $this->Flash->error(__($error_message));
 
-            return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
+            return [];
         }
 
         return false;
