@@ -184,13 +184,28 @@ class ApplicationsController extends AppController
 
         $application = $this->Applications->newEntity();
         if ($this->request->is('post')) {
-            $newData = ['modification' => 0];
-            $application = $this->Applications->patchEntity($application, $newData);
-
-            $application = $this->Applications->patchEntity($application, $this->request->data);
+            $newData = [
+                'modification' => 0,
+                'invoice'      => [ 'user_id' => $user->id, ],
+                ];
+            $appData = array_merge($newData, $this->request->getData());
+            $application = $this->Applications->patchEntity($application, $appData);
 
             if ($this->Applications->save($application)) {
-                $this->Flash->success(__('The application has been saved.'));
+                $appId = $application->get('id');
+                $application = $this->Applications->get($appId, ['contain' => ['Invoices']]);
+
+                $this->loadComponent('Line');
+                $parse = $this->Line->parseInvoice($application->invoice->id);
+
+                $this->loadComponent('Availability');
+                $this->Availability->getNumbers($appId);
+
+                $this->Flash->success(__('Application has been registered.'));
+
+                if ($parse) {
+                    $this->Flash->success(__('Invoice created.'));
+                }
 
                 return $this->redirect(['action' => 'view', $application->id]);
             } else {

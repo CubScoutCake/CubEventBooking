@@ -55,17 +55,18 @@ class AttendeesController extends AppController
     /**
      * Add method
      *
+     * @param int $userId The ID of the User
      * @return void Redirects on successful add, renders view otherwise.
      */
     public function add($userId = null)
     {
         $attendee = $this->Attendees->newEntity();
         if ($this->request->is('post')) {
-            $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
+            $attendee = $this->Attendees->patchEntity($attendee, $this->request->getData());
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $attendee->id]);
             } else {
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
             }
@@ -73,20 +74,17 @@ class AttendeesController extends AppController
         if (is_null($userId)) {
             $users = $this->Attendees->Users->find('list', ['limit' => 200]);
             $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'order' => ['id' => 'DESC']]);
-            $scoutgroups = $this->Attendees->Scoutgroups->find(
+            $sections = $this->Attendees->Sections->find(
                 'list',
                 [
                     'keyField' => 'id',
-                    'valueField' => 'scoutgroup',
-                    'groupField' => 'district.district'
+                    'valueField' => 'section',
+                    'groupField' => 'scoutgroup.district.district'
                 ]
             )
-                ->contain(['Districts']);
+            ->contain(['Scoutgroups.Districts']);
         } else {
-            $usrs = TableRegistry::get('Users');
-
-            $user = $usrs->get($userId);
-            $grpId = $user->scoutgroup_id;
+            $user = $this->Attendees->Users->get($userId);
 
             $users = $this->Attendees->Users->find('list', ['limit' => 200, 'conditions' => ['id' => $userId]]);
             $applications = $this->Attendees->Applications->find('list', [
@@ -97,13 +95,13 @@ class AttendeesController extends AppController
                 'order' => [
                     'id' => 'DESC'
                 ]]);
-            $scoutgroups = $this->Attendees->Scoutgroups->find('list', ['limit' => 200, 'conditions' => ['id' => $grpId]]);
+            $sections = $this->Attendees->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $user->section_id]]);
         }
 
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
         $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
 
-        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'scoutgroups', 'roles'));
+        $this->set(compact('attendee', 'users', 'applications', 'allergies', 'sections', 'roles'));
         $this->set('_serialize', ['attendee']);
     }
 

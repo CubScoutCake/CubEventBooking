@@ -34,7 +34,7 @@
                 <h5><?= __('Date of Birth (D.O.B.)') ?></h5>
                 <p><?= $this->Time->i18nFormat($attendee->dateofbirth, 'dd-MMM-yyyy') ?></p>
                 <h5><?= __('Scoutgroup') ?></h5>
-                <p><?= $attendee->has('scoutgroup') ? $this->Html->link($attendee->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $attendee->scoutgroup->id]) : '' ?></p>
+                <p><?= $attendee->has('section') ? $this->Html->link($attendee->section->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $attendee->scoutgroup->id]) : '' ?></p>
                 <h5><?= __('Role') ?></h5>
                 <p><?= $attendee->has('role') ? $this->Html->link($attendee->role->role, ['controller' => 'Roles', 'action' => 'view', $attendee->role->id]) : '' ?></p>
                 <h5><?= __('Holds a Nights Away Permit') ?></h5>
