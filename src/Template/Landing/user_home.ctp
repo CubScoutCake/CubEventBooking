@@ -175,7 +175,7 @@
                             <tr>
                                 <th><?= h('Application') ?></th>
                                 <th class="actions"><?= __('Actions') ?></th>
-                                <th><?= h('User') ?></th>
+                                <th><?= h('Event') ?></th>
                                 <th><?= h('Section') ?></th>
                                 <th><?= h('Permit Holder') ?></th>
                                 <th><?= h('Last Modified') ?></th>

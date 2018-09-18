@@ -5,6 +5,7 @@ use App\Model\Entity\User;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Auth\DigestAuthenticate;
 use Cake\Event\Event;
+use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -334,6 +335,10 @@ class UsersTable extends Table
             'Rho9Sigma',
             env('SERVER_NAME')
         );
+
+        if (is_null($entity->last_login)) {
+            $entity->last_login = Time::now();
+        }
 
         $authRole = $this->AuthRoles->get($entity->auth_role_id);
         $superUser = bindec('10000');

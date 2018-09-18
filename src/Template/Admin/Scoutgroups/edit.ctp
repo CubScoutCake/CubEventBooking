@@ -1,13 +1,3 @@
-<nav class="actions large-2 medium-3 columns" id="actions-sidebar">
-    
-    <?= $this->start('Sidebar');
-    echo $this->element('Sidebar/admin_edit');
-    echo $this->element('Sidebar/admin');
-    $this->end(); ?>
-    
-    <?= $this->fetch('Sidebar') ?>
-    
-</nav>
 <div class="scoutgroups form large-10 medium-9 columns content">
     <?= $this->Form->create($scoutgroup) ?>
     <fieldset>
