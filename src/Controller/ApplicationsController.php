@@ -447,52 +447,50 @@ class ApplicationsController extends AppController
         $teamLeaderBool = $event->event_type->team_leader;
         $permitHolderBool = $event->event_type->permit_holder;
 
-        /**
-         * @var \App\Model\Entity\Application $application
-         */
-
         if (is_null($appID)) {
-            $application = $this->Applications->newEntity(['contain' => 'Attendees']);
-
-            $newData = [
-                'modification' => 0,
-                'user_id' => $user->id,
-                'section_id' => $user->section_id,
-                'event_id' => $eventID,
-                'osm_event_id' => $osmEvent,
-                'invoice' => [
-                    'user_id' => $user->id,
-                ]
-            ];
-
-            $application = $this->Applications->patchEntity(
-                $application,
-                $newData,
-                ['associated' => [ 'Invoices', 'Attendees' ]]
-            );
+            $application = $this->Applications->newEntity([ 'contain' => 'Attendees' ]);
         } else {
-            $application = $this->Applications->get($appID, ['contain' => 'Attendees']);
+            $application = $this->Applications->get($appID, [ 'contain' => 'Attendees' ]);
             if (is_null($osmEvent)) {
                 $osmEvent = $application->osm_event_id;
             }
         }
 
-        if (!isset($osmEvent) || is_null($osmEvent)) {
+        if (! isset($osmEvent) || is_null($osmEvent)) {
             $this->Flash->error('OSM Event Not Selected.');
-            if (!is_null($appID)) {
-                return $this->redirect(['action' => 'choose_osm_event', $eventID, $appID]);
+            if (! is_null($appID)) {
+                return $this->redirect([ 'action' => 'choose_osm_event', $eventID, $appID ]);
             }
 
-            return $this->redirect(['controller' => 'Events', 'action' => 'book', $eventID]);
+            return $this->redirect([ 'controller' => 'Events', 'action' => 'book', $eventID ]);
         }
 
+        $appData = [];
+
+        if ($application->isNew()) {
+            $appData = [
+                'modification' => 0,
+                'user_id'      => $user->id,
+                'section_id'   => $user->section_id,
+                'event_id'     => $eventID,
+                'osm_event_id' => $osmEvent,
+                'invoice'      => [
+                    'user_id' => $user->id,
+                ],
+            ];
+        }
+
+        /**
+         * @var \App\Model\Entity\Application $application
+         */
+
         $this->loadComponent('ScoutManager');
-        $attendees = $this->ScoutManager->getEventAttendees($this->Auth->user(['id']), $osmEvent);
+        $attendees = $this->ScoutManager->getEventAttendees($this->Auth->user([ 'id' ]), $osmEvent);
 
         $data = [];
         $this->loadComponent('Booking');
 
-        $application->set('attendees', []);
+//      $application->set( 'attendees', [] );
 
         if (is_array($attendees)) {
             foreach ($attendees as $key => $attendee) {
@@ -502,23 +500,29 @@ class ApplicationsController extends AppController
                 }
 
                 $attendeeArr = [
-                    'user_id' => $user->id,
-                    'role_id' => $this->Booking->guessRole($attendee['dob'], $leaderPatrol),
-                    'firstname' => $attendee['firstname'],
-                    'lastname' => $attendee['lastname'],
-                    'osm_id' => $attendee['scoutid'],
+                    'user_id'       => $user->id,
+                    'role_id'       => $this->Booking->guessRole($attendee['dob'], $leaderPatrol),
+                    'firstname'     => $attendee['firstname'],
+                    'lastname'      => $attendee['lastname'],
+                    'osm_id'        => $attendee['scoutid'],
                     'osm_sync_date' => Time::now(),
-                    'dateofbirth' => $attendee['dob'],
-                    'section_id' => $user->section_id
+                    'dateofbirth'   => $attendee['dob'],
+                    'section_id'    => $user->section_id
                 ];
 
                 array_push($data, $attendeeArr);
             }
 
-            $appData = ['attendees' => $data];
-            $this->Applications->patchEntity($application, $appData, ['associated' => ['Invoices', 'Attendees']]);
+            $appData = array_merge($appData, [ 'attendees' => $data ]);
+        }
 
-            $this->set(compact('attendees'));
+        if ($this->request->is('get')) {
+            $application = $this->Applications->patchEntity($application, $appData, [
+                'associated' => [
+                    'Invoices',
+                    'Attendees'
+                ]
+            ]);
         }
 
         $attendeeCount = count($data);
@@ -527,7 +531,7 @@ class ApplicationsController extends AppController
             $team_price = $this->Events->Prices
                 ->find('all')
                 ->where([
-                    'event_id' => $event->id,
+                    'event_id'             => $event->id,
                     'ItemTypes.team_price' => true
                 ])
                 ->contain('ItemTypes')
@@ -535,7 +539,11 @@ class ApplicationsController extends AppController
             if ($attendeeCount > $team_price->max_number) {
                 $this->Flash->error(__('To many attendees for the team.'));
 
-                return $this->redirect($this->referer(['controller' => 'Events', 'action' => 'book', $event->id]));
+                return $this->redirect($this->referer([
+                    'controller' => 'Events',
+                    'action'     => 'book',
+                    $event->id
+                ]));
             }
         }
 
@@ -543,22 +551,25 @@ class ApplicationsController extends AppController
 
         if ($this->request->is(['post', 'put'])) {
             // Patch Data
-            $fields = ['attendees.role_id'];
+            $rData = $this->request->getData();
+//          debug($rData);
+
+            foreach ($application->attendees as $idx => $attendee) {
+                $attendee->role_id = $rData[$idx]['role_id'];
+            }
+
+            $fields = ['attendees' => ['role_id']];
+
             if ($teamLeaderBool) {
                 array_push($fields, 'team_leader');
+                $application->team_leader = $rData['team_leader'];
             }
             if ($permitHolderBool) {
                 array_push($fields, 'permit_holder');
+                $application->permit_holder = $rData['permit_holder'];
             }
 
-            $application = $this->Applications->patchEntity(
-                $application,
-                $this->request->getData(),
-                [
-                    'associated' => [ 'Attendees', 'Invoices' ],
-                    'fields' => $fields
-                ]
-            );
+//            debug($application);
 
             if ($this->Applications->save($application)) {
                 $appId = $application->get('id');

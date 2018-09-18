@@ -4,10 +4,10 @@
         <legend><?= __('Add Application') ?></legend>
         <?php
             echo $this->Form->input('user_id', ['options' => $users]);
-            echo $this->Form->input('scoutgroup_id');
-            echo $this->Form->input('section');
+            echo $this->Form->input('section_id', ['options' => $sections]);
             echo $this->Form->input('event_id',['options' => $events]);
-            echo $this->Form->input('permitholder');
+            echo $this->Form->input('permit_holder');
+            echo $this->Form->input('team_leader');
             echo $this->Form->input('attendees._ids', ['options' => $attendees, 'multiple' => 'checkbox']);
         ?>
     </fieldset>

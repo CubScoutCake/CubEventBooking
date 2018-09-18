@@ -112,7 +112,7 @@ class ScoutManagerComponentTest extends TestCase
             'sectionSet' => true,
             'termCurrent' => false,
             'attendees_present' => true,
-            'attendee_count' => 12,
+            'attendee_count' => 11,
             'next_step' => 'term',
         ];
 
