@@ -51,7 +51,6 @@ class EmailSendsFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
             'created' => 1487718602,
             'modified' => 1487718602,
             'sent' => 1487718602,

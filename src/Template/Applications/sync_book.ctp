@@ -66,15 +66,15 @@ use \Cake\I18n\Date;
                                 <th><?= h('Attendee Role') ?></th>
                             </tr>
                         </thead>
-                        <?php for ($att = 0; $att < $attendeeCount; $att ++): ?>
+                        <?php foreach ( $application->attendees as $idx => $attendee ): ?>
                             <tr>
-                                <td><?= h($application->attendees[$att]->firstname) ?></td>
-                                <td><?= h($application->attendees[$att]->lastname) ?></td>
-                                <td><?= $this->Time->i18nformat($application->attendees[$att]->dateofbirth,'dd-MMM-yyyy') ?></td>
-                                <td><?php $age = date_diff($application->attendees[$att]->dateofbirth, Date::now()); echo '<strong>' . $age->y . '</strong>' . ' years & ' . $age->m . ' months'; ?></td>
-                                <td><?= $this->Form->input('attendees.' . $att . '.role_id', ['options' => $roles, 'label' => '', /*, 'disabled' => 'disabled'*/])  ?></td>
+                                <td><?= h($attendee->firstname) ?></td>
+                                <td><?= h($attendee->lastname) ?></td>
+                                <td><?= $this->Time->i18nformat($attendee->dateofbirth,'dd-MMM-yyyy') ?></td>
+                                <td><?php $age = date_diff($attendee->dateofbirth, Date::now()); echo '<strong>' . $age->y . '</strong>' . ' years & ' . $age->m . ' months'; ?></td>
+                                <td><?= $this->Form->input('attendees.' . $idx . '.role_id', ['options' => $roles, 'label' => '', /*, 'disabled' => 'disabled'*/])  ?></td>
                             </tr>
-                        <?php endfor; ?>
+                        <?php endforeach; ?>
                     </table>
                 </div>
 			</fieldset>

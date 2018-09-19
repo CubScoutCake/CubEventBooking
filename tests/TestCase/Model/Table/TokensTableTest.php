@@ -149,7 +149,6 @@ class TokensTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 7,
             'token' => 'Lorem ipsum dolor sit',
             'user_id' => 1,
             'email_send_id' => 1,
@@ -176,7 +175,7 @@ class TokensTableTest extends TestCase
                 'header' => 'Lorem ipsum dolor sit amet'
             ],
             [
-                'id' => 7,
+                'id' => 3,
                 'token' => 'Lorem ipsum dolor sit',
                 'user_id' => 1,
                 'email_send_id' => 1,

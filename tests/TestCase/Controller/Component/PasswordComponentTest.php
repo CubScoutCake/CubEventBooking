@@ -12,6 +12,31 @@ class PasswordComponentTest extends TestCase
 {
 
     /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'app.tokens',
+        'app.users',
+        'app.roles',
+        'app.sections',
+        'app.section_types',
+        'app.scoutgroups',
+        'app.districts',
+        'app.password_states',
+        'app.settings',
+        'app.setting_types',
+        'app.event_types',
+        'app.auth_roles',
+        'app.notifications',
+        'app.notification_types',
+        'app.email_sends',
+        'app.email_responses',
+        'app.email_response_types'
+    ];
+
+    /**
      * Test subject
      *
      * @var \App\Controller\Component\PasswordComponent
@@ -47,8 +72,9 @@ class PasswordComponentTest extends TestCase
      *
      * @return void
      */
-    public function testInitialization()
+    public function testSendReset()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $response = $this->Password->sendReset(1);
+        $this->assertTrue($response);
     }
 }
