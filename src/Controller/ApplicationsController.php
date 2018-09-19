@@ -453,6 +453,8 @@ class ApplicationsController extends AppController
             $application = $this->Applications->get($appID, [ 'contain' => 'Attendees' ]);
             if (is_null($osmEvent)) {
                 $osmEvent = $application->osm_event_id;
+            } else {
+            	$application->set('osm_event_id', $osmEvent);
             }
         }
 
@@ -465,8 +467,6 @@ class ApplicationsController extends AppController
             return $this->redirect([ 'controller' => 'Events', 'action' => 'book', $eventID ]);
         }
 
-        $appData = [];
-
         if ($application->isNew()) {
             $appData = [
                 'modification' => 0,
@@ -478,6 +478,13 @@ class ApplicationsController extends AppController
                     'user_id' => $user->id,
                 ],
             ];
+
+	        $application = $this->Applications->patchEntity($application, $appData, [
+		        'associated' => [
+			        'Invoices',
+			        'Attendees'
+		        ]
+	        ]);
         }
 
         /**
@@ -490,6 +497,11 @@ class ApplicationsController extends AppController
         $data = [];
         $this->loadComponent('Booking');
 
+        if ($this->request->is(['post', 'put'])) {
+        	$requestArray = $this->request->getData();
+        }
+        debug($requestArray);
+
 //      $application->set( 'attendees', [] );
 
         if (is_array($attendees)) {
@@ -499,9 +511,17 @@ class ApplicationsController extends AppController
                     $leaderPatrol = true;
                 }
 
+                if ($this->request->is(['post', 'put'])) {
+					$request_att = $requestArray['attendees'][$key];
+					debug($request_att);
+					$role_id = $request_att['role_id'];
+                } else {
+	                $role_id = $this->Booking->guessRole($attendee['dob'], $leaderPatrol);
+                }
+
                 $attendeeArr = [
                     'user_id'       => $user->id,
-                    'role_id'       => $this->Booking->guessRole($attendee['dob'], $leaderPatrol),
+                    'role_id'       => $role_id,
                     'firstname'     => $attendee['firstname'],
                     'lastname'      => $attendee['lastname'],
                     'osm_id'        => $attendee['scoutid'],
@@ -512,18 +532,16 @@ class ApplicationsController extends AppController
 
                 array_push($data, $attendeeArr);
             }
-
-            $appData = array_merge($appData, [ 'attendees' => $data ]);
         }
 
-        if ($this->request->is('get')) {
-            $application = $this->Applications->patchEntity($application, $appData, [
-                'associated' => [
-                    'Invoices',
-                    'Attendees'
-                ]
-            ]);
-        }
+	    $appData = [ 'attendees' => $data ];
+
+        $application = $this->Applications->patchEntity($application, $appData, [
+            'associated' => [
+                'Invoices',
+                'Attendees'
+            ]
+        ]);
 
         $attendeeCount = count($data);
 
@@ -553,10 +571,6 @@ class ApplicationsController extends AppController
             // Patch Data
             $rData = $this->request->getData();
 //          debug($rData);
-
-            foreach ($application->attendees as $idx => $attendee) {
-                $attendee->role_id = $rData[$idx]['role_id'];
-            }
 
             $fields = ['attendees' => ['role_id']];
 

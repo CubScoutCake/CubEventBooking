@@ -99,7 +99,9 @@ class EventsController extends AppController
 
         if ($checkArray['linked'] && $checkArray['sectionSet'] && $checkArray['termCurrent']) {
             $osmEvents = $this->ScoutManager->getEventList($this->Auth->user('id'));
-            $readyForSync = true;
+            if (count($osmEvents) != 0) {
+	            $readyForSync = true;
+            }
         }
 
         $attForm = new AttNumberForm();
