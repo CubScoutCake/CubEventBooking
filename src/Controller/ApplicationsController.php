@@ -500,7 +500,7 @@ class ApplicationsController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $requestArray = $this->request->getData();
         }
-        debug($requestArray);
+        //debug($requestArray);
 
 //      $application->set( 'attendees', [] );
 
