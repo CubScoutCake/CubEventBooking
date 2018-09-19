@@ -454,7 +454,7 @@ class ApplicationsController extends AppController
             if (is_null($osmEvent)) {
                 $osmEvent = $application->osm_event_id;
             } else {
-            	$application->set('osm_event_id', $osmEvent);
+                $application->set('osm_event_id', $osmEvent);
             }
         }
 
@@ -479,12 +479,12 @@ class ApplicationsController extends AppController
                 ],
             ];
 
-	        $application = $this->Applications->patchEntity($application, $appData, [
-		        'associated' => [
-			        'Invoices',
-			        'Attendees'
-		        ]
-	        ]);
+            $application = $this->Applications->patchEntity($application, $appData, [
+                'associated' => [
+                    'Invoices',
+                    'Attendees'
+                ]
+            ]);
         }
 
         /**
@@ -498,7 +498,7 @@ class ApplicationsController extends AppController
         $this->loadComponent('Booking');
 
         if ($this->request->is(['post', 'put'])) {
-        	$requestArray = $this->request->getData();
+            $requestArray = $this->request->getData();
         }
         debug($requestArray);
 
@@ -512,11 +512,11 @@ class ApplicationsController extends AppController
                 }
 
                 if ($this->request->is(['post', 'put'])) {
-					$request_att = $requestArray['attendees'][$key];
-					debug($request_att);
-					$role_id = $request_att['role_id'];
+                    $request_att = $requestArray['attendees'][$key];
+                    debug($request_att);
+                    $role_id = $request_att['role_id'];
                 } else {
-	                $role_id = $this->Booking->guessRole($attendee['dob'], $leaderPatrol);
+                    $role_id = $this->Booking->guessRole($attendee['dob'], $leaderPatrol);
                 }
 
                 $attendeeArr = [
@@ -534,7 +534,7 @@ class ApplicationsController extends AppController
             }
         }
 
-	    $appData = [ 'attendees' => $data ];
+        $appData = [ 'attendees' => $data ];
 
         $application = $this->Applications->patchEntity($application, $appData, [
             'associated' => [
