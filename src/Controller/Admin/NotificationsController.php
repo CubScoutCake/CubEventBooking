@@ -348,8 +348,8 @@ class NotificationsController extends AppController
             $notes = TableRegistry::get('Notes');
 
             $invoice = $invoices->get($invoiceId);
-            $user = $users->get($invoice->user_id);
-            $group = $groups->get($user->scoutgroup_id);
+            $user = $users->get($invoice->user_id, ['contain' => 'Sections']);
+            $group = $groups->get($user->section->scoutgroup_id);
             $app = $applications->get($invoice->application_id);
 
             $invoiceData = [ 'link_id' => $invoice->id,
