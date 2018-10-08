@@ -1,6 +1,13 @@
+<?php
+
+/**
+ * @var \App\Model\Entity\Invoice $invoice
+ */
+
+?>
 <div class="row">
     <div class="col-lg-12 col-md-12">
-        <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
+        <h1 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
 </div>
 
@@ -8,16 +15,26 @@
     <div class="col-lg-12 col-md-12">
         <div class="panel panel-warning">
             <div class="panel-body">
-                <span><strong><?= __('User') ?>:</strong> <?= $invoice->has('user') ? $invoice->user->full_name : '' ?></span>
-                </br>
-                <span><strong><?= __('Application') ?>:</strong> <?= $invoice->has('application') ? $invoice->application->display_code : '' ?></span>
-                </br>
-                <span><strong><?= __('Date Created') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YYYY HH:mm')) ?></span>
-                </br>
-                <span><strong><?= __('Date Last Modified') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->modified,'dd-MMM-YYYY HH:mm')) ?></span>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <span><strong><?= __('Application') ?>:</strong> <?= $invoice->has('application') ? $invoice->application->display_code : '' ?></span>
+                        <br/>
+                        <span><strong><?= __('Event') ?>:</strong> <?= h($invoice->application->event->full_name) ?></span>
+                        <br/>
+                        <span><strong><?= __('Date Created') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YYYY HH:mm')) ?></span>
+                        <br/>
+                        <span><strong><?= __('User') ?>:</strong> <?= $invoice->has('user') ? $invoice->user->full_name : '' ?></span>
+                        <br/>
+                        <span><strong><?= __('Section') ?>:</strong> <?= $invoice->application->has('section') ? $this->Text->truncate($invoice->application->section->section,30) : '' ?></span>
+                        <br/>
+                        <span><strong><?= __('Scout Group') ?>:</strong> <?= $invoice->application->has('section') ? $this->Text->truncate($invoice->application->section->scoutgroup->scoutgroup,30) : '' ?></span>
+                        <br/>
+                        <span><strong><?= __('District') ?>:</strong> <?= $invoice->application->has('section') ? $this->Text->truncate($invoice->application->section->scoutgroup->district->district,30) : '' ?></span>
+                    </div>
+                </div>
             </div>
             <div class="panel-footer">
-                <p>Deposits for invoices should be made payable to <strong><?= h($invPayable) ?></strong> and sent to <strong><?= h($eventName) ?>, <?= h($invAddress) ?>, <?= h($invCity) ?>, <?= h($invPostcode) ?></strong> by <strong><?= $this->Time->i18nformat($invDeadline,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invPrefix) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
+                <p>Deposits for invoices should be made payable to <strong><?= h($invoice->application->event->event_type->payable->text) ?></strong> and sent to <strong><?= h($invoice->application->event->name) ?>, C/O: <?= h($invoice->application->event->admin_firstname) ?> <?= h($invoice->application->event->admin_lastname) ?>, <?= h($invoice->application->event->address) ?>, <?= h($invoice->application->event->city) ?>, <?= h($invoice->application->event->postcode) ?></strong> by <strong><?= $this->Time->i18nformat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?></strong>.<br/><br/>Please write <strong><?= h($invoice->application->event->event_type->invoice_text->text) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
             </div>
         </div>
     </div>
@@ -29,59 +46,20 @@
                 <i class="fa fa-files-o fa-fw"></i> Balance
             </div>
             <div class="panel-body">
-                <table class="table table-condensed">  
+                <table class="table table-condensed">
                     <tr>
                         <th><?= __('Initial Value') ?></th>
                         <th><?= __('Payments Recieved') ?></th>
                         <th><?= __('Balance') ?></th>          
                     </tr>
                     <tr>
-                        <td><span><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></span></td>
-                        <td><span></span><?= $this->Number->currency($invoice->value,'GBP') ?></span></td>
-                        <td><span><?= $this->Number->currency($invoice->balance,'GBP') ?></span></td>
+                        <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+                        <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
+                        <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
                     </tr>
                 </table>
             </div>
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-12">
-        <?php if (!empty($invoice->payments)): ?>
-            <div class="panel panel-warning">
-                <div class="panel-heading">
-                    <i class="fa fa-gbp fa-fw"></i> Payments Recieved
-                </div>
-                <!-- /.panel-heading -->
-                <div class="panel-body">
-                    <table class="table table-condensed">
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Value') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Paid') ?></th>
-                            <th><?= __('Name on Cheque') ?></th>
-                        </tr>
-                        <?php foreach ($invoice->payments as $payments): ?>
-                            <tr>
-                                <td><span><?= h($payments->id) ?></span></td>
-                                <td><span><?= $this->Number->currency($payments->value,'GBP') ?></span></td>
-                                <td><span><?= $this->Time->i18nformat($payments->created,'dd-MMM-yy') ?></span></td>
-                                <td><span><?= $this->Time->i18nformat($payments->paid,'dd-MMM-yy') ?></span></td>
-                                <td><span><?= $this->Text->wrap($payments->name_on_cheque,20); ?></span></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-            </div>
-        <?php endif; ?>
-        <?php if (empty($invoice->payments)): ?>
-            <div class="panel panel-warning">
-                <div class="panel-heading">
-                    <i class="fa fa-gbp fa-fw"></i> Payments received will be listed here.
-                </div>
-            </div>
-        <?php endif; ?>
     </div>
 </div>
 <?php if (!empty($invoice->invoice_items)): ?>
@@ -101,10 +79,10 @@
                     </tr>
                     <?php foreach ($invoice->invoice_items as $invoiceItems): ?>
                     <tr>
-                        <td><span><?= h($invoiceItems->description) ?></span></td>
-                        <td><span><?= h($invoiceItems->quantity) ?></span></td>
-                        <td><span><?= h($this->number->currency($invoiceItems->value,'GBP')) ?></span></td>
-                        <td><span><?= h($this->number->currency($invoiceItems->quantity_price,'GBP')) ?></span></td>
+                        <td><?= h($invoiceItems->description) ?></td>
+                        <td><?= h($invoiceItems->quantity) ?></td>
+                        <td><?= h($this->number->currency($invoiceItems->value,'GBP')) ?></td>
+                        <td><?= h($this->number->currency($invoiceItems->quantity_price,'GBP')) ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </table>
@@ -113,3 +91,40 @@
     </div>
 </div>
 <?php endif; ?>
+<div class="row">
+    <div class="col-lg-12">
+        <?php if (!empty($invoice->payments)): ?>
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <i class="fa fa-gbp fa-fw"></i> Payments Recieved
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <table class="table table-condensed">
+                        <tr>
+                            <th><?= __('ID') ?></th>
+                            <th><?= __('Value') ?></th>
+                            <th><?= __('Paid') ?></th>
+                            <th><?= __('Name on Cheque') ?></th>
+                        </tr>
+                        <?php foreach ($invoice->payments as $payments): ?>
+                            <tr>
+                                <td><?= h($payments->id) ?></td>
+                                <td><?= $this->Number->currency($payments->value,'GBP') ?></td>
+                                <td><?= $this->Time->i18nformat($payments->paid,'dd-MMM-yy') ?></td>
+                                <td><?= $this->Text->wrap($payments->name_on_cheque,20); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php if (empty($invoice->payments)): ?>
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <i class="fa fa-gbp fa-fw"></i> Payments received will be listed here.
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

@@ -23,9 +23,6 @@
                         <br/>
                         <span><strong><?= __('Date Created') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YYYY HH:mm')) ?></span>
                         <br/>
-                        <span><strong><?= __('Date Last Modified') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->modified,'dd-MMM-YYYY HH:mm')) ?></span>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <span><strong><?= __('User') ?>:</strong> <?= $invoice->has('user') ? $invoice->user->full_name : '' ?></span>
                         <br/>
                         <span><strong><?= __('Section') ?>:</strong> <?= $invoice->application->has('section') ? $this->Text->truncate($invoice->application->section->section,30) : '' ?></span>
@@ -37,7 +34,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <p>Deposits for invoices should be made payable to <strong><?= h($invoice->application->event->event_type->payable->text) ?></strong> and sent to <strong><?= h($invoice->application->event->name) ?>, C/O: <?= h($invoice->application->event->admin_firstname) ?> <?= h($invoice->application->event->admin_lastname) ?>, <?= h($invoice->application->event->address) ?>, <?= h($invoice->application->event->city) ?>, <?= h($invoice->application->event->postcode) ?></strong> by <strong><?= $this->Time->i18nformat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invoice->application->event->event_type->invoice_text->text) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
+                <p>Deposits for invoices should be made payable to <strong><?= h($invoice->application->event->event_type->payable->text) ?></strong> and sent to <strong><?= h($invoice->application->event->name) ?>, C/O: <?= h($invoice->application->event->admin_firstname) ?> <?= h($invoice->application->event->admin_lastname) ?>, <?= h($invoice->application->event->address) ?>, <?= h($invoice->application->event->city) ?>, <?= h($invoice->application->event->postcode) ?></strong> by <strong><?= $this->Time->i18nformat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?></strong>.<br/><br/>Please write <strong><?= h($invoice->application->event->event_type->invoice_text->text) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
             </div>
         </div>
     </div>
@@ -105,9 +102,8 @@
                 <div class="panel-body">
                     <table class="table table-condensed">
                         <tr>
-                            <th><?= __('Id') ?></th>
+                            <th><?= __('ID') ?></th>
                             <th><?= __('Value') ?></th>
-                            <th><?= __('Created') ?></th>
                             <th><?= __('Paid') ?></th>
                             <th><?= __('Name on Cheque') ?></th>
                         </tr>
@@ -115,7 +111,6 @@
                             <tr>
                                 <td><?= h($payments->id) ?></td>
                                 <td><?= $this->Number->currency($payments->value,'GBP') ?></td>
-                                <td><?= $this->Time->i18nformat($payments->created,'dd-MMM-yy') ?></td>
                                 <td><?= $this->Time->i18nformat($payments->paid,'dd-MMM-yy') ?></td>
                                 <td><?= $this->Text->wrap($payments->name_on_cheque,20); ?></td>
                             </tr>
