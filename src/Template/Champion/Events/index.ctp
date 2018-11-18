@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-calendar fa-fw"></i> Upcoming Events</h3>
+        <h3><i class="fal fa-calendar fa-fw"></i> Upcoming Events</h3>
         <div class="table-responsive">   
             <table class="table table-hover">
                 <thead>
@@ -20,7 +20,7 @@
                         <td class="actions">
                             <div class="dropdown btn-group">
                                 <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                    <i class="fal fa-cog"></i>  <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu " role="menu">
                                     <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>

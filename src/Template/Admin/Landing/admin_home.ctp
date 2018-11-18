@@ -19,7 +19,7 @@
 ?>
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header"><i class='fa fa-rocket fa-fw'></i> Admin Home</h1>
+        <h1 class="page-header"><i class='fal fa-rocket fa-fw'></i> Admin Home</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>   
@@ -30,7 +30,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-user fa-5x"></i>
+                        <i class="fal fa-user-circle fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntUsers); ?></div>
@@ -44,7 +44,7 @@
                 'prefix' => 'admin'],['_full']); ?>">
                 <div class="panel-footer">
                     <span class="pull-left">View All Users</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -55,7 +55,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-tasks fa-5x"></i>
+                        <i class="fal fa-clipboard-list fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntApplications); ?></div>
@@ -69,7 +69,7 @@
             	'prefix' => 'admin'],['_full']); ?>">
             	<div class='panel-footer'>
                     <span class='pull-left'>View All Applications</span>
-                    <span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+                    <span class='pull-right'><i class='fal fa-arrow-circle-right'></i></span>
                     <div class='clearfix'></div>
                 </div>
             </a>
@@ -80,7 +80,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-calendar-o fa-5x"></i>
+                        <i class="fal fa-calendar-star fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntEvents); ?></div>
@@ -94,7 +94,7 @@
                 'prefix' => 'admin'],['_full']); ?>">
                 <div class='panel-footer'>
                     <span class='pull-left'>View All Events</span>
-                    <span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+                    <span class='pull-right'><i class='fal fa-arrow-circle-right'></i></span>
                     <div class='clearfix'></div>
                 </div>
             </a>
@@ -106,7 +106,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-files-o fa-5x"></i>
+                        <i class="fal fa-file-invoice-dollar fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntInvoices); ?></div>
@@ -120,7 +120,7 @@
             	'prefix' => 'admin'],['_full']); ?>">
                 <div class="panel-footer">
                     <span class="pull-left">View All Invoices</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -131,7 +131,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-gbp fa-5x"></i>
+                        <i class="fal fa-receipt fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntPayments); ?></div>
@@ -145,7 +145,7 @@
             	'prefix' => 'admin'],['_full']); ?>">
                 <div class="panel-footer">
                     <span class="pull-left">View All Payments</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -156,7 +156,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-group fa-5x"></i>
+                        <i class="fal fa-poll-people fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntAttendees); ?></div>
@@ -170,7 +170,7 @@
                 'prefix' => 'admin'],['_full']); ?>">
                 <div class='panel-footer'>
                     <span class='pull-left'>View All Attendees</span>
-                    <span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+                    <span class='pull-right'><i class='fal fa-arrow-circle-right'></i></span>
                     <div class='clearfix'></div>
                 </div>
             </a>
@@ -212,32 +212,32 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-history fa-fw"></i> Recent Items
+                <i class="fal fa-history fa-fw"></i> Recent Items
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills">
                     <li class="active">
-                        <a href="#user-pills" data-toggle="tab"><i class="fa fa-user fa-fw"></i> Recent Users</a>
+                        <a href="#user-pills" data-toggle="tab"><i class="fal fa-user-circle fa-fw"></i> Recent Users</a>
                     </li>
                     <li>
-                        <a href="#appl-pills" data-toggle="tab"><i class="fa fa-tasks fa-fw"></i> Recent Applications</a>
+                        <a href="#appl-pills" data-toggle="tab"><i class="fal fa-clipboard-list fa-fw"></i> Recent Applications</a>
                     </li>
                     <li>
-                        <a href="#even-pills" data-toggle="tab"><i class="fa fa-calendar-o fa-fw"></i> Upcoming Events</a>
+                        <a href="#even-pills" data-toggle="tab"><i class="fal fa-calendar-star fa-fw"></i> Upcoming Events</a>
                     </li>
                     <li>
-                        <a href="#invo-pills" data-toggle="tab"><i class="fa fa-files-o fa-fw"></i> Recent Invoices</a>
+                        <a href="#invo-pills" data-toggle="tab"><i class="fal fa-file-invoice-dollar fa-fw"></i> Recent Invoices</a>
                     </li>
                     <li>
-                        <a href="#paym-pills" data-toggle="tab"><i class="fa fa-gbp fa-fw"></i> Recent Payments</a>
+                        <a href="#paym-pills" data-toggle="tab"><i class="fal fa-receipt fa-fw"></i> Recent Payments</a>
                     </li>
                     <li>
-                        <a href="#note-pills" data-toggle="tab"><i class="fa fa-pencil-square-o fa-fw"></i> Recent Notes</a>
+                        <a href="#note-pills" data-toggle="tab"><i class="fal fa-edit fa-fw"></i> Recent Notes</a>
                     </li>
                     <li>
-                        <a href="#notif-pills" data-toggle="tab"><i class="fa fa-bell fa-fw"></i> Recent Notifications</a>
+                        <a href="#notif-pills" data-toggle="tab"><i class="fal fa-bell fa-fw"></i> Recent Notifications</a>
                     </li>
                 </ul>
 
@@ -262,7 +262,7 @@
                                         <tr>
                                             <td><?= h($this->Text->truncate($user->full_name,18)) ?></td>
                                             <td class="actions">
-                                                <?= $this->Html->link('', ['controller' => 'Users', 'action' => 'view', $user->id], ['title' => __('View'), 'class' => 'btn btn-primary fa fa-eye']) ?>
+                                                <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Users', 'action' => 'view', $user->id], ['title' => __('View'), 'class' => 'btn btn-primary btn-sm', 'escape' => false]) ?>
                                             </td>
                                             <td><?= $user->section->has('scoutgroup') ? $this->Html->link($this->Text->truncate($user->section->scoutgroup->scoutgroup,30), ['controller' => 'Scoutgroups', 'action' => 'view', $user->section->scoutgroup->id]) : '' ?></td>
                                             <td><?= $user->section->scoutgroup->has('district') ? $this->Html->link($user->section->scoutgroup->district->short_name, ['controller' => 'Districts', 'action' => 'view', $user->section->scoutgroup->district->id]) : '' ?></td>
@@ -295,7 +295,7 @@
                                         <tr>
                                             <td><?= h($application->display_code) ?></td>
                                             <td class="actions">
-                                                <?= $this->Html->link('', ['controller' => 'Applications', 'action' => 'view', $application->id], ['title' => __('View'), 'class' => 'btn btn-success fa fa-eye']) ?>
+                                                <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Applications', 'action' => 'view', $application->id], ['title' => __('View'), 'class' => 'btn btn-success', 'escape' => false]) ?>
                                             </td>
                                             <td><?= $application->has('user') ? $this->Html->link($this->Text->truncate($application->user->full_name,30), ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></td>
                                             <td><?= $application->has('section') ? $this->Html->link($this->Text->truncate($application->section->section,30), ['controller' => 'Sections', 'action' => 'view', $application->section->id]) : '' ?></td>
@@ -326,7 +326,7 @@
                                     <tr>
                                         <td><?= h($event->name) ?></td>
                                         <td class="actions">
-                                            <?= $this->Html->link('', ['controller' => 'Events', 'action' => 'view', $event->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
+                                            <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Events', 'action' => 'view', $event->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                         </td>
                                         <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
                                         <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
@@ -358,7 +358,7 @@
                                         <tr>
                                             <td>Invoice #<?= $this->Number->format($invoice->id) ?></td>
                                             <td class="actions">
-                                                <?= $this->Html->link('', ['controller' => 'Invoices', 'action' => 'view', $invoice->id], ['title' => __('View'), 'class' => 'btn btn-warning fa fa-eye']) ?>
+                                                <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Invoices', 'action' => 'view', $invoice->id], ['title' => __('View'), 'class' => 'btn btn-warning btn-sm', 'escape' => false]) ?>
                                             </td>
                                             <td><?= $invoice->has('user') ? $this->Html->link($this->Text->truncate($invoice->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></td>
                                             <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
@@ -389,7 +389,7 @@
                                         <tr>
                                             <td><?= $this->Number->format($payment->id) ?></td>
                                             <td class="actions">
-                                                <?= $this->Html->link('', ['controller' => 'Payments', 'action' => 'view', $payment->id], ['title' => __('View'), 'class' => 'btn btn-danger fa fa-eye']) ?>
+                                                <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Payments', 'action' => 'view', $payment->id], ['title' => __('View'), 'class' => 'btn btn-danger btn-sm', 'escape' => false]) ?>
                                             </td>
                                             <td><?= $this->Number->currency($payment->value,'GBP') ?></td>
                                             <td><?= $this->Time->i18nformat($payment->created,'dd-MMM-yy HH:mm') ?></td>
@@ -419,7 +419,7 @@
                                         <tr>
                                             <td><?= h($note->id) ?></td>
                                             <td class="actions">
-                                                <?= $this->Html->link('', ['controller' => 'Notes', 'action' => 'view', $note->id], ['title' => __('View'), 'class' => 'btn btn-success fa fa-eye']) ?>
+                                                <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Notes', 'action' => 'view', $note->id], ['title' => __('View'), 'class' => 'btn btn-success btn-sm', 'escape' => false]) ?>
                                             </td>
                                             <td><?= $this->Text->truncate($note->note_text,50) ?></td>
                                             <td><?= $note->has('user') ? $this->Html->link($this->Text->truncate($note->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $note->user->id]) : '' ?></td>
@@ -451,10 +451,10 @@
                                         <tr>
                                             <td><?= $this->Number->format($notification->id) ?></td>
                                             <td class="actions">
-                                                <?= $this->Html->link('', ['controller' => 'Notifications', 'action' => 'view', $notification->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
+                                                <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Notifications', 'action' => 'view', $notification->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                             </td>
                                             <td><?= $notification->has('user') ? $this->Html->link($this->Text->truncate($notification->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $notification->user->id]) : '' ?></td>
-                                            <td><i class="fa <?= $notification->has('notification_type') ? $notification->notification_type->icon : '' ?> fa-fw fa-2x"></i></td>
+                                            <td><i class="fal <?= $notification->has('notification_type') ? $notification->notification_type->icon : '' ?> fa-fw fa-2x"></i></td>
                                             <td><?= h($notification->notification_source) ?></td>
                                             <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
                                             <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-yy HH:mm') ?></td>

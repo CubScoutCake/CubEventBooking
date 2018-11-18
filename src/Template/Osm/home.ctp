@@ -3,7 +3,7 @@
         <?= $this->Html->image('Logos/osmlogo.png', ['alt' => 'CakePHP', 'class' => 'img-responsive']); ?>
     </div>
     <div class="col-lg-11 col-md-10">
-        <h1 class="page-header"><i class="fa fa-refresh fa-fw"></i> Online Scout Manager Sync</h1>
+        <h1 class="page-header"><i class="fal fa-sync fa-fw"></i> Online Scout Manager Sync</h1>
     </div>
 </div>
 <div class="row">
@@ -12,7 +12,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-<?= $linked ? 'link' : 'chain-broken' ; ?> fa-5x"></i>
+                        <i class="fal fa-<?= $linked ? 'link' : 'chain-broken' ; ?> fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $linked ? 'Yes' : 'No' ; ?></div>
@@ -26,7 +26,7 @@
                 'prefix' => false],['_full']); ?>">
                 <div class='panel-footer'>
                     <span class='pull-left'>Link Your Account</span>
-                    <span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+                    <span class='pull-right'><i class='fal fa-arrow-circle-right'></i></span>
                     <div class='clearfix'></div>
                 </div>
             </a>
@@ -37,7 +37,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-<?= $sectionSet ? 'paw' : 'question' ; ?> fa-5x"></i>
+                        <i class="fal fa-<?= $sectionSet ? 'paw' : 'question' ; ?> fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $sectionSet ? 'Yes' : 'No' ; ?></div>
@@ -51,7 +51,7 @@
                 'prefix' => false],['_full']); ?>">
                 <div class="panel-footer">
                     <span class="pull-left">Choose Your Section</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -62,7 +62,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa <?= $termCurrent ? 'fa-calendar-check-o' : 'fa-calendar-times-o' ; ?> fa-5x"></i>
+                        <i class="fal <?= $termCurrent ? 'fa-calendar-check' : 'fa-calendar-times' ; ?> fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $termCurrent ? 'Yes' : 'No' ; ?></div>
@@ -76,7 +76,7 @@
                 'prefix' => false],['_full']); ?>">
                 <div class="panel-footer">
                     <span class="pull-left">Set The Current Term</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -87,7 +87,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-refresh fa-5x"></i>
+                        <i class="fal fa-sync fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?/*= $this->Number->format($synced); */?></div>
@@ -101,7 +101,7 @@
                 'prefix' => false],['_full']); */?>">
                 <div class="panel-footer">
                     <span class="pull-left">Sync Your Attendees with OSM</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -120,7 +120,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <i class="fa fa-unlock fa-fw"></i> Step 1
+                                <i class="fal fa-unlock fa-fw"></i> Step 1
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
@@ -134,7 +134,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <i class="fa fa-unlock fa-fw"></i> Step 2
+                                <i class="fal fa-unlock fa-fw"></i> Step 2
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
@@ -148,7 +148,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <i class="fa fa-unlock fa-fw"></i> Step 3
+                                <i class="fal fa-unlock fa-fw"></i> Step 3
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
@@ -162,7 +162,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <i class="fa fa-unlock fa-fw"></i> Step 4
+                                <i class="fal fa-unlock fa-fw"></i> Step 4
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">

@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-lg-9 col-md-8">
-        <h1 class="page-header"><i class="fa fa-user fa-fw"></i> <?= h($user->full_name); ?></h1>
+        <h1 class="page-header"><i class="fal fa-user-circle fa-fw"></i> <?= h($user->full_name); ?></h1>
     </div>
     <div class="col-lg-1 col-md-2">
         </br>
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-envelope-o fa-fw"></i>
+                    <i class="fal fa-envelope-o fa-fw"></i>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
@@ -56,7 +56,7 @@
     <div class="col-lg-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-key fa-fw"></i> Key Info
+                <i class="fal fa-key fa-fw"></i> Key Info
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -96,7 +96,7 @@
     <div class="col-lg-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-envelope fa-fw"></i> Contact Info
+                <i class="fal fa-envelope fa-fw"></i> Contact Info
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -121,28 +121,28 @@
     <div class="col-lg-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-level-down fa-fw"></i> Related Items
+                <i class="fal fa-level-down fa-fw"></i> Related Items
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills">
                     <?php if (!empty($user->applications)): ?>
-                        <li <?php if (!empty($user->applications)) { echo 'class="active"'; } ?>><a href="#appl-pills" data-toggle="tab"><i class="fa fa-tasks fa-fw"></i> User's Applications</a></li>
+                        <li <?php if (!empty($user->applications)) { echo 'class="active"'; } ?>><a href="#appl-pills" data-toggle="tab"><i class="fal fa-clipboard-list fa-fw"></i> User's Applications</a></li>
                     <?php endif; ?>
                     <?php if (!empty($user->invoices)): ?>
-                        <li><a href="#invo-pills" data-toggle="tab"><i class="fa fa-files-o fa-fw"></i> Users's Invoices</a></li>
+                        <li><a href="#invo-pills" data-toggle="tab"><i class="fal fa-file-invoice-dollar fa-fw"></i> Users's Invoices</a></li>
                     <?php endif; ?>
                     <?php if (!empty($user->attendees)): ?>
                         <li <?php if (empty($user->applications)) { echo 'class="active"'; } ?>>
-                            <a href="#att-pills" data-toggle="tab"><i class="fa fa-group fa-fw"></i> User's Attendees</a>
+                            <a href="#att-pills" data-toggle="tab"><i class="fal fa-poll-people fa-fw"></i> User's Attendees</a>
                         </li>
                     <?php endif; ?>
                     <?php if (!empty($user->notes)): ?>
-                        <li><a href="#note-pills" data-toggle="tab"><i class="fa fa-pencil-square-o fa-fw"></i> User Notes</a></li>
+                        <li><a href="#note-pills" data-toggle="tab"><i class="fal fa-edit fa-fw"></i> User Notes</a></li>
                     <?php endif; ?>
                     <?php if (!empty($user->notifications)): ?>
-                        <li><a href="#notif-pills" data-toggle="tab"><i class="fa fa-bell fa-fw"></i> User's Notifications</a></li>
+                        <li><a href="#notif-pills" data-toggle="tab"><i class="fal fa-bell fa-fw"></i> User's Notifications</a></li>
                     <?php endif; ?>
                 </ul>
 
@@ -155,8 +155,9 @@
                                     <tr>
                                         <th><?= __('Id') ?></th>
                                         <th class="actions"><?= __('Actions') ?></th>
-                                        <th><?= __('Scoutgroup') ?></th>
                                         <th><?= __('Event') ?></th>
+                                        <th><?= __('District') ?></th>
+                                        <th><?= __('Scout Group') ?></th>
                                         <th><?= __('Section') ?></th>
                                         <th><?= __('Permitholder') ?></th>
                                         <th><?= __('Created') ?></th>
@@ -170,7 +171,7 @@
                                             <td class="actions">
                                                 <div class="dropdown btn-group">
                                                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu " role="menu">
                                                         <li><?= $this->Html->link(__('View'), ['prefix' => 'admin', 'controller' => 'Applications', 'action' => 'view', $applications->id]) ?></li>
@@ -181,9 +182,10 @@
                                                     </ul>
                                                 </div>
                                             </td>
-                                            <td><?= $applications->has('scoutgroup') ? $this->Html->link($this->Text->truncate($applications->scoutgroup->scoutgroup,18), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $applications->scoutgroup->id]) : '' ?></td>
                                             <td><?= $applications->has('event') ? $this->Html->link($this->Text->truncate($applications->event->name,18), ['prefix' => 'admin', 'controller' => 'Events', 'action' => 'view', $applications->event->id]) : '' ?></td>
-                                            <td><?= h($applications->section) ?></td>
+                                            <td><?= $applications->has('section') ? $this->Html->link($applications->section->scoutgroup->district->short_name, ['prefix' => 'admin', 'controller' => 'Districts', 'action' => 'view', $applications->section->scoutgroup->district->id]) : '' ?></td>
+                                            <td><?= $applications->has('section') ? $this->Html->link($this->Text->truncate($applications->section->scoutgroup->scoutgroup,18), ['prefix' => 'admin', 'controller' => 'Scoutgroups', 'action' => 'view', $applications->section->scoutgroup->id]) : '' ?></td>
+                                            <td><?= $applications->has('section') ? $this->Html->link($this->Text->truncate($applications->section->section,18), ['prefix' => 'admin', 'controller' => 'Sections', 'action' => 'view', $applications->section->id]) : '' ?></td>
                                             <td><?= h($applications->permitholder) ?></td>
                                             <td><?= h($applications->created) ?></td>
                                             <td><?= h($applications->modified) ?></td>
@@ -215,7 +217,7 @@
                                                 <td class="actions">
                                                     <div class="dropdown btn-group">
                                                         <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                            <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
                                                             <li><?= $this->Html->link(__('View'), ['prefix' => 'admin', 'controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?></li>
@@ -263,7 +265,7 @@
                                                 <td class="actions">
                                                     <div class="dropdown btn-group">
                                                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                            <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
                                                             <li><?= $this->Html->link(__('View'), ['prefix' => 'admin', 'controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
@@ -309,7 +311,7 @@
                                                 <td class="actions">
                                                     <div class="dropdown btn-group">
                                                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                            <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
                                                             <li><?= $this->Html->link(__('View'), ['prefix' => 'admin', 'controller' => 'Notes', 'action' => 'view', $notes->id]) ?></li>
@@ -351,7 +353,7 @@
                                                 <td class="actions">
                                                     <div class="dropdown btn-group">
                                                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                            <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
                                                             <li><?= $this->Html->link(__('View Notification'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'view', $notification->id]) ?></li>

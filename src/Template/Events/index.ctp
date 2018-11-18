@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-calendar-o fa-fw"></i> Upcoming Events</h3>
+        <h3><i class="fal fa-calendar-star fa-fw"></i> Upcoming Events</h3>
         <div class="table-responsive">   
             <table class="table table-hover">
                 <thead>

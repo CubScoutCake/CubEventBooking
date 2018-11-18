@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-10 col-md-10">
-        <h1 class="page-header"><i class="fa fa-group fa-fw"></i> Attendee Information</h1>
+        <h1 class="page-header"><i class="fal fa-poll-people fa-fw"></i> Attendee Information</h1>
     </div>
     <div class="col-lg-2 col-md-2">
         </br>
@@ -24,7 +24,7 @@
     <div class="col-lg-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-key fa-fw"></i> Key Info
+                <i class="fal fa-key fa-fw"></i> Key Info
             </div>
             <div class="panel-body">
                 <h5 class="subheader"><?= __('Full Name') ?></h5>
@@ -60,7 +60,7 @@
     <div class="col-lg-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-envelope fa-fw"></i> Contact Info
+                <i class="fal fa-envelope fa-fw"></i> Contact Info
             </div>
             <div class="panel-body">                
                 <h5 class="subheader"><?= __('Address') ?></h5>
@@ -80,7 +80,7 @@
         <?php if (!empty($attendee->allergies)): ?>
             <div class="panel panel-red">
                 <div class="panel-heading">
-                    <i class="fa fa-exclamation fa-fw"></i> Listed Allergies
+                    <i class="fal fa-allergies fa-fw"></i> Listed Allergies
                 </div>
                 <div class="panel-body">                
                     <div class="table-responsive">
@@ -111,7 +111,7 @@
         <div class="col-lg-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="fa fa-tasks fa-fw"></i> Applications Attendee is On
+                    <i class="fal fa-clipboard-list fa-fw"></i> Applications Attendee is On
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -135,7 +135,7 @@
                                         <td class="actions">
                                             <div class="dropdown btn-group">
                                                 <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                    <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu " role="menu">
                                                     <li><?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $applications->id]) ?></li>

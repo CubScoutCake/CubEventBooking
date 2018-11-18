@@ -80,7 +80,7 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => ['Roles'
                 , 'Sections.Scoutgroups'
-                , 'Applications' => ['Sections.Scoutgroups', 'Events']
+                , 'Applications' => ['Sections.Scoutgroups.Districts', 'Events']
                 , 'Attendees' => ['Sections.Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']]
                 , 'Invoices.Applications.Events'
                 , 'AuthRoles'

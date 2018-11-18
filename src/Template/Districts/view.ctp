@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-10 col-md-10">
-        <h1 class="page-header"><i class="fa fa-sitemap fa-fw"></i> <?= h($district->district); ?></h1>
+        <h1 class="page-header"><i class="fal fa-sitemap fa-fw"></i> <?= h($district->district); ?></h1>
     </div>
     <div class="col-lg-2 col-md-2">
         </br>
@@ -28,7 +28,7 @@
     <div class="col-lg-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-key fa-fw"></i> District Info
+                <i class="fal fa-key fa-fw"></i> District Info
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -49,7 +49,7 @@
     <div class="col-lg-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-level-down fa-fw"></i> Related Items
+                <i class="fal fa-level-down fa-fw"></i> Related Items
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -57,11 +57,11 @@
                 <ul class="nav nav-pills">
                     <?php if (!empty($district->champions)): ?>
                     <li class="active">
-                        <a href="#champ-pills" data-toggle="tab"><i class="fa fa-life-ring fa-fw"></i> Champions</a>
+                        <a href="#champ-pills" data-toggle="tab"><i class="fal fa-life-ring fa-fw"></i> Champions</a>
                     </li>
                     <?php endif; ?>
                     <?php if (!empty($district->scoutgroups)): ?>
-                        <li><a href="#grp-pills" data-toggle="tab"><i class="fa fa-paw fa-fw"></i> Scout Groups</a></li>
+                        <li><a href="#grp-pills" data-toggle="tab"><i class="fal fa-paw fa-fw"></i> Scout Groups</a></li>
                     <?php endif; ?>
                 </ul>
 
@@ -86,7 +86,7 @@
                                                 <td class="actions">
                                                     <div class="dropdown btn-group">
                                                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                            <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
                                                             <li><?= $this->Html->link(__('View'), ['controller' => 'Champions', 'action' => 'view', $champions->id]) ?></li>
@@ -120,7 +120,7 @@
                                                 <td class="actions">
                                                     <div class="dropdown btn-group">
                                                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                            <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
                                                             <li><?= $this->Html->link(__('View'), ['controller' => 'Scoutgroups', 'action' => 'view', $scoutgroups->id]) ?></li>

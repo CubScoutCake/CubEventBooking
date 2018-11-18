@@ -1,7 +1,7 @@
 <?php echo $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css'); ?>
 <div class="row">
     <div class="col-lg-11 col-md-10">
-        <h1 class="page-header"><i class="fa fa-calendar-o fa-fw"></i> <?= h($event->name) ?></h1>
+        <h1 class="page-header"><i class="fal fa-calendar-star fa-fw"></i> <?= h($event->name) ?></h1>
     </div>
     <div class="col-lg-1 col-md-2">
         <div class="pull-right pull-down">
@@ -23,7 +23,7 @@
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-key fa-fw"></i> Key Event Information
+                <i class="fal fa-key fa-fw"></i> Key Event Information
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -78,7 +78,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-thermometer-half fa-5x"></i>
+                                    <i class="fal fa-thermometer-half fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="large"><?= $this->Number->format($event->cc_apps) ?> <?= h($term) ?> of <?= $this->Number->format($event->max_apps) ?> Available</div>
@@ -110,7 +110,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-thermometer-half fa-5x"></i>
+                                    <i class="fal fa-thermometer-half fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div>Event Availability</div>
@@ -148,7 +148,7 @@
         <div class="col-lg-6 col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-envelope-o fa-fw"></i> Event Organiser Contact
+                    <i class="fal fa-envelope-o fa-fw"></i> Event Organiser Contact
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -180,7 +180,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-gbp fa-fw"></i> Prices
+                <i class="fal fa-receipt fa-fw"></i> Prices
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -208,7 +208,7 @@
                     </div>
 				<?php endif; ?>
 				<?php if (empty($event->prices)): ?>
-                    <h2><i class="fa fa-exclamation-triangle fa-3x"></i> There are no prices set.</h2>
+                    <h2><i class="fal fa-calendar-exclamation fa-3x"></i> There are no prices set.</h2>
 				<?php endif; ?>
             </div>
             <?php if ($event->deposit || $event->has('discount')) : ?>

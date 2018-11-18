@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header"><i class='fa fa-ravelry fa-fw'></i> SuperUser Home</h1>
+        <h1 class="page-header"><i class='fab fa-ravelry fa-fw'></i> SuperUser Home</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>   
@@ -11,7 +11,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-user fa-5x"></i>
+                        <i class="fal fa-user-circle fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntUsers); ?></div>
@@ -25,7 +25,7 @@
                 'prefix' => 'admin'],['_full']); ?>">
                 <div class="panel-footer">
                     <span class="pull-left">View All Users</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -36,7 +36,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-tasks fa-5x"></i>
+                        <i class="fal fa-clipboard-list fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntApplications); ?></div>
@@ -50,7 +50,7 @@
             	'prefix' => 'admin'],['_full']); ?>">
             	<div class='panel-footer'>
                     <span class='pull-left'>View All Applications</span>
-                    <span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+                    <span class='pull-right'><i class='fal fa-arrow-circle-right'></i></span>
                     <div class='clearfix'></div>
                 </div>
             </a>
@@ -61,7 +61,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-calendar-o fa-5x"></i>
+                        <i class="fal fa-calendar-star fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntEvents); ?></div>
@@ -75,7 +75,7 @@
                 'prefix' => 'admin'],['_full']); ?>">
                 <div class='panel-footer'>
                     <span class='pull-left'>View All Events</span>
-                    <span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+                    <span class='pull-right'><i class='fal fa-arrow-circle-right'></i></span>
                     <div class='clearfix'></div>
                 </div>
             </a>
@@ -87,7 +87,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-files-o fa-5x"></i>
+                        <i class="fal fa-file-invoice-dollar fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntInvoices); ?></div>
@@ -101,7 +101,7 @@
             	'prefix' => 'admin'],['_full']); ?>">
                 <div class="panel-footer">
                     <span class="pull-left">View All Invoices</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -112,7 +112,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-gbp fa-5x"></i>
+                        <i class="fal fa-receipt fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntPayments); ?></div>
@@ -126,7 +126,7 @@
             	'prefix' => 'admin'],['_full']); ?>">
                 <div class="panel-footer">
                     <span class="pull-left">View All Payments</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -137,7 +137,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-group fa-5x"></i>
+                        <i class="fal fa-poll-people fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($cntAttendees); ?></div>
@@ -151,7 +151,7 @@
                 'prefix' => 'admin'],['_full']); ?>">
                 <div class='panel-footer'>
                     <span class='pull-left'>View All Attendees</span>
-                    <span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+                    <span class='pull-right'><i class='fal fa-arrow-circle-right'></i></span>
                     <div class='clearfix'></div>
                 </div>
             </a>
@@ -193,32 +193,32 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-history fa-fw"></i> Recent Items
+                <i class="fal fa-history fa-fw"></i> Recent Items
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills">
                     <li class="active">
-                        <a href="#user-pills" data-toggle="tab"><i class="fa fa-user fa-fw"></i> Recent Users</a>
+                        <a href="#user-pills" data-toggle="tab"><i class="fal fa-user-circle fa-fw"></i> Recent Users</a>
                     </li>
                     <li>
-                        <a href="#appl-pills" data-toggle="tab"><i class="fa fa-tasks fa-fw"></i> Recent Applications</a>
+                        <a href="#appl-pills" data-toggle="tab"><i class="fal fa-clipboard-list fa-fw"></i> Recent Applications</a>
                     </li>
                     <li>
-                        <a href="#even-pills" data-toggle="tab"><i class="fa fa-calendar-o fa-fw"></i> Upcoming Events</a>
+                        <a href="#even-pills" data-toggle="tab"><i class="fal fa-calendar-star fa-fw"></i> Upcoming Events</a>
                     </li>
                     <li>
-                        <a href="#invo-pills" data-toggle="tab"><i class="fa fa-files-o fa-fw"></i> Recent Invoices</a>
+                        <a href="#invo-pills" data-toggle="tab"><i class="fal fa-file-invoice-dollar fa-fw"></i> Recent Invoices</a>
                     </li>
                     <li>
-                        <a href="#paym-pills" data-toggle="tab"><i class="fa fa-gbp fa-fw"></i> Recent Payments</a>
+                        <a href="#paym-pills" data-toggle="tab"><i class="fal fa-receipt fa-fw"></i> Recent Payments</a>
                     </li>
                     <li>
-                        <a href="#note-pills" data-toggle="tab"><i class="fa fa-pencil-square-o fa-fw"></i> Recent Notes</a>
+                        <a href="#note-pills" data-toggle="tab"><i class="fal fa-edit fa-fw"></i> Recent Notes</a>
                     </li>
                     <li>
-                        <a href="#notif-pills" data-toggle="tab"><i class="fa fa-bell fa-fw"></i> Recent Notifications</a>
+                        <a href="#notif-pills" data-toggle="tab"><i class="fal fa-bell fa-fw"></i> Recent Notifications</a>
                     </li>
                 </ul>
 
@@ -244,7 +244,7 @@
                                             <td class="actions">
                                                 <div class="dropdown btn-group">
                                                     <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu " role="menu">
                                                         <li><?= $this->Html->link(__('View User'), ['prefix' => 'admin','controller' => 'Users','action' => 'view', $user->id]) ?></li>
@@ -285,7 +285,7 @@
                                             <td class="actions">
                                                 <div class="dropdown btn-group">
                                                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu " role="menu">
                                                         <li><?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $application->id]) ?></li>
@@ -326,7 +326,7 @@
                                         <td class="actions">
                                             <div class="dropdown btn-group">
                                                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                    <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu " role="menu">
                                                     <li><?= $this->Html->link(__('Preview - User View'), ['controller' => 'Events', 'action' => 'view', $event->id]) ?></li>
@@ -372,7 +372,7 @@
                                             <td class="actions">
                                                 <div class="dropdown btn-group">
                                                     <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu " role="menu">
                                                         <li><?= $this->Html->link(__('View'), ['prefix' => 'admin','controller' => 'Invoices','action' => 'view', $invoice->id]) ?></li>
@@ -413,7 +413,7 @@
                                             <td class="actions">
                                                 <div class="dropdown btn-group">
                                                     <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu " role="menu">
                                                         <li><?= $this->Html->link(__('View'), ['prefix' => 'admin','controller' => 'Payments','action' => 'view', $payment->id]) ?></li>
@@ -451,7 +451,7 @@
                                             <td class="actions">
                                                 <div class="dropdown btn-group">
                                                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu " role="menu">
                                                         <li><?= $this->Html->link(__('View'), ['prefix' => 'admin','controller' => 'Notes','action' => 'view', $note->id]) ?></li>
@@ -491,7 +491,7 @@
                                             <td class="actions">
                                                 <div class="dropdown btn-group">
                                                     <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                        <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu " role="menu">
                                                         <li><?= $this->Html->link(__('View Notification'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'view', $notification->id]) ?></li>

@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-lg-9 col-md-8">
-        <h1 class="page-header"><i class="fa fa-gbp fa-fw"></i> Payment <?= h($payment->id) ?></h1>
+        <h1 class="page-header"><i class="fal fa-receipt fa-fw"></i> Payment <?= h($payment->id) ?></h1>
     </div>
     <!-- <div class="col-lg-1 col-md-2">
         </br>
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-envelope-o fa-fw"></i>
+                    <i class="fal fa-envelope-o fa-fw"></i>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
@@ -53,7 +53,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-key fa-fw"></i> Payment Information
+                <i class="fal fa-key fa-fw"></i> Payment Information
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -98,7 +98,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-calendar fa-fw"></i> Related Invoices
+                <i class="fal fa-calendar fa-fw"></i> Related Invoices
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -119,7 +119,7 @@
                                 <td class="actions">
                                     <div class="dropdown btn-group">
                                         <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                            <i class="fal fa-cog"></i>  <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu " role="menu">
                                             <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'prefix' => 'admin', 'action' => 'view', $invoices->id]) ?></li>

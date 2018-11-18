@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-10 col-md-10">
-        <h1 class="page-header"><i class="fa fa-child fa-fw"></i> <?= h($role->role) ?></h1>
+        <h1 class="page-header"><i class="fal fa-child fa-fw"></i> <?= h($role->role) ?></h1>
     </div>
     <div class="col-lg-12">
         <div class="panel panel-default">
@@ -23,7 +23,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-group fa-fw"></i> Attendees
+                <i class="fal fa-poll-people fa-fw"></i> Attendees
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -42,7 +42,7 @@
                                 <td class="actions">
                                     <div class="dropdown btn-group">
                                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                            <i class="fal fa-cog"></i>  <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu " role="menu">
                                             <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>

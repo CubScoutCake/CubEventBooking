@@ -124,7 +124,7 @@ $cakeDescription = 'HertsCubs Booking System';
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        <i class="fal fa-envelope fa-fw"></i>  <i class="fal fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-messages">
                         <li>
@@ -166,7 +166,7 @@ $cakeDescription = 'HertsCubs Booking System';
                         <li>
                             <a class="text-center" href="#">
                                 <strong>Read All Messages</strong>
-                                <i class="fa fa-angle-right"></i>
+                                <i class="fal fa-angle-right"></i>
                             </a>
                         </li>
                     </ul>
@@ -175,7 +175,7 @@ $cakeDescription = 'HertsCubs Booking System';
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        <i class="fal fa-clipboard-list fa-fw"></i>  <i class="fal fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
                         <li>
@@ -245,7 +245,7 @@ $cakeDescription = 'HertsCubs Booking System';
                         <li>
                             <a class="text-center" href="#">
                                 <strong>See All Tasks</strong>
-                                <i class="fa fa-angle-right"></i>
+                                <i class="fal fa-angle-right"></i>
                             </a>
                         </li>
                     </ul>
@@ -254,7 +254,7 @@ $cakeDescription = 'HertsCubs Booking System';
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        <i class="fal fa-bell fa-fw"></i>  <i class="fal fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
                         <?php   $usr = $this->request->session()->read('Auth.User.id');
@@ -266,7 +266,7 @@ $cakeDescription = 'HertsCubs Booking System';
                                 'action' => 'index', 
                                 'prefix' => false]); ?>">
                                 <strong>See All Notifications</strong>
-                                <i class="fa fa-angle-right"></i>
+                                <i class="fal fa-angle-right"></i>
                             </a>
                         </li>
                     </ul>
@@ -275,7 +275,7 @@ $cakeDescription = 'HertsCubs Booking System';
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        <i class="fal fa-user-circle fa-fw"></i>  <i class="fal fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li>
@@ -298,7 +298,7 @@ $cakeDescription = 'HertsCubs Booking System';
 
                             echo $this->Url->build(['controller' => 'Users', 'action' => 'edit', $this->request->session()->read('Auth.User.id')]);
 
-                        } ?>"><i class="fa fa-user fa-fw"></i> <?php
+                        } ?>"><i class="fal fa-user-circle fa-fw"></i> <?php
 
                         if (is_null($this->request->session()->read('Auth.User.username'))) {
 
@@ -322,7 +322,7 @@ $cakeDescription = 'HertsCubs Booking System';
                         <li><a href="<?php echo $this->Url->build([
                             'controller' => 'Users',
                             'action' => 'logout',
-                            'prefix' => false]); ?>"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            'prefix' => false]); ?>"><i class="fal fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -333,13 +333,13 @@ $cakeDescription = 'HertsCubs Booking System';
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
+                    <ul class="nav" id="metismenu">
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
                                 <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
+                                    <i class="fal fa-search"></i>
                                 </button>
                             </span>
                             </div>
@@ -349,10 +349,10 @@ $cakeDescription = 'HertsCubs Booking System';
                             <a href="<?php echo $this->Url->build([
                                 'controller' => 'Landing',
                                 'action' => 'user_home',
-                                'prefix' => false]); ?>"><i class="fa fa-dashboard fa-fw"></i> User Home</a>
+                                'prefix' => false]); ?>"><i class="fal fa-home fa-fw"></i> User Home</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-calendar-o fa-fw"></i> Events<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fal fa-calendar-star fa-fw"></i> Events<span class="fal fa-chevron-left"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="<?php echo $this->Url->build([
@@ -363,7 +363,7 @@ $cakeDescription = 'HertsCubs Booking System';
                             </ul>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-tasks fa-fw"></i> Applications<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fal fa-clipboard-list fa-fw"></i> Applications<span class="fal fa-chevron-left"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="<?php echo $this->Url->build([
@@ -381,7 +381,7 @@ $cakeDescription = 'HertsCubs Booking System';
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-group fa-fw"></i> Attendees<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fal fa-poll-people fa-fw"></i> Attendees<span class="fal fa-chevron-left"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="<?php echo $this->Url->build([
@@ -405,7 +405,7 @@ $cakeDescription = 'HertsCubs Booking System';
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Invoices<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fal fa-file-invoice-dollar fa-fw"></i> Invoices<span class="fal fa-chevron-left"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="<?php echo $this->Url->build([
@@ -423,7 +423,7 @@ $cakeDescription = 'HertsCubs Booking System';
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-gbp fa-fw"></i> Payments<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fal fa-receipt fa-fw"></i> Payments<span class="fal fa-chevron-left"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="<?php echo $this->Url->build([
@@ -434,7 +434,7 @@ $cakeDescription = 'HertsCubs Booking System';
                             </ul>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> More<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fal fa-sitemap fa-fw"></i> More<span class="fal fa-chevron-left"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="<?php echo $this->Url->build([
@@ -455,7 +455,7 @@ $cakeDescription = 'HertsCubs Booking System';
                                 'prefix' => false]); ?>">View Districts</a>
                                 </li>
                                 <!--<li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
+                                    <a href="#">Third Level <span class="fal fa-chevron-left"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
                                             <a href="#">Third Level Item</a>

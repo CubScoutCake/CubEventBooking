@@ -18,7 +18,7 @@ use \Cake\I18n\Date;
 ?>
 <div class="row">
     <div class="col-lg-10 col-md-10">
-        <h1><i class="fa fa-exchange fa-fw" ></i><?= __(' Sync Event Booking') ?></h1>
+        <h1><i class="fal fa-exchange fa-fw" ></i><?= __(' Sync Event Booking') ?></h1>
     </div>
     <div class="col-lg-2 col-md-2">
         <div class="pull-right">

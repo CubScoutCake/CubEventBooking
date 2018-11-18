@@ -12,8 +12,7 @@
 <?php echo $this->Html->script('https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js', ['integrity' => 'sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo=', 'crossorigin' => 'anonymous']);?>
 
 <!-- Metis Menu Plugin JavaScript -->
-<?php echo $this->Html->script('https://cdn.jsdelivr.net/bootstrap.metismenu/1.1.2/js/metismenu.min.js', ['integrity' => 'sha256-MAI5Y7qcRpuhprsWe9eWvOQIw3qXfoeMIOVLxeMPcLQ=', 'crossorigin' => 'anonymous']);?>
-<?php echo $this->Html->script('https://cdn.jsdelivr.net/bootstrap.metismenu/1.1.2/js/jquery.metisMenu.min.js', ['integrity' =>'sha256-D8soXgWi3lwrBPuRny4yEIx9DvPV+BcQZ8D+32I4aKo=', 'crossorigin' => 'anonymous']);?>
+<?php echo $this->Html->script('https://cdn.jsdelivr.net/npm/metismenu@3.0.3/dist/metisMenu.min.js', ['integrity' =>'sha256-BNyjlkvjHfyJ3v5fTLcrkPCJlW0WxY/aa0c8XzIUVR8=', 'crossorigin' => 'anonymous']);?>
 
 <!-- Morris Charts JavaScript -->
 <?php //echo $this->Html->script('raphael-min.js');?>
@@ -25,7 +24,7 @@
 <?php //echo $this->Html->script('https://cdn.jsdelivr.net/jquery.datatables/1.10.10/js/jquery.dataTables.min.js', ['integrity' => 'sha256-YKbJo9/cZwgjue3I4jsFKdE+oGkrSpqZz6voxlmn2Fo=', 'crossorigin' => 'anonymous']); ?>
 
 <!-- Font Awesome CDN -->
-<?php echo $this->Html->script('https://use.fontawesome.com/687b7f2021.js');?>
+<script defer src="https://pro.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-3yBLeJ4waqGSAf4A8pjZ13UF7GuhgbdKnBQvIp/TkWoXtQbtwjlIPNjkDRJ46UCn" crossorigin="anonymous"></script>
 
 <!-- Custom Theme JavaScript -->
 <?php echo $this->Html->script('sb-admin-2.js');?>

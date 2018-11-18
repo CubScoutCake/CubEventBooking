@@ -6,7 +6,7 @@
 <div class="tokens form large-9 medium-8 columns content">
     <?= $this->Form->create($token) ?>
     <fieldset>
-        <legend><i class="fa fa-ticket fa-fw"></i> <?= __('Add Token') ?></legend>
+        <legend><i class="fal fa-ticket fa-fw"></i> <?= __('Add Token') ?></legend>
         <?php
             echo $this->Form->input('token');
             echo $this->Form->input('user_id', ['options' => $users]);

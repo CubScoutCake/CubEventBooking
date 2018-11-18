@@ -18,7 +18,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-1 col-md-offset-1">
-                            <i class="fa fa-exchange fa-3x"></i>
+                            <i class="fal fa-exchange fa-3x"></i>
                         </div>
                         <div class="col-md-8">
                             <div class="huge">Sync Book</div>
@@ -57,7 +57,7 @@
                     <div class="panel-header">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-list fa-5x"></i>
+                                <i class="fal fa-list fa-5x"></i>
                             </div>
                             <div class="col-xs-7 text-right">
                                 <div class="huge">Sync Book</div>

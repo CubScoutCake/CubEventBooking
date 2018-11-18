@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-fire fa-fw"></i> Sections</h3>
+        <h3><i class="fal fa-fire fa-fw"></i> Sections</h3>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -21,8 +21,8 @@
                         <td><?= $this->Number->format($section->id) ?></td>
                         <td><?= h($section->section) ?></td>
                         <td class="actions">
-                            <?= $this->Html->link('', ['action' => 'view', $section->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
-                            <?= $this->Html->link('', ['action' => 'edit', $section->id], ['title' => __('Edit'), 'class' => 'btn btn-default fa fa-pencil']) ?>
+                            <?= $this->Html->link('<i class="fal fa-eye"></i>', ['action' => 'view', $section->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['action' => 'edit', $section->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                         </td>
                         <td><?= $section->has('section_type') ? $this->Html->link($section->section_type->section_type, ['controller' => 'SectionTypes', 'action' => 'view', $section->section_type->id]) : '' ?></td>
                         <td><?= $section->has('scoutgroup') ? $this->Html->link($section->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $section->scoutgroup->id]) : '' ?></td>

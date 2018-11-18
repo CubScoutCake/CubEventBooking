@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-signal fa-fw"></i> Event Statuses</h3>
+        <h3><i class="fal fa-signal fa-fw"></i> Event Statuses</h3>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -25,12 +25,12 @@
                             <td><?= $this->Number->format($eventStatus->id) ?></td>
                             <td><?= h($eventStatus->event_status) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link('', ['action' => 'view', $eventStatus->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
-                                <?= $this->Html->link('', ['action' => 'edit', $eventStatus->id], ['title' => __('Edit'), 'class' => 'btn btn-default fa fa-pencil']) ?>
-                                <?= $this->Form->postLink('', ['action' => 'delete', $eventStatus->id], ['confirm' => __('Are you sure you want to delete # {0}?', $eventStatus->id), 'title' => __('Delete'), 'class' => 'btn btn-default fa fa-trash-o']) ?>
+                                <?= $this->Html->link('<i class="fal fa-eye"></i>', ['action' => 'view', $eventStatus->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['action' => 'edit', $eventStatus->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                <?= $this->Form->postLink('<i class="fal fa-trash-alt"></i>', ['action' => 'delete', $eventStatus->id], ['confirm' => __('Are you sure you want to delete # {0}?', $eventStatus->id), 'title' => __('Delete'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                             </td>
-                            <td><?= $eventStatus->live ? '<i class="fa fa-check fa-fw"></i>' : '' ?></td>
-                            <td><?= $eventStatus->accepting_applications ? '<i class="fa fa-check fa-fw"></i>' : '' ?></td>
+                            <td><?= $eventStatus->live ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
+                            <td><?= $eventStatus->accepting_applications ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

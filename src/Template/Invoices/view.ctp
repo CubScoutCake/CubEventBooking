@@ -7,7 +7,7 @@
 ?>
 <div class="row">
     <div class="col-lg-11 col-md-11">
-        <h1 class="page-header"><i class="fa fa-file-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
+        <h1 class="page-header"><i class="fal fa-file-invoice-dollar fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
     <div class="col-lg-1 col-md-1">
         <br/>
@@ -30,7 +30,7 @@
 		                    'prefix' => false,
 		                    $invoice->id,
 		                    '_ext' => 'pdf',
-                        ]); ?>"><span><i class="fa fa-file-pdf-o fa-fw"></i> Download</span></a>
+                        ]); ?>"><span><i class="fal fa-file-pdf fa-fw"></i> Download</span></a>
                     </li>
                 </ul>
             </div>
@@ -82,7 +82,7 @@
     <div class="col-lg-12">
         <div class="panel panel-yellow">
             <div class="panel-heading">
-                <i class="fa fa-files-o fa-fw"></i> Invoice Line Items
+                <i class="fal fa-file-invoice-dollar fa-fw"></i> Invoice Line Items
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -127,7 +127,7 @@
         <?php if (!empty($invoice->payments)): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-gbp fa-fw"></i> Payments Recieved
+                    <i class="fal fa-receipt fa-fw"></i> Payments Recieved
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -157,7 +157,7 @@
         <?php if (empty($invoice->payments)): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-gbp fa-fw"></i> Payments received will be listed here.
+                    <i class="fal fa-receipt fa-fw"></i> Payments received will be listed here.
                 </div>
             </div>
         <?php endif; ?>
@@ -168,7 +168,7 @@
         <?php if (!empty($invoice->notes)) : ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-pencil-square-o fa-fw"></i> Invoice Notes
+                    <i class="fal fa-edit fa-fw"></i> Invoice Notes
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">

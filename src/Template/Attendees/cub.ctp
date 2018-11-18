@@ -2,7 +2,7 @@
     <div class="col-lg-12">
         <?= $this->Form->create($attendee) ?>
         <fieldset>
-            <legend><i class="fa fa-group fa-fw"></i><?= __(' Add a New Young Person') ?></legend>
+            <legend><i class="fal fa-poll-people fa-fw"></i><?= __(' Add a New Young Person') ?></legend>
             <?php
                 echo $this->Form->input('section_id');
                 echo $this->Form->input('role_id');

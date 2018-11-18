@@ -3,7 +3,7 @@
         <?= $this->Html->image('Logos/osmlogo.png', ['alt' => 'CakePHP', 'class' => 'img-responsive']); ?>
     </div>
     <div class="col-lg-9 col-md-7">
-        <h1 class="page-header"><i class="fa fa-refresh fa-fw"></i> Granting Read Access to Herts Cubs</h1>
+        <h1 class="page-header"><i class="fal fa-sync fa-fw"></i> Granting Read Access to Herts Cubs</h1>
     </div>
     <div class="col-lg-2 col-md-3">
         <?php echo $this->Html->link('Return to OSM Dashboard.', ['controller' => 'Osm', 'action' => 'home'],['class' => 'btn btn-default']); ?>
@@ -13,7 +13,7 @@
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-unlock fa-fw"></i> Step 1
+                <i class="fal fa-unlock fa-fw"></i> Step 1
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -27,7 +27,7 @@
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-unlock fa-fw"></i> Step 2
+                <i class="fal fa-unlock fa-fw"></i> Step 2
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -41,7 +41,7 @@
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-unlock fa-fw"></i> Step 3
+                <i class="fal fa-unlock fa-fw"></i> Step 3
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -55,7 +55,7 @@
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-unlock fa-fw"></i> Step 4
+                <i class="fal fa-unlock fa-fw"></i> Step 4
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

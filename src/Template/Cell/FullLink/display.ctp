@@ -4,7 +4,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-search fa-5x"></i>
+                        <i class="fal fa-search fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">Search & Quick Link</div>
@@ -28,7 +28,7 @@
                                             'placeholder' => 'Search...'
                                         ]); ?>
                                         <span class="input-group-btn input-group">
-                                            <?= $this->Form->button(__('<i class="fa fa-search"></i> Quick Search'),['class' => 'btn input-lg btn-default', 'escape' => false ]) ?>
+                                            <?= $this->Form->button(__('<i class="fal fa-search"></i> Quick Search'),['class' => 'btn input-lg btn-default', 'escape' => false ]) ?>
                                         </span>
                                     </div>
                                 </div>

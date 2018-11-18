@@ -6,7 +6,7 @@
 ?>
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-line-chart fa-fw"></i> Application Statuses</h3>
+        <h3><i class="fal fa-thermometer fa-fw"></i> Application Statuses</h3>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -23,11 +23,11 @@
                             <td><?= $this->Number->format($applicationStatus->id) ?></td>
                             <td><?= h($applicationStatus->application_status) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link('', ['action' => 'view', $applicationStatus->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
-                                <?= $this->Html->link('', ['action' => 'edit', $applicationStatus->id], ['title' => __('Edit'), 'class' => 'btn btn-default fa fa-pencil']) ?>
-                                <?= $this->Form->postLink('', ['action' => 'delete', $applicationStatus->id], ['confirm' => __('Are you sure you want to delete # {0}?', $applicationStatus->id), 'title' => __('Delete'), 'class' => 'btn btn-default fa fa-trash-o']) ?>
+                                <?= $this->Html->link('<i class="fal fa-eye"></i>', ['action' => 'view', $applicationStatus->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['action' => 'edit', $applicationStatus->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                <?= $this->Form->postLink('<i class="fal fa-trash-alt"></i>', ['action' => 'delete', $applicationStatus->id], ['confirm' => __('Are you sure you want to delete # {0}?', $applicationStatus->id), 'title' => __('Delete'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                             </td>
-                            <td><?= $applicationStatus->active ? '<i class="fa fa-check fa-fw"></i>' : '' ?></td>
+                            <td><?= $applicationStatus->active ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
