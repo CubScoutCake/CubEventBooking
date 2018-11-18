@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\EmailResponseTypesTable;
+use App\Model\Table\ReservationsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\EmailResponseTypesTable Test Case
+ * App\Model\Table\ReservationsTable Test Case
  */
-class EmailResponseTypesTableTest extends TestCase
+class ReservationsTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\EmailResponseTypesTable
+     * @var \App\Model\Table\ReservationsTable
      */
-    public $EmailResponseTypes;
+    public $Reservations;
 
     /**
      * Fixtures
@@ -24,8 +24,13 @@ class EmailResponseTypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.email_response_types',
-        'app.email_responses'
+        'app.reservations',
+        'app.events',
+        'app.users',
+        'app.attendees',
+        'app.reservation_statuses',
+        'app.invoices',
+        'app.logistic_items'
     ];
 
     /**
@@ -36,8 +41,8 @@ class EmailResponseTypesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('EmailResponseTypes') ? [] : ['className' => EmailResponseTypesTable::class];
-        $this->EmailResponseTypes = TableRegistry::getTableLocator()->get('EmailResponseTypes', $config);
+        $config = TableRegistry::getTableLocator()->exists('Reservations') ? [] : ['className' => ReservationsTable::class];
+        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations', $config);
     }
 
     /**
@@ -47,7 +52,7 @@ class EmailResponseTypesTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->EmailResponseTypes);
+        unset($this->Reservations);
 
         parent::tearDown();
     }
@@ -68,6 +73,16 @@ class EmailResponseTypesTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

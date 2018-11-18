@@ -46,7 +46,6 @@ class EmailResponsesFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
             'email_send_id' => 1,
             'email_response_type_id' => 1,
             'created' => 1487718593,

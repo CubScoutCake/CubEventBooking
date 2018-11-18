@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\EmailResponseTypesTable;
+use App\Model\Table\ReservationStatusesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\EmailResponseTypesTable Test Case
+ * App\Model\Table\ReservationStatusesTable Test Case
  */
-class EmailResponseTypesTableTest extends TestCase
+class ReservationStatusesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\EmailResponseTypesTable
+     * @var \App\Model\Table\ReservationStatusesTable
      */
-    public $EmailResponseTypes;
+    public $ReservationStatuses;
 
     /**
      * Fixtures
@@ -24,8 +24,8 @@ class EmailResponseTypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.email_response_types',
-        'app.email_responses'
+        'app.reservation_statuses',
+        'app.reservations'
     ];
 
     /**
@@ -36,8 +36,8 @@ class EmailResponseTypesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('EmailResponseTypes') ? [] : ['className' => EmailResponseTypesTable::class];
-        $this->EmailResponseTypes = TableRegistry::getTableLocator()->get('EmailResponseTypes', $config);
+        $config = TableRegistry::getTableLocator()->exists('ReservationStatuses') ? [] : ['className' => ReservationStatusesTable::class];
+        $this->ReservationStatuses = TableRegistry::getTableLocator()->get('ReservationStatuses', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class EmailResponseTypesTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->EmailResponseTypes);
+        unset($this->ReservationStatuses);
 
         parent::tearDown();
     }

@@ -4,10 +4,10 @@ namespace App\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * EmailResponseTypesFixture
+ * ReservationStatusesFixture
  *
  */
-class EmailResponseTypesFixture extends TestFixture
+class ReservationStatusesFixture extends TestFixture
 {
 
     /**
@@ -18,8 +18,9 @@ class EmailResponseTypesFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 10, 'autoIncrement' => true, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
-        'email_response_type' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
-        'bounce' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
+        'reservation_status' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => false, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'active' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null],
+        'complete' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -36,8 +37,9 @@ class EmailResponseTypesFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'email_response_type' => 'Lorem ipsum dolor sit amet',
-                'bounce' => 1
+                'reservation_status' => 'Lorem ipsum dolor sit amet',
+                'active' => 1,
+                'complete' => 1
             ],
         ];
         parent::init();

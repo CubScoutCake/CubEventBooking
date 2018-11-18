@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\LogisticsTable Test Case
+ * App\Model\Table\LogisticsTable Test Case
  */
 class LogisticsTableTest extends TestCase
 {
@@ -22,35 +22,12 @@ class LogisticsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.logistics',
         'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.applications', 'app.application_statuses',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.scoutgroups',
-        'app.districts',
-        'app.champions',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notes',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.notifications',
-        'app.notificationtypes',
-        'app.events', 'app.event_statuses',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts'
+        'app.events',
+        'app.logistic_items'
     ];
 
     /**
@@ -61,8 +38,8 @@ class LogisticsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Logistics') ? [] : ['className' => 'App\Model\Table\LogisticsTable'];
-        $this->Logistics = TableRegistry::get('Logistics', $config);
+        $config = TableRegistry::getTableLocator()->exists('Logistics') ? [] : ['className' => LogisticsTable::class];
+        $this->Logistics = TableRegistry::getTableLocator()->get('Logistics', $config);
     }
 
     /**

@@ -63,11 +63,7 @@ class InvoicesController extends AppController
                     ],
                     'Sections.Scoutgroups.Districts',
                 ],
-                'Notes' => [
-                    'conditions' => [
-                        'visible' => true
-                    ]
-                ]
+                'Notes'
             ]
         ]);
 

@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Logistic;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -10,9 +9,18 @@ use Cake\Validation\Validator;
 /**
  * Logistics Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Parameters
- * @property \Cake\ORM\Association\BelongsTo $Events
- * @property \Cake\ORM\Association\HasMany $LogisticItems
+ * @property \App\Model\Table\ParametersTable|\Cake\ORM\Association\BelongsTo $Parameters
+ * @property \App\Model\Table\EventsTable|\Cake\ORM\Association\BelongsTo $Events
+ * @property \App\Model\Table\LogisticItemsTable|\Cake\ORM\Association\HasMany $LogisticItems
+ *
+ * @method \App\Model\Entity\Logistic get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Logistic newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Logistic[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Logistic|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Logistic|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Logistic patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Logistic[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Logistic findOrCreate($search, callable $callback = null, $options = [])
  */
 class LogisticsTable extends Table
 {
@@ -55,14 +63,22 @@ class LogisticsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->integer('id')
             ->allowEmpty('id', 'create');
 
         $validator
+            ->scalar('header')
+            ->maxLength('header', 45)
             ->allowEmpty('header');
 
         $validator
+            ->scalar('text')
+            ->maxLength('text', 999)
             ->allowEmpty('text');
+
+        $validator
+            ->dateTime('deleted')
+            ->allowEmpty('deleted');
 
         return $validator;
     }
