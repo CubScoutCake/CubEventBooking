@@ -25,7 +25,8 @@ class ApplicationsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.applications', 'app.application_statuses',
+        'app.applications',
+        'app.application_statuses',
         'app.settings',
         'app.setting_types',
         'app.discounts',
@@ -36,7 +37,8 @@ class ApplicationsTableTest extends TestCase
         'app.section_types',
         'app.sections',
         'app.users',
-        'app.events', 'app.event_statuses',
+        'app.events',
+        'app.event_statuses',
         'app.event_types',
         'app.auth_roles',
     ];

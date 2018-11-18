@@ -42,7 +42,11 @@ class TokensFixture extends TestFixture
     ];
     // @codingStandardsIgnoreEnd
 
-
+    /**
+     * Init method
+     *
+     * @return void
+     */
     public function init()
     {
         $this->records = [
@@ -64,12 +68,12 @@ class TokensFixture extends TestFixture
                 'token' => 'Lorem ipsum dolor sit amet',
                 'user_id' => 1,
                 'email_send_id' => 1,
-                'created' => date_create('2016-12-26 23:22:30'),
-                'modified' => date_create('2016-12-26 23:22:30'),
-                'expires' => date_create('2016-12-26 23:22:30'),
-                'utilised' => date_create('2016-12-26 23:22:30'),
+                'created' => 1542550324,
+                'modified' => 1542550324,
+                'expires' => 1542550324,
+                'utilised' => 1542550324,
                 'active' => 1,
-                'deleted' => date_create('2016-12-26 23:22:30'),
+                'deleted' => 1542550324,
                 'hash' => 'Lorem ipsum dolor sit amet',
                 'random_number' => 1,
                 'header' => 'Lorem ipsum dolor sit amet'

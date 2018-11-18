@@ -25,7 +25,6 @@ class ReservationStatusesTableTest extends TestCase
      */
     public $fixtures = [
         'app.reservation_statuses',
-        'app.reservations'
     ];
 
     /**

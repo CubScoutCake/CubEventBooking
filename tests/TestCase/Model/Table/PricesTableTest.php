@@ -57,6 +57,8 @@ class PricesTableTest extends TestCase
         'app.payments',
         'app.invoices_payments',
         'app.event_types',
+        'app.reservations',
+        'app.reservation_statuses',
     ];
 
     /**

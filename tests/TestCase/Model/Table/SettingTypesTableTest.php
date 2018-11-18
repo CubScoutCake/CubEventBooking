@@ -1,26 +1,31 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\ParametersTable;
+use App\Model\Table\SettingTypesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\ParametersTable Test Case
+ * App\Model\Table\SettingTypesTable Test Case
  */
-class ParametersTableTest extends TestCase
+class SettingTypesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\ParametersTable
+     * @var \App\Model\Table\SettingTypesTable
      */
-    public $Parameters;
+    public $SettingTypes;
 
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
     public $fixtures = [
-        'app.parameters',
-        'app.parameter_sets',
+        'app.setting_types',
+        'app.settings'
     ];
 
     /**
@@ -31,8 +36,8 @@ class ParametersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Parameters') ? [] : ['className' => 'App\Model\Table\ParametersTable'];
-        $this->Parameters = TableRegistry::get('Parameters', $config);
+        $config = TableRegistry::getTableLocator()->exists('SettingTypes') ? [] : ['className' => SettingTypesTable::class];
+        $this->SettingTypes = TableRegistry::getTableLocator()->get('SettingTypes', $config);
     }
 
     /**
@@ -42,7 +47,7 @@ class ParametersTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Parameters);
+        unset($this->SettingTypes);
 
         parent::tearDown();
     }
@@ -63,16 +68,6 @@ class ParametersTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

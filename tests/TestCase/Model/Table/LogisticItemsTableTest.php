@@ -26,8 +26,31 @@ class LogisticItemsTableTest extends TestCase
     public $fixtures = [
         'app.logistic_items',
         'app.applications',
+        'app.parameter_sets',
         'app.logistics',
-        'app.params'
+        'app.params',
+        'app.events',
+        'app.event_statuses',
+        'app.event_types',
+        'app.settings',
+        'app.password_states',
+        'app.setting_types',
+        'app.users',
+        'app.roles',
+        'app.discounts',
+        'app.sections',
+        'app.section_types',
+        'app.scoutgroups',
+        'app.districts',
+        'app.auth_roles',
+        'app.notifications',
+        'app.notification_types',
+        'app.application_statuses',
+        'app.reservations',
+        'app.champions',
+        'app.reservation_statuses',
+        'app.attendees',
+        'app.parameters',
     ];
 
     /**

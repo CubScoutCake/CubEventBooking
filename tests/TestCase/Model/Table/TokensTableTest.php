@@ -27,42 +27,20 @@ class TokensTableTest extends TestCase
      */
     public $fixtures = [
         'app.tokens',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.sections',
-        'app.section_types',
-        'app.scoutgroups',
-        'app.districts',
-        'app.champions',
-        'app.applications', 'app.application_statuses',
-        'app.password_states',
-        'app.events', 'app.event_statuses',
-        'app.settings',
-        'app.setting_types',
-        'app.discounts',
-        'app.event_types',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.prices',
-        'app.item_types',
-        'app.invoice_items',
-        'app.invoices',
-        'app.notes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.auth_roles',
+        'app.email_sends',
         'app.notifications',
         'app.notification_types',
-        'app.email_sends',
-        'app.email_responses',
-        'app.email_response_types'
+        'app.users',
+        'app.roles',
+        'app.scoutgroups',
+        'app.password_states',
+        'app.districts',
+        'app.champions',
+        'app.sections',
+        'app.section_types',
+        'app.auth_roles',
+        'app.settings',
+        'app.setting_types',
     ];
 
     /**
@@ -73,8 +51,8 @@ class TokensTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Tokens') ? [] : ['className' => 'App\Model\Table\TokensTable'];
-        $this->Tokens = TableRegistry::get('Tokens', $config);
+        $config = TableRegistry::getTableLocator()->exists('Tokens') ? [] : ['className' => TokensTable::class];
+        $this->Tokens = TableRegistry::getTableLocator()->get('Tokens', $config);
 
         $now = new Time('2016-12-26 23:22:30');
         Time::setTestNow($now);

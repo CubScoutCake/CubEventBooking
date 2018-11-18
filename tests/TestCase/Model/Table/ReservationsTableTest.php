@@ -26,11 +26,24 @@ class ReservationsTableTest extends TestCase
     public $fixtures = [
         'app.reservations',
         'app.events',
+        'app.event_statuses',
+        'app.event_types',
+        'app.discounts',
+        'app.notifications',
+        'app.notification_types',
         'app.users',
-        'app.attendees',
+        'app.roles',
+        'app.scoutgroups',
+        'app.password_states',
+        'app.districts',
+        'app.champions',
+        'app.sections',
+        'app.section_types',
+        'app.auth_roles',
+        'app.settings',
+        'app.setting_types',
         'app.reservation_statuses',
-        'app.invoices',
-        'app.logistic_items'
+        'app.attendees',
     ];
 
     /**
