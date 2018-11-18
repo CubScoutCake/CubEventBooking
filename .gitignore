@@ -14,3 +14,4 @@ logs/*
 /config/Migrations/schema-dump-default.lock
 /config/app_DB.php
 /entityList.txt
+queries/
