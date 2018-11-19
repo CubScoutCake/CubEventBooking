@@ -20,7 +20,8 @@
                         <td class="actions">
                             <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Events', 'action' => 'view', $event->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                             <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['action' => 'edit', $event->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
-                            <?= $this->Html->link('', ['action' => 'prices', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default fal fa-receipt']) ?>
+                            <?= $this->Html->link('<i class="fal fa-tags"></i>', ['action' => 'prices', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Html->link('<i class="fal fa-chart-bar"></i>', ['action' => 'accounts', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                         </td>
                         <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
                         <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>

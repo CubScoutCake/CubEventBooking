@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fal fa-file-invoice-dollar fa-fw"></i> Your Invoices</h3>
+        <h3><i class="fal fa-file-invoice-dollar fa-fw"></i> <?= h($term) ?> Invoices<?= isset($event) ? ' for ' . $event->name : '' ?></h3>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>

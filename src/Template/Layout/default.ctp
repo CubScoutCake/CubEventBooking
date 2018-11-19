@@ -406,7 +406,7 @@ $cakeDescription = 'HertsCubs Booking System';
         </nav>
         <div id="page-wrapper">
 
-            </br>
+            <br />
 
             <?php if (!$this->fetch('tb_flash')) {
                 $this->start('tb_flash');

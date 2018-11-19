@@ -245,7 +245,7 @@ class EventsController extends AppController
     public function accounts($id = null)
     {
         $event = $this->Events->get($id, [
-            'contain' => ['Settings', 'Discounts', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups.Districts']
+            'contain' => ['Settings', 'Discounts', 'Prices.ItemTypes', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups.Districts']
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);

@@ -90,36 +90,36 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-lg-6 col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fal fa-envelope-o fa-fw"></i> Event Organiser Contact
-            </div>
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <tr>
-                            <th><?= __('Contact Person') ?></th>
-                            <td><?= h($event->admin_full_name) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Contact Email') ?></th>
-                            <td><?= $this->Text->autoLink($event->admin_email) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Address') ?></th>
-                            <td><?= h($event->address) ?> </br>
-                                <?= h($event->city) ?> </br>
-                                <?= h($event->county) ?> </br>
-                                <?= h($event->postcode) ?></td>
-                        </tr>
-                    </table>
+            <br />
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fal fa-mobile fa-fw"></i> Event Organiser Contact
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tr>
+                                <th><?= __('Contact Person') ?></th>
+                                <td><?= h($event->admin_full_name) ?></td>
+                            </tr>
+                            <tr>
+                                <th><?= __('Contact Email') ?></th>
+                                <td><?= $this->Text->autoLink($event->admin_email) ?></td>
+                            </tr>
+                            <tr>
+                                <th><?= __('Address') ?></th>
+                                <td><?= h($event->address) ?> </br>
+								    <?= h($event->city) ?> </br>
+								    <?= h($event->county) ?> </br>
+								    <?= h($event->postcode) ?></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <div class="row">
@@ -134,43 +134,7 @@
         </div>
     </div>
     <div class="col-lg-6">
-        <div class="panel panel-default">
-        	<div class="panel-heading">
-                <i class="fal fa-cog fa-fw"></i> Event Settings
-            </div>
-            <div class="panel-body">
-	            <div class="table-responsive">
-	            	<table class="table table-hover">
-	            		<tr>
-	            		    <td><?= $event->live ? __('Event is Live') : __('Event is Hidden'); ?></td>
-	            		</tr>
-            		    <tr>
-	            		    <td><?= $event->max ? __('Numbers Limited') : __('Numbers Not Limited'); ?></td>
-            		    </tr>
-            		    <tr>
-	            		    <td><?= $event->allow_reductions ? __('Invoices can be Reduced') : __('Invoices can only be Increased'); ?></td>
-	            		</tr>
-            		    <tr>
-	            			<td><?= $event->invoices_locked ? __('Invoices are Locked') : __('Invoices can be Updated'); ?></td>
-	            		</tr>
-            		    <tr>
-	            			<td><?= $event->parent_applications ? __('Parent Applications Available') : __('Parent Applications Unavailable'); ?></td>
-	            		</tr>
-	            		<tr>
-	            		    <td><?php if (isset($event->available_apps) && isset($event->available_cubs)) {
-	            		            echo 'Available Cubs & Apps Limited';
-	            		        } elseif (isset($event->available_cubs)) {
-	            		            echo 'Available Cubs Limited';
-	            		        } elseif (isset($event->available_apps)) {
-	            		            echo 'Available Apps Limited';
-	            		        } else {
-	            		           echo 'Available Cubs & Apps Unlimited'; 
-	            		        }  ?></td>
-	            		</tr>
-	            	</table>
-            	</div>
-	        </div>  
-        </div>
+
     </div>
 </div>
 
@@ -272,7 +236,7 @@
             <div class="panel-body">
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills">
-                    <li class="active"><a href="#suma-pills" data-toggle="tab"><i class="fal fa-bar-chart fa-fw"></i> Summary Numbers</a></li>
+                    <li class="active"><a href="#suma-pills" data-toggle="tab"><i class="fal fa-chart-bar fa-fw"></i> Summary Numbers</a></li>
                     <?php if (!empty($event->applications)): ?>
 	                    <li><a href="#appl-pills" data-toggle="tab"><i class="fal fa-clipboard-list fa-fw"></i> Applications</a></li>
 	                <?php endif; ?>

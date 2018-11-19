@@ -41,7 +41,7 @@ $cakeDescription = 'HertsCubs Booking System';
     <?php echo $this->element('analytics'); ?>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <nav class="navbar navbar-inverse" role="navigation" >
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -106,7 +106,7 @@ $cakeDescription = 'HertsCubs Booking System';
                     <a href="<?php echo $this->Url->build([
                         'controller' => 'Mailchimp',
                         'action' => 'mailchimp',
-                        'prefix' => false]); ?>"><i class="fal fa-envelope-o fa-fw"></i> Sign Up for Emails</a>
+                        'prefix' => false]); ?>"><i class="fal fa-envelope fa-fw"></i> Sign Up for Emails</a>
                 </li>
             </ul>
         </div>
@@ -116,8 +116,6 @@ $cakeDescription = 'HertsCubs Booking System';
 
     </nav>
     <div id="page-wrapper">
-
-        </br>
 
         <?php if (!$this->fetch('tb_flash')) {
             $this->start('tb_flash');

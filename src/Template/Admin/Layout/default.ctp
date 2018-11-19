@@ -404,20 +404,18 @@ $cakeDescription = 'HertsCubs Booking System';
                                 'prefix' => 'admin']); ?>">View Invoices</a>
                                 </li>
                                 <li><a href="<?php echo $this->Url->build([
-                                'controller' => 'Invoices',
-                                'action' => 'unpaid',
-                                'prefix' => 'admin']); ?>">Unpaid Invoices</a>
+                                        'controller' => 'Invoices',
+                                        'action' => 'index',
+                                        'prefix' => 'admin',
+                                        '?' => ['unpaid' => true],
+                                    ]); ?>">Unpaid Invoices</a>
                                 </li>
                                 <li><a href="<?php echo $this->Url->build([
-                                'controller' => 'Invoices',
-                                'action' => 'outstanding',
-                                'prefix' => 'admin']); ?>">Outstanding Invoices</a>
-                                </li>
-                                <li>
-                                    <a href="<?php echo $this->Url->build([
-                                'controller' => 'Invoices',
-                                'action' => 'generate',
-                                'prefix' => 'admin']); ?>">Generate New Invoice</a>
+                                        'controller' => 'Invoices',
+                                        'action' => 'index',
+                                        'prefix' => 'admin',
+                                        '?' => ['outstanding' => true],
+                                    ]); ?>">Outstanding Invoices</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -571,8 +569,8 @@ $cakeDescription = 'HertsCubs Booking System';
             <!-- /.navbar-static-side -->
         </nav>
         <div id="page-wrapper">
-        
-            </br>
+
+            <br />
 
             <?php if (!$this->fetch('tb_flash')) {
                 $this->start('tb_flash');

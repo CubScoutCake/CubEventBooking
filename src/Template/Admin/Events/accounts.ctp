@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-lg-9 col-md-8">
-        <h1 class="page-header"><i class="fal fa-calendar-star fa-fw"></i> <?= h($event->name) ?></h1>
+        <h1 class="page-header"><?= h($event->name) ?></h1>
     </div>
     <div class="col-lg-2 col-md-2">
-        </br>
+        <br/>
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -13,8 +13,8 @@
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><?= $this->Html->link(__('Full View'), ['action' => 'full_view', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>
-                    <li><?= $this->Html->link(__('Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
-                    <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Unpaid Invoices'), ['controller' => 'Invoices','action' => 'index', $event->id, '?' => ['unpaid' => true]]) ?></li>
+                    <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id, '?' => ['outstanding' => true],]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
                     <li class="divider"></li>
@@ -23,14 +23,14 @@
                 </ul>
             </div>
         </div>
-        </br>
+        <br/>
     </div> 
 </div>
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fal fa-bar-chart fa-fw"></i> Summary Numbers
+                <i class="fal fa-chart-bar fa-fw"></i> Summary Numbers
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -109,13 +109,13 @@
                                 <tr>
                                     <th><?= __('Total Unpaid') ?></th>
                                     <td></td>
-                                    <td><?= $this->Html->link($this->Number->format($unpaid),['controller' => 'Invoices', 'action' => 'unpaid', $event->id]) ?></td>
+                                    <td><?= $this->Html->link($this->Number->format($unpaid),['controller' => 'Invoices', 'action' => 'index', $event->id, '?' => ['unpaid' => true]]) ?></td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <th><?= __('Total Outstanding') ?></th>
                                     <td></td>
-                                    <td><?= $this->Html->link($this->Number->format($outstanding),['controller' => 'Invoices', 'action' => 'outstanding', $event->id]) ?></td>
+                                    <td><?= $this->Html->link($this->Number->format($outstanding),['controller' => 'Invoices', 'action' => 'outstanding', $event->id, '?' => ['outstanding' => true]]) ?></td>
                                     <td></td>
                                 </tr>
                             <?php endif; ?>
@@ -138,7 +138,7 @@
             <div class="panel-body">
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills">
-                    <li class="active"><a href="#pric-pills" data-toggle="tab"><i class="fal fa-receipt fa-fw"></i> Prices</a></li>
+                    <li class="active"><a href="#pric-pills" data-toggle="tab"><i class="fal fa-tags fa-fw"></i> Prices</a></li>
                     <?php if (!empty($event->applications)): ?>
                         <li><a href="#appl-pills" data-toggle="tab"><i class="fal fa-clipboard-list fa-fw"></i> Applications</a></li>
                     <?php endif; ?>
@@ -161,7 +161,7 @@
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <tr>
-                                        <th><?= __('Attendee Type'); ?></th>
+                                        <th><?= __('Price Type'); ?></th>
                                         <th><?= __('Max Number'); ?></th>
                                         <th><?= __('Price'); ?></th>
                                         <th><?= __('Invoice Text'); ?></th>
@@ -169,16 +169,16 @@
                                     <?php foreach ($event->prices as $price): ?>
                                         <tr>
                                             <td><?= $price->has('item_type') ? h($price->item_type->item_type) : '' ?></td>
-                                            <td><?= $this->Number->currency($price->max_number,'GBP') ?></td>
+                                            <td><?= $this->Number->format($price->max_number) ?></td>
                                             <td><?= $this->Number->currency($price->value,'GBP') ?></td>
-                                            <td><?= $this->Number->currency($price->description,'GBP') ?></td>
+                                            <td><?= h($price->description) ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </table>
                             </div>
                         <?php endif; ?>
                         <?php if (empty($event->prices)): ?>
-                            <h2><i class="fal fa-calendar-exclamation fa-3x"></i> There are no prices set.</h2>
+                            <h2><i class="fal fa-exclamation"></i> There are no prices set.</h2>
                         <?php endif; ?>
                         <hr>
                         <div class="table-responsive">
