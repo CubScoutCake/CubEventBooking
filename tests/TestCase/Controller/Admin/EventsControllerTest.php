@@ -64,6 +64,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test index method
      *
      * @return void
+     *
+     * @throws
      */
     public function testIndex()
     {
@@ -81,6 +83,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test view method
      *
      * @return void
+     *
+     * @throws
      */
     public function testView()
     {
@@ -89,7 +93,7 @@ class EventsControllerTest extends IntegrationTestCase
            'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'view', 1]);
+        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'view', 2]);
 
         $this->assertResponseOk();
     }
@@ -98,6 +102,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test fullView method
      *
      * @return void
+     *
+     * @throws
      */
     public function testFullView()
     {
@@ -106,7 +112,7 @@ class EventsControllerTest extends IntegrationTestCase
            'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/admin/events/full-view/1');
+        $this->get('/admin/events/full-view/2');
 
         $this->assertResponseOk();
     }
@@ -115,6 +121,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test fullView method
      *
      * @return void
+     *
+     * @throws
      */
     public function testAdd()
     {
@@ -136,6 +144,7 @@ class EventsControllerTest extends IntegrationTestCase
             'full_name' => 'County Cub Cyclocross',
             'event_type_id' => 1,
             'section_type_id' => 1,
+            'event_status_id' => 1,
             'start_date' => [
                 'year' => 2018,
                 'month' => 02,
@@ -181,7 +190,7 @@ class EventsControllerTest extends IntegrationTestCase
             'county' => 'Hertfordshire',
             'postcode' => 'SG18 8HS',
             'max' => 1,
-            'max_apps' => '36',
+            'max_apps' => '2',
             'max_section' => null,
             'discount_id' => null,
         ]);
@@ -193,6 +202,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test fullView method
      *
      * @return void
+     *
+     * @throws
      */
     public function testEdit()
     {
@@ -201,7 +212,7 @@ class EventsControllerTest extends IntegrationTestCase
             'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/admin/events/edit/1');
+        $this->get('/admin/events/edit/2');
 
         $this->assertResponseOk();
     }
@@ -210,6 +221,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test fullView method
      *
      * @return void
+     *
+     * @throws
      */
     public function testPrices()
     {
@@ -218,7 +231,7 @@ class EventsControllerTest extends IntegrationTestCase
             'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'prices', 1]);
+        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'prices', 2]);
 
         $this->assertResponseOk();
     }

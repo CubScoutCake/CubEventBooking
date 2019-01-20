@@ -62,6 +62,8 @@ class UsersControllerTest extends IntegrationTestCase
      * Test index method
      *
      * @return void
+     *
+     * @throws
      */
     public function testIndex()
     {

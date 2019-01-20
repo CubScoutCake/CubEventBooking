@@ -50,8 +50,8 @@ class EventsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Events') ? [] : ['className' => 'App\Model\Table\EventsTable'];
-        $this->Events = TableRegistry::get('Events', $config);
+        $config = TableRegistry::getTableLocator()->exists('Events') ? [] : ['className' => EventsTable::class];
+        $this->Events = TableRegistry::getTableLocator()->get('Events', $config);
     }
 
     /**
@@ -112,6 +112,16 @@ class EventsTableTest extends TestCase
      * @return void
      */
     public function testFindUpcoming()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test determineComplete method
+     *
+     * @return void
+     */
+    public function testDetermineComplete()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

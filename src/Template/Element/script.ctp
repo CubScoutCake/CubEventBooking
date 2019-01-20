@@ -24,7 +24,7 @@
 <?php //echo $this->Html->script('https://cdn.jsdelivr.net/jquery.datatables/1.10.10/js/jquery.dataTables.min.js', ['integrity' => 'sha256-YKbJo9/cZwgjue3I4jsFKdE+oGkrSpqZz6voxlmn2Fo=', 'crossorigin' => 'anonymous']); ?>
 
 <!-- Font Awesome CDN -->
-<script defer src="https://pro.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-3yBLeJ4waqGSAf4A8pjZ13UF7GuhgbdKnBQvIp/TkWoXtQbtwjlIPNjkDRJ46UCn" crossorigin="anonymous"></script>
+<?php echo $this->Html->script('https://pro.fontawesome.com/releases/v5.5.0/js/all.js', ['integrity' => 'sha384-3yBLeJ4waqGSAf4A8pjZ13UF7GuhgbdKnBQvIp/TkWoXtQbtwjlIPNjkDRJ46UCn', 'crossorigin' => 'anonymous']); ?>
 
 <!-- Custom Theme JavaScript -->
 <?php echo $this->Html->script('sb-admin-2.js');?>

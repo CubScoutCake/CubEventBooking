@@ -186,13 +186,22 @@ class Installer
 
         if ($count == 0) {
             $io->write('No Security.salt placeholder to replace.');
+        }
 
+        $newCookieKey = hash('sha256', $dir . php_uname() . microtime(true));
+        $content = str_replace('__COOKIE_SALT__', $newCookieKey, $content, $cookieCount);
+
+        if ($cookieCount == 0) {
+            $io->write('No Cookie.salt placeholder to replace.');
+        }
+
+        if ($count == 0 && $cookieCount == 0) {
             return;
         }
 
         $result = file_put_contents($config, $content);
         if ($result) {
-            $io->write('Updated Security.salt value in config/app.php');
+            $io->write('Updated Security.salt &/or Cookie.salt value in config/app.php');
 
             return;
         }

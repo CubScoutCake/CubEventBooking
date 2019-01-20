@@ -79,6 +79,8 @@ class ApplicationsControllerTest extends IntegrationTestCase
      * Test bookings method
      *
      * @return void
+     *
+     * @throws
      */
     public function testBookings()
     {
@@ -87,7 +89,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
            'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/admin/applications/index/1');
+        $this->get('/admin/applications/index/2');
 
         $this->assertResponseOk();
 
@@ -105,6 +107,8 @@ class ApplicationsControllerTest extends IntegrationTestCase
      * Test view method
      *
      * @return void
+     *
+     * @throws
      */
     public function testView()
     {

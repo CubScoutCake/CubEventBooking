@@ -9,20 +9,24 @@ use Cake\Validation\Validator;
 /**
  * Events Model
  *
+ * @property \App\Model\Table\SettingsTable|\Cake\ORM\Association\BelongsTo $InvoiceTexts
+ * @property \App\Model\Table\SettingsTable|\Cake\ORM\Association\BelongsTo $LegalTexts
  * @property \App\Model\Table\DiscountsTable|\Cake\ORM\Association\BelongsTo $Discounts
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $AdminUsers
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $EventStatuses
  * @property \App\Model\Table\EventTypesTable|\Cake\ORM\Association\BelongsTo $EventTypes
  * @property \App\Model\Table\SectionTypesTable|\Cake\ORM\Association\BelongsTo $SectionTypes
+ * @property \App\Model\Table\EventStatusesTable|\Cake\ORM\Association\BelongsTo $EventStatuses
  * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\HasMany $Applications
  * @property \App\Model\Table\LogisticsTable|\Cake\ORM\Association\HasMany $Logistics
  * @property \App\Model\Table\PricesTable|\Cake\ORM\Association\HasMany $Prices
+ * @property |\Cake\ORM\Association\HasMany $Reservations
  * @property \App\Model\Table\SettingsTable|\Cake\ORM\Association\HasMany $Settings
  *
  * @method \App\Model\Entity\Event get($primaryKey, $options = [])
  * @method \App\Model\Entity\Event newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Event[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Event|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Event|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Event patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Event[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Event findOrCreate($search, callable $callback = null, $options = [])
@@ -61,12 +65,14 @@ class EventsTable extends Table
             'field' => 'deleted'
         ]);
 
+        $this->belongsTo('Settings', [
+            'foreignKey' => 'invtext_id'
+        ]);
+        $this->belongsTo('Settings', [
+            'foreignKey' => 'legaltext_id'
+        ]);
         $this->belongsTo('Discounts', [
             'foreignKey' => 'discount_id'
-        ]);
-        $this->belongsTo('EventStatuses', [
-            'foreignKey' => 'event_status_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('AdminUsers', [
             'className' => 'Users',
@@ -81,6 +87,10 @@ class EventsTable extends Table
             'foreignKey' => 'section_type_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('EventStatuses', [
+            'foreignKey' => 'event_status_id',
+            'joinType' => 'INNER'
+        ]);
         $this->hasMany('Applications', [
             'foreignKey' => 'event_id'
         ]);
@@ -88,6 +98,9 @@ class EventsTable extends Table
             'foreignKey' => 'event_id'
         ]);
         $this->hasMany('Prices', [
+            'foreignKey' => 'event_id'
+        ]);
+        $this->hasMany('Reservations', [
             'foreignKey' => 'event_id'
         ]);
         $this->hasMany('Settings', [
@@ -165,34 +178,9 @@ class EventsTable extends Table
             ->notEmpty('logo');
 
         $validator
-            ->scalar('address')
-            ->maxLength('address', 45)
-            ->allowEmpty('address');
-
-        $validator
-            ->scalar('city')
-            ->maxLength('city', 45)
-            ->allowEmpty('city');
-
-        $validator
-            ->scalar('county')
-            ->maxLength('county', 45)
-            ->allowEmpty('county');
-
-        $validator
-            ->scalar('postcode')
-            ->maxLength('postcode', 45)
-            ->allowEmpty('postcode');
-
-        $validator
             ->scalar('intro_text')
             ->maxLength('intro_text', 999)
             ->allowEmpty('intro_text');
-
-        $validator
-            ->scalar('tagline_text')
-            ->maxLength('tagline_text', 125)
-            ->allowEmpty('tagline_text');
 
         $validator
             ->scalar('location')
@@ -205,30 +193,24 @@ class EventsTable extends Table
             ->allowEmpty('max');
 
         $validator
+            ->integer('max_cubs')
+            ->allowEmpty('max_cubs');
+
+        $validator
+            ->integer('max_yls')
+            ->allowEmpty('max_yls');
+
+        $validator
+            ->integer('max_leaders')
+            ->allowEmpty('max_leaders');
+
+        $validator
             ->boolean('allow_reductions')
             ->allowEmpty('allow_reductions');
 
         $validator
             ->boolean('invoices_locked')
             ->allowEmpty('invoices_locked');
-
-        $validator
-            ->scalar('admin_firstname')
-            ->maxLength('admin_firstname', 45)
-            ->requirePresence('admin_firstname', 'create')
-            ->notEmpty('admin_firstname');
-
-        $validator
-            ->scalar('admin_lastname')
-            ->maxLength('admin_lastname', 45)
-            ->requirePresence('admin_lastname', 'create')
-            ->notEmpty('admin_lastname');
-
-        $validator
-            ->email('admin_email')
-            ->maxLength('admin_email', 255)
-            ->requirePresence('admin_email', 'create')
-            ->notEmpty('admin_email');
 
         $validator
             ->integer('max_apps')
@@ -239,16 +221,44 @@ class EventsTable extends Table
             ->allowEmpty('max_section');
 
         $validator
+            ->dateTime('deleted')
+            ->allowEmpty('deleted');
+
+        $validator
             ->dateTime('closing_date')
             ->allowEmpty('closing_date');
 
         $validator
+            ->integer('cc_apps')
+            ->allowEmpty('cc_apps');
+
+        $validator
             ->boolean('complete')
-            ->allowEmpty('complete');
+            ->requirePresence('complete', false)
+            ->notEmpty('complete');
+
+        $validator
+            ->integer('cc_prices')
+            ->allowEmpty('cc_prices');
 
         $validator
             ->boolean('team_price')
-            ->allowEmpty('team_price');
+            ->requirePresence('team_price', false)
+            ->notEmpty('team_price');
+
+        $validator
+            ->dateTime('opening_date')
+            ->allowEmpty('opening_date');
+
+        $validator
+            ->integer('cc_res')
+            ->requirePresence('cc_res', false)
+            ->notEmpty('cc_res');
+
+        $validator
+            ->integer('cc_atts')
+            ->requirePresence('cc_atts', false)
+            ->notEmpty('cc_atts');
 
         return $validator;
     }
@@ -262,6 +272,8 @@ class EventsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['invtext_id'], 'Settings'));
+        $rules->add($rules->existsIn(['legaltext_id'], 'Settings'));
         $rules->add($rules->existsIn(['discount_id'], 'Discounts'));
         $rules->add($rules->existsIn(['admin_user_id'], 'AdminUsers'));
         $rules->add($rules->existsIn(['event_type_id'], 'EventTypes'));

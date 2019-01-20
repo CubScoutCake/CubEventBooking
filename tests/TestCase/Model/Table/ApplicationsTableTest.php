@@ -95,7 +95,7 @@ class ApplicationsTableTest extends TestCase
                 'created' => $timeNow,
                 'modified' => $timeNow,
                 'modification' => 1,
-                'event_id' => 1,
+                'event_id' => 2,
                 'osm_event_id' => 1,
                 'cc_att_total' => 1,
                 'cc_att_cubs' => 1,

@@ -52,7 +52,6 @@ class EventTypesFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
             'event_type' => 'Lorem ipsum dolor sit amet',
             'simple_booking' => 1,
             'date_of_birth' => 1,
@@ -68,7 +67,6 @@ class EventTypesFixture extends TestFixture
             'payable_setting_id' => 7,
         ],
         [
-            'id' => 2,
             'event_type' => 'Lorem ipsum Gog sit amet',
             'simple_booking' => 1,
             'date_of_birth' => 1,

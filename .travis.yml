@@ -9,7 +9,7 @@ env:
   - DB=postgres
 
 services:
-  - postgres
+  - postgresql
 
 before_script:
   - phpenv rehash

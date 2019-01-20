@@ -12,10 +12,9 @@
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace App\Controller;
+namespace App\Controller\Parent;
 
 use Cake\Controller\Controller;
-use Cake\View\CellTrait;
 
 /**
  * Application Controller
@@ -27,8 +26,11 @@ use Cake\View\CellTrait;
  */
 class AppController extends Controller
 {
-    use CellTrait;
 
+    /**
+     * Initialise Function - Setup Application Config
+     * @return void
+     */
     public function initialize()
     {
         $this->loadComponent('Flash');
@@ -36,46 +38,30 @@ class AppController extends Controller
             'authorize' => 'Controller',
             'loginRedirect' => [
                 'controller' => 'Landing',
-                'action' => 'user_home'
+                'action' => 'user_home',
+                'prefix' => false
                 ],
             'logoutRedirect' => [
                 'controller' => 'Landing',
-                'action' => 'welcome'
+                'action' => 'welcome',
+                'prefix' => false
                 ],
             'loginAction' => [
                 'controller' => 'Users',
-                'action' => 'login'
+                'action' => 'login',
+                'prefix' => false,
                 ]
         ]);
-
-        $this->loadComponent('Security');
-        $this->loadComponent('Csrf');
-        $this->loadComponent('RequestHandler');
-
-        $this->loadComponent('Alert');
-        $this->Alert->appLoad($this->Auth->user('id'));
     }
 
+    /**
+     * Determine Authorisation for User in /Register
+     *
+     * @param \App\Model\Entity\User $user The User to be Evaluated
+     * @return bool
+     */
     public function isAuthorized($user)
     {
-        // Admin can access every action
-        if (isset($user['authrole']) && $user['authrole'] === 'admin') {
-            return true;
-        }
-
-        if (isset($user['id'])) {
-            if (isset($this->request->params['prefix']) && $this->request->params['prefix'] === 'admin') {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        //The add and index actions are always allowed.
-        if (isset($user['id']) && in_array($this->request->params['action'], ['index', 'add', 'admin-home'])) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 }

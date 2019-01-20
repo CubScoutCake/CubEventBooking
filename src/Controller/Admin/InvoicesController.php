@@ -21,19 +21,19 @@ class InvoicesController extends AppController
      */
     public function index($eventId = null)
     {
-	    $query = $this->request->getQueryParams();
-	    $data = $this->Invoices->find('all');
-	    $term = 'All';
+        $query = $this->request->getQueryParams();
+        $data = $this->Invoices->find('all');
+        $term = 'All';
 
-    	if (key_exists('unpaid', $query)) {
-    		$data = $this->Invoices->findUnpaid($data);
-    		$term = 'Unpaid';
-	    }
+        if (key_exists('unpaid', $query)) {
+            $data = $this->Invoices->findUnpaid($data);
+            $term = 'Unpaid';
+        }
 
-	    if (key_exists('outstanding', $query)) {
-	    	$data = $this->Invoices->findOutstanding($data);
-	    	$term = 'Outstanding';
-	    }
+        if (key_exists('outstanding', $query)) {
+            $data = $this->Invoices->findOutstanding($data);
+            $term = 'Outstanding';
+        }
 
         $this->paginate = [
             'contain' => ['Users', 'Applications.Events']
@@ -41,12 +41,12 @@ class InvoicesController extends AppController
             , 'order' => ['modified' => 'DESC']
         ];
 
-	    if (!is_null($eventId)) {
-		    $data = $data->where(['Events.id' => $eventId]);
-		    $event = $this->Invoices->Applications->Events->get($eventId);
-		    $this->set(compact('event'));
-	    }
-		$this->set(compact('term'));
+        if (!is_null($eventId)) {
+            $data = $data->where(['Events.id' => $eventId]);
+            $event = $this->Invoices->Applications->Events->get($eventId);
+            $this->set(compact('event'));
+        }
+        $this->set(compact('term'));
         $this->set('invoices', $this->paginate($data));
         $this->set('_serialize', ['invoices']);
     }

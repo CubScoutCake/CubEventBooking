@@ -1,8 +1,6 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\EventsController;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -35,6 +33,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test index method
      *
      * @return void
+     *
+     * @throws
      */
     public function testIndex()
     {
@@ -52,6 +52,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test view method
      *
      * @return void
+     *
+     * @throws
      */
     public function testView()
     {
@@ -60,7 +62,7 @@ class EventsControllerTest extends IntegrationTestCase
             'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/events/view/1');
+        $this->get('/events/view/2');
 
         $this->assertResponseOk();
     }
@@ -69,6 +71,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test edit method
      *
      * @return void
+     *
+     * @throws
      */
     public function testBookGet()
     {
@@ -77,7 +81,7 @@ class EventsControllerTest extends IntegrationTestCase
            'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/events/book/1');
+        $this->get('/events/book/2');
 
         $this->assertResponseOk();
     }
@@ -86,6 +90,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test edit method
      *
      * @return void
+     *
+     * @throws
      */
     public function testBookPost()
     {
@@ -97,8 +103,8 @@ class EventsControllerTest extends IntegrationTestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $this->post('/events/book/1', ['section' => 1, 'non_section' => 2, 'leaders' => 3]);
+        $this->post('/events/book/2', ['section' => 1, 'non_section' => 2, 'leaders' => 3]);
 
-        $this->assertRedirect(['controller' => 'Applications', 'action' => 'simple_book', 1, 1, 2, 3]);
+        $this->assertRedirect(['controller' => 'Applications', 'action' => 'simple_book', 2, 1, 2, 3]);
     }
 }
