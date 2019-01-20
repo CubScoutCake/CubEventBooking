@@ -14,5 +14,5 @@ class SparkMailer extends Mailer
      *
      * @var string
      */
-    static public $name = 'Spark';
+    public static $name = 'Spark';
 }

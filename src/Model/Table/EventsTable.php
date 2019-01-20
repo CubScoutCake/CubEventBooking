@@ -1,10 +1,13 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Event;
 use Cake\I18n\Time;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Mpdf\Tag\P;
 
 /**
  * Events Model
@@ -340,5 +343,46 @@ class EventsTable extends Table
         }
 
         return false;
+    }
+
+    /**
+     * @param int $event_id The booking Event
+     *
+     * @return int|bool
+     */
+    public function getPriceSection($event_id)
+    {
+        $event = $this->get($event_id, ['contain' => [
+            'Prices.ItemTypes',
+            'SectionTypes'
+        ]]);
+
+        if (!($event instanceof Event)) {
+            return false;
+        }
+
+        $max = 0;
+
+        if ($event->team_price) {
+            foreach ($event->prices as $price) {
+                if ($price->item_type->team_price && $price->max_number > $max) {
+                    $max = $price->max_number;
+                }
+            }
+
+            return $max;
+        }
+
+        if ($event->cc_prices > 0) {
+            foreach ($event->prices as $price) {
+                if ($price->item_type->role_id == $event->section_type->role_id && $price->item_type->available) {
+                    if ($price->max_number > $max) {
+                        $max = $price->max_number;
+                    }
+                }
+            }
+        }
+
+        return $max;
     }
 }

@@ -14,6 +14,8 @@ use Cake\ORM\TableRegistry;
 /**
  * Class ApplicationComponent
  * @package App\Controller\Component
+ *
+ * @property \App\Model\Table\ApplicationsTable $Applications
  */
 class AvailabilityComponent extends Component
 {
@@ -25,11 +27,11 @@ class AvailabilityComponent extends Component
      */
     public function getNumbers($applicationId)
     {
-        $this->Applications = TableRegistry::get('Applications');
+        $this->Applications = TableRegistry::getTableLocator()->get('Applications');
 
-        $Cubs = $this->Applications->find('cubs')->where(['Applications.id' => $applicationId])->count(['*']);
-        $YLs = $this->Applications->find('youngLeaders')->where(['Applications.id' => $applicationId])->count(['*']);
-        $Leaders = $this->Applications->find('leaders')->where(['Applications.id' => $applicationId])->count(['*']);
+        $Cubs = $this->Applications->find('cubs')->where(['Applications.id' => $applicationId])->count();
+        $YLs = $this->Applications->find('youngLeaders')->where(['Applications.id' => $applicationId])->count();
+        $Leaders = $this->Applications->find('leaders')->where(['Applications.id' => $applicationId])->count();
 
         $results = [
             'NumCubs' => $Cubs,

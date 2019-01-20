@@ -43,8 +43,8 @@ class PricesFixture extends TestFixture
     public $records = [
         [
             'item_type_id' => 1,
-            'event_id' => 1,
-            'max_number' => 1,
+            'event_id' => 2,
+            'max_number' => 6,
             'value' => 20,
             'description' => 'Team Booking Price'
         ],
@@ -68,13 +68,6 @@ class PricesFixture extends TestFixture
             'max_number' => 3,
             'value' => 35,
             'description' => 'Scout Price'
-        ],
-        [
-            'item_type_id' => 1,
-            'event_id' => 1,
-            'max_number' => 1,
-            'value' => 100,
-            'description' => 'Second Team Price'
         ],
         [
             'item_type_id' => 5,

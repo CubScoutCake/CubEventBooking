@@ -16,7 +16,7 @@
         "mpdf/mpdf" : "@stable",
         "friendsofcake/bootstrap-ui": "@stable",
         "friendsofcake/cakephp-csvview": "@stable",
-        "muffin/trash": "dev-master",
+        "muffin/trash": "@stable",
         "friendsofcake/search": "@stable",
         "robmorgan/phinx": "@stable",
         "dereuromark/cakephp-databaselog": "@stable",

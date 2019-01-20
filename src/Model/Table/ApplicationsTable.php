@@ -177,14 +177,20 @@ class ApplicationsTable extends Table
      * Finds the attendees, which are Cubs on the Application.
      *
      * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options The Array containing Options
+     *
      * @return \Cake\ORM\Query The modified query.
      */
-    public function findCubs($query)
+    public function findCubs($query, $options)
     {
         $query = $query->matching(
             'Attendees.Roles',
             function ($q) {
-                return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id' => 1]);
+                return $q->where([
+                    'Attendees.deleted IS' => null,
+                    'Roles.minor' => true,
+                    'Roles.id' => 3
+                ]);
             }
         );
 
@@ -195,14 +201,16 @@ class ApplicationsTable extends Table
      * Finds the attendees, which are Young Leaders on the Application.
      *
      * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options The Array containing Options.
+     *
      * @return \Cake\ORM\Query The modified query.
      */
-    public function findYoungLeaders($query)
+    public function findYoungLeaders($query, $options)
     {
         $query = $query->matching(
             'Attendees.Roles',
             function ($q) {
-                return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id <>' => 1]);
+                return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id <>' => 3]);
             }
         );
 
@@ -213,6 +221,7 @@ class ApplicationsTable extends Table
      * Finds the attendees, which are Adult Leaders on the Application.
      *
      * @param \Cake\ORM\Query $query The original query to be modified.
+     *
      * @return \Cake\ORM\Query The modified query.
      */
     public function findLeaders($query)

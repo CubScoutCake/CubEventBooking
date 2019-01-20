@@ -15,31 +15,50 @@ class LineComponentTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
-        'app.event_types',
-        'app.events', 'app.event_statuses',
-        'app.settings',
-        'app.setting_types',
-        'app.discounts',
-        'app.users',
-        'app.roles',
-        'app.password_states',
-        'app.attendees',
-        'app.sections',
-        'app.section_types',
-        'app.scoutgroups',
-        'app.districts',
-        'app.applications', 'app.application_statuses',
-        'app.invoices',
-        'app.invoice_items',
-        'app.item_types',
-        'app.prices',
+        'app.allergies',
+        'app.application_statuses',
+        'app.applications',
         'app.applications_attendees',
+        'app.attendees',
+        'app.attendees_allergies',
         'app.auth_roles',
+        'app.champions',
+        'app.discounts',
+        'app.districts',
+        'app.email_response_types',
+        'app.email_responses',
+        'app.email_sends',
+        'app.event_statuses',
+        'app.event_types',
+        'app.events',
+        'app.invoice_items',
+        'app.invoices',
+        'app.invoices_payments',
+        'app.item_types',
+        'app.logistic_items',
+        'app.logistics',
+        'app.notes',
+        'app.notification_types',
         'app.notifications',
-        'app.notification_types'
-    ];*/
+        'app.parameter_sets',
+        'app.parameters',
+        'app.params',
+        'app.password_states',
+        'app.payments',
+        'app.prices',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.roles',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.setting_types',
+        'app.settings',
+        'app.users',
+        'app.sessions',
+    ];
 
     /**
      * Test subject
@@ -89,9 +108,7 @@ class LineComponentTest extends TestCase
      */
     public function testParseInvoice()
     {
-        $this->markTestSkipped('Fixture Oddity.');
-
-        $invoices = TableRegistry::get('Invoices');
+        $invoices = $this->getTableLocator()->get('Invoices');
 
         $response = $this->Line->parseInvoice(1);
         $this->assertTrue($response);
@@ -112,55 +129,67 @@ class LineComponentTest extends TestCase
 
     public function testParseLine()
     {
-        $this->markTestSkipped('Fixture Oddity.');
         // Event 1 - Team Bookings
+        $events = $this->getTableLocator()->get('Events');
+        $teamBookingEvent = $events->get(2, ['contain' => 'Prices']);
+
+        $this->assertTrue($teamBookingEvent->get('team_price'));
+        $this->assertEquals(6, $teamBookingEvent->prices[0]->max_number);
 
         // Team Price 1 (on / over)
-        $response = $this->Line->parseLine(1, 1, 1);
+        $response = $this->Line->parseLine(1, 1, 6);
         $this->assertTrue($response);
-        $response = $this->Line->parseLine(1, 1, 2);
-        $this->assertFalse($response);
-
-        // Team Price 2 (on / over)
-        $response = $this->Line->parseLine(1, 5, 1);
-        $this->assertTrue($response);
-        $response = $this->Line->parseLine(1, 5, 2);
+        $response = $this->Line->parseLine(1, 1, 7);
         $this->assertFalse($response);
 
         // Event 3 - Line Bookings
+        $events = $this->getTableLocator()->get('Events');
+        $sectionBookingEvent = $events->get(3, ['contain' => 'Prices']);
+
+        $this->assertFalse($sectionBookingEvent->get('team_price'));
 
         // Cubs (on / over)
+        $this->assertEquals(5, $sectionBookingEvent->prices[4]->max_number);
+
         $response = $this->Line->parseLine(2, 2, 5);
         $this->assertTrue($response);
-        $response = $this->Line->parseLine(2, 2, 8);
+        $response = $this->Line->parseLine(2, 2, 6);
         $this->assertFalse($response);
 
         // Beavers (on / over)
+        $this->assertEquals(2, $sectionBookingEvent->prices[3]->max_number);
+
         $response = $this->Line->parseLine(2, 3, 2);
         $this->assertTrue($response);
-        $response = $this->Line->parseLine(2, 3, 4);
+        $response = $this->Line->parseLine(2, 3, 3);
         $this->assertFalse($response);
 
         // Scouts (on / over)
+        $this->assertEquals(3, $sectionBookingEvent->prices[2]->max_number);
+
         $response = $this->Line->parseLine(2, 4, 3);
         $this->assertTrue($response);
         $response = $this->Line->parseLine(2, 4, 4);
         $this->assertFalse($response);
 
         // Explorers (on / over)
-        $response = $this->Line->parseLine(2, 6, 3);
+        $this->assertEquals(3, $sectionBookingEvent->prices[1]->max_number);
+
+        $response = $this->Line->parseLine(2, 5, 3);
         $this->assertTrue($response);
-        $response = $this->Line->parseLine(2, 6, 4);
+        $response = $this->Line->parseLine(2, 5, 4);
         $this->assertFalse($response);
 
         // Adults (on / over)
-        $response = $this->Line->parseLine(2, 7, 10);
+        $this->assertEquals(10, $sectionBookingEvent->prices[0]->max_number);
+
+        $response = $this->Line->parseLine(2, 6, 10);
         $this->assertTrue($response);
-        $response = $this->Line->parseLine(2, 7, 12);
+        $response = $this->Line->parseLine(2, 6, 11);
         $this->assertFalse($response);
 
         // Test Price & Invoice Mismatch
-        $response = $this->Line->parseLine(1, 7, 1);
+        $response = $this->Line->parseLine(1, 6, 1);
         $this->assertFalse($response);
     }
 }

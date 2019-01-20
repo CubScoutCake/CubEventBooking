@@ -2,13 +2,15 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ApplicationsController;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
- * App\Admin\ApplicationsController Test Case
+ * App\Controller\ApplicationsController Test Case
  */
-class ApplicationsControllerTest extends IntegrationTestCase
+class ApplicationsControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * Fixtures
@@ -18,6 +20,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.allergies',
         'app.application_statuses',
+        'app.applications_attendees',
         'app.applications',
         'app.attendees',
         'app.attendees_allergies',
@@ -61,6 +64,8 @@ class ApplicationsControllerTest extends IntegrationTestCase
      * Test index method
      *
      * @return void
+     *
+     * @throws
      */
     public function testIndex()
     {
@@ -85,13 +90,32 @@ class ApplicationsControllerTest extends IntegrationTestCase
     }
 
     /**
-     * Test view method
+     * Test invoice method
      *
      * @return void
      */
-    public function testView()
+    public function testInvoice()
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test view method
+     *
+     * @return void
+     *
+     * @throws
+     */
+    public function testView()
+    {
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1
+        ]);
+
+        $this->get(['controller' => 'Applications', 'action' => 'view', 1]);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -105,31 +129,41 @@ class ApplicationsControllerTest extends IntegrationTestCase
     }
 
     /**
-     * Test add method
-     *
-     * @return void
-     */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test newApp method
-     *
-     * @return void
-     */
-    public function testNewApp()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test book method
      *
      * @return void
      */
     public function testBook()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test simpleBook method
+     *
+     * @return void
+     */
+    public function testSimpleBook()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test syncBook method
+     *
+     * @return void
+     */
+    public function testSyncBook()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test chooseOsmEvent method
+     *
+     * @return void
+     */
+    public function testChooseOsmEvent()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
