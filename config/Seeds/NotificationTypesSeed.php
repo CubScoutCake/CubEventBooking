@@ -35,13 +35,13 @@ class NotificationtypesSeed extends AbstractSeed
                 'id' => '3',
                 'notification_type' => 'Possible Duplicate Invoices',
                 'notification_description' => 'This can be triggered, when an application has more than one invoice associated and it is not clear why.',
-                'icon' => NULL,
+                'icon' => null,
             ],
             [
                 'id' => '4',
                 'notification_type' => 'Possible Missing Invoice',
                 'notification_description' => 'This can be triggered, when an otherwise complete application does not have an invoice associated to it and it is not clear why.',
-                'icon' => NULL,
+                'icon' => null,
             ],
             [
                 'id' => '5',

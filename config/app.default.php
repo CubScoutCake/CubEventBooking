@@ -11,9 +11,9 @@ return [
      */
     'debug' => true,
 
-	'maintenance' => false,
+    'maintenance' => false,
 
-	'travis' => true,
+    'travis' => true,
 
     /**
      * Configure basic information about the application.

@@ -35,7 +35,7 @@ class Sections extends AbstractMigration
             ])
             ->addColumn('upper_age', 'integer')
             ->addColumn('lower_age', 'integer')
-            ->addColumn('role_id', 'integer',[
+            ->addColumn('role_id', 'integer', [
                 'default' => null,
                 'limit' => 11,
                 'null' => true,
@@ -47,7 +47,8 @@ class Sections extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->create();
 
         // create the table
@@ -87,17 +88,19 @@ class Sections extends AbstractMigration
                 'section_types',
                 'id',
                 [
-                    'delete'=> 'RESTRICT',
-                    'update'=> 'CASCADE'
-                ])
+                    'delete' => 'RESTRICT',
+                    'update' => 'CASCADE'
+                ]
+            )
             ->addForeignKey(
                 'scoutgroup_id',
                 'scoutgroups',
                 'id',
                 [
-                    'delete'=> 'RESTRICT',
-                    'update'=> 'CASCADE'
-                ])
+                    'delete' => 'RESTRICT',
+                    'update' => 'CASCADE'
+                ]
+            )
             ->addIndex(['section_type_id'])
             ->create();
 
@@ -114,7 +117,8 @@ class Sections extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->addIndex(['section_id'])
             ->update();
 
@@ -132,10 +136,10 @@ class Sections extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->addIndex(['section_id'])
             ->update();
-
 
         $table = $this->table('attendees');
         $table->addColumn('section_id', 'integer', [
@@ -150,7 +154,8 @@ class Sections extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->addIndex(['section_id'])
             ->update();
     }

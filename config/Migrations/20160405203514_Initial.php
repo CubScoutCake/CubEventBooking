@@ -1736,7 +1736,6 @@ class Initial extends AbstractMigration
                 ]
             )
             ->update();
-
     }
 
     public function down()
