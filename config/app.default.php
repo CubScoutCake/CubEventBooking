@@ -13,7 +13,7 @@ return [
 
     'maintenance' => false,
 
-    'travis' => true,
+    'travis' => false,
 
     /**
      * Configure basic information about the application.

@@ -222,11 +222,11 @@ return [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => LOGS,
             'file' => 'debug',
-            'levels' => ['debug'],
         ],
-        'database' => [
-            'className' => 'DatabaseLog.Database',
-            'levels' => ['notice', 'info', 'warning', 'error', 'critical', 'alert', 'emergency'],
+        'error' => [
+            'className' => 'Cake\Log\Engine\FileLog',
+            'path' => LOGS,
+            'file' => 'error',
         ],
     ],
 

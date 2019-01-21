@@ -23,7 +23,7 @@ class LogsControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.logs',
         'app.sessions',
@@ -67,7 +67,7 @@ class LogsControllerTest extends IntegrationTestCase
         'app.setting_types',
         'app.settings',
         'app.users',
-    ];
+    ];*/
 
     /**
      * Setup
@@ -83,7 +83,7 @@ class LogsControllerTest extends IntegrationTestCase
             $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
         }
 
-        $this->travisPass = Configure::read('travis');
+        $this->travisPass = false;
     }
 
     /**
