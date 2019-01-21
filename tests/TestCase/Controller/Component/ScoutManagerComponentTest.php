@@ -10,6 +10,9 @@ use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\Component\ScoutManagerComponent Test Case
+ *
+ * @property ScoutManagerComponent $ScoutManager
+ * @property bool $travisPass
  */
 class ScoutManagerComponentTest extends TestCase
 {
@@ -48,7 +51,7 @@ class ScoutManagerComponentTest extends TestCase
         $registry = new ComponentRegistry();
         $this->ScoutManager = new ScoutManagerComponent($registry);
 
-        $this->passthrough = Configure::read('travis');
+        $this->travisPass = Configure::read('travis');
     }
 
     /**
@@ -65,7 +68,7 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testGetSettings()
     {
-        if ($this->passthrough) {
+        if ($this->travisPass) {
             $this->markTestSkipped('Skipped for Travis until Mocked.');
         }
 
@@ -85,7 +88,7 @@ class ScoutManagerComponentTest extends TestCase
      */
     public function testCheckOsmStatus()
     {
-        if ($this->passthrough) {
+        if ($this->travisPass) {
             $this->markTestSkipped('Skipped for Travis until Mocked.');
         }
 
@@ -124,7 +127,7 @@ class ScoutManagerComponentTest extends TestCase
      */
     public function testLinkUser()
     {
-        if ($this->passthrough) {
+        if ($this->travisPass) {
             $this->markTestSkipped('Skipped for Travis until Mocked.');
         }
 
@@ -144,7 +147,7 @@ class ScoutManagerComponentTest extends TestCase
      */
     public function testLinkUserWrongPassword()
     {
-        if ($this->passthrough) {
+        if ($this->travisPass) {
             $this->markTestSkipped('Skipped for Travis until Mocked.');
         }
 
@@ -161,7 +164,7 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testStoreUserSecret()
     {
-        if ($this->passthrough) {
+        if ($this->travisPass) {
             $this->markTestSkipped('Skipped for Travis until Mocked.');
         }
 
@@ -178,7 +181,7 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testStoreAndRetrieveUserSecret()
     {
-        if ($this->passthrough) {
+        if ($this->travisPass) {
             $this->markTestSkipped('Skipped for Travis until Mocked.');
         }
 
@@ -196,7 +199,7 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testGetSectionIds()
     {
-        if ($this->passthrough) {
+        if ($this->travisPass) {
             $this->markTestSkipped('Skipped for Travis until Mocked.');
         }
 
@@ -217,7 +220,7 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testSetTerm()
     {
-        if ($this->passthrough) {
+        if ($this->travisPass) {
             $this->markTestSkipped('Skipped for Travis until Mocked.');
         }
 
@@ -251,7 +254,7 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testGetEvents()
     {
-        if ($this->passthrough) {
+        if ($this->travisPass) {
             $this->markTestSkipped('Skipped for Travis until Mocked.');
         }
 
@@ -283,7 +286,7 @@ class ScoutManagerComponentTest extends TestCase
 
     public function testGetEventAttendees()
     {
-        if ($this->passthrough) {
+        if ($this->travisPass) {
             $this->markTestSkipped('Skipped for Travis until Mocked.');
         }
 
