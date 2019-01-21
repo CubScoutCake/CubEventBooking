@@ -8,6 +8,11 @@ use Cake\ORM\TableRegistry;
 
 /**
  * Line component
+ *
+ * @property \App\Model\Table\InvoicesTable $Invoices
+ * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Model\Table\InvoiceItemsTable $InvoiceItems
+ * @property \App\Model\Table\PricesTable $Prices
  */
 class LineComponent extends Component
 {
@@ -26,8 +31,8 @@ class LineComponent extends Component
      */
     public function parseInvoice($invoiceID)
     {
-        $this->Invoices = TableRegistry::get('Invoices');
-        $this->Applications = TableRegistry::get('Applications');
+        $this->Invoices = TableRegistry::getTableLocator()->get('Invoices');
+        $this->Applications = TableRegistry::getTableLocator()->get('Applications');
 
         $invoice = $this->Invoices->get($invoiceID, [
             'contain' => 'Applications.Events.Prices.ItemTypes'
@@ -87,9 +92,9 @@ class LineComponent extends Component
      */
     public function parseLine($invoiceID, $priceID, $quantity)
     {
-        $this->InvoiceItems = TableRegistry::get('InvoiceItems');
-        $this->Invoices = TableRegistry::get('Invoices');
-        $this->Prices = TableRegistry::get('Prices');
+        $this->InvoiceItems = TableRegistry::getTableLocator()->get('InvoiceItems');
+        $this->Invoices = TableRegistry::getTableLocator()->get('Invoices');
+        $this->Prices = TableRegistry::getTableLocator()->get('Prices');
 
         $price = $this->Prices->get($priceID, ['contain' => 'ItemTypes']);
 

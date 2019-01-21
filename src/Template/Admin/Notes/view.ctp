@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-10 col-md-10">
-        <h1 class="page-header"><i class="fa fa-pencil-square-o fa-fw"></i> Note #<?= h($note->id); ?></h1>
+        <h1 class="page-header"><i class="fal fa-edit fa-fw"></i> Note #<?= h($note->id); ?></h1>
     </div>
     <div class="pull-right">
         <div class="btn-group">
@@ -24,7 +24,7 @@
     <div class="col-lg-6">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <i class="fa fa-font 2x fa-fw"></i> Note Text
+                <i class="fal fa-font 2x fa-fw"></i> Note Text
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -35,7 +35,7 @@
     <div class="col-lg-6">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <i class="fa fa-key 2x fa-fw"></i> Link
+                <i class="fal fa-key 2x fa-fw"></i> Link
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

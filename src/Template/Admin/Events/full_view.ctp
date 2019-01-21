@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-lg-9 col-md-8">
-        <h1 class="page-header"><i class="fa fa-calendar-o fa-fw"></i> <?= h($event->name) ?></h1>
+        <h1 class="page-header"><i class="fal fa-calendar-star fa-fw"></i> <?= h($event->name) ?></h1>
     </div>
     <div class="col-lg-1 col-md-2">
         <!--</br>
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-envelope-o fa-fw"></i>
+                    <i class="fal fa-envelope-o fa-fw"></i>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
@@ -54,7 +54,7 @@
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-key fa-fw"></i> Key Event Information
+                <i class="fal fa-key fa-fw"></i> Key Event Information
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -90,36 +90,36 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-lg-6 col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-envelope-o fa-fw"></i> Event Organiser Contact
-            </div>
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <tr>
-                            <th><?= __('Contact Person') ?></th>
-                            <td><?= h($event->admin_full_name) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Contact Email') ?></th>
-                            <td><?= $this->Text->autoLink($event->admin_email) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Address') ?></th>
-                            <td><?= h($event->address) ?> </br>
-                                <?= h($event->city) ?> </br>
-                                <?= h($event->county) ?> </br>
-                                <?= h($event->postcode) ?></td>
-                        </tr>
-                    </table>
+            <br />
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fal fa-mobile fa-fw"></i> Event Organiser Contact
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tr>
+                                <th><?= __('Contact Person') ?></th>
+                                <td><?= h($event->admin_full_name) ?></td>
+                            </tr>
+                            <tr>
+                                <th><?= __('Contact Email') ?></th>
+                                <td><?= $this->Text->autoLink($event->admin_email) ?></td>
+                            </tr>
+                            <tr>
+                                <th><?= __('Address') ?></th>
+                                <td><?= h($event->address) ?> </br>
+								    <?= h($event->city) ?> </br>
+								    <?= h($event->county) ?> </br>
+								    <?= h($event->postcode) ?></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <div class="row">
@@ -134,43 +134,7 @@
         </div>
     </div>
     <div class="col-lg-6">
-        <div class="panel panel-default">
-        	<div class="panel-heading">
-                <i class="fa fa-cog fa-fw"></i> Event Settings
-            </div>
-            <div class="panel-body">
-	            <div class="table-responsive">
-	            	<table class="table table-hover">
-	            		<tr>
-	            		    <td><?= $event->live ? __('Event is Live') : __('Event is Hidden'); ?></td>
-	            		</tr>
-            		    <tr>
-	            		    <td><?= $event->max ? __('Numbers Limited') : __('Numbers Not Limited'); ?></td>
-            		    </tr>
-            		    <tr>
-	            		    <td><?= $event->allow_reductions ? __('Invoices can be Reduced') : __('Invoices can only be Increased'); ?></td>
-	            		</tr>
-            		    <tr>
-	            			<td><?= $event->invoices_locked ? __('Invoices are Locked') : __('Invoices can be Updated'); ?></td>
-	            		</tr>
-            		    <tr>
-	            			<td><?= $event->parent_applications ? __('Parent Applications Available') : __('Parent Applications Unavailable'); ?></td>
-	            		</tr>
-	            		<tr>
-	            		    <td><?php if (isset($event->available_apps) && isset($event->available_cubs)) {
-	            		            echo 'Available Cubs & Apps Limited';
-	            		        } elseif (isset($event->available_cubs)) {
-	            		            echo 'Available Cubs Limited';
-	            		        } elseif (isset($event->available_apps)) {
-	            		            echo 'Available Apps Limited';
-	            		        } else {
-	            		           echo 'Available Cubs & Apps Unlimited'; 
-	            		        }  ?></td>
-	            		</tr>
-	            	</table>
-            	</div>
-	        </div>  
-        </div>
+
     </div>
 </div>
 
@@ -178,7 +142,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-gbp fa-fw"></i> Prices
+                <i class="fal fa-receipt fa-fw"></i> Prices
                 <div class="pull-right">
                     <div class="btn-group">
                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -216,7 +180,7 @@
                 </div>
                 <?php endif; ?>
                 <?php if (empty($event->prices)): ?>
-                    <h2><i class="fa fa-exclamation-triangle fa-3x"></i> There are no prices set.</h2>
+                    <h2><i class="fal fa-calendar-exclamation fa-3x"></i> There are no prices set.</h2>
                 <?php endif; ?>
             </div>
             <div class="panel-footer">
@@ -266,24 +230,24 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-level-down fa-fw"></i> Related Items
+                <i class="fal fa-level-down fa-fw"></i> Related Items
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills">
-                    <li class="active"><a href="#suma-pills" data-toggle="tab"><i class="fa fa-bar-chart fa-fw"></i> Summary Numbers</a></li>
+                    <li class="active"><a href="#suma-pills" data-toggle="tab"><i class="fal fa-chart-bar fa-fw"></i> Summary Numbers</a></li>
                     <?php if (!empty($event->applications)): ?>
-	                    <li><a href="#appl-pills" data-toggle="tab"><i class="fa fa-tasks fa-fw"></i> Applications</a></li>
+	                    <li><a href="#appl-pills" data-toggle="tab"><i class="fal fa-clipboard-list fa-fw"></i> Applications</a></li>
 	                <?php endif; ?>
 	                <?php if (!empty($invoices)): ?>
-	                    <li><a href="#invo-pills" data-toggle="tab"><i class="fa fa-files-o fa-fw"></i> Invoices</a></li>
+	                    <li><a href="#invo-pills" data-toggle="tab"><i class="fal fa-file-invoice-dollar fa-fw"></i> Invoices</a></li>
 	                <?php endif; ?>
                     <?php if (!empty($outInvoices)): ?>
-                        <li><a href="#outi-pills" data-toggle="tab"><i class="fa fa-files-o fa-fw"></i> Outstanding Invoices</a></li>
+                        <li><a href="#outi-pills" data-toggle="tab"><i class="fal fa-file-invoice-dollar fa-fw"></i> Outstanding Invoices</a></li>
                     <?php endif; ?>
                     <?php if (!empty($unpaidInvoices)): ?>
-                        <li><a href="#unpa-pills" data-toggle="tab"><i class="fa fa-files-o fa-fw"></i> Unpaid Invoices</a></li>
+                        <li><a href="#unpa-pills" data-toggle="tab"><i class="fal fa-file-invoice-dollar fa-fw"></i> Unpaid Invoices</a></li>
                     <?php endif; ?>
                 </ul>
 
@@ -374,7 +338,7 @@
 	                    	                <td class="actions">
 	                    	                	<div class="dropdown btn-group">
 	                    	                	    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-	                    	                	        <i class="fa fa-gear"></i>  <span class="caret"></span>
+	                    	                	        <i class="fal fa-cog"></i>  <span class="caret"></span>
 	                    	                	    </button>
 	                    	                	    <ul class="dropdown-menu " role="menu">
 	                    	                	        <li><?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $applications->id]) ?></li>
@@ -418,7 +382,7 @@
 	                                            <td class="actions">
 	                                            	<div class="dropdown btn-group">
 	                                            	    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-	                                            	        <i class="fa fa-gear"></i>  <span class="caret"></span>
+	                                            	        <i class="fal fa-cog"></i>  <span class="caret"></span>
 	                                            	    </button>
 	                                            	    <ul class="dropdown-menu " role="menu">
 	                                            	        <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoice->id]) ?></li>
@@ -463,7 +427,7 @@
                                                 <td class="actions">
                                                     <div class="dropdown btn-group">
                                                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                            <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
                                                             <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoice->id]) ?></li>
@@ -508,7 +472,7 @@
                                                 <td class="actions">
                                                     <div class="dropdown btn-group">
                                                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                            <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu " role="menu">
                                                             <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoice->id]) ?></li>

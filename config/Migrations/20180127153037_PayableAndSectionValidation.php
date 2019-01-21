@@ -12,39 +12,39 @@ class PayableAndSectionValidation extends AbstractMigration
      */
     public function change()
     {
-    	$table = $this->table('sections');
+        $table = $this->table('sections');
 
-    	$table
-		    ->addColumn('validated', 'boolean', [
-		    	'default' => false,
-			    'null' => false,
-		    ])
-		    ->addColumn('cc_users', 'integer', [
-		    	'default' => null,
-			    'null' => true,
-			    'limit' => 11,
-		    ])
-		    ->addColumn('cc_atts', 'integer', [
-			    'default' => null,
-			    'null' => true,
-			    'limit' => 11,
-		    ])
-		    ->addColumn('cc_apps', 'integer', [
-			    'default' => null,
-			    'null' => true,
-			    'limit' => 11,
-		    ])
-		    ->save();
+        $table
+            ->addColumn('validated', 'boolean', [
+                'default' => false,
+                'null' => false,
+            ])
+            ->addColumn('cc_users', 'integer', [
+                'default' => null,
+                'null' => true,
+                'limit' => 11,
+            ])
+            ->addColumn('cc_atts', 'integer', [
+                'default' => null,
+                'null' => true,
+                'limit' => 11,
+            ])
+            ->addColumn('cc_apps', 'integer', [
+                'default' => null,
+                'null' => true,
+                'limit' => 11,
+            ])
+            ->save();
 
-    	$table = $this->table('event_types');
+        $table = $this->table('event_types');
 
-    	$table
-		    ->addColumn('payable_setting_id', 'integer', [
-		    	'default' => null,
-			    'null' => true,
-			    'limit' => 11,
-		    ])
-		    ->addForeignKey('payable_setting_id', 'settings', ['id'])
-		    ->save();
+        $table
+            ->addColumn('payable_setting_id', 'integer', [
+                'default' => null,
+                'null' => true,
+                'limit' => 11,
+            ])
+            ->addForeignKey('payable_setting_id', 'settings', ['id'])
+            ->save();
     }
 }

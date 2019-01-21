@@ -6,7 +6,7 @@
 ?>
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-tasks fa-fw"></i> <?= h($page_title) ?></h3>
+        <h3><i class="fal fa-clipboard-list fa-fw"></i> <?= h($page_title) ?></h3>
         <div class="table-responsive">   
             <table class="table table-hover">
                 <thead>
@@ -28,7 +28,7 @@
                             <td class="actions">
                                 <div class="dropdown btn-group">
                                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                        <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                        <i class="fal fa-cog"></i>  <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu " role="menu">
                                         <li><?= $this->Html->link(__('View'), ['action' => 'view', $application->id]) ?></li>

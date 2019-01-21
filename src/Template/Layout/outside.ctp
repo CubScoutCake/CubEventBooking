@@ -41,7 +41,7 @@ $cakeDescription = 'HertsCubs Booking System';
     <?php echo $this->element('analytics'); ?>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <nav class="navbar navbar-inverse" role="navigation" >
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -83,30 +83,30 @@ $cakeDescription = 'HertsCubs Booking System';
 
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
-            <ul class="nav" id="side-menu">
+            <ul class="nav" id="metismenu">
                 <li>
                     <a href="<?php echo $this->Url->build([
                         'controller' => 'Landing',
                         'action' => 'welcome',
-                        'prefix' => false]); ?>"><i class="fa fa-flag-checkered fa-fw"></i> Start Page</a>
+                        'prefix' => false]); ?>"><i class="fal fa-flag-checkered fa-fw"></i> Start Page</a>
                 </li>
                 <li>
                     <a href="<?php echo $this->Url->build([
                         'controller' => 'Users',
                         'action' => 'login',
-                        'prefix' => false]); ?>"><i class="fa fa-sign-in fa-fw"></i> Login</a>
+                        'prefix' => false]); ?>"><i class="fal fa-sign-in fa-fw"></i> Login</a>
                 </li>
                 <li>
                     <a href="<?php echo $this->Url->build([
                         'controller' => 'Users',
                         'action' => 'register',
-                        'prefix' => 'register']); ?>"><i class="fa fa-pencil-square-o fa-fw"></i> Register</a>
+                        'prefix' => 'register']); ?>"><i class="fal fa-edit fa-fw"></i> Register</a>
                 </li>
                 <li>
                     <a href="<?php echo $this->Url->build([
                         'controller' => 'Mailchimp',
                         'action' => 'mailchimp',
-                        'prefix' => false]); ?>"><i class="fa fa-envelope-o fa-fw"></i> Sign Up for Emails</a>
+                        'prefix' => false]); ?>"><i class="fal fa-envelope fa-fw"></i> Sign Up for Emails</a>
                 </li>
             </ul>
         </div>
@@ -116,8 +116,6 @@ $cakeDescription = 'HertsCubs Booking System';
 
     </nav>
     <div id="page-wrapper">
-
-        </br>
 
         <?php if (!$this->fetch('tb_flash')) {
             $this->start('tb_flash');

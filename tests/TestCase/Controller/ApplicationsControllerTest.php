@@ -2,13 +2,15 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ApplicationsController;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
- * App\Admin\ApplicationsController Test Case
+ * App\Controller\ApplicationsController Test Case
  */
-class ApplicationsControllerTest extends IntegrationTestCase
+class ApplicationsControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * Fixtures
@@ -16,26 +18,54 @@ class ApplicationsControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.applications', 'app.application_statuses',
-        'app.events', 'app.event_statuses',
-        'app.settings',
+        'app.allergies',
+        'app.application_statuses',
+        'app.applications_attendees',
+        'app.applications',
+        'app.attendees',
+        'app.attendees_allergies',
+        'app.auth_roles',
+        'app.champions',
         'app.discounts',
-        'app.users',
-        'app.password_states',
-        'app.scoutgroups',
-        'app.sections',
-        'app.section_types',
-        'app.authroles',
         'app.districts',
-        'app.roles',
-        'app.setting_types',
+        'app.email_response_types',
+        'app.email_responses',
+        'app.email_sends',
+        'app.event_statuses',
         'app.event_types',
+        'app.events',
+        'app.invoice_items',
+        'app.invoices',
+        'app.invoices_payments',
+        'app.item_types',
+        'app.logistic_items',
+        'app.logistics',
+        'app.notes',
+        'app.notification_types',
+        'app.notifications',
+        'app.parameter_sets',
+        'app.parameters',
+        'app.params',
+        'app.password_states',
+        'app.payments',
+        'app.prices',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.roles',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.setting_types',
+        'app.settings',
+        'app.users',
     ];
 
     /**
      * Test index method
      *
      * @return void
+     *
+     * @throws
      */
     public function testIndex()
     {
@@ -60,13 +90,32 @@ class ApplicationsControllerTest extends IntegrationTestCase
     }
 
     /**
-     * Test view method
+     * Test invoice method
      *
      * @return void
      */
-    public function testView()
+    public function testInvoice()
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test view method
+     *
+     * @return void
+     *
+     * @throws
+     */
+    public function testView()
+    {
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1
+        ]);
+
+        $this->get(['controller' => 'Applications', 'action' => 'view', 1]);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -80,31 +129,41 @@ class ApplicationsControllerTest extends IntegrationTestCase
     }
 
     /**
-     * Test add method
-     *
-     * @return void
-     */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test newApp method
-     *
-     * @return void
-     */
-    public function testNewApp()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test book method
      *
      * @return void
      */
     public function testBook()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test simpleBook method
+     *
+     * @return void
+     */
+    public function testSimpleBook()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test syncBook method
+     *
+     * @return void
+     */
+    public function testSyncBook()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test chooseOsmEvent method
+     *
+     * @return void
+     */
+    public function testChooseOsmEvent()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

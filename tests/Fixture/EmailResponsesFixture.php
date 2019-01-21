@@ -40,22 +40,26 @@ class EmailResponsesFixture extends TestFixture
     // @codingStandardsIgnoreEnd
 
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 1,
-            'email_send_id' => 1,
-            'email_response_type_id' => 1,
-            'created' => 1487718593,
-            'received' => 1487718593,
-            'link_clicked' => 'Lorem ipsum dolor sit amet',
-            'ip_address' => 'Lorem ipsum dolor sit amet',
-            'bounce_reason' => 'Lorem ipsum dolor sit amet',
-            'message_size' => 1,
-            'deleted' => null
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'email_send_id' => 1,
+                'email_response_type_id' => 1,
+                'created' => 1542548923,
+                'received' => 1542548923,
+                'link_clicked' => 'Lorem ipsum dolor sit amet',
+                'ip_address' => 'Lorem ipsum dolor sit amet',
+                'bounce_reason' => 'Lorem ipsum dolor sit amet',
+                'message_size' => 1,
+                'deleted' => 1542548923
+            ],
+        ];
+        parent::init();
+    }
 }

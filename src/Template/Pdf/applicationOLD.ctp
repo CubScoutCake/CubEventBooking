@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12">
-        <h1 class="page-header"><i class="fa fa-tasks fa-fw"></i> Application <?= h($application->display_code) ?></h1>
+        <h1 class="page-header"><i class="fal fa-clipboard-list fa-fw"></i> Application <?= h($application->display_code) ?></h1>
     </div>
 </div>
 <div class="row">
@@ -36,7 +36,7 @@
     <div class="col-sm-12 col-xs-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-tasks fa-fw"></i> Application Completion Progress
+                <i class="fal fa-clipboard-list fa-fw"></i> Application Completion Progress
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -56,7 +56,7 @@
     <div class="col-xs-6 col-sm-6">
         <div class="panel panel-yellow">
             <div class="panel-heading">
-                <i class="fa fa-files-o"></i> Invoices
+                <i class="fal fa-file-invoice-dollar"></i> Invoices
             </div>
             <div class="panel-body">
                 <div>
@@ -79,7 +79,7 @@
     <div class="col-xs-6 col-sm-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-group"></i> Attendees
+                <i class="fal fa-poll-people"></i> Attendees
             </div>
             <div class="panel-body">
                 <div>
@@ -102,7 +102,7 @@
     <div class="col-xs-6 col-sm-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-group"></i> Attendees
+                <i class="fal fa-poll-people"></i> Attendees
             </div>
             <div class="panel-body">
                 <div>
@@ -125,7 +125,7 @@
     <div class="col-xs-6 col-sm-6">
         <div class="panel panel-red">
             <div class="panel-heading">
-                <i class="fa fa-gbp"></i> Payments
+                <i class="fal fa-receipt"></i> Payments
             </div>
             <div class="panel-body">
                 <div>
@@ -152,7 +152,7 @@
         <?php if (!empty($application->invoices)): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-files-o fa-fw"></i> Invoices on this Application
+                    <i class="fal fa-file-invoice-dollar fa-fw"></i> Invoices on this Application
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -186,7 +186,7 @@
         <?php if (!empty($application->attendees)): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-group fa-fw"></i> Attendees on this Application
+                    <i class="fal fa-poll-people fa-fw"></i> Attendees on this Application
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -229,7 +229,7 @@
         <?php if (!empty($application->notes)) : ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-pencil-square-o fa-fw"></i> Application Notes
+                    <i class="fal fa-edit fa-fw"></i> Application Notes
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">

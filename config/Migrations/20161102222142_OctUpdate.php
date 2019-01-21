@@ -1326,4 +1326,3 @@ class OctUpdate extends AbstractMigration
             ->update();
     }
 }
-

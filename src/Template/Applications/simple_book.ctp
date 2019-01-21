@@ -3,7 +3,7 @@
         <div class="panel-body">
             <?= $this->Form->create($application) ?>
             <fieldset>
-                <legend><i class="fa fa-tasks fa-fw" ></i><?= __(' Simple Event Booking') ?></legend>
+                <legend><i class="fal fa-clipboard-list fa-fw" ></i><?= __(' Simple Event Booking') ?></legend>
                 <?php
                     if ($permitHolderBool) {
                         echo $this->Form->input('permit_holder', ['label' => 'The Name of the Nights Away Permit Holder']);

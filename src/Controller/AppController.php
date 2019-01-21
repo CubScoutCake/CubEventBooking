@@ -15,7 +15,6 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
-use Cake\ORM\TableRegistry;
 use Cake\View\CellTrait;
 
 /**
@@ -52,10 +51,6 @@ class AppController extends Controller
         $this->loadComponent('Security');
         $this->loadComponent('Csrf');
         $this->loadComponent('RequestHandler');
-
-        if (env('SERVER_NAME') !== 'dev.hertscubs100.uk') {
-        //$this->Security->requiresecure();
-        }
 
         $this->loadComponent('Alert');
         $this->Alert->appLoad($this->Auth->user('id'));

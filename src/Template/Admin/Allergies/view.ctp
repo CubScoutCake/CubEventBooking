@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1><i class="fa fa-exclamation fa-fw"></i> <?= h($allergy->allergy) ?></h1>
+        <h1><i class="fal fa-allergies fa-fw"></i> <?= h($allergy->allergy) ?></h1>
         <hr>
         <h6 class="subheader"><?= __('Description') ?></h6>
         <p><?= h($allergy->description) ?></p>
@@ -11,7 +11,7 @@
         <div class="col-lg-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="fa fa-group fa-fw"></i> Attendees with this Allergy
+                    <i class="fal fa-poll-people fa-fw"></i> Attendees with this Allergy
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -35,7 +35,7 @@
                                         <td class="actions">
                                             <div class="dropdown btn-group">
                                                 <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                    <i class="fal fa-cog"></i>  <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu " role="menu">
                                                     <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendee->id]) ?></li>

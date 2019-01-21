@@ -13,37 +13,37 @@ class EventTypes extends AbstractMigration
     public function change()
     {
         $table = $this->table('users');
-        $table->addColumn('section_validated', 'integer',[
+        $table->addColumn('section_validated', 'integer', [
                 'default' => null,
                 'limit' => 11,
                 'null' => true,
             ])
-            ->addColumn('email_validated', 'integer',[
+            ->addColumn('email_validated', 'integer', [
                 'default' => null,
                 'limit' => 11,
                 'null' => true,
             ])
-            ->addColumn('simple_attendees', 'integer',[
+            ->addColumn('simple_attendees', 'integer', [
                 'default' => null,
                 'limit' => 11,
                 'null' => true,
             ])
-            ->changeColumn('legacy_section','string', [
+            ->changeColumn('legacy_section', 'string', [
                 'default' => null,
                 'limit' => 255,
                 'null' => true,
                 ])
-            ->changeColumn('osm_secret','string', [
+            ->changeColumn('osm_secret', 'string', [
                 'default' => null,
                 'limit' => 255,
                 'null' => true,
             ])
-            ->changeColumn('address_2','string', [
+            ->changeColumn('address_2', 'string', [
                 'default' => null,
                 'limit' => 255,
                 'null' => true,
             ])
-            ->changeColumn('pw_reset','string', [
+            ->changeColumn('pw_reset', 'string', [
                 'default' => null,
                 'limit' => 255,
                 'null' => true,
@@ -56,37 +56,37 @@ class EventTypes extends AbstractMigration
                 'limit' => 255,
                 'null' => false,
             ])
-            ->addColumn('simple_booking', 'boolean',[
+            ->addColumn('simple_booking', 'boolean', [
                 'default' => null,
                 'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('date_of_birth', 'boolean',[
+            ->addColumn('date_of_birth', 'boolean', [
                 'default' => null,
                 'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('medical', 'boolean',[
+            ->addColumn('medical', 'boolean', [
                 'default' => null,
                 'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('dietary', 'boolean',[
+            ->addColumn('dietary', 'boolean', [
                 'default' => null,
                 'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('parent_applications', 'boolean',[
+            ->addColumn('parent_applications', 'boolean', [
                 'default' => null,
                 'limit' => null,
                 'null' => true,
             ])
-            ->addColumn('invoice_text_id', 'integer',[
+            ->addColumn('invoice_text_id', 'integer', [
                 'default' => null,
                 'limit' => 11,
                 'null' => true,
             ])
-            ->addColumn('legal_text_id', 'integer',[
+            ->addColumn('legal_text_id', 'integer', [
                 'default' => null,
                 'limit' => 11,
                 'null' => true,
@@ -96,7 +96,6 @@ class EventTypes extends AbstractMigration
             ->addIndex(['legal_text_id'])
             ->create();
 
-
         $table = $this->table('events');
         $table->addColumn('event_type_id', 'integer', [
                 'default' => null,
@@ -104,13 +103,14 @@ class EventTypes extends AbstractMigration
                 'null' => false,
             ])
             ->addForeignKey(
-            'event_type_id',
-            'event_types',
-            'id',
-            [
+                'event_type_id',
+                'event_types',
+                'id',
+                [
                 'delete' => 'RESTRICT',
                 'update' => 'CASCADE'
-            ])
+                ]
+            )
             ->addColumn('section_type_id', 'integer', [
                 'default' => null,
                 'limit' => 11,
@@ -123,13 +123,14 @@ class EventTypes extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->addIndex(['event_type_id'])
             ->addIndex(['section_type_id'])
             ->update();
 
         $table = $this->table('itemtypes');
-        $table->renameColumn('roletype','role_id')
+        $table->renameColumn('roletype', 'role_id')
             ->addForeignKey(
                 'role_id',
                 'roles',
@@ -137,8 +138,9 @@ class EventTypes extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'RESTRICT'
-                ])
-            ->addColumn('available', 'boolean',[
+                ]
+            )
+            ->addColumn('available', 'boolean', [
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -157,7 +159,7 @@ class EventTypes extends AbstractMigration
             ->update();
 
         $table = $this->table('notifications');
-        $table->renameColumn('notificationtype_id','notification_type_id')
+        $table->renameColumn('notificationtype_id', 'notification_type_id')
             ->update();
 
         $table = $this->table('settingtypes');
@@ -202,7 +204,8 @@ class EventTypes extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->addForeignKey(
                 'event_id',
                 'events',
@@ -210,7 +213,8 @@ class EventTypes extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->addIndex(['item_type_id'])
             ->addIndex(['event_id'])
             ->create();

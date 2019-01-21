@@ -35,8 +35,8 @@ class EmailResponseTypesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('EmailResponseTypes') ? [] : ['className' => 'App\Model\Table\EmailResponseTypesTable'];
-        $this->EmailResponseTypes = TableRegistry::get('EmailResponseTypes', $config);
+        $config = TableRegistry::getTableLocator()->exists('EmailResponseTypes') ? [] : ['className' => EmailResponseTypesTable::class];
+        $this->EmailResponseTypes = TableRegistry::getTableLocator()->get('EmailResponseTypes', $config);
     }
 
     /**

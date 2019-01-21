@@ -57,6 +57,8 @@ class PricesTableTest extends TestCase
         'app.payments',
         'app.invoices_payments',
         'app.event_types',
+        'app.reservations',
+        'app.reservation_statuses',
     ];
 
     /**
@@ -98,8 +100,8 @@ class PricesTableTest extends TestCase
             [
                 'id' => 1,
                 'item_type_id' => 1,
-                'event_id' => 1,
-                'max_number' => 1,
+                'event_id' => 2,
+                'max_number' => 6,
                 'value' => 20.0,
                 'description' => 'Team Booking Price'
             ],
@@ -129,14 +131,6 @@ class PricesTableTest extends TestCase
             ],
             [
                 'id' => 5,
-                'item_type_id' => 1,
-                'event_id' => 1,
-                'max_number' => 1,
-                'value' => 100.0,
-                'description' => 'Second Team Price'
-            ],
-            [
-                'id' => 6,
                 'item_type_id' => 5,
                 'event_id' => 3,
                 'max_number' => 3,
@@ -144,7 +138,7 @@ class PricesTableTest extends TestCase
                 'description' => 'Explorer Price'
             ],
             [
-                'id' => 7,
+                'id' => 6,
                 'item_type_id' => 6,
                 'event_id' => 3,
                 'max_number' => 10,

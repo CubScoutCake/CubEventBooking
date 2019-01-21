@@ -4,16 +4,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Logistic Entity.
+ * Logistic Entity
  *
  * @property int $id
  * @property int $parameter_id
- * @property \App\Model\Entity\Parameter $parameter
  * @property int $event_id
  * @property string $header
  * @property string $text
- * @property \App\Model\Entity\Application $application
- * @property \App\Model\Entity\Logisticstype $logisticstype
+ * @property \Cake\I18n\Time $deleted
+ *
+ * @property \App\Model\Entity\Parameter $parameter
+ * @property \App\Model\Entity\Event $event
+ * @property \App\Model\Entity\LogisticItem[] $logistic_items
  */
 class Logistic extends Entity
 {
@@ -28,7 +30,13 @@ class Logistic extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false,
+        'parameter_id' => true,
+        'event_id' => true,
+        'header' => true,
+        'text' => true,
+        'deleted' => true,
+        'parameter' => true,
+        'event' => true,
+        'logistic_items' => true
     ];
 }

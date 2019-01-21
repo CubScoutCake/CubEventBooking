@@ -1,7 +1,7 @@
 <?php echo $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css'); ?>
 <div class="row">
     <div class="col-lg-11 col-md-10">
-        <h1 class="page-header"><i class="fa fa-calendar-o fa-fw"></i> <?= h($event->name) ?></h1>
+        <h1 class="page-header"><i class="fal fa-calendar-star fa-fw"></i> <?= h($event->name) ?></h1>
     </div>
     <div class="col-lg-1 col-md-2">
         <div class="pull-right pull-down">
@@ -29,7 +29,7 @@
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-key fa-fw"></i> Key Event Information
+                <i class="fal fa-key fa-fw"></i> Key Event Information
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -66,15 +66,49 @@
                 </div>
             </div>
         </div>
+        <br />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fal fa-cog fa-fw"></i> Event Settings
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tr>
+                            <td><?= $event->live ? __('Event is Live') : __('Event is Hidden'); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?= $event->max ? __('Numbers Limited') : __('Numbers Not Limited'); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?= $event->allow_reductions ? __('Invoices can be Reduced') : __('Invoices can only be Increased'); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?= $event->invoices_locked ? __('Invoices are Locked') : __('Invoices can be Updated'); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?= $event->parent_applications ? __('Parent Applications Available') : __('Parent Applications Unavailable'); ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php if (isset($event->available_apps) && isset($event->available_cubs)) {
+                                    echo 'Available Cubs & Apps Limited';
+                                } elseif (isset($event->available_cubs)) {
+                                    echo 'Available Cubs Limited';
+                                } elseif (isset($event->available_apps)) {
+                                    echo 'Available Apps Limited';
+                                } else {
+                                    echo 'Available Cubs & Apps Unlimited';
+                                }  ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
         <?php if ($event->max) : ?>
+            <br />
             <div class="row">
                 <?php if ($event->max_apps > 0 && !is_null($event->max_apps)) : ?>
-                    <?php if ($event->max_section == 0 || is_null($event->max_section)) : ?>
-                        <div class="col-lg-12">
-                    <?php endif; ?>
-                    <?php if ($event->max_section > 0 && !is_null($event->max_section)) : ?>
-                    <div class="col-lg-6">
-                <?php endif; ?>
+                <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="progress progress-striped active">
@@ -84,7 +118,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-thermometer-half fa-5x"></i>
+                                    <i class="fal fa-thermometer-half fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="large"><?= $this->Number->format($event->cc_apps) ?> <?= h($term) ?> of <?= $this->Number->format($event->max_apps) ?> Available</div>
@@ -93,44 +127,29 @@
                             </div>
                         </div>
                     </div>
-                    <?php if ($event->max_section == 0 || is_null($event->max_section)) : ?>
-                    </div>
-                <?php endif; ?>
-                    <?php if ($event->max_section > 0 && !is_null($event->max_section)) : ?>
-                        </div>
-                    <?php endif; ?>
+                </div>
                 <?php endif; ?>
                 <?php if ($event->max_section > 0 && !is_null($event->max_section)) : ?>
-                    <?php if ($event->max_apps == 0 || is_null($event->max_apps)) : ?>
-                        <div class="col-lg-12">
-                    <?php endif; ?>
-                    <?php if ($event->max_apps > 0 && !is_null($event->max_apps)) : ?>
-                    <div class="col-lg-6">
-                <?php endif; ?>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="progress progress-striped active">
-                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($event->cc_apps / $event->max_section) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($event->cc_apps / $event->max_section),1,['multiply' => true]); ?>">
-                                    <span class="sr-only"><?= $this->Number->toPercentage(($event->cc_apps / $event->max_section),1,['multiply' => true]); ?> Complete</span>
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="progress progress-striped active">
+                                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($event->places_taken / $event->max_section) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($event->cc_apps / $event->max_section),1,['multiply' => true]); ?>">
+                                        <span class="sr-only"><?= $this->Number->toPercentage(($event->places_taken / $event->max_section),1,['multiply' => true]); ?> Complete</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-thermometer-half fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div>Event Availability</div>
-                                    <div class="huge"><?= $this->Number->format($event->max_section - $event->cc_apps) ?> Attendee Slots Available</div>
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fal fa-thermometer-half fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="large"><?= $this->Number->format($event->places_taken) ?> <?= h($term) ?> of <?= $this->Number->format($event->max_section) ?> Available</div>
+                                        <div class="huge"><?= $this->Number->toPercentage(($event->places_taken / $event->max_section),1,['multiply' => true]); ?></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <?php if ($event->max_apps == 0 || is_null($event->max_apps)) : ?>
-                    </div>
-                <?php endif; ?>
-                    <?php if ($event->max_apps > 0 && !is_null($event->max_apps)) : ?>
-                        </div>
-                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
@@ -150,11 +169,10 @@
         <!-- /.panel -->
     </div>
     <?php endif; ?>
-    <?php if (empty($lineArray)) : ?>
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-envelope-o fa-fw"></i> Event Organiser Contact
+                <i class="fal fa-mobile fa-fw"></i> Event Organiser Contact
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -179,14 +197,13 @@
             </div>
         </div>
     </div>
-    <?php endif; ?>
 </div>
 
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-gbp fa-fw"></i> Prices
+                <i class="fal fa-receipt fa-fw"></i> Prices
                 <div class="pull-right">
                     <div class="btn-group">
                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -222,7 +239,7 @@
                                     <td class="actions">
                                         <div class="dropdown btn-group">
                                             <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                <i class="fal fa-cog"></i>  <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu " role="menu">
                                                 <li><?= $this->Html->link(__('Edit'), ['controller' => 'Prices', 'action' => 'Edit', $price->id]) ?></li>
@@ -239,7 +256,7 @@
                     </div>
 				<?php endif; ?>
 				<?php if (empty($event->prices)): ?>
-                    <h2><i class="fa fa-exclamation-triangle fa-3x"></i> There are no prices set.</h2>
+                    <h2><i class="fal fa-calendar-exclamation fa-3x"></i> There are no prices set.</h2>
 				<?php endif; ?>
             </div>
             <div class="panel-footer">

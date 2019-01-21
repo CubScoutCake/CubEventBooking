@@ -12,6 +12,7 @@ use Cake\ORM\Entity;
  * @property bool $minor
  * @property bool $cancelled
  * @property bool $available
+ * @property bool $team_price
  *
  * @property \App\Model\Entity\InvoiceItem[] $invoice_items
  */

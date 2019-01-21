@@ -79,7 +79,8 @@ class Email extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->addForeignKey(
                 'notification_id',
                 'notifications',
@@ -87,7 +88,8 @@ class Email extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->addForeignKey(
                 'notification_type_id',
                 'notification_types',
@@ -95,7 +97,8 @@ class Email extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->create();
 
         $table = $this->table('email_response_types');
@@ -161,7 +164,8 @@ class Email extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->addForeignKey(
                 'email_response_type_id',
                 'email_response_types',
@@ -169,7 +173,8 @@ class Email extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->create();
 
         $table = $this->table('tokens');
@@ -220,7 +225,8 @@ class Email extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->addForeignKey(
                 'user_id',
                 'users',
@@ -228,7 +234,8 @@ class Email extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->create();
 
         $table = $this->table('password_states');
@@ -248,15 +255,14 @@ class Email extends AbstractMigration
             ])
             ->create();
 
-
         $table = $this->table('users');
 
         $table
-	        ->changeColumn('pw_state', 'integer', [
-		        'default' => null,
-		        'null' => true,
-	        ])
-	        ->renameColumn('pw_state', 'password_state_id')
+            ->changeColumn('pw_state', 'integer', [
+                'default' => null,
+                'null' => true,
+            ])
+            ->renameColumn('pw_state', 'password_state_id')
             ->addIndex('password_state_id')
             ->addForeignKey(
                 'password_state_id',
@@ -265,7 +271,8 @@ class Email extends AbstractMigration
                 [
                     'delete' => 'RESTRICT',
                     'update' => 'CASCADE'
-                ])
+                ]
+            )
             ->save();
     }
 }

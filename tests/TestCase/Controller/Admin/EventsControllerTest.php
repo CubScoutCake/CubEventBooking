@@ -18,46 +18,54 @@ class EventsControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.event_types',
-        'app.events', 'app.event_statuses',
-        'app.settings',
-        'app.setting_types',
-        'app.discounts',
-        'app.users',
-        'app.password_states',
-        'app.roles',
-        'app.attendees',
-        'app.sections',
-        'app.section_types',
-        'app.scoutgroups',
-        'app.districts',
-        'app.champions',
-        'app.applications', 'app.application_statuses',
-        'app.invoices',
-        'app.invoice_items',
-        'app.item_types',
-        'app.prices',
-        'app.notes',
-        'app.prices',
-        'app.payments',
-        'app.invoices_payments',
-        'app.logistic_items',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.applications_attendees',
         'app.allergies',
+        'app.application_statuses',
+        'app.applications',
+        'app.applications_attendees',
+        'app.attendees',
         'app.attendees_allergies',
         'app.auth_roles',
+        'app.champions',
+        'app.discounts',
+        'app.districts',
+        'app.email_response_types',
+        'app.email_responses',
+        'app.email_sends',
+        'app.event_statuses',
+        'app.event_types',
+        'app.events',
+        'app.invoice_items',
+        'app.invoices',
+        'app.invoices_payments',
+        'app.item_types',
+        'app.logistic_items',
+        'app.logistics',
+        'app.notes',
+        'app.notification_types',
         'app.notifications',
-        'app.notification_types'
+        'app.parameter_sets',
+        'app.parameters',
+        'app.params',
+        'app.password_states',
+        'app.payments',
+        'app.prices',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.roles',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.setting_types',
+        'app.settings',
+        'app.users',
     ];
 
     /**
      * Test index method
      *
      * @return void
+     *
+     * @throws
      */
     public function testIndex()
     {
@@ -75,6 +83,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test view method
      *
      * @return void
+     *
+     * @throws
      */
     public function testView()
     {
@@ -83,7 +93,7 @@ class EventsControllerTest extends IntegrationTestCase
            'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'view', 1]);
+        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'view', 2]);
 
         $this->assertResponseOk();
     }
@@ -92,6 +102,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test fullView method
      *
      * @return void
+     *
+     * @throws
      */
     public function testFullView()
     {
@@ -100,7 +112,7 @@ class EventsControllerTest extends IntegrationTestCase
            'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/admin/events/full-view/1');
+        $this->get('/admin/events/full-view/2');
 
         $this->assertResponseOk();
     }
@@ -109,6 +121,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test fullView method
      *
      * @return void
+     *
+     * @throws
      */
     public function testAdd()
     {
@@ -130,6 +144,7 @@ class EventsControllerTest extends IntegrationTestCase
             'full_name' => 'County Cub Cyclocross',
             'event_type_id' => 1,
             'section_type_id' => 1,
+            'event_status_id' => 1,
             'start_date' => [
                 'year' => 2018,
                 'month' => 02,
@@ -175,7 +190,7 @@ class EventsControllerTest extends IntegrationTestCase
             'county' => 'Hertfordshire',
             'postcode' => 'SG18 8HS',
             'max' => 1,
-            'max_apps' => '36',
+            'max_apps' => '2',
             'max_section' => null,
             'discount_id' => null,
         ]);
@@ -187,6 +202,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test fullView method
      *
      * @return void
+     *
+     * @throws
      */
     public function testEdit()
     {
@@ -195,7 +212,7 @@ class EventsControllerTest extends IntegrationTestCase
             'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/admin/events/edit/1');
+        $this->get('/admin/events/edit/2');
 
         $this->assertResponseOk();
     }
@@ -204,6 +221,8 @@ class EventsControllerTest extends IntegrationTestCase
      * Test fullView method
      *
      * @return void
+     *
+     * @throws
      */
     public function testPrices()
     {
@@ -212,7 +231,7 @@ class EventsControllerTest extends IntegrationTestCase
             'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'prices', 1]);
+        $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'prices', 2]);
 
         $this->assertResponseOk();
     }

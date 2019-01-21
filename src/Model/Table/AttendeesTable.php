@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\Attendee;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Event\Event;
 use Cake\Log\Log;
 use Cake\ORM\Query;
@@ -226,11 +227,14 @@ class AttendeesTable extends Table
      * Finds OSM attendees.
      *
      * @param \Cake\ORM\Query $query The original query to be modified.
+     *
      * @return \Cake\ORM\Query The modified query.
      */
     public function findOsm($query)
     {
-        return $query->where(['osm_id IS NOT' => false]);
+        return $query->where(function (QueryExpression $exp, Query $q) {
+            return $exp->isNotNull('osm_id');
+        });
     }
 
     /**

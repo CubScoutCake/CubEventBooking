@@ -6,7 +6,7 @@
                         'prefix' => false,
                         1]); ?>">
             <div>
-                <i class="fa fa-tasks fa-fw"></i> App Number <?= $app->done ?>
+                <i class="fal fa-clipboard-list fa-fw"></i> App Number <?= $app->done ?>
                 <span class="pull-right text-muted small">80%</span>
             </div>
         </a>

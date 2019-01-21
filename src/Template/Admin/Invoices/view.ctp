@@ -7,14 +7,14 @@
 ?>
 <div class="row">
     <div class="col-lg-10 col-md-9">
-        <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
+        <h1 class="page-header"><i class="fal fa-file-invoice-dollar fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
     <div class="col-lg-1 col-md-1">
         </br>
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-warning dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-envelope-o fa-fw"></i>
+                    <i class="fal fa-envelope-o fa-fw"></i>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
@@ -107,7 +107,7 @@
     <div class="col-lg-12">
         <div class="panel panel-yellow">
             <div class="panel-heading">
-                <i class="fa fa-files-o fa-fw"></i> Invoice Line Items
+                <i class="fal fa-file-invoice-dollar fa-fw"></i> Invoice Line Items
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -154,7 +154,7 @@
         <?php if (!empty($invoice->payments)): ?>
             <div class="panel panel-yellow">
                 <div class="panel-heading">
-                    <i class="fa fa-gbp fa-fw"></i> Payments Recieved
+                    <i class="fal fa-receipt fa-fw"></i> Payments Recieved
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body"><div class="related">
@@ -174,7 +174,7 @@
                                     <td class="actions">
                                         <div class="dropdown btn-group">
                                             <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                <i class="fal fa-cog"></i>  <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu " role="menu">
                                                 <li><?= $this->Html->link(__('View'), ['controller' => 'Payments', 'prefix' => 'admin', 'action' => 'view', $payments->id]) ?></li>
@@ -200,7 +200,7 @@
         <?php if (empty($invoice->payments)): ?>
             <div class="panel panel-yellow">
                 <div class="panel-heading">
-                    <i class="fa fa-gbp fa-fw"></i> Payments received will be listed here.
+                    <i class="fal fa-receipt fa-fw"></i> Payments received will be listed here.
                 </div>
             </div>
         <?php endif; ?>
@@ -212,7 +212,7 @@
         <?php if (!empty($invoice->notes)) : ?>
             <div class="panel panel-yellow">
                 <div class="panel-heading">
-                    <i class="fa fa-pencil-square-o fa-fw"></i> Invoice Notes
+                    <i class="fal fa-edit fa-fw"></i> Invoice Notes
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -230,7 +230,7 @@
                                     <td class="actions">
                                         <div class="dropdown btn-group">
                                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                <i class="fal fa-cog"></i>  <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu " role="menu">
                                                 <li><?= $this->Html->link(__('View'), ['controller' => 'Notes', 'prefix' => 'admin', 'action' => 'view', $notes->id]) ?></li>

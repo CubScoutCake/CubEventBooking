@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12 col-md-12">
-        <h1 class="page-header"><i class="fa fa-files-o fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
+        <h1 class="page-header"><i class="fal fa-file-invoice-dollar fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
 </div>
 
@@ -26,7 +26,7 @@
     <div class="col-lg-12">
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <i class="fa fa-files-o fa-fw"></i> Balance
+                <i class="fal fa-file-invoice-dollar fa-fw"></i> Balance
             </div>
             <div class="panel-body">
                 <table class="table table-condensed">  
@@ -50,7 +50,7 @@
         <?php if (!empty($invoice->payments)): ?>
             <div class="panel panel-warning">
                 <div class="panel-heading">
-                    <i class="fa fa-gbp fa-fw"></i> Payments Recieved
+                    <i class="fal fa-receipt fa-fw"></i> Payments Recieved
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -78,7 +78,7 @@
         <?php if (empty($invoice->payments)): ?>
             <div class="panel panel-warning">
                 <div class="panel-heading">
-                    <i class="fa fa-gbp fa-fw"></i> Payments received will be listed here.
+                    <i class="fal fa-receipt fa-fw"></i> Payments received will be listed here.
                 </div>
             </div>
         <?php endif; ?>
@@ -89,7 +89,7 @@
     <div class="col-lg-12">
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <i class="fa fa-files-o fa-fw"></i> Invoice Line Items
+                <i class="fal fa-file-invoice-dollar fa-fw"></i> Invoice Line Items
             </div>
             <div class="panel-body">
                 <table class="table table-condensed">

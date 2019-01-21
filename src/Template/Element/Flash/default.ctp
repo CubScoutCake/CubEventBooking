@@ -1,3 +1,4 @@
+<br/>
 <?php
 $class = 'message';
 if (!empty($params['class'])) {

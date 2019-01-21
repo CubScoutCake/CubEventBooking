@@ -36,7 +36,7 @@ class UsersTableTest extends TestCase
         'app.section_types',
         'app.auth_roles',
         'app.settings',
-        'app.settingtypes'
+        'app.setting_types'
     ];
 
     /**

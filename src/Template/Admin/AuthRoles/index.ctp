@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-id-card fa-fw"></i> Authorisation Roles</h3>
+        <h3><i class="fal fa-id-card fa-fw"></i> Authorisation Roles</h3>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>

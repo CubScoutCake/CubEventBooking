@@ -15,7 +15,7 @@ class DropEventName extends AbstractMigration
         $table = $this->table('applications');
 
         $table
-	        ->removeColumn('eventname')
-	        ->save();
+            ->removeColumn('eventname')
+            ->save();
     }
 }

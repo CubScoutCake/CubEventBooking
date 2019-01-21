@@ -5,7 +5,7 @@
 ?>
 <div class="row">
     <div class="col-lg-10 col-md-10">
-        <h1 class="page-header"><i class="fa fa-tasks fa-fw"></i> Application <?= h($application->display_code) ?></h1>
+        <h1 class="page-header"><i class="fal fa-clipboard-list fa-fw"></i> Application <?= h($application->display_code) ?></h1>
     </div>
     <div class="col-lg-2 col-md-2">
         </br>
@@ -74,7 +74,7 @@
             <div class="modal-header">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-ban fa-5x"></i>
+                        <i class="fal fa-ban fa-5x"></i>
                     </div>
                     <div class="col-xs-7 text-right">
                         <div class="huge">Cancellation</div>
@@ -152,7 +152,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-tasks fa-fw"></i> Application Completion Progress
+                <i class="fal fa-clipboard-list fa-fw"></i> Application Completion Progress
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -173,7 +173,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-yellow">
                 <div class="panel-heading">
-                    <i class="fa fa-files-o"></i> Invoices
+                    <i class="fal fa-file-invoice-dollar"></i> Invoices
                 </div>
                 <div class="panel-body">
                     <div>
@@ -211,7 +211,7 @@
                             <span class="pull-left">Update Existing Invoice</span>
                     <?php endif ?>
                     
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
                 </a>
@@ -220,7 +220,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="fa fa-group"></i> Attendees
+                    <i class="fal fa-poll-people"></i> Attendees
                 </div>
                 <div class="panel-body">
                     <div>
@@ -257,7 +257,7 @@
                             <span class="pull-left">Add a Cub</span>
                     <?php endif ?>
 
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
                 </a>
@@ -266,7 +266,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="fa fa-group"></i> Attendees
+                    <i class="fal fa-poll-people"></i> Attendees
                 </div>
                 <div class="panel-body">
                     <div>
@@ -303,7 +303,7 @@
                             <span class="pull-left">Add an Adult</span>
                     <?php endif ?>
                     
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
                 </a>
@@ -312,7 +312,7 @@
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-red">
                 <div class="panel-heading">
-                    <i class="fa fa-gbp"></i> Payments
+                    <i class="fal fa-receipt"></i> Payments
                 </div>
                 <div class="panel-body">
                     <div>
@@ -336,7 +336,7 @@
                     'prefix' => false],['_full']); ?>">
                     <div class="panel-footer">
                         <span class="pull-left">View Your Payments</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
                 </a>
@@ -350,7 +350,7 @@
         <?php if (!empty($application->invoice)): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-files-o fa-fw"></i> Invoices on this Application
+                    <i class="fal fa-file-invoice-dollar fa-fw"></i> Invoices on this Application
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -367,7 +367,7 @@
                             <tr>
                                 <td><?= h($application->invoice->id) ?></td>
                                 <td class="actions">
-                                    <?= $this->Html->link(' View', ['controller' => 'Invoices','action' => 'view', $application->invoice->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
+                                    <?= $this->Html->link('<i class="fal fa-eye"></i> View', ['controller' => 'Invoices','action' => 'view', $application->invoice->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                 </td>
                                 <td><?= $this->Number->currency($application->invoice->initialvalue,'GBP') ?></td>
                                 <td><?= $this->Number->currency($application->invoice->value,'GBP') ?></td>
@@ -386,7 +386,7 @@
         <?php if (!empty($application->attendees)): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-group fa-fw"></i> Attendees on this Application
+                    <i class="fal fa-poll-people fa-fw"></i> Attendees on this Application
                     <div class="pull-right">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -420,7 +420,7 @@
                                     <td class="actions">
                                         <div class="dropdown btn-group">
                                             <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-gear"></i>  <span class="caret"></span>
+                                                <i class="fal fa-cog"></i>  <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu " role="menu">
                                                 <li><?= $this->Html->link(__('View'), ['controller' => 'Attendees', 'action' => 'view', $attendees->id]) ?></li>
@@ -444,7 +444,7 @@
         <?php if (!empty($application->notes)) : ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-pencil-square-o fa-fw"></i> Application Notes
+                    <i class="fal fa-edit fa-fw"></i> Application Notes
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">

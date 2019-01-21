@@ -11,9 +11,9 @@ return [
      */
     'debug' => true,
 
-	'maintenance' => false,
+    'maintenance' => false,
 
-	'travis' => true,
+    'travis' => false,
 
     /**
      * Configure basic information about the application.
@@ -67,6 +67,7 @@ return [
      */
     'Security' => [
         'salt' => '__SALT__',
+        'cookieKey' => '__COOKIE_SALT__'
     ],
 
     /**
@@ -293,7 +294,7 @@ return [
      */
     'OSM' => [
         'api_id' => 'osm_secret_id_travis',
-	        'api_token' => 'osm_secret_token_travis',
+        'api_token' => 'osm_secret_token_travis',
         'api_base' => 'www.onlinescoutmanager.co.uk'
     ],
 

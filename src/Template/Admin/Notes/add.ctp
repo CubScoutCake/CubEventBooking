@@ -2,7 +2,7 @@
 <div class="col-lg-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <i class="fa fa-pencil-square-o fa-fw"></i> Create Note
+            <i class="fal fa-edit fa-fw"></i> Create Note
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">

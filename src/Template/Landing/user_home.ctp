@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header"><i class="fa fa-dashboard fa-fw"></i> User Home</h1>
+        <h1 class="page-header"><i class="fal fa-home fa-fw"></i> User Home</h1>
     </div>
     <?php if (!empty($events)): ?>
         <div class="col-lg-12">
@@ -15,7 +15,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-tasks fa-5x"></i>
+                        <i class="fal fa-clipboard-list fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($countApplications); ?></div>
@@ -29,7 +29,7 @@
                 'prefix' => false],['_full']); ?>">
                 <div class='panel-footer'>
                     <span class='pull-left'>View Your Applications</span>
-                    <span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+                    <span class='pull-right'><i class='fal fa-arrow-circle-right'></i></span>
                     <div class='clearfix'></div>
                 </div>
             </a>
@@ -40,7 +40,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-group fa-5x"></i>
+                        <i class="fal fa-poll-people fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($countAttendees); ?></div>
@@ -54,7 +54,7 @@
                 'prefix' => false],['_full']); ?>">
                 <div class="panel-footer">
                     <span class="pull-left">View Your Attendees</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -65,7 +65,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-files-o fa-5x"></i>
+                        <i class="fal fa-file-invoice-dollar fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($countInvoices); ?></div>
@@ -80,7 +80,7 @@
                 'prefix' => false],['_full']); ?>">
                 <div class="panel-footer">
                     <span class="pull-left">View Your Invoices</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -91,7 +91,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-gbp fa-5x"></i>
+                        <i class="fal fa-receipt fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= $this->Number->format($countPayments); ?></div>
@@ -105,7 +105,7 @@
                 'prefix' => false],['_full']); ?>">
                 <div class="panel-footer">
                     <span class="pull-left">View Your Payments</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -119,7 +119,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-paw fa-5x"></i>
+                            <i class="fal fa-paw fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
                             <div><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy') ?></div>
@@ -145,7 +145,7 @@
                 $event->id],['_full']); ?>">
                 <div class='panel-footer'>
                     <span class='pull-left'>Book Onto Event</span>
-                    <span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+                    <span class='pull-right'><i class='fal fa-arrow-circle-right'></i></span>
                     <div class='clearfix'></div>
                 </div>
             </a>
@@ -166,7 +166,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-tasks-o fa-fw"></i> Open Applications
+                    <i class="fal fa-clipboard-list fa-fw"></i> Open Applications
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -193,7 +193,7 @@
                                                 'prefix' => false,
                                                 $application->id],['_full']); ?>">
                                                 <button type="button" class="btn btn-success btn-sm">
-                                                    <i class="fa fa-eye"></i>  <span> View</span>
+                                                    <i class="fal fa-eye"></i><span> View</span>
                                                 </button>
                                             </a>
                                             <ul class="dropdown-menu " role="menu">

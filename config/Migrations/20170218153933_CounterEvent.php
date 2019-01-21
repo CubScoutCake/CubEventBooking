@@ -46,7 +46,7 @@ class CounterEvent extends AbstractMigration
                 'application_ref_id',
                 'settings',
                 'id'
-                )
+            )
             ->addIndex('application_ref_id')
             ->update();
     }

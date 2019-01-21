@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-gear fa-fw"></i> Settings</h3>
+        <h3><i class="fal fa-cog fa-fw"></i> Settings</h3>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -20,9 +20,9 @@
                         <td><?= $this->Number->format($setting->id) ?></td>
                         <td><?= h($setting->name) ?></td>
                         <td class="actions">
-                            <?= $this->Html->link('', ['action' => 'view', $setting->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
-                            <?= $this->Html->link('', ['action' => 'edit', $setting->id], ['title' => __('Edit'), 'class' => 'btn btn-default fa fa-pencil']) ?>
-                            <?= $this->Form->postLink('', ['action' => 'delete', $setting->id], ['confirm' => __('Are you sure you want to delete # {0}?', $setting->id), 'title' => __('Delete'), 'class' => 'btn btn-default fa fa-trash-o']) ?>
+                            <?= $this->Html->link('<i class="fal fa-eye"></i>', ['action' => 'view', $setting->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['action' => 'edit', $setting->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Form->postLink('<i class="fal fa-trash-alt"></i>', ['action' => 'delete', $setting->id], ['confirm' => __('Are you sure you want to delete # {0}?', $setting->id), 'title' => __('Delete'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                         </td>
                         <td><?= $this->Text->truncate($setting->text,60) ?></td>
                         <td><?= h($setting->created) ?></td>

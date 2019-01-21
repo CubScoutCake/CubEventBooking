@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\LogisticItem;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -10,9 +9,19 @@ use Cake\Validation\Validator;
 /**
  * LogisticItems Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Applications
- * @property \Cake\ORM\Association\BelongsTo $Logistics
- * @property \Cake\ORM\Association\BelongsTo $Params
+ * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\BelongsTo $Applications
+ * @property \App\Model\Table\LogisticsTable|\Cake\ORM\Association\BelongsTo $Logistics
+ * @property \App\Model\Table\ParamsTable|\Cake\ORM\Association\BelongsTo $Params
+ * @property |\Cake\ORM\Association\BelongsTo $Reservations
+ *
+ * @method \App\Model\Entity\LogisticItem get($primaryKey, $options = [])
+ * @method \App\Model\Entity\LogisticItem newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\LogisticItem[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\LogisticItem|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\LogisticItem|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\LogisticItem patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\LogisticItem[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\LogisticItem findOrCreate($search, callable $callback = null, $options = [])
  */
 class LogisticItemsTable extends Table
 {
@@ -44,6 +53,9 @@ class LogisticItemsTable extends Table
         $this->belongsTo('Params', [
             'foreignKey' => 'param_id'
         ]);
+        $this->belongsTo('Reservations', [
+            'foreignKey' => 'reservation_id'
+        ]);
     }
 
     /**
@@ -55,8 +67,12 @@ class LogisticItemsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->integer('id')
             ->allowEmpty('id', 'create');
+
+        $validator
+            ->dateTime('deleted')
+            ->allowEmpty('deleted');
 
         return $validator;
     }
@@ -73,6 +89,7 @@ class LogisticItemsTable extends Table
         $rules->add($rules->existsIn(['application_id'], 'Applications'));
         $rules->add($rules->existsIn(['logistic_id'], 'Logistics'));
         $rules->add($rules->existsIn(['param_id'], 'Params'));
+        $rules->add($rules->existsIn(['reservation_id'], 'Reservations'));
 
         return $rules;
     }

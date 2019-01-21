@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-exclamation fa-fw"></i> All Allergies</h3>
+        <h3><i class="fal fa-allergies fa-fw"></i> All Allergies</h3>
         <div class="table-responsive">   
             <table class="table table-hover">
                 <thead>

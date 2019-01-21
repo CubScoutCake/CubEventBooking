@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\EventsTable;
+use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -24,39 +25,41 @@ class EventsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.events', 'app.event_statuses',
-        'app.settings',
-        'app.password_states',
-        'app.setting_types',
-        'app.discounts',
-        'app.applications', 'app.application_statuses',
+        'app.prices',
+        'app.item_types',
+        'app.invoice_items',
+        'app.invoices',
         'app.users',
         'app.roles',
+        'app.password_states',
         'app.attendees',
         'app.sections',
         'app.section_types',
         'app.scoutgroups',
         'app.districts',
         'app.champions',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.auth_roles',
-        'app.invoices',
-        'app.invoice_items',
-        'app.item_types',
-        'app.prices',
-        'app.notes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.notifications',
-        'app.notification_types',
-        'app.logistic_items',
+        'app.applications', 'app.application_statuses',
+        'app.events', 'app.event_statuses',
+        'app.settings',
+        'app.setting_types',
+        'app.discounts',
         'app.logistics',
         'app.parameters',
         'app.parameter_sets',
         'app.params',
+        'app.logistic_items',
+        'app.notes',
+        'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
+        'app.auth_roles',
+        'app.notifications',
+        'app.notification_types',
+        'app.payments',
+        'app.invoices_payments',
         'app.event_types',
+        'app.reservations',
+        'app.reservation_statuses',
     ];
 
     /**
@@ -67,8 +70,8 @@ class EventsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Events') ? [] : ['className' => 'App\Model\Table\EventsTable'];
-        $this->Events = TableRegistry::get('Events', $config);
+        $config = TableRegistry::getTableLocator()->exists('Events') ? [] : ['className' => EventsTable::class];
+        $this->Events = TableRegistry::getTableLocator()->get('Events', $config);
     }
 
     /**
@@ -131,5 +134,31 @@ class EventsTableTest extends TestCase
     public function testFindUpcoming()
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test determineComplete method
+     *
+     * @return void
+     */
+    public function testDetermineComplete()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test findUpcoming method
+     *
+     * @return void
+     */
+    public function testGetPriceSection()
+    {
+        // Team Price Event
+        $section = $this->Events->getPriceSection(2);
+        $this->assertEquals(6, $section);
+
+        // Individual Price Event
+        $section = $this->Events->getPriceSection(3);
+        $this->assertEquals(5, $section);
     }
 }

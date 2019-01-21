@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-bell-o fa-fw"></i> Notification Types</h3>
+        <h3><i class="fal fa-flag-checkered fa-fw"></i> Notification Types</h3>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -16,12 +16,12 @@
                 <?php foreach ($notificationTypes as $notificationtype): ?>
                     <tr>
                         <td><?= $this->Number->format($notificationtype->id) ?></td>
-                        <td><i class="fa <?= $notificationtype->icon ?> fa-fw fa-2x"></i></td>
+                        <td><i class="fal <?= $notificationtype->icon ?> fa-fw fa-2x"></i></td>
                         <td><?= h($notificationtype->notification_type) ?></td>
                         <td class="actions">
-                            <?= $this->Html->link('', ['action' => 'view', $notificationtype->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
-                            <?= $this->Html->link('', ['action' => 'edit', $notificationtype->id], ['title' => __('Edit'), 'class' => 'btn btn-default fa fa-pencil']) ?>
-                            <?= $this->Form->postLink('', ['action' => 'delete', $notificationtype->id], ['confirm' => __('Are you sure you want to delete # {0}?', $notificationtype->id), 'title' => __('Delete'), 'class' => 'btn btn-default fa fa-trash-o']) ?>
+                            <?= $this->Html->link('<i class="fal fa-eye"></i>', ['action' => 'view', $notificationtype->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['action' => 'edit', $notificationtype->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Form->postLink('<i class="fal fa-trash-alt"></i>', ['action' => 'delete', $notificationtype->id], ['confirm' => __('Are you sure you want to delete # {0}?', $notificationtype->id), 'title' => __('Delete'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                         </td>
                         <td><?= h($notificationtype->notification_description) ?></td>
 

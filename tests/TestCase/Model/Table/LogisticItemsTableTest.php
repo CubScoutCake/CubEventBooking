@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\LogisticItemsTable Test Case
+ * App\Model\Table\LogisticItemsTable Test Case
  */
 class LogisticItemsTableTest extends TestCase
 {
@@ -22,35 +22,35 @@ class LogisticItemsTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.logistic_items',
-        'app.applications', 'app.application_statuses',
+        'app.applications',
+        'app.parameter_sets',
+        'app.logistics',
+        'app.params',
+        'app.events',
+        'app.event_statuses',
+        'app.event_types',
+        'app.settings',
+        'app.password_states',
+        'app.setting_types',
         'app.users',
         'app.roles',
-        'app.attendees',
+        'app.discounts',
+        'app.sections',
+        'app.section_types',
         'app.scoutgroups',
         'app.districts',
-        'app.champions',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.notes',
-        'app.invoices',
-        'app.invoice_items',
-        'app.itemtypes',
-        'app.payments',
-        'app.invoices_payments',
+        'app.auth_roles',
         'app.notifications',
-        'app.notificationtypes',
-        'app.events', 'app.event_statuses',
-        'app.settings',
-        'app.settingtypes',
-        'app.discounts',
-        'app.logistics',
+        'app.notification_types',
+        'app.application_statuses',
+        'app.reservations',
+        'app.champions',
+        'app.reservation_statuses',
+        'app.attendees',
         'app.parameters',
-        'app.parameter_sets',
-        'app.params'
     ];
 
     /**
@@ -61,8 +61,8 @@ class LogisticItemsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('LogisticItems') ? [] : ['className' => 'App\Model\Table\LogisticItemsTable'];
-        $this->LogisticItems = TableRegistry::get('LogisticItems', $config);
+        $config = TableRegistry::getTableLocator()->exists('LogisticItems') ? [] : ['className' => LogisticItemsTable::class];
+        $this->LogisticItems = TableRegistry::getTableLocator()->get('LogisticItems', $config);
     }
 
     /**

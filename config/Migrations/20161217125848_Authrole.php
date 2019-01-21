@@ -124,4 +124,3 @@ class Authrole extends AbstractMigration
         $this->dropTable('auth_roles');
     }
 }
-

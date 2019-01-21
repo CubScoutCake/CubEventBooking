@@ -108,6 +108,15 @@ Router::prefix('champion', function ($routes) {
     $routes->fallbacks('DashedRoute');
 });
 
+Router::prefix('parent', function ($routes) {
+    // Because you are in the admin scope,
+    // you do not need to include the /admin prefix
+    // or the admin route element.
+    $routes->connect('/', ['controller' => 'Reservation', 'action' => 'index', 'index']);
+
+    $routes->fallbacks('DashedRoute');
+});
+
 Router::prefix('register', function ($routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
@@ -144,7 +153,6 @@ Router::connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
 /**
 * <--- Jacob's Route's --->
 */
-
 
 Router::defaultRouteClass('DashedRoute');
 

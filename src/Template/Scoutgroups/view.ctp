@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-lg-12 col-md-12">
-        <h1 class="page-header"><i class="fa fa-paw fa-fw"></i> <?= h($scoutgroup->scoutgroup); ?></h1>
+        <h1 class="page-header"><i class="fal fa-paw fa-fw"></i> <?= h($scoutgroup->scoutgroup); ?></h1>
     </div>
 </div>
 <div class="row">
     <div class="col-lg-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-key fa-fw"></i> Scout Group Info
+                <i class="fal fa-key fa-fw"></i> Scout Group Info
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

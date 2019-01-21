@@ -37,12 +37,12 @@ class SectionTypesSeed extends AbstractSeed
                 'lower_age' => 10,
                 'role_id' => 9,
             ],
-	        [
-		        'section_type' => 'Adults',
-		        'upper_age' => 99,
-		        'lower_age' => 18,
-		        'role_id' => 19,
-	        ],
+            [
+                'section_type' => 'Adults',
+                'upper_age' => 99,
+                'lower_age' => 18,
+                'role_id' => 19,
+            ],
         ];
 
         $table = $this->table('section_types');

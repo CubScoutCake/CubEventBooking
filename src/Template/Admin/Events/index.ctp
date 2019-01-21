@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-calendar fa-fw"></i> Upcoming Events</h3>
+        <h3><i class="fal fa-calendar fa-fw"></i> Upcoming Events</h3>
         <div class="table-responsive">   
             <table class="table table-hover">
                 <thead>
@@ -18,9 +18,10 @@
                     <tr>
                         <td><?= h($event->name) ?></td>
                         <td class="actions">
-                            <?= $this->Html->link('', ['controller' => 'Events', 'action' => 'view', $event->id], ['title' => __('View'), 'class' => 'btn btn-default dropdown-toggle fa fa-eye']) ?>
-                            <?= $this->Html->link('', ['action' => 'edit', $event->id], ['title' => __('Edit'), 'class' => 'btn btn-default fa fa-pencil']) ?>
-                            <?= $this->Html->link('', ['action' => 'prices', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default fa fa-gbp']) ?>
+                            <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Events', 'action' => 'view', $event->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['action' => 'edit', $event->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Html->link('<i class="fal fa-tags"></i>', ['action' => 'prices', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Html->link('<i class="fal fa-chart-bar"></i>', ['action' => 'accounts', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                         </td>
                         <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
                         <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>

@@ -72,7 +72,7 @@ class ApplicationsFixture extends TestFixture
                 'created' => date_create('2016-12-26 23:22:30'),
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'modification' => 1,
-                'event_id' => 1,
+                'event_id' => 2,
                 'osm_event_id' => 1,
                 'cc_att_total' => 1,
                 'cc_att_cubs' => 1,

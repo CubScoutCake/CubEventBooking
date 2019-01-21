@@ -372,9 +372,6 @@ class ApplicationsController extends AppController
                 $this->loadComponent('Line');
                 $parse = $this->Line->parseInvoice($application->invoice->id);
 
-                $this->loadComponent('Availability');
-                $this->Availability->getNumbers($appId);
-
                 $this->Flash->success(__('Your '. $term . ' has been registered.'));
 
                 if ($parse) {
@@ -591,9 +588,6 @@ class ApplicationsController extends AppController
 
                 $this->loadComponent('Line');
                 $parse = $this->Line->parseInvoice($application->invoice->id);
-
-                $this->loadComponent('Availability');
-                $this->Availability->getNumbers($appId);
 
                 $this->Flash->success(__('Your '. $term . ' has been registered.'));
 

@@ -9,7 +9,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-user fa-5x"></i>
+                                        <i class="fal fa-user-circle fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">Search Users</div>
@@ -76,7 +76,7 @@
                                                                 ]); ?>">
                                                                     <div class="btn">
                                                                         <button type="button" class="btn btn-primary btn-sm">
-                                                                            <i class="fa fa-eye"></i>
+                                                                            <i class="fal fa-eye"></i>
                                                                         </button>
                                                                     </div>
                                                                 </a>
@@ -106,7 +106,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-paw fa-5x"></i>
+                                        <i class="fal fa-paw fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">Search Scout Groups</div>
@@ -159,7 +159,7 @@
                                                             <td><?= $this->Number->format($scoutgroup->id) ?></td>
                                                             <td><?= h($scoutgroup->scoutgroup) ?></td>
                                                             <td class="actions">
-                                                                <?= $this->Html->link('', ['controller' => 'Scoutgroups', 'action' => 'view', $scoutgroup->id], ['title' => __('View'), 'class' => 'btn btn-default fa fa-eye']) ?>
+                                                                <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Scoutgroups', 'action' => 'view', $scoutgroup->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                                             </td>
                                                             <td><?= $scoutgroup->has('district') ? $this->Html->link($scoutgroup->district->district, ['controller' => 'Districts', 'action' => 'view', $scoutgroup->district->id]) : '' ?></td>
                                                         </tr>

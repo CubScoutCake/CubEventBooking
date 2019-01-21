@@ -42,4 +42,3 @@ class DigestUpdate extends AbstractMigration
             ->update();
     }
 }
-

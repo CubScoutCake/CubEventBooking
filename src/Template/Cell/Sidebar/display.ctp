@@ -1,12 +1,12 @@
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
-        <ul class="nav" id="side-menu">
+        <ul class="nav" id="metismenu">
             <li class="sidebar-search">
                 <div class="input-group custom-search-form">
                     <input type="text" class="form-control" placeholder="Search...">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button">
-                            <i class="fa fa-search"></i>
+                            <i class="fal fa-search"></i>
                         </button>
                     </span>
                 </div>
@@ -16,10 +16,10 @@
                 <a href="<?php echo $this->Url->build([
                     'controller' => 'Landing',
                     'action' => 'user_home',
-                    'prefix' => false]); ?>"><i class="fa fa-dashboard fa-fw"></i> User Home</a>
+                    'prefix' => false]); ?>"><i class="fal fa-home fa-fw"></i> User Home</a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-calendar-o fa-fw"></i> Events<span class="fa arrow"></span></a>
+                <a href="#"><i class="fal fa-calendar-star fa-fw"></i> Events<span class="fal fa-chevron-left"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="<?php echo $this->Url->build([
@@ -30,7 +30,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-tasks fa-fw"></i> Applications<span class="fa arrow"></span></a>
+                <a href="#"><i class="fal fa-clipboard-list fa-fw"></i> Applications<span class="fal fa-chevron-left"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="<?php echo $this->Url->build([
@@ -48,7 +48,7 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="#"><i class="fa fa-group fa-fw"></i> Attendees<span class="fa arrow"></span></a>
+                <a href="#"><i class="fal fa-poll-people fa-fw"></i> Attendees<span class="fal fa-chevron-left"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="<?php echo $this->Url->build([
@@ -72,7 +72,7 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="#"><i class="fa fa-files-o fa-fw"></i> Invoices<span class="fa arrow"></span></a>
+                <a href="#"><i class="fal fa-file-invoice-dollar fa-fw"></i> Invoices<span class="fal fa-chevron-left"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="<?php echo $this->Url->build([
@@ -90,7 +90,7 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="#"><i class="fa fa-gbp fa-fw"></i> Payments<span class="fa arrow"></span></a>
+                <a href="#"><i class="fal fa-receipt fa-fw"></i> Payments<span class="fal fa-chevron-left"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="<?php echo $this->Url->build([
@@ -101,7 +101,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-sitemap fa-fw"></i> More<span class="fa arrow"></span></a>
+                <a href="#"><i class="fal fa-sitemap fa-fw"></i> More<span class="fal fa-chevron-left"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="#">View Scout Groups</a>
@@ -113,7 +113,7 @@
                         <a href="#">View Districts</a>
                     </li>
                     <!--<li>
-                        <a href="#">Third Level <span class="fa arrow"></span></a>
+                        <a href="#">Third Level <span class="fal fa-chevron-left"></span></a>
                         <ul class="nav nav-third-level">
                             <li>
                                 <a href="#">Third Level Item</a>

@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <?= $this->Form->create($event) ?>
             <fieldset>
-                <legend><i class="fa fa-gbp fa-fw"></i><?= __(' Edit Event Prices') ?></legend>
+                <legend><i class="fal fa-receipt fa-fw"></i><?= __(' Edit Event Prices') ?></legend>
                 <p><strong>WARNING</strong> - Changes in monetary value will not propagate to invoices created before the edit.</p>
                 <?php
                 echo $this->Form->input('name', ['disabled' => 'disabled']);
@@ -52,7 +52,7 @@
 		        'action' => 'team_prices',
 		        'prefix' => 'admin',
 	            $event->id ]); ?>">
-                <button type="button" class="btn btn-outline btn-lg btn-warning"><i class="fa fa-object-group fa-fw"></i> Convert to Application Pricing.</button>
+                <button type="button" class="btn btn-outline btn-lg btn-warning"><i class="fal fa-object-group fa-fw"></i> Convert to Application Pricing.</button>
             </a>
         </div>
     </div>
@@ -63,7 +63,7 @@
                 <div class="modal-header">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-list fa-5x"></i>
+                            <i class="fal fa-list fa-5x"></i>
                         </div>
                         <div class="col-xs-7 text-right">
                             <div class="huge">List Book</div>
@@ -118,7 +118,7 @@
         <div class="col-md-12">
 			<?= $this->Form->create($event) ?>
             <fieldset>
-                <legend><i class="fa fa-gbp fa-fw"></i><?= __(' Edit Event Prices') ?></legend>
+                <legend><i class="fal fa-receipt fa-fw"></i><?= __(' Edit Event Prices') ?></legend>
                 <p><strong>WARNING</strong> - Changes in monetary value will not propagate to invoices created before the edit.</p>
 				<?php
 				echo $this->Form->input('name', ['disabled' => 'disabled']);
@@ -161,7 +161,7 @@
         <div class="col-md-12">
             <h4><?= __('Application Pricing') ?></h4>
             <p><?= __('Remove all variable prices and set single price to application.') ?></p>
-            <button type="button" class="btn btn-outline btn-lg btn-warning"><i class="fa fa-object-group fa-fw"></i> Convert to Application Pricing.</button>
+            <button type="button" class="btn btn-outline btn-lg btn-warning"><i class="fal fa-object-group fa-fw"></i> Convert to Application Pricing.</button>
         </div>
     </div>
 <?php endif; ?>

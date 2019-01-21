@@ -13,7 +13,7 @@
                                         'placeholder' => 'Search...'
                                     ]); ?>
                                     <span class="input-group-btn input-group">
-                                    <?= $this->Form->button(__('<i class="fa fa-search"></i>'),['class' => 'btn btn-default', 'escape' => false ]) ?>
+                                    <?= $this->Form->button(__('<i class="fal fa-search"></i>'),['class' => 'btn btn-default', 'escape' => false ]) ?>
                                 </span>
                                 </div>
                             </div>

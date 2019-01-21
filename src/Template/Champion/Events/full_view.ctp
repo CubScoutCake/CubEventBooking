@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-lg-9 col-md-8">
-        <h1 class="page-header"><i class="fa fa-calendar-o fa-fw"></i> <?= h($event->name) ?></h1>
+        <h1 class="page-header"><i class="fal fa-calendar-star fa-fw"></i> <?= h($event->name) ?></h1>
     </div>
     <div class="col-lg-1 col-md-2">
         <!--</br>
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-envelope-o fa-fw"></i>
+                    <i class="fal fa-envelope-o fa-fw"></i>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
@@ -50,7 +50,7 @@
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-key fa-fw"></i> Key Event Information
+                <i class="fal fa-key fa-fw"></i> Key Event Information
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -83,7 +83,7 @@
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-envelope-o fa-fw"></i> Event Organiser Contact
+                <i class="fal fa-envelope-o fa-fw"></i> Event Organiser Contact
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -124,7 +124,7 @@
     <div class="col-lg-6">
         <div class="panel panel-default">
         	<div class="panel-heading">
-                <i class="fa fa-cog fa-fw"></i> Event Settings
+                <i class="fal fa-cog fa-fw"></i> Event Settings
             </div>
             <div class="panel-body">
 	            <div class="table-responsive">
@@ -166,7 +166,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-gbp fa-fw"></i> Prices
+                <i class="fal fa-receipt fa-fw"></i> Prices
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -262,18 +262,18 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-level-down fa-fw"></i> Related Items
+                <i class="fal fa-level-down fa-fw"></i> Related Items
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills">
-                    <li class="active"><a href="#suma-pills" data-toggle="tab"><i class="fa fa-bar-chart fa-fw"></i> Summary Numbers</a></li>
+                    <li class="active"><a href="#suma-pills" data-toggle="tab"><i class="fal fa-bar-chart fa-fw"></i> Summary Numbers</a></li>
                     <?php if (!empty($event->applications)): ?>
-	                    <li><a href="#appl-pills" data-toggle="tab"><i class="fa fa-tasks fa-fw"></i> Applications</a></li>
+	                    <li><a href="#appl-pills" data-toggle="tab"><i class="fal fa-clipboard-list fa-fw"></i> Applications</a></li>
 	                <?php endif; ?>
 	                <?php if (!empty($invoices)): ?>
-	                    <li><a href="#invo-pills" data-toggle="tab"><i class="fa fa-files-o fa-fw"></i> Invoices</a></li>
+	                    <li><a href="#invo-pills" data-toggle="tab"><i class="fal fa-file-invoice-dollar fa-fw"></i> Invoices</a></li>
 	                <?php endif; ?>
                 </ul>
 
@@ -354,7 +354,7 @@
 	                    	                <td class="actions">
 	                    	                	<div class="dropdown btn-group">
 	                    	                	    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-	                    	                	        <i class="fa fa-gear"></i>  <span class="caret"></span>
+	                    	                	        <i class="fal fa-cog"></i>  <span class="caret"></span>
 	                    	                	    </button>
 	                    	                	    <ul class="dropdown-menu " role="menu">
 	                    	                	        <li><?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $applications->id]) ?></li>
@@ -398,7 +398,7 @@
 	                                            <td class="actions">
 	                                            	<div class="dropdown btn-group">
 	                                            	    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-	                                            	        <i class="fa fa-gear"></i>  <span class="caret"></span>
+	                                            	        <i class="fal fa-cog"></i>  <span class="caret"></span>
 	                                            	    </button>
 	                                            	    <ul class="dropdown-menu " role="menu">
 	                                            	        <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoice->id]) ?></li>

@@ -16,45 +16,54 @@ class UsersControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.event_types',
-        'app.events', 'app.event_statuses',
-        'app.settings',
-        'app.setting_types',
-        'app.discounts',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.password_states',
-        'app.sections',
-        'app.section_types',
-        'app.scoutgroups',
-        'app.districts',
-        'app.champions',
-        'app.applications', 'app.application_statuses',
-        'app.invoices',
-        'app.invoice_items',
-        'app.item_types',
-        'app.prices',
-        'app.notes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.logistic_items',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.applications_attendees',
         'app.allergies',
+        'app.application_statuses',
+        'app.applications',
+        'app.applications_attendees',
+        'app.attendees',
         'app.attendees_allergies',
         'app.auth_roles',
+        'app.champions',
+        'app.discounts',
+        'app.districts',
+        'app.email_response_types',
+        'app.email_responses',
+        'app.email_sends',
+        'app.event_statuses',
+        'app.event_types',
+        'app.events',
+        'app.invoice_items',
+        'app.invoices',
+        'app.invoices_payments',
+        'app.item_types',
+        'app.logistic_items',
+        'app.logistics',
+        'app.notes',
+        'app.notification_types',
         'app.notifications',
-        'app.notification_types'
+        'app.parameter_sets',
+        'app.parameters',
+        'app.params',
+        'app.password_states',
+        'app.payments',
+        'app.prices',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.roles',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.setting_types',
+        'app.settings',
+        'app.users',
     ];
 
     /**
      * Test index method
      *
      * @return void
+     *
+     * @throws
      */
     public function testIndex()
     {

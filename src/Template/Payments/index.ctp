@@ -6,7 +6,7 @@
 ?>
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-gbp fa-fw"></i> Your Payments</h3>
+        <h3><i class="fal fa-receipt fa-fw"></i> Your Payments</h3>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>

@@ -26,7 +26,8 @@ class NotesTableTest extends TestCase
      */
     public $fixtures = [
         'app.notes',
-        'app.applications', 'app.application_statuses',
+        'app.applications',
+        'app.application_statuses',
         'app.users',
         'app.roles',
         'app.sections',
@@ -39,7 +40,8 @@ class NotesTableTest extends TestCase
         'app.notifications',
         'app.notification_types',
         'app.invoices',
-        'app.events', 'app.event_statuses',
+        'app.events',
+        'app.event_statuses',
         'app.settings',
         'app.setting_types',
         'app.discounts',

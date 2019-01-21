@@ -3,7 +3,7 @@
         <div class="panel-body">
             <?= $this->Form->create($application) ?>
             <fieldset>
-                <legend><i class="fa fa-tasks fa-fw" ></i><?= __(' Add Application') ?></legend>
+                <legend><i class="fal fa-clipboard-list fa-fw" ></i><?= __(' Add Application') ?></legend>
                 <?php
                     echo $this->Form->input('scoutgroup_id', ['options' => $scoutgroups]);
                     echo $this->Form->input('section', ['label' => 'Any Specific Section Name e.g. Wednesdays - Leave this blank if you are the only Cub Section in the Scout Group.']);

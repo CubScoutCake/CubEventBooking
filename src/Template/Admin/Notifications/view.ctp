@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-10 col-md-10">
-        <h1 class="page-header"><i class="fa fa-bell-o fa-fw"></i> View Notification</h1>
+        <h1 class="page-header"><i class="fal fa-bell fa-fw"></i> View Notification</h1>
     </div>
     <div class="col-lg-2 col-md-2">
         </br>
@@ -23,7 +23,7 @@
     <div class="col-lg-8">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-key fa-fw"></i> Notification Details
+                <i class="fal fa-key fa-fw"></i> Notification Details
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -66,7 +66,7 @@
     <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-link fa-fw"></i> Notification Subject
+                <i class="fal fa-link fa-fw"></i> Notification Subject
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

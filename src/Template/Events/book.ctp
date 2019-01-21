@@ -14,7 +14,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-exclamation-triangle fa-5x"></i>
+                                        <i class="fal fa-calendar-exclamation fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">Event Full</div>
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-thermometer-half fa-5x"></i>
+                                        <i class="fal fa-thermometer-half fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div>Event Availability</div>
@@ -80,7 +80,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-thermometer-half fa-5x"></i>
+                                    <i class="fal fa-thermometer-half fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div>Event Availability</div>
@@ -107,7 +107,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-exchange fa-5x"></i>
+                                        <i class="fal fa-exchange fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">Sync Book</div>
@@ -118,7 +118,7 @@
                             <a href="#" data-toggle="modal" data-target="#syncModal">
                                 <div class="panel-footer">
                                     <span class="pull-left">Book</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -129,7 +129,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-list fa-5x"></i>
+                                        <i class="fal fa-list fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">List Book</div>
@@ -140,7 +140,7 @@
                             <a href="#" data-toggle="modal" data-target="#listModal">
                                 <div class="panel-footer">
                                     <span class="pull-left">Book</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -153,7 +153,7 @@
                                 <div class="modal-header">
                                     <div class="row">
                                         <div class="col-xs-3">
-                                            <i class="fa fa-list fa-5x"></i>
+                                            <i class="fal fa-list fa-5x"></i>
                                         </div>
                                         <div class="col-xs-7 text-right">
                                             <div class="huge">List Book</div>
@@ -212,7 +212,7 @@
                                     <div class="modal-header">
                                         <div class="row">
                                             <div class="col-xs-3">
-                                                <i class="fa fa-exchange fa-5x"></i>
+                                                <i class="fal fa-exchange fa-5x"></i>
                                             </div>
                                             <div class="col-xs-7 text-right">
                                                 <div class="huge">Sync Book</div>
@@ -255,7 +255,7 @@
                                     <div class="modal-header">
                                         <div class="row">
                                             <div class="col-xs-3">
-                                                <i class="fa fa-list fa-5x"></i>
+                                                <i class="fal fa-list fa-5x"></i>
                                             </div>
                                             <div class="col-xs-7 text-right">
                                                 <div class="huge">Sync Book</div>
@@ -298,7 +298,7 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-exclamation-triangle fa-5x"></i>
+                                    <i class="fal fa-calendar-exclamation fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge">Event Not Accepting Applications</div>

@@ -41,8 +41,8 @@ class DataTablesHelper extends Helper
         // -- load i18n
         $this->config('language', [
             'paginate' => [
-                'next' => '<i class="fa fa-chevron-right"></i>',
-                'previous' => '<i class="fa fa-chevron-left"></i>',
+                'next' => '<i class="fal fa-chevron-right"></i>',
+                'previous' => '<i class="fal fa-chevron-left"></i>',
             ],
             'processing' => __d('DataTables', 'Your request is processing ...'),
             'lengthMenu' =>

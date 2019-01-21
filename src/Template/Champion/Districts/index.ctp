@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h3><i class="fa fa-sitemap fa-fw"></i> All Districts</h3>
+        <h3><i class="fal fa-sitemap fa-fw"></i> All Districts</h3>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>

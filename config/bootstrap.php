@@ -157,10 +157,12 @@ Security::setSalt(Configure::consume('Security.salt'));
  */
 Request::addDetector('mobile', function ($request) {
     $detector = new \Detection\MobileDetect();
+
     return $detector->isMobile();
 });
 Request::addDetector('tablet', function ($request) {
     $detector = new \Detection\MobileDetect();
+
     return $detector->isTablet();
 });
 
@@ -203,29 +205,29 @@ Plugin::load('CakePdf', ['bootstrap' => true, 'routes' => true]);
 //Plugin::load('tcpdf', ['bootstrap' => true]);
 
 Configure::write('CakePdf', [
-	'engine' => [
-		'className' => 'CakePdf.WkHtmlToPdf',
-		// Mac OS X / Linux is usually like:
-		'binary' => '/usr/local/bin/wkhtmltopdf',
-		// On Windows environmnent you NEED to use the path like
-		// old fashioned MS-DOS Paths, otherwise you will keep getting:
-		// WKHTMLTOPDF didn't return any data
-		// 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
-		'options' => [
-			// 'print-media-type' => false,
-			'outline' => true,
-			'dpi' => 128
-		],
-	],
-	'margin' => [
-		'bottom' => 15,
-		'left' => 15,
-		'right' => 15,
-		'top' => 15
-	],
-	'dpi' => 128,
-	'orientation' => 'portrait',
-	'download' => true
+    'engine' => [
+        'className' => 'CakePdf.WkHtmlToPdf',
+        // Mac OS X / Linux is usually like:
+        'binary' => '/usr/local/bin/wkhtmltopdf',
+        // On Windows environmnent you NEED to use the path like
+        // old fashioned MS-DOS Paths, otherwise you will keep getting:
+        // WKHTMLTOPDF didn't return any data
+        // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+        'options' => [
+            // 'print-media-type' => false,
+            'outline' => true,
+            'dpi' => 128
+        ],
+    ],
+    'margin' => [
+        'bottom' => 15,
+        'left' => 15,
+        'right' => 15,
+        'top' => 15
+    ],
+    'dpi' => 128,
+    'orientation' => 'portrait',
+    'download' => true
 ]);
 
 // Only try to load DebugKit in development mode

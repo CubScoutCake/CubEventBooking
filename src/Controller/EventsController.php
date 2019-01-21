@@ -12,6 +12,7 @@ use Cake\Utility\Inflector;
  * Events Controller
  *
  * @property \App\Model\Table\EventsTable $Events
+ * @property \App\Controller\Component\ScoutManagerComponent $ScoutManager
  */
 class EventsController extends AppController
 {
@@ -78,7 +79,7 @@ class EventsController extends AppController
      *
      * @param int|null $eventID Event id.
      * @return null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException|\Exception When record not found.
      */
     public function book($eventID)
     {
@@ -108,21 +109,35 @@ class EventsController extends AppController
         $syncForm = new SyncBookForm();
 
         if ($this->request->is('post')) {
+            if ($event->cc_apps >= $event->max_apps && $event->max) {
+                $this->Flash->error('This event is Full.');
+
+                return;
+            }
+
             $section = $this->request->getData('section');
             $nonSection = $this->request->getData('non_section');
             $leaders = $this->request->getData('leaders');
             $osm_event = $this->request->getData('osm_event');
 
             if (!is_null($section)) {
-                $this->redirect([
-                    'controller' => 'Applications',
-                    'action' => 'simple_book',
-                    'prefix' => false,
-                    $event->id,
-                    $section,
-                    $nonSection,
-                    $leaders,
-                ]);
+                $max_section = $this->Events->getPriceSection($eventID);
+
+                if ($section > $max_section) {
+                    $this->Flash->error('Booking Exceeds Maximum Numbers.');
+                }
+
+                if ($section <= $max_section) {
+                    $this->redirect([
+                        'controller' => 'Applications',
+                        'action' => 'simple_book',
+                        'prefix' => false,
+                        $event->id,
+                        $section,
+                        $nonSection,
+                        $leaders,
+                    ]);
+                }
             }
 
             if (!is_null($osm_event)) {

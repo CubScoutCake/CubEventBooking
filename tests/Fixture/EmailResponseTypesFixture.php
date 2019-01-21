@@ -27,15 +27,18 @@ class EmailResponseTypesFixture extends TestFixture
     // @codingStandardsIgnoreEnd
 
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 1,
-            'email_response_type' => 'Lorem ipsum dolor sit amet',
-            'bounce' => 1
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'email_response_type' => 'Lorem ipsum dolor sit amet',
+                'bounce' => true,
+            ],
+        ];
+        parent::init();
+    }
 }
