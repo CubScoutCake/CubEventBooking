@@ -83,7 +83,7 @@ class LogsControllerTest extends IntegrationTestCase
             $this->Logs->log('warning', 'Foo Warning', ['x' => 'y']);
         }
 
-        $this->travisPass = false;
+        $this->travisPass = Configure::read('travis');
     }
 
     /**
