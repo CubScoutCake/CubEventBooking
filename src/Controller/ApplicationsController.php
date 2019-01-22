@@ -17,6 +17,7 @@ use Mpdf\Tag\P;
  * @property \App\Model\Table\ApplicationsTable $Applications
  * @property \App\Model\Table\EventsTable $Events
  * @property \App\Model\Table\UsersTable $Users
+ * @property \App\Model\Table\AttendeesTable $Attendees
  *
  * @property \App\Controller\Component\ScoutManagerComponent $ScoutManager
  * @property \App\Controller\Component\AvailabilityComponent $Availability
@@ -217,11 +218,11 @@ class ApplicationsController extends AppController
     {
         $now = Time::now();
 
-        $evts = TableRegistry::get('Events');
+        $this->Events = TableRegistry::get('Events');
 
         if (isset($eventID)) {
             $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventID])->count();
-            $event = $evts->get($eventID);
+            $event = $this->Events->get($eventID);
 
             if ($applicationCount > $event->available_apps && isset($event->available_apps)) {
                 $this->Flash->error(__('Apologies this Event is Full.'));
@@ -241,7 +242,7 @@ class ApplicationsController extends AppController
             $evtID = $this->request->getData('event_id');
 
             $appCount = $this->Applications->find('all')->where(['event_id' => $evtID])->count();
-            $event = $evts->get($evtID);
+            $event = $this->Events->get($evtID);
 
             if ($appCount > $event->available_apps && isset($event->available_apps)) {
                 $this->Flash->error(__('Apologies this Event is Full.'));
@@ -353,9 +354,13 @@ class ApplicationsController extends AppController
                 ['associated' => [ 'Attendees', 'Invoices' ]]
             );
 
-            foreach ($application->attendees as $attendee) {
+            $this->Attendees = $this->getTableLocator()->get('Attendees');
+
+            foreach ($application->attendees as $idx => $attendee) {
                 $attendee['user_id'] = $userId;
                 $attendee['section_id'] = $sectionId;
+
+                $application->attendees[$idx] = $this->Attendees->checkDuplicate($attendee);
             }
 
             if ($this->Applications->save($application)) {
@@ -399,6 +404,8 @@ class ApplicationsController extends AppController
      * @param int|null $appID The ID of the app already existing
      *
      * @return null|\Cake\Http\Response
+     *
+     * @throws
      */
     public function syncBook($eventID, $osmEvent = null, $appID = null)
     {
@@ -641,15 +648,13 @@ class ApplicationsController extends AppController
      *
      * @param string|null $id Application id.
      * @return null|\Cake\Http\Response Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Exception When record not found.
      */
     public function edit($id = null)
     {
         /**
          * @var \App\Model\Entity\Application $application
          */
-
-        $evts = TableRegistry::get('Events');
 
         $application = $this->Applications->get($id, [
             'contain' => ['Attendees', 'Sections', 'Events.EventTypes' => ['ApplicationRefs'], 'Invoices']

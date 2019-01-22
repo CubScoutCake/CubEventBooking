@@ -319,23 +319,27 @@ class AttendeesTable extends Table
             ]
         ]);
 
-        $countOriginal = $original;
-        $countOriginal = $countOriginal->count();
+        $countOriginal = $original->count();
 
         if ($countOriginal > 0) {
             $originalEnt = $original->first();
 
             $changedValues = $entity->getDirty();
-            $newData = [];
 
-            foreach ($changedValues as $changed_value) {
-                $value = $entity->get($changed_value);
+            if (count($changedValues) > 0) {
+                $newData = [];
 
-                $newData = array_merge($newData, [$changed_value => $value]);
+                foreach ($changedValues as $changed_value) {
+                    $value = $entity->get($changed_value);
+                    if (!empty($value)) {
+                        $newData = $newData[$changed_value] = $value;
+                    }
+                }
+
+                if (count($newData) > 0 && is_array($newData) && !is_null($newData)) {
+                    $originalEnt = $this->patchEntity($originalEnt, $newData);
+                }
             }
-
-            $originalEnt = $this->patchEntity($originalEnt, $newData);
-
             return $originalEnt;
         }
 

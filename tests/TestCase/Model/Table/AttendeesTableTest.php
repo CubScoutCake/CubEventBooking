@@ -1,15 +1,18 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Entity\User;
+use App\Model\Entity\Attendees;
 use App\Model\Table\AttendeesTable;
 use Cake\I18n\Date;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Security;
 
 /**
  * App\ModelLevel\Table\AttendeesTable Test Case
+ *
+ * @property AttendeesTable $Attendees
  */
 class AttendeesTableTest extends TestCase
 {
@@ -65,6 +68,39 @@ class AttendeesTableTest extends TestCase
         unset($this->Attendees);
 
         parent::tearDown();
+    }
+
+    /**
+     * @return array
+     *
+     * @throws \Exception
+     */
+    private function getGood()
+    {
+        $startNow = Time::now();
+        $nowDate = new Date('2016-12-26');
+
+        return [
+            'user_id' => 1,
+            'section_id' => 1,
+            'role_id' => 1,
+            'firstname' => 'New Person' . random_int(1,999) . random_int(1, 999),
+            'lastname' => 'Joe Other' . random_int(1,999) . random_int(1, 999),
+            'dateofbirth' => $nowDate,
+            'phone' => '01234 567890',
+            'phone2' => null,
+            'address_1' => 'Lorem Ipsum Dolor Sit Amet',
+            'address_2' => 'Lorem Ipsum Dolor Sit Amet',
+            'city' => 'Lorem Ipsum Dolor Sit Amet',
+            'county' => 'Lorem Ipsum Dolor Sit Amet',
+            'postcode' => 'AB1 3DE',
+            'nightsawaypermit' => true,
+            'vegetarian' => true,
+            'osm_generated' => false,
+            'osm_id' =>  random_int(1,999) . random_int(1, 999),
+            'osm_sync_date' => $startNow,
+            'user_attendee' => true,
+        ];
     }
 
     public function getExpected()
@@ -394,7 +430,7 @@ class AttendeesTableTest extends TestCase
         $nowDate = new Date('2016-12-26');
 
         $addition = [
-            'id' => 13,
+            'id' => $id,
             'cc_apps' => 0,
             'deleted' => null,
             'created' => $startNow,
@@ -413,17 +449,52 @@ class AttendeesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $query = $this->Attendees->find('all');
+        $actual = $this->Attendees->get(1)->toArray();
 
-        $startNow = Time::now();
-        $nowDate = new Date('2016-12-26');
+        $dates = [
+            'modified',
+            'created',
+            'deleted',
+            'osm_sync_date'
+        ];
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
+        $this->assertInstanceOf('Cake\I18n\Date', $actual['dateofbirth']);
+        unset($actual['dateofbirth']);
 
-        $expected = $this->getExpected();
+        foreach ($dates as $date) {
+            $dateValue = $actual[$date];
+            if (!is_null($dateValue)) {
+                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+            }
+            unset($actual[$date]);
+        }
 
-        $this->assertEquals($expected, $result);
+        $expected = [
+            'id' => 1,
+            'user_id' => 1,
+            'section_id' => 1,
+            'role_id' => 1,
+            'firstname' => 'Joe',
+            'lastname' => 'Bloggs',
+            'phone' => '01234 567890',
+            'phone2' => null,
+            'address_1' => 'Lorem ipsum dolor sit amet',
+            'address_2' => 'Lorem ipsum dolor sit amet',
+            'city' => 'Lorem ipsum dolor sit amet',
+            'county' => 'Lorem ipsum dolor sit amet',
+            'postcode' => 'AB1 3DE',
+            'nightsawaypermit' => 1,
+            'vegetarian' => 1,
+            'osm_generated' => true,
+            'osm_id' => 1,
+            'user_attendee' => true,
+            'cc_apps' => 0,
+            'full_name' => 'Joe Bloggs'
+        ];
+        $this->assertEquals($expected, $actual);
+
+        $count = $this->Attendees->find('all')->count();
+        $this->assertEquals(12, $count);
     }
 
     /**
@@ -433,192 +504,172 @@ class AttendeesTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $startNow = Time::now();
-        $nowDate = new Date('2016-12-26');
+        $good = $this->getGood();
 
-        $badData = [
-            'county' => null,
-            'deleted' => null,
-            'user_id' => null,
-            'section_id' => null,
-            'role_id' => null,
-            'firstname' => null,
-            'lastname' => null,
-            'dateofbirth' => null,
-            'phone' => null,
-            'phone2' => null,
-            'address_1' => null,
-            'address_2' => null,
-            'city' => null,
-            'postcode' => null,
-            'nightsawaypermit' => null,
-            'vegetarian' => null,
-            'created' => null,
-            'modified' => null,
-            'osm_generated' => null,
-            'osm_id' => null,
-            'osm_sync_date' => null,
-            'user_attendee' => null,
+        $new = $this->Attendees->newEntity($good);
+        $attempt = $this->Attendees->save($new);
+        debug($attempt);
+        $this->assertNotFalse($attempt);
+        $this->assertInstanceOf('App\Model\Entity\Attendee', $attempt);
+
+        $required = [
+            'firstname',
+            'lastname',
         ];
 
-        $goodData = [
-            'user_id' => 1,
-            'section_id' => 1,
-            'role_id' => 1,
-            'firstname' => 'New Person',
-            'lastname' => 'Joe Other',
-            'dateofbirth' => $nowDate,
-            'phone' => '01234 567890',
-            'phone2' => null,
-            'address_1' => 'Lorem Ipsum Dolor Sit Amet',
-            'address_2' => 'Lorem Ipsum Dolor Sit Amet',
-            'city' => 'Lorem Ipsum Dolor Sit Amet',
-            'county' => 'Lorem Ipsum Dolor Sit Amet',
-            'postcode' => 'AB1 3DE',
-            'nightsawaypermit' => true,
-            'vegetarian' => true,
-            'osm_generated' => false,
-            'osm_id' => null,
-            'osm_sync_date' => $startNow,
-            'user_attendee' => true,
+        foreach ($required as $require) {
+            $reqArray = $this->getGood();
+            unset($reqArray[$require]);
+            $new = $this->Attendees->newEntity($reqArray);
+            $this->assertFalse($this->Attendees->save($new));
+        }
+
+        $notRequired = [
+            'phone',
+            'phone2',
+            'address_1',
+            'address_2',
+            'city',
+            'county',
+            'postcode',
+            'nightsawaypermit',
+            'vegetarian',
+            'osm_generated',
+            'osm_id',
+            'user_attendee',
+            'osm_sync_date',
         ];
 
-        $expected = $this->getExpected();
-        $inserted = $this->transformGood($goodData);
-        $expected = array_merge($expected, [$inserted]);
+        foreach ($notRequired as $not_required) {
+            $reqArray = $this->getGood();
+            unset($reqArray[$not_required]);
+            $new = $this->Attendees->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\Attendee', $this->Attendees->save($new));
+        }
 
-        $badEntity = $this->Attendees->newEntity($badData);
-        $goodEntity = $this->Attendees->newEntity($goodData);
+        $empties = [
+            'phone',
+            'phone2',
+            'address_1',
+            'address_2',
+            'city',
+            'county',
+            'postcode',
+            'nightsawaypermit',
+            'vegetarian',
+            'osm_generated',
+            'osm_id',
+            'user_attendee',
+            'osm_sync_date',
+        ];
 
-        $this->assertFalse($this->Attendees->save($badEntity));
-        $this->assertInstanceOf('\App\Model\Entity\Attendee', $this->Attendees->save($goodEntity));
+        foreach ($empties as $empty) {
+            $reqArray = $this->getGood();
+            $reqArray[$empty] = '';
+            $new = $this->Attendees->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\Attendee', $this->Attendees->save($new));
+        }
 
-        $query = $this->Attendees->find('all');
+        $notEmpties = [
+            'firstname',
+            'lastname',
+        ];
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
+        foreach ($notEmpties as $not_empty) {
+            $reqArray = $this->getGood();
+            $reqArray[$not_empty] = '';
+            $new = $this->Attendees->newEntity($reqArray);
+            $this->assertFalse($this->Attendees->save($new));
+        }
 
-        $this->assertEquals($expected, $result);
+        $maxLengths = [
+            'firstname' => 255,
+            'lastname' => 255,
+            'phone' => 12,
+            'phone2' => 12,
+            'address_1' => 255,
+            'address_2' => 255,
+            'city' => 125,
+            'county' => 125,
+            'postcode' => 8,
+        ];
+
+        $string = hash('sha512', Security::randomBytes(64));
+        $string .= $string;
+        $string .= $string;
+
+        foreach ($maxLengths as $maxField => $max_length) {
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $max_length);
+            $new = $this->Attendees->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\Attendee', $this->Attendees->save($new));
+
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $max_length + 1);
+            $new = $this->Attendees->newEntity($reqArray);
+            $this->assertFalse($this->Attendees->save($new));
+        }
     }
 
     /**
      * Test buildRules method
      *
      * @return void
+     *
+     * @throws \Exception
      */
     public function testBuildRules()
     {
-        $startNow = Time::now();
-        $nowDate = new Date('2016-12-26');
+        // Users
+        $values = $this->getGood();
 
-        $badSection = [
-            'user_id' => 1,
-            'section_id' => 12345,
-            'role_id' => 1,
-            'firstname' => 'New Person',
-            'lastname' => 'Joe Other',
-            'dateofbirth' => $nowDate,
-            'phone' => '01234 567890',
-            'phone2' => null,
-            'address_1' => 'Lorem Ipsum Dolor Sit Amet',
-            'address_2' => 'Lorem Ipsum Dolor Sit Amet',
-            'city' => 'Lorem Ipsum Dolor Sit Amet',
-            'county' => 'Lorem Ipsum Dolor Sit Amet',
-            'postcode' => 'AB1 3DE',
-            'nightsawaypermit' => true,
-            'vegetarian' => true,
-            'osm_generated' => false,
-            'osm_id' => null,
-            'osm_sync_date' => $startNow,
-            'user_attendee' => true,
-        ];
+        $types = $this->Attendees->Users->find('list')->toArray();
 
-        $badUser = [
-            'user_id' => 12345,
-            'section_id' => 1,
-            'role_id' => 1,
-            'firstname' => 'New Person',
-            'lastname' => 'Joe Other',
-            'dateofbirth' => $nowDate,
-            'phone' => '01234 567890',
-            'phone2' => null,
-            'address_1' => 'Lorem Ipsum Dolor Sit Amet',
-            'address_2' => 'Lorem Ipsum Dolor Sit Amet',
-            'city' => 'Lorem Ipsum Dolor Sit Amet',
-            'county' => 'Lorem Ipsum Dolor Sit Amet',
-            'postcode' => 'AB1 3DE',
-            'nightsawaypermit' => true,
-            'vegetarian' => true,
-            'osm_generated' => false,
-            'osm_id' => null,
-            'osm_sync_date' => $startNow,
-            'user_attendee' => true,
-        ];
+        $type = max(array_keys($types));
 
-        $badRole = [
-            'user_id' => 1,
-            'section_id' => 1,
-            'role_id' => 12345,
-            'firstname' => 'New Person',
-            'lastname' => 'Joe Other',
-            'dateofbirth' => $nowDate,
-            'phone' => '01234 567890',
-            'phone2' => null,
-            'address_1' => 'Lorem Ipsum Dolor Sit Amet',
-            'address_2' => 'Lorem Ipsum Dolor Sit Amet',
-            'city' => 'Lorem Ipsum Dolor Sit Amet',
-            'county' => 'Lorem Ipsum Dolor Sit Amet',
-            'postcode' => 'AB1 3DE',
-            'nightsawaypermit' => true,
-            'vegetarian' => true,
-            'osm_generated' => false,
-            'osm_id' => null,
-            'osm_sync_date' => $startNow,
-            'user_attendee' => true,
-        ];
+        $values['user_id'] = $type;
+        $new = $this->Attendees->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\Attendee', $this->Attendees->save($new));
 
-        $goodData = [
-            'user_id' => 1,
-            'section_id' => 1,
-            'role_id' => 1,
-            'firstname' => 'New Person',
-            'lastname' => 'Joe Other',
-            'dateofbirth' => $nowDate,
-            'phone' => '01234 567890',
-            'phone2' => null,
-            'address_1' => 'Lorem Ipsum Dolor Sit Amet',
-            'address_2' => 'Lorem Ipsum Dolor Sit Amet',
-            'city' => 'Lorem Ipsum Dolor Sit Amet',
-            'county' => 'Lorem Ipsum Dolor Sit Amet',
-            'postcode' => 'AB1 3DE',
-            'nightsawaypermit' => true,
-            'vegetarian' => true,
-            'osm_generated' => false,
-            'osm_id' => null,
-            'osm_sync_date' => $startNow,
-            'user_attendee' => true,
-        ];
+        $values = $this->getGood();
 
-        $expected = $this->getExpected();
-        $inserted = $this->transformGood($goodData);
-        $expected = array_merge($expected, [$inserted]);
+        $values['user_id'] = $type + 100;
+        $new = $this->Attendees->newEntity($values);
+        $this->assertFalse($this->Attendees->save($new));
+        
+        // Sections
+        $values = $this->getGood();
 
-        $goodEntity = $this->Attendees->newEntity($goodData);
-        $badSectionEntity = $this->Attendees->newEntity($badSection);
-        $badUserEntity = $this->Attendees->newEntity($badUser);
-        $badRoleEntity = $this->Attendees->newEntity($badRole);
+        $types = $this->Attendees->Sections->find('list')->toArray();
 
-        $this->assertInstanceOf('\App\Model\Entity\Attendee', $this->Attendees->save($goodEntity));
-        $this->assertFalse($this->Attendees->save($badSectionEntity));
-        $this->assertFalse($this->Attendees->save($badUserEntity));
-        $this->assertFalse($this->Attendees->save($badRoleEntity));
+        $type = max(array_keys($types));
 
-        $query = $this->Attendees->find('all');
+        $values['section_id'] = $type;
+        $new = $this->Attendees->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\Attendee', $this->Attendees->save($new));
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
+        $values = $this->getGood();
 
-        $this->assertEquals($expected, $result);
+        $values['section_id'] = $type + 100;
+        $new = $this->Attendees->newEntity($values);
+        $this->assertFalse($this->Attendees->save($new));
+        
+        // Roles
+        $values = $this->getGood();
+
+        $types = $this->Attendees->Roles->find('list')->toArray();
+
+        $type = max(array_keys($types));
+
+        $values['role_id'] = $type;
+        $new = $this->Attendees->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\Attendee', $this->Attendees->save($new));
+
+        $values = $this->getGood();
+
+        $values['role_id'] = $type + 100;
+        $new = $this->Attendees->newEntity($values);
+        $this->assertFalse($this->Attendees->save($new));        
     }
 
     /**
