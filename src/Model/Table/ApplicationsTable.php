@@ -181,18 +181,76 @@ class ApplicationsTable extends Table
      *
      * @return \Cake\ORM\Query The modified query.
      */
-    public function findCubs($query, $options)
+    public function findSection($query, $options)
     {
-        $query = $query->matching(
-            'Attendees.Roles',
-            function ($q) {
-                return $q->where([
-                    'Attendees.deleted IS' => null,
-                    'Roles.minor' => true,
-                    'Roles.id' => 3
-                ]);
-            }
-        );
+        $roleId = 3;
+        if (key_exists('role_id', $options)) {
+            $roleId = $options['role_id'];
+        }
+
+        switch ($roleId) {
+            case 1:
+                $query = $query->matching(
+                    'Attendees.Roles',
+                    function ($q) {
+                        return $q->where([
+                            'Attendees.deleted IS' => null,
+                            'Roles.minor' => true,
+                            'Roles.id' => 1
+                        ]);
+                    }
+                );
+                break;
+            case 2:
+                $query = $query->matching(
+                    'Attendees.Roles',
+                    function ($q) {
+                        return $q->where([
+                            'Attendees.deleted IS' => null,
+                            'Roles.minor' => true,
+                            'Roles.id' => 2
+                        ]);
+                    }
+                );
+                break;
+            case 3:
+                $query = $query->matching(
+                    'Attendees.Roles',
+                    function ($q) {
+                        return $q->where([
+                            'Attendees.deleted IS' => null,
+                            'Roles.minor' => true,
+                            'Roles.id' => 3
+                        ]);
+                    }
+                );
+                break;
+
+            case 4:
+                $query = $query->matching(
+                    'Attendees.Roles',
+                    function ($q) {
+                        return $q->where([
+                            'Attendees.deleted IS' => null,
+                            'Roles.minor' => true,
+                            'Roles.id' => 4
+                        ]);
+                    }
+                );
+                break;
+
+            default:
+                $query = $query->matching(
+                    'Attendees.Roles',
+                    function ($q) {
+                        return $q->where([
+                            'Attendees.deleted IS' => null,
+                            'Roles.minor' => true,
+                            'Roles.id' => 3
+                        ]);
+                    }
+                );
+        }
 
         return $query;
     }
@@ -205,14 +263,56 @@ class ApplicationsTable extends Table
      *
      * @return \Cake\ORM\Query The modified query.
      */
-    public function findYoungLeaders($query, $options)
+    public function findNonSection($query, $options)
     {
-        $query = $query->matching(
-            'Attendees.Roles',
-            function ($q) {
-                return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id <>' => 3]);
-            }
-        );
+        $roleId = 3;
+        if (key_exists('role_id', $options)) {
+            $roleId = $options['role_id'];
+        }
+
+        switch ($roleId) {
+            case 1:
+                $query = $query->matching(
+                    'Attendees.Roles',
+                    function ($q) {
+                        return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id <>' => 1]);
+                    }
+                );
+                break;
+            case 2:
+                $query = $query->matching(
+                    'Attendees.Roles',
+                    function ($q) {
+                        return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id <>' => 2]);
+                    }
+                );
+                break;
+            case 3:
+                $query = $query->matching(
+                    'Attendees.Roles',
+                    function ($q) {
+                        return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id <>' => 3]);
+                    }
+                );
+                break;
+
+            case 4:
+                $query = $query->matching(
+                    'Attendees.Roles',
+                    function ($q) {
+                        return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id <>' => 4]);
+                    }
+                );
+                break;
+
+            default:
+                $query = $query->matching(
+                    'Attendees.Roles',
+                    function ($q) {
+                        return $q->where(['Attendees.deleted IS' => null, 'Roles.minor' => true, 'Roles.id <>' => 3]);
+                    }
+                );
+        }
 
         return $query;
     }

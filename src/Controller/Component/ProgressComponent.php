@@ -5,9 +5,21 @@ use Cake\Cache\Cache;
 use Cake\Controller\Component;
 use Cake\ORM\TableRegistry;
 
+/**
+ * Class ProgressComponent
+ *
+ * @package App\Controller\Component
+ *
+ * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Model\Table\InvoicesTable $Invoices
+ * @property \Cake\Controller\Controller $Controller
+ *
+ * @property \App\Controller\Component\AvailabilityComponent $Availability
+ * @property \Cake\Controller\Component\FlashComponent $Flash
+ */
 class ProgressComponent extends Component
 {
-    public $components = ['Flash'];
+    public $components = ['Flash', 'Availability'];
 
     /**
      * A Function to Determine the Application
@@ -23,80 +35,27 @@ class ProgressComponent extends Component
      */
     public function determineApp($appID, $admin = null, $userID = null, $set = true, $full = true, $flash = null)
     {
-        if (!isset($set) || empty($set)) {
-            $set = false;
-        }
-
-        if (!isset($full) || empty($full)) {
-            $full = false;
-        }
-
         if (!is_null($flash)) {
             $flash = $set;
         }
 
-        $apps = TableRegistry::get('Applications');
-        $invs = TableRegistry::get('Invoices');
-        $atts = TableRegistry::get('Attendees');
-        $itms = TableRegistry::get('InvoiceItems');
+        $this->Applications = TableRegistry::getTableLocator()->get('Applications');
+        $this->Invoices = TableRegistry::getTableLocator()->get('Invoices');
 
-        $controller = $this->_registry->getController();
+        $this->Controller = $this->_registry->getController();
 
         // Get Application
-        $app = $apps->get($appID, [
-            'contain' => [
-                'Users',
-                'Sections.Scoutgroups',
-                'Events',
-                'Invoices',
-                'Attendees' => [
-                    'sort' => [
-                        'Attendees.role_id' => 'ASC',
-                        'Attendees.lastname' => 'ASC'
-                    ]
-                ],
-                'Attendees.Roles',
-                'Attendees.Sections.Scoutgroups'
-            ]
-        ]);
-
-        if (isset($userID)) {
-            $app = $apps->get($appID, [
-                'contain' => [
-                    'Users',
-                    'Sections.Scoutgroups',
-                    'Events',
-                    'Invoices',
-                    'Attendees' => [
-                        'sort' => [
-                            'Attendees.role_id' => 'ASC',
-                            'Attendees.lastname' => 'ASC'
-                        ]
-                    ],
-                    'Attendees.Roles' => [
-                        'conditions' => [
-                            'Attendees.user_id' => $userID
-                        ]],
-                    'Attendees.Sections.Scoutgroups' => [
-                        'conditions' => [
-                            'Attendees.user_id' => $userID
-                        ]]]
-            ]);
-        }
+        $application = $this->Applications->get($appID, ['contain' => 'Invoices']);
 
         // Determine Invoice Progress
-        $invoices = $invs->find('all')->where(['application_id' => $appID]);
-        $invCount = $invoices->count();
-        $invFirst = $invs->find('all')->where(['application_id' => $appID])->first();
+        $invCount = $application->has('invoice') ? 1 : 0;
 
         // Find Cub, YL & Leader Counts
-        $attendeeCubCount = $apps->find('cubs')->where(['Applications.id' => $appID]);
-        $attendeeYlCount = $apps->find('youngLeaders')->where(['Applications.id' => $appID]);
-        $attendeeLeaderCount = $apps->find('leaders')->where(['Applications.id' => $appID]);
+        $appNumbers = $this->Availability->getNumbers($appID);
 
-        $attCubs = $attendeeCubCount->count();
-        $attYls = $attendeeYlCount->count();
-        $attLeaders = $attendeeLeaderCount->count();
+        $attCubs = $appNumbers['NumSection'];
+        $attYls = $appNumbers['NumNonSection'];
+        $attLeaders = $appNumbers['NumLeaders'];
 
         $attNotCubs = $attYls + $attLeaders;
 
@@ -106,32 +65,24 @@ class ProgressComponent extends Component
         $invNotCubs = 0;
 
         if ($invCount > 0) {
-            $invMinorCount = $itms->find('all')
-                ->contain(['Invoices.Applications', 'ItemTypes'])
-                ->where(['Applications.id' => $appID, 'ItemTypes.minor' => true])
-                ->count();
+            $invMinorCount = $this->Invoices->InvoiceItems->find('minors', ['application_id' => $appID])->count();
 
             if ($invMinorCount > 0) {
-                $invItemMinorCounts = $itms->find('all')
-                   ->contain([ 'Invoices.Applications', 'ItemTypes' ])
-                   ->where([ 'Applications.id' => $appID, 'ItemTypes.minor' => true ])
-                   ->select([ 'sum' => $invoices->func()->sum('quantity') ])
-                   ->toArray();
+                $invItemMinorCounts = $this->Invoices->InvoiceItems
+                    ->find('minors', ['application_id' => $appID])
+                    ->find('totalQuantity')
+                    ->toArray();
 
                 $invCubs = $invItemMinorCounts[0]->sum;
             }
 
-            $invAdultCount = $itms->find('all')
-                ->contain(['Invoices.Applications', 'ItemTypes'])
-                ->where(['Applications.id' => $appID, 'ItemTypes.minor' => true])
-                ->count();
+            $invAdultCount = $this->Invoices->InvoiceItems->find('adults', ['application_id' => $appID])->count();
 
             if ($invAdultCount > 0) {
-                $invItemAdultCounts = $itms->find('all')
-                   ->contain(['Invoices.Applications', 'ItemTypes'])
-                   ->where(['Applications.id' => $appID, 'ItemTypes.minor' => false])
-                   ->select([ 'sum' => $invoices->func()->sum('quantity')])
-                   ->toArray();
+                $invItemAdultCounts = $this->Invoices->InvoiceItems
+                    ->find('adults', ['application_id' => $appID])
+                    ->find('totalQuantity', ['application_id' => $appID])
+                    ->toArray();
 
                 $invNotCubs = $invItemAdultCounts[0]->sum;
             }
@@ -141,11 +92,8 @@ class ProgressComponent extends Component
         $sumPayments = 0;
 
         if ($invCount > 0) {
-            $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->group('id')->first();
-            $sumPaymentItem = $invoices->select(['sum' => $invoices->func()->sum('value')])->group('id')->first();
-
-            $sumValues = $sumValueItem->sum;
-            $sumPayments = $sumPaymentItem->sum;
+            $sumValues = $this->Invoices->find('totalInitialValue')->first()->sum;
+            $sumPayments = $this->Invoices->find('totalValue')->first()->sum;
         }
 
         $sumBalances = $sumValues - $sumPayments;
@@ -171,7 +119,7 @@ class ProgressComponent extends Component
             $cubsDone = $attCubs / $invCubs;
 
             if ($set == true) {
-                $controller->set(compact('addCubs'));
+                $this->Controller->set(compact('addCubs'));
             }
         } elseif ($attCubs > 0 && $invCubs < $attCubs) {
             if ($flash == true) {
@@ -191,7 +139,7 @@ class ProgressComponent extends Component
             $cubsNotDone = $attNotCubs / $invNotCubs;
 
             if ($set == true) {
-                $controller->set(compact('addNotCubs'));
+                $this->Controller->set(compact('addNotCubs'));
             }
         } elseif ($attNotCubs > 0 && $invNotCubs < $attNotCubs) {
             if ($flash == true) {
@@ -223,53 +171,47 @@ class ProgressComponent extends Component
         }
 
         if ($set == true) {
-            $controller->set(compact('invCount', 'invFirst'));
-            $controller->set(compact('attCubs', 'attYls', 'attLeaders', 'attNotCubs'));
-            $controller->set(compact('invCubs', 'invYls', 'invLeaders', 'invNotCubs'));
-            $controller->set(compact('sumBalances', 'sumPayments', 'sumValues'));
-            $controller->set(compact('appDone', 'invDone', 'cubsDone', 'cubsNotDone', 'payDone'));
-            $controller->set(compact('done', 'status'));
+            $this->Controller->set(compact('invCount'));
+            $this->Controller->set(compact('attCubs', 'attYls', 'attLeaders', 'attNotCubs'));
+            $this->Controller->set(compact('invCubs', 'invYls', 'invLeaders', 'invNotCubs'));
+            $this->Controller->set(compact('sumBalances', 'sumPayments', 'sumValues'));
+            $this->Controller->set(compact('appDone', 'invDone', 'cubsDone', 'cubsNotDone', 'payDone'));
+            $this->Controller->set(compact('done', 'status'));
         }
 
-        if ($set == false && $full == true) {
-            $results = [
-                'invCount' => $invCount,
-                'invFirst' => $invFirst,
-                'invCubs' => $invCubs,
-                'invYls' => $invYls,
-                'invLeaders' => $invLeaders,
-                'invNotCubs' => $invNotCubs,
-                'attCubs' => $attCubs,
-                'attYls' => $attYls,
-                'attLeaders' => $attLeaders,
-                'attNotCubs' => $attNotCubs,
-                'sumBalances' => $sumBalances,
-                'sumPayments' => $sumPayments,
-                'sumValues' => $sumValues,
-                'appDone' => $appDone,
-                'invDone' => $invDone,
-                'cubsDone' => $cubsDone,
-                'cubsNotDone' => $cubsNotDone,
-                'payDone' => $payDone,
-                'done' => $done,
-                'status' => $status,
-            ];
-
-            return $results;
-        }
+        $simpleResults = [
+            'done' => $done,
+            'appDone' => $appDone,
+            'invDone' => $invDone,
+            'cubsDone' => $cubsDone,
+            'cubsNotDone' => $cubsNotDone,
+            'payDone' => $payDone,
+            'status' => $status,
+        ];
 
         if ($set == false && $full == false) {
-            $simpleResults = [
-                'done' => $done,
-                'appDone' => $appDone,
-                'invDone' => $invDone,
-                'cubsDone' => $cubsDone,
-                'cubsNotDone' => $cubsNotDone,
-                'payDone' => $payDone,
-                'status' => $status,
-            ];
-
             return $simpleResults;
+        }
+
+        $results = [
+            'invCount' => $invCount,
+            'invCubs' => $invCubs,
+            'invYls' => $invYls,
+            'invLeaders' => $invLeaders,
+            'invNotCubs' => $invNotCubs,
+            'attCubs' => $attCubs,
+            'attYls' => $attYls,
+            'attLeaders' => $attLeaders,
+            'attNotCubs' => $attNotCubs,
+            'sumBalances' => $sumBalances,
+            'sumPayments' => $sumPayments,
+            'sumValues' => $sumValues,
+        ];
+
+        if ($set == false && $full == true) {
+            $fullResults = array_merge($results, $simpleResults);
+
+            return $fullResults;
         }
     }
 

@@ -1,3 +1,16 @@
+<?php
+/**
+ * @var \App\Model\Entity\Event $event
+ * @var int $max_section
+ * @var string $term
+ * @var string $singleTerm
+ * @var bool $readyForSync
+ * @var array $osmEvents
+ *
+ * @var \App\Form\AttNumberForm $attForm
+ * @var \App\Form\SyncBookForm $syncForm
+ */
+?>
 <div class="row">
     <div class="col-lg-12">
         <h1>Book onto Event</h1>
@@ -13,10 +26,10 @@
                         <div class="panel panel-yellow">
                             <div class="panel-heading">
                                 <div class="row">
-                                    <div class="col-xs-3">
+                                    <div class="col-xs-3 col-md-1">
                                         <i class="fal fa-calendar-exclamation fa-5x"></i>
                                     </div>
-                                    <div class="col-xs-9 text-right">
+                                    <div class="col-xs-9 col-md-11 text-right">
                                         <div class="huge">Event Full</div>
                                         <hr/>
                                         <div>This event is currently full. Often Events need to set a team limit for logistical reasons. <br/>There may be cancellations or expansion of availability, but this is unlikely.</div>
@@ -47,12 +60,12 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-xs-3">
+                                    <div class="col-xs-3 col-md-1">
                                         <i class="fal fa-thermometer-half fa-5x"></i>
                                     </div>
-                                    <div class="col-xs-9 text-right">
+                                    <div class="col-xs-9 col-md-11 text-right">
                                         <div>Event Availability</div>
-                                        <div class="huge"><?= $this->Number->format($event->max_apps - $event->cc_apps) ?> <?= h($term) ?> Available</div>
+                                        <div><h2><?= $this->Number->format($event->max_apps - $event->cc_apps) ?> <?= h($term) ?> Available</h2></div>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +97,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div>Event Availability</div>
-                                    <div class="huge"><?= $this->Number->format($event->max_section - $event->cc_apps) ?> Attendee Slots Available</div>
+                                    <div><h2><?= $this->Number->format($event->max_section - $event->cc_apps) ?> Attendee Slots Available</h2></div>
                                 </div>
                             </div>
                         </div>
@@ -96,6 +109,18 @@
                         </div>
                     <?php endif; ?>
                 <?php endif; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($max_section !== 0)  : ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h2><?= $term ?> are limited to <?= $max_section ?> <?= $event->section_type->role->role ?>s per <?= $singleTerm ?></h2>
+                        </div>
+                    </div>
+                </div>
             </div>
         <?php endif; ?>
 

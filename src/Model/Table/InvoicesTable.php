@@ -179,4 +179,26 @@ class InvoicesTable extends Table
     {
         return $query->contain('Applications.Events')->where(['Events.live' => true]);
     }
+
+    /**
+     * Find Invoices which are not on an event which has been archived.
+     *
+     * @param \Cake\ORM\Query $query an existing ORM Query.
+     * @return \Cake\ORM\Query
+     */
+    public function findTotalValue($query)
+    {
+        return $query->select(['sum' => $query->func()->sum('value')])->group('id');
+    }
+
+    /**
+     * Find Invoices which are not on an event which has been archived.
+     *
+     * @param \Cake\ORM\Query $query an existing ORM Query.
+     * @return \Cake\ORM\Query
+     */
+    public function findTotalInitialValue($query)
+    {
+        return $query->select(['sum' => $query->func()->sum('initialvalue')])->group('id');
+    }
 }

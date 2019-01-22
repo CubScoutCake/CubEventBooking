@@ -25,22 +25,46 @@ class ApplicationsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.applications',
+        'app.allergies',
         'app.application_statuses',
-        'app.settings',
-        'app.setting_types',
+        'app.applications_attendees',
+        'app.applications',
+        'app.attendees',
+        'app.attendees_allergies',
+        'app.auth_roles',
+        'app.champions',
         'app.discounts',
-        'app.roles',
-        'app.password_states',
         'app.districts',
+        'app.email_response_types',
+        'app.email_responses',
+        'app.email_sends',
+        'app.event_statuses',
+        'app.event_types',
+        'app.events',
+        'app.invoice_items',
+        'app.invoices',
+        'app.invoices_payments',
+        'app.item_types',
+        'app.logistic_items',
+        'app.logistics',
+        'app.notes',
+        'app.notification_types',
+        'app.notifications',
+        'app.parameter_sets',
+        'app.parameters',
+        'app.params',
+        'app.password_states',
+        'app.payments',
+        'app.prices',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.roles',
         'app.scoutgroups',
         'app.section_types',
         'app.sections',
+        'app.setting_types',
+        'app.settings',
         'app.users',
-        'app.events',
-        'app.event_statuses',
-        'app.event_types',
-        'app.auth_roles',
     ];
 
     /**
@@ -192,9 +216,22 @@ class ApplicationsTableTest extends TestCase
      *
      * @return void
      */
-    public function testFindCubs()
+    public function testFindSection()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Applications->find('section');
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+
+        $this->assertEquals(10, $query->count());
+
+        $query = $this->Applications->find('section', ['role_id' => 1]);
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+
+        $this->assertEquals(0, $query->count());
+
+        $query = $this->Applications->find('section', ['role_id' => 3]);
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+
+        $this->assertEquals(10, $query->count());
     }
 
     /**
@@ -202,9 +239,22 @@ class ApplicationsTableTest extends TestCase
      *
      * @return void
      */
-    public function testFindYoungLeaders()
+    public function testFindNonSection()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Applications->find('nonSection');
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+
+        $this->assertEquals(10, $query->count());
+
+        $query = $this->Applications->find('nonSection', ['role_id' => 1]);
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+
+        $this->assertEquals(20, $query->count());
+
+        $query = $this->Applications->find('nonSection', ['role_id' => 3]);
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+
+        $this->assertEquals(10, $query->count());
     }
 
     /**
@@ -214,6 +264,9 @@ class ApplicationsTableTest extends TestCase
      */
     public function testFindLeaders()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $query = $this->Applications->find('leaders');
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+
+        $this->assertEquals(3, $query->count());
     }
 }

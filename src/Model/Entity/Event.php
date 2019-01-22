@@ -48,6 +48,9 @@ use Cake\ORM\Entity;
  * @property int $cc_res
  * @property int $cc_atts
  *
+ * @property string $admin_full_name
+ * @property bool $app_full
+ *
  * @property \App\Model\Entity\Discount $discount
  * @property \App\Model\Entity\EventStatus $event_status
  * @property \App\Model\Entity\User $admin_user

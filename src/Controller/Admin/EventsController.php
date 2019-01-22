@@ -11,6 +11,7 @@ use Cake\Utility\Hash;
  * Events Controller
  *
  * @property \App\Model\Table\EventsTable $Events
+ * @property \App\Controller\Component\AvailabilityComponent $Availability
  */
 class EventsController extends AppController
 {
@@ -52,7 +53,8 @@ class EventsController extends AppController
                     'ApplicationRefs',
                     'InvoiceTexts'
                 ],
-                'Prices.ItemTypes.Roles'
+                'SectionTypes.Roles',
+                'Prices.ItemTypes.Roles',
             ]
         ]);
         $this->set('event', $event);
@@ -75,133 +77,18 @@ class EventsController extends AppController
 
         $this->set(compact('lineArray'));
 
+        $max_section = $this->Events->getPriceSection($eventId);
+
         $term = $event->event_type->application_ref->text;
-        if ($event->cc_apps > 1) {
-            $term = Inflector::pluralize($term);
+        $singleTerm = $term;
+        $pluralTerm = Inflector::pluralize($term);
+
+        if (($event->max_apps - $event->cc_apps) > 1) {
+            $term = $pluralTerm;
         }
 
         // Pass to View
-        $this->set(compact('users', 'payments', 'term', 'discount', 'invText', 'legal'));
-    }
-
-    public function fullView($id = null)
-    {
-        $event = $this->Events->get($id, [
-            'contain' => ['Settings', 'Discounts', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups.Districts', 'Prices.ItemTypes.Roles']
-        ]);
-        $this->set('event', $event);
-        $this->set('_serialize', ['event']);
-
-        // Get Entities from Registry
-        $apps = TableRegistry::get('Applications');
-        $invs = TableRegistry::get('Invoices');
-        $itms = TableRegistry::get('InvoiceItems');
-        $atts = TableRegistry::get('Attendees');
-        $sets = TableRegistry::get('Settings');
-        $dscs = TableRegistry::get('Discounts');
-        $usrs = TableRegistry::get('Users');
-
-        $now = Time::now();
-        $userId = $this->Auth->user('id');
-
-        // Table Entities
-        $applications = $apps->find('all')->where(['event_id' => $event->id]);
-        $invoices = $invs->find('all')->contain(['Applications'])->where(['Applications.event_id' => $event->id]);
-        $allInvoices = $invs->find('all')->contain(['Applications'])->where(['Applications.event_id' => $event->id]);
-        if (isset($event->discount_id)) {
-            $discount = $dscs->get($event->discount_id);
-        }
-        if (isset($event->legaltext_id)) {
-            $legal = $sets->get($event->legaltext_id);
-        }
-        if (isset($event->invtext_id)) {
-            $invText = $sets->get($event->invtext_id);
-        }
-        if (isset($event->admin_user_id)) {
-            $administrator = $usrs->get($event->admin_user_id);
-        }
-
-        // Pass to View
-        $this->set(compact('applications', 'users', 'payments', 'discount', 'invText', 'legal', 'administrator'));
-        $this->set('invoices', $allInvoices);
-
-        // Counts of Entities
-        $cntApplications = $applications->count('*');
-        $cntInvoices = $invoices->count('*');
-
-        $this->set(compact('cntApplications', 'cntInvoices'));
-
-        $sumValues = 0;
-        $sumPayments = 0;
-        $sumBalances = 0;
-
-        $invCubs = 0;
-        $invYls = 0;
-        $invLeaders = 0;
-
-        $outstanding = 0;
-
-        if ($cntInvoices >= 1) {
-            // Sum Values & Calculate Balances
-            $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->group('Applications.event_id')->first();
-            $sumPaymentItem = $invoices->select(['sum' => $invoices->func()->sum('value')])->group('Applications.event_id')->first();
-
-            $sumValues = $sumValueItem->sum;
-            $sumPayments = $sumPaymentItem->sum;
-
-            $sumBalances = $sumValues - $sumPayments;
-
-            // Count of Line Items
-            $invItemCounts = $itms->find('all')->contain(['Invoices.Applications'])->where(['Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('quantity')])->group('item_type_id')->toArray();
-
-            $invCubs = $invItemCounts[1]->sum;
-            $invYls = $invItemCounts[2]->sum;
-            $invLeaders = $invItemCounts[3]->sum;
-
-            //Find all Outstanding Invoices
-            $outInvoices = $invs
-                ->find('outstanding')
-                ->contain(['Applications'])
-                ->where(['Applications.event_id' => $event->id]);
-
-            $unpaidInvoices = $invs
-                ->find('outstanding')
-                ->find('unpaid')
-                ->contain(['Applications'])
-                ->where(['Applications.event_id' => $event->id]);
-
-            $outstanding = $outInvoices->count();
-            $unpaid = $unpaidInvoices->count();
-
-            if ($outstanding == 0) {
-                $outInvoices = null;
-            }
-            if ($unpaid == 0) {
-                $unpaidInvoices = null;
-            }
-            $this->set(compact('outInvoices', 'unpaidInvoices'));
-        }
-
-        $this->set(compact('sumValues', 'sumBalances', 'sumPayments', 'outstanding', 'unpaid'));
-        $this->set(compact('invCubs', 'invYls', 'invLeaders'));
-
-        $appCubs = 0;
-        $appYls = 0;
-        $appLeaders = 0;
-
-        if ($cntApplications >= 1) {
-            // Set Attendee Counts
-            $attendeeCubCount = $apps->find('cubs')->where(['event_id' => $event->id]);
-            $attendeeYlCount = $apps->find('youngLeaders')->where(['event_id' => $event->id]);
-            $attendeeLeaderCount = $apps->find('leaders')->where(['event_id' => $event->id]);
-
-            // Count of Attendees
-            $appCubs = $attendeeCubCount->count('*');
-            $appYls = $attendeeYlCount->count('*');
-            $appLeaders = $attendeeLeaderCount->count('*');
-        }
-
-        $this->set(compact('appCubs', 'appYls', 'appLeaders'));
+        $this->set(compact('users', 'payments', 'term', 'discount', 'singleTerm', 'max_section', 'pluralTerm'));
     }
 
     public function regList($id = null)
@@ -285,21 +172,14 @@ class EventsController extends AppController
 
         $this->set(compact('cntApplications', 'cntInvoices'));
 
-        $appCubs = 0;
-        $appYls = 0;
-        $appLeaders = 0;
+        // Get Attendee Counts
+        $this->loadComponent('Availability');
+        $numbers = $this->Availability->getEventNumbers($id);
 
-        if ($cntApplications >= 1) {
-            // Set Attendee Counts
-            $attendeeCubCount = $apps->find('cubs')->where(['event_id' => $event->id]);
-            $attendeeYlCount = $apps->find('youngLeaders')->where(['event_id' => $event->id]);
-            $attendeeLeaderCount = $apps->find('leaders')->where(['event_id' => $event->id]);
-
-            // Count of Attendees
-            $appCubs = $attendeeCubCount->count();
-            $appYls = $attendeeYlCount->count();
-            $appLeaders = $attendeeLeaderCount->count();
-        }
+        // Count of Attendees
+        $appCubs = $numbers['NumSection'];
+        $appYls = $numbers['NumNonSection'];
+        $appLeaders = $numbers['NumLeaders'];
 
         $this->set(compact('appCubs', 'appYls', 'appLeaders'));
 
@@ -452,7 +332,7 @@ class EventsController extends AppController
      * Team Prices Function
      * @param int $id The ID of the event to be set to Event
      *
-     * @return \Cake\Http\Response|null
+     * @return \Cake\Http\Response
      */
     public function teamPrices($id = null)
     {
@@ -460,15 +340,52 @@ class EventsController extends AppController
             return $this->redirect($this->referer(['action' => 'prices']));
         }
 
-        $event = $this->Events->get($id);
+        $event = $this->Events->get($id, ['contain' => 'Prices.ItemTypes']);
         $event->set('team_price', true);
+
+        foreach ($event->prices as $price) {
+            if (!$price->item_type->team_price) {
+                $this->Events->Prices->delete($price);
+            }
+        }
 
         if ($this->Events->save($event)) {
             $this->Flash->success(__('The Event is Set to Team Pricing.'));
 
-            return $this->redirect(['action' => 'prices']);
+            return $this->redirect(['action' => 'prices', $id]);
         }
         $this->Flash->error(__('The Event could not be set to Team Pricing.'));
+
+        return $this->redirect($this->referer(['action' => 'prices']));
+    }
+
+    /**
+     * Application Prices Function
+     * @param int $id The ID of the event to be set to Event
+     *
+     * @return \Cake\Http\Response
+     */
+    public function applicationPrices($id = null)
+    {
+        if (is_null($id)) {
+            return $this->redirect($this->referer(['action' => 'prices']));
+        }
+
+        $event = $this->Events->get($id, ['contain' => 'Prices.ItemTypes']);
+        $event->set('team_price', false);
+
+        foreach ($event->prices as $price) {
+            if ($price->item_type->team_price) {
+                $this->Events->Prices->delete($price);
+            }
+        }
+
+        if ($this->Events->save($event)) {
+            $this->Flash->success(__('The Event is Set to Application Pricing.'));
+
+            return $this->redirect(['action' => 'prices', $id]);
+        }
+        $this->Flash->error(__('The Event could not be set to Application Pricing.'));
 
         return $this->redirect($this->referer(['action' => 'prices']));
     }
@@ -477,15 +394,20 @@ class EventsController extends AppController
      * Edit method
      *
      * @param string|null $id Event id.
-     * @param int $prices Number of Prices to be Created.
+     * @param int $additional Number of Prices to be Created.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Exception
      */
-    public function prices($id = null, $prices = 2)
+    public function prices($id = null, $additional = 0)
     {
+        if ($this->request->getData('additional')) {
+            return $this->redirect(['action' => 'prices', $id, $this->request->getData('boxes')]);
+        }
         $event = $this->Events->get($id, [
             'contain' => ['Settings', 'Prices']
         ]);
+        $prices = count($event->prices);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $event = $this->Events->patchEntity(
                 $event,
@@ -501,7 +423,7 @@ class EventsController extends AppController
                     $this->Flash->success('Event was marked Completed.');
                 }
 
-                return $this->redirect($this->referer(['action' => 'index']));
+                return $this->redirect(['action' => 'prices', $id]);
             } else {
                 $this->Flash->error(__('The event could not be saved. Please, try again.'));
             }
@@ -512,13 +434,7 @@ class EventsController extends AppController
             $itemTypeOptions = $this->Events->Prices->ItemTypes->find('list')->where(['team_price' => true]);
         }
 
-        $eventPrices = count($event->prices);
-
-        if ($eventPrices > 0) {
-            $prices = $eventPrices;
-        }
-
-        $this->set(compact('prices', 'event', 'itemTypeOptions'));
+        $this->set(compact('prices', 'additional', 'event', 'itemTypeOptions'));
 
         $this->set('_serialize', ['event']);
     }
@@ -527,8 +443,10 @@ class EventsController extends AppController
      * Delete method
      *
      * @param string|null $id Event id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     *
+     * @return \Cake\Http\Response Redirects to index.
+     *
+     * @throws \Exception When record not found.
      */
     public function delete($id = null)
     {
@@ -540,9 +458,12 @@ class EventsController extends AppController
             $this->Flash->error(__('The event could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect($this->referer(['action' => 'index']));
     }
 
+    /**
+     * @param int $eventID The event to be Exported.
+     */
     public function export($eventID)
     {
         $events = $this->Events->Applications->find('all', ['contain' => ['Sections.Scoutgroups.Districts', 'Users']])->where(['Applications.event_id' => $eventID])->toArray();
@@ -564,7 +485,7 @@ class EventsController extends AppController
         $this->set(compact('events', '_serialize', '_extract', '_header'));
 
         $fileName = 'Event ' . $eventID . ' Applications' . '.csv';
-        $this->response->download($fileName);
+        $this->response->withDownload($fileName);
 
         $this->viewBuilder()->className('CsvView.Csv');
         $this->set(compact('data', '_serialize'));
