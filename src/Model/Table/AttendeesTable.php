@@ -340,6 +340,7 @@ class AttendeesTable extends Table
                     $originalEnt = $this->patchEntity($originalEnt, $newData);
                 }
             }
+
             return $originalEnt;
         }
 

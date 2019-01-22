@@ -84,8 +84,8 @@ class AttendeesTableTest extends TestCase
             'user_id' => 1,
             'section_id' => 1,
             'role_id' => 1,
-            'firstname' => 'New Person' . random_int(1,999) . random_int(1, 999),
-            'lastname' => 'Joe Other' . random_int(1,999) . random_int(1, 999),
+            'firstname' => 'New Person' . random_int(1, 999) . random_int(1, 999),
+            'lastname' => 'Joe Other' . random_int(1, 999) . random_int(1, 999),
             'dateofbirth' => $nowDate,
             'phone' => '01234 567890',
             'phone2' => null,
@@ -97,7 +97,7 @@ class AttendeesTableTest extends TestCase
             'nightsawaypermit' => true,
             'vegetarian' => true,
             'osm_generated' => false,
-            'osm_id' =>  random_int(1,999) . random_int(1, 999),
+            'osm_id' => random_int(1, 999) . random_int(1, 999),
             'osm_sync_date' => $startNow,
             'user_attendee' => true,
         ];
@@ -636,7 +636,7 @@ class AttendeesTableTest extends TestCase
         $values['user_id'] = $type + 100;
         $new = $this->Attendees->newEntity($values);
         $this->assertFalse($this->Attendees->save($new));
-        
+
         // Sections
         $values = $this->getGood();
 
@@ -653,7 +653,7 @@ class AttendeesTableTest extends TestCase
         $values['section_id'] = $type + 100;
         $new = $this->Attendees->newEntity($values);
         $this->assertFalse($this->Attendees->save($new));
-        
+
         // Roles
         $values = $this->getGood();
 
@@ -669,7 +669,7 @@ class AttendeesTableTest extends TestCase
 
         $values['role_id'] = $type + 100;
         $new = $this->Attendees->newEntity($values);
-        $this->assertFalse($this->Attendees->save($new));        
+        $this->assertFalse($this->Attendees->save($new));
     }
 
     /**
