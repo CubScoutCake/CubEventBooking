@@ -28,6 +28,9 @@ use Cake\ORM\Entity;
  * @property int $section_id
  * @property int $application_status_id
  * @property string $team_leader
+ * @property string $leader
+ *
+ * @property string $display_code
  *
  * @property string $display_code
  *
