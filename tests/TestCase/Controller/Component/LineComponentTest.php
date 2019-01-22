@@ -127,14 +127,26 @@ class LineComponentTest extends TestCase
         $this->assertEquals(4, count($invoiceB->invoice_items));
     }
 
+    /**
+     * Test ParseLine Function
+     *
+     * @return void
+     */
     public function testParseLine()
     {
         // Event 1 - Team Bookings
         $events = $this->getTableLocator()->get('Events');
+
+        /** @var \App\Model\Entity\Event $teamBookingEvent */
+
         $teamBookingEvent = $events->get(2, ['contain' => 'Prices']);
 
         $this->assertTrue($teamBookingEvent->get('team_price'));
-        $this->assertEquals(6, $teamBookingEvent->prices[0]->max_number);
+        foreach ($teamBookingEvent->prices as $price) {
+            if ($price->item_type_id == 1) {
+                $this->assertEquals(6, $price->max_number);
+            }
+        }
 
         // Team Price 1 (on / over)
         $response = $this->Line->parseLine(1, 1, 6);
@@ -149,7 +161,12 @@ class LineComponentTest extends TestCase
         $this->assertFalse($sectionBookingEvent->get('team_price'));
 
         // Cubs (on / over)
-        $this->assertEquals(5, $sectionBookingEvent->prices[4]->max_number);
+        $this->assertTrue($teamBookingEvent->get('team_price'));
+        foreach ($teamBookingEvent->prices as $price) {
+            if ($price->item_type_id == 2) {
+                $this->assertEquals(5, $price->max_number);
+            }
+        }
 
         $response = $this->Line->parseLine(2, 2, 5);
         $this->assertTrue($response);
@@ -157,7 +174,11 @@ class LineComponentTest extends TestCase
         $this->assertFalse($response);
 
         // Beavers (on / over)
-        $this->assertEquals(2, $sectionBookingEvent->prices[3]->max_number);
+        foreach ($teamBookingEvent->prices as $price) {
+            if ($price->item_type_id == 3) {
+                $this->assertEquals(2, $price->max_number);
+            }
+        }
 
         $response = $this->Line->parseLine(2, 3, 2);
         $this->assertTrue($response);
@@ -165,7 +186,11 @@ class LineComponentTest extends TestCase
         $this->assertFalse($response);
 
         // Scouts (on / over)
-        $this->assertEquals(3, $sectionBookingEvent->prices[2]->max_number);
+        foreach ($teamBookingEvent->prices as $price) {
+            if ($price->item_type_id == 4) {
+                $this->assertEquals(3, $price->max_number);
+            }
+        }
 
         $response = $this->Line->parseLine(2, 4, 3);
         $this->assertTrue($response);
@@ -173,7 +198,11 @@ class LineComponentTest extends TestCase
         $this->assertFalse($response);
 
         // Explorers (on / over)
-        $this->assertEquals(3, $sectionBookingEvent->prices[1]->max_number);
+        foreach ($teamBookingEvent->prices as $price) {
+            if ($price->item_type_id == 5) {
+                $this->assertEquals(3, $price->max_number);
+            }
+        }
 
         $response = $this->Line->parseLine(2, 5, 3);
         $this->assertTrue($response);
@@ -181,7 +210,11 @@ class LineComponentTest extends TestCase
         $this->assertFalse($response);
 
         // Adults (on / over)
-        $this->assertEquals(10, $sectionBookingEvent->prices[0]->max_number);
+        foreach ($teamBookingEvent->prices as $price) {
+            if ($price->item_type_id == 6) {
+                $this->assertEquals(10, $price->max_number);
+            }
+        }
 
         $response = $this->Line->parseLine(2, 6, 10);
         $this->assertTrue($response);

@@ -15,6 +15,7 @@ use Cake\Utility\Security;
  * Users Controller
  *
  * @property \App\Model\Table\UsersTable $Users
+ * @property \App\Controller\Component\ProgressComponent $Progress
  */
 class UsersController extends AppController
 {

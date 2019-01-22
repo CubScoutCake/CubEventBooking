@@ -101,30 +101,20 @@ class AvailabilityComponentTest extends TestCase
         $numbers = $this->Availability->getNumbers(1);
 
         $expected = [
-            'NumCubs' => 5,
-            'NumYLs' => 5,
+            'NumSection' => 5,
+            'NumNonSection' => 5,
             'NumLeaders' => 1,
         ];
-        $this->assertSame($expected, $numbers);
-
-        // Application 2
-        $numbers = $this->Availability->getNumbers(2);
-
-        $expected = [
-            'NumCubs' => 0,
-            'NumYLs' => 0,
-            'NumLeaders' => 0,
-        ];
-        $this->assertSame($expected, $numbers);
+        $this->assertEquals($expected, $numbers);
 
         // Event 3
         $numbers = $this->Availability->getNumbers(3);
 
         $expected = [
-            'NumCubs' => 5,
-            'NumYLs' => 5,
+            'NumSection' => 5,
+            'NumNonSection' => 5,
             'NumLeaders' => 2,
         ];
-        $this->assertSame($expected, $numbers);
+        $this->assertEquals($expected, $numbers);
     }
 }

@@ -20,7 +20,7 @@ class EventsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return void
      */
     public function index()
     {
@@ -37,64 +37,19 @@ class EventsController extends AppController
     /**
      * View method
      *
-     * @param int|null $id Event id.
-     * @return \Cake\Network\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $event = $this->Events->get($id, [
-            'contain' => ['Discounts', 'AdminUsers', 'EventTypes', 'Settings', 'Prices' => [
-                'ItemTypes'
-            ], 'Applications']
-        ]);
-
-        $this->set('event', $event);
-        $this->set('_serialize', ['event']);
-
-        // Get Entities from Registry
-        $settings = TableRegistry::get('Settings');
-        $discounts = TableRegistry::get('Discounts');
-
-        $now = Time::now();
-        $userId = $this->Auth->user('id');
-
-        // Table Entities
-        if (isset($event->discount_id)) {
-            $discount = $discounts->get($event->discount_id);
-        }
-        if (isset($event->legaltext_id)) {
-            $legal = $settings->get($event->legaltext_id);
-        }
-        if (isset($event->invtext_id)) {
-            $invText = $settings->get($event->invtext_id);
-        }
-
-        // Pass to View
-        $this->set(compact('AdminUsers', 'payments', 'discount', 'invText', 'legal'));
-    }
-
-    /**
-     * View method
-     *
      * @param int|null $eventID Event id.
-     * @return null
+     * @return void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException|\Exception When record not found.
      */
     public function book($eventID)
     {
         $event = $this->Events->get($eventID, [
-            'contain' => ['Discounts', 'SectionTypes', 'Applications', 'EventTypes.InvoiceTexts', 'EventTypes.LegalTexts', 'EventTypes.ApplicationRefs']
+            'contain' => ['Discounts', 'SectionTypes.Roles', 'Applications', 'EventTypes.InvoiceTexts', 'EventTypes.LegalTexts', 'EventTypes.ApplicationRefs']
         ]);
-
-        $term = $event->event_type->application_ref->text;
-
-        if (($event->max_apps - $event->cc_apps) > 1) {
-            $term = Inflector::pluralize($term);
-        }
 
         $this->loadComponent('ScoutManager');
         $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
+        $max_section = $this->Events->getPriceSection($eventID);
 
         $readyForSync = false;
 
@@ -109,7 +64,7 @@ class EventsController extends AppController
         $syncForm = new SyncBookForm();
 
         if ($this->request->is('post')) {
-            if ($event->cc_apps >= $event->max_apps && $event->max) {
+            if ($event->cc_apps >= $event->max_apps && $event->max_apps != 0 && $event->max && !is_null($event->cc_apps)) {
                 $this->Flash->error('This event is Full.');
 
                 return;
@@ -121,13 +76,11 @@ class EventsController extends AppController
             $osm_event = $this->request->getData('osm_event');
 
             if (!is_null($section)) {
-                $max_section = $this->Events->getPriceSection($eventID);
-
-                if ($section > $max_section) {
+                if ($section > $max_section && $max_section != 0 && !is_null($max_section)) {
                     $this->Flash->error('Booking Exceeds Maximum Numbers.');
                 }
 
-                if ($section <= $max_section) {
+                if ($section <= $max_section || $max_section == 0 || is_null($max_section)) {
                     $this->redirect([
                         'controller' => 'Applications',
                         'action' => 'simple_book',
@@ -151,6 +104,15 @@ class EventsController extends AppController
             }
         }
 
-        $this->set(compact('event', 'term', 'attForm', 'syncForm', 'section', 'non_section', 'leaders', 'osmEvents', 'readyForSync'));
+        $term = $event->event_type->application_ref->text;
+        $singleTerm = $term;
+        $pluralTerm = Inflector::pluralize($term);
+
+        if (($event->max_apps - $event->cc_apps) > 1) {
+            $term = $pluralTerm;
+        }
+
+        $this->set(compact('event', 'term', 'attForm', 'syncForm', 'section', 'non_section'));
+        $this->set(compact('max_section', 'leaders', 'osmEvents', 'readyForSync', 'singleTerm'));
     }
 }

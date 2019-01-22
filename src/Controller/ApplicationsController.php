@@ -9,6 +9,7 @@ use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use CakePdf\Pdf;
+use Mpdf\Tag\P;
 
 /**
  * Applications Controller
@@ -282,6 +283,8 @@ class ApplicationsController extends AppController
      * @param int $nonSectionAtts The Quantity of Non Section Young People
      * @param int $leaderAtts The Quantity of Adults
      *
+     * @throws
+     *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function simpleBook($eventId = null, $attendees = null, $nonSectionAtts = null, $leaderAtts = null)
@@ -293,25 +296,14 @@ class ApplicationsController extends AppController
         $this->Events = TableRegistry::get('Events');
         $event = $this->Events->get($eventId, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
 
-        if ($event->team_price) {
-            $team_price = $this->Events->Prices
-                ->find('all')
-                ->where([
-                    'event_id' => $event->id,
-                    'ItemTypes.team_price' => true
-                ])
-                ->contain('ItemTypes')
-                ->first();
-            if ($attendees > $team_price->max_number) {
-                $this->Flash->error(__('To many attendees for the team.'));
+        $max_section = $this->Events->getPriceSection($eventId);
+        if ($attendees > $max_section && $max_section != 0 && !is_null($max_section)) {
+            $this->Flash->error(__('Too many attendees.'));
 
-                return $this->redirect($this->referer(['controller' => 'Events', 'action' => 'book', $event->id]));
-            }
+            return $this->redirect($this->referer(['controller' => 'Events', 'action' => 'book', $event->id]));
         }
 
-        $settings = TableRegistry::get('Settings');
-        $term = $settings->get($event->event_type->application_ref_id);
-        $term = $term->text;
+        $term = $event->event_type->application_ref->text;
 
         if (isset($eventId)) {
             $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventId])->count();

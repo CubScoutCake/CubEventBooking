@@ -72,25 +72,6 @@ class EventsControllerTest extends IntegrationTestCase
     }
 
     /**
-     * Test view method
-     *
-     * @return void
-     *
-     * @throws
-     */
-    public function testView()
-    {
-        $this->session([
-            'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
-        ]);
-
-        $this->get('/events/view/2');
-
-        $this->assertResponseOk();
-    }
-
-    /**
      * Test edit method
      *
      * @return void
@@ -147,11 +128,17 @@ class EventsControllerTest extends IntegrationTestCase
 
         $events = $this->getTableLocator()->get('Events');
 
+        /** @var \App\Model\Entity\Event $limitedEvent */
+
         $limitedEvent = $events->get(3, ['contain' => 'Prices']);
 
         $this->assertTrue($limitedEvent->max);
         $this->assertEquals(2, $limitedEvent->max_apps);
-        $this->assertEquals(5, $limitedEvent->prices[4]->max_number);
+        foreach ($limitedEvent->prices as $price) {
+            if ($price->item_type_id == 2) {
+                $this->assertEquals(5, $price->max_number);
+            }
+        }
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();

@@ -1,167 +1,126 @@
-<?php if (!$event->team_price) : ?>
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Event $event
+ * @var int $prices
+ * @var int $additional
+ * @var array $itemTypeOptions
+ */
+?>
+
     <div class="row">
         <div class="col-md-12">
             <?= $this->Form->create($event) ?>
             <fieldset>
                 <legend><i class="fal fa-receipt fa-fw"></i><?= __(' Edit Event Prices') ?></legend>
                 <p><strong>WARNING</strong> - Changes in monetary value will not propagate to invoices created before the edit.</p>
-                <?php
-                echo $this->Form->input('name', ['disabled' => 'disabled']);
-                echo '<div class="row"><div class="col-lg-6">';
-                echo $this->Form->input('start_date', ['disabled' => 'disabled']);
-                echo '</div><div class="col-lg-6">';
-                echo $this->Form->input('end_date', ['disabled' => 'disabled']);
-                echo '</div></div>';
-
-                echo '<div class="table-responsive"> <table class="table table-hover"> <tr> <td>';
-                echo $this->Form->input('deposit');
-                echo '</td> <td>';
-                echo $this->Form->input('deposit_inc_leaders');
-                echo '</td> <td>';
-                echo $this->Form->input('deposit_value');
-                echo '</td> <td>';
-                echo $this->Form->input('deposit_text');
-                echo '</td></tr></table></div>';
-
-                for ($priceNum = 0; $priceNum < $prices; $priceNum ++) {
-                    echo '<div class="table-responsive"> <table class="table table-hover"> <tr> <td>';
-                    echo '<p>Price ' . ($priceNum + 1) . '</p>';
-                    echo '</td> <td>';
-                    echo $this->Form->input('prices.' . $priceNum . '.item_type_id', ['label' => 'Role or Item Type', 'options' => $itemTypeOptions, 'empty' => true]);
-                    echo '</td> <td>';
-                    echo $this->Form->input('prices.' . $priceNum . '.max_number');
-                    echo '</td> <td>';
-                    echo $this->Form->input('prices.' . $priceNum . '.value');
-                    echo '</td> <td>';
-                    echo $this->Form->input('prices.' . $priceNum . '.description');
-                    echo '</td></tr></table></div>';
-                }
-                ?>
+                <?= $this->Form->control('name', ['disabled' => 'disabled']) ?>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <?= $this->Form->control('start_date', ['disabled' => 'disabled']) ?>
+                    </div>
+                    <div class="col-lg-6">
+                        <?= $this->Form->control('end_date', ['disabled' => 'disabled']) ?>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tr>
+                            <td>Deposit</td>
+                            <td><?= $this->Form->control('deposit', ['label' => 'Event has Deposit']) ?></td>
+                            <td><?= $this->Form->control('deposit_inc_leaders', ['label' => 'Deposit includes Leaders']) ?></td>
+                            <td><?= $this->Form->control('deposit_value') ?></td>
+                            <td><?= $this->Form->control('deposit_text') ?></td>
+                        </tr>
+                        <?php foreach ($event->prices as $idx => $price) : ?>
+                            <tr>
+                                <td>
+                                    <p>Price <?= $idx + 1 ?></p>
+                                    <?= $this->Form->postLink('<i class="fal fa-trash-alt"></i>', ['controller' => 'Prices', 'action' => 'delete', $price->id], ['confirm' => __('Are you sure you want to delete {0}?', $price->description), 'title' => __('Delete'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                </td>
+                                <?= $this->Form->control('prices.' . $idx . '.id') ?>
+                                <td><?= $this->Form->control('prices.' . $idx . '.item_type_id', ['label' => 'Role or Item Type', 'options' => $itemTypeOptions, 'empty' => true]) ?></td>
+                                <td><?= $this->Form->control('prices.' . $idx . '.max_number') ?></td>
+                                <td><?= $this->Form->control('prices.' . $idx . '.value') ?></td>
+                                <td><?= $this->Form->control('prices.' . $idx . '.description') ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php
+                        $total = $prices + $additional;
+                        for ($priceNum = $prices; $priceNum <= $additional; $priceNum ++) : ?>
+                            <tr>
+                                <td>
+                                    <p>Price <?= $priceNum + 1 ?></p>
+                                </td>
+                                <td><?= $this->Form->control('prices.' . $priceNum . '.item_type_id', ['label' => 'Role or Item Type', 'options' => $itemTypeOptions, 'empty' => true]) ?></td>
+                                <td><?= $this->Form->control('prices.' . $priceNum . '.max_number') ?></td>
+                                <td><?= $this->Form->control('prices.' . $priceNum . '.value') ?></td>
+                                <td><?= $this->Form->control('prices.' . $priceNum . '.description') ?></td>
+                            </tr>
+                        <?php endfor; ?>
+                    </table>
+                </div>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12">
-            <h4><?= __('Application Pricing') ?></h4>
+<hr>
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-6">
+        <?php if (!$event->team_price) : ?>
+            <h4><?= __('Team Pricing') ?></h4>
             <p><?= __('Remove all variable prices and set single price to application.') ?></p>
             <a href="<?php echo $this->Url->build([
-		        'controller' => 'Events',
-		        'action' => 'team_prices',
-		        'prefix' => 'admin',
-	            $event->id ]); ?>">
-                <button type="button" class="btn btn-outline btn-lg btn-warning"><i class="fal fa-object-group fa-fw"></i> Convert to Application Pricing.</button>
+                'controller' => 'Events',
+                'action' => 'team_prices',
+                'prefix' => 'admin',
+                $event->id ]); ?>">
+                <button type="button" class="btn btn-outline btn-lg btn-warning"><i class="fal fa-object-group fa-fw"></i> Convert to Team Pricing.</button>
             </a>
-        </div>
-    </div>
-
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fal fa-list fa-5x"></i>
-                        </div>
-                        <div class="col-xs-7 text-right">
-                            <div class="huge">List Book</div>
-                        </div>
-                        <div class="col-xs-2">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <br/>
-                        <div class="col-lg-offset-1 col-lg-10">
-							<?= $this->Form->create($attForm); ?>
-                            <legend><?= __('Number of Attendees Being Registered') ?></legend>
-                            <p>Please enter the number of attendees of each type you are booking for.</p>
-							<?php
-							//if ($cubsVis == 1) {
-							echo $this->Form->input('section');
-							//}
-							//if ($ylsVis == 1) {
-							echo $this->Form->input('non_section');
-							//}
-							//if ($leadersVis == 1) {
-							echo $this->Form->input('leaders');
-							//}
-							?>
-                            <br/>
-                            <br/>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            Step 1 of 3
-                        </div>
-                        <div class="col-xs-9 pull-right">
-							<?php echo $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary']); ?>
-							<?php echo $this->Form->end(); ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-<?php endif; ?>
-<?php if ($event->team_price) : ?>
-    <div class="row">
-        <div class="col-md-12">
-			<?= $this->Form->create($event) ?>
-            <fieldset>
-                <legend><i class="fal fa-receipt fa-fw"></i><?= __(' Edit Event Prices') ?></legend>
-                <p><strong>WARNING</strong> - Changes in monetary value will not propagate to invoices created before the edit.</p>
-				<?php
-				echo $this->Form->input('name', ['disabled' => 'disabled']);
-				echo '<div class="row"><div class="col-lg-6">';
-				echo $this->Form->input('start_date', ['disabled' => 'disabled']);
-				echo '</div><div class="col-lg-6">';
-				echo $this->Form->input('end_date', ['disabled' => 'disabled']);
-				echo '</div></div>';
-
-				echo '<div class="table-responsive"> <table class="table table-hover"> <tr> <td>';
-				echo $this->Form->input('deposit');
-				echo '</td> <td>';
-				echo $this->Form->input('deposit_inc_leaders');
-				echo '</td> <td>';
-				echo $this->Form->input('deposit_value');
-				echo '</td> <td>';
-				echo $this->Form->input('deposit_text');
-				echo '</td></tr></table></div>';
-
-                echo '<div class="table-responsive"> <table class="table table-hover"> <tr> <td>';
-                echo '<p>Price ' . (1) . '</p>';
-                echo '</td> <td>';
-                echo $this->Form->input('prices.0.item_type_id', ['label' => 'Role or Item Type', 'options' => $itemTypeOptions, 'empty' => true]);
-                echo '</td> <td>';
-                echo $this->Form->input('prices.0.max_number');
-                echo '</td> <td>';
-                echo $this->Form->input('prices.0.value');
-                echo '</td> <td>';
-                echo $this->Form->input('prices.0.description');
-                echo '</td></tr></table></div>';
-
-				?>
-            </fieldset>
-			<?= $this->Form->button(__('Submit')) ?>
-			<?= $this->Form->end() ?>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12">
+        <?php endif; ?>
+        <?php if ($event->team_price) : ?>
             <h4><?= __('Application Pricing') ?></h4>
-            <p><?= __('Remove all variable prices and set single price to application.') ?></p>
-            <button type="button" class="btn btn-outline btn-lg btn-warning"><i class="fal fa-object-group fa-fw"></i> Convert to Application Pricing.</button>
+            <p><?= __('Remove all any team prices and variable prices.') ?></p>
+            <a href="<?php echo $this->Url->build([
+                'controller' => 'Events',
+                'action' => 'application_prices',
+                'prefix' => 'admin',
+                $event->id ]); ?>">
+                <button type="button" class="btn btn-outline btn-warning btn-lg"><i class="fal fa-object-group fa-fw"></i> Convert to Application Pricing.</button>
+            </a>
+        <?php endif; ?>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-6">
+        <h4><?= __('Add Prices') ?></h4>
+        <p><?= __('Increase the number of available price boxes.') ?></p>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-lg btn-outline btn-primary" data-toggle="modal" data-target="#myModal">
+            <i class="fal fa-tags"></i> Add Price Rows
+        </button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fal fa-tags"></i> Add Additional Price Rows</h4>
+            </div>
+            <?= $this->Form->create($event) ?>
+            <div class="modal-body">
+                <p>Number of Additional Price Rows</p>
+                <?= $this->Form->number('boxes') ?>
+                <?= $this->Form->control('id') ?>
+                <?= $this->Form->hidden('additional', ['value' => true]) ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <?= $this->Form->button(__('Add '), ['class' => 'btn btn-primary']) ?>
+            </div>
+            <?= $this->Form->end() ?>
         </div>
     </div>
-<?php endif; ?>
+</div>

@@ -105,25 +105,6 @@ class EventsControllerTest extends IntegrationTestCase
      *
      * @throws
      */
-    public function testFullView()
-    {
-        $this->session([
-           'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
-        ]);
-
-        $this->get('/admin/events/full-view/2');
-
-        $this->assertResponseOk();
-    }
-
-    /**
-     * Test fullView method
-     *
-     * @return void
-     *
-     * @throws
-     */
     public function testAdd()
     {
         $this->session([

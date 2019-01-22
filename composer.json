@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "@stable",
+        "ext-json": "^1.5",
         "cakephp/cakephp": "@stable",
         "mobiledetect/mobiledetectlib": "@stable",
         "cakephp/migrations": "@stable",

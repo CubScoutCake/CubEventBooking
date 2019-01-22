@@ -1,3 +1,16 @@
+<?php
+/**
+ * @var string $pluralTerm
+ * @var string $term
+ * @var string $singleTerm
+ *
+ * @var int $max_section
+ *
+ * @var \App\View\AppView $this
+ *
+ * @var \App\Model\Entity\Event $event
+ */
+?>
 <?php echo $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css'); ?>
 <div class="row">
     <div class="col-lg-11 col-md-10">
@@ -13,9 +26,12 @@
                 <ul class="dropdown-menu pull-right pull-down" role="menu">
                     <li><?= $this->Html->link(__('Accounts View'), ['action' => 'accounts', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Export Data'), ['controller' => 'Events','action' => 'export', $event->id]) ?></li>
-                    <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>
                     <li class="divider"></li>
-                    <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Unpaid Invoices'), ['controller' => 'Invoices','action' => 'index', $event->id, '?' => ['unpaid' => true]]) ?></li>
+                    <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id, '?' => ['outstanding' => true],]) ?></li>
+                    <li class="divider"></li>
+                    <li><?= $this->Html->link(__('Edit Event'), ['action' => 'edit', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Edit Prices'), ['action' => 'prices', $event->id]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Parse Invoices'), ['controller' => 'Invoices','action' => 'event_pdf', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Parse Applications'), ['controller' => 'Applications','action' => 'event_pdf', $event->id]) ?></li>
@@ -74,6 +90,9 @@
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
+                        <tr>
+                            <td><?= $pluralTerm ?> are limited to <?= $max_section ?> <?= $event->section_type->role->role ?>s per <?= $singleTerm ?></td>
+                        </tr>
                         <tr>
                             <td><?= $event->live ? __('Event is Live') : __('Event is Hidden'); ?></td>
                         </tr>
@@ -187,10 +206,10 @@
                         </tr>
                         <tr>
                             <th><?= __('Address') ?></th>
-                            <td><?= h($event->address) ?> </br>
-                                <?= h($event->city) ?> </br>
-                                <?= h($event->county) ?> </br>
-                                <?= h($event->postcode) ?></td>
+                            <td><?= h($event->address) ?><br/>
+                                <?= h($event->city) ?> <br/>
+                                <?= h($event->county) ?> <br/>
+                                <?= h($event->postcode) ?><td/>
                         </tr>
                     </table>
                 </div>

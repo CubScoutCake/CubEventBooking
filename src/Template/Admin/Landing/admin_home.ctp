@@ -1,12 +1,12 @@
 <?php
 /**
- * @var \App\Model\Entity\User $users
- * @var \App\Model\Entity\Application $applications
- * @var \App\Model\Entity\Notification $notifications
- * @var \App\Model\Entity\Note $notes
- * @var \App\Model\Entity\Payment $payments
- * @var \App\Model\Entity\Invoice $invoices
- * @var \App\Model\Entity\Event $events
+ * @var \App\Model\Entity\User[] $users
+ * @var \App\Model\Entity\Application[] $applications
+ * @var \App\Model\Entity\Notification[] $notifications
+ * @var \App\Model\Entity\Note[] $notes
+ * @var \App\Model\Entity\Payment[] $payments
+ * @var \App\Model\Entity\Invoice[] $invoices
+ * @var \App\Model\Entity\Event[] $events
  *
  * @var int $cntUsers
  * @var int $cntApplications
@@ -327,6 +327,9 @@
                                         <td><?= h($event->name) ?></td>
                                         <td class="actions">
                                             <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Events', 'action' => 'view', $event->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                            <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['controller' => 'Events', 'action' => 'edit', $event->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                            <?= $this->Html->link('<i class="fal fa-tags"></i>', ['controller' => 'Events', 'action' => 'prices', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                            <?= $this->Html->link('<i class="fal fa-chart-bar"></i>', ['controller' => 'Events', 'action' => 'accounts', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                         </td>
                                         <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
                                         <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>

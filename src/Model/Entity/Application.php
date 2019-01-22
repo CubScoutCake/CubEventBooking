@@ -29,6 +29,8 @@ use Cake\ORM\Entity;
  * @property int $application_status_id
  * @property string $team_leader
  *
+ * @property string $display_code
+ *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\ApplicationStatus $application_status
  * @property \App\Model\Entity\Section $section

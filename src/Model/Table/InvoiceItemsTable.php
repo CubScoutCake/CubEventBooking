@@ -103,4 +103,54 @@ class InvoiceItemsTable extends Table
 
         return $rules;
     }
+
+    /**
+     * @param \Cake\ORM\Query $query Query Object
+     * @param array $options The Options Array
+     *
+     * @return array|\Cake\ORM\Query
+     */
+    public function findMinors(Query $query, $options)
+    {
+        if (!key_exists('application_id', $options)) {
+            return $query
+                ->contain(['Invoices.Applications', 'ItemTypes'])
+                ->where(['ItemTypes.minor' => true]);
+        }
+
+        return $query
+            ->contain(['Invoices.Applications', 'ItemTypes'])
+            ->where(['Applications.id' => $options['application_id'], 'ItemTypes.minor' => true]);
+    }
+
+    /**
+     * @param \Cake\ORM\Query $query Query Object
+     * @param array $options The Options Array
+     *
+     * @return array|\Cake\ORM\Query
+     */
+    public function findAdults(Query $query, $options)
+    {
+        if (!key_exists('application_id', $options)) {
+            return $query
+                ->contain(['Invoices.Applications', 'ItemTypes'])
+                ->where(['ItemTypes.minor' => false]);
+        }
+
+        return $query
+            ->contain(['Invoices.Applications', 'ItemTypes'])
+            ->where(['Applications.id' => $options['application_id'], 'ItemTypes.minor' => false]);
+    }
+
+    /**
+     * @param Query $query The Query Object
+     *
+     * @return array|\Cake\ORM\Query
+     */
+    public function findTotalQuantity($query)
+    {
+        $query = $query->select(['count' => $query->func()->sum('quantity')]);
+
+        return $query;
+    }
 }

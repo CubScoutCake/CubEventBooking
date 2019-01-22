@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\Model\Entity\Event[]|\Cake\Collection\CollectionInterface  $events
+ */
+?>
+
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header"><i class="fal fa-home fa-fw"></i> User Home</h1>

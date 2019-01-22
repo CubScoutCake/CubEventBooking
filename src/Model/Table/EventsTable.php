@@ -68,12 +68,6 @@ class EventsTable extends Table
             'field' => 'deleted'
         ]);
 
-        $this->belongsTo('Settings', [
-            'foreignKey' => 'invtext_id'
-        ]);
-        $this->belongsTo('Settings', [
-            'foreignKey' => 'legaltext_id'
-        ]);
         $this->belongsTo('Discounts', [
             'foreignKey' => 'discount_id'
         ]);

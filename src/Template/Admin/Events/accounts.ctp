@@ -10,13 +10,15 @@
                     Actions
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu pull-right" role="menu">
-                    <li><?= $this->Html->link(__('Full View'), ['action' => 'full_view', $event->id]) ?></li>
-                    <li><?= $this->Html->link(__('Preview - User View'), ['action' => 'view', $event->id]) ?></li>
+                <ul class="dropdown-menu pull-right pull-down" role="menu">
+                    <li><?= $this->Html->link(__('View Event'), ['action' => 'view', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Export Data'), ['controller' => 'Events','action' => 'export', $event->id]) ?></li>
+                    <li class="divider"></li>
                     <li><?= $this->Html->link(__('Unpaid Invoices'), ['controller' => 'Invoices','action' => 'index', $event->id, '?' => ['unpaid' => true]]) ?></li>
                     <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id, '?' => ['outstanding' => true],]) ?></li>
                     <li class="divider"></li>
-                    <li><?= $this->Html->link(__('Edit'), ['action' => 'edit', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Edit Event'), ['action' => 'edit', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Edit Prices'), ['action' => 'prices', $event->id]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Parse Invoices'), ['controller' => 'Invoices','action' => 'event_pdf', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Parse Applications'), ['controller' => 'Applications','action' => 'event_pdf', $event->id]) ?></li>
