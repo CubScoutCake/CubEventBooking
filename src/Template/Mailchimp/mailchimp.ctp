@@ -37,7 +37,7 @@
 	    		
 		    		<div class="mc-field-group form-group">
 		    			<label for="mce-MMERGE5">Scouting Appointment </label>
-		    			<input type="text" value="" name="MMERGE5" class="required form-control" id="mce-MMERGE5">
+		    			<input type="text" value="" name="MMERGE5" class="form-control" id="mce-MMERGE5">
 		    		</div>
 
 		    		<div class="mc-field-group form-group">
