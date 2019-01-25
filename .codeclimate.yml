@@ -1,5 +1,4 @@
----
-version: "2"         # required to adjust maintainability checks
+version: "3"         # required to adjust maintainability checks
 
 checks:
   argument-count:
@@ -40,7 +39,7 @@ engines:
     enabled: true
     config:
       languages:
-      - php
+        - php
   eslint:
     enabled: true
   fixme:
@@ -50,20 +49,20 @@ engines:
 
 plugins:
   phpcodesniffer:
-      enabled: true
-      config:
-      	standard: PHPCS
+    enabled: true
+    config:
+      standard: PHPCS
   sonar-php:
-        enabled: true
-        config:
-          tests_patterns:
-            - tests/TestCase/**
+    enabled: true
+    config:
+      tests_patterns:
+        - tests/TestCase/**
 
 ratings:
   paths:
-  - "**.php"
+    - "**.php"
 
 exclude_paths:
-- "**/config/"
-- "**/spec/"
-- "**/vendor/"
+  - "**/config/"
+  - "**/spec/"
+  - "**/vendor/"

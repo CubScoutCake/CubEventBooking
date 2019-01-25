@@ -80,7 +80,8 @@ class InvoicesController extends AppController
                     'Events' => [
                         'EventTypes' => [
                             'LegalTexts', 'InvoiceTexts', 'Payable'
-                        ]
+                        ],
+                        'AdminUsers',
                     ],
                     'Sections.Scoutgroups.Districts',
                 ],
@@ -114,7 +115,8 @@ class InvoicesController extends AppController
                     'Events' => [
                         'EventTypes' => [
                             'LegalTexts', 'InvoiceTexts', 'Payable'
-                        ]
+                        ],
+                        'AdminUsers',
                     ],
                     'Sections.Scoutgroups.Districts',
                 ],
