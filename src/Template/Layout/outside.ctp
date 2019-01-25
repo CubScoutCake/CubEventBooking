@@ -129,7 +129,7 @@ $cakeDescription = 'HertsCubs Booking System';
         echo $this->fetch('tb_flash'); ?>
         <?= $this->Flash->render() ?>
         <?= $this->Flash->render('auth') ?>
-             
+
         <?= $this->fetch('content') ?>    
 
     </div>
