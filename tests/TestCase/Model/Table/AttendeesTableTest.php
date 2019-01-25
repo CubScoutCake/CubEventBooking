@@ -501,6 +501,8 @@ class AttendeesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
+     *
+     * @throws
      */
     public function testValidationDefault()
     {
@@ -508,7 +510,7 @@ class AttendeesTableTest extends TestCase
 
         $new = $this->Attendees->newEntity($good);
         $attempt = $this->Attendees->save($new);
-        debug($attempt);
+
         $this->assertNotFalse($attempt);
         $this->assertInstanceOf('App\Model\Entity\Attendee', $attempt);
 
