@@ -39,8 +39,8 @@
                             <td><?= $notification->has('user') ? $this->Html->link($notification->user->full_name, ['controller' => 'Users', 'action' => 'view', $notification->user->id]) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Notificationtype') ?></th>
-                            <td><?= $notification->has('notificationtype') ? $notification->notificationtype->notification_type : '' ?></td>
+                            <th><?= __('Notification Type') ?></th>
+                            <td><?= $notification->has('notification_type') ? $notification->notification_type->notification_type : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Notification Source') ?></th>

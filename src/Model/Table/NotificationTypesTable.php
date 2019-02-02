@@ -1,14 +1,14 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Notificationtype;
+use App\Model\Entity\NotificationType;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Notificationtypes Model
+ * NotificationTypes Model
  *
  * @property \Cake\ORM\Association\HasMany $Notifications
  */

@@ -18,7 +18,7 @@
         <legend><?= __('Add Notification') ?></legend>
         <?php
             echo $this->Form->input('user_id', ['options' => $users, 'empty' => true]);
-            echo $this->Form->input('notification_type_id', ['options' => $notificationtypes, 'empty' => true]);
+            echo $this->Form->input('notification_type_id', ['options' => $notification_types, 'empty' => true]);
             echo $this->Form->input('new');
             echo $this->Form->input('notification_header');
             echo $this->Form->input('text');

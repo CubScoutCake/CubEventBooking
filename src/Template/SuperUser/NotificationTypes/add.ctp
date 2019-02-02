@@ -1,5 +1,5 @@
-<div class="notificationtypes form large-10 medium-9 columns content">
-    <?= $this->Form->create($notificationtype) ?>
+<div class="notification_types form large-10 medium-9 columns content">
+    <?= $this->Form->create($notification_type) ?>
     <fieldset>
         <legend><?= __('Add Notification Type') ?></legend>
         <?php

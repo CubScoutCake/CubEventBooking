@@ -18,7 +18,7 @@
             <tr>
                 <td><?= $this->Number->format($notification->id) ?></td>
                 <td><?= $notification->has('user') ? $this->Html->link($notification->user->full_name, ['controller' => 'Users', 'action' => 'view', $notification->user->id]) : '' ?></td>
-                <td><?= $notification->has('notificationtype') ? $this->Html->link($notification->notificationtype->notification_type, ['controller' => 'Notificationtypes', 'action' => 'view', $notification->notificationtype->id]) : '' ?></td>
+                <td><?= $notification->has('notification_type') ? $this->Html->link($notification->notification_type->notification_type, ['controller' => 'NotificationTypes', 'action' => 'view', $notification->notification_type->id]) : '' ?></td>
                 <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
                 <td><?= h($notification->notification_header) ?></td>
                 <td><?= h($notification->created) ?></td>

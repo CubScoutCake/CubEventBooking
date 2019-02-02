@@ -13,17 +13,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($notificationTypes as $notificationtype): ?>
+                <?php foreach ($notificationTypes as $notification_type): ?>
                     <tr>
-                        <td><?= $this->Number->format($notificationtype->id) ?></td>
-                        <td><i class="fal <?= $notificationtype->icon ?> fa-fw fa-2x"></i></td>
-                        <td><?= h($notificationtype->notification_type) ?></td>
+                        <td><?= $this->Number->format($notification_type->id) ?></td>
+                        <td><i class="fal <?= $notification_type->icon ?> fa-fw fa-2x"></i></td>
+                        <td><?= h($notification_type->notification_type) ?></td>
                         <td class="actions">
-                            <?= $this->Html->link('<i class="fal fa-eye"></i>', ['action' => 'view', $notificationtype->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
-                            <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['action' => 'edit', $notificationtype->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
-                            <?= $this->Form->postLink('<i class="fal fa-trash-alt"></i>', ['action' => 'delete', $notificationtype->id], ['confirm' => __('Are you sure you want to delete # {0}?', $notificationtype->id), 'title' => __('Delete'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Html->link('<i class="fal fa-eye"></i>', ['action' => 'view', $notification_type->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['action' => 'edit', $notification_type->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                            <?= $this->Form->postLink('<i class="fal fa-trash-alt"></i>', ['action' => 'delete', $notification_type->id], ['confirm' => __('Are you sure you want to delete # {0}?', $notification_type->id), 'title' => __('Delete'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                         </td>
-                        <td><?= h($notificationtype->notification_description) ?></td>
+                        <td><?= h($notification_type->notification_description) ?></td>
 
                     </tr>
                 <?php endforeach; ?>

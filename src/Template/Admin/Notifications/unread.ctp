@@ -28,7 +28,7 @@
                                     </ul>
                                 </div>
                             </td>
-                            <td><?= $notification->has('notificationtype') ? h($notification->notificationtype->notification_type) : '' ?></td>
+                            <td><?= $notification->has('notification_type') ? h($notification->notification_type->notification_type) : '' ?></td>
                             <td><?= $notification->has('user') ? $this->Html->link($this->Text->truncate($notification->user->full_name,20), ['controller' => 'Users', 'prefix' => 'admin', 'action' => 'view', $notification->user->id]) : '' ?></td>
                             <td><?= h($notification->created) ?></td>
                         </tr>

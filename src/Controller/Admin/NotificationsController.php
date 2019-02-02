@@ -26,7 +26,7 @@ class NotificationsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Notificationtypes'],
+            'contain' => ['Users', 'NotificationTypes'],
             'order' => ['created' => 'DESC']
         ];
         $this->set('notifications', $this->paginate($this->Notifications));
@@ -41,7 +41,7 @@ class NotificationsController extends AppController
     public function unread()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Notificationtypes'],
+            'contain' => ['Users', 'NotificationTypes'],
             'conditions' => ['new' => 1],
             'order' => ['created' => 'DESC']
         ];
@@ -59,7 +59,7 @@ class NotificationsController extends AppController
     public function view($id = null)
     {
         $notification = $this->Notifications->get($id, [
-            'contain' => ['Users', 'Notificationtypes']
+            'contain' => ['Users', 'NotificationTypes']
         ]);
         $this->set('notification', $notification);
         $this->set('_serialize', ['notification']);
@@ -84,8 +84,8 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notificationtypes = $this->Notifications->Notificationtypes->find('list', ['limit' => 200]);
-        $this->set(compact('notification', 'users', 'notificationtypes'));
+        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }
 
@@ -725,8 +725,8 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notificationtypes = $this->Notifications->Notificationtypes->find('list', ['limit' => 200]);
-        $this->set(compact('notification', 'users', 'notificationtypes'));
+        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }
 
@@ -749,8 +749,8 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notificationtypes = $this->Notifications->Notificationtypes->find('list', ['limit' => 200]);
-        $this->set(compact('notification', 'users', 'notificationtypes'));
+        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }
 
@@ -845,8 +845,8 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notificationtypes = $this->Notifications->Notificationtypes->find('list', ['limit' => 200]);
-        $this->set(compact('notification', 'users', 'notificationtypes'));
+        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }
 
