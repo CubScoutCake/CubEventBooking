@@ -86,7 +86,7 @@ class LogsController extends AppController
      * Delete action
      *
      * @param null|int $id The log ID to delete.
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      */
     public function delete($id = null)
     {
@@ -108,7 +108,7 @@ class LogsController extends AppController
      *
      * Deletes all log entries.
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      */
     public function reset()
     {
@@ -122,7 +122,7 @@ class LogsController extends AppController
     /**
      * Remove duplicates action
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      */
     public function removeDuplicates()
     {

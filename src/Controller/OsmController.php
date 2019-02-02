@@ -1,29 +1,44 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
 use App\Form\LinkForm;
 use App\Form\SectionForm;
-use Cake\ORM\TableRegistry;
-use Cake\Network\Http\Client;
 use Cake\I18n\Time;
+use Cake\Network\Http\Client;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
-use Cake\Utility\Security;
-use Cake\Error\Debugger;
 
+/**
+ * Class OsmController
+ *
+ * @package App\Controller
+ *
+ * @property \App\Controller\Component\ScoutManagerComponent $ScoutManager
+ */
 class OsmController extends AppController
 {
+    /**
+     * @throws \Exception
+     *
+     * @return void
+     */
     public function initialize()
     {
         parent::initialize();
         $this->loadComponent('ScoutManager');
     }
 
+    /**
+     * @return \Cake\Http\Response
+     */
     public function index()
     {
         return $this->redirect(['action' => 'home']);
     }
 
+    /**
+     * @return \Cake\Http\Response|void
+     */
     public function home()
     {
         $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
@@ -34,6 +49,9 @@ class OsmController extends AppController
         $this->set('synced', $checkArray['attendee_count']);
     }
 
+    /**
+     * @return \Cake\Http\Response|void
+     */
     public function link()
     {
         $linkForm = new LinkForm();
@@ -141,6 +159,13 @@ class OsmController extends AppController
         return $this->redirect(['action' => 'home']);
     }
 
+    /**
+     * Sync OSM Users
+     *
+     * @return \Cake\Http\Response|void
+     *
+     * @throws \Exception
+     */
     public function sync()
     {
         $settings = TableRegistry::get('Settings');
@@ -190,8 +215,7 @@ class OsmController extends AppController
           'scheme' => 'https'
         ]);
 
-        $url = '/ext/members/contact/grid/'
-            . '?action=getMembers';
+        $url = '/ext/members/contact/grid/' . '?action=getMembers';
 
         $response = $http->post($url, [
             'userid' => $userOsmId,
@@ -499,9 +523,5 @@ class OsmController extends AppController
 
             return $this->redirect(['action' => 'home']);
         }
-    }
-
-    public function access()
-    {
     }
 }

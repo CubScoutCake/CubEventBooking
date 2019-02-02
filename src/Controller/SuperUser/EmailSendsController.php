@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\SuperUser;
 
-use App\Controller\SuperUser\AppController;
-
 /**
  * EmailSends Controller
  *
@@ -14,7 +12,7 @@ class EmailSendsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      */
     public function index()
     {
@@ -30,13 +28,14 @@ class EmailSendsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Email Send id.
-     * @return \Cake\Network\Response|null
+     * @param string|null $emailSendId Email Send id.
+     *
+     * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($emailSendId = null)
     {
-        $emailSend = $this->EmailSends->get($id, [
+        $emailSend = $this->EmailSends->get($emailSendId, [
             'contain' => ['Messages', 'Users', 'NotificationTypes', 'Notifications', 'EmailResponses', 'Tokens']
         ]);
 
@@ -47,13 +46,13 @@ class EmailSendsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Network\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $emailSend = $this->EmailSends->newEntity();
         if ($this->request->is('post')) {
-            $emailSend = $this->EmailSends->patchEntity($emailSend, $this->request->data);
+            $emailSend = $this->EmailSends->patchEntity($emailSend, $this->request->getData());
             if ($this->EmailSends->save($emailSend)) {
                 $this->Flash->success(__('The email send has been saved.'));
 
@@ -72,17 +71,18 @@ class EmailSendsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Email Send id.
-     * @return \Cake\Network\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $emailSendId Email Send id.
+     *
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($emailSendId = null)
     {
-        $emailSend = $this->EmailSends->get($id, [
+        $emailSend = $this->EmailSends->get($emailSendId, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $emailSend = $this->EmailSends->patchEntity($emailSend, $this->request->data);
+            $emailSend = $this->EmailSends->patchEntity($emailSend, $this->request->getData());
             if ($this->EmailSends->save($emailSend)) {
                 $this->Flash->success(__('The email send has been saved.'));
 
@@ -101,14 +101,15 @@ class EmailSendsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Email Send id.
-     * @return \Cake\Network\Response|null Redirects to index.
+     * @param string|null $emailSendId Email Send id.
+     *
+     * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($emailSendId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $emailSend = $this->EmailSends->get($id);
+        $emailSend = $this->EmailSends->get($emailSendId);
         if ($this->EmailSends->delete($emailSend)) {
             $this->Flash->success(__('The email send has been deleted.'));
         } else {

@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
-
 /**
  * Allergies Controller
  *
@@ -25,13 +23,14 @@ class AllergiesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Allergy id.
+     * @param string|null $allergyId Allergy id.
+     *
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($allergyId = null)
     {
-        $allergy = $this->Allergies->get($id, [
+        $allergy = $this->Allergies->get($allergyId, [
             'contain' => ['Attendees']
         ]);
         $this->set('allergy', $allergy);
@@ -41,14 +40,14 @@ class AllergiesController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $allergy = $this->Allergies->newEntity();
 
         if ($this->request->is('post')) {
-            $allergy = $this->Allergies->patchEntity($allergy, $this->request->data, ['accessibleFields' => ['id' => true]]);
+            $allergy = $this->Allergies->patchEntity($allergy, $this->request->getData(), ['accessibleFields' => ['id' => true]]);
             if ($this->Allergies->save($allergy)) {
                 $this->Flash->success(__('The allergy has been saved.'));
 

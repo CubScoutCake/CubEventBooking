@@ -32,37 +32,38 @@ checks:
     config:
       threshold: 40 # language-specific defaults. an override will affect all languages.
 
-engines:
-  csslint:
-    enabled: false
-  duplication:
-    enabled: true
-    config:
-      languages:
-        - php
-  eslint:
-    enabled: true
-  fixme:
-    enabled: true
-  phpmd:
-    enabled: false
-
 plugins:
   phpcodesniffer:
     enabled: true
     config:
       standard: PHPCS
+
   sonar-php:
     enabled: true
     config:
       tests_patterns:
         - tests/TestCase/**
 
+  csslint:
+    enabled: false
+    duplication:
+      enabled: true
+      config:
+        languages:
+          - php
+
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+
 ratings:
   paths:
     - "**.php"
 
-exclude_paths:
+exclude_patterns:
   - "**/config/"
   - "**/spec/"
   - "**/vendor/"

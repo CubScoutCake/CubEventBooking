@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
-
 /**
  * Settings Controller
  *
@@ -30,7 +28,7 @@ class SettingsController extends AppController
      * View method
      *
      * @param string|null $id Setting id.
-     * @return \Cake\Network\Response|void
+     * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -46,13 +44,13 @@ class SettingsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $setting = $this->Settings->newEntity();
         if ($this->request->is('post')) {
-            $setting = $this->Settings->patchEntity($setting, $this->request->data);
+            $setting = $this->Settings->patchEntity($setting, $this->request->getData());
             if ($this->Settings->save($setting)) {
                 $this->Flash->success(__('The setting has been saved.'));
 
@@ -70,8 +68,8 @@ class SettingsController extends AppController
      * Edit method
      *
      * @param string|null $id Setting id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
@@ -79,7 +77,7 @@ class SettingsController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $setting = $this->Settings->patchEntity($setting, $this->request->data);
+            $setting = $this->Settings->patchEntity($setting, $this->request->getData());
             if ($this->Settings->save($setting)) {
                 $this->Flash->success(__('The setting has been saved.'));
 
@@ -96,7 +94,7 @@ class SettingsController extends AppController
      * Delete method
      *
      * @param string|null $id Setting id.
-     * @return \Cake\Network\Response|void Redirects to index.
+     * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)

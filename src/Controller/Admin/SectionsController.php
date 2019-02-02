@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -61,7 +60,7 @@ class SectionsController extends AppController
     {
         $section = $this->Sections->newEntity();
         if ($this->request->is('post')) {
-            $section = $this->Sections->patchEntity($section, $this->request->data);
+            $section = $this->Sections->patchEntity($section, $this->request->getData());
             if ($this->Sections->save($section)) {
                 $this->Flash->success(__('The section has been saved.'));
 
@@ -88,8 +87,8 @@ class SectionsController extends AppController
      * Edit method
      *
      * @param string|null $id Section id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
@@ -97,7 +96,7 @@ class SectionsController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $section = $this->Sections->patchEntity($section, $this->request->data);
+            $section = $this->Sections->patchEntity($section, $this->request->getData());
             if ($this->Sections->save($section)) {
                 $this->Flash->success(__('The section has been saved.'));
 
@@ -124,7 +123,7 @@ class SectionsController extends AppController
      * Delete method
      *
      * @param string|null $id Section id.
-     * @return \Cake\Network\Response|null Redirects to index.
+     * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)

@@ -30,7 +30,7 @@
                                 </div>
                             </td>
                             <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
-                            <td><?= $notification->has('notificationtype') ? h($notification->notificationtype->notification_type) : '' ?></td>
+                            <td><?= $notification->has('notification_type') ? h($notification->notification_type->notification_type) : '' ?></td>
                             <td><?= $notification->has('user') ? $this->Html->link($this->Text->truncate($notification->user->full_name,20), ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $notification->user_id]) : '' ?></td>
                             <td><?= h($notification->created) ?></td>
                         </tr>

@@ -16,13 +16,13 @@ class SectionsController extends AppController
      *
      * @param int|null $eventId an Event Id to proceed with - will be set to the session.
      *
-     * @return \Cake\Network\Response|void Value to be returned
+     * @return \Cake\Http\Response|void Value to be returned
      */
     public function select($eventId = null)
     {
         if ($this->request->is('post')) {
-            $groupId = $this->request->data['scoutgroup_id'];
-            $typeId = $this->request->data['section_type_id'];
+            $groupId = $this->request->getData()['scoutgroup_id'];
+            $typeId = $this->request->getData()['section_type_id'];
 
             $this->redirect(['action' => 'existing', $groupId, $typeId]);
         }
@@ -46,7 +46,7 @@ class SectionsController extends AppController
      * @param int|null $groupId A groupId for searching.
      * @param int|null $typeId A SectionTypeId for searching.
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function existing($groupId = null, $typeId = null)
@@ -65,7 +65,7 @@ class SectionsController extends AppController
 
         $section = $this->Sections->newEntity();
         if ($this->request->is('post')) {
-            $redir = $this->request->data['_ids'];
+            $redir = $this->request->getData()['_ids'];
             $this->redirect(['controller' => 'Users', 'action' => 'register', 'prefix' => 'register', $redir]);
         }
 
@@ -79,7 +79,7 @@ class SectionsController extends AppController
      * @param int|null $groupId A groupId for searching.
      * @param int|null $typeId A SectionTypeId for searching.
      *
-     * @return \Cake\Network\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add($groupId = null, $typeId = null)
     {
@@ -87,8 +87,8 @@ class SectionsController extends AppController
             return $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
-        $this->request->data['scoutgroup_id'] = $groupId;
-        $this->request->data['section_type_id'] = $typeId;
+        $this->request->getData()['scoutgroup_id'] = $groupId;
+        $this->request->getData()['section_type_id'] = $typeId;
 
         if ($this->request->is('get')) {
             $group = $this->Sections->Scoutgroups->get($groupId);
@@ -96,12 +96,12 @@ class SectionsController extends AppController
 
             $suggestion = Text::truncate($group['scoutgroup'], 8, ['ellipsis' => false]) . ' - ' . $type['section_type'];
 
-            $this->request->data['section'] = $suggestion;
+            $this->request->getData()['section'] = $suggestion;
         }
 
         $section = $this->Sections->newEntity();
         if ($this->request->is('post')) {
-            $section = $this->Sections->patchEntity($section, $this->request->data, [
+            $section = $this->Sections->patchEntity($section, $this->request->getData(), [
                 'fieldList' => [
                     'section_type_id',
                     'scoutgroup_id',

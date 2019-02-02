@@ -1,23 +1,17 @@
 <?php
 namespace App\Controller;
 
-use App\Form\AttNumberForm;
-use App\Form\SyncBookForm;
 use App\Form\CancellationForm;
-use Cake\I18n\Date;
+use App\Form\SyncBookForm;
+use CakePdf\Pdf;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
-use CakePdf\Pdf;
-use Mpdf\Tag\P;
 
 /**
  * Applications Controller
  *
  * @property \App\Model\Table\ApplicationsTable $Applications
- * @property \App\Model\Table\EventsTable $Events
- * @property \App\Model\Table\UsersTable $Users
- * @property \App\Model\Table\AttendeesTable $Attendees
  *
  * @property \App\Controller\Component\ScoutManagerComponent $ScoutManager
  * @property \App\Controller\Component\AvailabilityComponent $Availability
@@ -44,6 +38,8 @@ class ApplicationsController extends AppController
 
     /**
      * @param int $eventID The ID of the Event
+     *
+     * @return void
      */
     public function bookings($eventID = null)
     {
@@ -58,7 +54,9 @@ class ApplicationsController extends AppController
     /**
      * @param int $applicationID The Application ID
      *
-     * @return \Cake\Http\Response|null
+     * @return \Cake\Http\Response|void
+     *
+     * @throws \Exception
      */
     public function invoice($applicationID)
     {
@@ -72,20 +70,23 @@ class ApplicationsController extends AppController
     /**
      * View method - Displays the Application to the User
      *
-     * @param string|null $id Application id.
+     * @param string|null $applicationId Application id.
+     *
      * @return \Cake\Http\Response|null
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     *
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
+     * @throws \Exception
      */
-    public function view($id = null)
+    public function view($applicationId = null)
     {
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
-                   'filename' => 'Application_' . $id
+                   'filename' => 'Application_' . $applicationId
                ]
            ]);
 
-        $application = $this->Applications->get($id, [
+        $application = $this->Applications->get($applicationId, [
             'contain' => [
                 'Users',
                 'Sections.Scoutgroups.Districts',
@@ -93,21 +94,21 @@ class ApplicationsController extends AppController
                 'Invoices',
                 'Attendees' => [
                     'sort' => [
-                        'Attendees.role_id' => 'ASC'
-                        , 'Attendees.lastname' => 'ASC'
+                        'Attendees.role_id' => 'ASC',
+                        'Attendees.lastname' => 'ASC',
                     ]
-                ]
-                , 'Attendees.Roles' => [
+                ],
+                'Attendees.Roles' => [
                     'conditions' => [
                         'Attendees.user_id' => $this->Auth->user('id')
                     ]
-                ]
-                , 'Attendees.Sections.Scoutgroups' => [
+                ],
+                'Attendees.Sections.Scoutgroups' => [
                     'conditions' => [
                         'Attendees.user_id' => $this->Auth->user('id')
                     ]
-                ]
-                , 'Notes' => ['conditions' => ['visible' => true]]]
+                ],
+                'Notes' => ['conditions' => ['visible' => true]]]
         ]);
 
         $this->set('application', $application);
@@ -126,14 +127,14 @@ class ApplicationsController extends AppController
 
             $note = $this->Applications->Notes->newEntity();
             $content = 'Cancellation Requested: "' . $reason . '" [Other Apps: ' . $others . ']';
-            $note_data = [
+            $noteData = [
                 'visible' => true,
                 'user_id' => $application->user->id,
                 'invoice_id' => $application->invoice->id,
                 'application_id' => $application->id,
                 'note_text' => $content
             ];
-            $note = $this->Applications->Notes->patchEntity($note, $note_data);
+            $note = $this->Applications->Notes->patchEntity($note, $noteData);
             if ($this->Applications->Notes->save($note)) {
                 $this->Flash->success(__('Cancellation Submitted Successfully.'));
 
@@ -150,12 +151,19 @@ class ApplicationsController extends AppController
     }
 
     /**
-     * @param int $id The ID of the Event
+     * Save the Application as a PDF file.
+     *
+     * @param int $eventId The ID of the Event
+     *
+     * @throws \Cake\Http\Exception\NotFoundException When record not found
+     * @throws \Exception
+     *
+     * @return void
      */
-    public function pdfView($id = null)
+    public function pdfView($eventId = null)
     {
         // Instantiate Objects
-        $application = $this->Applications->get($id, [
+        $application = $this->Applications->get($eventId, [
             'contain' => [
                 'Users',
                 'Sections.Scoutgroups',
@@ -163,48 +171,44 @@ class ApplicationsController extends AppController
                 'Invoices',
                 'Attendees' => [
                     'sort' => [
-                        'Attendees.role_id' => 'ASC'
-                        , 'Attendees.lastname' => 'ASC'
+                        'Attendees.role_id' => 'ASC',
+                        'Attendees.lastname' => 'ASC',
                     ]
-                ]
-                , 'Attendees.Roles' => [
+                ],
+                'Attendees.Roles' => [
                     'conditions' => [
                         'Attendees.user_id' => $this->Auth->user('id')
                     ]
-                ]
-                , 'Attendees.Sections.Scoutgroups' => [
+                ],
+                'Attendees.Sections.Scoutgroups' => [
                     'conditions' => [
                         'Attendees.user_id' => $this->Auth->user('id')
                     ]
-                ]
-                , 'Notes' => ['conditions' => ['visible' => true]]]
+                ],
+                'Notes' => ['conditions' => ['visible' => true]]]
         ]);
 
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
-                   'filename' => 'Invoice_' . $id
+                   'filename' => 'Invoice_' . $eventId
                ]
            ]);
 
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
 
-        $evts = TableRegistry::get('Events');
-
-        $event = $evts->get($application->event_id);
+        $event = $this->Applications->Events->get($application->event_id);
 
         $this->loadComponent('Progress');
 
         $this->Progress->determineApp($application->id, false, $this->Auth->user('id'), true);
 
-        $CakePdf = new Pdf\CakePdf();
-        $CakePdf->template('application', 'default');
-        $CakePdf->viewVars($this->viewVars);
-        // Get the PDF string returned
-//        $CakePdf->output();
-        // Or write it to file directly
-        $CakePdf->write(FILES . DS . 'Event ' . $event->id . DS . 'Applications' . DS . 'Application #' . $id . '.pdf');
+        $cakePDF = new Pdf\CakePdf();
+        $cakePDF->template('application', 'default');
+        $this->set($cakePDF->viewVars());
+
+        $cakePDF->write(FILES . DS . 'Event ' . $event->id . DS . 'Applications' . DS . 'Application #' . $eventId . '.pdf');
 
         $this->redirect(['controller' => 'Applications', 'action' => 'view', $application->id, '_ext' => 'pdf']);
     }
@@ -272,7 +276,7 @@ class ApplicationsController extends AppController
 
         $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $events = $this->Applications->Events->find('list', ['limit' => 200, 'conditions' => ['end >' => $now, 'live' => 1]]);
-        $this->set(compact('application', 'users', 'events', 'attendees'));
+        $this->set(compact('application', 'events', 'attendees'));
         $this->set('_serialize', ['application']);
     }
 
@@ -284,7 +288,7 @@ class ApplicationsController extends AppController
      * @param int $nonSectionAtts The Quantity of Non Section Young People
      * @param int $leaderAtts The Quantity of Adults
      *
-     * @throws
+     * @throws \Exception
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
@@ -294,11 +298,13 @@ class ApplicationsController extends AppController
             $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId, $attendees]);
         }
 
-        $this->Events = TableRegistry::get('Events');
-        $event = $this->Events->get($eventId, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
+        /**
+         * @var \App\Model\Entity\Event $event
+         */
+        $event = $this->Applications->Events->get($eventId, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
 
-        $max_section = $this->Events->getPriceSection($eventId);
-        if ($attendees > $max_section && $max_section != 0 && !is_null($max_section)) {
+        $maxSection = $this->Applications->Events->getPriceSection($eventId);
+        if ($attendees > $maxSection && $maxSection != 0 && !is_null($maxSection)) {
             $this->Flash->error(__('Too many attendees.'));
 
             return $this->redirect($this->referer(['controller' => 'Events', 'action' => 'book', $event->id]));
@@ -322,11 +328,16 @@ class ApplicationsController extends AppController
             }
         }
 
+        /**
+         * @var \App\Model\Entity\Application $application
+         */
         $application = $this->Applications->newEntity();
 
         $userId = $this->Auth->user('id');
-        $this->Users = TableRegistry::get('Users');
-        $user = $this->Users->get($userId, ['contain' => ['Sections.SectionTypes.Roles']]);
+        /**
+         * @var \App\Model\Entity\User $user
+         */
+        $user = $this->Applications->Users->get($userId, ['contain' => ['Sections.SectionTypes.Roles']]);
         $sectionId = $user['section_id'];
 
         if ($this->request->is('post')) {
@@ -354,13 +365,11 @@ class ApplicationsController extends AppController
                 ['associated' => [ 'Attendees', 'Invoices' ]]
             );
 
-            $this->Attendees = $this->getTableLocator()->get('Attendees');
-
             foreach ($application->attendees as $idx => $attendee) {
                 $attendee['user_id'] = $userId;
                 $attendee['section_id'] = $sectionId;
 
-                $application->attendees[$idx] = $this->Attendees->checkDuplicate($attendee);
+                $application->attendees[$idx] = $this->Applications->Attendees->checkDuplicate($attendee);
             }
 
             if ($this->Applications->save($application)) {
@@ -369,7 +378,7 @@ class ApplicationsController extends AppController
                 $this->loadComponent('Line');
                 $parse = $this->Line->parseInvoice($application->invoice->id);
 
-                $this->Flash->success(__('Your '. $term . ' has been registered.'));
+                $this->Flash->success(__('Your ' . $term . ' has been registered.'));
 
                 if ($parse) {
                     $this->Flash->success(__('Your Invoice has been created automatically.'));
@@ -405,13 +414,10 @@ class ApplicationsController extends AppController
      *
      * @return null|\Cake\Http\Response
      *
-     * @throws
+     * @throws \Exception
      */
     public function syncBook($eventID, $osmEvent = null, $appID = null)
     {
-        $this->Events = TableRegistry::get('Events');
-        $this->Users = TableRegistry::get('Users');
-
         if ($osmEvent == 0) {
             $osmEvent = null;
         }
@@ -420,7 +426,7 @@ class ApplicationsController extends AppController
          * @var \App\Model\Entity\Event $event
          * @var \App\Model\Table\EventsTable $this->Events
          */
-        $event = $this->Events->get($eventID, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
+        $event = $this->Applications->Events->get($eventID, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
 
         if (isset($eventID) && is_null($appID)) {
             if ($event->app_full) {
@@ -466,11 +472,11 @@ class ApplicationsController extends AppController
         if ($application->isNew()) {
             $appData = [
                 'modification' => 0,
-                'user_id'      => $user->id,
-                'section_id'   => $user->section_id,
-                'event_id'     => $eventID,
+                'user_id' => $user->id,
+                'section_id' => $user->section_id,
+                'event_id' => $eventID,
                 'osm_event_id' => $osmEvent,
-                'invoice'      => [
+                'invoice' => [
                     'user_id' => $user->id,
                 ],
             ];
@@ -496,9 +502,6 @@ class ApplicationsController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $requestArray = $this->request->getData();
         }
-        //debug($requestArray);
-
-//      $application->set( 'attendees', [] );
 
         if (is_array($attendees)) {
             foreach ($attendees as $key => $attendee) {
@@ -507,7 +510,7 @@ class ApplicationsController extends AppController
                     $leaderPatrol = true;
                 }
 
-                if ($this->request->is(['post', 'put'])) {
+                if ($this->request->is(['post', 'put']) && isset($requestArray)) {
                     $request_att = $requestArray['attendees'][$key];
                     debug($request_att);
                     $role_id = $request_att['role_id'];
@@ -516,14 +519,14 @@ class ApplicationsController extends AppController
                 }
 
                 $attendeeArr = [
-                    'user_id'       => $user->id,
-                    'role_id'       => $role_id,
-                    'firstname'     => $attendee['firstname'],
-                    'lastname'      => $attendee['lastname'],
-                    'osm_id'        => $attendee['scoutid'],
+                    'user_id' => $user->id,
+                    'role_id' => $role_id,
+                    'firstname' => $attendee['firstname'],
+                    'lastname' => $attendee['lastname'],
+                    'osm_id' => $attendee['scoutid'],
                     'osm_sync_date' => Time::now(),
-                    'dateofbirth'   => $attendee['dob'],
-                    'section_id'    => $user->section_id
+                    'dateofbirth' => $attendee['dob'],
+                    'section_id' => $user->section_id
                 ];
 
                 array_push($data, $attendeeArr);
@@ -542,10 +545,13 @@ class ApplicationsController extends AppController
         $attendeeCount = count($data);
 
         if ($event->team_price) {
+            /**
+             * @var \App\Model\Entity\Price $team_price
+             */
             $team_price = $this->Events->Prices
                 ->find('all')
                 ->where([
-                    'event_id'             => $event->id,
+                    'event_id' => $event->id,
                     'ItemTypes.team_price' => true
                 ])
                 ->contain('ItemTypes')
@@ -555,7 +561,7 @@ class ApplicationsController extends AppController
 
                 return $this->redirect($this->referer([
                     'controller' => 'Events',
-                    'action'     => 'book',
+                    'action' => 'book',
                     $event->id
                 ]));
             }
@@ -566,7 +572,6 @@ class ApplicationsController extends AppController
         if ($this->request->is(['post', 'put'])) {
             // Patch Data
             $rData = $this->request->getData();
-//          debug($rData);
 
             $fields = ['attendees' => ['role_id']];
 
@@ -579,8 +584,6 @@ class ApplicationsController extends AppController
                 $application->permit_holder = $rData['permit_holder'];
             }
 
-//            debug($application);
-
             if ($this->Applications->save($application)) {
                 $appId = $application->get('id');
                 $application = $this->Applications->get($appId, ['contain' => ['Invoices']]);
@@ -588,7 +591,7 @@ class ApplicationsController extends AppController
                 $this->loadComponent('Line');
                 $parse = $this->Line->parseInvoice($application->invoice->id);
 
-                $this->Flash->success(__('Your '. $term . ' has been registered.'));
+                $this->Flash->success(__('Your ' . $term . ' has been registered.'));
 
                 if ($parse) {
                     $this->Flash->success(__('Your Invoice has been created automatically.'));
@@ -610,6 +613,10 @@ class ApplicationsController extends AppController
     /**
      * @param int $eventId The ID of the Event booking onto
      * @param int|null $applicationId The Application being booked
+     *
+     * @throws \Exception
+     *
+     * @return void
      */
     public function chooseOsmEvent($eventId, $applicationId = null)
     {
@@ -626,15 +633,15 @@ class ApplicationsController extends AppController
         $syncForm = new SyncBookForm();
 
         if ($this->request->is('post')) {
-            $osm_event = $this->request->getData('osm_event');
+            $osmEvent = $this->request->getData('osm_event');
 
-            if (!is_null($osm_event)) {
+            if (!is_null($osmEvent)) {
                 $this->redirect([
                     'controller' => 'Applications',
                     'action' => 'sync_book',
                     'prefix' => false,
                     $eventId,
-                    $osm_event,
+                    $osmEvent,
                     $applicationId
                 ]);
             }
@@ -646,17 +653,18 @@ class ApplicationsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Application id.
+     * @param string|null $applicationId Application id.
+     *
      * @return null|\Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Exception When record not found.
      */
-    public function edit($id = null)
+    public function edit($applicationId = null)
     {
         /**
          * @var \App\Model\Entity\Application $application
          */
 
-        $application = $this->Applications->get($id, [
+        $application = $this->Applications->get($applicationId, [
             'contain' => ['Attendees', 'Sections', 'Events.EventTypes' => ['ApplicationRefs'], 'Invoices']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -665,10 +673,11 @@ class ApplicationsController extends AppController
             if ($event->invoices_locked) {
                 $this->Flash->error(__('Apologies this Event is Currently Locked.'));
 
-                return $this->redirect(['controller' => 'Applications'
-                    , 'action' => 'view'
-                    , 'prefix' => false
-                    , $id]);
+                return $this->redirect(['controller' => 'Applications',
+                    'action' => 'view',
+                    'prefix' => false,
+                    $applicationId
+                ]);
             } else {
                 $newData = ['user_id' => $this->Auth->user('id'), 'modification' => $application->modification + 1];
                 $application = $this->Applications->patchEntity($application, $newData);
@@ -684,7 +693,7 @@ class ApplicationsController extends AppController
                         $this->Flash->success(__('Your Invoice has been updated automatically.'));
                     }
 
-                    return $this->redirect(['action' => 'view', $id]);
+                    return $this->redirect(['action' => 'view', $applicationId]);
                 } else {
                     $this->Flash->error(__('The application could not be saved. Please, try again.'));
                 }
@@ -706,18 +715,18 @@ class ApplicationsController extends AppController
             ->contain(['Scoutgroups.Districts']);
         $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $events = $this->Applications->Events->find('unarchived')->find('list', ['limit' => 200]);
-        $this->set(compact('application', 'users', 'sections', 'events', 'attendees', 'term', 'teamLeaderBool', 'permitHolderBool'));
+        $this->set(compact('application', 'sections', 'events', 'attendees', 'term', 'teamLeaderBool', 'permitHolderBool'));
         $this->set('_serialize', ['application']);
     }
 
     /**
-     * @param int $id The ID of the Event to be linked.
+     * @param int $applicationId The ID of the Event to be linked.
      *
      * @return \Cake\Http\Response|null
      */
-    public function link($id = null)
+    public function link($applicationId = null)
     {
-        $application = $this->Applications->get($id, [
+        $application = $this->Applications->get($applicationId, [
             'contain' => ['Attendees', 'Sections.Scoutgroups']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -725,12 +734,12 @@ class ApplicationsController extends AppController
 
             $newData = ['user_id' => $this->Auth->user('id'), 'modification' => $mod];
             $application = $this->Applications->patchEntity($application, $newData);
-            $application = $this->Applications->patchEntity($application, $this->request->data);
+            $application = $this->Applications->patchEntity($application, $this->request->getData());
 
             if ($this->Applications->save($application)) {
                 $this->Flash->success(__('The application has been saved.'));
 
-                return $this->redirect(['action' => 'view', $id]);
+                return $this->redirect(['action' => 'view', $applicationId]);
             }
 
             $this->Flash->error(__('The application could not be saved. Please, try again.'));
@@ -745,14 +754,15 @@ class ApplicationsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Application id.
+     * @param string|null $applicationId Application id.
+     *
      * @return null|\Cake\Http\Response Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($applicationId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $application = $this->Applications->get($id);
+        $application = $this->Applications->get($applicationId);
         if ($this->Applications->delete($application)) {
             $this->Flash->success(__('The application has been deleted.'));
         } else {
@@ -763,20 +773,20 @@ class ApplicationsController extends AppController
     }
 
     /**
-     * @param \Cake\ORM\Entity $user User Entity
+     * @param array $user AuthUser Entity
      *
      * @return bool
      */
     public function isAuthorized($user)
     {
         // All registered users can add articles
-        if (in_array($this->request->action, ['add', 'book', 'index'])) {
+        if (in_array($this->request->getParam('action'), ['add', 'book', 'index'])) {
             return true;
         }
 
         // The owner of an application can edit and delete it
-        if (in_array($this->request->action, ['edit', 'view', 'delete'])) {
-            $applicationId = (int)$this->request->params['pass'][0];
+        if (in_array($this->request->getParam('action'), ['edit', 'view', 'delete'])) {
+            $applicationId = $this->request->getParam('pass')[0];
             if ($this->Applications->isOwnedBy($applicationId, $user['id'])) {
                 return true;
             }

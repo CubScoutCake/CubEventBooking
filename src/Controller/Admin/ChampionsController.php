@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
-
 /**
  * Champions Controller
  *
@@ -28,13 +26,14 @@ class ChampionsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Champion id.
+     * @param string|null $championId Champion id.
+     *
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($championId = null)
     {
-        $champion = $this->Champions->get($id, [
+        $champion = $this->Champions->get($championId, [
             'contain' => ['Districts', 'Users']
         ]);
         $this->set('champion', $champion);
@@ -44,13 +43,13 @@ class ChampionsController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $champion = $this->Champions->newEntity();
         if ($this->request->is('post')) {
-            $champion = $this->Champions->patchEntity($champion, $this->request->data);
+            $champion = $this->Champions->patchEntity($champion, $this->request->getData());
             if ($this->Champions->save($champion)) {
                 $redir = $champion->get('id');
 
@@ -70,17 +69,18 @@ class ChampionsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Champion id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $championId Champion id.
+     *
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($championId = null)
     {
-        $champion = $this->Champions->get($id, [
+        $champion = $this->Champions->get($championId, [
             'contain' => ['Users', 'Districts']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $champion = $this->Champions->patchEntity($champion, $this->request->data);
+            $champion = $this->Champions->patchEntity($champion, $this->request->getData());
             if ($this->Champions->save($champion)) {
                 $this->Flash->success(__('The champion has been saved.'));
 
@@ -98,14 +98,15 @@ class ChampionsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Champion id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $championId Champion id.
+     *
+     * @return \Cake\Http\Response|void Redirects to index.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($championId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $champion = $this->Champions->get($id);
+        $champion = $this->Champions->get($championId);
         if ($this->Champions->delete($champion)) {
             $this->Flash->success(__('The champion has been deleted.'));
         } else {

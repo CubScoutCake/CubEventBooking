@@ -1,27 +1,27 @@
-<div class="notificationtypes view large-10 medium-9 columns content">
-    <h3><?= h($notificationtype->id) ?></h3>
+<div class="notification_types view large-10 medium-9 columns content">
+    <h3><?= h($notification_type->id) ?></h3>
     <table class="vertical-table">
         <tr>
             <th><?= __('Notification Type') ?></th>
-            <td><?= h($notificationtype->notification_type) ?></td>
+            <td><?= h($notification_type->notification_type) ?></td>
         </tr>
         <tr>
             <th><?= __('Notification Description') ?></th>
-            <td><?= h($notificationtype->notification_description) ?></td>
+            <td><?= h($notification_type->notification_description) ?></td>
         </tr>
         <tr>
             <th><?= __('Id') ?></th>
-            <td><?= $this->Number->format($notificationtype->id) ?></td>
+            <td><?= $this->Number->format($notification_type->id) ?></td>
         </tr>
     </table>
     <div class="related">
         <h4><?= __('Related Notifications') ?></h4>
-        <?php if (!empty($notificationtype->notifications)): ?>
+        <?php if (!empty($notification_type->notifications)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th><?= __('Id') ?></th>
                 <th><?= __('User Id') ?></th>
-                <th><?= __('Notificationtype Id') ?></th>
+                <th><?= __('Notification Type Id') ?></th>
                 <th><?= __('New') ?></th>
                 <th><?= __('Header') ?></th>
                 <th><?= __('Text') ?></th>
@@ -30,7 +30,7 @@
                 <th><?= __('From') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
-            <?php foreach ($notificationtype->notifications as $notifications): ?>
+            <?php foreach ($notification_type->notifications as $notifications): ?>
             <tr>
                 <td><?= h($notifications->id) ?></td>
                 <td><?= h($notifications->user_id) ?></td>

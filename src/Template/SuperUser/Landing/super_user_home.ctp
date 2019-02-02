@@ -501,7 +501,7 @@
                                                 </div>
                                             </td>
                                             <td><?= $notification->has('user') ? $this->Html->link($this->Text->truncate($notification->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $notification->user->id]) : '' ?></td>
-                                            <td><?= $notification->has('notificationtype') ? $notification->notificationtype->notification_type : '' ?></td>
+                                            <td><?= $notification->has('notification_type') ? $notification->notification_type->notification_type : '' ?></td>
                                             <td><?= h($notification->notification_source) ?></td>
                                             <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
                                             <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-yy HH:mm') ?></td>

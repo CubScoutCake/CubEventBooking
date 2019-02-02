@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
 use Cake\I18n\Time;
 use Cake\Mailer\Email;
 use Cake\Mailer\MailerAwareTrait;
@@ -26,7 +25,7 @@ class NotificationsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Notificationtypes'],
+            'contain' => ['Users', 'NotificationTypes'],
             'order' => ['created' => 'DESC']
         ];
         $this->set('notifications', $this->paginate($this->Notifications));
@@ -41,7 +40,7 @@ class NotificationsController extends AppController
     public function unread()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Notificationtypes'],
+            'contain' => ['Users', 'NotificationTypes'],
             'conditions' => ['new' => 1],
             'order' => ['created' => 'DESC']
         ];
@@ -54,12 +53,12 @@ class NotificationsController extends AppController
      *
      * @param string|null $id Notification id.
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
     {
         $notification = $this->Notifications->get($id, [
-            'contain' => ['Users', 'Notificationtypes']
+            'contain' => ['Users', 'NotificationTypes']
         ]);
         $this->set('notification', $notification);
         $this->set('_serialize', ['notification']);
@@ -74,7 +73,7 @@ class NotificationsController extends AppController
     {
         $notification = $this->Notifications->newEntity();
         if ($this->request->is('post')) {
-            $notification = $this->Notifications->patchEntity($notification, $this->request->data);
+            $notification = $this->Notifications->patchEntity($notification, $this->request->getData());
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
 
@@ -84,8 +83,8 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notificationtypes = $this->Notifications->Notificationtypes->find('list', ['limit' => 200]);
-        $this->set(compact('notification', 'users', 'notificationtypes'));
+        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }
 
@@ -715,7 +714,7 @@ class NotificationsController extends AppController
     {
         $notification = $this->Notifications->newEntity();
         if ($this->request->is('post')) {
-            $notification = $this->Notifications->patchEntity($notification, $this->request->data);
+            $notification = $this->Notifications->patchEntity($notification, $this->request->getData());
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
 
@@ -725,8 +724,8 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notificationtypes = $this->Notifications->Notificationtypes->find('list', ['limit' => 200]);
-        $this->set(compact('notification', 'users', 'notificationtypes'));
+        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }
 
@@ -739,7 +738,7 @@ class NotificationsController extends AppController
     {
         $notification = $this->Notifications->newEntity();
         if ($this->request->is('post')) {
-            $notification = $this->Notifications->patchEntity($notification, $this->request->data);
+            $notification = $this->Notifications->patchEntity($notification, $this->request->getData());
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
 
@@ -749,8 +748,8 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notificationtypes = $this->Notifications->Notificationtypes->find('list', ['limit' => 200]);
-        $this->set(compact('notification', 'users', 'notificationtypes'));
+        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }
 
@@ -827,7 +826,7 @@ class NotificationsController extends AppController
      *
      * @param int $notificationId Notification id.
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($notificationId = null)
     {
@@ -835,7 +834,7 @@ class NotificationsController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $notification = $this->Notifications->patchEntity($notification, $this->request->data);
+            $notification = $this->Notifications->patchEntity($notification, $this->request->getData());
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
 
@@ -845,8 +844,8 @@ class NotificationsController extends AppController
             }
         }
         $users = $this->Notifications->Users->find('list', ['limit' => 200]);
-        $notificationtypes = $this->Notifications->Notificationtypes->find('list', ['limit' => 200]);
-        $this->set(compact('notification', 'users', 'notificationtypes'));
+        $notification_types = $this->Notifications->NotificationTypes->find('list', ['limit' => 200]);
+        $this->set(compact('notification', 'users', 'notification_types'));
         $this->set('_serialize', ['notification']);
     }
 
@@ -855,7 +854,7 @@ class NotificationsController extends AppController
      *
      * @param int $notificationId Notification id.
      * @return \Cake\Http\Response Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function delete($notificationId = null)
     {

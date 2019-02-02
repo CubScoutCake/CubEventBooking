@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
-
 /**
  * Tokens Controller
  *
@@ -47,13 +45,13 @@ class TokensController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Network\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $token = $this->Tokens->newEntity();
         if ($this->request->is('post')) {
-            $token = $this->Tokens->patchEntity($token, $this->request->data);
+            $token = $this->Tokens->patchEntity($token, $this->request->getData());
             if ($this->Tokens->save($token)) {
                 $this->Flash->success(__('The token has been saved.'));
 
@@ -71,8 +69,8 @@ class TokensController extends AppController
      * Edit method
      *
      * @param string|null $id Token id.
-     * @return \Cake\Network\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
@@ -80,7 +78,7 @@ class TokensController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $token = $this->Tokens->patchEntity($token, $this->request->data);
+            $token = $this->Tokens->patchEntity($token, $this->request->getData());
             if ($this->Tokens->save($token)) {
                 $this->Flash->success(__('The token has been saved.'));
 
@@ -98,7 +96,7 @@ class TokensController extends AppController
      * Delete method
      *
      * @param string|null $id Token id.
-     * @return \Cake\Network\Response|null Redirects to index.
+     * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)

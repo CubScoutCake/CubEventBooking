@@ -24,11 +24,20 @@ use Cake\View\CellTrait;
  * will inherit them.
  *
  * @link http://book.cakephp.org/3.0/en/controllers.html#the-app-controller
+ *
+ * @property \App\Controller\Component\AlertComponent $Alert
  */
 class AppController extends Controller
 {
     use CellTrait;
 
+    /**
+     * The App Initialisation Method.
+     *
+     * @throws \Exception
+     *
+     * @return void
+     */
     public function initialize()
     {
         $this->loadComponent('Flash');
@@ -56,6 +65,11 @@ class AppController extends Controller
         $this->Alert->appLoad($this->Auth->user('id'));
     }
 
+    /**
+     * @param array $user The AuthUser
+     *
+     * @return bool
+     */
     public function isAuthorized($user)
     {
         // Admin can access every action
@@ -64,7 +78,7 @@ class AppController extends Controller
         }
 
         if (isset($user['id'])) {
-            if (isset($this->request->params['prefix']) && $this->request->params['prefix'] === 'admin') {
+            if (!empty($this->request->getParam('prefix')) && $this->request->getParam('prefix') === 'admin') {
                 return false;
             } else {
                 return true;
@@ -72,7 +86,7 @@ class AppController extends Controller
         }
 
         //The add and index actions are always allowed.
-        if (isset($user['id']) && in_array($this->request->params['action'], ['index', 'add', 'admin-home'])) {
+        if (isset($user['id']) && in_array($this->request->getParam('action'), ['index', 'add', 'admin-home'])) {
             return true;
         }
 

@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
+use App\Form\PasswordForm;
 use Cake\Utility\Security;
 
 /**
@@ -32,11 +32,11 @@ class TokensController extends AppController
 
         $tokenRow = $this->Tokens->get($validated);
 
-        $resettor = $this->Users->get($tokenRow->user_id);
+        $resettor = $this->Tokens->Users->get($tokenRow->user_id);
 
         if (is_numeric($validated)) {
-            $PasswordForm = new PasswordForm();
-            $this->set(compact('PasswordForm'));
+            $passwordForm = new PasswordForm();
+            $this->set(compact('passwordForm'));
 
             if ($this->request->is('post')) {
                 $fmPassword = $this->request->getData('newpw');
@@ -50,39 +50,36 @@ class TokensController extends AppController
                     $usPostcode = str_replace(" ", "", strtoupper($usPostcode));
 
                     if ($usPostcode == $fmPostcode) {
-                        $newPw = ['password' => $fmPassword
-                            , 'reset' => 'No Longer Active'];
+                        $newPw = [
+                            'password' => $fmPassword,
+                            'reset' => 'No Longer Active'
+                        ];
 
-                        $resettor = $this->Users->patchEntity($resettor, $newPw);
+                        $resettor = $this->Tokens->Users->patchEntity($resettor, $newPw);
 
-                        if ($this->Users->save($resettor)) {
+                        if ($this->Tokens->Users->save($resettor)) {
                             return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'login']);
-                        } else {
-                            $this->Flash->error(__('The user could not be saved. Please, try again.'));
                         }
-                    } else {
                         $this->Flash->error(__('The user could not be saved. Please, try again.'));
                     }
-                } else {
-                    $this->Flash->error(__('The user could not be saved. Please, try again.'));
                 }
             }
-        } else {
-            $this->Flash->success(__('The user has been saved.'));
-
-            return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
         }
+
+        return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
     }
 
     /**
      * Before Filter - Authorisation Permissions
      *
-     * @param \Cake\Event\Event $event
+     * @param \Cake\Event\Event $event The CakeEvent to be Processed
      *
-     * @return null
+     * @return \Cake\Event\Event
      */
     public function beforeFilter(\Cake\Event\Event $event)
     {
         $this->Auth->allow(['validate']);
+
+        return $event;
     }
 }

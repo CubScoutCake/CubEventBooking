@@ -11,7 +11,7 @@ use Cake\Validation\Validator;
  * Notifications Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsTo $Notificationtypes
+ * @property \Cake\ORM\Association\BelongsTo $NotificationTypes
  * @property \Cake\ORM\Association\BelongsTo $Links
  */
 class NotificationsTable extends Table

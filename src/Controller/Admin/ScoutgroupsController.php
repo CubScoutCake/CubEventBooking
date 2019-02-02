@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
-
 /**
  * Scoutgroups Controller
  *
@@ -53,7 +51,7 @@ class ScoutgroupsController extends AppController
      *
      * @param string|null $id Scoutgroup id.
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
     {
@@ -73,7 +71,7 @@ class ScoutgroupsController extends AppController
     {
         $scoutgroup = $this->Scoutgroups->newEntity();
         if ($this->request->is('post')) {
-            $scoutgroup = $this->Scoutgroups->patchEntity($scoutgroup, $this->request->data);
+            $scoutgroup = $this->Scoutgroups->patchEntity($scoutgroup, $this->request->getData());
             if ($this->Scoutgroups->save($scoutgroup)) {
                 $this->Flash->success(__('The scoutgroup has been saved.'));
 
@@ -92,13 +90,13 @@ class ScoutgroupsController extends AppController
      *
      * @param int $id the ID of the Scout Group.
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
         $scoutgroup = $this->Scoutgroups->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $scoutgroup = $this->Scoutgroups->patchEntity($scoutgroup, $this->request->data);
+            $scoutgroup = $this->Scoutgroups->patchEntity($scoutgroup, $this->request->getData());
             if ($this->Scoutgroups->save($scoutgroup)) {
                 $this->Flash->success(__('The scoutgroup has been saved.'));
 
@@ -117,7 +115,7 @@ class ScoutgroupsController extends AppController
      *
      * @param string|null $id Scoutgroup id.
      * @return \Cake\Http\Response|void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function delete($id = null)
     {

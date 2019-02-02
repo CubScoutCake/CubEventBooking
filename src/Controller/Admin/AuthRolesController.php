@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
-
 /**
  * AuthRoles Controller
  *
@@ -14,7 +12,7 @@ class AuthRolesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      */
     public function index()
     {
@@ -27,13 +25,14 @@ class AuthRolesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Auth Role id.
-     * @return \Cake\Network\Response|null
+     * @param string|null $authRoleId Auth Role id.
+     *
+     * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($authRoleId = null)
     {
-        $authRole = $this->AuthRoles->get($id, [
+        $authRole = $this->AuthRoles->get($authRoleId, [
             'contain' => ['Users']
         ]);
 

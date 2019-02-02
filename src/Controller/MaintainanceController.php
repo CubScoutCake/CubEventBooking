@@ -14,10 +14,6 @@
  */
 namespace App\Controller;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
-
 /**
  * Static content controller
  *
@@ -32,15 +28,22 @@ class MaintainanceController extends AppController
      * Displays a view
      *
      * @return void|\Cake\Network\Response
-     * @throws \Cake\Network\Exception\NotFoundException When the view file could not
+     * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
     public function index()
     {
     }
 
+    /**
+     * @param \Cake\Event\Event $event The CakePHP emissive event
+     *
+     * @return \Cake\Event\Event
+     */
     public function beforeFilter(\Cake\Event\Event $event)
     {
         $this->Auth->allow(['index']);
+
+        return $event;
     }
 }

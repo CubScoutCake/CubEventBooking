@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * Settings Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Events
- * @property \Cake\ORM\Association\BelongsTo $Settingtypes
+ * @property \Cake\ORM\Association\BelongsTo $SettingTypes
  *
  * @method \App\Model\Entity\Setting get($primaryKey, $options = [])
  * @method \App\Model\Entity\Setting newEntity($data = null, array $options = [])

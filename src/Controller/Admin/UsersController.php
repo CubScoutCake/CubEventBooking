@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
 use Cake\Cache\Cache;
 use Cake\Http\ServerRequest;
 use Cake\I18n\Time;
@@ -80,7 +79,7 @@ class UsersController extends AppController
      *
      * @param string|null $id User id.
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
     {
@@ -114,7 +113,7 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
 
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->data, [
+            $user = $this->Users->patchEntity($user, $this->request->getData(), [
                 'fieldList' => [
                     'id',
                     'role_id',
@@ -281,7 +280,7 @@ class UsersController extends AppController
      *
      * @param int $userId The ID of the User to be Edited.
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($userId = null)
     {
@@ -289,7 +288,7 @@ class UsersController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->data);
+            $user = $this->Users->patchEntity($user, $this->request->getData());
 
             if ($this->Users->save($user)) {
                 if ($this->Auth->user('id') == $user->id) {
@@ -376,7 +375,7 @@ class UsersController extends AppController
      *
      * @param string|null $userId User id.
      * @return \Cake\Http\Response Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function delete($userId = null)
     {

@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
 use App\Form\PaymentAssocationForm;
 
 /**
@@ -31,7 +30,7 @@ class PaymentsController extends AppController
      *
      * @param int $paymentId Payment id.
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($paymentId = null)
     {
@@ -45,16 +44,16 @@ class PaymentsController extends AppController
     /**
      * Add method
      *
-     * @param int $numberOfInvoiceAssocs a number for the amount of invoice lines available.
+     * @param int $numberOfInvAssocs a number for the amount of invoice lines available.
      * @param int $invId a suggested invoice to association
      *
      * @return \Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
-    public function add($numberOfInvoiceAssocs = null, $invId = null)
+    public function add($numberOfInvAssocs = null, $invId = null)
     {
-        if (is_null($numberOfInvoiceAssocs) || $numberOfInvoiceAssocs < 1) {
-            $paymentAssociationForm = new PaymentAssocationForm();
-            $this->set(compact('paymentAssociationForm', 'invId', 'numberOfInvoiceAssocs'));
+        if (is_null($numberOfInvAssocs) || $numberOfInvAssocs < 1) {
+            $paymentAssocForm = new PaymentAssocationForm();
+            $this->set(compact('paymentAssocForm', 'invId', 'numberOfInvAssocs'));
 
             if ($this->request->is('post')) {
                 $requested = $this->request->getData('payment_assoc_count');
@@ -63,13 +62,13 @@ class PaymentsController extends AppController
             }
         }
 
-        if (!is_null($numberOfInvoiceAssocs) && $numberOfInvoiceAssocs > 0) {
+        if (!is_null($numberOfInvAssocs) && $numberOfInvAssocs > 0) {
             $payment = $this->Payments->newEntity();
             if ($this->request->is('post')) {
                 $newData = [ 'user_id' => $this->Auth->user('id') ];
                 $payment = $this->Payments->patchEntity($payment, $newData);
 
-                $payment = $this->Payments->patchEntity($payment, $this->request->data, [
+                $payment = $this->Payments->patchEntity($payment, $this->request->getData(), [
                     'associated' => [
                         'Invoices'
                     ]
@@ -82,8 +81,8 @@ class PaymentsController extends AppController
 
                     return $this->redirect([
                         'controller' => 'Notifications',
-                        'action'     => 'new_payment',
-                        'prefix'     => 'admin',
+                        'action' => 'new_payment',
+                        'prefix' => 'admin',
                         $redir
                     ]);
                 } else {
@@ -102,7 +101,7 @@ class PaymentsController extends AppController
                 $invDefault = 'empty';
             }
 
-            $this->set(compact('payment', 'invoices', 'numberOfInvoiceAssocs', 'invId', 'invDefault'));
+            $this->set(compact('payment', 'invoices', 'numberOfInvAssocs', 'invId', 'invDefault'));
             $this->set('_serialize', [ 'payment' ]);
         }
     }
@@ -111,19 +110,20 @@ class PaymentsController extends AppController
      * Edit method
      *
      * @param int $paymentId Payment id.
-     * @param int $numberOfInvoiceAssocs a number for the amount of invoice lines available.
+     * @param int $numInvAssociated a number for the amount of invoice lines available.
+     *
      * @return \Cake\Http\Response Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($paymentId = null, $numberOfInvoiceAssocs = null)
+    public function edit($paymentId = null, $numInvAssociated = null)
     {
         $payment = $this->Payments->get($paymentId, [
             'contain' => ['Invoices']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $payment = $this->Payments->patchEntity($payment, $this->request->data);
+            $payment = $this->Payments->patchEntity($payment, $this->request->getData());
 
-            $payment = $this->Payments->patchEntity($payment, $this->request->data, [
+            $payment = $this->Payments->patchEntity($payment, $this->request->getData(), [
                 'associated' => [
                     'Invoices'
                 ]
@@ -139,11 +139,11 @@ class PaymentsController extends AppController
         }
         $invoices = $this->Payments->Invoices->find('unarchived')->find('list', ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]);
 
-        if (is_null($numberOfInvoiceAssocs)) {
-            $numberOfInvoiceAssocs = 1;
+        if (is_null($numInvAssociated)) {
+            $numInvAssociated = 1;
         }
 
-        $this->set(compact('payment', 'invoices', 'numberOfInvoiceAssocs'));
+        $this->set(compact('payment', 'invoices', 'numInvAssociated'));
         $this->set('_serialize', ['payment']);
     }
 
@@ -152,7 +152,7 @@ class PaymentsController extends AppController
      *
      * @param string|null $paymentId Payment id.
      * @return \Cake\Http\Response Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function delete($paymentId = null)
     {

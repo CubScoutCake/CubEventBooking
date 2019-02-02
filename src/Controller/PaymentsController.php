@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
-
 /**
  * Payments Controller
  *
@@ -44,7 +42,7 @@ class PaymentsController extends AppController
      *
      * @param string|null $id Payment id.
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     /*public function view($id = null)
     {
@@ -64,7 +62,7 @@ class PaymentsController extends AppController
     {
         $payment = $this->Payments->newEntity();
         if ($this->request->is('post')) {
-            $payment = $this->Payments->patchEntity($payment, $this->request->data);
+            $payment = $this->Payments->patchEntity($payment, $this->request->getData());
             if ($this->Payments->save($payment)) {
                 $this->Flash->success(__('The payment has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -82,7 +80,7 @@ class PaymentsController extends AppController
      *
      * @param string|null $id Payment id.
      * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     /*public function edit($id = null)
     {
@@ -90,7 +88,7 @@ class PaymentsController extends AppController
             'contain' => ['Invoices']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $payment = $this->Payments->patchEntity($payment, $this->request->data);
+            $payment = $this->Payments->patchEntity($payment, $this->request->getData());
             if ($this->Payments->save($payment)) {
                 $this->Flash->success(__('The payment has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -108,7 +106,7 @@ class PaymentsController extends AppController
      *
      * @param string|null $id Payment id.
      * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     /*public function delete($id = null)
     {

@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
 use App\Form\AttNumberForm;
 use App\Form\SyncBookForm;
 use Cake\I18n\Time;
