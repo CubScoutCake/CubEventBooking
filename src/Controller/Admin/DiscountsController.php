@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
-
 /**
  * Discounts Controller
  *
@@ -14,7 +12,7 @@ class DiscountsController extends AppController
     /**
      * Index method
      *
-     * @return void
+     * @return \Cake\Http\Response|void
      */
     public function index()
     {
@@ -25,13 +23,13 @@ class DiscountsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Discount id.
-     * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $discountId Discount id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($discountId = null)
     {
-        $discount = $this->Discounts->get($id, [
+        $discount = $this->Discounts->get($discountId, [
             'contain' => ['Events']
         ]);
         $this->set('discount', $discount);
@@ -41,13 +39,13 @@ class DiscountsController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $discount = $this->Discounts->newEntity();
         if ($this->request->is('post')) {
-            $discount = $this->Discounts->patchEntity($discount, $this->request->data);
+            $discount = $this->Discounts->patchEntity($discount, $this->request->getData());
             if ($this->Discounts->save($discount)) {
                 $this->Flash->success(__('The discount has been saved.'));
 
@@ -63,17 +61,17 @@ class DiscountsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Discount id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $discountId Discount id.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($discountId = null)
     {
-        $discount = $this->Discounts->get($id, [
+        $discount = $this->Discounts->get($discountId, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $discount = $this->Discounts->patchEntity($discount, $this->request->data);
+            $discount = $this->Discounts->patchEntity($discount, $this->request->getData());
             if ($this->Discounts->save($discount)) {
                 $this->Flash->success(__('The discount has been saved.'));
 
@@ -89,14 +87,14 @@ class DiscountsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Discount id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $discountId Discount id.
+     * @return \Cake\Http\Response|void Redirects to index.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($discountId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $discount = $this->Discounts->get($id);
+        $discount = $this->Discounts->get($discountId);
         if ($this->Discounts->delete($discount)) {
             $this->Flash->success(__('The discount has been deleted.'));
         } else {

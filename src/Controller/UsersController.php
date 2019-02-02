@@ -1,21 +1,17 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
 use App\Form\PasswordForm;
 use App\Form\ResetForm;
-
 use Cake\I18n\Time;
-// use Cake\Utility\Hash;
-use Cake\Network\Http\Client;
-use Cake\ORM\TableRegistry;
-use Cake\Utility\Security;
 
 /**
  * Users Controller
  *
  * @property \App\Model\Table\UsersTable $Users
+ *
  * @property \App\Controller\Component\ProgressComponent $Progress
+ * @property \App\Controller\Component\PasswordComponent $Password
  */
 class UsersController extends AppController
 {
@@ -41,7 +37,7 @@ class UsersController extends AppController
      *
      * @param string|null $userID User id.
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($userID = null)
     {
@@ -68,9 +64,9 @@ class UsersController extends AppController
      *
      * @param string|null $userID User id.
      *
-     * @return \Cake\Network\Response|null Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      *
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($userID = null)
     {
@@ -78,7 +74,7 @@ class UsersController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->data);
+            $user = $this->Users->patchEntity($user, $this->request->getData());
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
@@ -105,19 +101,16 @@ class UsersController extends AppController
     /**
      * Sync Function
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      */
     public function sync()
     {
-
         $user = $this->Users->get($this->Auth->user('id'));
 
-        $atts = TableRegistry::get('Attendees');
+        $attRef = $this->Users->Attendees->find('all')->where(['user_attendee' => true, 'user_id' => $user->id]);
+        $attName = $this->Users->Attendees->find('all')->where(['firstname' => $user->firstname, 'lastname' => $user->lastname, 'user_id' => $user->id]);
 
-        $attRef = $atts->find('all')->where(['user_attendee' => true, 'user_id' => $user->id]);
-        $attName = $atts->find('all')->where(['firstname' => $user->firstname, 'lastname' => $user->lastname, 'user_id' => $user->id]);
-
-        $count = MAX($attRef->count(), $attName->count());
+        $count = max($attRef->count(), $attName->count());
 
         if ($count == 1) {
             if ($attRef->count() == 1) {
@@ -126,7 +119,7 @@ class UsersController extends AppController
                 $att = $attName->first();
             }
         } else {
-            $att = $atts->newEntity();
+            $att = $this->Users->Attendees->newEntity();
         }
 
         $attendeeData = [
@@ -144,9 +137,9 @@ class UsersController extends AppController
             'phone' => $user->phone
         ];
 
-        $att = $atts->patchEntity($att, $attendeeData);
+        $att = $this->Users->Attendees->patchEntity($att, $attendeeData);
 
-        if ($atts->save($att)) {
+        if ($this->Users->Attendees->save($att)) {
             $this->Flash->success(__('An Attendee for your User has been Synchronised.'));
         } else {
             $this->Flash->error(__('An Attendee for your User could not be Synchronised. Please, try again.'));
@@ -159,15 +152,17 @@ class UsersController extends AppController
     /**
      * Login method
      *
-     * @return \Cake\Network\Response If Successful - redirects to landing.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @return \Cake\Http\Response|void If Successful - redirects to landing.
+     *
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
+     * @throws \Exception
      */
     public function login()
     {
         // Set the layout.
-        $this->viewBuilder()->layout('outside');
+        $this->viewBuilder()->setLayout('outside');
 
-        $session = $this->request->session();
+        $session = $this->request->getSession();
 
         if ($session->check('Reset.lgTries')) {
             $tries = $session->read('Reset.lgTries');
@@ -195,55 +190,19 @@ class UsersController extends AppController
                 $now = Time::now();
 
                 $logins = 1;
-                $previousLogin = $now;
                 $syncRedir = 1;
 
                 if (!empty($loggedInUser->logins)) {
                     $logins = $loggedInUser->logins + 1;
-                    $previousLogin = $loggedInUser->last_login;
                     $syncRedir = 0;
                 }
 
                 $loginPass = ['last_login' => $now, 'logins' => $logins, 'pw_salt' => $this->request->getQuery('redirect')];
 
-                $loginEnt = [
-                    'Entity Id' => $loggedInUser->id,
-                    'Controller' => 'Users',
-                    'Action' => 'Login',
-                    'User Id' => $loggedInUser->id,
-                    'Creation Date' => $loggedInUser->created,
-                    'Modified' => $loggedInUser->modified,
-                    'User' => [
-                        'AuthValue' => $loggedInUser->auth_role->auth_value,
-                        'Username' => $loggedInUser->username,
-                        'First Name' => $loggedInUser->firstname,
-                        'Last Name' => $loggedInUser->lastname,
-                        'Number of Logins' => $logins,
-                        'Previous Login' => $previousLogin,
-                        'This Login' => $now
-                        ]
-                    ];
-
                 $loggedInUser = $this->Users->patchEntity($loggedInUser, $loginPass, ['validate' => false]);
                 $loggedInUser->setDirty('modified', true);
 
                 if ($this->Users->save($loggedInUser)) {
-                    $sets = TableRegistry::get('Settings');
-
-                    $jsonLogin = json_encode($loginEnt);
-                    $apiKey = $sets->get(13)->text;
-                    $projectId = $sets->get(14)->text;
-                    $eventType = 'Login';
-
-                    $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $apiKey;
-
-                    $http = new Client();
-                    $response = $http->post(
-                        $keenURL,
-                        $jsonLogin,
-                        ['type' => 'json']
-                    );
-
                     $this->loadComponent('Progress');
 
                     $this->Progress->cacheApps($loggedInUser->id);
@@ -290,20 +249,20 @@ class UsersController extends AppController
             $this->Flash->error('Your username or password is incorrect. Please try again.');
             $session->write('Reset.lgTries', $tries);
         }
-        $this->set(compact('eventId'));
     }
 
     /**
      * Password Reset Function - Enables Resetting a User's Password via Email
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
+     *
+     * @throws \Exception
      */
     public function reset()
     {
         $this->viewBuilder()->setLayout('outside');
 
         $resForm = new ResetForm();
-        $sets = TableRegistry::get('Settings');
 
         $scoutgroups = $this->Users->Sections->Scoutgroups->find(
             'list',
@@ -313,7 +272,7 @@ class UsersController extends AppController
                 'groupField' => 'district.district'
             ]
         )->contain(['Districts']);
-        $session = $this->request->session();
+        $session = $this->request->getSession();
 
         $this->set(compact('scoutgroups', 'resForm'));
 
@@ -328,14 +287,14 @@ class UsersController extends AppController
 
             if (isset($tries) && $tries < 6) {
                 // Extract Form Info
-                $fmGroup = $this->request->data['scoutgroup'];
-                $fmEmail = $this->request->data['email'];
+                $fmGroup = $this->request->getData()['scoutgroup'];
+                $fmEmail = $this->request->getData()['email'];
 
                 $found = $this->Users->find('all')
                     ->contain('Sections')
                     ->where(['email' => $fmEmail, 'Sections.scoutgroup_id' => $fmGroup]);
 
-                $count = $found->count('*');
+                $count = $found->count();
                 $user = $found->first();
 
                 $tries = $tries + 1;
@@ -377,11 +336,9 @@ class UsersController extends AppController
      */
     public function token($token = null)
     {
-        $tokenTable = TableRegistry::get('Tokens');
-
         $this->viewBuilder()->setLayout('outside');
 
-        $valid = $tokenTable->validateToken($token);
+        $valid = $this->Users->Tokens->validateToken($token);
         if (!$valid) {
             $this->Flash->error('Password Reset Token could not be validated.');
 
@@ -389,7 +346,7 @@ class UsersController extends AppController
         }
 
         if (is_numeric($valid)) {
-            $tokenRow = $tokenTable->get($valid);
+            $tokenRow = $this->Users->Tokens->get($valid);
             $resetUser = $this->Users->get($tokenRow->user_id);
 
             $passwordForm = new PasswordForm();
@@ -407,8 +364,10 @@ class UsersController extends AppController
                     $usPostcode = str_replace(" ", "", strtoupper($usPostcode));
 
                     if ($usPostcode == $fmPostcode) {
-                        $newPw = ['password' => $fmPassword
-                            , 'reset' => 'No Longer Active'];
+                        $newPw = [
+                            'password' => $fmPassword,
+                            'reset' => 'No Longer Active'
+                        ];
 
                         $resetUser = $this->Users->patchEntity($resetUser, $newPw, [ 'fields' => ['password'], 'validate' => false ]);
 
@@ -430,13 +389,13 @@ class UsersController extends AppController
     }
 
     /**
-     * @param $userId
+     * @param int|null $userId The ID of the User
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      */
     public function validate($userId)
     {
-        $this->viewBuilder()->layout('outside');
+        $this->viewBuilder()->setLayout('outside');
 
         $user = $this->Users->get($userId);
 
@@ -452,9 +411,12 @@ class UsersController extends AppController
         }
     }
 
+    /**
+     * @return \Cake\Http\Response|void
+     */
     public function logout()
     {
-        $session = $this->request->session();
+        $session = $this->request->getSession();
         $session->delete('OSM.Secret');
 
         $this->Flash->success('You are now logged out.');
@@ -462,6 +424,13 @@ class UsersController extends AppController
         return $this->redirect($this->Auth->logout());
     }
 
+    /**
+     * Filter allowed functions
+     *
+     * @param \Cake\Event\Event $event The CakePHP emissive event.
+     *
+     * @return \Cake\Event\Event
+     */
     public function beforeFilter(\Cake\Event\Event $event)
     {
         $this->Auth->allow(['register']);
@@ -469,18 +438,25 @@ class UsersController extends AppController
         $this->Auth->allow(['validate']);
         $this->Auth->allow(['reset']);
         $this->Auth->allow(['token']);
+
+        return $event;
     }
 
+    /**
+     * @param array $user The AuthUser
+     *
+     * @return bool
+     */
     public function isAuthorized($user)
     {
         // All registered users can add articles
-        if (in_array($this->request->action, ['logout'])) {
+        if (in_array($this->request->getParam('action'), ['logout'])) {
             return true;
         }
 
         // The owner of an application can edit and delete it
-        if (in_array($this->request->action, ['view', 'edit'])) {
-            $editingId = (int)$this->request->params['pass'][0];
+        if (in_array($this->request->getParam('action'), ['view', 'edit'])) {
+            $editingId = (int)$this->request->getParam('pass')[0];
             if ($editingId == $user['id']) {
                 return true;
             } else {

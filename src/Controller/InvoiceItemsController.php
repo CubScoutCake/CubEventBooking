@@ -1,21 +1,23 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
-use App\Form\InvForm;
 use Cake\ORM\TableRegistry;
 
 /**
  * InvoiceItems Controller
  *
  * @property \App\Model\Table\InvoiceItemsTable $InvoiceItems
+ *
+ * @property \App\Controller\Component\LineComponent $Line
  */
 class InvoiceItemsController extends AppController
 {
     /**
-     * @param null $invID
+     * @param null $invID The Invoice ID
      *
      * @return \Cake\Http\Response|null
+     *
+     * @throws \Exception
      */
     public function populate($invID = null)
     {
@@ -28,7 +30,7 @@ class InvoiceItemsController extends AppController
             return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
         }
 
-        $invoices = TableRegistry::get('Invoices');
+        $invoices = TableRegistry::getTableLocator()->get('Invoices');
         $invoice = $invoices->get($invID);
 
         $this->Flash->error('There was an Error Populating your Invoice.');
@@ -36,8 +38,13 @@ class InvoiceItemsController extends AppController
         return $this->redirect(['controller' => 'Application', 'action' => 'view', $invoice->application_id]);
     }
 
-    public function repopulate($invID = null)
+    /**
+     * @param null $invId The Invoice ID.
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function repopulate($invId = null)
     {
-        return $this->redirect(['action' => 'populate', $invID]);
+        return $this->redirect(['action' => 'populate', $invId]);
     }
 }

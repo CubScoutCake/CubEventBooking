@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
 use App\Form\DiscountForm;
 use App\Model\Entity\User;
 use Cake\ORM\TableRegistry;
@@ -20,6 +19,8 @@ class InvoicesController extends AppController
      * Initialisation - Load Component
      *
      * @return void
+     *
+     * @throws \Exception
      */
     public function initialize()
     {
@@ -45,20 +46,21 @@ class InvoicesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Invoice id.
+     * @param string|null $invoiceId Invoice id.
+     *
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($invoiceId = null)
     {
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
-                   'filename' => 'Invoice_' . $id
+                   'filename' => 'Invoice_' . $invoiceId
                ]
            ]);
 
-        $invoice = $this->Invoices->get($id, [
+        $invoice = $this->Invoices->get($invoiceId, [
             'contain' => [
                 'Users',
                 'Payments',
@@ -89,22 +91,22 @@ class InvoicesController extends AppController
     }
 
     /**
-     * @param int $id The ID of the Invoice to be Viewed
+     * @param int $invoiceId The ID of the Invoice to be Viewed
      *
      * @return \Cake\Http\Response
      */
-    public function pdfView($id = null)
+    public function pdfView($invoiceId = null)
     {
         // Insantiate Objects
         $this->viewBuilder()->setOptions([
             'pdfConfig' => [
                 'orientation' => 'portrait',
-                'filename' => 'Invoice_' . $id
+                'filename' => 'Invoice_' . $invoiceId
             ]
         ]);
 
         // Insantiate Objects
-        $invoice = $this->Invoices->get($id, [
+        $invoice = $this->Invoices->get($invoiceId, [
             'contain' => [
                 'Users',
                 'Payments',
@@ -130,14 +132,6 @@ class InvoicesController extends AppController
             ]
         ]);
 
-        // Set Address Variables
-        $eventName = $invoice->application->event->full_name;
-        $invAddress = $invoice->application->event->address;
-        $invCity = $invoice->application->event->city;
-        $invPostcode = $invoice->application->event->postcode;
-
-        $this->set(compact('eventName', 'invAddress', 'invCity', 'invPostcode'));
-
         // Set Deadline Variable
         $invDeadline = $invoice->application->event->deposit_date;
 
@@ -153,13 +147,11 @@ class InvoicesController extends AppController
         $this->set(compact('invoice', 'invPayable', 'invPrefix', 'invDeadline'));
         $this->set('_serialize', ['invoice']);
 
-        $CakePdf = new \CakePdf\Pdf\CakePdf();
-        $CakePdf->template('invoice', 'default');
-        $CakePdf->viewVars($this->viewVars);
-        // Get the PDF string returned
-        $pdf = $CakePdf->output();
+        $cakePDF = new \CakePdf\Pdf\CakePdf();
+        $cakePDF->template('invoice', 'default');
+        $cakePDF->viewVars($this->viewVars);
         // Or write it to file directly
-        $CakePdf->write(FILES . DS . 'Event ' . $invoice->application->event->id . DS . 'Invoices' . DS . 'Invoice #' . $invoice->id . '.pdf');
+        $cakePDF->write(FILES . DS . 'Event ' . $invoice->application->event->id . DS . 'Invoices' . DS . 'Invoice #' . $invoice->id . '.pdf');
 
         return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invoice->id, '_ext' => 'pdf']);
     }
@@ -208,7 +200,7 @@ class InvoicesController extends AppController
         $dics = TableRegistry::get('Discounts');
 
         if ($this->request->is('post')) {
-            $disCode = $this->request->data['discount'];
+            $disCode = $this->request->getData()['discount'];
 
             if (isset($disCode) && strlen($disCode) >= 5 && strlen($disCode) <= 45) {
             // Check the code and match to a discount

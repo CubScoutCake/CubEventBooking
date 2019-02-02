@@ -24,9 +24,16 @@ use Cake\ORM\TableRegistry;
  * will inherit them.
  *
  * @link http://book.cakephp.org/3.0/en/controllers.html#the-app-controller
+ *
+ * @property \App\Controller\Component\AlertComponent $Alert
  */
 class AppController extends Controller
 {
+    /**
+     * @throws \Exception
+     *
+     * @return void
+     */
     public function initialize()
     {
         $this->loadComponent('Flash');
@@ -52,6 +59,13 @@ class AppController extends Controller
         $this->Alert->appLoad($this->Auth->user('id'));
     }
 
+    /**
+     * Authorisation Validation Method
+     *
+     * @param array $user The Auth->User to be Validated
+     *
+     * @return bool
+     */
     public function isAuthorized($user)
     {
         $auth = TableRegistry::get('AuthRoles');
@@ -62,17 +76,10 @@ class AppController extends Controller
             return false;
         }
 
-        if ($this->request->params['prefix'] === 'admin' && isset($user['auth_role_id'])) {
+        if ($this->request->getParam('prefix') === 'admin' && isset($user['auth_role_id'])) {
             return (bool)($adminTrue['admin_access']);
         }
 
         return false;
-    }
-
-    public function forceSSL()
-    {
-        if (env('SERVER_NAME') == 'booking.hertscubs.uk') {
-            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->here);
-        }
     }
 }

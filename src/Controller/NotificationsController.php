@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\I18n\Time;
 use Cake\Mailer\Email;
@@ -53,7 +52,7 @@ class NotificationsController extends AppController
      *
      * @param string|null $id Notification id.
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
     {
@@ -272,7 +271,7 @@ class NotificationsController extends AppController
     {
         $notification = $this->Notifications->newEntity();
         if ($this->request->is('post')) {
-            $notification = $this->Notifications->patchEntity($notification, $this->request->data);
+            $notification = $this->Notifications->patchEntity($notification, $this->request->getData());
             if ($this->Notifications->save($notification)) {
                 $this->Flash->success(__('The notification has been saved.'));
 

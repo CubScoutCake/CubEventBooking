@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -65,13 +64,13 @@ class NotesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $note = $this->Notes->newEntity();
         if ($this->request->is('post')) {
-            $note = $this->Notes->patchEntity($note, $this->request->data);
+            $note = $this->Notes->patchEntity($note, $this->request->getData());
             if ($this->Notes->save($note)) {
                 $this->Flash->success(__('The note has been saved.'));
                 $redir = $note->get('id');
@@ -119,7 +118,7 @@ class NotesController extends AppController
         if (!is_null($invId)) {
             $note = $this->Notes->newEntity();
             if ($this->request->is('post')) {
-                $note = $this->Notes->patchEntity($note, $this->request->data);
+                $note = $this->Notes->patchEntity($note, $this->request->getData());
 
                 $invs = TableRegistry::get('Invoices');
                 $invoice = $invs->get($invId);
@@ -156,7 +155,7 @@ class NotesController extends AppController
         if (!is_null($appId)) {
             $note = $this->Notes->newEntity();
             if ($this->request->is('post')) {
-                $note = $this->Notes->patchEntity($note, $this->request->data);
+                $note = $this->Notes->patchEntity($note, $this->request->getData());
 
                 $apps = TableRegistry::get('Applications');
                 $invs = TableRegistry::get('Invoices');
@@ -196,7 +195,7 @@ class NotesController extends AppController
         if (!is_null($userId)) {
             $note = $this->Notes->newEntity();
             if ($this->request->is('post')) {
-                $note = $this->Notes->patchEntity($note, $this->request->data);
+                $note = $this->Notes->patchEntity($note, $this->request->getData());
 
                 $userLink = ['user_id' => $userId];
                 $note = $this->Notes->patchEntity($note, $userLink);
@@ -221,14 +220,14 @@ class NotesController extends AppController
      * Edit method
      *
      * @param string|null $id Note id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
         $note = $this->Notes->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $note = $this->Notes->patchEntity($note, $this->request->data);
+            $note = $this->Notes->patchEntity($note, $this->request->getData());
             if ($this->Notes->save($note)) {
                 $this->Flash->success(__('The note has been saved.'));
                 $redir = $note->get('id');
@@ -271,7 +270,7 @@ class NotesController extends AppController
      * Delete method
      *
      * @param string|null $id Note id.
-     * @return \Cake\Network\Response|null Redirects to index.
+     * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)

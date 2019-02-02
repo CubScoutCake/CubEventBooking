@@ -1,11 +1,9 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
 use Cake\ORM\TableRegistry;
-use Cake\I18n\Time;
-use Cake\Utility\Inflector;
 use Cake\Utility\Hash;
+use Cake\Utility\Inflector;
 
 /**
  * Events Controller
@@ -24,8 +22,8 @@ class EventsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Settings', 'Discounts']
-            , 'order' => ['modified' => 'DESC']
+            'contain' => ['Settings', 'Discounts'],
+            'order' => ['modified' => 'DESC']
         ];
         $this->set('events', $this->paginate($this->Events));
         $this->set('_serialize', ['events']);
@@ -37,13 +35,14 @@ class EventsController extends AppController
      * @param string|null $eventId Event id.
      *
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($eventId = null)
     {
         $event = $this->Events->get($eventId, [
             'contain' => [
                 'Discounts',
+                'AdminUsers',
                 'Applications' => [
                     'Sections.Scoutgroups.Districts'
                 ],
@@ -77,7 +76,7 @@ class EventsController extends AppController
 
         $this->set(compact('lineArray'));
 
-        $max_section = $this->Events->getPriceSection($eventId);
+        $maxSection = $this->Events->getPriceSection($eventId);
 
         $term = $event->event_type->application_ref->text;
         $singleTerm = $term;
@@ -88,50 +87,19 @@ class EventsController extends AppController
         }
 
         // Pass to View
-        $this->set(compact('users', 'payments', 'term', 'discount', 'singleTerm', 'max_section', 'pluralTerm'));
+        $this->set(compact('term', 'singleTerm', 'maxSection', 'pluralTerm'));
     }
 
-    public function regList($id = null)
+    /**
+     * @param null $eventId The ID of the Event
+     *
+     * @throws \Exception
+     *
+     * @return void
+     */
+    public function accounts($eventId = null)
     {
-        $event = $this->Events->get($id, [
-            'contain' => ['Settings'
-            , 'Discounts'
-            , 'Applications'
-                , 'Applications.Invoices'
-                , 'Applications.Attendees']
-        ]);
-        $this->set('event', $event);
-        $this->set('_serialize', ['event']);
-
-        // Get Entities from Registry
-        $sets = TableRegistry::get('Settings');
-        $dscs = TableRegistry::get('Discounts');
-
-        // Table Entities
-        if (isset($event->discount_id)) {
-            $discount = $dscs->get($event->discount_id);
-        }
-        if (isset($event->legaltext_id)) {
-            $legal = $sets->get($event->legaltext_id);
-        }
-        if (isset($event->invtext_id)) {
-            $invText = $sets->get($event->invtext_id);
-        }
-
-        // Pass to View
-        $this->set(compact('users', 'payments', 'discount', 'invText', 'legal'));
-
-        // Set Logo Dimensions
-        $setting = $sets->get(7);
-        $logoSet = $setting->text;
-        $logoHeight = $logoSet;
-        $logoWidth = $logoSet / $event->logo_ratio;
-        $this->set(compact('logoWidth', 'logoHeight'));
-    }
-
-    public function accounts($id = null)
-    {
-        $event = $this->Events->get($id, [
+        $event = $this->Events->get($eventId, [
             'contain' => ['Settings', 'Discounts', 'Prices.ItemTypes', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups.Districts']
         ]);
         $this->set('event', $event);
@@ -163,7 +131,7 @@ class EventsController extends AppController
         }
 
         // Pass to View
-        $this->set(compact('applications', 'users', 'payments', 'discount', 'invText', 'legal', 'administrator'));
+        $this->set(compact('applications', 'discount', 'invText', 'legal', 'administrator'));
         $this->set('invoices', $allInvoices);
 
         // Counts of Entities
@@ -174,7 +142,7 @@ class EventsController extends AppController
 
         // Get Attendee Counts
         $this->loadComponent('Availability');
-        $numbers = $this->Availability->getEventNumbers($id);
+        $numbers = $this->Availability->getEventNumbers($eventId);
 
         // Count of Attendees
         $appCubs = $numbers['NumSection'];
@@ -273,15 +241,15 @@ class EventsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|mixed Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $event = $this->Events->newEntity();
 
         if ($this->request->is('post')) {
-            $event_data = $this->request->getData();
-            $event = $this->Events->patchEntity($event, $event_data);
+            $eventData = $this->request->getData();
+            $event = $this->Events->patchEntity($event, $eventData);
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
 
@@ -294,24 +262,25 @@ class EventsController extends AppController
         $eventTypes = $this->Events->EventTypes->find('list', ['limit' => 200]);
         $sectionTypes = $this->Events->SectionTypes->find('list', ['limit' => 200]);
         $users = $this->Events->AdminUsers->find('list', ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]);
-        $this->set(compact('event', 'eventTypes', 'inv', 'legal', 'discounts', 'users', 'sectionTypes'));
+        $this->set(compact('event', 'eventTypes', 'discounts', 'users', 'sectionTypes'));
         $this->set('_serialize', ['event']);
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Event id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $eventId Event id.
+     *
+     * @return \Cake\Http\Response Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($eventId = null)
     {
-        $event = $this->Events->get($id, [
+        $event = $this->Events->get($eventId, [
             'contain' => ['Settings']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $event = $this->Events->patchEntity($event, $this->request->data);
+            $event = $this->Events->patchEntity($event, $this->request->getData());
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
 
@@ -330,17 +299,18 @@ class EventsController extends AppController
 
     /**
      * Team Prices Function
-     * @param int $id The ID of the event to be set to Event
      *
-     * @return \Cake\Http\Response
+     * @param int $eventId The ID of the event to be set to Event
+     *
+     * @return \Cake\Http\Response|mixed
      */
-    public function teamPrices($id = null)
+    public function teamPrices($eventId = null)
     {
-        if (is_null($id)) {
+        if (is_null($eventId)) {
             return $this->redirect($this->referer(['action' => 'prices']));
         }
 
-        $event = $this->Events->get($id, ['contain' => 'Prices.ItemTypes']);
+        $event = $this->Events->get($eventId, ['contain' => 'Prices.ItemTypes']);
         $event->set('team_price', true);
 
         foreach ($event->prices as $price) {
@@ -352,7 +322,7 @@ class EventsController extends AppController
         if ($this->Events->save($event)) {
             $this->Flash->success(__('The Event is Set to Team Pricing.'));
 
-            return $this->redirect(['action' => 'prices', $id]);
+            return $this->redirect(['action' => 'prices', $eventId]);
         }
         $this->Flash->error(__('The Event could not be set to Team Pricing.'));
 
@@ -361,17 +331,18 @@ class EventsController extends AppController
 
     /**
      * Application Prices Function
-     * @param int $id The ID of the event to be set to Event
+     *
+     * @param int $eventId The ID of the event to be set to Event
      *
      * @return \Cake\Http\Response
      */
-    public function applicationPrices($id = null)
+    public function applicationPrices($eventId = null)
     {
-        if (is_null($id)) {
+        if (is_null($eventId)) {
             return $this->redirect($this->referer(['action' => 'prices']));
         }
 
-        $event = $this->Events->get($id, ['contain' => 'Prices.ItemTypes']);
+        $event = $this->Events->get($eventId, ['contain' => 'Prices.ItemTypes']);
         $event->set('team_price', false);
 
         foreach ($event->prices as $price) {
@@ -383,7 +354,7 @@ class EventsController extends AppController
         if ($this->Events->save($event)) {
             $this->Flash->success(__('The Event is Set to Application Pricing.'));
 
-            return $this->redirect(['action' => 'prices', $id]);
+            return $this->redirect(['action' => 'prices', $eventId]);
         }
         $this->Flash->error(__('The Event could not be set to Application Pricing.'));
 
@@ -393,17 +364,18 @@ class EventsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Event id.
+     * @param string|null $eventId Event id.
      * @param int $additional Number of Prices to be Created.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     *
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Exception
      */
-    public function prices($id = null, $additional = 0)
+    public function prices($eventId = null, $additional = 0)
     {
         if ($this->request->getData('additional')) {
-            return $this->redirect(['action' => 'prices', $id, $this->request->getData('boxes')]);
+            return $this->redirect(['action' => 'prices', $eventId, $this->request->getData('boxes')]);
         }
-        $event = $this->Events->get($id, [
+        $event = $this->Events->get($eventId, [
             'contain' => ['Settings', 'Prices']
         ]);
         $prices = count($event->prices);
@@ -423,7 +395,7 @@ class EventsController extends AppController
                     $this->Flash->success('Event was marked Completed.');
                 }
 
-                return $this->redirect(['action' => 'prices', $id]);
+                return $this->redirect(['action' => 'prices', $eventId]);
             } else {
                 $this->Flash->error(__('The event could not be saved. Please, try again.'));
             }
@@ -442,16 +414,16 @@ class EventsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Event id.
+     * @param string|null $eventId Event id.
      *
      * @return \Cake\Http\Response Redirects to index.
      *
      * @throws \Exception When record not found.
      */
-    public function delete($id = null)
+    public function delete($eventId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $event = $this->Events->get($id);
+        $event = $this->Events->get($eventId);
         if ($this->Events->delete($event)) {
             $this->Flash->success(__('The event has been deleted.'));
         } else {
@@ -463,6 +435,8 @@ class EventsController extends AppController
 
     /**
      * @param int $eventID The event to be Exported.
+     *
+     * @return \Cake\Http\Response|void
      */
     public function export($eventID)
     {
@@ -487,7 +461,6 @@ class EventsController extends AppController
         $fileName = 'Event ' . $eventID . ' Applications' . '.csv';
         $this->response->withDownload($fileName);
 
-        $this->viewBuilder()->className('CsvView.Csv');
-        $this->set(compact('data', '_serialize'));
+        $this->viewBuilder()->setClassName('CsvView.Csv');
     }
 }

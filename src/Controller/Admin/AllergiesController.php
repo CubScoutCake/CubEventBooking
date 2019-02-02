@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
-
 /**
  * Allergies Controller
  *
@@ -25,13 +23,14 @@ class AllergiesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Allergy id.
+     * @param string|null $allergyId Allergy id.
+     *
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($allergyId = null)
     {
-        $allergy = $this->Allergies->get($id, [
+        $allergy = $this->Allergies->get($allergyId, [
             'contain' => ['Attendees.Users', 'Attendees.Sections.Scoutgroups', 'Attendees.Roles']
         ]);
         $this->set('allergy', $allergy);
@@ -41,14 +40,14 @@ class AllergiesController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $allergy = $this->Allergies->newEntity();
 
         if ($this->request->is('post')) {
-            $allergy = $this->Allergies->patchEntity($allergy, $this->request->data, ['accessibleFields' => ['id' => true]]);
+            $allergy = $this->Allergies->patchEntity($allergy, $this->request->getData(), ['accessibleFields' => ['id' => true]]);
             if ($this->Allergies->save($allergy)) {
                 $this->Flash->success(__('The allergy has been saved.'));
 
@@ -65,17 +64,18 @@ class AllergiesController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Allergy id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $allergyId Allergy id.
+     *
+     * @return \Cake\Http\Response Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($allergyId = null)
     {
-        $allergy = $this->Allergies->get($id, [
+        $allergy = $this->Allergies->get($allergyId, [
             'contain' => ['Attendees']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $allergy = $this->Allergies->patchEntity($allergy, $this->request->data);
+            $allergy = $this->Allergies->patchEntity($allergy, $this->request->getData());
             if ($this->Allergies->save($allergy)) {
                 $this->Flash->success(__('The allergy has been saved.'));
 
@@ -92,14 +92,15 @@ class AllergiesController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Allergy id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $allergyId Allergy id.
+     *
+     * @return \Cake\Http\Response Redirects to index.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($allergyId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $allergy = $this->Allergies->get($id);
+        $allergy = $this->Allergies->get($allergyId);
         if ($this->Allergies->delete($allergy)) {
             $this->Flash->success(__('The allergy has been deleted.'));
         } else {

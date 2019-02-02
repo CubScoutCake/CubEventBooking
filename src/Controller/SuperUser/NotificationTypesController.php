@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\SuperUser;
 
-use App\Controller\SuperUser\AppController;
-
 /**
  * NotificationTypes Controller
  *
@@ -14,7 +12,7 @@ class NotificationTypesController extends AppController
     /**
      * Index method
      *
-     * @return void
+     * @return \Cake\Http\Response|void
      */
     public function index()
     {
@@ -25,13 +23,14 @@ class NotificationTypesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Notification Type id.
-     * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $notificationTypeId Notification Type id.
+     *
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($notificationTypeId = null)
     {
-        $notificationType = $this->NotificationTypes->get($id, [
+        $notificationType = $this->NotificationTypes->get($notificationTypeId, [
             'contain' => ['Notifications']
         ]);
         $this->set('notificationType', $notificationType);
@@ -41,14 +40,14 @@ class NotificationTypesController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
-        $notification_type = $this->NotificationTypes->newEntity();
+        $notificationType = $this->NotificationTypes->newEntity();
         if ($this->request->is('post')) {
-            $notification_type = $this->NotificationTypes->patchEntity($notification_type, $this->request->data);
-            if ($this->NotificationTypes->save($notification_type)) {
+            $notificationType = $this->NotificationTypes->patchEntity($notificationType, $this->request->getData());
+            if ($this->NotificationTypes->save($notificationType)) {
                 $this->Flash->success(__('The notification_type has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -56,25 +55,25 @@ class NotificationTypesController extends AppController
                 $this->Flash->error(__('The notification_type could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('notification_type'));
+        $this->set(compact('notificationType'));
         $this->set('_serialize', ['notification_type']);
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Notification Type id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $notificationTypeId Notification Type id.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($notificationTypeId = null)
     {
-        $notification_type = $this->NotificationTypes->get($id, [
+        $notificationType = $this->NotificationTypes->get($notificationTypeId, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $notification_type = $this->NotificationTypes->patchEntity($notification_type, $this->request->data);
-            if ($this->NotificationTypes->save($notification_type)) {
+            $notificationType = $this->NotificationTypes->patchEntity($notificationType, $this->request->getData());
+            if ($this->NotificationTypes->save($notificationType)) {
                 $this->Flash->success(__('The notification_type has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -82,22 +81,23 @@ class NotificationTypesController extends AppController
                 $this->Flash->error(__('The notification_type could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('notification_type'));
+        $this->set(compact('notificationType'));
         $this->set('_serialize', ['notification_type']);
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Notification Type id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $notificationTypeId Notification Type id.
+     *
+     * @return \Cake\Http\Response|void Redirects to index.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($notificationTypeId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $notification_type = $this->NotificationTypes->get($id);
-        if ($this->NotificationTypes->delete($notification_type)) {
+        $notificationType = $this->NotificationTypes->get($notificationTypeId);
+        if ($this->NotificationTypes->delete($notificationType)) {
             $this->Flash->success(__('The notification_type has been deleted.'));
         } else {
             $this->Flash->error(__('The notification_type could not be deleted. Please, try again.'));

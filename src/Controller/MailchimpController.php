@@ -32,7 +32,7 @@ class MailchimpController extends AppController
      * Displays a view
      *
      * @return void|\Cake\Network\Response
-     * @throws \Cake\Network\Exception\NotFoundException When the view file could not
+     * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
     public function mailchimp()
@@ -41,8 +41,15 @@ class MailchimpController extends AppController
         $this->viewBuilder()->layout('outside');
     }
 
+    /**
+     * @param \Cake\Event\Event $event CakePHP emissive Event
+     *
+     * @return \Cake\Event\Event
+     */
     public function beforeFilter(\Cake\Event\Event $event)
     {
         $this->Auth->allow(['mailchimp']);
+
+        return $event;
     }
 }

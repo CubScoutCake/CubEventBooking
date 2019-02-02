@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\SuperUser;
 
-use App\Controller\AppController;
-
 /**
  * AuthRoles Controller
  *
@@ -14,7 +12,7 @@ class AuthRolesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      */
     public function index()
     {
@@ -27,13 +25,14 @@ class AuthRolesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Auth Role id.
-     * @return \Cake\Network\Response|null
+     * @param string|null $authRoleId Auth Role id.
+     *
+     * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($authRoleId = null)
     {
-        $authRole = $this->AuthRoles->get($id, [
+        $authRole = $this->AuthRoles->get($authRoleId, [
             'contain' => ['Users']
         ]);
 
@@ -44,13 +43,13 @@ class AuthRolesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $authRole = $this->AuthRoles->newEntity();
         if ($this->request->is('post')) {
-            $authRole = $this->AuthRoles->patchEntity($authRole, $this->request->data);
+            $authRole = $this->AuthRoles->patchEntity($authRole, $this->request->getData());
             if ($this->AuthRoles->save($authRole)) {
                 $this->Flash->success(__('The auth role has been saved.'));
 
@@ -66,17 +65,17 @@ class AuthRolesController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Auth Role id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $authRoleId Auth Role id.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($authRoleId = null)
     {
-        $authRole = $this->AuthRoles->get($id, [
+        $authRole = $this->AuthRoles->get($authRoleId, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $authRole = $this->AuthRoles->patchEntity($authRole, $this->request->data);
+            $authRole = $this->AuthRoles->patchEntity($authRole, $this->request->getData());
             if ($this->AuthRoles->save($authRole)) {
                 $this->Flash->success(__('The auth role has been saved.'));
 
@@ -92,14 +91,14 @@ class AuthRolesController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Auth Role id.
-     * @return \Cake\Network\Response|null Redirects to index.
+     * @param string|null $authRoleId Auth Role id.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($authRoleId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $authRole = $this->AuthRoles->get($id);
+        $authRole = $this->AuthRoles->get($authRoleId);
         if ($this->AuthRoles->delete($authRole)) {
             $this->Flash->success(__('The auth role has been deleted.'));
         } else {

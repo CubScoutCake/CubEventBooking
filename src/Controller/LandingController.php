@@ -15,10 +15,7 @@
 namespace App\Controller;
 
 use Cake\Core\Configure;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
 use Cake\ORM\TableRegistry;
-use Cake\I18n\Time;
 
 /**
  * Static content controller
@@ -34,17 +31,17 @@ class LandingController extends AppController
      * Displays a view
      *
      * @return void|\Cake\Network\Response
-     * @throws \Cake\Network\Exception\NotFoundException When the view file could not
+     * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
     public function userHome()
     {
         // Get Entities from Registry
-        $apps = TableRegistry::get('Applications');
-        $atts = TableRegistry::get('Attendees');
-        $invs = TableRegistry::get('Invoices');
-        $pays = TableRegistry::get('Payments');
-        $evs = TableRegistry::get('Events');
+        $apps = TableRegistry::getTableLocator()->get('Applications');
+        $atts = TableRegistry::getTableLocator()->get('Attendees');
+        $invs = TableRegistry::getTableLocator()->get('Invoices');
+        $pays = TableRegistry::getTableLocator()->get('Payments');
+        $evs = TableRegistry::getTableLocator()->get('Events');
 
         $userId = $this->Auth->user('id');
 
@@ -56,7 +53,7 @@ class LandingController extends AppController
                 return $q->where(['Invoices.user_id' => $this->Auth->user('id')]);
         });
 
-        if ($events->count('*') > 0) {
+        if ($events->count() > 0) {
             $this->set(compact('events'));
         }
 
@@ -64,44 +61,44 @@ class LandingController extends AppController
         $this->set(compact('applications', 'invoices', 'payments'));
 
         // Counts of Entities
-        $countApplications = $applications->count('*');
-        $countInvoices = $invoices->count('*');
-        $countAttendees = $atts->find('all', ['conditions' => ['user_id' => $userId]])->count('*');
+        $countApplications = $applications->count();
+        $countInvoices = $invoices->count();
+        $countAttendees = $atts->find('all', ['conditions' => ['user_id' => $userId]])->count();
 
         if (empty($payments)) {
             $countPayments = 0;
         }
 
         if (!empty($payments)) {
-            $countPayments = $payments->count('*');
+            $countPayments = $payments->count();
         }
 
         // Pass to View
         $this->set(compact('countApplications', 'countAttendees', 'countInvoices', 'countPayments', 'userId'));
     }
 
+    /**
+     * @param null $eventId Event Id
+     *
+     * @return \Cake\Http\Response|void
+     */
     public function welcome($eventId = null)
     {
         // Set the layout.
         $this->viewBuilder()->setLayout('outside');
 
-        if ($this->request->is('get')) {
-            $usr = $this->Auth->user('id');
-            if (isset($usr)) {
-                if ($this->Auth->user('authrole') === 'admin') {
-                    return $this->redirect(['controller' => 'Landing', 'prefix' => 'admin', 'action' => 'admin_home']);
-                } elseif ($this->Auth->user('authrole') === 'champion') {
-                    return $this->redirect(['controller' => 'Landing', 'prefix' => 'champion', 'action' => 'champion_home']);
-                } else {
-                    return $this->redirect(['controller' => 'Landing', 'prefix' => false, 'action' => 'user_home']);
-                }
-            }
-        }
         $this->set(compact('eventId'));
     }
 
+    /**
+     * @param \Cake\Event\Event $event The CakePHP emissive Event
+     *
+     * @return \Cake\Event\Event
+     */
     public function beforeFilter(\Cake\Event\Event $event)
     {
         $this->Auth->allow(['welcome']);
+
+        return $event;
     }
 }

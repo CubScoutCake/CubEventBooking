@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
-
 /**
  * Prices Controller
  *
@@ -14,7 +12,7 @@ class PricesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|void
+     * @return \Cake\Http\Response|void
      */
     public function index()
     {
@@ -31,7 +29,7 @@ class PricesController extends AppController
      * View method
      *
      * @param string|null $id Price id.
-     * @return \Cake\Network\Response|void
+     * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -53,7 +51,7 @@ class PricesController extends AppController
     {
         $price = $this->Prices->newEntity();
         if ($this->request->is('post')) {
-            $price = $this->Prices->patchEntity($price, $this->request->data);
+            $price = $this->Prices->patchEntity($price, $this->request->getData());
             if ($this->Prices->save($price)) {
                 $this->Flash->success(__('The price has been saved.'));
 
@@ -73,7 +71,7 @@ class PricesController extends AppController
      *
      * @param string|null $id Price id.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {

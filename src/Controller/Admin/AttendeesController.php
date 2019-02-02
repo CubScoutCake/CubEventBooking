@@ -1,9 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\AppController;
-use Cake\ORM\TableRegistry;
-
 /**
  * Attendees Controller
  *
@@ -20,32 +17,35 @@ class AttendeesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
-            , 'order' => ['modified' => 'DESC']
+            'contain' => [
+                'Users',
+                'Sections.Scoutgroups',
+                'Roles',
+                'Applications.Sections.Scoutgroups',
+                'Applications.Events',
+                'Allergies'
+            ],
+            'order' => ['modified' => 'DESC']
         ];
+        if ($this->request->getParam('unattached')) {
+            $this->set('attendees', $this->paginate($this->Attendees->find('unattached')));
+        }
+
         $this->set('attendees', $this->paginate($this->Attendees->find('all')));
         $this->set('_serialize', ['attendees']);
     }
 
-    public function unattached()
-    {
-        $this->paginate = [
-            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
-            , 'order' => ['modified' => 'DESC']
-        ];
-        $this->set('attendees', $this->paginate($this->Attendees->find('unattached')));
-        $this->set('_serialize', ['attendees']);
-    }
     /**
      * View method
      *
-     * @param string|null $id Attendee id.
+     * @param string|null $attendeeId Attendee id.
+     *
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($attendeeId = null)
     {
-        $attendee = $this->Attendees->get($id, [
+        $attendee = $this->Attendees->get($attendeeId, [
             'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
         ]);
         $this->set('attendee', $attendee);
@@ -56,7 +56,7 @@ class AttendeesController extends AppController
      * Add method
      *
      * @param int $userId The ID of the User
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add($userId = null)
     {
@@ -110,7 +110,7 @@ class AttendeesController extends AppController
      *
      * @param null $attendeeId The Attendee to be De-duplicated.
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      */
     public function deduplicate($attendeeId = null)
     {
@@ -124,17 +124,18 @@ class AttendeesController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Attendee id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $attendeeId Attendee id.
+     *
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($attendeeId = null)
     {
-        $attendee = $this->Attendees->get($id, [
+        $attendee = $this->Attendees->get($attendeeId, [
             'contain' => ['Applications', 'Allergies']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
+            $attendee = $this->Attendees->patchEntity($attendee, $this->request->getData());
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
 
@@ -161,17 +162,24 @@ class AttendeesController extends AppController
         $this->set('_serialize', ['attendee']);
     }
 
-    public function update($id = null)
+    /**
+     * @param null $attendeeId The Attendee to be Updated
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function update($attendeeId = null)
     {
-        $attendee = $this->Attendees->get($id);
+        $attendee = $this->Attendees->get($attendeeId);
 
-        $upperAttendee = ['firstname' => ucwords(strtolower($attendee->firstname))
-            , 'lastname' => ucwords(strtolower($attendee->lastname))
-            , 'address_1' => ucwords(strtolower($attendee->address_1))
-            , 'address_2' => ucwords(strtolower($attendee->address_2))
-            , 'city' => ucwords(strtolower($attendee->city))
-            , 'county' => ucwords(strtolower($attendee->county))
-            , 'postcode' => strtoupper($attendee->postcode)];
+        $upperAttendee = [
+            'firstname' => ucwords(strtolower($attendee->firstname)),
+            'lastname' => ucwords(strtolower($attendee->lastname)),
+            'address_1' => ucwords(strtolower($attendee->address_1)),
+            'address_2' => ucwords(strtolower($attendee->address_2)),
+            'city' => ucwords(strtolower($attendee->city)),
+            'county' => ucwords(strtolower($attendee->county)),
+            'postcode' => strtoupper($attendee->postcode),
+        ];
 
         $attendee = $this->Attendees->patchEntity($attendee, $upperAttendee);
 
@@ -211,14 +219,15 @@ class AttendeesController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Attendee id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $attendeeId Attendee id.
+     *
+     * @return \Cake\Http\Response|void Redirects to index.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($attendeeId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $attendee = $this->Attendees->get($id);
+        $attendee = $this->Attendees->get($attendeeId);
         if ($this->Attendees->delete($attendee)) {
             $this->Flash->success(__('The attendee has been deleted.'));
         } else {

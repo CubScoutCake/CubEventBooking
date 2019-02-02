@@ -14,7 +14,7 @@ class EventTypesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      */
     public function index()
     {
@@ -30,13 +30,14 @@ class EventTypesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Event Type id.
-     * @return \Cake\Network\Response|null
+     * @param string|null $eventTypeId Event Type id.
+     *
+     * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($eventTypeId = null)
     {
-        $eventType = $this->EventTypes->get($id, [
+        $eventType = $this->EventTypes->get($eventTypeId, [
             'contain' => ['LegalTexts', 'InvoiceTexts', 'ApplicationRefs', 'Events']
         ]);
 
@@ -47,13 +48,13 @@ class EventTypesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $eventType = $this->EventTypes->newEntity();
         if ($this->request->is('post')) {
-            $eventType = $this->EventTypes->patchEntity($eventType, $this->request->data);
+            $eventType = $this->EventTypes->patchEntity($eventType, $this->request->getData());
             if ($this->EventTypes->save($eventType)) {
                 $this->Flash->success(__('The event type has been saved.'));
 
@@ -72,17 +73,18 @@ class EventTypesController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Event Type id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $eventTypeId Event Type id.
+     *
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($eventTypeId = null)
     {
-        $eventType = $this->EventTypes->get($id, [
+        $eventType = $this->EventTypes->get($eventTypeId, [
             'contain' => ['InvoiceTexts', 'LegalTexts', 'ApplicationRefs']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $eventType = $this->EventTypes->patchEntity($eventType, $this->request->data);
+            $eventType = $this->EventTypes->patchEntity($eventType, $this->request->getData());
             if ($this->EventTypes->save($eventType)) {
                 $this->Flash->success(__('The event type has been saved.'));
 
@@ -101,14 +103,16 @@ class EventTypesController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Event Type id.
-     * @return \Cake\Network\Response|null Redirects to index.
+     * @param string|null $eventTypeId Event Type id.
+     *
+     * @return \Cake\Http\Response|null Redirects to index.
+     *
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($eventTypeId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $eventType = $this->EventTypes->get($id);
+        $eventType = $this->EventTypes->get($eventTypeId);
         if ($this->EventTypes->delete($eventType)) {
             $this->Flash->success(__('The event type has been deleted.'));
         } else {

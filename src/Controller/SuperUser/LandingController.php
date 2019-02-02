@@ -23,10 +23,18 @@ use Cake\ORM\TableRegistry;
  * This controller will render views from Template/Pages/
  *
  * @link http://book.cakephp.org/3.0/en/controllers/pages-controller.html
+ *
+ * @property \App\Model\Table\ScoutgroupsTable $Scoutgroups
+ * @property \App\Model\Table\UsersTable $Users
  */
 class LandingController extends AppController
 {
 
+    /**
+     * @throws \Exception
+     *
+     * @return void
+     */
     public function initialize()
     {
         parent::initialize();
@@ -41,20 +49,20 @@ class LandingController extends AppController
      * Displays a view
      *
      * @return void|\Cake\Network\Response
-     * @throws \Cake\Network\Exception\NotFoundException When the view file could not
+     * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
     public function superUserHome()
     {
         // Get Entities from Registry
-        $apps = TableRegistry::get('Applications');
-        $evs = TableRegistry::get('Events');
-        $invs = TableRegistry::get('Invoices');
-        $usrs = TableRegistry::get('Users');
-        $pays = TableRegistry::get('Payments');
-        $atts = TableRegistry::get('Attendees');
-        $nts = TableRegistry::get('Notes');
-        $notifs = TableRegistry::get('Notifications');
+        $apps = TableRegistry::getTableLocator()->get('Applications');
+        $evs = TableRegistry::getTableLocator()->get('Events');
+        $invs = TableRegistry::getTableLocator()->get('Invoices');
+        $usrs = TableRegistry::getTableLocator()->get('Users');
+        $pays = TableRegistry::getTableLocator()->get('Payments');
+        $atts = TableRegistry::getTableLocator()->get('Attendees');
+        $nts = TableRegistry::getTableLocator()->get('Notes');
+        $notifs = TableRegistry::getTableLocator()->get('Notifications');
 
         $userId = $this->Auth->user('id');
 
@@ -71,17 +79,22 @@ class LandingController extends AppController
         $this->set(compact('applications', 'events', 'invoices', 'users', 'payments', 'notes', 'notifications'));
 
         // Counts of Entities
-        $cntApplications = $apps->find('all')->count('*');
-        $cntEvents = $evs->find('all')->count('*');
-        $cntInvoices = $invs->find('all')->count('*');
-        $cntUsers = $usrs->find('all')->count('*');
-        $cntPayments = $pays->find('all')->count('*');
-        $cntAttendees = $atts->find('all')->count('*');
+        $cntApplications = $apps->find('all')->count();
+        $cntEvents = $evs->find('all')->count();
+        $cntInvoices = $invs->find('all')->count();
+        $cntUsers = $usrs->find('all')->count();
+        $cntPayments = $pays->find('all')->count();
+        $cntAttendees = $atts->find('all')->count();
 
         // Pass to View
         $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));
     }
 
+    /**
+     * @param null $linkEntry The Search Text
+     *
+     * @return \Cake\Http\Response|null
+     */
     public function link($linkEntry = null)
     {
         $searchEntry = $this->request->getQuery('q');
@@ -99,35 +112,27 @@ class LandingController extends AppController
 
             $cont = substr($entStr, 0, 1);
 
-            $id = substr($entStr, 1);
-            $idNum = intval($id);
+            $objectId = substr($entStr, 1);
+            $idNum = intval($objectId);
 
             if (is_int($idNum) && $idNum != 0) {
                 switch ($cont) {
                     case "U":
-                        return $this->redirect(['controller' => 'Users', 'action' => 'view', $idNum]);
-                        break;
+                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $idNum]);
                     case "I":
-                        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $idNum]);
-                        break;
+                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Invoices', 'action' => 'view', $idNum]);
                     case "A":
-                        return $this->redirect(['controller' => 'Applications', 'action' => 'view', $idNum]);
-                        break;
+                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Applications', 'action' => 'view', $idNum]);
                     case "N":
-                        return $this->redirect(['controller' => 'Notes', 'action' => 'view', $idNum]);
-                        break;
+                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Notes', 'action' => 'view', $idNum]);
                     case "P":
-                        return $this->redirect(['controller' => 'Payments', 'action' => 'view', $idNum]);
-                        break;
+                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Payments', 'action' => 'view', $idNum]);
                     case "T":
-                        return $this->redirect(['controller' => 'Attendees', 'action' => 'view', $idNum]);
-                        break;
+                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Attendees', 'action' => 'view', $idNum]);
                     case "E":
-                        return $this->redirect(['controller' => 'Events', 'action' => 'full_view', $idNum]);
-                        break;
+                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Events', 'action' => 'full_view', $idNum]);
                     case "S":
                         return $this->redirect(['controller' => 'Settings', 'action' => 'view', $idNum]);
-                        break;
                     default:
                         return $this->redirect(['action' => 'admin_home']);
                 }
@@ -135,9 +140,7 @@ class LandingController extends AppController
         }
 
         if (!is_int($idNum) || $idNum == 0 || is_null($idNum)) {
-            $this->Sections = TableRegistry::get('Sections');
-            $this->Users = TableRegistry::get('Users');
-            $section = $this->Sections->get($this->Auth->user('section_id'));
+            $this->Users = TableRegistry::getTableLocator()->get('Users');
 
             $userQuery = $this->Users
                 ->find('search', ['search' => $this->request->getQueryParams()])
@@ -151,7 +154,7 @@ class LandingController extends AppController
                 'limit' => 10
             ];
 
-            $this->Scoutgroups = TableRegistry::get('Scoutgroups');
+            $this->Scoutgroups = TableRegistry::getTableLocator()->get('Scoutgroups');
 
             $sections = $this->Users->Sections
                 ->find(

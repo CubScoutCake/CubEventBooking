@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\SuperUser;
 
-use App\Controller\SuperUser\AppController;
-
 /**
  * SettingTypes Controller
  *
@@ -14,7 +12,7 @@ class SettingTypesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Network\Response|null
+     * @return \Cake\Http\Response|void
      */
     public function index()
     {
@@ -27,13 +25,14 @@ class SettingTypesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Setting Type id.
-     * @return \Cake\Network\Response|null
+     * @param string|null $settingTypeId Setting Type id.
+     *
+     * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($settingTypeId = null)
     {
-        $settingType = $this->SettingTypes->get($id, [
+        $settingType = $this->SettingTypes->get($settingTypeId, [
             'contain' => ['Settings']
         ]);
 
@@ -44,13 +43,13 @@ class SettingTypesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Network\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $settingType = $this->SettingTypes->newEntity();
         if ($this->request->is('post')) {
-            $settingType = $this->SettingTypes->patchEntity($settingType, $this->request->data);
+            $settingType = $this->SettingTypes->patchEntity($settingType, $this->request->getData());
             if ($this->SettingTypes->save($settingType)) {
                 $this->Flash->success(__('The setting type has been saved.'));
 
@@ -65,17 +64,18 @@ class SettingTypesController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Setting Type id.
-     * @return \Cake\Network\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $settingTypeId Setting Type id.
+     *
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($settingTypeId = null)
     {
-        $settingType = $this->SettingTypes->get($id, [
+        $settingType = $this->SettingTypes->get($settingTypeId, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $settingType = $this->SettingTypes->patchEntity($settingType, $this->request->data);
+            $settingType = $this->SettingTypes->patchEntity($settingType, $this->request->getData());
             if ($this->SettingTypes->save($settingType)) {
                 $this->Flash->success(__('The setting type has been saved.'));
 
@@ -90,14 +90,15 @@ class SettingTypesController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Setting Type id.
-     * @return \Cake\Network\Response|null Redirects to index.
+     * @param string|null $settingTypeId Setting Type id.
+     *
+     * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($settingTypeId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $settingType = $this->SettingTypes->get($id);
+        $settingType = $this->SettingTypes->get($settingTypeId);
         if ($this->SettingTypes->delete($settingType)) {
             $this->Flash->success(__('The setting type has been deleted.'));
         } else {

@@ -38,7 +38,7 @@ class UsersController extends AppController
 
             $user = $this->Users->patchEntity($user, $usrData, ['validate' => false]);
 
-            $user = $this->Users->patchEntity($user, $this->request->data, [
+            $user = $this->Users->patchEntity($user, $this->request->getData(), [
                 'fieldList' => [
                     'role_id',
                     'section_id',
@@ -104,7 +104,7 @@ class UsersController extends AppController
         }
 
         if ($this->request->is('get')) {
-            $this->request->data['section_id'] = $sectionId;
+            $this->request->getData()['section_id'] = $sectionId;
         }
 
         $roles = $this->Users->Roles->find('nonAuto')->find('leaders')->find('list', ['limit' => 200]);

@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\AppController;
 use Cake\Network\Http\Client;
 use Cake\ORM\TableRegistry;
 
@@ -33,7 +32,7 @@ class AttendeesController extends AppController
      *
      * @param string|null $AttID Attendee id.
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($AttID = null)
     {
@@ -127,7 +126,7 @@ class AttendeesController extends AppController
      *
      * @return mixed Redirects on successful edit, renders view otherwise.
      *
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($AttID = null)
     {
@@ -135,7 +134,7 @@ class AttendeesController extends AppController
             'contain' => ['Applications', 'Allergies', 'Users', 'Sections', 'Roles']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $attendee = $this->Attendees->patchEntity($attendee, $this->request->data);
+            $attendee = $this->Attendees->patchEntity($attendee, $this->request->getData());
 
             $phone1 = $attendee->phone;
             $phone2 = $attendee->phone2;
@@ -182,7 +181,7 @@ class AttendeesController extends AppController
      *
      * @return \Cake\Http\Response Redirects to index.
      *
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function delete($AttID = null)
     {

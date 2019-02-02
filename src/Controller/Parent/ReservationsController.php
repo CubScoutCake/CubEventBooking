@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Parent;
 
-use App\Controller\Parent\AppController;
-
 /**
  * Reservations Controller
  *
@@ -46,6 +44,8 @@ class ReservationsController extends AppController
 
     /**
      * Add method
+     *
+     * @param int|null $eventId The Event to be Reserved
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */

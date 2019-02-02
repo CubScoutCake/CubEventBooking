@@ -14,6 +14,8 @@ use Cake\ORM\Entity;
  * @property bool $parent
  * @property int $auth
  *
+ * @property int $auth_value
+ *
  * @property \App\Model\Entity\User[] $users
  */
 class AuthRole extends Entity

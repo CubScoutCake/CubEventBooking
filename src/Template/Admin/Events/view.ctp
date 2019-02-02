@@ -4,11 +4,13 @@
  * @var string $term
  * @var string $singleTerm
  *
- * @var int $max_section
+ * @var int $maxSection
  *
  * @var \App\View\AppView $this
  *
  * @var \App\Model\Entity\Event $event
+ *
+ * @var array $lineArray
  */
 ?>
 <?php echo $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css'); ?>
@@ -67,16 +69,16 @@
                             <th><?= __('Event End') ?></th>
                         </tr>
                         <tr>
-                            <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
-                            <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->format($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->format($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Deposit Deadline') ?></th>
                             <th><?= __('Closing Date') ?></th>
                         </tr>
                         <tr>
-                            <td><?= $event->deposit ? $this->Time->i18nFormat($event->deposit_date, 'dd-MMM-yy HH:mm') : __('No Deposit Date'); ?></td>
-                            <td><?= $this->Time->i18nFormat($event->closing_date, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $event->deposit ? $this->Time->format($event->deposit_date, 'dd-MMM-yy HH:mm') : __('No Deposit Date'); ?></td>
+                            <td><?= $this->Time->format($event->closing_date, 'dd-MMM-yy HH:mm') ?></td>
                         </tr>
                     </table>
                 </div>
@@ -91,7 +93,7 @@
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <tr>
-                            <td><?= $pluralTerm ?> are limited to <?= $max_section ?> <?= $event->section_type->role->role ?>s per <?= $singleTerm ?></td>
+                            <td><?= $pluralTerm ?> are limited to <?= $maxSection ?> <?= $event->section_type->role->role ?>s per <?= $singleTerm ?></td>
                         </tr>
                         <tr>
                             <td><?= $event->live ? __('Event is Live') : __('Event is Hidden'); ?></td>
@@ -104,20 +106,6 @@
                         </tr>
                         <tr>
                             <td><?= $event->invoices_locked ? __('Invoices are Locked') : __('Invoices can be Updated'); ?></td>
-                        </tr>
-                        <tr>
-                            <td><?= $event->parent_applications ? __('Parent Applications Available') : __('Parent Applications Unavailable'); ?></td>
-                        </tr>
-                        <tr>
-                            <td><?php if (isset($event->available_apps) && isset($event->available_cubs)) {
-                                    echo 'Available Cubs & Apps Limited';
-                                } elseif (isset($event->available_cubs)) {
-                                    echo 'Available Cubs Limited';
-                                } elseif (isset($event->available_apps)) {
-                                    echo 'Available Apps Limited';
-                                } else {
-                                    echo 'Available Cubs & Apps Unlimited';
-                                }  ?></td>
                         </tr>
                     </table>
                 </div>
@@ -198,18 +186,19 @@
                     <table class="table table-hover">
                         <tr>
                             <th><?= __('Contact Person') ?></th>
-                            <td><?= h($event->admin_full_name) ?></td>
+                            <td><?= h($event->admin_user->full_name) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contact Email') ?></th>
-                            <td><?= $this->Text->autoLink($event->admin_email) ?></td>
+                            <td><?= $this->Text->autoLink($event->admin_user->email) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Address') ?></th>
-                            <td><?= h($event->address) ?><br/>
-                                <?= h($event->city) ?> <br/>
-                                <?= h($event->county) ?> <br/>
-                                <?= h($event->postcode) ?><td/>
+                            <td><?= h($event->admin_user->address_1) ?><br/>
+                                <?= h($event->admin_user->address_2) ?><br/>
+                                <?= h($event->admin_user->city) ?> <br/>
+                                <?= h($event->admin_user->county) ?> <br/>
+                                <?= h($event->admin_user->postcode) ?></td>
                         </tr>
                     </table>
                 </div>
@@ -291,7 +280,7 @@
                         <tr>
                             <td><?= $event->deposit ? __('Yes') : __('No'); ?></td>
                             <td><?= $event->deposit_inc_leaders ? __('Yes') : __('No'); ?></td>
-                            <td><?= $this->Time->i18nFormat($event->deposit_date, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->format($event->deposit_date, 'dd-MMM-yy HH:mm') ?></td>
                             <td><?= $this->Number->currency($event->deposit_value,'GBP') ?></td>
                             <td><?= h($event->deposit_text) ?></td>
                         </tr>
@@ -321,9 +310,7 @@
 </div>
 
 <!-- Morris Charts JavaScript -->
-<?php echo $this->Html->script('https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js');?>
-<?php echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js');?>
-<?php echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js');?>
+<?= $this->element('Scripts/morris') ?>
 
 <script>
     new Morris.Bar({

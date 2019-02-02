@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\SuperUser;
 
-use App\Controller\SuperUser\AppController;
-
 /**
  * Settings Controller
  *
@@ -18,9 +16,8 @@ class SettingsController extends AppController
      */
     public function index()
     {
-        $superAuth = bindec('1' . '0000');
         $this->paginate = [
-            'contain' => ['SettingTypes'], 'conditions' => ['SettingTypes.min_auth <=' => $superAuth]
+            'contain' => ['SettingTypes'],
         ];
         $this->set('settings', $this->paginate($this->Settings));
         $this->set('_serialize', ['settings']);
@@ -29,13 +26,14 @@ class SettingsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Setting id.
+     * @param string|null $settingId Setting id.
+     *
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($settingId = null)
     {
-        $setting = $this->Settings->get($id, [
+        $setting = $this->Settings->get($settingId, [
             'contain' => ['SettingTypes']
         ]);
         $this->set('setting', $setting);
@@ -45,13 +43,13 @@ class SettingsController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $setting = $this->Settings->newEntity();
         if ($this->request->is('post')) {
-            $setting = $this->Settings->patchEntity($setting, $this->request->data);
+            $setting = $this->Settings->patchEntity($setting, $this->request->getData());
             if ($this->Settings->save($setting)) {
                 $this->Flash->success(__('The setting has been saved.'));
 
@@ -68,17 +66,17 @@ class SettingsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Setting id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $settingId Setting id.
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($settingId = null)
     {
-        $setting = $this->Settings->get($id, [
+        $setting = $this->Settings->get($settingId, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $setting = $this->Settings->patchEntity($setting, $this->request->data);
+            $setting = $this->Settings->patchEntity($setting, $this->request->getData());
             if ($this->Settings->save($setting)) {
                 $this->Flash->success(__('The setting has been saved.'));
 
@@ -95,14 +93,15 @@ class SettingsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Setting id.
-     * @return void Redirects to index.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string|null $settingId Setting id.
+     *
+     * @return \Cake\Http\Response|void Redirects to index.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($settingId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $setting = $this->Settings->get($id);
+        $setting = $this->Settings->get($settingId);
         if ($this->Settings->delete($setting)) {
             $this->Flash->success(__('The setting has been deleted.'));
         } else {
