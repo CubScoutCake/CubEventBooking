@@ -33,17 +33,6 @@ checks:
       threshold: 40 # language-specific defaults. an override will affect all languages.
 
 plugins:
-  phpcodesniffer:
-    enabled: true
-    config:
-      standard: PHPCS
-
-  sonar-php:
-    enabled: true
-    config:
-      tests_patterns:
-        - tests/TestCase/**
-
   csslint:
     enabled: false
     duplication:
