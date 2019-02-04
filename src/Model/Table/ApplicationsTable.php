@@ -11,13 +11,13 @@ use Cake\Validation\Validator;
 /**
  * Applications Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsTo $ApplicationStatuses
- * @property \Cake\ORM\Association\BelongsTo $Sections
- * @property \Cake\ORM\Association\BelongsTo $Events
- * @property \Cake\ORM\Association\HasOne $Invoices
- * @property \Cake\ORM\Association\HasMany $Notes
- * @property \Cake\ORM\Association\BelongsToMany $Attendees
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\BelongsTo $ApplicationStatuses
+ * @property \App\Model\Table\SectionsTable|\Cake\ORM\Association\BelongsTo $Sections
+ * @property \App\Model\Table\EventsTable|\Cake\ORM\Association\BelongsTo $Events
+ * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\HasOne $Invoices
+ * @property \App\Model\Table\NotesTable|\Cake\ORM\Association\HasMany $Notes
+ * @property \App\Model\Table\AttendeesTable|\Cake\ORM\Association\BelongsToMany $Attendees
  */
 class ApplicationsTable extends Table
 {
