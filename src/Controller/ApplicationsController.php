@@ -246,7 +246,7 @@ class ApplicationsController extends AppController
             $evtID = $this->request->getData('event_id');
 
             $appCount = $this->Applications->find('all')->where(['event_id' => $evtID])->count();
-            $event = $this->Events->get($evtID);
+            $event = $this->Applications->Events->get($evtID);
 
             if ($appCount > $event->available_apps && isset($event->available_apps)) {
                 $this->Flash->error(__('Apologies this Event is Full.'));
@@ -298,9 +298,7 @@ class ApplicationsController extends AppController
             $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId, $attendees]);
         }
 
-        /**
-         * @var \App\Model\Entity\Event $event
-         */
+        /** @var \App\Model\Entity\Event $event */
         $event = $this->Applications->Events->get($eventId, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
 
         $maxSection = $this->Applications->Events->getPriceSection($eventId);
@@ -424,7 +422,6 @@ class ApplicationsController extends AppController
 
         /**
          * @var \App\Model\Entity\Event $event
-         * @var \App\Model\Table\EventsTable $this->Events
          */
         $event = $this->Applications->Events->get($eventID, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
 
@@ -440,8 +437,8 @@ class ApplicationsController extends AppController
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
             }
         }
-
-        $user = $this->Users->get($this->Auth->user('id'), ['contain' => ['Sections.SectionTypes.Roles']]);
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Applications->Users->get($this->Auth->user('id'), ['contain' => ['Sections.SectionTypes.Roles']]);
 
         $sectionType = Inflector::singularize($user->section->section_type->section_type);
 
@@ -545,10 +542,8 @@ class ApplicationsController extends AppController
         $attendeeCount = count($data);
 
         if ($event->team_price) {
-            /**
-             * @var \App\Model\Entity\Price $team_price
-             */
-            $team_price = $this->Events->Prices
+            /** @var \App\Model\Entity\Price $team_price */
+            $team_price = $this->Applications->Events->Prices
                 ->find('all')
                 ->where([
                     'event_id' => $event->id,
