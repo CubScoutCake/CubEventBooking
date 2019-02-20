@@ -16,8 +16,25 @@ class AllergiesController extends AppController
      */
     public function index()
     {
-        $this->set('allergies', $this->paginate($this->Allergies));
+        $qpm = $this->request->getQueryParams();
+        $dietary = false;
+        $medical = false;
+
+        $found = $this->Allergies;
+
+        if (key_exists('dietary', $qpm) && $qpm['dietary'] == 'true') {
+            $found = $found->find('dietary');
+            $dietary = true;
+        }
+
+        if (key_exists('medical', $qpm) && $qpm['medical'] == 'true') {
+            $found = $found->find('medical');
+            $medical = true;
+        }
+
+        $this->set('allergies', $this->paginate($found));
         $this->set('_serialize', ['allergies']);
+        $this->set(compact('medical', 'dietary'));
     }
 
     /**
@@ -44,7 +61,7 @@ class AllergiesController extends AppController
      */
     public function add()
     {
-        $allergy = $this->Allergies->newEntity();
+        $allergy = $this->Allergies->newEntity(['is_specific' => false]);
 
         if ($this->request->is('post')) {
             $allergy = $this->Allergies->patchEntity($allergy, $this->request->getData(), ['accessibleFields' => ['id' => true]]);

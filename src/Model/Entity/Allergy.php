@@ -8,7 +8,10 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $allergy
- * @property string $description
+ * @property string|null $description
+ * @property bool $is_medical
+ * @property bool $is_specific
+ * @property bool $is_dietary
  *
  * @property \App\Model\Entity\Attendee[] $attendees
  */
@@ -25,7 +28,11 @@ class Allergy extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        //'id' => false
+        'allergy' => true,
+        'description' => true,
+        'is_medical' => true,
+        'is_specific' => true,
+        'is_dietary' => true,
+        'attendees' => true
     ];
 }

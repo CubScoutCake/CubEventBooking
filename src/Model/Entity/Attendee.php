@@ -36,6 +36,9 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Role $role
  * @property \App\Model\Entity\Application[] $applications
  * @property \App\Model\Entity\Allergy[] $allergies
+ *
+ * @property \App\Model\Entity\Allergy[] $medical_issues
+ * @property \App\Model\Entity\Allergy[] $dietary_restrictions
  */
 class Attendee extends Entity
 {
@@ -77,7 +80,9 @@ class Attendee extends Entity
         'section' => true,
         'role' => true,
         'applications' => true,
-        'allergies' => true
+        'allergies' => true,
+        'dietary_restrictions' => true,
+        'medical_issues' => true,
     ];
 
     /**

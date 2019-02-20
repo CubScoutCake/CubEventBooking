@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\AllergiesTable Test Case
+ * App\Model\Table\AllergiesTable Test Case
  */
 class AllergiesTableTest extends TestCase
 {
@@ -35,8 +35,8 @@ class AllergiesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Allergies') ? [] : ['className' => 'App\Model\Table\AllergiesTable'];
-        $this->Allergies = TableRegistry::get('Allergies', $config);
+        $config = TableRegistry::getTableLocator()->exists('Allergies') ? [] : ['className' => AllergiesTable::class];
+        $this->Allergies = TableRegistry::getTableLocator()->get('Allergies', $config);
     }
 
     /**
@@ -52,6 +52,51 @@ class AllergiesTableTest extends TestCase
     }
 
     /**
+     * Get Good Set Function
+     *
+     * @return array
+     *
+     * @throws
+     */
+    private function getExpected()
+    {
+        return [
+            [
+                'id' => 1,
+                'allergy' => 'Fish Allergy',
+                'description' => 'Fish Allergies can kill cuttlefish',
+                'is_medical' => false,
+                'is_specific' => false,
+                'is_dietary' => true
+            ],
+            [
+                'id' => 2,
+                'allergy' => 'Goats',
+                'description' => 'Goat Allergy is very serious',
+                'is_medical' => false,
+                'is_specific' => false,
+                'is_dietary' => true
+            ],
+            [
+                'id' => 3,
+                'allergy' => 'Diabetes',
+                'description' => 'Crazy sugar thing',
+                'is_medical' => true,
+                'is_specific' => false,
+                'is_dietary' => true
+            ],
+            [
+                'id' => 4,
+                'allergy' => 'Epilepsy',
+                'description' => 'Serious Neural disorder',
+                'is_medical' => false,
+                'is_specific' => false,
+                'is_dietary' => true
+            ],
+        ];
+    }
+
+    /**
      * Test initialize method
      *
      * @return void
@@ -62,18 +107,7 @@ class AllergiesTableTest extends TestCase
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->enableHydration(false)->toArray();
-        $expected = [
-            [
-                'id' => 1,
-                'allergy' => 'Lorem ipsum dolor sit amet',
-                'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. The Goat'
-            ],
-            [
-                'id' => 2,
-                'allergy' => 'Lorem ipsum dolor sit amet',
-                'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. The Goat'
-            ]
-        ];
+        $expected = $this->getExpected();
 
         $this->assertEquals($expected, $result);
     }
@@ -91,28 +125,16 @@ class AllergiesTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 3,
             'allergy' => 'Lorem Goat Fish dolor sit amet',
-            'description' => 'Lorem Monkey dolor sit amet, aliquet feugiat. The Goat'
+            'description' => 'Lorem Monkey dolor sit amet, aliquet feugiat. The Goat',
+            'is_medical' => false,
+            'is_dietary' => true,
+            'is_specific' => false,
         ];
 
-        $expected = [
-            [
-                'id' => 1,
-                'allergy' => 'Lorem ipsum dolor sit amet',
-                'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. The Goat'
-            ],
-            [
-                'id' => 2,
-                'allergy' => 'Lorem ipsum dolor sit amet',
-                'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. The Goat'
-            ],
-            [
-                'id' => 3,
-                'allergy' => 'Lorem Goat Fish dolor sit amet',
-                'description' => 'Lorem Monkey dolor sit amet, aliquet feugiat. The Goat'
-            ]
-        ];
+        $expected = $this->getExpected();
+        $goodExpectation = array_merge($goodData, ['id' => 6]);
+        array_push($expected, $goodExpectation);
 
         $badEntity = $this->Allergies->newEntity($badData);
         $goodEntity = $this->Allergies->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
