@@ -58,7 +58,6 @@ class ScoutManagerComponentTest extends TestCase
         $this->travisPass = Configure::read('travis');
     }
 
-
     /**
      * @return \PHPUnit\Framework\MockObject\MockObject
      */
