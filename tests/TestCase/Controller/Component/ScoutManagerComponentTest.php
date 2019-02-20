@@ -4,6 +4,8 @@ namespace App\Test\TestCase\Controller\Component;
 use App\Controller\Component\ScoutManagerComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
+use Cake\Http\Client;
+use Cake\Http\Response;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -49,9 +51,28 @@ class ScoutManagerComponentTest extends TestCase
     {
         parent::setUp();
         $registry = new ComponentRegistry();
-        $this->ScoutManager = new ScoutManagerComponent($registry);
+        $http = $this->httpMock();
+
+        $this->ScoutManager = new ScoutManagerComponent($registry, [], $http);
 
         $this->travisPass = Configure::read('travis');
+    }
+
+
+    /**
+     * @return \PHPUnit\Framework\MockObject\MockObject
+     */
+    private function httpMock()
+    {
+        $http = $this->getMockBuilder(Client::class)->getMock();
+
+        $response = new Response;
+
+        $http->expects($this->once())
+            ->method('post')
+            ->willReturn($response);
+
+        return $http;
     }
 
     /**

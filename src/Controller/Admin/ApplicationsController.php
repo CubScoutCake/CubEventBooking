@@ -127,13 +127,17 @@ class ApplicationsController extends AppController
             $userSectionId = $user->section_id;
         }
 
+        /** @var \App\Model\Entity\Application $application */
         $application = $this->Applications->newEntity();
         if ($this->request->is('post')) {
             $newData = [
                 'modification' => 0,
+                'invoice' => [
+                    'user_id' => $this->request->getData('user_id'),
+                ],
             ];
             $appData = array_merge($newData, $this->request->getData());
-            $application = $this->Applications->patchEntity($application, $appData);
+            $application = $this->Applications->patchEntity($application, $appData, ['associated' => 'Invoices']);
 
             if ($this->Applications->save($application)) {
                 $appId = $application->get('id');
@@ -177,10 +181,10 @@ class ApplicationsController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'section',
-                'groupField' => 'scoutgroup.scoutgroup'
+                'groupField' => 'scoutgroup.district.district'
             ]
         )
-            ->contain(['Scoutgroups']);
+            ->contain(['Scoutgroups.Districts']);
         $events = $this->Applications->Events->find('list', ['limit' => 200]);
 
         $this->set(compact('application', 'users', 'attendees', 'sections', 'events'));

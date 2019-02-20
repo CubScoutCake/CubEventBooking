@@ -57,7 +57,7 @@
                             'controller' => 'Invoices',
                             'action' => 'regenerate',
                             'prefix' => false,
-                            $invFirst->id],['_full']); ?>">Update Invoice
+                            $application->invoice->id],['_full']); ?>">Update Invoice
 
                         <?php endif ?></a></li>
                     <li><a href="#" data-toggle="modal" data-target="#cancellation">Request Cancellation</a></li>
@@ -203,10 +203,10 @@
 
                     <?php else : 
                         echo $this->Url->build([
-                        'controller' => 'Invoices',
-                        'action' => 'regenerate',
-                        'prefix' => false,
-                        $invFirst->id],['_full']); ?>">
+                            'controller' => 'Invoices',
+                            'action' => 'regenerate',
+                            'prefix' => false,
+                            $application->invoice->id],['_full']); ?>">
                         <div class="panel-footer">
                             <span class="pull-left">Update Existing Invoice</span>
                     <?php endif ?>

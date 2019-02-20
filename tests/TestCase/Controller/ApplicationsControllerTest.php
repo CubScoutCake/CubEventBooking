@@ -82,16 +82,6 @@ class ApplicationsControllerTest extends TestCase
     }
 
     /**
-     * Test bookings method
-     *
-     * @return void
-     */
-    public function testBookings()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test invoice method
      *
      * @return void

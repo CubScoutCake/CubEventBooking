@@ -37,21 +37,6 @@ class ApplicationsController extends AppController
     }
 
     /**
-     * @param int $eventID The ID of the Event
-     *
-     * @return void
-     */
-    public function bookings($eventID = null)
-    {
-        $this->paginate = [
-            'contain' => ['Users', 'Sections.Scoutgroups', 'Events'],
-            'conditions' => ['event_id' => $eventID]
-        ];
-        $this->set('applications', $this->paginate($this->Applications->find('unarchived')->find('ownedBy', ['userId' => $this->Auth->user('id')])));
-        $this->set('_serialize', ['applications']);
-    }
-
-    /**
      * @param int $applicationID The Application ID
      *
      * @return \Cake\Http\Response|void

@@ -113,7 +113,7 @@ class TokensTable extends Table
 
     /**
      *
-     * @param Event       $event The Event to be processed
+     * @param \Cake\Event\Event $event The Event to be processed
      * @param ArrayObject $data The data to be modified
      * @param ArrayObject $options The Options Contained
      *
@@ -131,17 +131,17 @@ class TokensTable extends Table
      * Hashes the password before save
      *
      * @param \Cake\Event\Event $event The event trigger.
+     *
      * @return true
+     *
+     * @throws \Exception
      */
     public function beforeSave(Event $event)
     {
         $entity = $event->getData('entity');
 
         if ($entity->isNew()) {
-            $entity->random_number = random_int(
-                1000000,
-                9999999
-            );
+            $entity->random_number = unpack('n', Security::randomBytes(64))[1];
 
             // Set Expiry Date
             $now = Time::now();

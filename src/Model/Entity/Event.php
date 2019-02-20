@@ -48,7 +48,6 @@ use Cake\ORM\Entity;
  * @property int $cc_res
  * @property int $cc_atts
  *
- * @property string $admin_full_name
  * @property bool $app_full
  *
  * @property \App\Model\Entity\Discount $discount
@@ -141,15 +140,5 @@ class Event extends Entity
         return false;
     }
 
-    /**
-     * Specifies the Admin Full Name
-     *
-     * @return string
-     */
-    protected function _getAdminFullName()
-    {
-        return $this->_properties['admin_firstname'] . ' ' . $this->_properties['admin_lastname'];
-    }
-
-    protected $_virtual = ['app_full', 'admin_full_name'];
+    protected $_virtual = ['app_full'];
 }

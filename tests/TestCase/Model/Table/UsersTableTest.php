@@ -83,8 +83,8 @@ class UsersTableTest extends TestCase
             [
                 'id' => 1,
                 'role_id' => 1,
-                'firstname' => 'Lorem ipsum dolor sit amet',
-                'lastname' => 'Lorem ipsum dolor sit amet',
+                'firstname' => 'Jacob',
+                'lastname' => 'Tyler',
                 'email' => 'jacob@fish.com',
                 'password' => 'Lorem ipsum dolor sit amet',
                 'phone' => 'Lorem ipsum dolor sit amet',
@@ -201,8 +201,8 @@ class UsersTableTest extends TestCase
             [
                 'id' => 1,
                 'role_id' => 1,
-                'firstname' => 'Lorem ipsum dolor sit amet',
-                'lastname' => 'Lorem ipsum dolor sit amet',
+                'firstname' => 'Jacob',
+                'lastname' => 'Tyler',
                 'email' => 'jacob@fish.com',
                 'phone' => 'Lorem ipsum dolor sit amet',
                 'address_1' => 'Lorem ipsum dolor sit amet',
@@ -518,8 +518,8 @@ class UsersTableTest extends TestCase
             [
                 'id' => 1,
                 'role_id' => 1,
-                'firstname' => 'Lorem ipsum dolor sit amet',
-                'lastname' => 'Lorem ipsum dolor sit amet',
+                'firstname' => 'Jacob',
+                'lastname' => 'Tyler',
                 'email' => 'jacob@fish.com',
                 'phone' => 'Lorem ipsum dolor sit amet',
                 'address_1' => 'Lorem ipsum dolor sit amet',

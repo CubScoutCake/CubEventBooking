@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Controller\Admin;
 
 use App\Controller\Admin\ApplicationsController;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -57,6 +58,8 @@ class ApplicationsControllerTest extends IntegrationTestCase
         'app.settings',
         'app.users',
     ];
+
+    public $Applications;
 
     /**
      * Test index method
@@ -154,6 +157,8 @@ class ApplicationsControllerTest extends IntegrationTestCase
      * Test add method
      *
      * @return void
+     *
+     * @throws
      */
     public function testAdd()
     {
@@ -162,15 +167,42 @@ class ApplicationsControllerTest extends IntegrationTestCase
            'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/admin/applications/add');
+        $this->get([
+            'action' => 'add',
+            'controller' => 'Applications',
+            'prefix' => 'admin'
+        ]);
 
         $this->assertResponseOk();
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
+
+        $this->post([
+            'action' => 'add',
+            'controller' => 'Applications',
+            'prefix' => 'admin'
+        ], [
+            'user_id' => 1,
+            'event_id' => 2,
+            'section_id' => 1,
+            'permit_holder' => 'Jacob Tyler',
+            'team_leader' => 'Jacob Tyler',
+        ]);
+
+        $this->assertRedirect();
+
+        $this->assertFlashMessageAt(0, 'Application has been registered.');
+        $this->assertFlashMessageAt(1, 'Invoice created.');
     }
 
     /**
      * Test edit method
      *
      * @return void
+     *
+     * @throws
      */
     public function testEdit()
     {
@@ -182,6 +214,35 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $this->get('/admin/applications/edit/1');
 
         $this->assertResponseOk();
+
+        /** @var \App\Model\Table\ApplicationsTable $applications */
+        $applications = TableRegistry::getTableLocator()->get('Applications');
+
+        $before = $applications->get(1);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
+
+        $this->post([
+            'action' => 'edit',
+            'controller' => 'Applications',
+            'prefix' => 'admin',
+            1
+        ], [
+            'user_id' => 1,
+            'event_id' => 2,
+            'section_id' => 1,
+            'permit_holder' => 'Jacob Tyler',
+            'team_leader' => 'Jacob Tyler',
+        ]);
+
+        $this->assertRedirect();
+
+        $this->assertFlashMessageAt(0, 'The application has been saved.');
+
+        $after = $applications->get(1);
+        $this->assertNotSame($before, $after);
     }
 
     /**
