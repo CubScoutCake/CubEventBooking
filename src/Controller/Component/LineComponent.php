@@ -47,6 +47,7 @@ class LineComponent extends Component
                 $this->parseLine($invoiceID, $price->id, 1);
             } else {
                 if (!is_null($price->item_type->role_id)) {
+                    /** @var \App\Model\Entity\Application $application */
                     $application = $this->Applications
                         ->get($invoice->application_id, [
                             'contain' => 'Attendees.Roles'
@@ -63,6 +64,7 @@ class LineComponent extends Component
                 }
 
                 if (is_null($price->item_type->role_id) && !$price->item_type->minor) {
+                    /** @var \App\Model\Entity\Application $application */
                     $application = $this->Applications
                         ->get($invoice->application_id, [
                             'contain' => 'Attendees.Roles'

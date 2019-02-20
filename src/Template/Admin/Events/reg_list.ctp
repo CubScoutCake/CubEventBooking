@@ -123,7 +123,7 @@
     <table class="goat">
         <tr>
             <th><?= __('Address') ?></th>
-            <td><?= h($event->admin_full_name) ?></td>
+            <td><?= h($event->admin_user->full_name) ?></td>
             <th><?= __('Deposit Required') ?></th>
             <td><?= $event->deposit ? __('Yes') : __('No'); ?></td>
         </tr>

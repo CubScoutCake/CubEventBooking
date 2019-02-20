@@ -157,28 +157,30 @@ class InvoicesController extends AppController
     }
 
     /**
-     * @param int $InvId The Invoice to be Regenerated.
+     * @param int $invoiceID The Invoice to be Regenerated.
      *
      * @return \Cake\Http\Response|null
+     *
+     * @throws \Exception
      */
-    public function regenerate($InvId = null)
+    public function regenerate($invoiceID = null)
     {
-        $invoice = $this->Invoices->get($InvId, [
-            'contain' => ['Applications.Events']
+        $invoice = $this->Invoices->get($invoiceID, [
+            'contain' => ['Applications.Events.AdminUsers']
         ]);
 
         if ($invoice->application->event->invoices_locked) {
-            $errorMsg = 'This event has been LOCKED to prevent updates to invoices. Please contact ' . $invoice->application->event->admin_full_name . '.';
+            $errorMsg = 'This event has been LOCKED to prevent updates to invoices. Please contact ' . $invoice->application->event->admin_user->full_name . '.';
             $this->Flash->error(__($errorMsg));
             $this->log($errorMsg, 'info');
         } else {
             $this->loadComponent('Line');
-            $parse = $this->Line->parseInvoice($InvId);
+            $parse = $this->Line->parseInvoice($invoiceID);
 
             if ($parse) {
                 $this->Flash->success('Your Invoice has been updated from your Application.');
 
-                return $this->redirect($this->referer(['controller' => 'Invoices', 'action' => 'view', 'prefix' => false, $InvId]));
+                return $this->redirect($this->referer(['controller' => 'Invoices', 'action' => 'view', 'prefix' => false, $invoiceID]));
             }
 
             $errorMsg = 'Issue Regenerating Invoice.';
@@ -186,7 +188,7 @@ class InvoicesController extends AppController
             $this->log($errorMsg, 'info');
         }
 
-        return $this->redirect($this->referer(['controller' => 'Invoices', 'action' => 'view', 'prefix' => false, $InvId]));
+        return $this->redirect($this->referer(['controller' => 'Invoices', 'action' => 'view', 'prefix' => false, $invoiceID]));
     }
 
     /**

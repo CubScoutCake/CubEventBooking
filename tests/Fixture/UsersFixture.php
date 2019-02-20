@@ -80,8 +80,8 @@ class UsersFixture extends TestFixture
             [
                 'role_id' => 1,
                 'authrole' => 'Lorem ipsum dolor sit amet',
-                'firstname' => 'Lorem ipsum dolor sit amet',
-                'lastname' => 'Lorem ipsum dolor sit amet',
+                'firstname' => 'Jacob',
+                'lastname' => 'Tyler',
                 'email' => 'jacob@fish.com',
                 'password' => 'Lorem ipsum dolor sit amet',
                 'phone' => 'Lorem ipsum dolor sit amet',
