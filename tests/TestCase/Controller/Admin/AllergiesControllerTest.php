@@ -146,9 +146,10 @@ class AllergiesControllerTest extends IntegrationTestCase
         $this->enableSecurityToken();
 
         $postData = [
-            'id' => 5,
             'allergy' => 'I am a Test',
             'description' => 'This is a different test Allergy',
+            'is_medical' => false,
+            'is_dietary' => true,
         ];
 
         $this->post('/admin/allergies/add', $postData);

@@ -18,6 +18,8 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\SectionsTable|\Cake\ORM\Association\BelongsTo $Sections
  * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\BelongsToMany $Applications
  * @property \App\Model\Table\AllergiesTable|\Cake\ORM\Association\BelongsToMany $Allergies
+ * @property \App\Model\Table\AllergiesTable|\Cake\ORM\Association\BelongsToMany $DietaryRestrictions
+ * @property \App\Model\Table\AllergiesTable|\Cake\ORM\Association\BelongsToMany $MedicalIssues
  *
  * @method \App\Model\Entity\Attendee get($primaryKey, $options = [])
  * @method \App\Model\Entity\Attendee newEntity($data = null, array $options = [])
@@ -83,6 +85,18 @@ class AttendeesTable extends Table
         ]);
         $this->belongsToMany('Allergies', [
             'through' => 'AttendeesAllergies',
+        ]);
+        $this->belongsTo('DietaryRestrictions', [
+            'className' => 'Allergies',
+            'through' => 'AttendeesAllergies',
+            'property' => 'dietary_restrictions',
+            'conditions' => ['DietaryRestrictions.is_dietary' => true],
+        ]);
+        $this->belongsTo('MedicalIssues', [
+            'className' => 'Allergies',
+            'through' => 'AttendeesAllergies',
+            'property' => 'medical_issues',
+            'conditions' => ['MedicalIssues.is_medical' => true],
         ]);
     }
 
