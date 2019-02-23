@@ -1,47 +1,57 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \DatabaseLog\Model\Entity\DatabaseLog[] $logs
+ * @var string|null $currentType
+ * @var array $types
+ */
+
+use DatabaseLog\Model\Table\DatabaseLogsTable;
+
+?>
+
 <div class="row">
     <div class="col-lg-12">
-        <h1><i class="fal fa-tree fa-fw"></i> Logs</h1>
+        <h1><i class="fal fa-tree fa-fw"></i> <?php echo $currentType ? ucwords($currentType) : 'All'; ?> Logs</h1>
         <br/>
-        <ul class="list-inline">
-            <a href="<?php echo $this->Url->build([
-                'controller' => 'Logs',
-                'action' => 'index',
-                'prefix' => 'super_user'
-            ]); ?> ">
-                <li class="btn btn-default btn-sm"> ALL </li>
-            </a>
-            <li></li>
-            <?php
-            foreach ($types as $type) {
-                echo '<a href="' . $this->Url->build([
+        <?php
+        if (DatabaseLogsTable::isSearchEnabled()) {
+            echo $this->element('log_search');
+        }
+        ?>
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <ul class="list-inline">
+                    <a href="<?php echo $this->Url->build([
                         'controller' => 'Logs',
                         'action' => 'index',
-                        'prefix' => 'super_user',
-                        '?' => ['type' => $type]
-                    ])
-                    . '">';
+                        'prefix' => 'super_user'
+                    ]); ?>"><li class="btn btn-default">ALL</li></a>
+                    <?php foreach ($types as $type) : ?>
+                        <?php $typeStyle = $type;
 
-                $typeStyle = $type;
+                        if ($type == 'error') {
+                            $typeStyle = 'danger';
+                        }
+                        if ($type == 'notice') {
+                            $typeStyle = 'warning';
+                        } ?>
 
-                if ($type == 'error') {
-                    $typeStyle = 'danger';
-                }
-                if ($type == 'notice') {
-                    $typeStyle = 'warning';
-                }
-
-                echo '<li class="btn btn-default btn-'. $typeStyle . ' btn-sm">';
-
-                echo ' ' . strtoupper($type) . ' ';
-
-                echo '</li></a>';
-
-                echo '<li> </li>';
-            }
-            ?>
-        </ul>
-
-        <?php echo $this->element('DatabaseLog.admin_filter'); ?>
+                        <a href="<?php echo $this->Url->build([
+                                'controller' => 'Logs',
+                                'action' => 'index',
+                                'prefix' => 'super_user',
+                                '?' => ['type' => $type]
+                            ]); ?>"><li class="btn btn-<?= $typeStyle ?> <?= $currentType == $type ? 'active' : '' ?>"><?= strtoupper($type) ?> <span class="badge"><?= $currentType == $type ? 'CURRENT' : '' ?></span></li></a>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <?php //echo $this->element('DatabaseLog.admin_filter'); ?>
         <div class="table-responsive">
 	        <table class="table list">
                 <tr>
