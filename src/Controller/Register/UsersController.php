@@ -29,14 +29,10 @@ class UsersController extends AppController
         }
 
         $user = $this->Users->newEntity();
+        $user->set('section_id', $sectionId);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $usrData = [
-                'auth_role_id' => 1,
-                'section_id' => $sectionId
-            ];
-
-            $user = $this->Users->patchEntity($user, $usrData, ['validate' => false]);
+            $user->set('auth_role_id', 1);
 
             $user = $this->Users->patchEntity($user, $this->request->getData(), [
                 'fieldList' => [
@@ -57,18 +53,8 @@ class UsersController extends AppController
                     'postcode', ]
             ]);
 
-            $upperUser = ['firstname' => ucwords(strtolower($user->firstname)),
-                'lastname' => ucwords(strtolower($user->lastname)),
-                'address_1' => ucwords(strtolower($user->address_1)),
-                'address_2' => ucwords(strtolower($user->address_2)),
-                'city' => ucwords(strtolower($user->city)),
-                'county' => ucwords(strtolower($user->county)),
-                'postcode' => strtoupper($user->postcode)];
-
-            $user = $this->Users->patchEntity($user, $upperUser, ['validate' => false]);
-
             if ($this->Users->save($user)) {
-                $atts = TableRegistry::get('Attendees');
+                $atts = TableRegistry::getTableLocator()->get('Attendees');
 
                 $att = $atts->newEntity();
 
@@ -101,10 +87,6 @@ class UsersController extends AppController
             } else {
                 $this->Flash->error(__('The user could not be registered. There may be an error. Please, try again.'));
             }
-        }
-
-        if ($this->request->is('get')) {
-            $this->request->getData()['section_id'] = $sectionId;
         }
 
         $roles = $this->Users->Roles->find('nonAuto')->find('leaders')->find('list', ['limit' => 200]);

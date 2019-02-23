@@ -16,22 +16,54 @@ class UsersControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.users',
-        'app.roles',
-        'app.password_states',
-        'app.sections',
-        'app.section_types',
-        'app.scoutgroups',
-        'app.districts',
+        'app.allergies',
+        'app.application_statuses',
+        'app.applications',
+        'app.applications_attendees',
+        'app.attendees',
+        'app.attendees_allergies',
         'app.auth_roles',
+        'app.champions',
+        'app.discounts',
+        'app.districts',
+        'app.email_response_types',
+        'app.email_responses',
+        'app.email_sends',
+        'app.event_statuses',
+        'app.event_types',
+        'app.events',
+        'app.invoice_items',
+        'app.invoices',
+        'app.invoices_payments',
+        'app.item_types',
+        'app.logistic_items',
+        'app.logistics',
+        'app.notes',
+        'app.notification_types',
         'app.notifications',
-        'app.notification_types'
+        'app.parameter_sets',
+        'app.parameters',
+        'app.params',
+        'app.password_states',
+        'app.payments',
+        'app.prices',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.roles',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.setting_types',
+        'app.settings',
+        'app.users',
     ];
 
     /**
      * Test index method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testRegisterSectionRedirect()
     {
@@ -40,6 +72,13 @@ class UsersControllerTest extends IntegrationTestCase
         $this->assertRedirect(['prefix' => 'register', 'controller' => 'Sections', 'action' => 'select']);
     }
 
+    /**
+     * Register
+     *
+     * @return void
+     *
+     * @throws \PHPUnit\Exception
+     */
     public function testRegisterGet()
     {
         $this->get('/register/users/register/1');
@@ -47,47 +86,43 @@ class UsersControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
+    /**
+     * Test Register Post
+     *
+     * @return void
+     *
+     * @throws
+     */
     public function testRegisterPost()
     {
-        $this->markTestSkipped('Needs to be fixed.');
-
         $this->enableCsrfToken();
         $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
 
         $data = [
-            'role_id' => 1,
-            'firstname' => 'Joe',
+            'role_id' => 2,
+            'firstname' => 'Wendy',
             'lastname' => 'Bloggs',
-            'email' => 'joe.bloggs@somewhere.cool',
-            'username' => 'ThisUser',
+            'email' => 'joe.bloggs@wendy.cool',
+            'membership_number' => random_int(111111, 999999),
+            'username' => 'WendyThisUser',
             'password' => 'SuperSecure',
-            'phone' => '0892912912',
+            'phone' => '01462 628819',
             'address_1' => 'Here is',
             'address_2' => 'The Way',
             'city' => 'to',
-            'membership_number' => '82925',
             'county' => 'Ammarillo',
             'postcode' => 'GO8 0FK',
-            //'section_id' => 1,
-            //'auth_role_id' => 1,
         ];
         $this->post('/register/users/register/1', $data);
 
-        $this->assertRedirect();
-    }
+        $this->assertRedirect([
+            'controller' => 'Landing',
+            'action' => 'user_home',
+            'prefix' => false,
+        ]);
 
-    public function testRegisterPostBadCsrf()
-    {
-        $this->markTestIncomplete();
-    }
-
-    public function testRegisterPostBadSecurity()
-    {
-        $this->markTestIncomplete();
-    }
-
-    public function testRegisterPostBadData()
-    {
-        $this->markTestIncomplete();
+        $this->assertFlashMessageAt(1, 'You have successfully registered!');
+        $this->assertFlashMessageAt(0, 'An Attendee for your user has been created.');
     }
 }
