@@ -9,6 +9,8 @@
 <!-- Jan16 Admin Theme Scripts -->
 
 <?php echo $this->Html->css('sb-admin-2.min.css'); ?>
+
+<?php echo $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css'); ?>
 <?php //echo $this->Html->css('timeline.css'); ?>
 <?php //echo $this->Html->css('print.css'); ?>
 <?php //echo $this->Html->css('https://cdn.jsdelivr.net/jquery.datatables/1.10.10/css/dataTables.bootstrap.min.css', ['integrity' => 'sha256-z84A8SU1XXNN76l7Y+r65zvMYxgGD4v5wqg90I24Prw=', 'crossorigin' => 'anonymous']); ?>
