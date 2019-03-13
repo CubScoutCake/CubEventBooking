@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ *
+ */
+?>
+
 <!-- jQuery v 3.0 -->
 <?php //echo $this->Html->script('https://code.jquery.com/jquery-3.0.0.min.js', ['integrity' => 'sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=', 'crossorigin' => 'anonymous']);?>
 
@@ -13,6 +20,10 @@
 
 <!-- Metis Menu Plugin JavaScript -->
 <?php echo $this->Html->script('https://cdn.jsdelivr.net/npm/metismenu@3.0.3/dist/metisMenu.min.js', ['integrity' =>'sha256-BNyjlkvjHfyJ3v5fTLcrkPCJlW0WxY/aa0c8XzIUVR8=', 'crossorigin' => 'anonymous']);?>
+
+<!-- Select 2 -->
+<?php echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js'); ?>
+<?php echo $this->Html->script('multi-select.js'); ?>
 
 <!-- Morris Charts JavaScript -->
 <?php //echo $this->Html->script('raphael-min.js');?>

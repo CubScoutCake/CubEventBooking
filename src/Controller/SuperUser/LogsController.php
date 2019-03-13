@@ -9,7 +9,7 @@
  */
 namespace App\Controller\SuperUser;
 
-use App\Controller\SuperUser\AppController;
+use DatabaseLog\Model\Table\DatabaseLogsTable;
 
 /**
  * @property \DatabaseLog\Model\Table\DatabaseLogsTable $DatabaseLogs
@@ -42,11 +42,29 @@ class LogsController extends AppController
         'order' => ['DatabaseLogs.id' => 'DESC'],
         'fields' => [
             'DatabaseLogs.created',
+            'DatabaseLogs.count',
             'DatabaseLogs.type',
             'DatabaseLogs.message',
             'DatabaseLogs.id'
         ]
     ];
+
+    /**
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function initialize()
+    {
+        parent::initialize();
+
+        if (!DatabaseLogsTable::isSearchEnabled()) {
+            return;
+        }
+        $this->loadComponent('Search.Prg', [
+            'actions' => ['index'],
+        ]);
+    }
 
     /**
      * Index/Overview action
@@ -55,43 +73,46 @@ class LogsController extends AppController
      */
     public function index()
     {
-        $types = $this->DatabaseLogs->getTypes();
-        $this->set(compact('types'));
+        $currentType = $this->request->getQuery('type');
 
-        $conditions = $this->DatabaseLogs->textSearch();
-        $type = $this->request->query('type');
-        if ($type) {
-            $conditions['type'] = $type;
+        if (DatabaseLogsTable::isSearchEnabled()) {
+            $query = $this->DatabaseLogs->find('search', ['search' => $this->request->getQuery()]);
+        } else {
+            $conditions = $this->DatabaseLogs->textSearch();
+            if ($currentType) {
+                $conditions['type'] = $currentType;
+            }
+            $query = $this->DatabaseLogs->find()->where($conditions);
         }
-        $query = $this->DatabaseLogs->find()->where($conditions);
-        $this->paginate = [
-            'order' => ['created' => 'DESC'],
-        ];
 
-        $this->set('logs', $this->paginate($query));
-        $this->set('types', $this->DatabaseLogs->getTypes());
+        $logs = $this->paginate($query);
+        $types = $this->DatabaseLogs->getTypes();
+
+        $this->set(compact('logs', 'types', 'currentType'));
     }
 
     /**
-     * @param null|int $id The log ID to view.
+     * @param null|int $logId The log ID to view.
+     *
      * @return void
      */
-    public function view($id = null)
+    public function view($logId = null)
     {
-        $log = $this->DatabaseLogs->get($id);
+        $log = $this->DatabaseLogs->get($logId);
         $this->set('log', $log);
     }
 
     /**
      * Delete action
      *
-     * @param null|int $id The log ID to delete.
+     * @param null|int $logId The log ID to delete.
+     *
      * @return \Cake\Http\Response|void
      */
-    public function delete($id = null)
+    public function delete($logId = null)
     {
         $this->request->allowMethod('post');
-        $log = $this->DatabaseLogs->get($id);
+        $log = $this->DatabaseLogs->get($logId);
 
         if ($this->DatabaseLogs->delete($log)) {
             $this->Flash->success(__('Log deleted'));
@@ -108,13 +129,20 @@ class LogsController extends AppController
      *
      * Deletes all log entries.
      *
-     * @return \Cake\Http\Response|void
+     * @return \Cake\Http\Response|null
      */
     public function reset()
     {
         $this->request->allowMethod('post');
 
-        $this->DatabaseLogs->truncate();
+        $type = $this->request->getQuery('type');
+        if ($type) {
+            $this->DatabaseLogs->deleteAll([
+                'type' => $type
+            ]);
+        } else {
+            $this->DatabaseLogs->truncate();
+        }
 
         return $this->redirect(['action' => 'index']);
     }

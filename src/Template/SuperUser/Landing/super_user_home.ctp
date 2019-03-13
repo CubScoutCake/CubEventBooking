@@ -330,7 +330,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu " role="menu">
                                                     <li><?= $this->Html->link(__('Preview - User View'), ['controller' => 'Events', 'action' => 'view', $event->id]) ?></li>
-                                                    <li><?= $this->Html->link(__('Full View - Inc Bookings'), ['controller' => 'Events', 'action' => 'full_view', $event->id]) ?></li>
+                                                    <li><?= $this->Html->link(__('Full View - Inc Bookings'), ['controller' => 'Events', 'action' => 'view', $event->id]) ?></li>
                                                     <li><?= $this->Html->link(__('Accounts View'), ['controller' => 'Events', 'action' => 'accounts', $event->id]) ?></li>
                                                     <li><?= $this->Html->link(__('View Unpaid Invoices'), ['controller' => 'Invoices','action' => 'unpaid', $event->id]) ?></li>
                                                     <li><?= $this->Html->link(__('View Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>

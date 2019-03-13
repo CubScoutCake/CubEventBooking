@@ -56,7 +56,7 @@ return [
             //'port' => 'nonstandard_port_number',
             'username' => 'postgres',
             'password' => '',
-            'database' => 'cake',
+            'database' => 'fake',
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'cacheMetadata' => true,

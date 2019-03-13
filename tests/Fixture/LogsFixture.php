@@ -39,10 +39,27 @@ class LogsFixture extends TestFixture
     ];
 
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'type' => 'Lorem ipsum dolor sit amet',
+                'message' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+                'context' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+                'created' => '2018-11-18 22:47:27',
+                'ip' => 'Lorem ipsum dolor sit amet',
+                'hostname' => 'Lorem ipsum dolor sit amet',
+                'uri' => 'Lorem ipsum dolor sit amet',
+                'refer' => 'Lorem ipsum dolor sit amet',
+                'user_agent' => 'Lorem ipsum dolor sit amet',
+                'count' => 1
+            ],
+        ];
+        parent::init();
+    }
 }

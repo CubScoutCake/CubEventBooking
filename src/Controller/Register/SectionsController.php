@@ -34,7 +34,7 @@ class SectionsController extends AppController
                 'valueField' => 'scoutgroup',
                 'groupField' => 'district.district'
             ]
-        ) ->contain(['Districts']);
+        )->contain(['Districts']);
         $section = $this->Sections->newEntity();
         $this->set(compact('section', 'sectionTypes', 'scoutgroups'));
         $this->set('_serialize', ['section']);
@@ -87,8 +87,9 @@ class SectionsController extends AppController
             return $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
-        $this->request->getData()['scoutgroup_id'] = $groupId;
-        $this->request->getData()['section_type_id'] = $typeId;
+        $section = $this->Sections->newEntity();
+        $section->set('scoutgroup_id', $groupId);
+        $section->set('section_type_id', $typeId);
 
         if ($this->request->is('get')) {
             $group = $this->Sections->Scoutgroups->get($groupId);
@@ -96,10 +97,9 @@ class SectionsController extends AppController
 
             $suggestion = Text::truncate($group['scoutgroup'], 8, ['ellipsis' => false]) . ' - ' . $type['section_type'];
 
-            $this->request->getData()['section'] = $suggestion;
+            $section->set('section', $suggestion);
         }
 
-        $section = $this->Sections->newEntity();
         if ($this->request->is('post')) {
             $section = $this->Sections->patchEntity($section, $this->request->getData(), [
                 'fieldList' => [
@@ -119,6 +119,7 @@ class SectionsController extends AppController
                 $this->log('Register:Sections:Add - Fail - Could not be saved.', 'notice');
             }
         }
+
         $sectionTypes = $this->Sections->SectionTypes->find('list', ['limit' => 200]);
         $scoutgroups = $this->Sections->Scoutgroups->find('list', ['limit' => 200]);
         $this->set(compact('section', 'sectionTypes', 'scoutgroups'));

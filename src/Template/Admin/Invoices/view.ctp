@@ -38,19 +38,29 @@
                         'controller' => 'Invoices',
                         'action' => 'regenerate',
                         'prefix' => 'admin',
-                        $invoice->id],['_full']); ?>">Update Invoice</a>
+                        $invoice->id]); ?>">Update Invoice</a>
+                    </li>
+                    <li><a href="<?php echo $this->Url->build([
+                            'controller' => 'Invoices',
+                            'action' => 'regenerate',
+                            'prefix' => 'admin',
+                            $invoice->id,
+                            '?' => [
+                                    'force' => true,
+                            ]
+                        ]); ?>">Override Update</a>
                     </li>
                     <li><a href="<?php echo $this->Url->build([
                         'controller' => 'Invoices',
                         'action' => 'edit',
                         'prefix' => 'admin',
-                        $invoice->id],['_full']); ?>">Edit Invoice</a>
+                        $invoice->id]); ?>">Edit Invoice</a>
                     </li>
                     <li><a href="<?php echo $this->Url->build([
                         'controller' => 'Invoices',
                         'action' => 'pdf_view',
                         'prefix' => 'admin',
-                        $invoice->id],['_full']); ?>">Download Invoice</a>
+                        $invoice->id]); ?>">Download Invoice</a>
                     </li>
                     <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete','prefix' => 'admin', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?></li>
                     <li><?= $this->Form->postLink(__('Add Surcharge'), ['controller' => 'InvoiceItems', 'action' => 'overdue','prefix' => 'admin', $invoice->id], ['confirm' => __('Are you sure you want to add a Surcharge to # {0}?', $invoice->id)]) ?></li>

@@ -130,7 +130,7 @@ class LandingController extends AppController
                     case "T":
                         return $this->redirect(['prefix' => 'admin', 'controller' => 'Attendees', 'action' => 'view', $idNum]);
                     case "E":
-                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Events', 'action' => 'full_view', $idNum]);
+                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Events', 'action' => 'view', $idNum]);
                     case "S":
                         return $this->redirect(['controller' => 'Settings', 'action' => 'view', $idNum]);
                     default:

@@ -14,20 +14,48 @@ class InvoicesControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
-
+     */
     public $fixtures = [
-        'app.invoices',
-        'app.users',
-        'app.roles',
+        'app.allergies',
+        'app.application_statuses',
+        'app.applications',
+        'app.applications_attendees',
         'app.attendees',
-        'app.scoutgroups',
+        'app.attendees_allergies',
+        'app.auth_roles',
+        'app.champions',
+        'app.discounts',
         'app.districts',
-        'app.notes',
+        'app.email_response_types',
+        'app.email_responses',
+        'app.email_sends',
+        'app.event_statuses',
+        'app.event_types',
+        'app.events',
         'app.invoice_items',
-        'app.itemtypes',
+        'app.invoices',
+        'app.invoices_payments',
+        'app.item_types',
+        'app.logistic_items',
+        'app.logistics',
+        'app.notes',
+        'app.notification_types',
+        'app.notifications',
+        'app.parameter_sets',
+        'app.parameters',
+        'app.params',
+        'app.password_states',
         'app.payments',
-        'app.invoices_payments'
+        'app.prices',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.roles',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.setting_types',
+        'app.settings',
+        'app.users',
     ];
 
     /**
@@ -52,16 +80,23 @@ class InvoicesControllerTest extends IntegrationTestCase
      * Test index method
      *
      * @return void
+     *
+     * @throws
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-        /*
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
 
-        $this->get('/invoices');
+        $this->get([
+            'controller' => 'Invoices',
+            'prefix' => 'admin',
+            'action' => 'index'
+        ]);
 
-        $this->assertResponseOk();*/
+        $this->assertResponseOk();
     }
 
     public function testViewUnauthenticatedFails()
@@ -76,10 +111,24 @@ class InvoicesControllerTest extends IntegrationTestCase
      * Test view method
      *
      * @return void
+     *
+     * @throws
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get([
+            'controller' => 'Invoices',
+            'prefix' => 'admin',
+            'action' => 'view',
+            1
+        ]);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -96,10 +145,56 @@ class InvoicesControllerTest extends IntegrationTestCase
      * Test edit method
      *
      * @return void
+     *
+     * @throws
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->get([
+            'controller' => 'Invoices',
+            'prefix' => 'admin',
+            'action' => 'edit',
+            1
+        ]);
+
+        $this->assertResponseOk();
+
+        $this->enableCsrfToken();
+        $this->enableRetainFlashMessages();
+        $this->enableSecurityToken();
+
+        $this->post([
+            'controller' => 'Invoices',
+            'prefix' => 'admin',
+            'action' => 'edit',
+            1
+        ], [
+            'user_id' => 1,
+            'application_id' => 1,
+        ]);
+
+        $this->assertFlashMessageAt(0, 'The invoice has been saved.');
+
+        $this->assertRedirect();
+
+        $this->post([
+            'controller' => 'Invoices',
+            'prefix' => 'admin',
+            'action' => 'edit',
+            1
+        ], [
+            'user_id' => 100,
+            'application_id' => 100,
+        ]);
+
+        $this->assertFlashMessageAt(0, 'The invoice could not be saved. Please, try again.');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -113,23 +208,45 @@ class InvoicesControllerTest extends IntegrationTestCase
     }
 
     /**
-     * Test generate method
-     *
-     * @return void
-     */
-    public function testGenerate()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test regenerate method
      *
      * @return void
+     *
+     * @throws
      */
     public function testRegenerate()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 2
+        ]);
+
+        $this->enableRetainFlashMessages();
+
+        $this->get([
+            'controller' => 'Invoices',
+            'prefix' => 'admin',
+            'action' => 'regenerate',
+            1
+        ]);
+
+        $this->assertFlashMessageAt(0, 'Invoice Regenerated from Application.');
+
+        $this->assertRedirect();
+
+        $this->get([
+            'controller' => 'Invoices',
+            'prefix' => 'admin',
+            'action' => 'regenerate',
+            1,
+            '?' => [
+                'force' => true,
+            ]
+        ]);
+
+        $this->assertFlashMessageAt(0, 'Invoice Regenerated from Application (bypassing limits).');
+
+        $this->assertRedirect();
     }
 
     /**
