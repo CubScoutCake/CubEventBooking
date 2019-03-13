@@ -26,10 +26,11 @@ class LineComponent extends Component
 
     /**
      * @param int $invoiceID The ID of the Invoice
+     * @param bool $admin Whether it is an admin regenerate (override locks)
      *
      * @return bool
      */
-    public function parseInvoice($invoiceID)
+    public function parseInvoice($invoiceID, $admin = false)
     {
         $this->Invoices = TableRegistry::getTableLocator()->get('Invoices');
         $this->Applications = TableRegistry::getTableLocator()->get('Applications');
@@ -38,13 +39,9 @@ class LineComponent extends Component
             'contain' => 'Applications.Events.Prices.ItemTypes'
         ]);
 
-//      debug($invoice);
-
         foreach ($invoice->application->event->prices as $price) {
-//          debug($price);
-
             if ($price->item_type->team_price) {
-                $this->parseLine($invoiceID, $price->id, 1);
+                $this->parseLine($invoiceID, $price->id, 1, $admin);
             } else {
                 if (!is_null($price->item_type->role_id)) {
                     /** @var \App\Model\Entity\Application $application */
@@ -60,7 +57,7 @@ class LineComponent extends Component
                             $countAtts += 1;
                         }
                     }
-                    $this->parseLine($invoiceID, $price->id, $countAtts);
+                    $this->parseLine($invoiceID, $price->id, $countAtts, $admin);
                 }
 
                 if (is_null($price->item_type->role_id) && !$price->item_type->minor) {
@@ -77,7 +74,7 @@ class LineComponent extends Component
                             $countAtts += 1;
                         }
                     }
-                    $this->parseLine($invoiceID, $price->id, $countAtts);
+                    $this->parseLine($invoiceID, $price->id, $countAtts, $admin);
                 }
             }
         }
@@ -89,10 +86,11 @@ class LineComponent extends Component
      * @param int $invoiceID The InvoiceID
      * @param int $priceID The Price ID
      * @param int $quantity The Quantity on the Line Item
+     * @param bool $admin Lock to max.
      *
      * @return bool
      */
-    public function parseLine($invoiceID, $priceID, $quantity)
+    public function parseLine($invoiceID, $priceID, $quantity, $admin = false)
     {
         $this->InvoiceItems = TableRegistry::getTableLocator()->get('InvoiceItems');
         $this->Invoices = TableRegistry::getTableLocator()->get('Invoices');
@@ -110,7 +108,7 @@ class LineComponent extends Component
             return false;
         }
 
-        if ($quantity > $price->max_number) {
+        if ($quantity > $price->max_number && $admin == false) {
             return false;
         }
 

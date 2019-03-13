@@ -14,7 +14,7 @@
             <li><a href="<?php echo $this->Url->build([
                 'controller' => 'Events',
                 'prefix' => 'admin',
-                'action' => 'full_view',
+                'action' => 'view',
                 $event->id],['_full']); ?>">Admin View</a>
             </li>
             <li><a href="<?php echo $this->Url->build([

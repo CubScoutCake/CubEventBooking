@@ -140,7 +140,7 @@ class LandingController extends AppController
                         return $this->redirect(['controller' => 'Attendees', 'action' => 'view', $idNum]);
 //                        break;
                     case "E":
-                        return $this->redirect(['controller' => 'Events', 'action' => 'full_view', $idNum]);
+                        return $this->redirect(['controller' => 'Events', 'action' => 'view', $idNum]);
 //                        break;
                     case "S":
                         return $this->redirect(['controller' => 'Settings', 'action' => 'view', $idNum]);

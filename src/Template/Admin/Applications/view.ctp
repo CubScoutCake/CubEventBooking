@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\Model\Entity\Application $application
+ */
+?>
+
 <div class="row">
     <div class="col-lg-10 col-md-10">
         <h1 class="page-header"><i class="fal fa-clipboard-list fa-fw"></i> Application <?= h($application->display_code) ?></h1>
@@ -29,7 +35,7 @@
                             'controller' => 'Invoices',
                             'action' => 'regenerate',
                             'prefix' => 'admin',
-                            $invFirst->id],['_full']); ?>">Update Invoice
+                            $application->invoice->id],['_full']); ?>">Update Invoice
 
                         <?php endif ?></a></li>
                     <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'prefix' => 'admin', 'action' => 'new_application', $application->id]) ?></li>
@@ -51,7 +57,7 @@
                 </br>
                 <span><?= __('Section') ?>: <?= $application->has('section') ? $this->Html->link($application->section->section, ['controller' => 'Sections', 'action' => 'view', $application->section->id]) : '' ?></span>
                 </br>
-                <span><?= __('Permitholder') ?>: <?= h($application->permitholder) ?></span>
+                <span><?= __('Permitholder') ?>: <?= h($application->permit_holder) ?></span>
 
             </div>
         </div>
@@ -59,7 +65,7 @@
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-green">
             <div class="panel-body">
-                <span><?= __('Event') ?>: <?= $application->has('event') ? $this->Html->link($application->event->full_name, ['controller' => 'Events', 'action' => 'full_view', $application->event->id]) : '' ?></span>
+                <span><?= __('Event') ?>: <?= $application->has('event') ? $this->Html->link($application->event->full_name, ['controller' => 'Events', 'action' => 'view', $application->event->id]) : '' ?></span>
                 </br>
                 <span><?= __('App Number') ?>: <?= $this->Number->format($application->id) ?></span>
                 </br>
@@ -128,7 +134,7 @@
                         'controller' => 'Invoices',
                         'action' => 'regenerate',
                         'prefix' => 'admin',
-                        $invFirst->id],['_full']); ?>">
+                        $application->invoice->id],['_full']); ?>">
                         <div class="panel-footer">
                             <span class="pull-left">Update Existing Invoice</span>
                     <?php endif ?>

@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller\Admin;
 
+use Mpdf\Tag\P;
+
 /**
  * Invoices Controller
  *
@@ -70,11 +72,7 @@ class InvoicesController extends AppController
             'contain' => [
                 'Users',
                 'Payments',
-                'InvoiceItems' => [
-                    'conditions' => [
-                        'visible' => 1
-                    ]
-                ],
+                'InvoiceItems',
                 'Applications' => [
                     'Events' => [
                         'EventTypes' => [
@@ -295,11 +293,22 @@ class InvoicesController extends AppController
      */
     public function regenerate($invoiceId = null)
     {
+        $query = $this->request->getQueryParams();
+
+        $admin = false;
+        if (key_exists('force', $query)) {
+            $admin = true;
+        }
+
         $this->loadComponent('Line');
-        $parse = $this->Line->parseInvoice($invoiceId);
+        $parse = $this->Line->parseInvoice($invoiceId, $admin);
 
         if ($parse) {
-            $this->Flash->success('Invoice Regenerated from Application.');
+            if ($admin) {
+                $this->Flash->success('Invoice Regenerated from Application (bypassing limits).');
+            } else {
+                $this->Flash->success('Invoice Regenerated from Application.');
+            }
 
             return $this->redirect($this->referer(['action' => 'view']));
         }

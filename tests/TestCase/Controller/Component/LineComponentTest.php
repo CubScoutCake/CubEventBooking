@@ -148,11 +148,13 @@ class LineComponentTest extends TestCase
             }
         }
 
-        // Team Price 1 (on / over)
+        // Team Price 1 (on / over / override)
         $response = $this->Line->parseLine(1, 1, 6);
         $this->assertTrue($response);
         $response = $this->Line->parseLine(1, 1, 7);
         $this->assertFalse($response);
+        $response = $this->Line->parseLine(1, 1, 7, true);
+        $this->assertTrue($response);
 
         // Event 3 - Line Bookings
         $events = $this->getTableLocator()->get('Events');
@@ -160,7 +162,7 @@ class LineComponentTest extends TestCase
 
         $this->assertFalse($sectionBookingEvent->get('team_price'));
 
-        // Cubs (on / over)
+        // Cubs (on / over / override)
         $this->assertTrue($teamBookingEvent->get('team_price'));
         foreach ($teamBookingEvent->prices as $price) {
             if ($price->item_type_id == 2) {
@@ -172,8 +174,10 @@ class LineComponentTest extends TestCase
         $this->assertTrue($response);
         $response = $this->Line->parseLine(2, 2, 6);
         $this->assertFalse($response);
+        $response = $this->Line->parseLine(2, 2, 6, true);
+        $this->assertTrue($response);
 
-        // Beavers (on / over)
+        // Beavers (on / over / override)
         foreach ($teamBookingEvent->prices as $price) {
             if ($price->item_type_id == 3) {
                 $this->assertEquals(2, $price->max_number);
@@ -184,8 +188,10 @@ class LineComponentTest extends TestCase
         $this->assertTrue($response);
         $response = $this->Line->parseLine(2, 3, 3);
         $this->assertFalse($response);
+        $response = $this->Line->parseLine(2, 3, 3, true);
+        $this->assertTrue($response);
 
-        // Scouts (on / over)
+        // Scouts (on / over / override)
         foreach ($teamBookingEvent->prices as $price) {
             if ($price->item_type_id == 4) {
                 $this->assertEquals(3, $price->max_number);
@@ -196,8 +202,10 @@ class LineComponentTest extends TestCase
         $this->assertTrue($response);
         $response = $this->Line->parseLine(2, 4, 4);
         $this->assertFalse($response);
+        $response = $this->Line->parseLine(2, 4, 4, true);
+        $this->assertTrue($response);
 
-        // Explorers (on / over)
+        // Explorers (on / over / override)
         foreach ($teamBookingEvent->prices as $price) {
             if ($price->item_type_id == 5) {
                 $this->assertEquals(3, $price->max_number);
@@ -208,8 +216,10 @@ class LineComponentTest extends TestCase
         $this->assertTrue($response);
         $response = $this->Line->parseLine(2, 5, 4);
         $this->assertFalse($response);
+        $response = $this->Line->parseLine(2, 5, 4, true);
+        $this->assertTrue($response);
 
-        // Adults (on / over)
+        // Adults (on / over / override)
         foreach ($teamBookingEvent->prices as $price) {
             if ($price->item_type_id == 6) {
                 $this->assertEquals(10, $price->max_number);
@@ -220,6 +230,8 @@ class LineComponentTest extends TestCase
         $this->assertTrue($response);
         $response = $this->Line->parseLine(2, 6, 11);
         $this->assertFalse($response);
+        $response = $this->Line->parseLine(2, 6, 11, true);
+        $this->assertTrue($response);
 
         // Test Price & Invoice Mismatch
         $response = $this->Line->parseLine(1, 6, 1);
