@@ -16,25 +16,17 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <span><?= __('User') ?>: <?= $application->has('user') ? $application->user->full_name : '' ?></span>
-                </br>
+                <br/>
                 <span><?= __('Scout Group') ?>: <?= $application->has('section') ? $application->section->scoutgroup->scoutgroup : '' ?></span>
-                </br>
+                <br/>
                 <span><?= __('Team') ?>: <?= h($application->section->section) ?></span>
-                </br>
-                <span><?= __('Permitholder') ?>: <?= h($application->permitholder) ?></span>
-
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-6">
-        <div class="panel panel-default">
-            <div class="panel-body">
+                <br/>
+                <span><?= __('Responsible Adult') ?>: <?= h($application->permitholder) ?></span>
+                <br/>
                 <span><?= __('Event') ?>: <?= $application->has('event') ? h($application->event->full_name) : '' ?></span>
-                </br>
-                <span><?= __('App Number') ?>: <?= $this->Number->format($application->id) ?></span>
-                </br>
+                <br/>
                 <span><?= __('Date Created') ?>: <?= $this->Time->i18nFormat($application->created, 'dd-MMM-yy HH:mm') ?></span>
-                </br>
+                <br/>
                 <span><?= __('Last Modified') ?>: <?= $this->Time->i18nFormat($application->modified, 'dd-MMM-yy HH:mm') ?></span>
             </div>
         </div>
@@ -46,9 +38,7 @@
             <div class="panel-heading">
                 <i class="fal fa-clipboard-list fa-fw"></i> Application Completion Progress
             </div>
-            <!-- /.panel-heading -->
             <div class="panel-body">
-                <h4><?= $this->Number->toPercentage($done,1,['multiply' => true]); ?> Complete</h4>
                 <table class="table table-condensed">
                     <tr>
                         <th><?= __('Area') ?></th>
@@ -93,7 +83,6 @@
                         <tr>
                             <th><?= __('Name') ?></th>
                             <th><?= __('Role') ?></th>
-                            <th><?= __('Contact Number') ?></th>
                             <th><?= __('Allergies') ?></th>
                         </tr>
                         <?php foreach ($application->attendees as $attendees): ?>
@@ -117,7 +106,7 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <?php if (!empty($application->invoices)): ?>
+        <?php if (!empty($application->invoice)): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fal fa-file-invoice-dollar fa-fw"></i> Invoices on this Application
@@ -132,15 +121,13 @@
                             <th><?= __('Balance') ?></th>
                             <th><?= __('Date Created') ?></th>
                         </tr>
-                        <?php foreach ($application->invoices as $invoices): ?>
                         <tr>
-                            <td><span><?= h($invoices->id) ?></span></td>
-                            <td><span><?= $this->Number->currency($invoices->initialvalue,'GBP') ?></span></td>
-                            <td><span><?= $this->Number->currency($invoices->value,'GBP') ?></span></td>
-                            <td><span><?= $this->Number->currency($invoices->balance,'GBP') ?></span></td>
-                            <td><span><?= $this->Time->i18nformat($invoices->created,'dd-MMM-yy HH:mm') ?></span></td>
+                            <td><span><?= h($application->invoice->id) ?></span></td>
+                            <td><span><?= $this->Number->currency($application->invoice->initialvalue,'GBP') ?></span></td>
+                            <td><span><?= $this->Number->currency($application->invoice->value,'GBP') ?></span></td>
+                            <td><span><?= $this->Number->currency($application->invoice->balance,'GBP') ?></span></td>
+                            <td><span><?= $this->Time->i18nformat($application->invoice->created,'dd-MMM-yy HH:mm') ?></span></td>
                         </tr>
-                        <?php endforeach; ?>
                     </table>
                 </div>
             </div>      

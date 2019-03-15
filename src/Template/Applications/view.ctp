@@ -24,9 +24,10 @@
                     </li>
                     <li><a href="<?php echo $this->Url->build([
                         'controller' => 'Applications',
-                        'action' => 'pdf_view',
+                        'action' => 'view',
                         'prefix' => false,
-                        $application->id],['_full']); ?>">Download Application</a>
+                        '_ext' => 'pdf',
+                        $application->id]); ?>">Download Application</a>
                     </li>
                     <li><a href="<?php
 

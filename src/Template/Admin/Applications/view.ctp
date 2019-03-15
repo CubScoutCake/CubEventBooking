@@ -19,7 +19,7 @@
                 <ul class="dropdown-menu pull-right" role="menu">
                     <li><?= $this->Html->link(__('Edit Application'), ['controller' => 'Applications', 'action' => 'edit', 'prefix' => 'admin', $application->id]) ?></li>
                     <li><?= $this->Html->link(__('Link Attendees'), ['controller' => 'Applications', 'action' => 'link', 'prefix' => 'admin', $application->id]) ?></li>
-                    <li><?= $this->Html->link(__('Download Application'), ['controller' => 'Applications', 'action' => 'pdf_view', 'prefix' => 'admin', $application->id]) ?></li>
+                    <li><?= $this->Html->link(__('Download Application'), ['controller' => 'Applications', 'action' => 'view', '_ext' => 'pdf', 'prefix' => 'admin', $application->id]) ?></li>
                     <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Applications', 'action' => 'delete', $application->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $application->id)]) ?></li>
                     <li class='divider'></li>
                     <li><a href="<?php 
