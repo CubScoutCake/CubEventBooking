@@ -1,9 +1,6 @@
 <?php
 namespace App\Controller;
 
-use Cake\Network\Http\Client;
-use Cake\ORM\TableRegistry;
-
 /**
  * Attendees Controller
  *
@@ -30,13 +27,14 @@ class AttendeesController extends AppController
     /**
      * View method
      *
-     * @param string|null $AttID Attendee id.
+     * @param string|null $attendeeID Attendee id.
+     *
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($AttID = null)
+    public function view($attendeeID = null)
     {
-        $attendee = $this->Attendees->get($AttID, [
+        $attendee = $this->Attendees->get($attendeeID, [
             'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
         ]);
         $this->set('attendee', $attendee);
@@ -71,7 +69,7 @@ class AttendeesController extends AppController
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
-        $this->set(compact('attendee', 'users', 'sections', 'roles', 'applications', 'allergies'));
+        $this->set(compact('attendee', 'sections', 'roles', 'applications', 'allergies'));
         $this->set('_serialize', ['attendee']);
 
         if ($this->request->is('get')) {
@@ -110,7 +108,7 @@ class AttendeesController extends AppController
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
-        $this->set(compact('attendee', 'users', 'sections', 'roles', 'applications', 'allergies'));
+        $this->set(compact('attendee', 'sections', 'roles', 'applications', 'allergies'));
         $this->set('_serialize', ['attendee']);
 
         if ($this->request->is('get')) {
@@ -122,46 +120,24 @@ class AttendeesController extends AppController
     /**
      * Edit method
      *
-     * @param int $AttID The ID of the Attendee.
+     * @param int $attendeeId The ID of the Attendee.
      *
      * @return mixed Redirects on successful edit, renders view otherwise.
      *
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($AttID = null)
+    public function edit($attendeeId = null)
     {
-        $attendee = $this->Attendees->get($AttID, [
+        $attendee = $this->Attendees->get($attendeeId, [
             'contain' => ['Applications', 'Allergies', 'Users', 'Sections', 'Roles']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $attendee = $this->Attendees->patchEntity($attendee, $this->request->getData());
-
-            $phone1 = $attendee->phone;
-            $phone2 = $attendee->phone2;
-
-            $phone1 = str_replace(' ', '', $phone1);
-            $phone1 = str_replace('-', '', $phone1);
-            $phone1 = str_replace('/', '', $phone1);
-            $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
-
-            if (!empty($phone2)) {
-                $phone2 = str_replace(' ', '', $phone2);
-                $phone2 = str_replace('-', '', $phone2);
-                $phone2 = str_replace('/', '', $phone2);
-                $phone2 = substr($phone2, 0, 5) . ' ' . substr($phone2, 5);
-            }
-
-            $phoneAttendee = [
-                'phone' => $phone1,
-                'phone2' => $phone2
-                ];
-
-            $attendee = $this->Attendees->patchEntity($attendee, $phoneAttendee);
+            $this->Attendees->patchEntity($attendee, $this->request->getData());
 
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $attendeeId]);
             } else {
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
             }
@@ -170,23 +146,24 @@ class AttendeesController extends AppController
         $roles = $this->Attendees->Roles->find('nonAuto')->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
-        $this->set(compact('attendee', 'users', 'sections', 'roles', 'applications', 'allergies'));
+
+        $this->set(compact('attendee', 'sections', 'roles', 'applications', 'allergies'));
         $this->set('_serialize', ['attendee']);
     }
 
     /**
      * Delete method
      *
-     * @param string|null $AttID Attendee id.
+     * @param string|null $attendeeId Attendee id.
      *
      * @return \Cake\Http\Response Redirects to index.
      *
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function delete($AttID = null)
+    public function delete($attendeeId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $attendee = $this->Attendees->get($AttID, ['contain' => ['Roles', 'Sections.Scoutgroups.Districts']]);
+        $attendee = $this->Attendees->get($attendeeId, ['contain' => ['Roles', 'Sections.Scoutgroups.Districts']]);
         if ($this->Attendees->delete($attendee)) {
             $this->Flash->success(__('The attendee has been deleted.'));
         } else {

@@ -139,7 +139,7 @@ class AttendeesController extends AppController
             if ($this->Attendees->save($attendee)) {
                 $this->Flash->success(__('The attendee has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $attendeeId]);
             } else {
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
             }

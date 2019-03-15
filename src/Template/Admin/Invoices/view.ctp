@@ -58,9 +58,11 @@
                     </li>
                     <li><a href="<?php echo $this->Url->build([
                         'controller' => 'Invoices',
-                        'action' => 'pdf_view',
+                        'action' => 'view',
                         'prefix' => 'admin',
-                        $invoice->id]); ?>">Download Invoice</a>
+                        '_ext' => 'pdf',
+                        $invoice->id
+                        ]); ?>">Download Invoice</a>
                     </li>
                     <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete','prefix' => 'admin', $invoice->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoice->id)]) ?></li>
                     <li><?= $this->Form->postLink(__('Add Surcharge'), ['controller' => 'InvoiceItems', 'action' => 'overdue','prefix' => 'admin', $invoice->id], ['confirm' => __('Are you sure you want to add a Surcharge to # {0}?', $invoice->id)]) ?></li>

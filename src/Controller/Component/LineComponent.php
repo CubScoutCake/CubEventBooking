@@ -57,19 +57,23 @@ class LineComponent extends Component
                 $this->parseLine($invoiceID, $price->id, 1, $admin);
             } else {
                 // Find Cub, YL & Leader Counts
-                $appNumbers = $this->Availability->getNumbers($invoice->application->id);
+                $appNumbers = $this->Availability->getApplicationNumbers($invoice->application->id);
 
-                if (!is_null($price->item_type->role_id)) {
-                    if ($price->item_type->role_id == $invoice->application->event->section_type->role_id) {
-                        $this->parseLine($invoiceID, $price->id, $appNumbers['NumSection'], $admin);
-                    }
+                if (!is_null($price->item_type->role_id)
+                    && $price->item_type->role_id == $invoice->application->event->section_type->role_id
+                ) {
+                    $this->parseLine($invoiceID, $price->id, $appNumbers['NumSection'], $admin);
                 }
 
-                if (is_null($price->item_type->role_id) && !$price->item_type->minor) {
+                if (!$price->item_type->minor
+                    && (is_null($price->item_type->role_id) || $price->item_type->role_id != $invoice->application->event->section_type->role_id)
+                ) {
                     $this->parseLine($invoiceID, $price->id, $appNumbers['NumLeaders'], $admin);
                 }
 
-                if ((is_null($price->item_type->role_id) && $price->item_type->minor) || ($price->item_type->role_id != $invoice->application->event->section_type->role_id)) {
+                if ($price->item_type->minor
+                    && (is_null($price->item_type->role_id) || $price->item_type->role_id != $invoice->application->event->section_type->role_id)
+                ) {
                     $this->parseLine($invoiceID, $price->id, $appNumbers['NumNonSection'], $admin);
                 }
             }

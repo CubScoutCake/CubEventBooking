@@ -118,9 +118,19 @@ class InvoiceItemsTable extends Table
                 ->where(['ItemTypes.minor' => true]);
         }
 
+        if (!key_exists('role_id', $options)) {
+            return $query
+                ->contain(['Invoices.Applications', 'ItemTypes'])
+                ->where(['Applications.id' => $options['application_id'], 'ItemTypes.minor' => true]);
+        }
+
         return $query
             ->contain(['Invoices.Applications', 'ItemTypes'])
-            ->where(['Applications.id' => $options['application_id'], 'ItemTypes.minor' => true]);
+            ->where([
+                'Applications.id' => $options['application_id'],
+                'ItemTypes.minor' => true,
+                'ItemTypes.role_id' => $options['role_id'],
+            ]);
     }
 
     /**
