@@ -137,5 +137,4 @@ class AvailabilityComponentTest extends TestCase
         ];
         $this->assertEquals($expected, $numbers);
     }
-
 }
