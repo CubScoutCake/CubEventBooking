@@ -89,10 +89,28 @@ class InvoiceItemsTableTest extends TestCase
             [
                 'id' => 1,
                 'invoice_id' => 1,
-                'value' => 1.0,
-                'description' => 'Lorem ipsum dolor sit amet',
+                'value' => 10,
+                'description' => 'CUBS',
+                'quantity' => 5,
+                'item_type_id' => 2,
+                'visible' => true,
+            ],
+            [
+                'id' => 2,
+                'invoice_id' => 1,
+                'value' => 0,
+                'description' => 'YOUNG LEADERS',
+                'quantity' => 4,
+                'item_type_id' => 5,
+                'visible' => 1
+            ],
+            [
+                'id' => 3,
+                'invoice_id' => 1,
+                'value' => 5,
+                'description' => 'LEADERS',
                 'quantity' => 1,
-                'item_type_id' => 1,
+                'item_type_id' => 6,
                 'visible' => 1
             ],
         ];

@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller\Admin;
 
+use Cake\ORM\TableRegistry;
+
 /**
  * Applications Controller
  *
@@ -106,6 +108,50 @@ class ApplicationsController extends AppController
         $cakePDF->write(FILES . DS . 'Event ' . $application->id . DS . 'Applications' . DS . 'Application #' . $applicationId . '.pdf');
 
         $this->redirect(['controller' => 'Applications', 'action' => 'view', $application->id, '_ext' => 'pdf']);
+    }
+
+    /**
+     * Parse all applications for an event
+     *
+     * @param null $eventId Event ID to be parsed.
+     *
+     * @throws \Exception
+     *
+     * @return void
+     */
+    public function eventPdf($eventId = null)
+    {
+        if (isset($eventId)) {
+            $events = TableRegistry::getTableLocator()->get('Events');
+            $event = $events->get($eventId, ['contain' => ['Applications']]);
+            foreach ($event->applications as $applications) {
+                // Insantiate Objects
+                $application = $this->Applications->get($applications->id, [
+                    'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes']
+                ]);
+                $this->set('application', $application);
+                $this->set('_serialize', ['application']);
+                $this->viewBuilder()->options([
+                    'pdfConfig' => [
+                        'orientation' => 'portrait',
+                        'filename' => 'Application ' . $application->id
+                    ]
+                ]);
+                $this->set('application', $application);
+                $this->set('_serialize', ['application']);
+                $this->loadComponent('Progress');
+                $this->Progress->determineApp($application->id, true, $this->Auth->user('id'), true, true, false);
+                $cakePdf = new \CakePdf\Pdf\CakePdf();
+                $cakePdf->template('application', 'default');
+                $cakePdf->viewVars($this->viewVars);
+                // Get the PDF string returned
+                // $pdf = $cakePdf->output();
+                // Or write it to file directly
+                $cakePdf->write(FILES . DS . 'Event ' . $event->id . DS . 'Applications' . DS . 'Application #' . $application->id . '.pdf');
+            }
+            $this->redirect($this->referer(['controller' => 'Events', 'action' => 'view', $eventId]));
+        }
+        $this->redirect($this->referer(['controller' => 'Landing', 'action' => 'admin_home']));
     }
 
     /**

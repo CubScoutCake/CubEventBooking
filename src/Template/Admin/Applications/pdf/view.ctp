@@ -1,3 +1,11 @@
+<?php
+
+/**
+ * @var \App\Model\Entity\Application $application
+ */
+
+?>
+
 <div class="row">
     <div class="col-xs-12">
         <h1 class="page-header"><i class="fal fa-clipboard-list fa-fw"></i> Application <?= h($application->display_code) ?></h1>
@@ -7,11 +15,11 @@
     <div class="col-xs-6">
         <div class="panel panel-default">
             <div class="panel-body">
-                <span><?= __('User') ?>: <?= $application->has('user') ? $this->Html->link($application->user->full_name, ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></span>
+                <span><?= __('User') ?>: <?= $application->has('user') ? $application->user->full_name : '' ?></span>
                 </br>
-                <span><?= __('Scoutgroup') ?>: <?= $application->has('scoutgroup') ? $this->Html->link($application->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $application->scoutgroup->id]) : '' ?></span>
+                <span><?= __('Scout Group') ?>: <?= $application->has('section') ? $application->section->scoutgroup->scoutgroup : '' ?></span>
                 </br>
-                <span><?= __('Team') ?>: <?= h($application->section) ?></span>
+                <span><?= __('Team') ?>: <?= h($application->section->section) ?></span>
                 </br>
                 <span><?= __('Permitholder') ?>: <?= h($application->permitholder) ?></span>
 
@@ -21,7 +29,7 @@
     <div class="col-xs-6">
         <div class="panel panel-default">
             <div class="panel-body">
-                <span><?= __('Event') ?>: <?= $application->has('event') ? $this->Html->link($application->event->full_name, ['controller' => 'Events', 'action' => 'view', $application->event->id]) : '' ?></span>
+                <span><?= __('Event') ?>: <?= $application->has('event') ? h($application->event->full_name) : '' ?></span>
                 </br>
                 <span><?= __('App Number') ?>: <?= $this->Number->format($application->id) ?></span>
                 </br>
@@ -40,14 +48,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <div>   
-                    <div class="progress progress-striped active">
-                        <div class="progress-bar progress-bar-<?= h($status) ?>" role="progressbar" aria-valuenow="<?php echo ($done * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage($done,1,['multiply' => true]); ?>">
-                            <span class="sr-only"><?= $this->Number->toPercentage($done,1,['multiply' => true]); ?> Complete</span>
-                        </div>
-                    </div>
-                </div>
-                <h4><?= $this->Number->toPercentage($done,1,['multiply' => true]); ?></h4>
+                <h4><?= $this->Number->toPercentage($done,1,['multiply' => true]); ?> Complete</h4>
                 <table class="table table-condensed">
                     <tr>
                         <th><?= __('Area') ?></th>
@@ -99,7 +100,6 @@
                         <tr>
                             <td><span><?= h($attendees->firstname) ?> <?= h($attendees->lastname) ?></span></td> 
                             <td><span><?= $attendees->has('role') ? $this->Text->truncate($attendees->role->role,10) : '' ?></span></td>
-                            <td><span><?= $attendees->phone?></span></td>
                             <td><span>
                                 <?php if (!empty($attendees->allergies)): ?>
                                     <?php foreach ($attendees->allergies as $allergies): ?>

@@ -67,7 +67,8 @@ class ProgressComponent extends Component
         $invNotCubs = 0;
 
         if ($invCount > 0) {
-            $invMinorCount = $this->Invoices->InvoiceItems->find('minors', ['application_id' => $appID])->count();
+            $invMinorCount = $this->Invoices->InvoiceItems->find('minors', ['application_id' => $appID]);
+            $invMinorCount = $invMinorCount->count();
 
             if ($invMinorCount > 0) {
                 $invItemMinorCounts = $this->Invoices->InvoiceItems
@@ -75,7 +76,12 @@ class ProgressComponent extends Component
                     ->find('totalQuantity')
                     ->toArray();
 
-                $invCubs = $invItemMinorCounts[0]->sum;
+                $invCubs = $invItemMinorCounts[0]->count;
+
+                if ($invCubs == ($attCubs + $attYls)) {
+                    $invYls = intval(($invCubs - $attCubs));
+                    $invCubs = intval(($invCubs - $attYls));
+                }
             }
 
             $invAdultCount = $this->Invoices->InvoiceItems->find('adults', ['application_id' => $appID])->count();
@@ -86,8 +92,10 @@ class ProgressComponent extends Component
                     ->find('totalQuantity', ['application_id' => $appID])
                     ->toArray();
 
-                $invNotCubs = $invItemAdultCounts[0]->sum;
+                $invLeaders = intval($invItemAdultCounts[0]->count);
             }
+
+            $invNotCubs = $invYls + $invLeaders;
         }
 
         $sumValues = 0;

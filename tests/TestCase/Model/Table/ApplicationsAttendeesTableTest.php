@@ -119,10 +119,6 @@ class ApplicationsAttendeesTableTest extends TestCase
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 10
-            ],
-            [
-                'application_id' => 1,
                 'attendee_id' => 11
             ],
             [
@@ -231,10 +227,6 @@ class ApplicationsAttendeesTableTest extends TestCase
             [
                 'application_id' => 1,
                 'attendee_id' => 9
-            ],
-            [
-                'application_id' => 1,
-                'attendee_id' => 10
             ],
             [
                 'application_id' => 1,

@@ -13,9 +13,13 @@ use Cake\ORM\TableRegistry;
  * @property \App\Model\Table\ApplicationsTable $Applications
  * @property \App\Model\Table\InvoiceItemsTable $InvoiceItems
  * @property \App\Model\Table\PricesTable $Prices
+ *
+ * @property \App\Controller\Component\AvailabilityComponent $Availability
+ * @property \Cake\Controller\Component\FlashComponent $Flash
  */
 class LineComponent extends Component
 {
+    public $components = ['Flash', 'Availability'];
 
     /**
      * Default configuration.
@@ -36,45 +40,37 @@ class LineComponent extends Component
         $this->Applications = TableRegistry::getTableLocator()->get('Applications');
 
         $invoice = $this->Invoices->get($invoiceID, [
-            'contain' => 'Applications.Events.Prices.ItemTypes'
+            'contain' => [
+                'Applications' => [
+                    'Events' => [
+                        'Prices' => [
+                            'ItemTypes'
+                        ],
+                        'SectionTypes',
+                    ],
+                ]
+            ]
         ]);
 
         foreach ($invoice->application->event->prices as $price) {
             if ($price->item_type->team_price) {
                 $this->parseLine($invoiceID, $price->id, 1, $admin);
             } else {
+                // Find Cub, YL & Leader Counts
+                $appNumbers = $this->Availability->getNumbers($invoice->application->id);
+
                 if (!is_null($price->item_type->role_id)) {
-                    /** @var \App\Model\Entity\Application $application */
-                    $application = $this->Applications
-                        ->get($invoice->application_id, [
-                            'contain' => 'Attendees.Roles'
-                        ]);
-
-                    $countAtts = 0;
-
-                    foreach ($application->attendees as $attendee) {
-                        if ($attendee->role_id == $price->item_type->role_id) {
-                            $countAtts += 1;
-                        }
+                    if ($price->item_type->role_id == $invoice->application->event->section_type->role_id) {
+                        $this->parseLine($invoiceID, $price->id, $appNumbers['NumSection'], $admin);
                     }
-                    $this->parseLine($invoiceID, $price->id, $countAtts, $admin);
                 }
 
                 if (is_null($price->item_type->role_id) && !$price->item_type->minor) {
-                    /** @var \App\Model\Entity\Application $application */
-                    $application = $this->Applications
-                        ->get($invoice->application_id, [
-                            'contain' => 'Attendees.Roles'
-                        ]);
+                    $this->parseLine($invoiceID, $price->id, $appNumbers['NumLeaders'], $admin);
+                }
 
-                    $countAtts = 0;
-
-                    foreach ($application->attendees as $attendee) {
-                        if (!$attendee->role->minor) {
-                            $countAtts += 1;
-                        }
-                    }
-                    $this->parseLine($invoiceID, $price->id, $countAtts, $admin);
+                if ((is_null($price->item_type->role_id) && $price->item_type->minor) || ($price->item_type->role_id != $invoice->application->event->section_type->role_id)) {
+                    $this->parseLine($invoiceID, $price->id, $appNumbers['NumNonSection'], $admin);
                 }
             }
         }
