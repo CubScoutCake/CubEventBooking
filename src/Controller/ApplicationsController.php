@@ -67,7 +67,7 @@ class ApplicationsController extends AppController
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
-                   'filename' => 'Application_' . $applicationId
+                   'filename' => 'Application #' . $applicationId
                ]
            ]);
 
@@ -176,7 +176,7 @@ class ApplicationsController extends AppController
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
-                   'filename' => 'Invoice_' . $eventId
+                   'filename' => 'Invoice #' . $eventId
                ]
            ]);
 

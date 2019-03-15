@@ -7,6 +7,8 @@ use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\Component\AvailabilityComponent Test Case
+ *
+ * @property \App\Controller\Component\AvailabilityComponent $Availability
  */
 class AvailabilityComponentTest extends TestCase
 {
@@ -91,14 +93,14 @@ class AvailabilityComponentTest extends TestCase
     }
 
     /**
-     * Test getNumbers method
+     * Test getApplicationNumbers method
      *
      * @return void
      */
-    public function testGetNumbers()
+    public function testGetApplicationNumbers()
     {
         // Application 1
-        $numbers = $this->Availability->getNumbers(1);
+        $numbers = $this->Availability->getApplicationNumbers(1);
 
         $expected = [
             'NumSection' => 5,
@@ -108,7 +110,7 @@ class AvailabilityComponentTest extends TestCase
         $this->assertEquals($expected, $numbers);
 
         // Event 3
-        $numbers = $this->Availability->getNumbers(3);
+        $numbers = $this->Availability->getApplicationNumbers(3);
 
         $expected = [
             'NumSection' => 5,
@@ -117,4 +119,23 @@ class AvailabilityComponentTest extends TestCase
         ];
         $this->assertEquals($expected, $numbers);
     }
+
+    /**
+     * Test getInvoiceNumbers method
+     *
+     * @return void
+     */
+    public function testGetInvoiceNumbers()
+    {
+        // Application 1
+        $numbers = $this->Availability->getInvoiceNumbers(1);
+
+        $expected = [
+            'NumSection' => 5,
+            'NumNonSection' => 4,
+            'NumLeaders' => 1,
+        ];
+        $this->assertEquals($expected, $numbers);
+    }
+
 }

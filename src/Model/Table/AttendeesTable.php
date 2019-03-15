@@ -292,7 +292,7 @@ class AttendeesTable extends Table
             $entity = $entity->set($changed, $newEntity->get($changed));
         }
 
-        $entity = $this->changeCase($entity);
+        //$entity = $this->changeCase($entity);
 
         return true;
     }

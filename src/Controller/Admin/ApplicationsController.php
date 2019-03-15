@@ -95,7 +95,7 @@ class ApplicationsController extends AppController
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
-                   'filename' => 'Invoice_' . $applicationId
+                   'filename' => 'Invoice #' . $applicationId
                ]
            ]);
 
@@ -193,7 +193,7 @@ class ApplicationsController extends AppController
                 $parse = $this->Line->parseInvoice($application->invoice->id);
 
                 $this->loadComponent('Availability');
-                $this->Availability->getNumbers($appId);
+                $this->Availability->getApplicationNumbers($appId);
 
                 $this->Flash->success(__('Application has been registered.'));
 

@@ -56,7 +56,7 @@ class InvoicesController extends AppController
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
-                   'filename' => 'Invoice_' . $invoiceId
+                   'filename' => 'Invoice #' . $invoiceId
                ]
            ]);
 
@@ -66,7 +66,7 @@ class InvoicesController extends AppController
                 'Payments',
                 'InvoiceItems' => [
                     'conditions' => [
-                        'visible' => 1
+                        'visible' => true
                     ]
                 ],
                 'Applications' => [
@@ -101,7 +101,7 @@ class InvoicesController extends AppController
         $this->viewBuilder()->setOptions([
             'pdfConfig' => [
                 'orientation' => 'portrait',
-                'filename' => 'Invoice_' . $invoiceId
+                'filename' => 'Invoice #' . $invoiceId
             ]
         ]);
 

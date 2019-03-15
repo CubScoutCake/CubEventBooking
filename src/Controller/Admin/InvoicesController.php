@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use Mpdf\Tag\P;
-
 /**
  * Invoices Controller
  *
@@ -64,7 +62,7 @@ class InvoicesController extends AppController
         $this->viewBuilder()->setOptions([
             'pdfConfig' => [
                 'orientation' => 'portrait',
-                'filename' => 'Invoice_' . $invoiceId
+                'filename' => 'Invoice #' . $invoiceId
             ]
         ]);
 
@@ -102,7 +100,7 @@ class InvoicesController extends AppController
         $this->viewBuilder()->setOptions([
             'pdfConfig' => [
                 'orientation' => 'portrait',
-                'filename' => 'Invoice_' . $invoiceId
+                'filename' => 'Invoice #' . $invoiceId
             ]
         ]);
 
@@ -144,45 +142,66 @@ class InvoicesController extends AppController
     }
 
     /**
-     * @param int|null $invoiceId The ID of the Invoice
+     * @param int $eventId The ID of the Invoice
      *
      * @return \Cake\Http\Response|void
      *
      * @throws \Exception
      */
-    public function sendPdf($invoiceId = null)
+    public function eventPdf($eventId)
     {
-        // Instantiate Objects
-        $invoice = $this->Invoices->get($invoiceId, [
-            'contain' => ['Users', 'Payments', 'InvoiceItems' => ['conditions' => ['visible' => 1]], 'Applications']
-        ]);
+        if (isset($eventId)) {
+            /** @var \App\Model\Entity\Event $event */
+            $event = $this->Invoices->Applications->Events->get($eventId, ['contain' => ['Applications.Invoices', 'Settings']]);
 
-        $this->viewBuilder()->setOptions([
-               'pdfConfig' => [
-                   'orientation' => 'portrait',
-                   'filename' => 'Invoice_' . $invoiceId
-               ]
-           ]);
+            foreach ($event->applications as $application) {
+                if ($application->has('invoice')) {
+                    $this->viewBuilder()->setOptions([
+                        'pdfConfig' => [
+                            'orientation' => 'portrait',
+                            'filename' => 'Invoice #' . $application->invoice->id
+                        ]
+                    ]);
 
-        /**
-         * @var \App\Model\Entity\Application $application
-         */
-        $application = $this->Invoices->Applications->get($invoice->application_id);
+                    $invoice = $this->Invoices->get($application->invoice->id, [
+                        'contain' => [
+                            'Users',
+                            'Payments',
+                            'InvoiceItems' => [
+                                'conditions' => [
+                                    'visible' => true
+                                ]
+                            ],
+                            'Applications' => [
+                                'Events' => [
+                                    'EventTypes' => [
+                                        'LegalTexts', 'InvoiceTexts', 'Payable'
+                                    ],
+                                    'AdminUsers',
+                                ],
+                                'Sections.Scoutgroups.Districts',
+                            ],
+                            'Notes' => [
+                                'conditions' => [
+                                    'visible' => true
+                                ]
+                            ]
+                        ]
+                    ]);
 
-        /**
-         * @var \App\Model\Entity\Event $event
-         */
-        $event = $this->Invoices->Applications->Events->get($application->event_id, ['contain' => ['Applications', 'Settings']]);
+                    $this->set(compact('invoice'));
+                    $this->set('_serialize', ['invoice']);
+                    $cakePDF = new \CakePdf\Pdf\CakePdf();
+                    $cakePDF->template('invoice', 'default');
+                    $cakePDF->viewVars($this->viewVars);
 
-        $this->set('_serialize', ['invoice']);
-
-        $cakePDF = new \CakePdf\Pdf\CakePdf();
-        $cakePDF->template('invoice', 'default');
-        $this->set($cakePDF->viewVars());
-
-        $cakePDF->write(FILES . DS . 'Event ' . $event->id . DS . 'Invoices' . DS . 'Invoice #' . $invoiceId . '.pdf');
-
-        $this->redirect(['controller' => 'Notifications', 'action' => 'sendPdf', $invoice->id]);
+                    // write it to file directly
+                    $cakePDF->write(FILES . DS . 'Event ' . $event->id . DS . 'Invoices' . DS . 'Invoice #' . $invoice->id . '.pdf');
+                }
+            }
+            $this->redirect(['controller' => 'Events', 'action' => 'view', $event->id]);
+        }
+        $this->redirect($this->referer(['controller' => 'Landing', 'action' => 'admin_home']));
     }
 
     /**

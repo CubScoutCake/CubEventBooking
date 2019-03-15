@@ -35,7 +35,7 @@ class ProgressComponent extends Component
      */
     public function determineApp($appID, $admin = null, $userID = null, $set = true, $full = true, $flash = null)
     {
-        if (!is_null($flash)) {
+        if (is_null($flash)) {
             $flash = $set;
         }
 
@@ -53,7 +53,7 @@ class ProgressComponent extends Component
         $invCount = $application->has('invoice') ? 1 : 0;
 
         // Find Cub, YL & Leader Counts
-        $appNumbers = $this->Availability->getNumbers($appID);
+        $appNumbers = $this->Availability->getApplicationNumbers($appID);
 
         $attCubs = $appNumbers['NumSection'];
         $attYls = $appNumbers['NumNonSection'];
@@ -66,35 +66,12 @@ class ProgressComponent extends Component
         $invLeaders = 0;
         $invNotCubs = 0;
 
-        if ($invCount > 0) {
-            $invMinorCount = $this->Invoices->InvoiceItems->find('minors', ['application_id' => $appID]);
-            $invMinorCount = $invMinorCount->count();
+        if ($application->has('invoice')) {
+            $invoiceNumbers = $this->Availability->getInvoiceNumbers($application->invoice->id);
 
-            if ($invMinorCount > 0) {
-                $invItemMinorCounts = $this->Invoices->InvoiceItems
-                    ->find('minors', ['application_id' => $appID])
-                    ->find('totalQuantity')
-                    ->toArray();
-
-                $invCubs = $invItemMinorCounts[0]->count;
-
-                if ($invCubs == ($attCubs + $attYls)) {
-                    $invYls = intval(($invCubs - $attCubs));
-                    $invCubs = intval(($invCubs - $attYls));
-                }
-            }
-
-            $invAdultCount = $this->Invoices->InvoiceItems->find('adults', ['application_id' => $appID])->count();
-
-            if ($invAdultCount > 0) {
-                $invItemAdultCounts = $this->Invoices->InvoiceItems
-                    ->find('adults', ['application_id' => $appID])
-                    ->find('totalQuantity', ['application_id' => $appID])
-                    ->toArray();
-
-                $invLeaders = intval($invItemAdultCounts[0]->count);
-            }
-
+            $invCubs = $invoiceNumbers['NumSection'];
+            $invYls = $invoiceNumbers['NumNonSection'];
+            $invLeaders = $invoiceNumbers['NumLeaders'];
             $invNotCubs = $invYls + $invLeaders;
         }
 

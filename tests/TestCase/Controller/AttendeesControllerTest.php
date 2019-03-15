@@ -106,6 +106,7 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testAdult()
     {
+        $this->markTestIncomplete();
         $this->session([
            'Auth.User.id' => 1,
            'Auth.User.auth_role_id' => 2
@@ -113,7 +114,7 @@ class AttendeesControllerTest extends IntegrationTestCase
 
         $this->get([
             'controller' => 'Attendees',
-            'action' => 'edit',
+            'action' => 'add',
             '?' => [
                 'section' => true,
             ]
@@ -131,6 +132,7 @@ class AttendeesControllerTest extends IntegrationTestCase
      */
     public function testSection()
     {
+        $this->markTestIncomplete();
         $this->session([
             'Auth.User.id' => 1,
             'Auth.User.auth_role_id' => 2
@@ -138,7 +140,7 @@ class AttendeesControllerTest extends IntegrationTestCase
 
         $this->get([
             'controller' => 'Attendees',
-            'action' => 'edit',
+            'action' => 'add',
             '?' => [
                 'section' => true,
             ]
@@ -234,26 +236,59 @@ class AttendeesControllerTest extends IntegrationTestCase
      * Test delete method
      *
      * @return void
+     *
+     * @throws
      */
     public function testDelete()
     {
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
+
+        $this->session([
+            'Auth.User.id' => 2,
+            'Auth.User.auth_role_id' => 1
+        ]);
+
+        $this->post([
+            'controller' => 'Attendees',
+            'action' => 'delete',
+            'prefix' => false,
+            1
+        ]);
+        $this->assertRedirect();
+//        $this->assertFlashMessageAt(0, 'You are not authorised to perform this action.');
+
         $this->session([
             'Auth.User.id' => 1,
             'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
+        $this->get([
+            'controller' => 'Attendees',
+            'action' => 'view',
+            'prefix' => false,
+            1,
+        ]);
+        $this->assertResponseOk();
 
-        $this->post('/attendees/delete/1');
+        $this->post([
+            'controller' => 'Attendees',
+            'action' => 'delete',
+            'prefix' => false,
+            1
+        ]);
 
         $this->assertRedirect();
+        $this->assertFlashMessageAt(0, 'The attendee has been deleted.');
     }
 
     /**
      * Test isAuthorized method
      *
      * @return void
+     *
+     * @throws
      */
     public function testIsAuthorized()
     {

@@ -23,11 +23,19 @@ $cakeDescription = 'HertsCubs Booking System';
     	.panel-warning {
 			border-color: #f0ad4e;
 		}
+        .panel-default {
+            border-color: #00a794;
+        }
     	.panel-warning .panel-heading {
 			border-color: #f0ad4e;
 			color: #fff;
 			background-color: #f0ad4e;
 		}
+        .panel-default .panel-heading {
+            border-color: #00a794;
+            color: #fff;
+            background-color: #00a794;
+        }
 		.panel-heading {
 			padding: 10px 15px;
 			border-bottom: 1px solid transparent;

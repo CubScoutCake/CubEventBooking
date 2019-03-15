@@ -180,6 +180,8 @@ class AttendeesControllerTest extends IntegrationTestCase
      * Test delete method
      *
      * @return void
+     *
+     * @throws
      */
     public function testDelete()
     {
@@ -190,9 +192,16 @@ class AttendeesControllerTest extends IntegrationTestCase
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
 
-        $this->post('/admin/attendees/delete/1');
+        $this->post([
+            'controller' => 'Attendees',
+            'action' => 'delete',
+            'prefix' => 'admin',
+            1
+        ]);
 
         $this->assertRedirect();
+        $this->assertFlashMessageAt(0, 'The attendee has been deleted.');
     }
 }
