@@ -244,17 +244,17 @@ class ApplicationsTableTest extends TestCase
         $query = $this->Applications->find('nonSection');
         $this->assertInstanceOf('Cake\ORM\Query', $query);
 
-        $this->assertEquals(10, $query->count());
+        $this->assertEquals(9, $query->count());
 
         $query = $this->Applications->find('nonSection', ['role_id' => 1]);
         $this->assertInstanceOf('Cake\ORM\Query', $query);
 
-        $this->assertEquals(20, $query->count());
+        $this->assertEquals(19, $query->count());
 
         $query = $this->Applications->find('nonSection', ['role_id' => 3]);
         $this->assertInstanceOf('Cake\ORM\Query', $query);
 
-        $this->assertEquals(10, $query->count());
+        $this->assertEquals(9, $query->count());
     }
 
     /**

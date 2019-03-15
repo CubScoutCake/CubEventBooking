@@ -69,10 +69,6 @@ class ApplicationsAttendeesFixture extends TestFixture
         ],
         [
             'application_id' => 1,
-            'attendee_id' => 10
-        ],
-        [
-            'application_id' => 1,
             'attendee_id' => 11
         ],
         [

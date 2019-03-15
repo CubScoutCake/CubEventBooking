@@ -49,7 +49,7 @@
                 <table class="table table-condensed">
                     <tr>
                         <th><?= __('Initial Value') ?></th>
-                        <th><?= __('Payments Recieved') ?></th>
+                        <th><?= __('Payments Received') ?></th>
                         <th><?= __('Balance') ?></th>          
                     </tr>
                     <tr>

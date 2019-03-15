@@ -32,7 +32,7 @@ use Cake\ORM\Entity;
  *
  * @property string $display_code
  *
- * @property string $display_code
+ * @property string $permitholder
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\ApplicationStatus $application_status
