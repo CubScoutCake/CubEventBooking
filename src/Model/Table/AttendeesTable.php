@@ -281,8 +281,6 @@ class AttendeesTable extends Table
      */
     public function beforeRules(Event $event, $entity)
     {
-//      $entity = $this->changeCase($entity);
-
         $newEntity = $this->checkDuplicate($entity);
 
         if (!$newEntity->isNew()) {
@@ -294,7 +292,7 @@ class AttendeesTable extends Table
             $entity = $entity->set($changed, $newEntity->get($changed));
         }
 
-//      $entity = $this->changeCase($entity);
+        $entity = $this->changeCase($entity);
 
         return true;
     }
@@ -337,6 +335,10 @@ class AttendeesTable extends Table
 
         if ($countOriginal > 0) {
             $originalEnt = $original->first();
+
+            if ($originalEnt->get('id') == $entity->get('id') && !$entity->isNew()) {
+                return $entity;
+            }
 
             $changedValues = $entity->getDirty();
 
