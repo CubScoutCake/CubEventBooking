@@ -61,10 +61,18 @@ class ReservationsControllerTest extends IntegrationTestCase
      * Test index method
      *
      * @return void
+     *
+     * @throws
      */
-    public function testIndex()
+    public function testEvents()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get([
+            'prefix' => 'parent',
+            'controller' => 'Reservations',
+            'action' => 'events'
+        ]);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -81,10 +89,18 @@ class ReservationsControllerTest extends IntegrationTestCase
      * Test add method
      *
      * @return void
+     *
+     * @throws
      */
-    public function testAdd()
+    public function testReserve()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get([
+            'prefix' => 'parent',
+            'controller' => 'Reservations',
+            'action' => 'reserve'
+        ]);
+
+        $this->assertResponseOk();
     }
 
     /**

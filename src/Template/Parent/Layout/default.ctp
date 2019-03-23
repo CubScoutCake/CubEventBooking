@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
 
 	<?php echo $this->element('style'); ?>
 
     <title>
-		<?= $cakeDescription ?>:
-		<?= $this->fetch('title') ?>
+        <?= $this->fetch('title') ?>
     </title>
 
     <!-- Actual Fetch -->
@@ -74,6 +72,10 @@ echo $this->fetch('tb_flash'); ?>
 
 <!-- Custom scripts for this template -->
 <?php echo $this->Html->script('grayscale.min.js');?>
+
+<!-- Select 2 -->
+<?php echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js'); ?>
+<?php echo $this->Html->script('multi-select.js'); ?>
 
 <!-- Footer -->
 <footer class="bg-black small text-center text-white-50">

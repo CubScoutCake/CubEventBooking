@@ -22,6 +22,7 @@
             </tr>
         </thead>
         <tbody>
+            <?php /** @var \App\Model\Entity\Logistic[] $logistics */ ?>
             <?php foreach ($logistics as $logistic): ?>
             <tr>
                 <td><?= $this->Number->format($logistic->id) ?></td>

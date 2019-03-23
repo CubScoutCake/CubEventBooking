@@ -16,7 +16,7 @@ class ReservationsController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
+    public function events()
     {
         $this->paginate = [
             'contain' => ['Events', 'Users', 'Attendees', 'ReservationStatuses']
@@ -49,11 +49,26 @@ class ReservationsController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add($eventId = null)
+    public function reserve($eventId = null)
     {
         $reservation = $this->Reservations->newEntity();
         if ($this->request->is('post')) {
-            $reservation = $this->Reservations->patchEntity($reservation, $this->request->getData());
+            $requestData = $this->request->getData();
+
+            if (!is_null($requestData['event_id'])) {
+                $eventId = $requestData['event_id'];
+            }
+
+            debug($requestData);
+            $this->Reservations->Users->detectParent([
+                $requestData['user']
+            ]);
+
+            $reservationData = [
+                'event_id' => $eventId,
+            ];
+
+            $reservation = $this->Reservations->patchEntity($reservation, $reservationData);
             if ($this->Reservations->save($reservation)) {
                 $this->Flash->success(__('The reservation has been saved.'));
 
@@ -124,5 +139,17 @@ class ReservationsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * @param \Cake\Event\Event $event The CakePHP emissive Event
+     *
+     * @return \Cake\Event\Event
+     */
+    public function beforeFilter(\Cake\Event\Event $event)
+    {
+        $this->Auth->allow(['reserve', 'events', 'confirmation']);
+
+        return $event;
     }
 }
