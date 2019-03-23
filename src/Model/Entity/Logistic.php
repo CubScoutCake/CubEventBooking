@@ -7,11 +7,13 @@ use Cake\ORM\Entity;
  * Logistic Entity
  *
  * @property int $id
- * @property int $parameter_id
- * @property int $event_id
- * @property string $header
- * @property string $text
- * @property \Cake\I18n\Time $deleted
+ * @property int|null $event_id
+ * @property string|null $header
+ * @property string|null $text
+ * @property \Cake\I18n\Time|null $deleted
+ * @property int|null $parameter_id
+ * @property array|null $variable_max_values
+ * @property int|null $max_value
  *
  * @property \App\Model\Entity\Parameter $parameter
  * @property \App\Model\Entity\Event $event
@@ -30,11 +32,13 @@ class Logistic extends Entity
      * @var array
      */
     protected $_accessible = [
-        'parameter_id' => true,
         'event_id' => true,
         'header' => true,
         'text' => true,
         'deleted' => true,
+        'parameter_id' => true,
+        'variable_max_values' => true,
+        'max_value' => true,
         'parameter' => true,
         'event' => true,
         'logistic_items' => true

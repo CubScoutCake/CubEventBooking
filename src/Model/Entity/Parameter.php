@@ -4,13 +4,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Parameter Entity.
+ * Parameter Entity
  *
  * @property int $id
- * @property string $parameter
- * @property string $constant
- * @property int $set_id
+ * @property string|null $parameter
+ * @property string|null $constant
+ * @property int|null $set_id
+ * @property \Cake\I18n\Time|null $deleted
+ * @property bool $limited
+ *
+ * @property \App\Model\Entity\ParameterSet $parameter_set
  * @property \App\Model\Entity\Logistic[] $logistics
+ * @property \App\Model\Entity\Param[] $params
  */
 class Parameter extends Entity
 {
@@ -25,7 +30,13 @@ class Parameter extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false,
+        'parameter' => true,
+        'constant' => true,
+        'set_id' => true,
+        'deleted' => true,
+        'limited' => true,
+        'parameter_set' => true,
+        'logistics' => true,
+        'params' => true
     ];
 }
