@@ -6,23 +6,20 @@
     "license": "MIT",
     "require": {
         "php": "@stable",
-        "ext-json": "^1.5",
+        "ext-json": "@stable",
         "cakephp/cakephp": "@stable",
         "mobiledetect/mobiledetectlib": "@stable",
         "cakephp/migrations": "@stable",
         "cakephp/plugin-installer": "@stable",
-        "dompdf/dompdf": "^0.8.2",
         "friendsofcake/cakepdf": "@stable",
-        "tecnickcom/tcpdf" : "@stable",
-        "mpdf/mpdf" : "@stable",
         "friendsofcake/bootstrap-ui": "@stable",
         "friendsofcake/cakephp-csvview": "@stable",
         "muffin/trash": "@stable",
         "friendsofcake/search": "@stable",
         "robmorgan/phinx": "@stable",
         "dereuromark/cakephp-databaselog": "@stable",
-        "josegonzalez/cakephp-upload": "^3.6",
-        "riesenia/cakephp-duplicatable": "^3.0"
+        "josegonzalez/cakephp-upload": "@stable",
+        "riesenia/cakephp-duplicatable": "@stable"
     },
     "require-dev": {
         "psy/psysh": "@stable",
