@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ */
+?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -17,9 +22,10 @@
     <fieldset>
         <legend><?= __('Edit Parameter') ?></legend>
         <?php
-            echo $this->Form->input('parameter');
-            echo $this->Form->input('constant');
-            echo $this->Form->input('set_id');
+            echo $this->Form->control('parameter');
+            echo $this->Form->control('constant');
+            echo $this->Form->control('set_id', ['options' => $sets]);
+            echo $this->Form->control('limited');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

@@ -412,6 +412,53 @@ class EventsController extends AppController
     }
 
     /**
+     * Edit method
+     *
+     * @param string|null $eventId Event id.
+     * @param int $additional Number of Prices to be Created.
+     *
+     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Exception
+     */
+    public function logistics($eventId = null, $additional = 0)
+    {
+        if ($this->request->getData('additional')) {
+            return $this->redirect(['action' => 'logistics', $eventId, $this->request->getData('boxes')]);
+        }
+        $event = $this->Events->get($eventId, [
+            'contain' => ['Settings', 'Logistics' => ['Parameters' => [ 'Params', 'ParameterSets']]],
+        ]);
+        $logisticsCount = count($event->logistics);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $event = $this->Events->patchEntity(
+                $event,
+                $this->request->getData(),
+                ['associated' => [ 'Logistics']]
+            );
+            if ($this->Events->save($event)) {
+                $this->Flash->success(__('The event has been saved.'));
+
+                if ($this->Events->determineComplete($event->id)) {
+                    $this->log('Event #' . $event->id . ' (' . $event->name . ') was completed.', 'info');
+
+                    $this->Flash->success('Event was marked Completed.');
+                }
+
+                return $this->redirect(['action' => 'logistics', $eventId]);
+            } else {
+                $this->Flash->error(__('The event could not be saved. Please, try again.'));
+            }
+        }
+
+        $parameters = $this->Events->Logistics->Parameters->find('list');
+
+        $this->set(compact('logisticsCount', 'additional', 'event', 'parameters'));
+
+        $this->set('_serialize', ['event']);
+    }
+
+    /**
      * Delete method
      *
      * @param string|null $eventId Event id.

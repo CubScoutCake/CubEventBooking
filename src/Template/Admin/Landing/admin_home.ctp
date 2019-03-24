@@ -330,6 +330,7 @@
                                             <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['controller' => 'Events', 'action' => 'edit', $event->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                             <?= $this->Html->link('<i class="fal fa-tags"></i>', ['controller' => 'Events', 'action' => 'prices', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                             <?= $this->Html->link('<i class="fal fa-chart-bar"></i>', ['controller' => 'Events', 'action' => 'accounts', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                            <?= $this->Html->link('<i class="fal fa-inventory"></i>', ['controller' => 'Events', 'action' => 'logistics', $event->id], ['title' => __('Logistics'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                         </td>
                                         <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
                                         <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>

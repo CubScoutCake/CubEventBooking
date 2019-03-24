@@ -40,6 +40,10 @@ class LogisticsTable extends Table
         $this->setDisplayField('header');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
+
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id'
         ]);
@@ -110,5 +114,29 @@ class LogisticsTable extends Table
         $rules->add($rules->existsIn(['parameter_id'], 'Parameters'));
 
         return $rules;
+    }
+
+    /**
+     * Writes the max value to the Logistic
+     *
+     * @param \Cake\Event\Event $event The event trigger.
+     *
+     * @return true
+     */
+    public function beforeSave($event)
+    {
+        /** @var \App\Model\Entity\Logistic $entity */
+        $entity = $event->getData('entity');
+
+        $variableMax = $entity->get('variable_max_values');
+        $total = 0;
+
+        foreach ($variableMax as $variable) {
+            $total += $variable['limit'];
+        }
+
+        $entity->set('max_value', $total);
+
+        return true;
     }
 }

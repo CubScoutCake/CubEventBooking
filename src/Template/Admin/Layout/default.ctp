@@ -270,6 +270,29 @@ $cakeDescription = 'HertsCubs Booking System';
                                 'prefix' => 'admin']); ?>">Add a New Event</a>
                                 </li>
                                 <li>
+                                    <a class="has-arrow" href="#"><i class="fal fa-inventory fa-fw"></i> Logistics</a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'Logistics',
+                                                'action' => 'index',
+                                                'prefix' => 'admin']); ?>">View Logistics</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'Parameters',
+                                                'action' => 'index',
+                                                'prefix' => 'admin']); ?>">View Parameters</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'Parameters',
+                                                'action' => 'add',
+                                                'prefix' => 'admin']); ?>">Add a Parameter</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
                                     <a class="has-arrow" href="#"><i class="fal fa-tag fa-fw"></i> Discounts</a>
                                     <ul class="nav nav-third-level">
                                         <li>

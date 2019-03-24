@@ -60,7 +60,7 @@ class LandingController extends AppController
         $invs = TableRegistry::getTableLocator()->get('Invoices');
         $usrs = TableRegistry::getTableLocator()->get('Users');
         $pays = TableRegistry::getTableLocator()->get('Payments');
-        $atts = TableRegistry::getTableLocator()->get('Attendees');
+        $tokens = TableRegistry::getTableLocator()->get('Tokens');
         $nts = TableRegistry::getTableLocator()->get('Notes');
         $notifs = TableRegistry::getTableLocator()->get('Notifications');
 
@@ -84,10 +84,10 @@ class LandingController extends AppController
         $cntInvoices = $invs->find('all')->count();
         $cntUsers = $usrs->find('all')->count();
         $cntPayments = $pays->find('all')->count();
-        $cntAttendees = $atts->find('all')->count();
+        $cntTokens = $tokens->find('all')->count();
 
         // Pass to View
-        $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));
+        $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntTokens', 'userId'));
     }
 
     /**
