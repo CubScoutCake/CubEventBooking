@@ -5,12 +5,10 @@ sudo: false
 php:
   - 7.0
   - 7.1
-  - 7.2
 
 env:
   - DB=postgres
-  global:
-    - PGPORT=5433
+  - PGPORT=5433
 
 services:
   - postgresql
