@@ -5,15 +5,15 @@ dist: xenial
 sudo: false
 
 php:
-  - 7.0
   - 7.1
+  - 7.2
 
 env:
   - DB=postgres
-  - PGPORT=5432
 
 services:
   - postgresql
+  - redis
 
 before_script:
   - cp config/app.travis.php config/app.php
