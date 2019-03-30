@@ -17,7 +17,7 @@ return [
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
              * the following line and set the port accordingly
              */
-            //'port' => 'nonstandard_port_number',
+            'port' => '5433',
             'username' => 'postgres',
             'password' => '',
             'database' => 'cake',
@@ -53,7 +53,7 @@ return [
             'driver' => 'Cake\Database\Driver\Postgres',
             'persistent' => false,
             'host' => '127.0.0.1',
-            //'port' => 'nonstandard_port_number',
+            'port' => '5433',
             'username' => 'postgres',
             'password' => '',
             'database' => 'fake',
@@ -69,7 +69,7 @@ return [
             'driver' => 'Cake\Database\Driver\Postgres',
             'persistent' => false,
             'host' => '127.0.0.1',
-            //'port' => 'nonstandard_port_number',
+            'port' => '5433',
             'username' => 'postgres',
             'password' => '',
             'database' => 'cake',
@@ -85,7 +85,7 @@ return [
             'driver' => 'Cake\Database\Driver\Postgres',
             'persistent' => false,
             'host' => '127.0.0.1',
-            //'port' => 'nonstandard_port_number',
+            'port' => '5433',
             'username' => 'postgres',
             'password' => '',
             'database' => 'fake',
