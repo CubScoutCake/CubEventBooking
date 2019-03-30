@@ -15,6 +15,10 @@ services:
   - postgresql
   - redis
 
+cache:
+  directories:
+    - vendor
+
 before_script:
   - cp config/app.travis.php config/app.php
   - cp config/app_DB.travis.php config/app_DB.php
@@ -30,7 +34,9 @@ before_script:
 
 script:
   - composer cs-check
-  - composer test
+  - composer test-model
+  - composer test-other
+  - composer test-controller
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
