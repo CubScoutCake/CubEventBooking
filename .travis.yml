@@ -34,9 +34,7 @@ before_script:
 
 script:
   - composer cs-check
-  - composer test-model
-  - composer test-other
-  - composer test-controller
+  - composer test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
