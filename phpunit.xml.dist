@@ -15,8 +15,8 @@
 	<!-- Add any additional test suites you want to run here -->
 	<testsuites>
 		<testsuite name="Model">
-			<directory>./tests/TestCase/Model/Behavior</directory>
-			<directory>./tests/TestCase/Model/Table</directory>
+			<directory>./tests/TestCase/Model</directory>
+			<directory>./tests/TestCase/Model</directory>
 		</testsuite>
 		<testsuite name="Other">
 			<directory>./tests/TestCase/Form</directory>
