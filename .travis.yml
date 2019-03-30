@@ -34,7 +34,7 @@ before_script:
 
 script:
   - composer cs-check
-  - phpunit --colors=always
+  - sh -c "phpunit --colors=always"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
