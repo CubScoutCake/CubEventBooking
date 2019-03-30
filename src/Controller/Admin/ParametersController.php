@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller\Admin;
 
+use Cake\Utility\Inflector;
+
 /**
  * Parameters Controller
  *
@@ -16,7 +18,7 @@ class ParametersController extends AppController
      */
     public function index()
     {
-        $parameters = $this->paginate($this->Parameters);
+        $parameters = $this->paginate($this->Parameters, ['contain' => 'ParameterSets']);
 
         $this->set(compact('parameters'));
         $this->set('_serialize', ['parameters']);
@@ -32,7 +34,7 @@ class ParametersController extends AppController
     public function view($id = null)
     {
         $parameter = $this->Parameters->get($id, [
-            'contain' => ['Logistics']
+            'contain' => ['Logistics', 'Params']
         ]);
 
         $this->set('parameter', $parameter);
@@ -84,7 +86,8 @@ class ParametersController extends AppController
                 $this->Flash->error(__('The parameter could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('parameter'));
+        $sets = $this->Parameters->ParameterSets->find('list', ['limit' => 200]);
+        $this->set(compact('parameter', 'sets'));
         $this->set('_serialize', ['parameter']);
     }
 

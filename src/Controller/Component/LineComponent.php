@@ -108,7 +108,7 @@ class LineComponent extends Component
             return false;
         }
 
-        if ($quantity > $price->max_number && $admin == false) {
+        if ($quantity > $price->max_number && $admin == false && isset($price->max_number) && $price->max_number > 0) {
             return false;
         }
 

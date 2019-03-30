@@ -20,7 +20,7 @@
             echo $this->Form->control('section_type_id', ['options' => $sectionTypes]);
             echo '<div class="row"> <div class="col-lg-6">';
             echo $this->Form->control('start_date');
-            echo $this->Form->control('deposit_date');
+            echo $this->Form->control('opening_date');
             echo '</div> <div class="col-lg-6>"';
             echo $this->Form->control('end_date');
             echo $this->Form->control('closing_date');
@@ -54,9 +54,6 @@
             echo $this->Form->control('logo');
 
             echo $this->Form->control('admin_user_id', ['options' => $users]);
-
-            echo $this->Form->control('discount_id', ['options' => $discounts, 'empty' => true]);
-
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

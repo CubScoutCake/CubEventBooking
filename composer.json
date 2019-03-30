@@ -1,28 +1,25 @@
 {   
-    "name": "jacob-ag-tyler/scouting-booking",
-    "description": "An app to manage booking for Cub Scouts by leaders.",
+    "name": "cub-scout-cake/cub-event-booking",
+    "description": "An app to manage booking for Scouting by leaders.",
     "homepage": "https://github.com/CubScoutCake/CubEventBooking",
     "type": "project",
     "license": "MIT",
     "require": {
         "php": "@stable",
-        "ext-json": "^1.5",
+        "ext-json": "@stable",
         "cakephp/cakephp": "@stable",
         "mobiledetect/mobiledetectlib": "@stable",
         "cakephp/migrations": "@stable",
         "cakephp/plugin-installer": "@stable",
-        "dompdf/dompdf": "^0.8.2",
         "friendsofcake/cakepdf": "@stable",
-        "tecnickcom/tcpdf" : "@stable",
-        "mpdf/mpdf" : "@stable",
         "friendsofcake/bootstrap-ui": "@stable",
         "friendsofcake/cakephp-csvview": "@stable",
         "muffin/trash": "@stable",
         "friendsofcake/search": "@stable",
         "robmorgan/phinx": "@stable",
         "dereuromark/cakephp-databaselog": "@stable",
-        "josegonzalez/cakephp-upload": "^3.6",
-        "riesenia/cakephp-duplicatable": "^3.0"
+        "josegonzalez/cakephp-upload": "@stable",
+        "riesenia/cakephp-duplicatable": "@stable"
     },
     "require-dev": {
         "psy/psysh": "@stable",
@@ -49,7 +46,10 @@
         "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
         "cs-check": "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests ./src",
         "cs-fix": "vendor/bin/phpcbf -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests ./src ./config",
-        "test": "phpunit --colors=always"
+        "test": "phpunit --colors=always",
+        "test-model": "phpunit --colors=always --testsuite Model",
+        "test-controller": "phpunit --colors=always --testsuite Controller",
+        "test-other": "phpunit --colors=always --testsuite Other"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

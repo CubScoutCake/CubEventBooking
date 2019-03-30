@@ -32,31 +32,6 @@
         </div>
     </div>
     <div class="col-lg-4 col-md-6">
-        <div class="panel panel-green">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fal fa-clipboard-list fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge"><?= $this->Number->format($cntApplications); ?></div>
-                        <div>Total Applications</div>
-                    </div>
-                </div>
-            </div>
-            <a href="<?php echo $this->Url->build([
-            	'controller' => 'Applications',
-            	'action' => 'index',
-            	'prefix' => 'admin'],['_full']); ?>">
-            	<div class='panel-footer'>
-                    <span class='pull-left'>View All Applications</span>
-                    <span class='pull-right'><i class='fal fa-arrow-circle-right'></i></span>
-                    <div class='clearfix'></div>
-                </div>
-            </a>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
@@ -81,76 +56,25 @@
             </a>
         </div>
     </div>
-    
-    <div class="col-lg-4 col-md-6">
-        <div class="panel panel-yellow">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fal fa-file-invoice-dollar fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge"><?= $this->Number->format($cntInvoices); ?></div>
-                        <div>Total Invoices</div>
-                    </div>
-                </div>
-            </div>
-            <a href="<?php echo $this->Url->build([
-            	'controller' => 'Invoices',
-            	'action' => 'index',
-            	'prefix' => 'admin'],['_full']); ?>">
-                <div class="panel-footer">
-                    <span class="pull-left">View All Invoices</span>
-                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
-        </div>
-    </div>
     <div class="col-lg-4 col-md-6">
         <div class="panel panel-red">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fal fa-receipt fa-5x"></i>
+                        <i class="fal fa-ticket fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><?= $this->Number->format($cntPayments); ?></div>
-                        <div>Total Payments Received</div>
+                        <div class="huge"><?= $this->Number->format($cntTokens); ?></div>
+                        <div>Total Tokens</div>
                     </div>
                 </div>
             </div>
             <a href="<?php echo $this->Url->build([
-            	'controller' => 'Payments',
-            	'action' => 'index',
-            	'prefix' => 'admin'],['_full']); ?>">
-                <div class="panel-footer">
-                    <span class="pull-left">View All Payments</span>
-                    <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fal fa-poll-people fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge"><?= $this->Number->format($cntAttendees); ?></div>
-                        <div>Total Attendees</div>
-                    </div>
-                </div>
-            </div>
-            <a href="<?php echo $this->Url->build([
-                'controller' => 'Attendees',
+                'controller' => 'Tokens',
                 'action' => 'index',
-                'prefix' => 'admin'],['_full']); ?>">
+            ],['_full']); ?>">
                 <div class='panel-footer'>
-                    <span class='pull-left'>View All Attendees</span>
+                    <span class='pull-left'>View All Tokens</span>
                     <span class='pull-right'><i class='fal fa-arrow-circle-right'></i></span>
                     <div class='clearfix'></div>
                 </div>

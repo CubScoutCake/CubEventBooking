@@ -15,10 +15,11 @@
                     <li><?= $this->Html->link(__('Export Data'), ['controller' => 'Events','action' => 'export', $event->id]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Unpaid Invoices'), ['controller' => 'Invoices','action' => 'index', $event->id, '?' => ['unpaid' => true]]) ?></li>
-                    <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id, '?' => ['outstanding' => true],]) ?></li>
+                    <li><?= $this->Html->link(__('Outstanding Invoices'), ['controller' => 'Invoices','action' => 'index', $event->id, '?' => ['outstanding' => true],]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Edit Event'), ['action' => 'edit', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Edit Prices'), ['action' => 'prices', $event->id]) ?></li>
+                    <li><?= $this->Html->link(__('Edit Logistics'), ['action' => 'logistics', $event->id]) ?></li>
                     <li class="divider"></li>
                     <li><?= $this->Html->link(__('Parse Invoices'), ['controller' => 'Invoices','action' => 'event_pdf', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Parse Applications'), ['controller' => 'Applications','action' => 'event_pdf', $event->id]) ?></li>
@@ -117,7 +118,7 @@
                                 <tr>
                                     <th><?= __('Total Outstanding') ?></th>
                                     <td></td>
-                                    <td><?= $this->Html->link($this->Number->format($outstanding),['controller' => 'Invoices', 'action' => 'outstanding', $event->id, '?' => ['outstanding' => true]]) ?></td>
+                                    <td><?= $this->Html->link($this->Number->format($outstanding),['controller' => 'Invoices', 'action' => 'index', $event->id, '?' => ['outstanding' => true]]) ?></td>
                                     <td></td>
                                 </tr>
                             <?php endif; ?>

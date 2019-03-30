@@ -59,7 +59,7 @@ class MaintainanceController extends AppController
             if (Configure::read('debug')) {
                 throw $e;
             }
-            throw new NotFoundException();
+            throw new \Cake\Http\Exception\NotFoundException();
         }
     }
 }

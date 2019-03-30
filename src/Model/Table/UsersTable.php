@@ -378,4 +378,41 @@ class UsersTable extends Table
 
         return true;
     }
+
+    /**
+     * Finder to locate Parent Accounts
+     *
+     * @param Query $query the Query to be modified.
+     *
+     * @return Query
+     */
+    public function findParents($query)
+    {
+        return $query
+            ->contain('AuthRoles')
+            ->where(['AuthRoles.parent_access' => true]);
+    }
+
+    /**
+     * Function to Detect Parent Accounts
+     *
+     * @param array $userArray The Array Data sent
+     *
+     * @return bool|array|\Cake\Datasource\EntityInterface
+     */
+    public function detectParent($userArray)
+    {
+        $parentFind = $this->find('parents')->where([
+            'firstname ILIKE' => $userArray['firstname'],
+            'lastname ILIKE' => $userArray['lastname'],
+            'email ILIKE' => $userArray['email'],
+            'postcode ILIKE' => $userArray['postcode'],
+        ]);
+
+        if (!is_null($parentFind->count()) && $parentFind->count() == 1) {
+            return $parentFind->first();
+        }
+
+        return false;
+    }
 }

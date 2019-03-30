@@ -52,17 +52,13 @@ class AuthRolesTableTest extends TestCase
     }
 
     /**
-     * Test initialize method
+     * Setup Expected
      *
-     * @return void
+     * @return array
      */
-    public function testInitialize()
+    private function getExpected()
     {
-        $query = $this->AuthRoles->find('all');
-
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
-        $expected = [
+        return [
             [
                 'id' => 1,
                 'auth_role' => 'User',
@@ -85,7 +81,72 @@ class AuthRolesTableTest extends TestCase
                 'user_access' => true,
                 'section_limited' => false,
             ],
+            [
+                'id' => 3,
+                'auth_role' => 'Admin',
+                'admin_access' => true,
+                'champion_access' => false,
+                'super_user' => false,
+                'auth' => 1,
+                'parent_access' => false,
+                'user_access' => true,
+                'section_limited' => true,
+            ],
+            [
+                'id' => 4,
+                'auth_role' => 'Parent',
+                'admin_access' => false,
+                'champion_access' => false,
+                'super_user' => false,
+                'auth' => 1,
+                'parent_access' => true,
+                'user_access' => false,
+                'section_limited' => true,
+            ],
+            [
+                'id' => 5,
+                'auth_role' => 'Parent User',
+                'admin_access' => false,
+                'champion_access' => false,
+                'super_user' => false,
+                'auth' => 12,
+                'parent_access' => true,
+                'user_access' => true,
+                'section_limited' => true,
+            ],
         ];
+    }
+
+    /**
+     * @return array
+     *
+     * @throws
+     */
+    private function getGood()
+    {
+        return [
+            'auth_role' => 'New Admin ' . random_int(11111, 99999) . random_int(11111, 99999),
+            'admin_access' => true,
+            'champion_access' => true,
+            'super_user' => false,
+            'parent_access' => false,
+            'user_access' => true,
+            'section_limited' => true,
+        ];
+    }
+
+    /**
+     * Test initialize method
+     *
+     * @return void
+     */
+    public function testInitialize()
+    {
+        $query = $this->AuthRoles->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->enableHydration(false)->toArray();
+        $expected = $this->getExpected();
 
         $this->assertEquals($expected, $result);
     }
@@ -97,78 +158,50 @@ class AuthRolesTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $badData = [
-            'id' => 3,
-            'auth_role' => null,
-            'admin_access' => true,
-            'champion_access' => true,
-            'super_user' => false,
-            'auth' => null,
-            'parent_access' => false,
-            'user_access' => true,
-            'section_limited' => true,
-        ];
-
-        $goodData = [
-            'id' => 3,
-            'auth_role' => 'Admin',
-            'admin_access' => true,
-            'champion_access' => true,
-            'super_user' => false,
-            'auth' => 1,
-            'parent_access' => false,
-            'user_access' => true,
-            'section_limited' => true,
-        ];
-
-        $expected = [
-            [
-                'id' => 1,
-                'auth_role' => 'User',
-                'admin_access' => false,
-                'champion_access' => false,
-                'super_user' => false,
-                'auth' => 1,
-                'parent_access' => false,
-                'user_access' => true,
-                'section_limited' => true,
-            ],
-            [
-                'id' => 2,
-                'auth_role' => 'SuperUser',
-                'admin_access' => true,
-                'champion_access' => true,
-                'super_user' => true,
-                'auth' => 12,
-                'parent_access' => false,
-                'user_access' => true,
-                'section_limited' => false,
-            ],
-            [
-                'id' => 3,
-                'auth_role' => 'Admin',
-                'admin_access' => true,
-                'champion_access' => true,
-                'super_user' => false,
-                'auth' => 1,
-                'parent_access' => false,
-                'user_access' => true,
-                'section_limited' => true,
-            ],
-        ];
-
-        $badEntity = $this->AuthRoles->newEntity($badData, ['accessibleFields' => ['id' => true]]);
-        $goodEntity = $this->AuthRoles->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
-
-        $this->assertFalse($this->AuthRoles->save($badEntity));
-        $this->AuthRoles->save($goodEntity);
+        // Test Good
+        $good = $this->getGood();
+        $this->assertInstanceOf('App\Model\Entity\AuthRole', $this->AuthRoles->save($this->AuthRoles->newEntity($good)));
 
         $query = $this->AuthRoles->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->enableHydration(false)->toArray();
 
+        $expected = $this->getExpected();
+        array_push($expected, array_merge($good, ['id' => 6, 'auth' => 14]));
+
         $this->assertEquals($expected, $result);
+
+        // Test Empty
+        $empty = [
+            'admin_access',
+            'champion_access',
+            'super_user',
+            'parent_access',
+            'user_access',
+            'section_limited'
+        ];
+
+        foreach ($empty as $field) {
+            $good = $this->getGood();
+            $good[$field] = null;
+
+            $this->assertInstanceOf('App\Model\Entity\AuthRole', $this->AuthRoles->save($this->AuthRoles->newEntity($good)));
+        }
+
+        // Test Not Empty
+        $notEmpty = [
+            'auth_role',
+        ];
+
+        foreach ($notEmpty as $field) {
+            $good = $this->getGood();
+            $good[$field] = null;
+
+            $saved = $this->AuthRoles->save($this->AuthRoles->newEntity($good));
+            $this->assertNotInstanceOf('App\Model\Entity\AuthRole', $saved);
+            $this->assertFalse($saved);
+        }
     }
 
     /**
@@ -179,76 +212,49 @@ class AuthRolesTableTest extends TestCase
     public function testBuildRules()
     {
         $badData = [
-            'id' => 1,
             'auth_role' => 'User',
             'admin_access' => false,
             'champion_access' => false,
             'super_user' => false,
-            'auth' => 1,
             'parent_access' => false,
             'user_access' => true,
             'section_limited' => true,
         ];
+        $goodData = $this->getGood();
 
-        $goodData = [
-            'id' => 3,
-            'auth_role' => 'Admin',
-            'admin_access' => true,
-            'champion_access' => true,
-            'super_user' => false,
-            'auth' => 1,
-            'parent_access' => false,
-            'user_access' => true,
-            'section_limited' => true,
-        ];
-
-        $expected = [
-            [
-                'id' => 1,
-                'auth_role' => 'User',
-                'admin_access' => false,
-                'champion_access' => false,
-                'super_user' => false,
-                'auth' => 1,
-                'parent_access' => false,
-                'user_access' => true,
-                'section_limited' => true,
-            ],
-            [
-                'id' => 2,
-                'auth_role' => 'SuperUser',
-                'admin_access' => true,
-                'champion_access' => true,
-                'super_user' => true,
-                'auth' => 12,
-                'parent_access' => false,
-                'user_access' => true,
-                'section_limited' => false,
-            ],
-            [
-                'id' => 3,
-                'auth_role' => 'Admin',
-                'admin_access' => true,
-                'champion_access' => true,
-                'super_user' => false,
-                'auth' => 1,
-                'parent_access' => false,
-                'user_access' => true,
-                'section_limited' => true,
-            ],
-        ];
-
-        $badEntity = $this->AuthRoles->newEntity($badData, ['accessibleFields' => ['id' => true]]);
-        $goodEntity = $this->AuthRoles->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        $badEntity = $this->AuthRoles->newEntity($badData);
+        $goodEntity = $this->AuthRoles->newEntity($goodData);
 
         $this->assertFalse($this->AuthRoles->save($badEntity));
-        $this->AuthRoles->save($goodEntity);
+        $this->assertInstanceOf('App\Model\Entity\AuthRole', $this->AuthRoles->save($goodEntity));
 
         $query = $this->AuthRoles->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->enableHydration(false)->toArray();
 
+        $expected = $this->getExpected();
+        array_push($expected, array_merge($goodData, ['id' => 6, 'auth' => 14]));
+
         $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * Test Before Save
+     *
+     * @return void
+     */
+    public function testBeforeSave()
+    {
+        $good = $this->getGood();
+
+        $new = $this->AuthRoles->newEntity($good);
+        $new->set('auth', 150);
+
+        $new = $this->AuthRoles->save($new);
+        $this->assertInstanceOf('App\Model\Entity\AuthRole', $new);
+
+        $this->assertNotEquals(150, $new->get('auth'));
+        $this->assertEquals(14, $new->get('auth'));
     }
 }

@@ -4,10 +4,11 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * ParameterSet Entity.
+ * ParameterSet Entity
  *
  * @property int $id
- * @property string $name
+ * @property string|null $name
+ * @property \Cake\I18n\Time|null $deleted
  */
 class ParameterSet extends Entity
 {
@@ -22,7 +23,7 @@ class ParameterSet extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false,
+        'name' => true,
+        'deleted' => true
     ];
 }

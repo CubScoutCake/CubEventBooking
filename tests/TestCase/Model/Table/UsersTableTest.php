@@ -67,19 +67,15 @@ class UsersTableTest extends TestCase
     }
 
     /**
-     * Test initialize method
+     * Return Expected Array
      *
-     * @return void
+     * @return array
      */
-    public function testInitialize()
+    private function getExpected()
     {
         $startNow = Time::now();
 
-        $query = $this->Users->find('all');
-
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
-        $expected = [
+        return [
             [
                 'id' => 1,
                 'role_id' => 1,
@@ -118,7 +114,174 @@ class UsersTableTest extends TestCase
                 'membership_number' => 1,
                 'section_id' => 1
             ],
+            [
+                'id' => 3,
+                'role_id' => 2,
+                'section_id' => 1,
+                'firstname' => 'Parent',
+                'lastname' => 'Joe',
+                'email' => 'llama@goat.com',
+                'password' => 'TestMe',
+                'digest_hash' => 'b517225d7899cbd7d4c675b053d8f444',
+                'pw_salt' => 'dev.hertscubs.uk',
+                'api_key_plain' => 'a key',
+                'api_key' => 'a key.P6JDH982',
+                'phone' => 'NUMBER HERE',
+                'address_1' => 'ADDRESS 1',
+                'address_2' => '',
+                'city' => 'ADDRESS 2',
+                'county' => 'COUNTY',
+                'postcode' => 'POSTCODE',
+                'legacy_section' => '',
+                'created' => $startNow,
+                'modified' => $startNow,
+                'username' => 'PJoe',
+                'osm_user_id' => '111',
+                'osm_secret' => '123',
+                'osm_section_id' => '1242',
+                'osm_linked' => 3,
+                'osm_linkdate' => $startNow,
+                'osm_current_term' => '1422',
+                'osm_term_end' => $startNow,
+                'pw_reset' => 'No Longer Active',
+                'last_login' => $startNow,
+                'logins' => '12',
+                'validated' => null,
+                'deleted' => null,
+                'auth_role_id' => 3,
+                'password_state_id' => 1,
+                'membership_number' => 789,
+            ],
+            [
+                'id' => 4,
+                'role_id' => 2,
+                'section_id' => 1,
+                'firstname' => 'Joe',
+                'lastname' => 'Parent',
+                'email' => 'j.a.g.tyler@me.com',
+                'password' => 'TestMe',
+                'digest_hash' => 'b517225d7899cbd7d4c675b053d8f444',
+                'pw_salt' => 'dev.hertscubs.uk',
+                'api_key_plain' => 'a key',
+                'api_key' => 'a key.P6JDH982',
+                'phone' => 'NUMBER HERE',
+                'address_1' => 'ADDRESS 1',
+                'address_2' => '',
+                'city' => 'ADDRESS 2',
+                'county' => 'COUNTY',
+                'postcode' => 'POSTCODE',
+                'legacy_section' => '',
+                'created' => $startNow,
+                'modified' => $startNow,
+                'username' => 'JoeP',
+                'osm_user_id' => '111',
+                'osm_secret' => '123',
+                'osm_section_id' => '1242',
+                'osm_linked' => 3,
+                'osm_linkdate' => $startNow,
+                'osm_current_term' => '1422',
+                'osm_term_end' => $startNow,
+                'pw_reset' => 'No Longer Active',
+                'last_login' => $startNow,
+                'logins' => '12',
+                'validated' => null,
+                'deleted' => null,
+                'auth_role_id' => 4,
+                'password_state_id' => 1,
+                'membership_number' => 456,
+            ],
+            [
+                'id' => 5,
+                'role_id' => 2,
+                'section_id' => 1,
+                'firstname' => 'Admin',
+                'lastname' => 'Joe',
+                'email' => 'jacob@llama.com',
+                'password' => 'TestMe',
+                'digest_hash' => 'b517225d7899cbd7d4c675b053d8f444',
+                'pw_salt' => 'dev.hertscubs.uk',
+                'api_key_plain' => 'a key',
+                'api_key' => 'a key.P6JDH982',
+                'phone' => 'NUMBER HERE',
+                'address_1' => 'ADDRESS 1',
+                'address_2' => '',
+                'city' => 'ADDRESS 2',
+                'county' => 'COUNTY',
+                'postcode' => 'POSTCODE',
+                'legacy_section' => '',
+                'created' => $startNow,
+                'modified' => $startNow,
+                'username' => 'AdminJoeP',
+                'osm_user_id' => '111',
+                'osm_secret' => '123',
+                'osm_section_id' => '1242',
+                'osm_linked' => 3,
+                'osm_linkdate' => $startNow,
+                'osm_current_term' => '1422',
+                'osm_term_end' => $startNow,
+                'pw_reset' => 'No Longer Active',
+                'last_login' => $startNow,
+                'logins' => '12',
+                'validated' => null,
+                'deleted' => null,
+                'auth_role_id' => 2,
+                'password_state_id' => 1,
+                'membership_number' => 769213,
+            ],
         ];
+    }
+
+    /**
+     * Get Good Entity Data
+     *
+     * @return array
+     *
+     * @throws
+     */
+    private function getGood()
+    {
+        $startNow = Time::now();
+
+        return [
+            'role_id' => 1,
+            'section_id' => 1,
+            'password_state_id' => 1,
+            'auth_role_id' => 1,
+            'firstname' => 'Jacob',
+            'lastname' => 'Goat',
+            'email' => 'jacob' . random_int(111, 999) . '@goat' . random_int(111, 999) . '.com',
+            'password' => 'HASHEDHASHYHASHHASH',
+            'phone' => '01982 987221',
+            'address_1' => 'Lorem Ipsum Dolor Sit Amet',
+            'address_2' => 'Lorem Ipsum Dolor Sit Amet',
+            'city' => 'Lorem Ipsum Dolor Sit Amet',
+            'county' => 'Lorem Ipsum Dolor Sit Amet',
+            'postcode' => 'SG18 89S',
+            'username' => random_int(111, 999) . 'Fish' . random_int(111, 999),
+            'pw_reset' => 'Lorem ipsum dolor sit amet',
+            'last_login' => $startNow,
+            'logins' => 1,
+            'validated' => true,
+            'digest_hash' => 'Lorem ipsum dolor sit amet',
+            'pw_salt' => 'Lorem ipsum dolor sit amet',
+            'api_key_plain' => 'Lorem ipsum dolor sit amet',
+            'api_key' => 'Lorem ipsum dolor sit amet',
+            'membership_number' => random_int(1111, 9999) + random_int(119, 9919),
+        ];
+    }
+
+    /**
+     * Test initialize method
+     *
+     * @return void
+     */
+    public function testInitialize()
+    {
+        $query = $this->Users->find('all');
+
+        $this->assertInstanceOf('Cake\ORM\Query', $query);
+        $result = $query->enableHydration(false)->toArray();
+        $expected = $this->getExpected();
 
         $this->assertEquals($expected, $result);
     }
@@ -170,107 +333,9 @@ class UsersTableTest extends TestCase
             'section_id' => 1
         ];
 
-        $goodData = [
-            'role_id' => 1,
-            'section_id' => 1,
-            'password_state_id' => 1,
-            'auth_role_id' => 1,
-            'firstname' => 'Jacob',
-            'lastname' => 'Goat',
-            'email' => 'jacob@goat.com',
-            'password' => 'HASHEDHASHYHASHHASH',
-            'phone' => '01982 987221',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'SG18 89S',
-            'username' => 'Fish',
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'membership_number' => 123,
-        ];
+        $goodData = $this->getGood();
 
-        $expected = [
-            [
-                'id' => 1,
-                'role_id' => 1,
-                'firstname' => 'Jacob',
-                'lastname' => 'Tyler',
-                'email' => 'jacob@fish.com',
-                'phone' => 'Lorem ipsum dolor sit amet',
-                'address_1' => 'Lorem ipsum dolor sit amet',
-                'address_2' => 'Lorem ipsum dolor sit amet',
-                'city' => 'Lorem ipsum dolor sit amet',
-                'county' => 'Lorem ipsum dolor sit amet',
-                'postcode' => 'Lorem ipsum dolor sit amet',
-                'legacy_section' => 'Lorem ipsum dolor sit amet',
-                'created' => $startNow,
-                'modified' => $startNow,
-                'username' => 'Test',
-                'osm_user_id' => 1,
-                'osm_secret' => 'Lorem ipsum dolor sit amet',
-                'osm_section_id' => 1,
-                'osm_linked' => 1,
-                'osm_linkdate' => $startNow,
-                'osm_current_term' => 1,
-                'osm_term_end' => $startNow,
-                'pw_reset' => 'Lorem ipsum dolor sit amet',
-                'last_login' => $startNow,
-                'logins' => 1,
-                'validated' => true,
-                'deleted' => null,
-                'pw_salt' => 'Lorem ipsum dolor sit amet',
-                'api_key_plain' => 'Lorem ipsum dolor sit amet',
-                'api_key' => 'Lorem ipsum dolor sit amet',
-                'auth_role_id' => 1,
-                'password_state_id' => 1,
-                'membership_number' => 1,
-                'section_id' => 1
-            ],
-            [
-                'id' => 3,
-                'role_id' => 1,
-                'section_id' => 1,
-                'password_state_id' => 1,
-                'auth_role_id' => 1,
-                'firstname' => 'Jacob',
-                'lastname' => 'Goat',
-                'email' => 'jacob@goat.com',
-                'phone' => '01982 987221',
-                'address_1' => 'Lorem Ipsum Dolor Sit Amet',
-                'address_2' => 'Lorem Ipsum Dolor Sit Amet',
-                'city' => 'Lorem Ipsum Dolor Sit Amet',
-                'county' => 'Lorem Ipsum Dolor Sit Amet',
-                'postcode' => 'SG18 89S',
-                'username' => 'Fish',
-                'pw_reset' => 'Lorem ipsum dolor sit amet',
-                'last_login' => $startNow,
-                'logins' => 1,
-                'validated' => true,
-                'pw_salt' => 'Lorem ipsum dolor sit amet',
-                'api_key_plain' => 'Lorem ipsum dolor sit amet',
-                'api_key' => 'Lorem ipsum dolor sit amet',
-                'membership_number' => 123,
-                'legacy_section' => null,
-                'created' => $startNow,
-                'modified' => $startNow,
-                'osm_user_id' => null,
-                'osm_secret' => null,
-                'osm_section_id' => null,
-                'osm_linked' => null,
-                'osm_linkdate' => null,
-                'osm_current_term' => null,
-                'osm_term_end' => null,
-                'deleted' => null,
-            ],
-        ];
+        $expected = $this->getExpected();
 
         $badEntity = $this->Users->newEntity($badData, ['accessibleFields' => ['id' => true]]);
         $goodEntity = $this->Users->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
@@ -286,6 +351,24 @@ class UsersTableTest extends TestCase
         $result = Hash::remove($result, '{n}.password');
         $result = Hash::remove($result, '{n}.digest_hash');
 
+        array_push($expected, array_merge($goodData, [
+            'id' => 6,
+            'legacy_section' => null,
+            'created' => $startNow,
+            'modified' => $startNow,
+            'osm_user_id' => null,
+            'osm_secret' => null,
+            'osm_section_id' => null,
+            'osm_linked' => null,
+            'osm_linkdate' => null,
+            'osm_current_term' => null,
+            'osm_term_end' => null,
+            'deleted' => null,
+        ]));
+
+        $expected = Hash::remove($expected, '{n}.password');
+        $expected = Hash::remove($expected, '{n}.digest_hash');
+
         $this->assertEquals($expected, $result);
     }
 
@@ -296,330 +379,19 @@ class UsersTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $startNow = Time::now();
+        $unique = ['username', 'email', 'membership_number'];
+        $first = $this->Users->find('all')->first();
 
-        $badRoleData = [
-            'role_id' => 1234,
-            'section_id' => 1,
-            'password_state_id' => 1,
-            'auth_role_id' => 1,
-            'firstname' => 'Jacob',
-            'lastname' => 'Goat',
-            'email' => 'jacob@goat.com',
-            'password' => 'HASHEDHASHYHASHHASH',
-            'phone' => '01982 987221',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'SG18 89S',
-            'username' => 'Llama',
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'membership_number' => 123,
-        ];
+        foreach ($unique as $field) {
+            $good = $this->getGood();
+            $this->assertInstanceOf(User::class, $this->Users->save($this->Users->newEntity($good)));
 
-        $badAuthData = [
-            'role_id' => 1,
-            'section_id' => 1,
-            'password_state_id' => 1,
-            'auth_role_id' => 1234,
-            'firstname' => 'Jacob',
-            'lastname' => 'Goat',
-            'email' => 'jacob@goat.com',
-            'password' => 'HASHEDHASHYHASHHASH',
-            'phone' => '01982 987221',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'SG18 89S',
-            'username' => 'Llama',
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'membership_number' => 123,
-        ];
+            $good = $this->getGood();
+            $fieldEnt = $this->Users->newEntity($good);
 
-        $badSectionData = [
-            'role_id' => 1,
-            'section_id' => 1234,
-            'password_state_id' => 1,
-            'auth_role_id' => 1,
-            'firstname' => 'Jacob',
-            'lastname' => 'Goat',
-            'email' => 'jacob@goat.com',
-            'password' => 'HASHEDHASHYHASHHASH',
-            'phone' => '01982 987221',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'SG18 89S',
-            'username' => 'TesGTt',
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'membership_number' => 123,
-        ];
-
-        $badPWStateData = [
-            'role_id' => 1,
-            'section_id' => 1,
-            'password_state_id' => 1234,
-            'auth_role_id' => 1,
-            'firstname' => 'Jacob',
-            'lastname' => 'Goat',
-            'email' => 'jacob@goat.com',
-            'password' => 'HASHEDHASHYHASHHASH',
-            'phone' => '01982 987221',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'SG18 89S',
-            'username' => 'TesGTt',
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'membership_number' => 123,
-        ];
-
-        $badUsernameData = [
-            'role_id' => 1,
-            'section_id' => 1,
-            'password_state_id' => 1,
-            'auth_role_id' => 1,
-            'firstname' => 'Jacob',
-            'lastname' => 'Goat',
-            'email' => 'jacob@goat.com',
-            'password' => 'HASHEDHASHYHASHHASH',
-            'phone' => '01982 987221',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'SG18 89S',
-            'username' => 'Test',
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'membership_number' => 123,
-        ];
-
-        $badEmailData = [
-            'role_id' => 1,
-            'section_id' => 1,
-            'password_state_id' => 1,
-            'auth_role_id' => 1,
-            'firstname' => 'Jacob',
-            'lastname' => 'Goat',
-            'email' => 'jacob@fish.com',
-            'password' => 'HASHEDHASHYHASHHASH',
-            'phone' => '01982 987221',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'SG18 89S',
-            'username' => 'Fish',
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'membership_number' => 123,
-        ];
-
-        $badMembershipNumberData = [
-            'role_id' => 1,
-            'section_id' => 1,
-            'password_state_id' => 1,
-            'auth_role_id' => 1,
-            'firstname' => 'Jacob',
-            'lastname' => 'Goat',
-            'email' => 'jacob@goat.com',
-            'password' => 'HASHEDHASHYHASHHASH',
-            'phone' => '01982 987221',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'SG18 89S',
-            'username' => 'Fish',
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'membership_number' => 1,
-        ];
-
-        $goodData = [
-            'role_id' => 1,
-            'section_id' => 1,
-            'password_state_id' => 1,
-            'auth_role_id' => 1,
-            'firstname' => 'Jacob',
-            'lastname' => 'Goat',
-            'email' => 'jacob@goat.com',
-            'password' => 'HASHEDHASHYHASHHASH',
-            'phone' => '01982 987221',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'SG18 89S',
-            'username' => 'Fish',
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'membership_number' => 123,
-        ];
-
-        $expected = [
-            [
-                'id' => 1,
-                'role_id' => 1,
-                'firstname' => 'Jacob',
-                'lastname' => 'Tyler',
-                'email' => 'jacob@fish.com',
-                'phone' => 'Lorem ipsum dolor sit amet',
-                'address_1' => 'Lorem ipsum dolor sit amet',
-                'address_2' => 'Lorem ipsum dolor sit amet',
-                'city' => 'Lorem ipsum dolor sit amet',
-                'county' => 'Lorem ipsum dolor sit amet',
-                'postcode' => 'Lorem ipsum dolor sit amet',
-                'legacy_section' => 'Lorem ipsum dolor sit amet',
-                'created' => $startNow,
-                'modified' => $startNow,
-                'username' => 'Test',
-                'osm_user_id' => 1,
-                'osm_secret' => 'Lorem ipsum dolor sit amet',
-                'osm_section_id' => 1,
-                'osm_linked' => 1,
-                'osm_linkdate' => $startNow,
-                'osm_current_term' => 1,
-                'osm_term_end' => $startNow,
-                'pw_reset' => 'Lorem ipsum dolor sit amet',
-                'last_login' => $startNow,
-                'logins' => 1,
-                'validated' => true,
-                'deleted' => null,
-                'pw_salt' => 'Lorem ipsum dolor sit amet',
-                'api_key_plain' => 'Lorem ipsum dolor sit amet',
-                'api_key' => 'Lorem ipsum dolor sit amet',
-                'auth_role_id' => 1,
-                'password_state_id' => 1,
-                'membership_number' => 1,
-                'section_id' => 1
-            ],
-            [
-                'id' => 3,
-                'role_id' => 1,
-                'section_id' => 1,
-                'password_state_id' => 1,
-                'auth_role_id' => 1,
-                'firstname' => 'Jacob',
-                'lastname' => 'Goat',
-                'email' => 'jacob@goat.com',
-                'phone' => '01982 987221',
-                'address_1' => 'Lorem Ipsum Dolor Sit Amet',
-                'address_2' => 'Lorem Ipsum Dolor Sit Amet',
-                'city' => 'Lorem Ipsum Dolor Sit Amet',
-                'county' => 'Lorem Ipsum Dolor Sit Amet',
-                'postcode' => 'SG18 89S',
-                'username' => 'Fish',
-                'pw_reset' => 'Lorem ipsum dolor sit amet',
-                'last_login' => $startNow,
-                'logins' => 1,
-                'validated' => true,
-                'pw_salt' => 'Lorem ipsum dolor sit amet',
-                'api_key_plain' => 'Lorem ipsum dolor sit amet',
-                'api_key' => 'Lorem ipsum dolor sit amet',
-                'membership_number' => 123,
-                'legacy_section' => null,
-                'created' => $startNow,
-                'modified' => $startNow,
-                'osm_user_id' => null,
-                'osm_secret' => null,
-                'osm_section_id' => null,
-                'osm_linked' => null,
-                'osm_linkdate' => null,
-                'osm_current_term' => null,
-                'osm_term_end' => null,
-                'deleted' => null,
-            ],
-        ];
-
-        $badRoleEntity = $this->Users->newEntity($badRoleData);
-        $badAuthEntity = $this->Users->newEntity($badAuthData);
-        $badSectionEntity = $this->Users->newEntity($badSectionData);
-        $badPWStateEntity = $this->Users->newEntity($badPWStateData);
-
-        $badUsernameEntity = $this->Users->newEntity($badUsernameData);
-        $badEmailEntity = $this->Users->newEntity($badEmailData);
-        $badMembershipNumberEntity = $this->Users->newEntity($badMembershipNumberData);
-
-        $goodEntity = $this->Users->newEntity($goodData);
-
-        $this->assertFalse($this->Users->save($badRoleEntity));
-        $this->assertFalse($this->Users->save($badAuthEntity));
-        $this->assertFalse($this->Users->save($badSectionEntity));
-        $this->assertFalse($this->Users->save($badPWStateEntity));
-
-        $this->assertFalse($this->Users->save($badUsernameEntity));
-        $this->assertFalse($this->Users->save($badEmailEntity));
-        $this->assertFalse($this->Users->save($badMembershipNumberEntity));
-
-        $this->assertInstanceOf(User::class, $this->Users->save($goodEntity));
-
-        $query = $this->Users->find('all');
-
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
-
-        $result = Hash::remove($result, '{n}.password');
-        $result = Hash::remove($result, '{n}.digest_hash');
-
-        $this->assertEquals($expected, $result);
+            $fieldEnt->set($field, $first->get($field));
+            $this->assertFalse($this->Users->save($fieldEnt));
+        }
     }
 
     /**
@@ -629,36 +401,7 @@ class UsersTableTest extends TestCase
      */
     public function testBeforeSave()
     {
-        $startNow = Time::now();
-
-        $password = 'Lorem ipsum dolor sit amet';
-
-        $goodData = [
-            'role_id' => 1,
-            'section_id' => 1,
-            'password_state_id' => 1,
-            'auth_role_id' => 1,
-            'firstname' => 'jacOB',
-            'lastname' => 'tylER',
-            'email' => 'JaCoB@TyLeR.com',
-            'password' => $password,
-            'phone' => '01982 987221',
-            'address_1' => 'letchworth HERE',
-            'address_2' => 'llamaland GONTANOS',
-            'city' => 'CHOOLOOSJ linguia',
-            'county' => 'other world FISHY',
-            'postcode' => 'sg6 ihj',
-            'username' => 'Fish',
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'membership_number' => 123,
-        ];
+        $goodData = $this->getGood();
 
         $goodEntity = $this->Users->newEntity($goodData);
 
@@ -666,16 +409,27 @@ class UsersTableTest extends TestCase
 
         $user = $this->Users->get('3');
 
-        $this->assertNotEquals($goodData['password'], $user->password);
-        $this->assertNotEquals($goodData['email'], $user->email);
+        $fields = ['password', 'email', 'firstname', 'lastname', 'address_1', 'address_2', 'city', 'county', 'postcode'];
+        foreach ($fields as $field) {
+            $this->assertNotEquals($goodData[$field], $user->get($field));
+        }
+    }
 
-        $this->assertNotEquals($goodData['firstname'], $user->firstname);
-        $this->assertNotEquals($goodData['lastname'], $user->lastname);
+    /**
+     * Test Parents Finder
+     *
+     * @return void
+     */
+    public function testFindParents()
+    {
+        $normal = $this->Users->find('all')->count();
 
-        $this->assertNotEquals($goodData['address_1'], $user->address_1);
-        $this->assertNotEquals($goodData['address_2'], $user->address_2);
-        $this->assertNotEquals($goodData['city'], $user->city);
-        $this->assertNotEquals($goodData['county'], $user->county);
-        $this->assertNotEquals($goodData['postcode'], $user->postcode);
+        $parentFinder = $this->Users->find('parents');
+
+        $parents = $parentFinder->count();
+        $this->assertLessThan($normal, $parents);
+
+        $parent = $parentFinder->first();
+        $this->assertInstanceOf(User::class, $parent);
     }
 }

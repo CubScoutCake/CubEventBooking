@@ -9,7 +9,7 @@
         echo $this->Form->input('section_type_id', ['options' => $sectionTypes]);
         echo '<div class="row"> <div class="col-lg-6">';
         echo $this->Form->input('start_date');
-        echo $this->Form->input('deposit_date');
+        echo $this->Form->input('opening_date');
         echo '</div> <div class="col-lg-6">';
         echo $this->Form->input('end_date');
         echo $this->Form->input('closing_date');
@@ -29,26 +29,12 @@
         echo '</td></tr></table></div>';
         echo '</div> </div>';
 
-        echo $this->Form->input('location');
+        echo $this->Form->control('location');
         echo $this->Form->label('Descriptive Text for the Event');
         echo $this->Form->textarea('intro_text');
-        echo $this->Form->input('tagline_text');
-        echo $this->Form->input('logo');
+        echo $this->Form->control('logo');
 
-        echo '<div class="row"> <div class="col-lg-12">';
-        echo '<div class="table-responsive"> <table class="table table-hover"> <tr> <td>';
-        echo $this->Form->input('admin_firstname');
-        echo '</td> <td>';
-        echo $this->Form->input('admin_lastname');
-        echo '</td> <td>';
-        echo $this->Form->input('admin_email');
-        echo '</td></tr></table></div>';
-        echo '</div> </div>';
-        echo $this->Form->input('admin_user_id', ['options' => $users]);
-        echo $this->Form->input('address');
-        echo $this->Form->input('city');
-        echo $this->Form->input('county');
-        echo $this->Form->input('postcode');
+        echo $this->Form->control('admin_user_id', ['options' => $users]);
 
         echo '<div class="table-responsive"> <table class="table table-hover"> <tr> <td>';
         echo $this->Form->input('max', ['label' => 'Limit Numbers (will enforce limits to the left)']);
@@ -59,9 +45,6 @@
         echo $this->Form->input('max_section', ['label' => 'Maximum Young Person Spaces Available']);
         echo '<p>Leave Blank for Infinite, does not include young leaders</p>';
         echo '</td></tr></table></div>';
-
-        echo $this->Form->input('discount_id', ['options' => $discounts, 'empty' => true]);
-
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

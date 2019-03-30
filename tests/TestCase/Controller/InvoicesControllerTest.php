@@ -181,7 +181,7 @@ class InvoicesControllerTest extends IntegrationTestCase
 
         $this->assertRedirect();
 
-        $this->assertFlashMessage('This event has been LOCKED to prevent updates to invoices. Please contact Jacob Tyler.');
+        $this->assertFlashMessage('This event has been LOCKED to prevent updates to invoices. Please contact Admin Joe.');
 
         $events = TableRegistry::getTableLocator()->get('Events');
         $event = $events->get(2);

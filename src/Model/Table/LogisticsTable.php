@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Database\Schema\TableSchema;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -9,8 +10,8 @@ use Cake\Validation\Validator;
 /**
  * Logistics Model
  *
- * @property \App\Model\Table\ParametersTable|\Cake\ORM\Association\BelongsTo $Parameters
  * @property \App\Model\Table\EventsTable|\Cake\ORM\Association\BelongsTo $Events
+ * @property \App\Model\Table\ParametersTable|\Cake\ORM\Association\BelongsTo $Parameters
  * @property \App\Model\Table\LogisticItemsTable|\Cake\ORM\Association\HasMany $LogisticItems
  *
  * @method \App\Model\Entity\Logistic get($primaryKey, $options = [])
@@ -36,18 +37,18 @@ class LogisticsTable extends Table
         parent::initialize($config);
 
         $this->setTable('logistics');
-        $this->setDisplayField('id');
+        $this->setDisplayField('header');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
             'field' => 'deleted'
         ]);
 
-        $this->belongsTo('Parameters', [
-            'foreignKey' => 'parameter_id'
-        ]);
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id'
+        ]);
+        $this->belongsTo('Parameters', [
+            'foreignKey' => 'parameter_id'
         ]);
         $this->hasMany('LogisticItems', [
             'foreignKey' => 'logistic_id'
@@ -64,23 +65,40 @@ class LogisticsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->scalar('header')
             ->maxLength('header', 45)
-            ->allowEmpty('header');
+            ->requirePresence('header')
+            ->allowEmptyString('header', false);
 
         $validator
             ->scalar('text')
             ->maxLength('text', 999)
-            ->allowEmpty('text');
+            ->requirePresence('text')
+            ->allowEmptyString('text');
 
         $validator
-            ->dateTime('deleted')
-            ->allowEmpty('deleted');
+            ->allowEmptyString('variable_max_values');
+
+        $validator
+            ->integer('max_value')
+            ->allowEmptyString('max_value');
 
         return $validator;
+    }
+
+    /**
+     * @param \Cake\Database\Schema\TableSchema $schema The Schema to be modified
+     *
+     * @return TableSchema|\Cake\Database\Schema\TableSchema
+     */
+    protected function _initializeSchema($schema)
+    {
+        $schema->setColumnType('capabilities', 'json');
+
+        return $schema;
     }
 
     /**
@@ -92,9 +110,33 @@ class LogisticsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['parameter_id'], 'Parameters'));
         $rules->add($rules->existsIn(['event_id'], 'Events'));
+        $rules->add($rules->existsIn(['parameter_id'], 'Parameters'));
 
         return $rules;
+    }
+
+    /**
+     * Writes the max value to the Logistic
+     *
+     * @param \Cake\Event\Event $event The event trigger.
+     *
+     * @return true
+     */
+    public function beforeSave($event)
+    {
+        /** @var \App\Model\Entity\Logistic $entity */
+        $entity = $event->getData('entity');
+
+        $variableMax = $entity->get('variable_max_values');
+        $total = 0;
+
+        foreach ($variableMax as $variable) {
+            $total += $variable['limit'];
+        }
+
+        $entity->set('max_value', $total);
+
+        return true;
     }
 }

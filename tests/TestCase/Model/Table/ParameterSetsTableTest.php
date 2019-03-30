@@ -6,7 +6,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\ParameterSetsTable Test Case
+ * App\Model\Table\ParameterSetsTable Test Case
  */
 class ParameterSetsTableTest extends TestCase
 {
@@ -24,7 +24,7 @@ class ParameterSetsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.parameter_sets'
+        'app.ParameterSets'
     ];
 
     /**
@@ -35,8 +35,8 @@ class ParameterSetsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('ParameterSets') ? [] : ['className' => 'App\Model\Table\ParameterSetsTable'];
-        $this->ParameterSets = TableRegistry::get('ParameterSets', $config);
+        $config = TableRegistry::getTableLocator()->exists('ParameterSets') ? [] : ['className' => ParameterSetsTable::class];
+        $this->ParameterSets = TableRegistry::getTableLocator()->get('ParameterSets', $config);
     }
 
     /**

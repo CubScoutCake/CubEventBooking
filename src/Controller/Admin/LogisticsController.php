@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
  * Logistics Controller
  *
  * @property \App\Model\Table\LogisticsTable $Logistics
+ *
+ * @method \App\Model\Entity\Logistic[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class LogisticsController extends AppController
 {
@@ -12,40 +14,38 @@ class LogisticsController extends AppController
     /**
      * Index method
      *
-     * @return void
+     * @return \Cake\Http\Response|void
      */
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Applications', 'Logisticstypes', 'Parameters']
+            'contain' => ['Parameters', 'Events']
         ];
         $logistics = $this->paginate($this->Logistics);
 
         $this->set(compact('logistics'));
-        $this->set('_serialize', ['logistics']);
     }
 
     /**
      * View method
      *
-     * @param string|null $logisticId Logistic id.
-     * @return void
+     * @param string|null $id Logistic id.
+     * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($logisticId = null)
+    public function view($id = null)
     {
-        $logistic = $this->Logistics->get($logisticId, [
-            'contain' => ['Applications', 'Logisticstypes', 'Parameters']
+        $logistic = $this->Logistics->get($id, [
+            'contain' => ['Parameters', 'Events', 'LogisticItems']
         ]);
 
         $this->set('logistic', $logistic);
-        $this->set('_serialize', ['logistic']);
     }
 
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -55,24 +55,21 @@ class LogisticsController extends AppController
             if ($this->Logistics->save($logistic)) {
                 $this->Flash->success(__('The logistic has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The logistic could not be saved. Please, try again.'));
+                return $this->redirect(['action' => 'view', $logistic->get('id')]);
             }
+            $this->Flash->error(__('The logistic could not be saved. Please, try again.'));
         }
-        $applications = $this->Logistics->Applications->find('list', ['limit' => 200]);
-        $logisticstypes = $this->Logistics->Logisticstypes->find('list', ['limit' => 200]);
         $parameters = $this->Logistics->Parameters->find('list', ['limit' => 200]);
-        $this->set(compact('logistic', 'applications', 'logisticstypes', 'parameters'));
-        $this->set('_serialize', ['logistic']);
+        $events = $this->Logistics->Events->find('list', ['limit' => 200]);
+        $this->set(compact('logistic', 'parameters', 'events'));
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Logistic id.
-     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Http\Exception\NotFoundException When record not found.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
     {
@@ -85,22 +82,19 @@ class LogisticsController extends AppController
                 $this->Flash->success(__('The logistic has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The logistic could not be saved. Please, try again.'));
             }
+            $this->Flash->error(__('The logistic could not be saved. Please, try again.'));
         }
-        $applications = $this->Logistics->Applications->find('list', ['limit' => 200]);
-        $logisticstypes = $this->Logistics->Logisticstypes->find('list', ['limit' => 200]);
         $parameters = $this->Logistics->Parameters->find('list', ['limit' => 200]);
-        $this->set(compact('logistic', 'applications', 'logisticstypes', 'parameters'));
-        $this->set('_serialize', ['logistic']);
+        $events = $this->Logistics->Events->find('list', ['limit' => 200]);
+        $this->set(compact('logistic', 'parameters', 'events'));
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Logistic id.
-     * @return \Cake\Http\Response|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)

@@ -7,6 +7,8 @@
  * @var array $attendees
  * @var array $reservationStatuses
  */
+
+$this->assign('title', 'Reserve a place');
 ?>
 
 <!-- Header -->
@@ -66,7 +68,7 @@
                     ?></div><div class="col"><?php
                         echo $this->Form->control('attendee.lastname', ['label' => 'Young Person Last Name']);
 			        ?></div></div><?php
-                    echo $this->Form->control('attendee.section', ['options' => $sections, 'class' => 'form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0']);
+                    echo $this->Form->control('attendee.section', ['options' => $sections, 'empty' => true, 'class' => 'hierarchy-select form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0']);
                     ?>
                 </fieldset>
                 <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>

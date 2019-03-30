@@ -51,41 +51,41 @@ class AuthRolesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->requirePresence('auth_role', 'create')
-            ->notEmpty('auth_role')
+            ->allowEmptyString('auth_role', false)
             ->add('auth_role', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->boolean('admin_access')
-            ->allowEmpty('admin_access');
+            ->allowEmptyString('admin_access');
 
         $validator
             ->boolean('champion_access')
-            ->allowEmpty('champion_access');
+            ->allowEmptyString('champion_access');
 
         $validator
             ->boolean('super_user')
-            ->allowEmpty('super_user');
+            ->allowEmptyString('super_user');
 
         $validator
             ->integer('auth')
-            ->requirePresence('auth', 'create')
-            ->notEmpty('auth');
+            ->requirePresence('auth', false)
+            ->allowEmptyString('auth');
 
         $validator
             ->boolean('parent_access')
-            ->allowEmpty('parent_access');
+            ->allowEmptyString('parent_access');
 
         $validator
             ->boolean('user_access')
-            ->allowEmpty('user_access');
+            ->allowEmptyString('user_access');
 
         $validator
             ->boolean('section_limited')
-            ->allowEmpty('section_limited');
+            ->allowEmptyString('section_limited');
 
         return $validator;
     }
@@ -102,5 +102,22 @@ class AuthRolesTable extends Table
         $rules->add($rules->isUnique(['auth_role']));
 
         return $rules;
+    }
+
+    /**
+     * Hashes the password before save
+     *
+     * @param \Cake\Event\Event $event The event trigger.
+     *
+     * @return true
+     */
+    public function beforeSave($event)
+    {
+        /** @var \App\Model\Entity\AuthRole $entity */
+        $entity = $event->getData('entity');
+
+        $entity->set('auth', $entity->auth_value);
+
+        return true;
     }
 }

@@ -1,15 +1,23 @@
 language: php
 
+dist: xenial
+
 sudo: false
 
 php:
   - 7.1
+  - 7.2
 
 env:
   - DB=postgres
 
 services:
   - postgresql
+  - redis
+
+cache:
+  directories:
+    - vendor
 
 before_script:
   - cp config/app.travis.php config/app.php
@@ -26,7 +34,7 @@ before_script:
 
 script:
   - composer cs-check
-  - composer test
+  - vendor/bin/phpunit --colors=always
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
@@ -45,5 +53,10 @@ notifications:
     on_start: never # default: never
 
 addons:
-    code_climate:
-        repo_token: CodeClimateTokenForReplacement
+  postgresql: "10"
+  apt:
+    packages:
+      - postgresql-10
+      - postgresql-client-10
+  code_climate:
+      repo_token: CodeClimateTokenForReplacement

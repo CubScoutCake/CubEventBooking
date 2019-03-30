@@ -4,6 +4,7 @@ namespace App\Test\TestCase\Model\Table;
 use App\Model\Table\LogisticsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Security;
 
 /**
  * App\Model\Table\LogisticsTable Test Case
@@ -24,25 +25,41 @@ class LogisticsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.events',
-        'app.event_statuses',
-        'app.event_types',
-        'app.settings',
-        'app.password_states',
-        'app.setting_types',
+        'app.prices',
+        'app.item_types',
+        'app.invoice_items',
+        'app.invoices',
         'app.users',
         'app.roles',
-        'app.discounts',
+        'app.password_states',
+        'app.attendees',
         'app.sections',
         'app.section_types',
         'app.scoutgroups',
         'app.districts',
+        'app.champions',
+        'app.applications', 'app.application_statuses',
+        'app.events', 'app.event_statuses',
+        'app.settings',
+        'app.setting_types',
+        'app.discounts',
+        'app.logistics',
+        'app.parameters',
+        'app.parameter_sets',
+        'app.params',
+        'app.logistic_items',
+        'app.notes',
+        'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
         'app.auth_roles',
         'app.notifications',
         'app.notification_types',
+        'app.payments',
+        'app.invoices_payments',
+        'app.event_types',
+        'app.reservations',
+        'app.reservation_statuses',
     ];
 
     /**
@@ -70,13 +87,60 @@ class LogisticsTableTest extends TestCase
     }
 
     /**
+     * Get Good Set Function
+     *
+     * @return array
+     *
+     * @throws
+     */
+    private function getGood()
+    {
+        $good = [
+            'event_id' => 2,
+            'header' => 'Lorem ipsum dolor sit amet',
+            'text' => 'Lorem ipsum dolor sit amet',
+            'parameter_id' => 1,
+            'variable_max_values' => '',
+            'max_value' => 1
+        ];
+
+        return $good;
+    }
+
+    /**
      * Test initialize method
      *
      * @return void
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $actual = $this->Logistics->get(1)->toArray();
+
+        $dates = [
+            'deleted'
+        ];
+
+        foreach ($dates as $date) {
+            $dateValue = $actual[$date];
+            if (!is_null($dateValue)) {
+                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+            }
+            unset($actual[$date]);
+        }
+
+        $expected = [
+            'id' => 1,
+            'event_id' => 1,
+            'header' => 'Lorem ipsum dolor sit amet',
+            'text' => 'Lorem ipsum dolor sit amet',
+            'parameter_id' => 1,
+            'variable_max_values' => '',
+            'max_value' => 1
+        ];
+        $this->assertEquals($expected, $actual);
+
+        $count = $this->Logistics->find('all')->count();
+        $this->assertEquals(1, $count);
     }
 
     /**
@@ -86,7 +150,59 @@ class LogisticsTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $good = $this->getGood();
+
+        $new = $this->Logistics->newEntity($good);
+        $this->assertInstanceOf('App\Model\Entity\Logistic', $this->Logistics->save($new));
+
+        $required = [
+            'header',
+            'text',
+        ];
+
+        foreach ($required as $require) {
+            $reqArray = $this->getGood();
+            unset($reqArray[$require]);
+            $new = $this->Logistics->newEntity($reqArray);
+            $this->assertFalse($this->Logistics->save($new));
+        }
+
+        $notEmpties = [
+            'header',
+        ];
+
+        foreach ($notEmpties as $not_empty) {
+            $reqArray = $this->getGood();
+            $reqArray[$not_empty] = '';
+            $new = $this->Logistics->newEntity($reqArray);
+            $this->assertFalse($this->Logistics->save($new));
+        }
+
+        $maxLengths = [
+            'header' => 45,
+            'text' => 999,
+        ];
+
+        $string = hash('sha512', Security::randomBytes(64));
+        $string .= $string;
+        $string .= $string;
+        if (max($maxLengths) > 255) {
+            $string .= $string;
+            $string .= $string;
+            $string .= $string;
+        }
+
+        foreach ($maxLengths as $maxField => $maxLength) {
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $maxLength);
+            $new = $this->Logistics->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\Logistic', $this->Logistics->save($new));
+
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $maxLength + 1);
+            $new = $this->Logistics->newEntity($reqArray);
+            $this->assertFalse($this->Logistics->save($new));
+        }
     }
 
     /**
@@ -96,6 +212,34 @@ class LogisticsTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // Parameter Exists
+        $values = $this->getGood();
+
+        $parameters = $this->Logistics->Parameters->find('list')->toArray();
+
+        $parameter = max(array_keys($parameters));
+
+        $values['parameter_id'] = $parameter;
+        $new = $this->Logistics->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\Logistic', $this->Logistics->save($new));
+
+        $values['parameter_id'] = $parameter + 1;
+        $new = $this->Logistics->newEntity($values);
+        $this->assertFalse($this->Logistics->save($new));
+
+        // Event Exists
+        $values = $this->getGood();
+
+        $events = $this->Logistics->Events->find('list')->toArray();
+
+        $event = max(array_keys($events));
+
+        $values['event_id'] = $event;
+        $new = $this->Logistics->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\Logistic', $this->Logistics->save($new));
+
+        $values['event_id'] = $event + 1;
+        $new = $this->Logistics->newEntity($values);
+        $this->assertFalse($this->Logistics->save($new));
     }
 }

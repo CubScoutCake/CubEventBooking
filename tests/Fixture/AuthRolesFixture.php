@@ -40,7 +40,6 @@ class AuthRolesFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
             'auth_role' => 'User',
             'admin_access' => 0,
             'champion_access' => 0,
@@ -51,7 +50,6 @@ class AuthRolesFixture extends TestFixture
             'section_limited' => 1
         ],
         [
-            'id' => 2,
             'auth_role' => 'SuperUser',
             'admin_access' => 1,
             'champion_access' => 1,
@@ -60,6 +58,36 @@ class AuthRolesFixture extends TestFixture
             'parent_access' => 0,
             'user_access' => 1,
             'section_limited' => 0
+        ],
+        [
+            'auth_role' => 'Admin',
+            'admin_access' => true,
+            'champion_access' => false,
+            'super_user' => false,
+            'auth' => 1,
+            'parent_access' => false,
+            'user_access' => true,
+            'section_limited' => true,
+        ],
+        [
+            'auth_role' => 'Parent',
+            'admin_access' => false,
+            'champion_access' => false,
+            'super_user' => false,
+            'auth' => 1,
+            'parent_access' => true,
+            'user_access' => false,
+            'section_limited' => true,
+        ],
+        [
+            'auth_role' => 'Parent User',
+            'admin_access' => false,
+            'champion_access' => false,
+            'super_user' => false,
+            'auth' => 12,
+            'parent_access' => true,
+            'user_access' => true,
+            'section_limited' => true,
         ],
     ];
 }
