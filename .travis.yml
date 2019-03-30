@@ -9,6 +9,8 @@ php:
 
 env:
   - DB=postgres
+  global:
+    - PGPORT=5433
 
 services:
   - postgresql
@@ -47,13 +49,10 @@ notifications:
     on_start: never # default: never
 
 addons:
-    postgresql: "10"
-      apt:
-        packages:
-          - postgresql-10
-          - postgresql-client-10
-    env:
-      global:
-        - PGPORT=5433
-    code_climate:
+  postgresql: "10"
+  apt:
+    packages:
+      - postgresql-10
+      - postgresql-client-10
+  code_climate:
       repo_token: CodeClimateTokenForReplacement
