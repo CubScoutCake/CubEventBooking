@@ -1,5 +1,7 @@
 language: php
 
+dist: xenial
+
 sudo: false
 
 php:
@@ -8,7 +10,7 @@ php:
 
 env:
   - DB=postgres
-  - PGPORT=5433
+  - PGPORT=5432
 
 services:
   - postgresql
