@@ -4,6 +4,7 @@ namespace App\Test\TestCase\Model\Table;
 use App\Model\Table\EmailResponseTypesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Security;
 
 /**
  * App\Model\Table\EmailResponseTypesTable Test Case
@@ -24,7 +25,7 @@ class EmailResponseTypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.email_response_types'
+        'app.email_response_types',
     ];
 
     /**
@@ -52,13 +53,40 @@ class EmailResponseTypesTableTest extends TestCase
     }
 
     /**
+     * Get Good Set Function
+     *
+     * @return array
+     *
+     * @throws
+     */
+    private function getGood()
+    {
+        $good = [
+            'email_response_type' => 'Type' . random_int(1111, 9999),
+            'bounce' => true,
+        ];
+
+        return $good;
+    }
+
+    /**
      * Test initialize method
      *
      * @return void
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $actual = $this->EmailResponseTypes->get(1)->toArray();
+
+        $expected = [
+            'id' => 1,
+            'email_response_type' => 'Lorem ipsum dolor sit amet',
+            'bounce' => true,
+        ];
+        $this->assertEquals($expected, $actual);
+
+        $count = $this->EmailResponseTypes->find('all')->count();
+        $this->assertEquals(1, $count);
     }
 
     /**
@@ -68,6 +96,73 @@ class EmailResponseTypesTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $good = $this->getGood();
+
+        $new = $this->EmailResponseTypes->newEntity($good);
+        $this->assertInstanceOf('App\Model\Entity\EmailResponseType', $this->EmailResponseTypes->save($new));
+
+        $required = [
+            'email_response_type',
+            'bounce',
+        ];
+
+        foreach ($required as $require) {
+            $reqArray = $good;
+            unset($reqArray[$require]);
+            $new = $this->EmailResponseTypes->newEntity($reqArray);
+            $this->assertFalse($this->EmailResponseTypes->save($new));
+        }
+
+        $notEmpties = [
+            'email_response_type',
+            'bounce',
+        ];
+
+        foreach ($notEmpties as $not_empty) {
+            $reqArray = $good;
+            $reqArray[$not_empty] = '';
+            $new = $this->EmailResponseTypes->newEntity($reqArray);
+            $this->assertFalse($this->EmailResponseTypes->save($new));
+        }
+
+        $maxLengths = [
+            'email_response_type' => 255,
+        ];
+
+        $string = hash('sha512', Security::randomBytes(64));
+        $string .= $string;
+        $string .= $string;
+
+        foreach ($maxLengths as $maxField => $max_length) {
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $max_length);
+            $new = $this->EmailResponseTypes->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\EmailResponseType', $this->EmailResponseTypes->save($new));
+
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $max_length + 1);
+            $new = $this->EmailResponseTypes->newEntity($reqArray);
+            $this->assertFalse($this->EmailResponseTypes->save($new));
+        }
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
+    {
+        $values = $this->getGood();
+
+        $existing = $this->EmailResponseTypes->get(1)->toArray();
+
+        $values['email_response_type'] = 'My new Camp Role Type';
+        $new = $this->EmailResponseTypes->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\EmailResponseType', $this->EmailResponseTypes->save($new));
+
+        $values['email_response_type'] = $existing['email_response_type'];
+        $new = $this->EmailResponseTypes->newEntity($values);
+        $this->assertFalse($this->EmailResponseTypes->save($new));
     }
 }

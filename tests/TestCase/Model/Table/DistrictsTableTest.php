@@ -1,16 +1,21 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Entity\District;
 use App\Model\Table\DistrictsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\DistrictsTable Test Case
+ * App\Model\Table\DistrictsTable Test Case
  */
 class DistrictsTableTest extends TestCase
 {
+    /**
+     * Test subject
+     *
+     * @var \App\Model\Table\DistrictsTable
+     */
+    public $Districts;
 
     /**
      * Fixtures
@@ -18,7 +23,8 @@ class DistrictsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.districts'
+        'app.Districts',
+        'app.Scoutgroups',
     ];
 
     /**
@@ -29,8 +35,8 @@ class DistrictsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Districts') ? [] : ['className' => 'App\Model\Table\DistrictsTable'];
-        $this->Districts = TableRegistry::get('Districts', $config);
+        $config = TableRegistry::getTableLocator()->exists('Districts') ? [] : ['className' => DistrictsTable::class];
+        $this->Districts = TableRegistry::getTableLocator()->get('Districts', $config);
     }
 
     /**

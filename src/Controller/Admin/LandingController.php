@@ -30,6 +30,20 @@ use Cake\View\Exception\MissingTemplateException;
 class LandingController extends AppController
 {
     /**
+     * User Home Redirect Function
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function userHome()
+    {
+        return $this->redirect([
+            'controller' => 'Landing',
+            'action' => 'user_home',
+            'prefix' => false,
+        ]);
+    }
+
+    /**
      * Setup Config
      *
      * @return void

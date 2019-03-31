@@ -40,7 +40,11 @@ class AuthRolesControllerTest extends IntegrationTestCase
            'Auth.User.auth_role_id' => 2
         ]);
 
-        $this->get('/super_user/auth-roles');
+        $this->get([
+            'controller' => 'AuthRoles',
+            'action' => 'index',
+            'prefix' => 'super_user',
+        ]);
 
         $this->assertResponseOk();
     }

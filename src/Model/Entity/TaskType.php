@@ -4,18 +4,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * District Entity
+ * TaskType Entity
  *
  * @property int $id
- * @property string $district
- * @property string|null $county
- * @property \Cake\I18n\Time|null $deleted
- * @property string|null $short_name
+ * @property string $task_type
+ * @property bool $shared_type
+ * @property string $type_icon
+ * @property string $type_code
+ * @property string $task_requirement
  *
- * @property \App\Model\Entity\Scoutgroup[] $scoutgroups
- * @property \App\Model\Entity\Champion[] $champions
+ * @property \App\Model\Entity\Task[] $tasks
  */
-class District extends Entity
+class TaskType extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -27,10 +27,11 @@ class District extends Entity
      * @var array
      */
     protected $_accessible = [
-        'district' => true,
-        'county' => true,
-        'short_name' => true,
-        'scoutgroups' => true,
-        'champions' => true
+        'task_type' => true,
+        'shared_type' => true,
+        'type_icon' => true,
+        'type_code' => true,
+        'task_requirement' => true,
+        'tasks' => true
     ];
 }
