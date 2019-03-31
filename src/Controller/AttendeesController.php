@@ -8,7 +8,6 @@ namespace App\Controller;
  */
 class AttendeesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -18,7 +17,11 @@ class AttendeesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Users', 'Sections.Scoutgroups', 'Roles'],
-            'conditions' => ['user_id' => $this->Auth->user('id')]
+            'finder' => [
+                'ownedBy' => [
+                    'userId' => $this->Auth->user('id')
+                ],
+            ],
         ];
         $this->set('attendees', $this->paginate($this->Attendees));
         $this->set('_serialize', ['attendees']);
