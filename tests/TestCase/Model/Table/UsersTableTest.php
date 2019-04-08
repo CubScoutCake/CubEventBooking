@@ -2,17 +2,18 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Entity\User;
+use App\Model\Table\UsersTable;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use Cake\Utility\Security;
 
 /**
  * App\Model\Table\UsersTable Test Case
  */
 class UsersTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -26,17 +27,19 @@ class UsersTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.users',
-        'app.roles',
-        'app.scoutgroups',
-        'app.password_states',
-        'app.districts',
-        'app.champions',
-        'app.sections',
-        'app.section_types',
-        'app.auth_roles',
-        'app.settings',
-        'app.setting_types'
+        'app.Users',
+        'app.Roles',
+        'app.AuthRoles',
+        'app.PasswordStates',
+        'app.ScoutGroups',
+        'app.Districts',
+        'app.SectionTypes',
+        'app.Sections',
+        'app.EmailSends',
+        'app.Notifications',
+        'app.NotificationTypes',
+        'app.Payments',
+        'app.Tokens'
     ];
 
     /**
@@ -47,8 +50,8 @@ class UsersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Users') ? [] : ['className' => 'App\Model\Table\UsersTable'];
-        $this->Users = TableRegistry::get('Users', $config);
+        $config = TableRegistry::getTableLocator()->exists('Users') ? [] : ['className' => UsersTable::class];
+        $this->Users = TableRegistry::getTableLocator()->get('Users', $config);
 
         $now = new Time('2016-12-26 23:22:30');
         Time::setTestNow($now);
@@ -64,171 +67,6 @@ class UsersTableTest extends TestCase
         unset($this->Users);
 
         parent::tearDown();
-    }
-
-    /**
-     * Return Expected Array
-     *
-     * @return array
-     */
-    private function getExpected()
-    {
-        $startNow = Time::now();
-
-        return [
-            [
-                'id' => 1,
-                'role_id' => 1,
-                'firstname' => 'Jacob',
-                'lastname' => 'Tyler',
-                'email' => 'jacob@fish.com',
-                'password' => 'Lorem ipsum dolor sit amet',
-                'phone' => 'Lorem ipsum dolor sit amet',
-                'address_1' => 'Lorem ipsum dolor sit amet',
-                'address_2' => 'Lorem ipsum dolor sit amet',
-                'city' => 'Lorem ipsum dolor sit amet',
-                'county' => 'Lorem ipsum dolor sit amet',
-                'postcode' => 'Lorem ipsum dolor sit amet',
-                'legacy_section' => 'Lorem ipsum dolor sit amet',
-                'created' => $startNow,
-                'modified' => $startNow,
-                'username' => 'Test',
-                'osm_user_id' => 1,
-                'osm_secret' => 'Lorem ipsum dolor sit amet',
-                'osm_section_id' => 1,
-                'osm_linked' => 1,
-                'osm_linkdate' => $startNow,
-                'osm_current_term' => 1,
-                'osm_term_end' => $startNow,
-                'pw_reset' => 'Lorem ipsum dolor sit amet',
-                'last_login' => $startNow,
-                'logins' => 1,
-                'validated' => true,
-                'deleted' => null,
-                'digest_hash' => 'Lorem ipsum dolor sit amet',
-                'pw_salt' => 'Lorem ipsum dolor sit amet',
-                'api_key_plain' => 'Lorem ipsum dolor sit amet',
-                'api_key' => 'Lorem ipsum dolor sit amet',
-                'auth_role_id' => 1,
-                'password_state_id' => 1,
-                'membership_number' => 1,
-                'section_id' => 1
-            ],
-            [
-                'id' => 3,
-                'role_id' => 2,
-                'section_id' => 1,
-                'firstname' => 'Parent',
-                'lastname' => 'Joe',
-                'email' => 'llama@goat.com',
-                'password' => 'TestMe',
-                'digest_hash' => 'b517225d7899cbd7d4c675b053d8f444',
-                'pw_salt' => 'dev.hertscubs.uk',
-                'api_key_plain' => 'a key',
-                'api_key' => 'a key.P6JDH982',
-                'phone' => 'NUMBER HERE',
-                'address_1' => 'ADDRESS 1',
-                'address_2' => '',
-                'city' => 'ADDRESS 2',
-                'county' => 'COUNTY',
-                'postcode' => 'POSTCODE',
-                'legacy_section' => '',
-                'created' => $startNow,
-                'modified' => $startNow,
-                'username' => 'PJoe',
-                'osm_user_id' => '111',
-                'osm_secret' => '123',
-                'osm_section_id' => '1242',
-                'osm_linked' => 3,
-                'osm_linkdate' => $startNow,
-                'osm_current_term' => '1422',
-                'osm_term_end' => $startNow,
-                'pw_reset' => 'No Longer Active',
-                'last_login' => $startNow,
-                'logins' => '12',
-                'validated' => null,
-                'deleted' => null,
-                'auth_role_id' => 3,
-                'password_state_id' => 1,
-                'membership_number' => 789,
-            ],
-            [
-                'id' => 4,
-                'role_id' => 2,
-                'section_id' => 1,
-                'firstname' => 'Joe',
-                'lastname' => 'Parent',
-                'email' => 'j.a.g.tyler@me.com',
-                'password' => 'TestMe',
-                'digest_hash' => 'b517225d7899cbd7d4c675b053d8f444',
-                'pw_salt' => 'dev.hertscubs.uk',
-                'api_key_plain' => 'a key',
-                'api_key' => 'a key.P6JDH982',
-                'phone' => 'NUMBER HERE',
-                'address_1' => 'ADDRESS 1',
-                'address_2' => '',
-                'city' => 'ADDRESS 2',
-                'county' => 'COUNTY',
-                'postcode' => 'POSTCODE',
-                'legacy_section' => '',
-                'created' => $startNow,
-                'modified' => $startNow,
-                'username' => 'JoeP',
-                'osm_user_id' => '111',
-                'osm_secret' => '123',
-                'osm_section_id' => '1242',
-                'osm_linked' => 3,
-                'osm_linkdate' => $startNow,
-                'osm_current_term' => '1422',
-                'osm_term_end' => $startNow,
-                'pw_reset' => 'No Longer Active',
-                'last_login' => $startNow,
-                'logins' => '12',
-                'validated' => null,
-                'deleted' => null,
-                'auth_role_id' => 4,
-                'password_state_id' => 1,
-                'membership_number' => 456,
-            ],
-            [
-                'id' => 5,
-                'role_id' => 2,
-                'section_id' => 1,
-                'firstname' => 'Admin',
-                'lastname' => 'Joe',
-                'email' => 'jacob@llama.com',
-                'password' => 'TestMe',
-                'digest_hash' => 'b517225d7899cbd7d4c675b053d8f444',
-                'pw_salt' => 'dev.hertscubs.uk',
-                'api_key_plain' => 'a key',
-                'api_key' => 'a key.P6JDH982',
-                'phone' => 'NUMBER HERE',
-                'address_1' => 'ADDRESS 1',
-                'address_2' => '',
-                'city' => 'ADDRESS 2',
-                'county' => 'COUNTY',
-                'postcode' => 'POSTCODE',
-                'legacy_section' => '',
-                'created' => $startNow,
-                'modified' => $startNow,
-                'username' => 'AdminJoeP',
-                'osm_user_id' => '111',
-                'osm_secret' => '123',
-                'osm_section_id' => '1242',
-                'osm_linked' => 3,
-                'osm_linkdate' => $startNow,
-                'osm_current_term' => '1422',
-                'osm_term_end' => $startNow,
-                'pw_reset' => 'No Longer Active',
-                'last_login' => $startNow,
-                'logins' => '12',
-                'validated' => null,
-                'deleted' => null,
-                'auth_role_id' => 2,
-                'password_state_id' => 1,
-                'membership_number' => 769213,
-            ],
-        ];
     }
 
     /**
@@ -267,6 +105,17 @@ class UsersTableTest extends TestCase
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
             'membership_number' => random_int(1111, 9999) + random_int(119, 9919),
+            'legacy_section' => 'Lorem ipsum dolor sit amet',
+            'osm_user_id' => 1,
+            'osm_secret' => 'Lorem ipsum dolor sit amet',
+            'osm_section_id' => 1,
+            'osm_linked' => 1,
+            'osm_current_term' => 1,
+            'simple_attendees' => 1,
+            'member_validated' => true,
+            'section_validated' => true,
+            'email_validated' => true,
+            'full_name' => 'Jacob Tyler',
         ];
     }
 
@@ -277,13 +126,64 @@ class UsersTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $query = $this->Users->find('all');
+        $actual = $this->Users->get(1)->toArray();
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
-        $expected = $this->getExpected();
+        $dates = [
+            'expires',
+            'created',
+            'modified',
+            'osm_linkdate',
+            'deleted',
+            'last_login',
+            'osm_term_end',
+        ];
 
-        $this->assertEquals($expected, $result);
+        foreach ($dates as $date) {
+            $dateValue = $actual[$date];
+            if (!is_null($dateValue)) {
+                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+            }
+            unset($actual[$date]);
+        }
+
+        $expected = [
+            'id' => 1,
+            'role_id' => 1,
+            'firstname' => 'Jacob',
+            'lastname' => 'Tyler',
+            'email' => 'jacob@fish.com',
+            'phone' => '07801 999911',
+            'address_1' => 'Lorem ipsum dolor sit amet',
+            'address_2' => 'Lorem ipsum dolor sit amet',
+            'city' => 'Lorem ipsum dolor sit amet',
+            'county' => 'Lorem ipsum dolor sit amet',
+            'postcode' => 'POST COD',
+            'legacy_section' => 'Lorem ipsum dolor sit amet',
+            'username' => 'Test',
+            'osm_user_id' => 1,
+            'osm_secret' => 'Lorem ipsum dolor sit amet',
+            'osm_section_id' => 1,
+            'osm_linked' => 1,
+            'osm_current_term' => 1,
+            'pw_reset' => 'Lorem ipsum dolor sit amet',
+            'logins' => 1,
+            'validated' => true,
+            'api_key_plain' => 'Lorem ipsum dolor sit amet',
+            'api_key' => 'Lorem ipsum dolor sit amet',
+            'auth_role_id' => 1,
+            'password_state_id' => 1,
+            'membership_number' => 1,
+            'section_id' => 1,
+            'simple_attendees' => 1,
+            'member_validated' => true,
+            'section_validated' => true,
+            'email_validated' => true,
+            'full_name' => 'Jacob Tyler',
+        ];
+        $this->assertEquals($expected, $actual);
+
+        $count = $this->Users->find('all')->count();
+        $this->assertEquals(4, $count);
     }
 
     /**
@@ -293,83 +193,151 @@ class UsersTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $startNow = Time::now();
+        $good = $this->getGood();
 
-        $badData = [
-            'role_id' => 1,
-            'firstname' => null,
-            'lastname' => null,
-            'email' => null,
-            'password' => 'Lorem ipsum dolor sit amet',
-            'phone' => 'Lorem ipsum dolor sit amet',
-            'address_1' => 'Lorem ipsum dolor sit amet',
-            'address_2' => 'Lorem ipsum dolor sit amet',
-            'city' => 'Lorem ipsum dolor sit amet',
-            'county' => 'Lorem ipsum dolor sit amet',
-            'postcode' => 'Lorem ipsum dolor sit amet',
-            'legacy_section' => 'Lorem ipsum dolor sit amet',
-            'created' => $startNow,
-            'modified' => $startNow,
-            'username' => 'Fish',
-            'osm_user_id' => 12,
-            'osm_secret' => 'Lorem ipsum dolor sit amet',
-            'osm_section_id' => 134,
-            'osm_linked' => 1,
-            'osm_linkdate' => $startNow,
-            'osm_current_term' => 12,
-            'osm_term_end' => $startNow,
-            'pw_reset' => 'Lorem ipsum dolor sit amet',
-            'last_login' => $startNow,
-            'logins' => 1,
-            'validated' => true,
-            'deleted' => null,
-            'digest_hash' => 'Lorem ipsum dolor sit amet',
-            'pw_salt' => 'Lorem ipsum dolor sit amet',
-            'api_key_plain' => 'Lorem ipsum dolor sit amet',
-            'api_key' => 'Lorem ipsum dolor sit amet',
-            'auth_role_id' => 1,
-            'password_state_id' => 1,
-            'membership_number' => 123,
-            'section_id' => 1
+        $new = $this->Users->newEntity($good);
+        $this->assertInstanceOf('App\Model\Entity\User', $this->Users->save($new));
+
+        $required = [
+            'role_id',
+            'section_id',
+            'password_state_id',
+            'auth_role_id',
+            'firstname',
+            'lastname',
+            'email',
+            'password',
+            'phone',
+            'address_1',
+            'city',
+            'county',
+            'postcode',
+            'username',
+            'membership_number',
         ];
 
-        $goodData = $this->getGood();
+        foreach ($required as $require) {
+            $reqArray = $this->getGood();
+            unset($reqArray[$require]);
+            $new = $this->Users->newEntity($reqArray);
+            $this->assertFalse($this->Users->save($new));
+        }
 
-        $expected = $this->getExpected();
+        $notRequired = [
+            'address_2',
+            'legacy_section',
+            'osm_user_id',
+            'osm_secret',
+            'osm_section_id',
+            'osm_linked',
+            'osm_current_term',
+            'simple_attendees',
+            'digest_hash',
+            'pw_salt',
+            'api_key_plain',
+            'api_key',
+            'last_login',
+            'logins',
+            'pw_reset',
+            'validated',
+            'member_validated',
+            'section_validated',
+            'email_validated',
+        ];
 
-        $badEntity = $this->Users->newEntity($badData, ['accessibleFields' => ['id' => true]]);
-        $goodEntity = $this->Users->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        foreach ($notRequired as $notRequire) {
+            $reqArray = $this->getGood();
+            unset($reqArray[$notRequire]);
+            $new = $this->Users->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\User', $this->Users->save($new));
+        }
 
-        $this->assertFalse($this->Users->save($badEntity));
-        $this->Users->save($goodEntity);
+        $empties = [
+            'address_2',
+            'legacy_section',
+            'osm_user_id',
+            'osm_secret',
+            'osm_section_id',
+            'osm_linked',
+            'osm_current_term',
+            'simple_attendees',
+            'digest_hash',
+            'pw_salt',
+            'api_key_plain',
+            'api_key',
+            'last_login',
+            'logins',
+            'pw_reset',
+        ];
 
-        $query = $this->Users->find('all');
+        foreach ($empties as $empty) {
+            $reqArray = $this->getGood();
+            $reqArray[$empty] = '';
+            $new = $this->Users->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\User', $this->Users->save($new));
+        }
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
+        $notEmpties = [
+            'role_id',
+            'section_id',
+            'password_state_id',
+            'auth_role_id',
+            'firstname',
+            'lastname',
+            'email',
+            'password',
+            'phone',
+            'address_1',
+            'city',
+            'county',
+            'postcode',
+            'username',
+            'membership_number',
+        ];
 
-        $result = Hash::remove($result, '{n}.password');
-        $result = Hash::remove($result, '{n}.digest_hash');
+        foreach ($notEmpties as $notEmpty) {
+            $reqArray = $this->getGood();
+            $reqArray[$notEmpty] = '';
+            $new = $this->Users->newEntity($reqArray);
+            $this->assertFalse($this->Users->save($new));
+        }
 
-        array_push($expected, array_merge($goodData, [
-            'id' => 6,
-            'legacy_section' => null,
-            'created' => $startNow,
-            'modified' => $startNow,
-            'osm_user_id' => null,
-            'osm_secret' => null,
-            'osm_section_id' => null,
-            'osm_linked' => null,
-            'osm_linkdate' => null,
-            'osm_current_term' => null,
-            'osm_term_end' => null,
-            'deleted' => null,
-        ]));
+        $maxLengths = [
+            'api_key_plain' => 999,
+            'api_key' => 999,
+            'pw_salt' => 255,
+            'pw_reset' => 255,
+            'osm_secret' => 255,
+            'username' => 45,
+            'legacy_section' => 255,
+            'postcode' => 8,
+            'county' => 125,
+            'city' => 125,
+            'address_2' => 255,
+            'address_1' => 255,
+            'phone' => 12,
+            'lastname' => 125,
+            'firstname' => 125,
+        ];
 
-        $expected = Hash::remove($expected, '{n}.password');
-        $expected = Hash::remove($expected, '{n}.digest_hash');
+        $string = hash('sha512', Security::randomBytes(64));
+        $string .= $string;
+        $string .= $string;
+        $string .= $string;
+        $string .= $string;
+        $string .= $string;
 
-        $this->assertEquals($expected, $result);
+        foreach ($maxLengths as $maxField => $maxLength) {
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $maxLength);
+            $new = $this->Users->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\User', $this->Users->save($new));
+
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $maxLength + 1);
+            $new = $this->Users->newEntity($reqArray);
+            $this->assertFalse($this->Users->save($new));
+        }
     }
 
     /**
@@ -416,6 +384,61 @@ class UsersTableTest extends TestCase
     }
 
     /**
+     * Test beforeRules method
+     *
+     * @return void
+     */
+    public function testBeforeRules()
+    {
+        $before = $this->getGood();
+        $changed = ['email', 'postcode', 'firstname', 'lastname', 'address_1', 'address_2', 'city', 'county'];
+
+        foreach ($this->Users->upperCase as $field) {
+            $this->assertTrue(in_array($field, $changed));
+            $before[$field] = strtolower($before[$field]);
+        }
+        foreach ($this->Users->lowerCase as $field) {
+            $this->assertTrue(in_array($field, $changed));
+            $before[$field] = strtoupper($before[$field]);
+        }
+        foreach ($this->Users->initCase as $field) {
+            $this->assertTrue(in_array($field, $changed));
+            $before[$field] = strtoupper($before[$field]);
+        }
+
+        $new = $this->Users->newEntity($before);
+        $this->Users->save($new);
+        $after = $this->Users->get($new->id);
+
+        foreach ($changed as $change) {
+            $this->assertNotSame($before[$change], $after->get($change));
+        }
+    }
+
+    /**
+     * Test beforeRules method
+     *
+     * @return void
+     */
+    public function testBeforeMarshal()
+    {
+        $before = $this->getGood();
+        $fieldsMarshaled = ['validated', 'member_validated', 'section_validated', 'email_validated'];
+
+        foreach ($fieldsMarshaled as $field) {
+            $before[$field] = null;
+        }
+
+        $new = $this->Users->newEntity($before);
+        $this->assertInstanceOf(User::class, $new);
+
+        foreach ($fieldsMarshaled as $field) {
+            $this->assertFalse(is_null($new->get($field)));
+            $this->assertTrue(is_bool($new->get($field)));
+        }
+    }
+
+    /**
      * Test Parents Finder
      *
      * @return void
@@ -431,5 +454,53 @@ class UsersTableTest extends TestCase
 
         $parent = $parentFinder->first();
         $this->assertInstanceOf(User::class, $parent);
+    }
+
+    /**
+     * Test detectParent method
+     *
+     * @return void
+     */
+    public function testDetectParent()
+    {
+        $existingParent = [
+            'firstname' => 'Joe',
+            'lastname' => 'Parent',
+            'email' => 'j.a.g.tyler@me.com',
+            'postcode' => 'POSTCODE',
+        ];
+        $this->assertInstanceOf(User::class, $this->Users->detectParent($existingParent));
+
+        $newParent = [
+            'firstname' => 'Joe',
+            'lastname' => 'Llama',
+            'email' => 'jacob@stargate.com',
+            'postcode' => 'SG1 TAR',
+        ];
+        $this->assertFalse($this->Users->detectParent($newParent));
+    }
+
+    /**
+     * Test detectParent method
+     *
+     * @return void
+     */
+    public function testDetectExisting()
+    {
+        $existingUser = [
+            'firstname' => 'Jacob',
+            'lastname' => 'Tyler',
+            'email' => 'jacob@stargate.com',
+            'postcode' => 'POST COD',
+        ];
+        $this->assertInstanceOf(User::class, $this->Users->detectExisting($existingUser));
+
+        $newUser = [
+            'firstname' => 'Joe',
+            'lastname' => 'Llama',
+            'email' => 'jacob@stargate.com',
+            'postcode' => 'SG1 TAR',
+        ];
+        $this->assertFalse($this->Users->detectExisting($newUser));
     }
 }

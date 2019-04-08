@@ -44,12 +44,11 @@ class TokensController extends AppController
                 $location = $header['redirect'];
                 $tokenReData = [
                     '?' => [
-                        'token' => $token,
                         'token_id' => $validated,
+                        'token' => urldecode($token),
                     ]
                 ];
                 $redirect = array_merge($location, $tokenReData);
-                debug($redirect);
 
                 return $this->redirect($redirect);
             }

@@ -75,19 +75,24 @@ class TokensTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
+
+        $validator
+            ->integer('user_id')
+            ->allowEmptyString('user_id', false)
+            ->requirePresence('user_id');
 
         $validator
             ->requirePresence('token', 'create')
-            ->notEmpty('token');
+            ->allowEmptyString('token', false);
 
         $validator
             ->dateTime('expires')
-            ->allowEmpty('expires');
+            ->allowEmptyDateTime('expires');
 
         $validator
             ->dateTime('utilised')
-            ->allowEmpty('utilised');
+            ->allowEmptyDateTime('utilised');
 
         $validator
             ->boolean('active')
@@ -172,7 +177,7 @@ class TokensTable extends Table
      *
      * @return string
      */
-    public function buildToken($tokenId)
+    public function prepareToken($tokenId)
     {
         $tokenRow = $this->get($tokenId, [
             'contain' => 'Users'
@@ -198,7 +203,18 @@ class TokensTable extends Table
         $token = base64_encode($token);
 
         $token = $decrypter . $token;
-//        $token = gzcompress($token, 9);
+
+        return $token;
+    }
+
+    /**
+     * @param int $tokenId The Id of the Token
+     *
+     * @return string
+     */
+    public function buildToken($tokenId)
+    {
+        $token = $this->prepareToken($tokenId);
         $token = urlencode($token);
 
         return $token;
