@@ -29,7 +29,7 @@ class TokensFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'hash' => ['type' => 'string', 'length' => 511, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'random_number' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'header' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'header' => ['type' => 'json', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         '_indexes' => [
             'tokens_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
             'tokens_email_send_id' => ['type' => 'index', 'columns' => ['email_send_id'], 'length' => []],
@@ -56,13 +56,21 @@ class TokensFixture extends TestFixture
                 'email_send_id' => 1,
                 'created' => date_create('2016-12-26 23:22:30'),
                 'modified' => date_create('2016-12-26 23:22:30'),
-                'expires' => date_create('2016-12-26 23:22:30'),
-                'utilised' => date_create('2016-12-26 23:22:30'),
+                'expires' => date_create('2019-12-26 23:22:30'),
+                'utilised' => null,
                 'active' => 1,
                 'deleted' => null,
-                'hash' => 'Lorem ipsum dolor sit amet',
-                'random_number' => 1,
-                'header' => 'Lorem ipsum dolor sit amet'
+                'hash' => 'Loremipsumdolorsitamet',
+                'random_number' => 1789,
+                'header' => [
+                    'redirect' => [
+                        'controller' => 'Applications',
+                        'action' => 'view',
+                        'prefix' => false,
+                        1
+                    ],
+                    'authenticate' => true,
+                ]
             ],
             [
                 'token' => 'Lorem ipsum dolor sit amet',

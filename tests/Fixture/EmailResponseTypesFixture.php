@@ -32,7 +32,7 @@ class EmailResponseTypesFixture extends TestFixture
     {
         $this->records = [
             [
-                'email_response_type' => 'Lorem ipsum dolor sit amet',
+                'email_response_type' => 'Email Open',
                 'bounce' => true,
             ],
         ];

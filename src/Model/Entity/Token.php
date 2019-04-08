@@ -10,22 +10,21 @@ use Cake\ORM\Entity;
  * @property string $token
  * @property int $user_id
  * @property int $email_send_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
- * @property \Cake\I18n\Time $expires
- * @property \Cake\I18n\Time $utilised
+ * @property \Cake\I18n\Time|null $created
+ * @property \Cake\I18n\Time|null $modified
+ * @property \Cake\I18n\Time|null $expires
+ * @property \Cake\I18n\Time|null $utilised
  * @property bool $active
- * @property \Cake\I18n\Time $deleted
- * @property string $hash
- * @property int $random_number
- * @property string $header
+ * @property \Cake\I18n\Time|null $deleted
+ * @property string|null $hash
+ * @property int|null $random_number
+ * @property array|null $header
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\EmailSend $email_send
  */
 class Token extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -36,8 +35,20 @@ class Token extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false
+        'token' => true,
+        'user_id' => true,
+        'email_send_id' => true,
+        'created' => true,
+        'modified' => true,
+        'expires' => true,
+        'utilised' => true,
+        'active' => true,
+        'deleted' => true,
+        'hash' => true,
+        'random_number' => true,
+        'header' => true,
+        'user' => true,
+        'email_send' => true
     ];
 
     /**

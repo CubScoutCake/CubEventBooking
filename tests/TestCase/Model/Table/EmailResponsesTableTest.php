@@ -24,46 +24,20 @@ class EmailResponsesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.allergies',
-        'app.application_statuses',
-        'app.applications_attendees',
-        'app.applications',
-        'app.attendees',
-        'app.attendees_allergies',
-        'app.auth_roles',
-        'app.champions',
-        'app.discounts',
-        'app.districts',
         'app.email_response_types',
         'app.email_responses',
         'app.email_sends',
-        'app.event_statuses',
-        'app.event_types',
-        'app.events',
-        'app.invoice_items',
-        'app.invoices',
-        'app.invoices_payments',
-        'app.item_types',
-        'app.logistic_items',
-        'app.logistics',
-        'app.notes',
         'app.notification_types',
         'app.notifications',
-        'app.parameter_sets',
-        'app.parameters',
-        'app.params',
-        'app.password_states',
-        'app.payments',
-        'app.prices',
-        'app.reservation_statuses',
-        'app.reservations',
+
+        'app.users',
         'app.roles',
+        'app.auth_roles',
+        'app.districts',
         'app.scoutgroups',
         'app.section_types',
         'app.sections',
-        'app.setting_types',
-        'app.settings',
-        'app.users',
+        'app.password_states',
     ];
 
     /**
@@ -224,7 +198,6 @@ class EmailResponsesTableTest extends TestCase
         $values['email_response_type_id'] = $type + 1;
         $new = $this->EmailResponses->newEntity($values);
         $this->assertFalse($this->EmailResponses->save($new));
-
 
         // Email Send Exists
         $values = $this->getGood();

@@ -80,7 +80,7 @@ class EmailResponseTypesTableTest extends TestCase
 
         $expected = [
             'id' => 1,
-            'email_response_type' => 'Lorem ipsum dolor sit amet',
+            'email_response_type' => 'Email Open',
             'bounce' => true,
         ];
         $this->assertEquals($expected, $actual);
@@ -133,14 +133,14 @@ class EmailResponseTypesTableTest extends TestCase
         $string .= $string;
         $string .= $string;
 
-        foreach ($maxLengths as $maxField => $max_length) {
+        foreach ($maxLengths as $maxField => $maxLength) {
             $reqArray = $this->getGood();
-            $reqArray[$maxField] = substr($string, 1, $max_length);
+            $reqArray[$maxField] = substr($string, 1, $maxLength);
             $new = $this->EmailResponseTypes->newEntity($reqArray);
             $this->assertInstanceOf('App\Model\Entity\EmailResponseType', $this->EmailResponseTypes->save($new));
 
             $reqArray = $this->getGood();
-            $reqArray[$maxField] = substr($string, 1, $max_length + 1);
+            $reqArray[$maxField] = substr($string, 1, $maxLength + 1);
             $new = $this->EmailResponseTypes->newEntity($reqArray);
             $this->assertFalse($this->EmailResponseTypes->save($new));
         }
@@ -150,6 +150,8 @@ class EmailResponseTypesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
+     *
+     * @throws
      */
     public function testBuildRules()
     {

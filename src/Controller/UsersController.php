@@ -330,16 +330,15 @@ class UsersController extends AppController
     /**
      * Token - Completes Password Reset Function
      *
-     * @param string $token The String to Be Validated
-     *
      * @return \Cake\Http\Response|null
      */
-    public function token($token = null)
+    public function token()
     {
         $this->viewBuilder()->setLayout('outside');
+        $qParams = $this->request->getQueryParams();
 
-        $valid = $this->Users->Tokens->validateToken($token);
-        if (!$valid) {
+        $valid = $this->Users->Tokens->validateToken($qParams['token']);
+        if (!$valid || $qParams['token_id' != $valid]) {
             $this->Flash->error('Password Reset Token could not be validated.');
 
             return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
@@ -366,7 +365,6 @@ class UsersController extends AppController
                     if ($usPostcode == $fmPostcode) {
                         $newPw = [
                             'password' => $fmPassword,
-                            'reset' => 'No Longer Active'
                         ];
 
                         $resetUser = $this->Users->patchEntity($resetUser, $newPw, [ 'fields' => ['password'], 'validate' => false ]);
@@ -374,7 +372,12 @@ class UsersController extends AppController
                         if ($this->Users->save($resetUser)) {
                             $this->Flash->success('Your password was saved successfully.');
 
-                            return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'login']);
+                            $tokenRow->set('active', false);
+                            $this->Users->Tokens->save($tokenRow);
+
+                            $this->Auth->setUser($resetUser->toArray());
+
+                            return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
                         } else {
                             $this->Flash->error(__('The user could not be saved. Please try again.'));
                         }

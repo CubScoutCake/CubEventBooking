@@ -93,7 +93,23 @@ class TokensTable extends Table
             ->boolean('active')
             ->requirePresence('active', 'create');
 
+        $validator
+            ->requirePresence('header', 'create')
+            ->allowEmptyString('header', false);
+
         return $validator;
+    }
+
+    /**
+     * @param \Cake\Database\Schema\TableSchema $schema The Schema to be modified
+     *
+     * @return TableSchema|\Cake\Database\Schema\TableSchema
+     */
+    protected function _initializeSchema($schema)
+    {
+        $schema->setColumnType('header', 'json');
+
+        return $schema;
     }
 
     /**
@@ -166,21 +182,16 @@ class TokensTable extends Table
         $decrypter = base64_encode($decrypter);
         $decrypter = substr($decrypter, 0, 8);
 
-        $hash = $decrypter . $tokenRow->user->lastname . $tokenRow->created . $tokenRow['random_number'];
+        $hash = $decrypter . $tokenRow->user->lastname . $tokenRow->created . $tokenRow->random_number;
 
         $hash = Security::hash($hash, 'sha256');
 
-        $hashData = [
-            'hash' => $hash
-        ];
-
-        $this->patchEntity($tokenRow, $hashData);
-
+        $tokenRow->set('hash', $hash);
         $this->save($tokenRow);
 
         $tokenData = [
             'id' => $tokenId,
-            'random_number' => $tokenRow['random_number'],
+            'random_number' => $tokenRow->random_number,
         ];
 
         $token = json_encode($tokenData);
@@ -216,11 +227,18 @@ class TokensTable extends Table
             'contain' => 'Users'
         ]);
 
+        if (!$tokenRow->active) {
+            return false;
+        }
+
+        $tokenRow->set('utilised', Time::now());
+        $this->save($tokenRow);
+
         if ($tokenRow->random_number <> $token->random_number) {
             return false;
         }
 
-        $testHash = $decrypter . $tokenRow->user->lastname . $tokenRow->created . $tokenRow['random_number'];
+        $testHash = $decrypter . $tokenRow->user->lastname . $tokenRow->created . $tokenRow->random_number;
         $testHash = Security::hash($testHash, 'sha256');
 
         $tokenRowHash = $tokenRow['hash'];

@@ -1,9 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Form\PasswordForm;
-use Cake\Utility\Security;
-
 /**
  * Tokens Controller
  *
@@ -20,49 +17,40 @@ class TokensController extends AppController
      */
     public function validate($token = null)
     {
+        // Kick if no Token
         if (is_null($token)) {
             return $this->redirect($this->referer('/'));
         }
 
+        // Validate Token
         $validated = $this->Tokens->validateToken($token);
 
         if (!is_numeric($validated) || (!$validated && is_bool($validated))) {
-            return $this->redirect($this->referer('/'));
+            $this->Flash->error('This Token is Invalid');
+
+            return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
         }
 
-        $tokenRow = $this->Tokens->get($validated);
-
-        $resettor = $this->Tokens->Users->get($tokenRow->user_id);
-
         if (is_numeric($validated)) {
-            $passwordForm = new PasswordForm();
-            $this->set(compact('passwordForm'));
+            $tokenRow = $this->Tokens->get($validated);
+            $header = $tokenRow->get('header');
 
-            if ($this->request->is('post')) {
-                $fmPassword = $this->request->getData('newpw');
-                $fmConfirm = $this->request->getData('confirm');
+            if (key_exists('authenticate', $header) && $header['authenticate']) {
+                $transactor = $this->Tokens->Users->get($tokenRow->user_id);
+                $this->Auth->setUser($transactor->toArray());
+            }
 
-                if ($fmConfirm == $fmPassword) {
-                    $fmPostcode = $this->request->getData('postcode');
-                    $fmPostcode = str_replace(" ", "", strtoupper($fmPostcode));
-
-                    $usPostcode = $resettor->postcode;
-                    $usPostcode = str_replace(" ", "", strtoupper($usPostcode));
-
-                    if ($usPostcode == $fmPostcode) {
-                        $newPw = [
-                            'password' => $fmPassword,
-                            'reset' => 'No Longer Active'
-                        ];
-
-                        $resettor = $this->Tokens->Users->patchEntity($resettor, $newPw);
-
-                        if ($this->Tokens->Users->save($resettor)) {
-                            return $this->redirect(['prefix' => false, 'controller' => 'Users', 'action' => 'login']);
-                        }
-                        $this->Flash->error(__('The user could not be saved. Please, try again.'));
-                    }
-                }
+            if (key_exists('redirect', $header)) {
+                $location = $header['redirect'];
+                $tokenReData = [
+                    '?' => [
+                        'token' => $token,
+                        'token_id' => $validated,
+                    ]
+                ];
+                $redirect = array_merge($location, $tokenReData);
+                debug($redirect);
+                return $this->redirect($redirect);
             }
         }
 

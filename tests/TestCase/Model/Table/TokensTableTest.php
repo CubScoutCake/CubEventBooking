@@ -77,31 +77,44 @@ class TokensTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $startNow = Time::now();
+        $actual = $this->Tokens->get(1)->toArray();
 
-        $query = $this->Tokens->find('all');
-
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
-        $expected = [
-            [
-                'id' => 1,
-                'token' => 'Lorem ipsum dolor sit amet',
-                'user_id' => 1,
-                'email_send_id' => 1,
-                'created' => $startNow,
-                'modified' => $startNow,
-                'expires' => $startNow,
-                'utilised' => $startNow,
-                'active' => 1,
-                'deleted' => null,
-                'hash' => 'Lorem ipsum dolor sit amet',
-                'random_number' => 1,
-                'header' => 'Lorem ipsum dolor sit amet'
-            ],
+        $dates = [
+            'expires',
+            'created',
+            'modified',
+            'utilised',
+            'deleted',
         ];
 
-        $this->assertEquals($expected, $result);
+        foreach ($dates as $date) {
+            $dateValue = $actual[$date];
+            if (!is_null($dateValue)) {
+                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+            }
+            unset($actual[$date]);
+        }
+
+        $expected = [
+            'id' => 1,
+            'user_id' => 1,
+            'email_send_id' => 1,
+            'active' => true,
+            'random_number' => 1789,
+            'header' => [
+                'redirect' => [
+                    'controller' => 'Applications',
+                    'action' => 'view',
+                    'prefix' => false,
+                    1
+                ],
+                'authenticate' => true,
+            ]
+        ];
+        $this->assertEquals($expected, $actual);
+
+        $count = $this->Tokens->find('all')->count();
+        $this->assertEquals(1, $count);
     }
 
     /**
@@ -308,7 +321,7 @@ class TokensTableTest extends TestCase
 
         $data = [
             'id' => 1,
-            'random_number' => 1,
+            'random_number' => 1789,
         ];
 
         $this->assertEquals($data['id'], $token->id);
@@ -320,11 +333,18 @@ class TokensTableTest extends TestCase
     public function testBeforeSave()
     {
         $goodData = [
-            'id' => 3,
             'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,
             'token' => 'GOAT',
+            'header' => [
+                'redirect' => [
+                    'controller' => 'Applications',
+                    'action' => 'view',
+                    'prefix' => false,
+                ],
+                'authenticate' => true,
+            ]
         ];
 
         $expected = [
@@ -332,9 +352,17 @@ class TokensTableTest extends TestCase
             'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,
+            'header' => [
+                'redirect' => [
+                    'controller' => 'Applications',
+                    'action' => 'view',
+                    'prefix' => false,
+                ],
+                'authenticate' => true,
+            ]
         ];
 
-        $goodEntity = $this->Tokens->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Tokens->newEntity($goodData);
 
         $this->Tokens->save($goodEntity);
 
@@ -344,6 +372,7 @@ class TokensTableTest extends TestCase
                 'user_id',
                 'email_send_id',
                 'active',
+                'header',
             ]
         ]);
 
@@ -371,6 +400,14 @@ class TokensTableTest extends TestCase
             'email_send_id' => 1,
             'active' => true,
             'token' => 'GOAT',
+            'header' => [
+                'redirect' => [
+                    'controller' => 'Applications',
+                    'action' => 'view',
+                    'prefix' => false,
+                ],
+                'authenticate' => true,
+            ]
         ];
 
         $expected = [
