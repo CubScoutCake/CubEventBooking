@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * PasswordStatesFixture
- *
  */
 class PasswordStatesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -26,18 +24,20 @@ class PasswordStatesFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 1,
-            'password_state' => 'Lorem ipsum dolor sit amet',
-            'active' => 1,
-            'expired' => 1
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'password_state' => 'Lorem ipsum dolor sit amet',
+                'active' => 1,
+                'expired' => 1
+            ],
+        ];
+        parent::init();
+    }
 }
