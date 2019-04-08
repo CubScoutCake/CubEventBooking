@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * SettingTypesFixture
- *
  */
 class SettingTypesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -26,47 +24,50 @@ class SettingTypesFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'setting_type' => 'Lorem ipsum dolor sit amet',
-            'description' => 'Lorem ipsum dolor sit amet',
-            'min_auth' => 1
-        ],
-        [
-            'setting_type' => 'Lorem ipsum  sit amet',
-            'description' => 'Lorem ipsum dolor sit amet',
-            'min_auth' => 1
-        ],
-        [
-            'setting_type' => 'LegalText',
-            'description' => 'Lorem ipsum dolor sit amet',
-            'min_auth' => 1
-        ],
-        [
-            'setting_type' => 'InvText',
-            'description' => 'Lorem ipsum dolor sit amet',
-            'min_auth' => 1
-        ],
-        [
-            'setting_type' => 'Lorem ipsum dolor amet',
-            'description' => 'Lorem ipsum dolor sit amet',
-            'min_auth' => 1
-        ],
-        [
-            'setting_type' => 'AppRef',
-            'description' => 'Application Reference',
-            'min_auth' => 1
-        ],
-        [
-            'setting_type' => 'Payable',
-            'description' => 'Payable Reference',
-            'min_auth' => 8
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'setting_type' => 'Lorem ipsum dolor sit amet',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'setting_type' => 'Lorem ipsum  sit amet',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'setting_type' => 'LegalText',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'setting_type' => 'InvText',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'setting_type' => 'Lorem ipsum dolor amet',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'min_auth' => 1
+            ],
+            [
+                'setting_type' => 'AppRef',
+                'description' => 'Application Reference',
+                'min_auth' => 1
+            ],
+            [
+                'setting_type' => 'Payable',
+                'description' => 'Payable Reference',
+                'min_auth' => 8
+            ],
+        ];
+        parent::init();
+    }
 }

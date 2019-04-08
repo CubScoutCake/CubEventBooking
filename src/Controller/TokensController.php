@@ -50,6 +50,7 @@ class TokensController extends AppController
                 ];
                 $redirect = array_merge($location, $tokenReData);
                 debug($redirect);
+
                 return $this->redirect($redirect);
             }
         }

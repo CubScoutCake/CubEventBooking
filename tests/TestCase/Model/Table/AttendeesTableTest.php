@@ -424,13 +424,12 @@ class AttendeesTableTest extends TestCase
         ];
     }
 
-    public function transformGood($inserted, $id = 13)
+    private function transformGood($inserted, $attId = 13)
     {
         $startNow = Time::now();
-        $nowDate = new Date('2016-12-26');
 
         $addition = [
-            'id' => $id,
+            'id' => $attId,
             'cc_apps' => 0,
             'deleted' => null,
             'created' => $startNow,
@@ -542,9 +541,9 @@ class AttendeesTableTest extends TestCase
             'osm_sync_date',
         ];
 
-        foreach ($notRequired as $not_required) {
+        foreach ($notRequired as $notRequire) {
             $reqArray = $this->getGood();
-            unset($reqArray[$not_required]);
+            unset($reqArray[$notRequire]);
             $new = $this->Attendees->newEntity($reqArray);
             $this->assertInstanceOf('App\Model\Entity\Attendee', $this->Attendees->save($new));
         }
@@ -577,9 +576,9 @@ class AttendeesTableTest extends TestCase
             'lastname',
         ];
 
-        foreach ($notEmpties as $not_empty) {
+        foreach ($notEmpties as $notEmpty) {
             $reqArray = $this->getGood();
-            $reqArray[$not_empty] = '';
+            $reqArray[$notEmpty] = '';
             $new = $this->Attendees->newEntity($reqArray);
             $this->assertFalse($this->Attendees->save($new));
         }
@@ -600,14 +599,14 @@ class AttendeesTableTest extends TestCase
         $string .= $string;
         $string .= $string;
 
-        foreach ($maxLengths as $maxField => $max_length) {
+        foreach ($maxLengths as $maxField => $maxLength) {
             $reqArray = $this->getGood();
-            $reqArray[$maxField] = substr($string, 1, $max_length);
+            $reqArray[$maxField] = substr($string, 1, $maxLength);
             $new = $this->Attendees->newEntity($reqArray);
             $this->assertInstanceOf('App\Model\Entity\Attendee', $this->Attendees->save($new));
 
             $reqArray = $this->getGood();
-            $reqArray[$maxField] = substr($string, 1, $max_length + 1);
+            $reqArray[$maxField] = substr($string, 1, $maxLength + 1);
             $new = $this->Attendees->newEntity($reqArray);
             $this->assertFalse($this->Attendees->save($new));
         }
@@ -774,8 +773,8 @@ class AttendeesTableTest extends TestCase
     {
         $expectedAttendees = $this->getExpected();
 
-        foreach ($expectedAttendees as $expected_attendee) {
-            $attendeeEnt = $this->Attendees->get($expected_attendee['id']);
+        foreach ($expectedAttendees as $expectedAttendee) {
+            $attendeeEnt = $this->Attendees->get($expectedAttendee['id']);
 
             $newEntityData = [];
             $extractedData = [
@@ -822,8 +821,8 @@ class AttendeesTableTest extends TestCase
             }
         }
 
-        foreach ($notDeleted as $expected_attendee) {
-            $attendeeEnt = $this->Attendees->get($expected_attendee['id']);
+        foreach ($notDeleted as $expectedAttendee) {
+            $attendeeEnt = $this->Attendees->get($expectedAttendee['id']);
 
             $newEntityData = [];
             $extractedData = [

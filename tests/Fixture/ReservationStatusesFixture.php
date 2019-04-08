@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * ReservationStatusesFixture
- *
  */
 class ReservationStatusesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -26,7 +24,6 @@ class ReservationStatusesFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *
@@ -36,7 +33,6 @@ class ReservationStatusesFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'reservation_status' => 'Lorem ipsum dolor sit amet',
                 'active' => 1,
                 'complete' => 1

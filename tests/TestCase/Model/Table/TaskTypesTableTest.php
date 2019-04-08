@@ -100,7 +100,7 @@ class TaskTypesTableTest extends TestCase
         $this->assertEquals($expected, $actual);
 
         $count = $this->TaskTypes->find('all')->count();
-        $this->assertEquals(1, $count);
+        $this->assertEquals(2, $count);
     }
 
     /**

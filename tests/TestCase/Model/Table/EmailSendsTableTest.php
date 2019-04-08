@@ -255,7 +255,6 @@ class EmailSendsTableTest extends TestCase
         $new = $this->EmailSends->newEntity($values);
         $this->assertFalse($this->EmailSends->save($new));
 
-
         // Email Send Exists
         $values = $this->getGood();
 
