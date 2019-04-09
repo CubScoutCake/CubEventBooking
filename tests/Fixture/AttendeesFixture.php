@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * AttendeesFixture
- *
  */
 class AttendeesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -41,6 +39,8 @@ class AttendeesFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'section_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'cc_apps' => ['type' => 'integer', 'length' => 10, 'default' => '0', 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'identity_hash' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'obfuscated' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'attendees_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
             'attendees_role_id' => ['type' => 'index', 'columns' => ['role_id'], 'length' => []],
@@ -48,17 +48,17 @@ class AttendeesFixture extends TestFixture
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'attendees_identity_hash' => ['type' => 'unique', 'columns' => ['identity_hash'], 'length' => []],
             'attendees_role_id' => ['type' => 'foreign', 'columns' => ['role_id'], 'references' => ['roles', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
             'attendees_section_id' => ['type' => 'foreign', 'columns' => ['section_id'], 'references' => ['sections', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
             'attendees_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
     public function init()
     {

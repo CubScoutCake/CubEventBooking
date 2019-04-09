@@ -47,6 +47,8 @@ class ApplicationsAttendeesTableTest extends TestCase
         'app.setting_types',
         'app.discounts',
         'app.password_states',
+        'app.reservation_statuses',
+        'app.reservations',
     ];
 
     /**

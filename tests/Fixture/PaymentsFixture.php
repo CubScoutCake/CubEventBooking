@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * PaymentsFixture
- *
  */
 class PaymentsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -31,38 +29,30 @@ class PaymentsFixture extends TestFixture
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'payments_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
+            'payments_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 1,
-            'value' => 1,
-            'created' => null,
-            'paid' => null,
-            'cheque_number' => 'Lorem ipsum dolor sit amet',
-            'name_on_cheque' => 'Lorem ipsum dolor sit amet',
-            'user_id' => 1,
-            'payment_notes' => 'Lorem ipsum dolor sit amet',
-            'deleted' => null
-        ],
-        [
-            'id' => 2,
-            'value' => 1,
-            'created' => 1484948568,
-            'paid' => 1484948568,
-            'cheque_number' => 'Lorem ipsum dolor sit amet',
-            'name_on_cheque' => 'Lorem ipsum dolor sit amet',
-            'user_id' => 1,
-            'payment_notes' => 'Lorem ipsum dolor sit amet',
-            'deleted' => 1484948568
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'value' => 1,
+                'created' => 1554766739,
+                'paid' => 1554766739,
+                'cheque_number' => 'Lorem ipsum dolor sit amet',
+                'name_on_cheque' => 'Lorem ipsum dolor sit amet',
+                'user_id' => 1,
+                'payment_notes' => 'Lorem ipsum dolor sit amet',
+                'deleted' => 1554766739
+            ],
+        ];
+        parent::init();
+    }
 }

@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * ScoutgroupsFixture
- *
  */
 class ScoutgroupsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -32,40 +30,39 @@ class ScoutgroupsFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 1,
-            'scoutgroup' => 'Lorem ipsum dolor sit amet',
-            'district_id' => 1,
-            'number_stripped' => 1,
-            'deleted' => null
-        ],
-        [
-            'id' => 2,
-            'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
-            'district_id' => 2,
-            'number_stripped' => 1,
-            'deleted' => null
-        ],
-        [
-            'id' => 3,
-            'scoutgroup' => 'Lorem ipsum tempis sit amet',
-            'district_id' => 1,
-            'number_stripped' => 1,
-            'deleted' => 1481983190
-        ],
-        [
-            'id' => 4,
-            'scoutgroup' => 'Lorem tempis dolor sit amet',
-            'district_id' => 2,
-            'number_stripped' => 1,
-            'deleted' => 1481983190
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'scoutgroup' => 'Lorem ipsum dolor sit amet',
+                'district_id' => 1,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
+                'district_id' => 2,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'scoutgroup' => 'Lorem ipsum tempis sit amet',
+                'district_id' => 1,
+                'number_stripped' => 1,
+                'deleted' => 1481983190
+            ],
+            [
+                'scoutgroup' => 'Lorem tempis dolor sit amet',
+                'district_id' => 2,
+                'number_stripped' => 1,
+                'deleted' => 1481983190
+            ],
+        ];
+        parent::init();
+    }
 }

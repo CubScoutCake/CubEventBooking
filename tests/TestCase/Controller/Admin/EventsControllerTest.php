@@ -134,7 +134,7 @@ class EventsControllerTest extends IntegrationTestCase
             ],
             'opening_date' => [
                 'year' => 2018,
-                'month' => 02,
+                'month' => 01,
                 'day' => 05,
                 'hour' => 00,
                 'minute' => 15,

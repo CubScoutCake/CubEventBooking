@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * AuthRolesFixture
- *
  */
 class AuthRolesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -32,32 +30,31 @@ class AuthRolesFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
     public $records = [
         [
             'auth_role' => 'User',
-            'admin_access' => 0,
-            'champion_access' => 0,
-            'super_user' => 0,
+            'admin_access' => false,
+            'champion_access' => false,
+            'super_user' => false,
             'auth' => 1,
-            'parent_access' => 0,
-            'user_access' => 1,
-            'section_limited' => 1
+            'parent_access' => false,
+            'user_access' => true,
+            'section_limited' => true
         ],
         [
             'auth_role' => 'SuperUser',
-            'admin_access' => 1,
-            'champion_access' => 1,
-            'super_user' => 1,
+            'admin_access' => true,
+            'champion_access' => true,
+            'super_user' => true,
             'auth' => 12,
-            'parent_access' => 0,
-            'user_access' => 1,
-            'section_limited' => 0
+            'parent_access' => false,
+            'user_access' => true,
+            'section_limited' => false
         ],
         [
             'auth_role' => 'Admin',

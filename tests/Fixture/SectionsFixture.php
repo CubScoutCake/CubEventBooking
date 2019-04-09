@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * SectionsFixture
- *
  */
 class SectionsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -38,16 +36,14 @@ class SectionsFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
     public function init()
     {
         $this->records = [
-
             [
                 'created' => date_format(date_sub(date_create('2016-12-26 21:22:30'), date_interval_create_from_date_string("3 days")), 'Y-m-d H:i:s'),
                 'modified' => date_format(date_sub(date_create('2016-12-26 21:22:30'), date_interval_create_from_date_string("3 days")), 'Y-m-d H:i:s'),

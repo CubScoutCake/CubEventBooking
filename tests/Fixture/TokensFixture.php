@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * TokensFixture
- *
  */
 class TokensFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -29,7 +27,7 @@ class TokensFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'hash' => ['type' => 'string', 'length' => 511, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'random_number' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'header' => ['type' => 'json', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'header' => ['type' => 'json', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'tokens_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
             'tokens_email_send_id' => ['type' => 'index', 'columns' => ['email_send_id'], 'length' => []],
@@ -41,7 +39,6 @@ class TokensFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *
@@ -51,40 +48,19 @@ class TokensFixture extends TestFixture
     {
         $this->records = [
             [
+                'id' => 1,
                 'token' => 'Lorem ipsum dolor sit amet',
                 'user_id' => 1,
                 'email_send_id' => 1,
-                'created' => date_create('2016-12-26 23:22:30'),
-                'modified' => date_create('2016-12-26 23:22:30'),
-                'expires' => date_create('2019-12-26 23:22:30'),
-                'utilised' => null,
+                'created' => 1554766740,
+                'modified' => 1554766740,
+                'expires' => 1554766740,
+                'utilised' => 1554766740,
                 'active' => 1,
-                'deleted' => null,
-                'hash' => 'Loremipsumdolorsitamet',
-                'random_number' => 1789,
-                'header' => [
-                    'redirect' => [
-                        'controller' => 'Applications',
-                        'action' => 'view',
-                        'prefix' => false,
-                        1
-                    ],
-                    'authenticate' => true,
-                ]
-            ],
-            [
-                'token' => 'Lorem ipsum dolor sit amet',
-                'user_id' => 1,
-                'email_send_id' => 1,
-                'created' => 1542550324,
-                'modified' => 1542550324,
-                'expires' => 1542550324,
-                'utilised' => 1542550324,
-                'active' => 1,
-                'deleted' => 1542550324,
+                'deleted' => 1554766740,
                 'hash' => 'Lorem ipsum dolor sit amet',
                 'random_number' => 1,
-                'header' => 'Lorem ipsum dolor sit amet'
+                'header' => ''
             ],
         ];
         parent::init();

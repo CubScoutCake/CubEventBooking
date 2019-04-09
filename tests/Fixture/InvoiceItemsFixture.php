@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * InvoiceItemsFixture
- *
  */
 class InvoiceItemsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -31,40 +29,43 @@ class InvoiceItemsFixture extends TestFixture
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'invoice_items_invoice_id' => ['type' => 'foreign', 'columns' => ['invoice_id'], 'references' => ['invoices', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
-            'invoice_items_itemtype_id' => ['type' => 'foreign', 'columns' => ['item_type_id'], 'references' => ['item_types', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
+            'invoice_items_itemtype_id' => ['type' => 'foreign', 'columns' => ['item_type_id'], 'references' => ['item_types', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'invoice_id' => 1,
-            'value' => 10,
-            'description' => 'CUBS',
-            'quantity' => 5,
-            'item_type_id' => 2,
-            'visible' => 1
-        ],
-        [
-            'invoice_id' => 1,
-            'value' => 0,
-            'description' => 'YOUNG LEADERS',
-            'quantity' => 4,
-            'item_type_id' => 5,
-            'visible' => 1
-        ],
-        [
-            'invoice_id' => 1,
-            'value' => 5,
-            'description' => 'LEADERS',
-            'quantity' => 1,
-            'item_type_id' => 6,
-            'visible' => 1
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'invoice_id' => 1,
+                'value' => 10,
+                'description' => 'CUBS',
+                'quantity' => 5,
+                'item_type_id' => 2,
+                'visible' => 1
+            ],
+            [
+                'invoice_id' => 1,
+                'value' => 0,
+                'description' => 'YOUNG LEADERS',
+                'quantity' => 4,
+                'item_type_id' => 5,
+                'visible' => 1
+            ],
+            [
+                'invoice_id' => 1,
+                'value' => 5,
+                'description' => 'LEADERS',
+                'quantity' => 1,
+                'item_type_id' => 6,
+                'visible' => 1
+            ],
+        ];
+        parent::init();
+    }
 }

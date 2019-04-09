@@ -134,6 +134,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => true,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 2,
@@ -160,6 +162,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 3,
@@ -186,6 +190,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 4,
@@ -212,6 +218,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 5,
@@ -238,6 +246,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 6,
@@ -264,6 +274,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 7,
@@ -290,6 +302,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 8,
@@ -316,6 +330,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 9,
@@ -342,6 +358,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 10,
@@ -368,6 +386,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 11,
@@ -394,6 +414,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 12,
@@ -420,6 +442,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
         ];
     }
@@ -482,13 +506,15 @@ class AttendeesTableTest extends TestCase
             'city' => 'Lorem ipsum dolor sit amet',
             'county' => 'Lorem ipsum dolor sit amet',
             'postcode' => 'AB1 3DE',
-            'nightsawaypermit' => 1,
-            'vegetarian' => 1,
+            'nightsawaypermit' => true,
+            'vegetarian' => true,
             'osm_generated' => true,
             'osm_id' => 1,
             'user_attendee' => true,
             'cc_apps' => 0,
-            'full_name' => 'Joe Bloggs'
+            'full_name' => 'Joe Bloggs',
+            'identity_hash' => null,
+            'obfuscated' => false,
         ];
         $this->assertEquals($expected, $actual);
 
@@ -743,13 +769,13 @@ class AttendeesTableTest extends TestCase
             'osm_id' => 987654,
             'osm_sync_date' => $startNow,
             'user_attendee' => true,
+            'identity_hash' => null,
+            'obfuscated' => false,
         ];
 
         $caseEntity = $this->Attendees->newEntity($caseData);
 
         $this->assertInstanceOf('\App\Model\Entity\Attendee', $this->Attendees->save($caseEntity));
-
-        $this->Attendees->changeArrayCase($caseData);
 
         $expected = $this->getExpected();
         $inserted = $this->transformGood($caseData);
@@ -867,6 +893,8 @@ class AttendeesTableTest extends TestCase
             'osm_id' => 987654,
             'osm_sync_date' => $startNow,
             'user_attendee' => true,
+            'identity_hash' => null,
+            'obfuscated' => false,
         ];
         $new = $this->Attendees->newEntity($caseData);
         $this->assertInstanceOf('\App\Model\Entity\Attendee', $this->Attendees->save($new));

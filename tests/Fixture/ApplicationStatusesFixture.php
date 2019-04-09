@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * ApplicationStatusesFixture
- *
  */
 class ApplicationStatusesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -25,7 +23,6 @@ class ApplicationStatusesFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *

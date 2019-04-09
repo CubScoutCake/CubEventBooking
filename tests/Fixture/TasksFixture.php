@@ -44,21 +44,13 @@ class TasksFixture extends TestFixture
     {
         $this->records = [
             [
+                'id' => 1,
                 'task_type_id' => 1,
                 'user_id' => 1,
-                'created' => 1553974122,
-                'modified' => 1553974122,
-                'completed' => 0,
-                'date_completed' => null,
-                'completed_by_user_id' => null
-            ],
-            [
-                'task_type_id' => 1,
-                'user_id' => 1,
-                'created' => 1553974122,
-                'modified' => 1553974122,
+                'created' => 1554766740,
+                'modified' => 1554766740,
                 'completed' => 1,
-                'date_completed' => 1553974122,
+                'date_completed' => 1554766740,
                 'completed_by_user_id' => 1
             ],
         ];

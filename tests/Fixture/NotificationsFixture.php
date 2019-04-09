@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * NotificationsFixture
- *
  */
 class NotificationsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -33,37 +31,39 @@ class NotificationsFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'notifications_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
-            'notifications_notification_type_id' => ['type' => 'index', 'columns' => ['notification_type_id'], 'length' => []],
+            'notifications_notificationtype_id' => ['type' => 'index', 'columns' => ['notification_type_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'notifications_notification_type_id' => ['type' => 'foreign', 'columns' => ['notification_type_id'], 'references' => ['notification_types', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
+            'notifications_notificationtype_id' => ['type' => 'foreign', 'columns' => ['notification_type_id'], 'references' => ['notification_types', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
             'notifications_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 1,
-            'user_id' => 1,
-            'notification_type_id' => 1,
-            'new' => 1,
-            'notification_header' => 'Lorem ipsum dolor sit amet',
-            'text' => 'Lorem ipsum dolor sit amet',
-            'created' => 1487718627,
-            'read_date' => 1487718627,
-            'notification_source' => 'Lorem ipsum dolor sit amet',
-            'link_id' => 1,
-            'link_controller' => 'Users',
-            'link_prefix' => 'super_user',
-            'link_action' => 'view',
-            'deleted' => null
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'user_id' => 1,
+                'notification_type_id' => 1,
+                'new' => 1,
+                'notification_header' => 'Lorem ipsum dolor sit amet',
+                'text' => 'Lorem ipsum dolor sit amet',
+                'created' => 1487718627,
+                'read_date' => 1487718627,
+                'notification_source' => 'Lorem ipsum dolor sit amet',
+                'link_id' => 1,
+                'link_controller' => 'Users',
+                'link_prefix' => 'super_user',
+                'link_action' => 'view',
+                'deleted' => null
+            ],
+        ];
+        parent::init();
+    }
 }
