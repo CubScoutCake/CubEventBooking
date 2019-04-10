@@ -65,18 +65,25 @@ class DistrictsTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'district' => 'Lorem ipsum dolor sit amet',
+                'district' => 'Letchworth & Baldock',
+                'county' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'short_name' => 'Lorem',
+            ],
+            [
+                'id' => 2,
+                'district' => 'Kingdom of Oz',
                 'county' => 'Lorem ipsum dolor sit amet',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],
             [
                 'id' => 3,
-                'district' => 'Lorem ipsum sit amet',
+                'district' => 'The Farm Place',
                 'county' => 'Lorem dolor sit amet',
                 'deleted' => null,
                 'short_name' => 'Lorem',
-            ]
+            ],
         ];
 
         $this->assertEquals($expected, $result);
@@ -106,14 +113,21 @@ class DistrictsTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'district' => 'Lorem ipsum dolor sit amet',
+                'district' => 'Letchworth & Baldock',
+                'county' => 'Lorem ipsum dolor sit amet',
+                'deleted' => null,
+                'short_name' => 'Lorem',
+            ],
+            [
+                'id' => 2,
+                'district' => 'Kingdom of Oz',
                 'county' => 'Lorem ipsum dolor sit amet',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],
             [
                 'id' => 3,
-                'district' => 'Lorem ipsum sit amet',
+                'district' => 'The Farm Place',
                 'county' => 'Lorem dolor sit amet',
                 'deleted' => null,
                 'short_name' => 'Lorem',

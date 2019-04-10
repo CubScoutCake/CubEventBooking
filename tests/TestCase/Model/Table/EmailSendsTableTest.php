@@ -175,25 +175,6 @@ class EmailSendsTableTest extends TestCase
         $new = $this->EmailSends->newEntity($good);
         $this->assertInstanceOf('App\Model\Entity\EmailSend', $this->EmailSends->save($new));
 
-        $required = [
-            'sent',
-            'message_id',
-            'user_id',
-            'subject',
-            'routing_domain',
-            'from_address',
-            'friendly_from',
-            'notification_type_id',
-            'notification_id',
-        ];
-
-        foreach ($required as $require) {
-            $reqArray = $this->getGood();
-            unset($reqArray[$require]);
-            $new = $this->EmailSends->newEntity($reqArray);
-            $this->assertFalse($this->EmailSends->save($new));
-        }
-
         $empties = [
             'sent',
             'message_id',
@@ -212,25 +193,6 @@ class EmailSendsTableTest extends TestCase
             $new = $this->EmailSends->newEntity($reqArray);
             $this->assertInstanceOf('App\Model\Entity\EmailSend', $this->EmailSends->save($new));
         }
-
-        $notEmpties = [
-            'sent',
-            'message_id',
-            'user_id',
-            'subject',
-            'routing_domain',
-            'from_address',
-            'friendly_from',
-            'notification_type_id',
-            'notification_id',
-        ];
-
-        foreach ($notEmpties as $notEmpty) {
-            $reqArray = $this->getGood();
-            $reqArray[$notEmpty] = '';
-            $new = $this->EmailSends->newEntity($reqArray);
-            $this->assertFalse($this->EmailSends->save($new));
-        }
     }
 
     /**
@@ -240,33 +202,48 @@ class EmailSendsTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        // EmailSend Type Exists
+        // Notification Exists
         $values = $this->getGood();
 
-        $types = $this->EmailSends->EmailSendTypes->find('list')->toArray();
+        $notifications = $this->EmailSends->Notifications->find('list')->toArray();
 
-        $type = max(array_keys($types));
+        $notification = max(array_keys($notifications));
 
-        $values['email_response_type_id'] = $type;
+        $values['notification_id'] = $notification;
         $new = $this->EmailSends->newEntity($values);
         $this->assertInstanceOf('App\Model\Entity\EmailSend', $this->EmailSends->save($new));
 
-        $values['email_response_type_id'] = $type + 1;
+        $values['notification_id'] = $notification + 1;
         $new = $this->EmailSends->newEntity($values);
         $this->assertFalse($this->EmailSends->save($new));
 
-        // Email Send Exists
+        // Notification Type Exists
         $values = $this->getGood();
 
-        $types = $this->EmailSends->EmailSends->find('list')->toArray();
+        $types = $this->EmailSends->NotificationTypes->find('list')->toArray();
 
         $type = max(array_keys($types));
 
-        $values['email_send_id'] = $type;
+        $values['notification_type_id'] = $type;
         $new = $this->EmailSends->newEntity($values);
         $this->assertInstanceOf('App\Model\Entity\EmailSend', $this->EmailSends->save($new));
 
-        $values['email_send_id'] = $type + 1;
+        $values['notification_type_id'] = $type + 1;
+        $new = $this->EmailSends->newEntity($values);
+        $this->assertFalse($this->EmailSends->save($new));
+
+        // Users Exist
+        $values = $this->getGood();
+
+        $users = $this->EmailSends->Users->find('list')->toArray();
+
+        $user = max(array_keys($users));
+
+        $values['user_id'] = $user;
+        $new = $this->EmailSends->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\EmailSend', $this->EmailSends->save($new));
+
+        $values['user_id'] = $user + 1;
         $new = $this->EmailSends->newEntity($values);
         $this->assertFalse($this->EmailSends->save($new));
     }

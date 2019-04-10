@@ -66,16 +66,30 @@ class ScoutgroupsTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'scoutgroup' => 'Lorem ipsum dolor sit amet',
+                'scoutgroup' => '12th Letchworth',
                 'district_id' => 1,
                 'number_stripped' => 1,
                 'deleted' => null
             ],
             [
                 'id' => 2,
-                'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
+                'scoutgroup' => '4th Octopus',
                 'district_id' => 2,
+                'number_stripped' => 4,
+                'deleted' => null
+            ],
+            [
+                'id' => 3,
+                'scoutgroup' => '1st Llamaland',
+                'district_id' => 1,
                 'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 4,
+                'scoutgroup' => '11th Goatface',
+                'district_id' => 2,
+                'number_stripped' => 11,
                 'deleted' => null
             ],
         ];
@@ -109,16 +123,30 @@ class ScoutgroupsTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'scoutgroup' => 'Lorem ipsum dolor sit amet',
+                'scoutgroup' => '12th Letchworth',
                 'district_id' => 1,
                 'number_stripped' => 1,
                 'deleted' => null
             ],
             [
                 'id' => 2,
-                'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
+                'scoutgroup' => '4th Octopus',
                 'district_id' => 2,
+                'number_stripped' => 4,
+                'deleted' => null
+            ],
+            [
+                'id' => 3,
+                'scoutgroup' => '1st Llamaland',
+                'district_id' => 1,
                 'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 4,
+                'scoutgroup' => '11th Goatface',
+                'district_id' => 2,
+                'number_stripped' => 11,
                 'deleted' => null
             ],
             [
@@ -153,8 +181,8 @@ class ScoutgroupsTableTest extends TestCase
     {
         $badData = [
             'id' => 5,
-            'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
-            'district_id' => 2,
+            'scoutgroup' => null,
+            'district_id' => null,
             'number_stripped' => 1,
             'deleted' => null
         ];
@@ -170,16 +198,30 @@ class ScoutgroupsTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'scoutgroup' => 'Lorem ipsum dolor sit amet',
+                'scoutgroup' => '12th Letchworth',
                 'district_id' => 1,
                 'number_stripped' => 1,
                 'deleted' => null
             ],
             [
                 'id' => 2,
-                'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
+                'scoutgroup' => '4th Octopus',
                 'district_id' => 2,
+                'number_stripped' => 4,
+                'deleted' => null
+            ],
+            [
+                'id' => 3,
+                'scoutgroup' => '1st Llamaland',
+                'district_id' => 1,
                 'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 4,
+                'scoutgroup' => '11th Goatface',
+                'district_id' => 2,
+                'number_stripped' => 11,
                 'deleted' => null
             ],
             [

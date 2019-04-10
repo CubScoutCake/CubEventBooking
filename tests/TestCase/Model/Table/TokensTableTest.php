@@ -29,19 +29,17 @@ class TokensTableTest extends TestCase
     public $fixtures = [
         'app.tokens',
         'app.email_sends',
-        'app.notifications',
         'app.notification_types',
+        'app.notifications',
+
         'app.users',
         'app.roles',
-        'app.scoutgroups',
-        'app.password_states',
-        'app.districts',
-        'app.champions',
-        'app.sections',
-        'app.section_types',
         'app.auth_roles',
-        'app.settings',
-        'app.setting_types',
+        'app.districts',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
     ];
 
     /**
@@ -295,7 +293,7 @@ class TokensTableTest extends TestCase
         ];
 
         $expected = [
-            'id' => 3,
+            'id' => 2,
             'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,
@@ -313,7 +311,7 @@ class TokensTableTest extends TestCase
 
         $this->Tokens->save($goodEntity);
 
-        $query = $this->Tokens->get(3, [
+        $query = $this->Tokens->get(2, [
             'fields' => [
                 'id',
                 'user_id',
@@ -327,7 +325,7 @@ class TokensTableTest extends TestCase
 
         $this->assertEquals($expected, $result);
 
-        $query = $this->Tokens->get(3, [
+        $query = $this->Tokens->get(2, [
             'fields' => [
                 'random_number',
                 'active'
@@ -358,7 +356,7 @@ class TokensTableTest extends TestCase
         ];
 
         $expected = [
-            'id' => 3,
+            'id' => 2,
             'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,
@@ -368,7 +366,7 @@ class TokensTableTest extends TestCase
 
         $this->Tokens->save($goodEntity);
 
-        $query = $this->Tokens->get(3, [
+        $query = $this->Tokens->get(2, [
             'fields' => [
                 'id',
                 'user_id',
@@ -381,7 +379,7 @@ class TokensTableTest extends TestCase
 
         $this->assertEquals($expected, $result);
 
-        $query = $this->Tokens->get(3, [
+        $query = $this->Tokens->get(2, [
             'fields' => [
                 'random_number',
                 'active'
@@ -393,7 +391,7 @@ class TokensTableTest extends TestCase
         $this->assertTrue(is_numeric($result['random_number']));
         $this->assertTrue($result['active']);
 
-        $token = $this->Tokens->buildToken(3);
+        $token = $this->Tokens->buildToken(2);
 
         $result = $this->Tokens->validateToken($token);
 

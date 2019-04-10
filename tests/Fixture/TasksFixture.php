@@ -44,7 +44,6 @@ class TasksFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'task_type_id' => 1,
                 'user_id' => 1,
                 'created' => 1554766740,

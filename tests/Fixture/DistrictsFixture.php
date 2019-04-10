@@ -35,19 +35,19 @@ class DistrictsFixture extends TestFixture
     {
         $this->records = [
             [
-                'district' => 'Lorem ipsum dolor sit amet',
+                'district' => 'Letchworth & Baldock',
                 'county' => 'Lorem ipsum dolor sit amet',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],
             [
-                'district' => 'Lorem ipsum dolor aurum amet',
+                'district' => 'Kingdom of Oz',
                 'county' => 'Lorem ipsum dolor sit amet',
-                'deleted' => 1481983190,
+                'deleted' => null,
                 'short_name' => 'Lorem',
             ],
             [
-                'district' => 'Lorem ipsum sit amet',
+                'district' => 'The Farm Place',
                 'county' => 'Lorem dolor sit amet',
                 'deleted' => null,
                 'short_name' => 'Lorem',

@@ -80,6 +80,7 @@ class EventTypesTableTest extends TestCase
                 'team_leader' => true,
                 'sync_book' => true,
                 'payable_setting_id' => 7,
+                'dietary' => null,
             ],
             [
                 'id' => 2,
@@ -96,6 +97,7 @@ class EventTypesTableTest extends TestCase
                 'team_leader' => true,
                 'sync_book' => true,
                 'payable_setting_id' => 7,
+                'dietary' => null,
             ],
         ];
 

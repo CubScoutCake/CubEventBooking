@@ -48,7 +48,6 @@ class TokensFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'token' => 'Lorem ipsum dolor sit amet',
                 'user_id' => 1,
                 'email_send_id' => 1,
@@ -57,10 +56,18 @@ class TokensFixture extends TestFixture
                 'expires' => 1554766740,
                 'utilised' => 1554766740,
                 'active' => 1,
-                'deleted' => 1554766740,
+                'deleted' => null,
                 'hash' => 'Lorem ipsum dolor sit amet',
-                'random_number' => 1,
-                'header' => ''
+                'random_number' => 1789,
+                'header' => [
+                    'redirect' => [
+                        'controller' => 'Applications',
+                        'action' => 'view',
+                        'prefix' => false,
+                        1
+                    ],
+                    'authenticate' => true,
+                ]
             ],
         ];
         parent::init();

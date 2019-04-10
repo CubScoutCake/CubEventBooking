@@ -107,13 +107,13 @@ class TasksTableTest extends TestCase
             'id' => 1,
             'task_type_id' => 1,
             'user_id' => 1,
-            'completed' => false,
-            'completed_by_user_id' => null,
+            'completed' => true,
+            'completed_by_user_id' => 1,
         ];
         $this->assertEquals($expected, $actual);
 
         $count = $this->Tasks->find('all')->count();
-        $this->assertEquals(2, $count);
+        $this->assertEquals(1, $count);
     }
 
     /**

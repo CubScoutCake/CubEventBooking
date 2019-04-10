@@ -206,31 +206,15 @@ class EventsTable extends Table
 
         $validator
             ->boolean('complete')
-            ->requirePresence('complete', 'create')
-            ->allowEmptyString('complete', false);
-
-        $validator
-            ->integer('cc_prices')
-            ->allowEmptyString('cc_prices');
+            ->allowEmptyString('complete');
 
         $validator
             ->boolean('team_price')
-            ->requirePresence('team_price', 'create')
-            ->allowEmptyString('team_price', false);
+            ->allowEmptyString('team_price');
 
         $validator
             ->dateTime('opening_date')
             ->allowEmptyDateTime('opening_date');
-
-        $validator
-            ->integer('cc_res')
-            ->requirePresence('cc_res', 'create')
-            ->allowEmptyString('cc_res', false);
-
-        $validator
-            ->integer('cc_atts')
-            ->requirePresence('cc_atts', 'create')
-            ->allowEmptyString('cc_atts', false);
 
         return $validator;
     }
