@@ -127,15 +127,7 @@ class TokensTableTest extends TestCase
             'email_send_id' => 1,
             'active' => true,
             'random_number' => 1789,
-            'header' => [
-                'redirect' => [
-                    'controller' => 'Applications',
-                    'action' => 'view',
-                    'prefix' => false,
-                    1
-                ],
-                'authenticate' => true,
-            ]
+            'header' => ''
         ];
         $this->assertEquals($expected, $actual);
 
@@ -153,7 +145,6 @@ class TokensTableTest extends TestCase
         $good = $this->getGood();
 
         $new = $this->Tokens->newEntity($good);
-        debug($new);
         $this->assertInstanceOf('App\Model\Entity\Token', $this->Tokens->save($new));
 
         $required = [

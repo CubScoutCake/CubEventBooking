@@ -31,7 +31,7 @@ class UsersTableTest extends TestCase
         'app.Roles',
         'app.AuthRoles',
         'app.PasswordStates',
-        'app.ScoutGroups',
+        'app.Scoutgroups',
         'app.Districts',
         'app.SectionTypes',
         'app.Sections',

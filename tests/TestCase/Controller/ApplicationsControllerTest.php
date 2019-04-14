@@ -191,7 +191,7 @@ class ApplicationsControllerTest extends TestCase
         $this->assertInstanceOf('App\Model\Entity\Invoice', $invoice);
         $this->assertEquals(1, $invoice->get('user_id'));
         $this->assertEquals(20, $invoice->get('balance'));
-        $this->assertSame('INV #4', $invoice->get('display_code'));
+        $this->assertSame('INV #5', $invoice->get('display_code'));
         foreach ($invoice->invoice_items as $invoice_item) {
             $this->assertTrue($invoice_item->get('visible'));
             $this->assertEquals(20, $invoice_item->get('value'));

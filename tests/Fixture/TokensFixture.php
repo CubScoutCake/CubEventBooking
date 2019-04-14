@@ -28,14 +28,14 @@ class TokensFixture extends TestFixture
         'hash' => ['type' => 'string', 'length' => 511, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'random_number' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'header' => ['type' => 'json', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
-        '_indexes' => [
-            'tokens_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
-            'tokens_email_send_id' => ['type' => 'index', 'columns' => ['email_send_id'], 'length' => []],
-        ],
+//        '_indexes' => [
+//            'tokens_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
+//            'tokens_email_send_id' => ['type' => 'index', 'columns' => ['email_send_id'], 'length' => []],
+//        ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'tokens_email_send_id' => ['type' => 'foreign', 'columns' => ['email_send_id'], 'references' => ['email_sends', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
-            'tokens_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
+//            'tokens_email_send_id' => ['type' => 'foreign', 'columns' => ['email_send_id'], 'references' => ['email_sends', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
+//            'tokens_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'cascade', 'delete' => 'restrict', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
@@ -59,15 +59,7 @@ class TokensFixture extends TestFixture
                 'deleted' => null,
                 'hash' => 'Lorem ipsum dolor sit amet',
                 'random_number' => 1789,
-                'header' => [
-                    'redirect' => [
-                        'controller' => 'Applications',
-                        'action' => 'view',
-                        'prefix' => false,
-                        1
-                    ],
-                    'authenticate' => true,
-                ]
+                'header' => ''
             ],
         ];
         parent::init();

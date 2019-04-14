@@ -35,7 +35,7 @@ class PasswordStatesFixture extends TestFixture
             [
                 'password_state' => 'Lorem ipsum dolor sit amet',
                 'active' => 1,
-                'expired' => 1
+                'expired' => 0
             ],
         ];
         parent::init();

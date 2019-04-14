@@ -82,7 +82,7 @@ class PasswordStatesTableTest extends TestCase
             'id' => 1,
             'password_state' => 'Lorem ipsum dolor sit amet',
             'active' => true,
-            'expired' => true
+            'expired' => false
         ];
         $this->assertEquals($expected, $actual);
 

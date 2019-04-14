@@ -174,7 +174,7 @@ class InvoicesControllerTest extends IntegrationTestCase
             'action' => 'edit',
             1
         ], [
-            'user_id' => 2,
+            'user_id' => 3,
             'application_id' => 1,
         ]);
 

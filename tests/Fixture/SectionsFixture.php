@@ -57,9 +57,9 @@ class SectionsFixture extends TestFixture
                 'cc_apps' => null,
             ],
             [
-                'created' => date_format(date_sub(date_create('2016-12-26 20:22:30'), date_interval_create_from_date_string("3 days")), 'Y-m-d H:i:s'),
-                'modified' => date_format(date_sub(date_create('2016-12-26 21:22:30'), date_interval_create_from_date_string("2 days")), 'Y-m-d H:i:s'),
-                'deleted' => date_format(date_sub(date_create('2016-12-26 21:22:30'), date_interval_create_from_date_string("1 days")), 'Y-m-d H:i:s'),
+                'created' => date_format(date_sub(date_create('2016-12-26 21:22:30'), date_interval_create_from_date_string("3 days")), 'Y-m-d H:i:s'),
+                'modified' => date_format(date_sub(date_create('2016-12-26 21:22:30'), date_interval_create_from_date_string("3 days")), 'Y-m-d H:i:s'),
+                'deleted' => null,
                 'section' => 'Lorem ipsum uj sit amet',
                 'section_type_id' => 1,
                 'scoutgroup_id' => 1,
