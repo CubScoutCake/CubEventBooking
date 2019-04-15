@@ -44,7 +44,14 @@ class ItemTypesControllerTest extends TestCase
         'app.invoice_items',
         'app.itemtypes',
         'app.payments',
-        'app.invoices_payments'
+        'app.invoices_payments',
+        'app.reservations',
+        'app.reservation_statuses',
+        'app.auth_roles',
+        'app.password_states',
+        'app.sections',
+        'app.section_types',
+        'app.event_types',
     ];
 
     /**

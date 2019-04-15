@@ -33,6 +33,9 @@ class PaymentsControllerTest extends IntegrationTestCase
         'app.users',
         'app.password_states',
         'app.event_types',
+        'app.reservations',
+        'app.reservation_statuses',
+        'app.attendees',
     ];
 
     /**

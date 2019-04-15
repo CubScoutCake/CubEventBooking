@@ -15,6 +15,9 @@
 
 	<!-- Add any additional test suites you want to run here -->
 	<testsuites>
+		<testsuite name="Controller">
+			<directory>./tests/TestCase/Controller</directory>
+		</testsuite>
 		<testsuite name="Model">
 			<directory>./tests/TestCase/Model</directory>
 			<directory>./tests/TestCase/Model</directory>
@@ -24,9 +27,6 @@
 			<directory>./tests/TestCase/Mailer</directory>
 			<directory>./tests/TestCase/View</directory>
 		</testsuite>
-        <testsuite name="Controller">
-            <directory>./tests/TestCase/Controller</directory>
-        </testsuite>
 		<!-- Add plugin test suites here. -->
 	</testsuites>
 

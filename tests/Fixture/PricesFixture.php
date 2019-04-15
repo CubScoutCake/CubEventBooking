@@ -82,6 +82,20 @@ class PricesFixture extends TestFixture
                 'value' => 15,
                 'description' => 'Adult Price'
             ],
+            [
+                'item_type_id' => 7,
+                'event_id' => 3,
+                'max_number' => 0,
+                'value' => 20,
+                'description' => 'Team Deposit Price'
+            ],
+            [
+                'item_type_id' => 8,
+                'event_id' => 3,
+                'max_number' => 20,
+                'value' => 10,
+                'description' => 'Section Deposit Price'
+            ],
         ];
         parent::init();
     }

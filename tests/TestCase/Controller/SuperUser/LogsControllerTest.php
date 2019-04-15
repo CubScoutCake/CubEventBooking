@@ -65,6 +65,8 @@ class LogsControllerTest extends TestCase
         'app.setting_types',
         'app.settings',
         'app.users',
+        'app.tasks',
+        'app.task_types',
     ];
 
     /**

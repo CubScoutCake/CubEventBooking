@@ -34,7 +34,7 @@ class LandingControllerTest extends IntegrationTestCase
         'app.reservations',
         'app.reservation_statuses',
         'app.attendees',
-        'app.application_attendees',
+        'app.applications_attendees',
     ];
 
     /**

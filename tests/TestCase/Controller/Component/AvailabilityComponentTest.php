@@ -106,6 +106,7 @@ class AvailabilityComponentTest extends TestCase
             'NumSection' => 5,
             'NumNonSection' => 4,
             'NumLeaders' => 1,
+            'NumTeams' => 1,
         ];
         $this->assertEquals($expected, $numbers);
 
@@ -116,6 +117,7 @@ class AvailabilityComponentTest extends TestCase
             'NumSection' => 5,
             'NumNonSection' => 5,
             'NumLeaders' => 2,
+            'NumTeams' => 1,
         ];
         $this->assertEquals($expected, $numbers);
     }

@@ -121,10 +121,10 @@ class LineComponentTest extends TestCase
         $this->assertTrue($response);
 
         $invoiceB = $invoices->get(2, ['contain' => 'InvoiceItems']);
-        $this->assertEquals(2, count($invoiceB->invoice_items));
+        $this->assertEquals(4, count($invoiceB->invoice_items));
 
         $invoiceB = $invoices->get(2, ['contain' => [ 'InvoiceItems' => [ 'conditions' => ['visible' => true]]]]);
-        $this->assertEquals(2, count($invoiceB->invoice_items));
+        $this->assertEquals(4, count($invoiceB->invoice_items));
     }
 
     /**
