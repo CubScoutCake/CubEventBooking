@@ -28,18 +28,18 @@ class TokensTableTest extends TestCase
      */
     public $fixtures = [
         'app.tokens',
-        'app.email_sends',
-        'app.notification_types',
-        'app.notifications',
-
-        'app.users',
-        'app.roles',
-        'app.auth_roles',
-        'app.districts',
-        'app.scoutgroups',
-        'app.section_types',
-        'app.sections',
-        'app.password_states',
+//        'app.email_sends',
+//        'app.notification_types',
+//        'app.notifications',
+//
+//        'app.users',
+//        'app.roles',
+//        'app.auth_roles',
+//        'app.districts',
+//        'app.scoutgroups',
+//        'app.section_types',
+//        'app.sections',
+//        'app.password_states',
     ];
 
     /**

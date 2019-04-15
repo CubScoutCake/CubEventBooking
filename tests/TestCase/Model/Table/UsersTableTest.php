@@ -466,7 +466,7 @@ class UsersTableTest extends TestCase
         $existingParent = [
             'firstname' => 'Joe',
             'lastname' => 'Parent',
-            'email' => 'j.a.g.tyler@me.com',
+            'email' => 'goat@fish.monkey',
             'postcode' => 'POSTCODE',
         ];
         $this->assertInstanceOf(User::class, $this->Users->detectParent($existingParent));
