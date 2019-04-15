@@ -30,6 +30,9 @@ class EventTypesFixture extends TestFixture
         'application_ref_id' => ['type' => 'integer', 'length' => 10, 'default' => '1', 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'sync_book' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
         'payable_setting_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'hold_booking' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
+        'attendee_booking' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
+        'district_booking' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'event_types_invoice_text_id' => ['type' => 'index', 'columns' => ['invoice_text_id'], 'length' => []],
             'event_types_legal_text_id' => ['type' => 'index', 'columns' => ['legal_text_id'], 'length' => []],
@@ -55,6 +58,7 @@ class EventTypesFixture extends TestFixture
                 'simple_booking' => 1,
                 'date_of_birth' => 1,
                 'medical' => 1,
+                'dietary' => 1,
                 'parent_applications' => 1,
                 'invoice_text_id' => 4,
                 'legal_text_id' => 3,
@@ -64,12 +68,16 @@ class EventTypesFixture extends TestFixture
                 'team_leader' => 1,
                 'sync_book' => 1,
                 'payable_setting_id' => 7,
+                'hold_booking' => 1,
+                'attendee_booking' => 1,
+                'district_booking' => 1
             ],
             [
                 'event_type' => 'Lorem ipsum Gog sit amet',
                 'simple_booking' => 1,
                 'date_of_birth' => 1,
                 'medical' => 1,
+                'dietary' => 1,
                 'parent_applications' => 1,
                 'invoice_text_id' => 4,
                 'legal_text_id' => 3,
@@ -79,6 +87,9 @@ class EventTypesFixture extends TestFixture
                 'team_leader' => 1,
                 'sync_book' => 1,
                 'payable_setting_id' => 7,
+                'hold_booking' => 1,
+                'attendee_booking' => 1,
+                'district_booking' => 1
             ],
         ];
         parent::init();

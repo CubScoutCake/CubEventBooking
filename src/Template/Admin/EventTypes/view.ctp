@@ -16,10 +16,13 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <p><strong><?= __('Simple Booking') ?>:</strong> <?= $eventType->simple_booking ? __('Yes') : __('No'); ?></p>
-                            <p><strong><?= __('Sync Book') ?>:</strong> <?= $eventType->sync_book ? __('Yes') : __('No'); ?></p>
+                            <p><strong><?= __('Sync Booking') ?>:</strong> <?= $eventType->sync_book ? __('Yes') : __('No'); ?></p>
+                            <p><strong><?= __('Hold Booking') ?>:</strong> <?= $eventType->hold_booking ? __('Yes') : __('No'); ?></p>
+                            <p><strong><?= __('Attendee Booking') ?>:</strong> <?= $eventType->attendee_booking ? __('Yes') : __('No'); ?></p>
                         </div>
                         <div class="col-lg-6">
                             <p><strong><?= __('Parent Applications') ?>:</strong> <?= $eventType->parent_applications ? __('Yes') : __('No'); ?></p>
+                            <p><strong><?= __('District Booking') ?>:</strong> <?= $eventType->district_booking ? __('Yes') : __('No'); ?></p>
                         </div>
                     </div>
                 </div>

@@ -10,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class EventTypesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -71,7 +70,7 @@ class EventTypesController extends AppController
      *
      * @param string|null $id Event Type id.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Http\Exception\NotFoundException When record not found.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
     {

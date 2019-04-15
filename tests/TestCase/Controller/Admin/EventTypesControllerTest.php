@@ -2,13 +2,15 @@
 namespace App\Test\TestCase\Controller\Admin;
 
 use App\Controller\Admin\EventTypesController;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\EventTypesController Test Case
+ * App\Controller\Admin\EventTypesController Test Case
  */
-class EventTypesControllerTest extends IntegrationTestCase
+class EventTypesControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * Fixtures

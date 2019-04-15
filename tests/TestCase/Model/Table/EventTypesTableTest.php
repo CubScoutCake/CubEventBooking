@@ -10,7 +10,6 @@ use Cake\TestSuite\TestCase;
  */
 class EventTypesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -37,8 +36,8 @@ class EventTypesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('EventTypes') ? [] : ['className' => 'App\Model\Table\EventTypesTable'];
-        $this->EventTypes = TableRegistry::get('EventTypes', $config);
+        $config = TableRegistry::getTableLocator()->exists('EventTypes') ? [] : ['className' => EventTypesTable::class];
+        $this->EventTypes = TableRegistry::getTableLocator()->get('EventTypes', $config);
     }
 
     /**
@@ -80,7 +79,10 @@ class EventTypesTableTest extends TestCase
                 'team_leader' => true,
                 'sync_book' => true,
                 'payable_setting_id' => 7,
-                'dietary' => null,
+                'dietary' => true,
+                'hold_booking' => true,
+                'attendee_booking' => true,
+                'district_booking' => true,
             ],
             [
                 'id' => 2,
@@ -97,7 +99,10 @@ class EventTypesTableTest extends TestCase
                 'team_leader' => true,
                 'sync_book' => true,
                 'payable_setting_id' => 7,
-                'dietary' => null,
+                'dietary' => true,
+                'hold_booking' => true,
+                'attendee_booking' => true,
+                'district_booking' => true,
             ],
         ];
 
