@@ -8,17 +8,19 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $item_type
- * @property int $role_id
- * @property bool $minor
- * @property bool $cancelled
- * @property bool $available
+ * @property int|null $role_id
+ * @property bool|null $minor
+ * @property bool|null $cancelled
+ * @property bool|null $available
  * @property bool $team_price
+ * @property bool $deposit
  *
+ * @property \App\Model\Entity\Role $role
  * @property \App\Model\Entity\InvoiceItem[] $invoice_items
+ * @property \App\Model\Entity\Price[] $prices
  */
 class ItemType extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -29,7 +31,15 @@ class ItemType extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false
+        'item_type' => true,
+        'role_id' => true,
+        'minor' => true,
+        'cancelled' => true,
+        'available' => true,
+        'team_price' => true,
+        'deposit' => true,
+        'role' => true,
+        'invoice_items' => true,
+        'prices' => true
     ];
 }

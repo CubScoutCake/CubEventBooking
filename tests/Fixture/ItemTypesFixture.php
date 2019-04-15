@@ -22,6 +22,7 @@ class ItemTypesFixture extends TestFixture
         'cancelled' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'available' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'team_price' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
+        'deposit' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'item_types_role_id' => ['type' => 'index', 'columns' => ['role_id'], 'length' => []],
         ],
@@ -46,6 +47,7 @@ class ItemTypesFixture extends TestFixture
                 'cancelled' => false,
                 'available' => true,
                 'team_price' => true,
+                'deposit' => false,
             ],
             [
                 'item_type' => 'Cub Item Type',
@@ -54,6 +56,7 @@ class ItemTypesFixture extends TestFixture
                 'cancelled' => false,
                 'available' => true,
                 'team_price' => false,
+                'deposit' => false,
             ],
             [
                 'item_type' => 'Beaver Item Type',
@@ -62,6 +65,7 @@ class ItemTypesFixture extends TestFixture
                 'cancelled' => false,
                 'available' => true,
                 'team_price' => false,
+                'deposit' => false,
             ],
             [
                 'item_type' => 'Scout Item Type',
@@ -70,6 +74,7 @@ class ItemTypesFixture extends TestFixture
                 'cancelled' => false,
                 'available' => true,
                 'team_price' => false,
+                'deposit' => false,
             ],
             [
                 'item_type' => 'YL Item Type',
@@ -78,6 +83,7 @@ class ItemTypesFixture extends TestFixture
                 'cancelled' => false,
                 'available' => true,
                 'team_price' => false,
+                'deposit' => false,
             ],
             [
                 'item_type' => 'Adult Item Type',
@@ -86,6 +92,25 @@ class ItemTypesFixture extends TestFixture
                 'cancelled' => false,
                 'available' => true,
                 'team_price' => false,
+                'deposit' => false,
+            ],
+            [
+                'item_type' => 'Team Deposit',
+                'role_id' => 1,
+                'minor' => false,
+                'cancelled' => false,
+                'available' => true,
+                'team_price' => true,
+                'deposit' => true,
+            ],
+            [
+                'item_type' => 'Section Deposit',
+                'role_id' => 1,
+                'minor' => false,
+                'cancelled' => false,
+                'available' => true,
+                'team_price' => false,
+                'deposit' => true,
             ],
         ];
         parent::init();
