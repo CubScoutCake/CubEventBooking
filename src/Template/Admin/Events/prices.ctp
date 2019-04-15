@@ -27,10 +27,10 @@
                     <table class="table table-hover">
                         <tr>
                             <td>Deposit</td>
+                            <td></td>
                             <td><?= $this->Form->control('deposit', ['label' => 'Event has Deposit']) ?></td>
                             <td><?= $this->Form->control('deposit_inc_leaders', ['label' => 'Deposit includes Leaders']) ?></td>
-                            <td><?= $this->Form->control('deposit_value') ?></td>
-                            <td><?= $this->Form->control('deposit_text') ?></td>
+                            <td><?= $this->Form->control('deposit_date') ?></td>
                         </tr>
                         <?php foreach ($event->prices as $idx => $price) : ?>
                             <tr>

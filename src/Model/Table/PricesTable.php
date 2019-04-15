@@ -90,4 +90,18 @@ class PricesTable extends Table
 
         return $rules;
     }
+
+    /**
+     * Finder to locate Parent Accounts
+     *
+     * @param Query $query the Query to be modified.
+     *
+     * @return Query
+     */
+    public function findDeposits($query)
+    {
+        return $query
+            ->contain('ItemTypes')
+            ->where(['ItemTypes.deposit' => true]);
+    }
 }

@@ -43,7 +43,8 @@ class AvailabilityComponent extends Component
         $results = [
             'NumSection' => $section,
             'NumNonSection' => $nonSection,
-            'NumLeaders' => $leaders
+            'NumLeaders' => $leaders,
+            'NumTeams' => 1,
         ];
 
         return $results;
