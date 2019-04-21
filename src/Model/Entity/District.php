@@ -29,6 +29,7 @@ class District extends Entity
     protected $_accessible = [
         'district' => true,
         'county' => true,
+        'deleted' => true,
         'short_name' => true,
         'scoutgroups' => true,
         'champions' => true

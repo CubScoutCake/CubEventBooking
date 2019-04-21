@@ -24,16 +24,28 @@ class TasksTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.TaskTypes',
-        'app.Tasks',
-        'app.Users',
-        'app.AuthRoles',
-        'app.PasswordStates',
-        'app.Roles',
-        'app.Districts',
-        'app.Scoutgroups',
-        'app.Sections',
-        'app.SectionTypes',
+        'app.districts',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
+        'app.application_statuses',
+        'app.setting_types',
+        'app.settings',
+        'app.event_types',
+        'app.event_statuses',
+        'app.discounts',
+        'app.events',
+        'app.prices',
+        'app.applications',
+        'app.task_types',
+        'app.tasks',
     ];
 
     /**
@@ -107,13 +119,13 @@ class TasksTableTest extends TestCase
             'id' => 1,
             'task_type_id' => 1,
             'user_id' => 1,
-            'completed' => true,
-            'completed_by_user_id' => 1,
+            'completed' => false,
+            'completed_by_user_id' => null,
         ];
         $this->assertEquals($expected, $actual);
 
         $count = $this->Tasks->find('all')->count();
-        $this->assertEquals(1, $count);
+        $this->assertEquals(2, $count);
     }
 
     /**

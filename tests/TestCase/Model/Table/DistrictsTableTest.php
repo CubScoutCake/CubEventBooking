@@ -24,7 +24,6 @@ class DistrictsTableTest extends TestCase
      */
     public $fixtures = [
         'app.Districts',
-        'app.Scoutgroups',
     ];
 
     /**
@@ -66,21 +65,21 @@ class DistrictsTableTest extends TestCase
             [
                 'id' => 1,
                 'district' => 'Letchworth & Baldock',
-                'county' => 'Lorem ipsum dolor sit amet',
+                'county' => 'Fugu',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],
             [
                 'id' => 2,
                 'district' => 'Kingdom of Oz',
-                'county' => 'Lorem ipsum dolor sit amet',
+                'county' => 'Fugu',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],
             [
                 'id' => 3,
                 'district' => 'The Farm Place',
-                'county' => 'Lorem dolor sit amet',
+                'county' => 'Fugu',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],
@@ -114,21 +113,21 @@ class DistrictsTableTest extends TestCase
             [
                 'id' => 1,
                 'district' => 'Letchworth & Baldock',
-                'county' => 'Lorem ipsum dolor sit amet',
+                'county' => 'Fugu',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],
             [
                 'id' => 2,
                 'district' => 'Kingdom of Oz',
-                'county' => 'Lorem ipsum dolor sit amet',
+                'county' => 'Fugu',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],
             [
                 'id' => 3,
                 'district' => 'The Farm Place',
-                'county' => 'Lorem dolor sit amet',
+                'county' => 'Fugu',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],
