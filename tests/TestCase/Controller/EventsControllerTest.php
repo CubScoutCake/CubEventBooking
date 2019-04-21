@@ -107,9 +107,11 @@ class EventsControllerTest extends IntegrationTestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $this->post('/events/book/2', ['section' => 1, 'non_section' => 2, 'leaders' => 3]);
+        $this->post('/events/book/2', ['section' => 1, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'list']);
+        $this->assertRedirect(['controller' => 'Applications', 'action' => 'simple_book', 2, '?' => ['section' => 1, 'non_section' => 2, 'leaders' => 3]]);
 
-        $this->assertRedirect(['controller' => 'Applications', 'action' => 'simple_book', 2, 1, 2, 3]);
+        $this->post('/events/book/2', ['section' => 1, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'hold']);
+        $this->assertRedirect(['controller' => 'Applications', 'action' => 'hold_book', 2, '?' => ['section' => 1, 'non_section' => 2, 'leaders' => 3]]);
     }
 
     /**
@@ -150,15 +152,18 @@ class EventsControllerTest extends IntegrationTestCase
         $this->assertFlashElement('Flash/error');
         $this->assertFlashMessage('Booking Exceeds Maximum Numbers.');
 
-        $this->post('/events/book/3', ['section' => 5, 'non_section' => 2, 'leaders' => 3]);
-        $this->assertRedirect(['controller' => 'Applications', 'action' => 'simple_book', 3, 5, 2, 3]);
+        $this->post('/events/book/3', ['section' => 5, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'list']);
+        $this->assertRedirect(['controller' => 'Applications', 'action' => 'simple_book', 3, '?' => ['section' => 5, 'non_section' => 2, 'leaders' => 3]]);
+
+        $this->post('/events/book/3', ['section' => 5, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'hold']);
+        $this->assertRedirect(['controller' => 'Applications', 'action' => 'hold_book', 3, '?' => ['section' => 5, 'non_section' => 2, 'leaders' => 3]]);
 
         $limitedEvent->set('max_apps', 1);
         $limitedEvent = $events->save($limitedEvent);
 
         $this->assertEquals(1, $limitedEvent->max_apps);
 
-        $this->post('/events/book/3', ['section' => 5, 'non_section' => 2, 'leaders' => 3]);
+        $this->post('/events/book/3', ['section' => 5, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'list']);
         $this->assertNoRedirect();
         $this->assertFlashElement('Flash/error');
         $this->assertFlashMessage('This event is Full.');

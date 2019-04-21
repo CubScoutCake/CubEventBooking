@@ -12,6 +12,7 @@
                     <th scope="col"><?= $this->Paginator->sort('minor') ?></th>
                     <th scope="col"><?= $this->Paginator->sort('cancelled') ?></th>
                     <th scope="col"><?= $this->Paginator->sort('available') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('deposit') ?></th>
                     <th scope="col"><?= $this->Paginator->sort('team_price') ?></th>
                 </tr>
                 </thead>
@@ -29,6 +30,7 @@
                         <td><?= $itemType->minor ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
                         <td><?= $itemType->cancelled ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
                         <td><?= $itemType->available ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
+                        <td><?= $itemType->deposit ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
                         <td><?= $itemType->team_price ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
                     </tr>
                 <?php endforeach; ?>

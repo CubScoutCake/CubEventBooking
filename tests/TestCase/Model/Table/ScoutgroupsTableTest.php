@@ -180,8 +180,8 @@ class ScoutgroupsTableTest extends TestCase
     {
         $badData = [
             'id' => 5,
-            'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
             'district_id' => 4,
+            'scoutgroup' => null,
             'number_stripped' => 1,
             'deleted' => null
         ];

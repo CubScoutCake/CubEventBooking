@@ -52,19 +52,33 @@ class ApplicationStatusesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->scalar('application_status')
             ->maxLength('application_status', 255)
             ->requirePresence('application_status', 'create')
-            ->notEmpty('application_status');
+            ->allowEmptyString('application_status', false);
 
         $validator
             ->boolean('active')
             ->requirePresence('active', 'create')
-            ->notEmpty('active');
+            ->allowEmptyString('active', false);
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['application_status']));
+
+        return $rules;
     }
 }

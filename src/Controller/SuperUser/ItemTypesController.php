@@ -1,16 +1,15 @@
 <?php
 namespace App\Controller\SuperUser;
 
-use App\Controller\SuperUser\AppController;
-
 /**
  * ItemTypes Controller
  *
  * @property \App\Model\Table\ItemTypesTable $ItemTypes
+ *
+ * @method \App\Model\Entity\ItemType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ItemTypesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -24,7 +23,6 @@ class ItemTypesController extends AppController
         $itemTypes = $this->paginate($this->ItemTypes);
 
         $this->set(compact('itemTypes'));
-        $this->set('_serialize', ['itemTypes']);
     }
 
     /**
@@ -37,17 +35,16 @@ class ItemTypesController extends AppController
     public function view($id = null)
     {
         $itemType = $this->ItemTypes->get($id, [
-            'contain' => ['InvoiceItems']
+            'contain' => ['Roles', 'InvoiceItems', 'Prices']
         ]);
 
         $this->set('itemType', $itemType);
-        $this->set('_serialize', ['itemType']);
     }
 
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -58,23 +55,19 @@ class ItemTypesController extends AppController
                 $this->Flash->success(__('The item type has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The item type could not be saved. Please, try again.'));
             }
+            $this->Flash->error(__('The item type could not be saved. Please, try again.'));
         }
-
-        $roles = $this->ItemTypes->Roles->find('list');
-
+        $roles = $this->ItemTypes->Roles->find('list', ['limit' => 200]);
         $this->set(compact('itemType', 'roles'));
-        $this->set('_serialize', ['itemType']);
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Item Type id.
-     * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Http\Exception\NotFoundException When record not found.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
     {
@@ -87,22 +80,18 @@ class ItemTypesController extends AppController
                 $this->Flash->success(__('The item type has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The item type could not be saved. Please, try again.'));
             }
+            $this->Flash->error(__('The item type could not be saved. Please, try again.'));
         }
-
-        $roles = $this->ItemTypes->Roles->find('list');
-
+        $roles = $this->ItemTypes->Roles->find('list', ['limit' => 200]);
         $this->set(compact('itemType', 'roles'));
-        $this->set('_serialize', ['itemType']);
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Item Type id.
-     * @return \Cake\Http\Response|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)

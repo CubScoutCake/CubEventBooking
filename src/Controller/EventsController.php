@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Form\AttNumberForm;
 use App\Form\SyncBookForm;
+use App\Model\Entity\Price;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
@@ -37,7 +38,7 @@ class EventsController extends AppController
      * View method
      *
      * @param int|null $eventID Event id.
-     * @return void
+     * @return void|\Cake\Http\Response
      * @throws \Cake\Datasource\Exception\RecordNotFoundException|\Exception When record not found.
      */
     public function book($eventID)
@@ -73,6 +74,7 @@ class EventsController extends AppController
             $nonSection = $this->request->getData('non_section');
             $leaders = $this->request->getData('leaders');
             $osm_event = $this->request->getData('osm_event');
+            $bookingType = $this->request->getData('booking_type');
 
             if (!is_null($section)) {
                 if ($section > $max_section && $max_section != 0 && !is_null($max_section)) {
@@ -80,15 +82,34 @@ class EventsController extends AppController
                 }
 
                 if ($section <= $max_section || $max_section == 0 || is_null($max_section)) {
-                    $this->redirect([
-                        'controller' => 'Applications',
-                        'action' => 'simple_book',
-                        'prefix' => false,
-                        $event->id,
-                        $section,
-                        $nonSection,
-                        $leaders,
-                    ]);
+                    switch ($bookingType) {
+                        case 'list':
+                            return $this->redirect([
+                                'controller' => 'Applications',
+                                'action' => 'simple_book',
+                                'prefix' => false,
+                                $event->id,
+                                '?' => [
+                                    'section' => $section,
+                                    'non_section' => $nonSection,
+                                    'leaders' => $leaders,
+                                ],
+                            ]);
+                        case 'hold':
+                            return $this->redirect([
+                                'controller' => 'Applications',
+                                'action' => 'hold_book',
+                                'prefix' => false,
+                                $event->id,
+                                '?' => [
+                                    'section' => $section,
+                                    'non_section' => $nonSection,
+                                    'leaders' => $leaders,
+                                ],
+                            ]);
+                        default:
+                            break;
+                    }
                 }
             }
 
@@ -111,7 +132,7 @@ class EventsController extends AppController
             $term = $pluralTerm;
         }
 
-        $this->set(compact('event', 'term', 'attForm', 'syncForm', 'section', 'non_section'));
+        $this->set(compact('event', 'term', 'attForm', 'holdForm', 'syncForm', 'section', 'non_section'));
         $this->set(compact('max_section', 'leaders', 'osmEvents', 'readyForSync', 'singleTerm'));
     }
 }

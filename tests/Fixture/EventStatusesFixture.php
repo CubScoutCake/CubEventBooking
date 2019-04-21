@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * EventStatusesFixture
- *
  */
 class EventStatusesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -26,7 +24,6 @@ class EventStatusesFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *
@@ -36,6 +33,7 @@ class EventStatusesFixture extends TestFixture
     {
         $this->records = [
             [
+                'id' => 1,
                 'event_status' => 'Lorem ipsum dolor sit amet',
                 'live' => 1,
                 'accepting_applications' => 1

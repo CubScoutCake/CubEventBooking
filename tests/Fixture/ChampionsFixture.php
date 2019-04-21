@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * ChampionsFixture
- *
  */
 class ChampionsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -31,34 +29,35 @@ class ChampionsFixture extends TestFixture
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'champions_district_id' => ['type' => 'foreign', 'columns' => ['district_id'], 'references' => ['districts', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
-            'champions_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
+            'champions_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 1,
-            'district_id' => 1,
-            'firstname' => 'Lorem ipsum dolor sit amet',
-            'lastname' => 'Lorem ipsum dolor sit amet',
-            'email' => 'jacob@fish.com',
-            'user_id' => 1,
-            'deleted' => null
-        ],
-        [
-            'id' => 2,
-            'district_id' => 1,
-            'firstname' => 'Lorem ipsum dolor sit amet',
-            'lastname' => 'Lorem ipsum dolor sit amet',
-            'email' => 'Lorem goat dolor sit amet',
-            'user_id' => 1,
-            'deleted' => 2482061379
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'district_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'email' => 'jacob@fish.com',
+                'user_id' => 1,
+                'deleted' => null
+            ],
+            [
+                'district_id' => 1,
+                'firstname' => 'Lorem ipsum dolor sit amet',
+                'lastname' => 'Lorem ipsum dolor sit amet',
+                'email' => 'Lorem goat dolor sit amet',
+                'user_id' => 2,
+                'deleted' => 2482061379
+            ],
+        ];
+        parent::init();
+    }
 }

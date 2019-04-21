@@ -75,12 +75,10 @@ class PaymentsTableTest extends TestCase
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->enableHydration(false)->toArray();
 
-        $startNow = Time::now();
-
         $expected = [
             [
                 'id' => 1,
-                'value' => 1,
+                'value' => 1.0,
                 'created' => null,
                 'paid' => null,
                 'cheque_number' => 'Lorem ipsum dolor sit amet',

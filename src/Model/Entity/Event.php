@@ -17,19 +17,12 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time|null $modified
  * @property bool|null $deposit
  * @property \Cake\I18n\Time|null $deposit_date
- * @property float|null $deposit_value
  * @property bool|null $deposit_inc_leaders
- * @property string|null $deposit_text
  * @property string $logo
- * @property int|null $invtext_id
- * @property int|null $legaltext_id
  * @property int|null $discount_id
  * @property string|null $intro_text
  * @property string $location
  * @property bool|null $max
- * @property int|null $max_cubs
- * @property int|null $max_yls
- * @property int|null $max_leaders
  * @property bool|null $allow_reductions
  * @property bool|null $invoices_locked
  * @property int $admin_user_id
@@ -51,18 +44,18 @@ use Cake\ORM\Entity;
  * @property bool $app_full
  *
  * @property \App\Model\Entity\Discount $discount
- * @property \App\Model\Entity\EventStatus $event_status
- * @property \App\Model\Entity\User $admin_user
+ * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\EventType $event_type
  * @property \App\Model\Entity\SectionType $section_type
+ * @property \App\Model\Entity\EventStatus $event_status
  * @property \App\Model\Entity\Application[] $applications
  * @property \App\Model\Entity\Logistic[] $logistics
  * @property \App\Model\Entity\Price[] $prices
+ * @property \App\Model\Entity\Reservation[] $reservations
  * @property \App\Model\Entity\Setting[] $settings
  */
 class Event extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -83,19 +76,12 @@ class Event extends Entity
         'modified' => true,
         'deposit' => true,
         'deposit_date' => true,
-        'deposit_value' => true,
         'deposit_inc_leaders' => true,
-        'deposit_text' => true,
         'logo' => true,
-        'invtext_id' => true,
-        'legaltext_id' => true,
         'discount_id' => true,
         'intro_text' => true,
         'location' => true,
         'max' => true,
-        'max_cubs' => true,
-        'max_yls' => true,
-        'max_leaders' => true,
         'allow_reductions' => true,
         'invoices_locked' => true,
         'admin_user_id' => true,
@@ -114,13 +100,14 @@ class Event extends Entity
         'cc_res' => true,
         'cc_atts' => true,
         'discount' => true,
-        'event_status' => true,
-        'admin_user' => true,
+        'user' => true,
         'event_type' => true,
         'section_type' => true,
+        'event_status' => true,
         'applications' => true,
         'logistics' => true,
         'prices' => true,
+        'reservations' => true,
         'settings' => true
     ];
 

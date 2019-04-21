@@ -25,9 +25,12 @@
                             <div class="col-lg-6">
 								<?= $this->Form->control('simple_booking') ?>
 								<?= $this->Form->control('sync_book') ?>
+                                <?= $this->Form->control('hold_booking') ?>
+                                <?= $this->Form->control('attendee_booking') ?>
                             </div>
                             <div class="col-lg-6">
 								<?= $this->Form->control('parent_applications') ?>
+                                <?= $this->Form->control('district_booking') ?>
                             </div>
                         </div>
                     </div>
@@ -68,6 +71,6 @@
             </div>
         </div>
     </fieldset>
-	<?= $this->Form->button(__('Submit')) ?>
-	<?= $this->Form->end() ?>
+    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->end() ?>
 </div>

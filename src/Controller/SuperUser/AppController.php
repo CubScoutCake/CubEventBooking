@@ -74,7 +74,7 @@ class AppController extends Controller
             return false;
         }
 
-        if ($this->request->getParam('prefix') === 'super_user' && isset($user['auth_role_id'])) {
+        if ($this->request->getParam('prefix') == 'super_user' && isset($user['auth_role_id'])) {
             return (bool)($adminTrue['super_user']);
         }
 

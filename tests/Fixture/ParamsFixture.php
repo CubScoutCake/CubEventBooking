@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * ParamsFixture
- *
  */
 class ParamsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -22,7 +20,6 @@ class ParamsFixture extends TestFixture
         'constant' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         '_indexes' => [
             'params_parameter_id' => ['type' => 'index', 'columns' => ['parameter_id'], 'length' => []],
-            'pram_parameter_idx' => ['type' => 'index', 'columns' => ['parameter_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
@@ -30,17 +27,19 @@ class ParamsFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 1,
-            'parameter_id' => 1,
-            'constant' => 'Lorem ipsum dolor sit amet'
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'parameter_id' => 1,
+                'constant' => 'Lorem ipsum dolor sit amet'
+            ],
+        ];
+        parent::init();
+    }
 }

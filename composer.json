@@ -46,6 +46,7 @@
         "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
         "cs-check": "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests ./src",
         "cs-fix": "vendor/bin/phpcbf -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./tests ./src ./config",
+        "unit-version": "phpunit --version",
         "test": "phpunit --colors=always",
         "test-model": "phpunit --colors=always --testsuite Model",
         "test-controller": "phpunit --colors=always --testsuite Controller",

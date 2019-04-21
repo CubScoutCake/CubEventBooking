@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * EmailSendsFixture
- *
  */
 class EmailSendsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -43,26 +41,29 @@ class EmailSendsFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'created' => 1487718602,
-            'modified' => 1487718602,
-            'sent' => 1487718602,
-            'message_id' => 'Lorem ipsum dolor sit amet',
-            'user_id' => 1,
-            'subject' => 'Lorem ipsum dolor sit amet',
-            'routing_domain' => 'Lorem ipsum dolor sit amet',
-            'from_address' => 'Lorem ipsum dolor sit amet',
-            'friendly_from' => 'Lorem ipsum dolor sit amet',
-            'notification_type_id' => 1,
-            'notification_id' => 1,
-            'deleted' => null
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'created' => 1554732394,
+                'modified' => 1554732394,
+                'sent' => 1554732394,
+                'message_id' => 'Lorem ipsum dolor sit amet',
+                'user_id' => 1,
+                'subject' => 'Lorem ipsum dolor sit amet',
+                'routing_domain' => 'Lorem ipsum dolor sit amet',
+                'from_address' => 'Lorem ipsum dolor sit amet',
+                'friendly_from' => 'Lorem ipsum dolor sit amet',
+                'notification_type_id' => 1,
+                'notification_id' => 1,
+                'deleted' => null
+            ],
+        ];
+        parent::init();
+    }
 }

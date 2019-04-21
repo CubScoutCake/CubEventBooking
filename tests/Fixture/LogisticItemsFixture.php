@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * LogisticItemsFixture
- *
  */
 class LogisticItemsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -27,6 +25,7 @@ class LogisticItemsFixture extends TestFixture
             'logistic_items_application_id' => ['type' => 'index', 'columns' => ['application_id'], 'length' => []],
             'logistic_items_logistic_id' => ['type' => 'index', 'columns' => ['logistic_id'], 'length' => []],
             'logistic_items_param_id' => ['type' => 'index', 'columns' => ['param_id'], 'length' => []],
+            'logistic_items_reservation_id' => ['type' => 'index', 'columns' => ['reservation_id'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
@@ -37,7 +36,6 @@ class LogisticItemsFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *
@@ -47,11 +45,10 @@ class LogisticItemsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'application_id' => 1,
                 'logistic_id' => 1,
                 'param_id' => 1,
-                'deleted' => 1542547798,
+                'deleted' => null,
                 'reservation_id' => 1
             ],
         ];

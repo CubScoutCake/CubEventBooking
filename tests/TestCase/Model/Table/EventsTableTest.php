@@ -38,8 +38,10 @@ class EventsTableTest extends TestCase
         'app.scoutgroups',
         'app.districts',
         'app.champions',
-        'app.applications', 'app.application_statuses',
-        'app.events', 'app.event_statuses',
+        'app.applications',
+        'app.application_statuses',
+        'app.events',
+        'app.event_statuses',
         'app.settings',
         'app.setting_types',
         'app.discounts',
@@ -93,7 +95,60 @@ class EventsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $actual = $this->Events->get(2)->toArray();
+
+        $dates = [
+            'start_date',
+            'end_date',
+            'created',
+            'modified',
+            'deleted',
+            'deposit_date',
+            'closing_date',
+            'opening_date',
+        ];
+
+        foreach ($dates as $date) {
+            $dateValue = $actual[$date];
+            if (!is_null($dateValue)) {
+                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+            }
+            unset($actual[$date]);
+        }
+
+        $expected = [
+            'id' => 2,
+            'name' => 'OLD dolo',
+            'full_name' => 'Lorem Goat dolor sit amet',
+            'live' => true,
+            'new_apps' => true,
+            'deposit' => true,
+            'deposit_inc_leaders' => true,
+            'logo' => 'Lorem ipsum dolor sit amet',
+            'discount_id' => null,
+            'intro_text' => 'Lorem ipsum dolor sit amet',
+            'location' => 'Lorem ipsum dolor sit amet',
+            'max' => true,
+            'allow_reductions' => true,
+            'invoices_locked' => true,
+            'admin_user_id' => 5,
+            'max_apps' => 2,
+            'max_section' => 20,
+            'event_type_id' => 1,
+            'section_type_id' => 2,
+            'cc_apps' => 1,
+            'cc_prices' => 2,
+            'complete' => false,
+            'team_price' => true,
+            'event_status_id' => 1,
+            'cc_res' => 1,
+            'cc_atts' => 1,
+            'app_full' => false,
+        ];
+        $this->assertEquals($expected, $actual);
+
+        $count = $this->Events->find('all')->count();
+        $this->assertEquals(2, $count);
     }
 
     /**
@@ -143,7 +198,8 @@ class EventsTableTest extends TestCase
      */
     public function testDetermineComplete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertTrue($this->Events->determineComplete(2));
+        $this->assertTrue($this->Events->determineComplete(3));
     }
 
     /**

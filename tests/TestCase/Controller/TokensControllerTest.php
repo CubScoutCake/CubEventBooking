@@ -2,19 +2,23 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\TokensController;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\Core\Configure;
+use Cake\ORM\TableRegistry;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\TokensController Test Case
  */
-class TokensControllerTest extends IntegrationTestCase
+class TokensControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * Fixtures
      *
      * @var array
-     */
+     *
     public $fixtures = [
         'app.email_responses',
         'app.email_sends',
@@ -29,16 +33,44 @@ class TokensControllerTest extends IntegrationTestCase
         'app.notifications',
         'app.notification_types',
         'app.tokens',
-        'app.email_response_types'
+        'app.email_response_types',
+        'app.tokens',
     ];
 
     /**
      * Test view method
      *
      * @return void
+     *
+     * @throws
      */
     public function testValidate()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        if (Configure::read('travis')) {
+            $this->markTestSkipped('Token odd behaviour!');
+        }
+
+        /** @var \App\Model\Table\TokensTable $tokens */
+        $tokens = TableRegistry::getTableLocator()->get('Tokens');
+
+        $token = $tokens->prepareToken(1);
+
+        $this->get([
+            'controller' => 'Tokens',
+            'action' => 'validate',
+            'prefix' => false,
+            urlencode($token)
+        ]);
+
+        $this->assertRedirect([
+            'controller' => 'Applications',
+            'action' => 'view',
+            'prefix' => false,
+            1,
+            '?' => [
+                'token_id' => 1,
+                'token' => $token,
+            ]
+        ]);
     }
 }
