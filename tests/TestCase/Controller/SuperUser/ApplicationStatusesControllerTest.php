@@ -16,20 +16,18 @@ class ApplicationStatusesControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.applications', 'app.application_statuses',
-        'app.settings',
-        'app.setting_types',
-        'app.discounts',
-        'app.roles',
-        'app.password_states',
         'app.districts',
         'app.scoutgroups',
         'app.section_types',
         'app.sections',
-        'app.users',
-        'app.events', 'app.event_statuses',
-        'app.event_types',
+        'app.password_states',
         'app.auth_roles',
+        'app.item_types',
+        'app.roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
+        'app.application_statuses',
     ];
 
     /**

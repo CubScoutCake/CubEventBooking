@@ -28,7 +28,7 @@ class ApplicationsAttendeesTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.districts',
         'app.scoutgroups',
@@ -50,8 +50,6 @@ class ApplicationsAttendeesTableTest extends TestCase
         'app.events',
         'app.prices',
         'app.applications',
-        'app.task_types',
-        'app.tasks',
         'app.attendees',
         'app.applications_attendees',
     ];
@@ -66,8 +64,6 @@ class ApplicationsAttendeesTableTest extends TestCase
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('ApplicationsAttendees') ? [] : ['className' => ApplicationsAttendeesTable::class];
         $this->ApplicationsAttendees = TableRegistry::getTableLocator()->get('ApplicationsAttendees', $config);
-
-        $this->travisPass = Configure::read('travis');
     }
 
     /**
@@ -78,7 +74,6 @@ class ApplicationsAttendeesTableTest extends TestCase
     public function tearDown()
     {
         unset($this->ApplicationsAttendees);
-        unset($this->travisPass);
 
         parent::tearDown();
     }
@@ -90,10 +85,6 @@ class ApplicationsAttendeesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $query = $this->ApplicationsAttendees->find('all');
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
@@ -199,10 +190,6 @@ class ApplicationsAttendeesTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $badData = [
             'application_id' => 98,
             'attendee_id' => 98
@@ -308,8 +295,14 @@ class ApplicationsAttendeesTableTest extends TestCase
             ],
         ];
 
-        $badEntity = $this->ApplicationsAttendees->newEntity($badData);
-        $goodEntity = $this->ApplicationsAttendees->newEntity($goodData);
+        $badEntity = $this->ApplicationsAttendees->newEntity($badData, ['accessibleFields' => [
+            'application_id' => true,
+            'attendee_id' => true
+        ]]);
+        $goodEntity = $this->ApplicationsAttendees->newEntity($goodData, ['accessibleFields' => [
+            'application_id' => true,
+            'attendee_id' => true
+        ]]);
 
         $this->assertFalse($this->ApplicationsAttendees->save($badEntity));
         $this->assertInstanceOf(ApplicationsAttendee::class, $this->ApplicationsAttendees->save($goodEntity));

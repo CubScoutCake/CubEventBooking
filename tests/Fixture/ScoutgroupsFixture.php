@@ -30,7 +30,6 @@ class ScoutgroupsFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *
@@ -39,30 +38,31 @@ class ScoutgroupsFixture extends TestFixture
     public function init()
     {
         $this->records = [
-          [
-              'scoutgroup' => '12th Letchworth',
-              'district_id' => 1,
-              'number_stripped' => 1,
-              'deleted' => null
-          ],
-          [
-              'scoutgroup' => '4th Octopus',
-              'district_id' => 2,
-              'number_stripped' => 4,
-              'deleted' => null
-          ],
-          [
-              'scoutgroup' => '1st Llamaland',
-              'district_id' => 1,
-              'number_stripped' => 1,
-              'deleted' => null
-          ],
-          [
-              'scoutgroup' => '11th Goatface',
-              'district_id' => 2,
-              'number_stripped' => 11,
-              'deleted' => null
-          ],
+            [
+                'scoutgroup' => '12th Letchworth',
+                'district_id' => 1,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'scoutgroup' => '4th Octopus',
+                'district_id' => 2,
+                'number_stripped' => 4,
+                'deleted' => null
+            ],
+            [
+                'scoutgroup' => '1st Llamaland',
+                'district_id' => 1,
+                'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'scoutgroup' => '11th Goatface',
+                'district_id' => 2,
+                'number_stripped' => 11,
+                'deleted' => null
+            ],
         ];
+        parent::init();
     }
 }
