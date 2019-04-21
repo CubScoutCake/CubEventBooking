@@ -72,24 +72,34 @@ class EmailResponsesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
+
+        $validator
+            ->integer('email_send_id')
+            ->requirePresence('email_send_id')
+            ->allowEmptyString('email_send_id', false);
+
+        $validator
+            ->integer('email_response_type_id')
+            ->requirePresence('email_response_type_id')
+            ->allowEmptyString('email_response_type_id', false);
 
         $validator
             ->dateTime('received')
-            ->allowEmpty('received');
+            ->allowEmptyString('received', false);
 
         $validator
-            ->allowEmpty('link_clicked');
+            ->allowEmptyString('link_clicked');
 
         $validator
-            ->allowEmpty('ip_address');
+            ->allowEmptyString('ip_address');
 
         $validator
-            ->allowEmpty('bounce_reason');
+            ->allowEmptyString('bounce_reason');
 
         $validator
             ->integer('message_size')
-            ->allowEmpty('message_size');
+            ->allowEmptyString('message_size');
 
         return $validator;
     }

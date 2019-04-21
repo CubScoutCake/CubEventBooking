@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * EmailResponseTypesFixture
- *
  */
 class EmailResponseTypesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -25,7 +23,6 @@ class EmailResponseTypesFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *
