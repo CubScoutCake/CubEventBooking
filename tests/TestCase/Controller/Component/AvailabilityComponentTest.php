@@ -139,4 +139,56 @@ class AvailabilityComponentTest extends TestCase
         ];
         $this->assertEquals($expected, $numbers);
     }
+
+    /**
+     * Test getCheckBooking Type method
+     *
+     * @return void
+     */
+    public function testCheckBookingType()
+    {
+        $testData['booking_type'] = 'list';
+        $response = $this->Availability->checkBooking(2, $testData, false);
+        $this->assertTrue($response);
+        $response = $this->Availability->checkBooking(3, $testData, false);
+        $this->assertFalse($response);
+
+        $testData['booking_type'] = 'hold';
+        $response = $this->Availability->checkBooking(2, $testData, false);
+        $this->assertTrue($response);
+        $response = $this->Availability->checkBooking(3, $testData, false);
+        $this->assertFalse($response);
+
+        $testData['booking_type'] = 'district';
+        $response = $this->Availability->checkBooking(2, $testData, false);
+        $this->assertTrue($response);
+        $response = $this->Availability->checkBooking(3, $testData, false);
+        $this->assertFalse($response);
+    }
+
+    /**
+     * Test getCheckBooking Attendees method
+     *
+     * @return void
+     */
+    public function testCheckBookingSection()
+    {
+        // Max for Event 2 is 6 - 6 Pass 7 Fail
+        $testData['section'] = 6;
+        $response = $this->Availability->checkBooking(2, $testData, false);
+        $this->assertTrue($response);
+
+        $testData['section'] = 7;
+        $response = $this->Availability->checkBooking(2, $testData, false);
+        $this->assertFalse($response);
+
+        // Max for Event 3 is 5 - 5 Pass 6 Fail
+        $testData['section'] = 5;
+        $response = $this->Availability->checkBooking(2, $testData, false);
+        $this->assertTrue($response);
+
+        $testData['section'] = 6;
+        $response = $this->Availability->checkBooking(3, $testData, false);
+        $this->assertFalse($response);
+    }
 }

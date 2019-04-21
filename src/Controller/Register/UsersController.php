@@ -32,12 +32,18 @@ class UsersController extends AppController
         $user->set('section_id', $sectionId);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user->set('auth_role_id', 1);
+            $data = $this->request->getData();
+            $data = array_merge($data, [
+                'auth_role_id' => 1,
+                'password_state_id' => 1,
+                'section_id' => $sectionId,
+            ]);
 
-            $user = $this->Users->patchEntity($user, $this->request->getData(), [
+            $user = $this->Users->patchEntity($user, $data, [
                 'fieldList' => [
                     'role_id',
                     'section_id',
+                    'password_state_id',
                     'auth_role_id',
                     'firstname',
                     'lastname',

@@ -156,7 +156,10 @@ class SectionsControllerTest extends IntegrationTestCase
 
         $this->assertResponseOk();
         $sectionsFound = $this->viewVariable('existing')->toArray();
-        $this->assertEquals([1 => 'Lorem ipsum dolor sit amet'], $sectionsFound);
+        $this->assertEquals([
+            1 => 'Lorem ipsum dolor sit amet',
+            2 => 'Lorem ipsum uj sit amet',
+        ], $sectionsFound);
 
         // Test New Section Redirect
         $this->get([
@@ -229,7 +232,7 @@ class SectionsControllerTest extends IntegrationTestCase
         $this->assertEquals(1, $groupId);
         $this->assertEquals(2, $typeId);
 
-        $this->assertSame($suggested, 'Lorem ip - Cubs');
+        $this->assertSame('12th Let - Cubs', $suggested);
 
         // Assert Post Functional
         $this->enableSecurityToken();

@@ -35,11 +35,6 @@ class UsersTableTest extends TestCase
         'app.Districts',
         'app.SectionTypes',
         'app.Sections',
-        'app.EmailSends',
-        'app.Notifications',
-        'app.NotificationTypes',
-        'app.Payments',
-        'app.Tokens'
     ];
 
     /**

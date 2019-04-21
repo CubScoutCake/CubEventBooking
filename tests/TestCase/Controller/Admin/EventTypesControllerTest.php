@@ -143,7 +143,7 @@ class EventTypesControllerTest extends TestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $this->post(['controller' => 'EventTypes', 'prefix' => 'admin', 'action' => 'delete', 2]);
+        $this->post(['controller' => 'EventTypes', 'prefix' => 'admin', 'action' => 'delete', 3]);
 
         $this->assertRedirect();
     }

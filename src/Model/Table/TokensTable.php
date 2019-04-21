@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
 /**
  * Tokens Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Users
  * @property \Cake\ORM\Association\BelongsTo $EmailSends
  *
  * @method \App\Model\Entity\Token get($primaryKey, $options = [])
@@ -55,10 +54,6 @@ class TokensTable extends Table
             'field' => 'deleted'
         ]);
 
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
-        ]);
         $this->belongsTo('EmailSends', [
             'foreignKey' => 'email_send_id',
             'joinType' => 'INNER'
@@ -78,11 +73,6 @@ class TokensTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->integer('user_id')
-            ->allowEmptyString('user_id', false)
-            ->requirePresence('user_id');
-
-        $validator
             ->requirePresence('token', 'create')
             ->allowEmptyString('token', false);
 
@@ -99,8 +89,8 @@ class TokensTable extends Table
             ->requirePresence('active', 'create');
 
         $validator
-            ->requirePresence('header', 'create')
-            ->allowEmptyString('header', false);
+            ->requirePresence('token_header', 'create')
+            ->allowEmptyString('token_header', false);
 
         return $validator;
     }
@@ -112,7 +102,7 @@ class TokensTable extends Table
      */
     protected function _initializeSchema($schema)
     {
-        $schema->setColumnType('header', 'json');
+        $schema->setColumnType('token_header', 'json');
 
         return $schema;
     }
@@ -126,7 +116,6 @@ class TokensTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['email_send_id'], 'EmailSends'));
 
         return $rules;
@@ -159,6 +148,7 @@ class TokensTable extends Table
      */
     public function beforeSave(Event $event)
     {
+        /** @var \App\Model\Entity\Token $entity */
         $entity = $event->getData('entity');
 
         if ($entity->isNew()) {
@@ -179,15 +169,13 @@ class TokensTable extends Table
      */
     public function prepareToken($tokenId)
     {
-        $tokenRow = $this->get($tokenId, [
-            'contain' => 'Users'
-        ]);
+        $tokenRow = $this->get($tokenId);
 
         $decrypter = Security::randomBytes(64);
         $decrypter = base64_encode($decrypter);
         $decrypter = substr($decrypter, 0, 8);
 
-        $hash = $decrypter . $tokenRow->user->lastname . $tokenRow->created . $tokenRow->random_number;
+        $hash = $decrypter . $tokenRow->created . $tokenRow->random_number;
 
         $hash = Security::hash($hash, 'sha256');
 
@@ -239,9 +227,7 @@ class TokensTable extends Table
             return false;
         }
 
-        $tokenRow = $this->get($token->id, [
-            'contain' => 'Users'
-        ]);
+        $tokenRow = $this->get($token->id);
 
         if (!$tokenRow->active) {
             return false;
@@ -254,7 +240,7 @@ class TokensTable extends Table
             return false;
         }
 
-        $testHash = $decrypter . $tokenRow->user->lastname . $tokenRow->created . $tokenRow->random_number;
+        $testHash = $decrypter . $tokenRow->created . $tokenRow->random_number;
         $testHash = Security::hash($testHash, 'sha256');
 
         $tokenRowHash = $tokenRow['hash'];

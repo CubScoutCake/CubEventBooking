@@ -269,57 +269,37 @@ class ApplicationsController extends AppController
      * Simple Book Method - Single form for a whole booking.
      *
      * @param int $eventId The ID of the Event to be booked
-     * @param int $attendees The Quantity of Section Young People
-     * @param int $nonSectionAtts The Quantity of Non Section Young People
-     * @param int $leaderAtts The Quantity of Adults
      *
      * @throws \Exception
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function simpleBook($eventId = null, $attendees = null, $nonSectionAtts = null, $leaderAtts = null)
+    public function simpleBook($eventId)
     {
-        if (!isset($eventId) || !isset($attendees)) {
-            $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId, $attendees]);
+        $this->loadComponent('Availability');
+        $bookingData = $this->request->getQueryParams();
+
+        if (!isset($eventId) || !key_exists('section', $bookingData)) {
+            $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
+        }
+
+        $attendees = $bookingData['section'];
+        $nonSectionAtts = $bookingData['non_section'];
+        $leaderAtts = $bookingData['leaders'];
+        $bookingData['booking_type'] = 'list';
+
+        if (!$this->Availability->checkBooking($eventId, $bookingData, true)) {
+            $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
         }
 
         /** @var \App\Model\Entity\Event $event */
         $event = $this->Applications->Events->get($eventId, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
 
-        $maxSection = $this->Applications->Events->getPriceSection($eventId);
-        if ($attendees > $maxSection && $maxSection != 0 && !is_null($maxSection)) {
-            $this->Flash->error(__('Too many attendees.'));
-
-            return $this->redirect($this->referer(['controller' => 'Events', 'action' => 'book', $event->id]));
-        }
-
-        $term = $event->event_type->application_ref->text;
-
-        if (isset($eventId)) {
-            $applicationCount = $this->Applications->find('all')->where(['event_id' => $eventId])->count();
-
-            if ($applicationCount > $event->available_apps && isset($event->available_apps)) {
-                $this->Flash->error(__('Apologies this Event is Full.'));
-
-                return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
-            }
-
-            if (!$event->new_apps) {
-                $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
-
-                return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
-            }
-        }
-
-        /**
-         * @var \App\Model\Entity\Application $application
-         */
+        /** @var \App\Model\Entity\Application $application */
         $application = $this->Applications->newEntity();
 
         $userId = $this->Auth->user('id');
-        /**
-         * @var \App\Model\Entity\User $user
-         */
+        /** @var \App\Model\Entity\User $user */
         $user = $this->Applications->Users->get($userId, ['contain' => ['Sections.SectionTypes.Roles']]);
         $sectionId = $user['section_id'];
 
@@ -361,7 +341,7 @@ class ApplicationsController extends AppController
                 $this->loadComponent('Line');
                 $parse = $this->Line->parseInvoice($application->invoice->id);
 
-                $this->Flash->success(__('Your ' . $term . ' has been registered.'));
+                $this->Flash->success(__('Your ' . $event->event_type->application_ref->text . ' has been registered.'));
 
                 if ($parse) {
                     $this->Flash->success(__('Your Invoice has been created automatically.'));
@@ -373,20 +353,113 @@ class ApplicationsController extends AppController
             }
         }
 
-        $sectionType = Inflector::singularize($user->section->section_type->section_type);
+        $this->set(compact('application', 'event', 'user', 'attendees', 'nonSectionAtts', 'leaderAtts'));
 
-        $term = $event->event_type->application_ref->text;
-        $teamLeaderBool = $event->event_type->team_leader;
-        $permitHolderBool = $event->event_type->permit_holder;
-
-        $this->set(compact('application', 'teamLeaderBool', 'permitHolderBool', 'term', 'attendees', 'nonSectionAtts', 'leaderAtts', 'sectionType'));
-
-        $sections = $this->Applications->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
+        // Option Groups
         $sectionRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->where(['id' => $user->section->section_type->role_id]);
         $nonSectionRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('nonAuto')->find('minors')->where(['id <>' => $user->section->section_type->role_id]);
         $leaderRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('leaders')->find('nonAuto');
+        $this->set(compact('sectionRoles', 'nonSectionRoles', 'leaderRoles'));
 
-        $this->set(compact('application', 'sectionRoles', 'term', 'nonSectionRoles', 'leaderRoles', 'sections', 'attendees', 'nonSectionAtts', 'leaderAtts', 'sectionType'));
+        $this->set('_serialize', ['application']);
+    }
+
+    /**
+     * Simple Book Method - Single form for a whole booking.
+     *
+     * @param int $eventId The ID of the Event to be booked
+     *
+     * @throws \Exception
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function holdBook($eventId)
+    {
+        $this->loadComponent('Availability');
+        $bookingData = $this->request->getQueryParams();
+
+        if (!isset($eventId) || !key_exists('section', $bookingData)) {
+            $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
+        }
+
+        $attendees = $bookingData['section'];
+        $nonSectionAtts = $bookingData['non_section'];
+        $leaderAtts = $bookingData['leaders'];
+        $bookingData['booking_type'] = 'hold';
+
+        if (!$this->Availability->checkBooking($eventId, $bookingData, true)) {
+            $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
+        }
+
+        /** @var \App\Model\Entity\Event $event */
+        $event = $this->Applications->Events->get($eventId, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
+
+        /** @var \App\Model\Entity\Application $application */
+        $application = $this->Applications->newEntity();
+
+        $userId = $this->Auth->user('id');
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Applications->Users->get($userId, ['contain' => ['Sections.SectionTypes.Roles']]);
+        $sectionId = $user['section_id'];
+
+        if ($this->request->is('post')) {
+            // Patch Data
+
+            $newData = [
+                'modification' => 0,
+                'user_id' => $userId,
+                'section_id' => $sectionId,
+                'event_id' => $eventId,
+                'invoice' => [
+                    'user_id' => $userId,
+                ]
+            ];
+
+            $application = $this->Applications->patchEntity(
+                $application,
+                $newData,
+                ['associated' => [ 'Invoices' ]]
+            );
+
+            $application = $this->Applications->patchEntity(
+                $application,
+                $this->request->getData(),
+                ['associated' => [ 'Attendees', 'Invoices' ]]
+            );
+
+            foreach ($application->attendees as $idx => $attendee) {
+                $attendee['user_id'] = $userId;
+                $attendee['section_id'] = $sectionId;
+
+                $application->attendees[$idx] = $this->Applications->Attendees->checkDuplicate($attendee);
+            }
+
+            if ($this->Applications->save($application)) {
+                $appId = $application->get('id');
+
+                $this->loadComponent('Line');
+                $parse = $this->Line->parseInvoice($application->invoice->id);
+
+                $this->Flash->success(__('Your ' . $event->event_type->application_ref->text . ' has been registered.'));
+
+                if ($parse) {
+                    $this->Flash->success(__('Your Invoice has been created automatically.'));
+                }
+
+                return $this->redirect(['action' => 'view', $appId]);
+            } else {
+                $this->Flash->error(__('The application could not be saved. Please, try again.'));
+            }
+        }
+
+        $this->set(compact('application', 'event', 'user', 'attendees', 'nonSectionAtts', 'leaderAtts'));
+
+        // Option Groups
+        $sectionRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->where(['id' => $user->section->section_type->role_id]);
+        $nonSectionRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('nonAuto')->find('minors')->where(['id <>' => $user->section->section_type->role_id]);
+        $leaderRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('leaders')->find('nonAuto');
+        $this->set(compact('sectionRoles', 'nonSectionRoles', 'leaderRoles'));
+
         $this->set('_serialize', ['application']);
     }
 
@@ -732,27 +805,6 @@ class ApplicationsController extends AppController
     }
 
     /**
-     * Delete method
-     *
-     * @param string|null $applicationId Application id.
-     *
-     * @return null|\Cake\Http\Response Redirects to index.
-     * @throws \Cake\Http\Exception\NotFoundException When record not found.
-     */
-    public function delete($applicationId = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $application = $this->Applications->get($applicationId);
-        if ($this->Applications->delete($application)) {
-            $this->Flash->success(__('The application has been deleted.'));
-        } else {
-            $this->Flash->error(__('The application could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
-    }
-
-    /**
      * @param array $user AuthUser Entity
      *
      * @return bool
@@ -765,7 +817,7 @@ class ApplicationsController extends AppController
         }
 
         // The owner of an application can edit and delete it
-        if (in_array($this->request->getParam('action'), ['edit', 'view', 'delete'])) {
+        if (in_array($this->request->getParam('action'), ['edit', 'view'])) {
             $applicationId = $this->request->getParam('pass')[0];
             if ($this->Applications->isOwnedBy($applicationId, $user['id'])) {
                 return true;

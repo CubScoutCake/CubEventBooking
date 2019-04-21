@@ -37,6 +37,7 @@ class ApplicationsFixture extends TestFixture
         'section_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'team_leader' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
         'application_status_id' => ['type' => 'integer', 'length' => 10, 'default' => '1', 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'hold_numbers' => ['type' => 'json', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'applications_user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
             'applications_event_id' => ['type' => 'index', 'columns' => ['event_id'], 'length' => []],
@@ -80,7 +81,8 @@ class ApplicationsFixture extends TestFixture
                 'cc_inv_cubs' => 1,
                 'cc_inv_yls' => 1,
                 'cc_inv_leaders' => 1,
-                'deleted' => null
+                'deleted' => null,
+                'hold_numbers' => ''
             ],
             [
                 'user_id' => 1,
@@ -102,7 +104,8 @@ class ApplicationsFixture extends TestFixture
                 'cc_inv_cubs' => 1,
                 'cc_inv_yls' => 1,
                 'cc_inv_leaders' => 1,
-                'deleted' => 1481841289
+                'deleted' => 1481841289,
+                'hold_numbers' => ''
             ],
             [
                 'user_id' => 1,
@@ -124,7 +127,8 @@ class ApplicationsFixture extends TestFixture
                 'cc_inv_cubs' => 1,
                 'cc_inv_yls' => 1,
                 'cc_inv_leaders' => 1,
-                'deleted' => null
+                'deleted' => null,
+                'hold_numbers' => ''
             ],
         ];
         parent::init();

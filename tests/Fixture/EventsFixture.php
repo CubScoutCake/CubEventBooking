@@ -109,6 +109,7 @@ class EventsFixture extends TestFixture
                 'cc_res' => 1,
                 'cc_atts' => 1
             ],
+            // Available Event Type 1 - Leader
             [
                 'name' => 'OLD dolo',
                 'full_name' => 'Lorem Goat dolor sit amet',
@@ -144,6 +145,7 @@ class EventsFixture extends TestFixture
                 'cc_res' => 1,
                 'cc_atts' => 1
             ],
+            // Available Event Type 2 - Parent
             [
                 'name' => 'Bushcraft 109',
                 'full_name' => 'CountyBushcraft',
@@ -167,7 +169,7 @@ class EventsFixture extends TestFixture
                 'max_apps' => 2,
                 'max_section' => 1,
                 'deleted' => null,
-                'event_type_id' => 1,
+                'event_type_id' => 2,
                 'section_type_id' => 2,
                 'closing_date' => date_format(date_add(date_create('2016-12-26 23:22:30'), date_interval_create_from_date_string("30 days")), 'Y-m-d H:i:s'),
                 'cc_apps' => 1,

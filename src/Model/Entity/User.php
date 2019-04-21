@@ -61,7 +61,6 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Note[] $notes
  * @property \App\Model\Entity\Notification[] $notifications
  * @property \App\Model\Entity\Payment[] $payments
- * @property \App\Model\Entity\Token[] $tokens
  */
 class User extends Entity
 {

@@ -31,9 +31,8 @@ use Search\Manager;
  * @property \App\Model\Table\NotesTable|\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\NotificationsTable|\Cake\ORM\Association\HasMany $Notifications
  * @property \App\Model\Table\PaymentsTable|\Cake\ORM\Association\HasMany $Payments
- * @property |\Cake\ORM\Association\HasMany $Reservations
- * @property |\Cake\ORM\Association\HasMany $Tasks
- * @property \App\Model\Table\TokensTable|\Cake\ORM\Association\HasMany $Tokens
+ * @property \App\Model\Table\ReservationsTable|\Cake\ORM\Association\HasMany $Reservations
+ * @property \App\Model\Table\TasksTable|\Cake\ORM\Association\HasMany $Tasks
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
@@ -125,9 +124,6 @@ class UsersTable extends Table
             'foreignKey' => 'user_id'
         ]);
         $this->hasMany('Tasks', [
-            'foreignKey' => 'user_id'
-        ]);
-        $this->hasMany('Tokens', [
             'foreignKey' => 'user_id'
         ]);
 

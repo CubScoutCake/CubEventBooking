@@ -42,7 +42,6 @@ class PaymentsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'value' => 1,
                 'created' => null,
                 'paid' => null,
@@ -53,7 +52,6 @@ class PaymentsFixture extends TestFixture
                 'deleted' => null
             ],
             [
-                'id' => 2,
                 'value' => 1,
                 'created' => 1484948568,
                 'paid' => 1484948568,

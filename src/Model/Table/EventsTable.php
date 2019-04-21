@@ -297,6 +297,8 @@ class EventsTable extends Table
     }
 
     /**
+     * Method to determine the maximum section numbers for an event.
+     *
      * @param int $eventId The booking Event
      *
      * @return int|bool

@@ -146,16 +146,16 @@ class ApplicationsControllerTest extends TestCase
             'Auth.User.id' => 1,
         ]);
 
-        $this->get(['controller' => 'Applications', 'action' => 'simple_book', 2, 6, 1, 1]);
+        $this->get(['controller' => 'Applications', 'action' => 'simple_book', 2, '?' => ['section' => 6, 'non_section' => 1, 'leaders' => 1]]);
         $this->assertResponseOk();
 
-        $this->get(['controller' => 'Applications', 'action' => 'simple_book', 2, 7, 1, 1]);
+        $this->get(['controller' => 'Applications', 'action' => 'simple_book', 2, '?' => ['section' => 7, 'non_section' => 1, 'leaders' => 1]]);
         $this->assertRedirect(['controller' => 'Events', 'action' => 'book', 2]);
         $this->assertFlashElement('Flash/error');
-        $this->assertFlashMessage('Too many attendees.');
+        $this->assertFlashMessage('Event is nearly Full. Too many attendees.');
 
         $this->post(
-            ['controller' => 'Applications', 'action' => 'simple_book', 2, 6, 1, 1],
+            ['controller' => 'Applications', 'action' => 'simple_book', 2, '?' => ['section' => 6, 'non_section' => 1, 'leaders' => 1]],
             [
                 'team_leader' => 'Jacob Tyler',
                 'attendees' => [

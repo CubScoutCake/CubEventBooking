@@ -35,8 +35,8 @@ class NotificationsFixture extends TestFixture
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-//            'notifications_notificationtype_id' => ['type' => 'foreign', 'columns' => ['notification_type_id'], 'references' => ['notification_types', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
-//            'notifications_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
+            'notifications_notificationtype_id' => ['type' => 'foreign', 'columns' => ['notification_type_id'], 'references' => ['notification_types', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
+            'notifications_user_id' => ['type' => 'foreign', 'columns' => ['user_id'], 'references' => ['users', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
@@ -51,15 +51,15 @@ class NotificationsFixture extends TestFixture
             [
                 'user_id' => 1,
                 'notification_type_id' => 1,
-                'new' => 1,
-                'notification_header' => 'Lorem ipsum dolor sit amet',
-                'text' => 'Lorem ipsum dolor sit amet',
-                'created' => 1487718627,
-                'read_date' => 1487718627,
-                'notification_source' => 'Lorem ipsum dolor sit amet',
-                'link_id' => 1,
-                'link_controller' => 'Users',
-                'link_prefix' => 'super_user',
+                'new' => false,
+                'notification_header' => 'A payment has been recorded.',
+                'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.',
+                'created' => '2018-02-25 15:56:43',
+                'read_date' => '2018-02-25 15:58:04',
+                'notification_source' => 'System Generated',
+                'link_id' => 2,
+                'link_controller' => 'Invoices',
+                'link_prefix' => null,
                 'link_action' => 'view',
                 'deleted' => null
             ],

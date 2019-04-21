@@ -18,9 +18,13 @@ use Cake\ORM\TableRegistry;
  * @property \App\Model\Table\ApplicationsTable $Applications
  * @property \App\Model\Table\InvoicesTable $Invoices
  * @property \App\Model\Table\EventsTable $Events
+ *
+ * @property \Cake\Controller\Component\FlashComponent $Flash
  */
 class AvailabilityComponent extends Component
 {
+    public $components = ['Flash'];
+
     /**
      * Retrieve an Array of Numbers for the Number of Attendees.
      *
@@ -125,16 +129,184 @@ class AvailabilityComponent extends Component
         $event = $this->Events->get($eventId, ['contain' => 'SectionTypes.Roles']);
         $roleId = $event->section_type->role->id;
 
-        $Section = $this->Events->Applications->find('section', ['role_id' => $roleId])->where(['Applications.event_id' => $eventId])->count();
-        $NonSection = $this->Events->Applications->find('nonSection', ['role_id' => $roleId])->where(['Applications.event_id' => $eventId])->count();
-        $Leaders = $this->Events->Applications->find('leaders')->where(['Applications.event_id' => $eventId])->count();
+        $section = $this->Events->Applications->find('section', ['role_id' => $roleId])->where(['Applications.event_id' => $eventId])->count();
+        $nonSection = $this->Events->Applications->find('nonSection', ['role_id' => $roleId])->where(['Applications.event_id' => $eventId])->count();
+        $leaders = $this->Events->Applications->find('leaders')->where(['Applications.event_id' => $eventId])->count();
 
         $results = [
-            'NumSection' => $Section,
-            'NumNonSection' => $NonSection,
-            'NumLeaders' => $Leaders
+            'NumSection' => $section,
+            'NumNonSection' => $nonSection,
+            'NumLeaders' => $leaders
         ];
 
         return $results;
+    }
+
+    /**
+     * @param \App\Model\Entity\Event $event The Event
+     * @param bool $flash Should the method emit Flash messages
+     *
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    private function checkEventOpen($event, $flash)
+    {
+        if (!$event->new_apps) {
+            if ($flash) {
+                $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param string $type The Type to be checked
+     * @param \App\Model\Entity\EventType $eventType The EventType of the Event
+     * @param bool $flash Should the method emit Flash messages
+     *
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    private function checkBookingType($type, $eventType, $flash)
+    {
+        switch ($type) {
+            case 'list':
+                if (!$eventType->simple_booking) {
+                    if ($flash) {
+                        $this->Flash->error(__('This event is not configured for List Booking.'));
+                    }
+
+                    return false;
+                }
+
+                return true;
+            case 'hold':
+                if (!$eventType->hold_booking) {
+                    if ($flash) {
+                        $this->Flash->error(__('This event is not configured for Hold Booking.'));
+                    }
+
+                    return false;
+                }
+
+                return true;
+            case 'district':
+                if (!$eventType->district_booking) {
+                    if ($flash) {
+                        $this->Flash->error(__('This event is not configured for District Booking.'));
+                    }
+
+                    return false;
+                }
+
+                return true;
+            default:
+                return true;
+        }
+    }
+
+    /**
+     * @param \App\Model\Entity\Event $event The EventType of the Event
+     * @param bool $flash Should the method emit Flash messages
+     * @param int $appId The ID of the App
+     *
+     * @return bool
+     */
+    private function checkBookingApp($event, $flash, $appId = null)
+    {
+        if (!$event->max) {
+            return true;
+        }
+
+        /** @var \App\Model\Table\ApplicationsTable Applications */
+        $this->Applications = TableRegistry::getTableLocator()->get('Applications');
+        $applicationCount = $this->Applications->find('all')->where(['event_id' => $event->id])->count();
+
+        if ($applicationCount > $event->max_apps) {
+            if ($flash) {
+                $this->Flash->error(__('Apologies this Event is Full.'));
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param int $sectionNumbers The Number to be checked
+     * @param \App\Model\Entity\Event $event The EventType of the Event
+     * @param bool $flash Should the method emit Flash messages
+     * @param int $appId The ID of the App
+     *
+     * @return bool
+     */
+    private function checkBookingSection($sectionNumbers, $event, $flash, $appId = null)
+    {
+        if (!$event->max) {
+            return true;
+        }
+
+        $this->Events = TableRegistry::getTableLocator()->get('Events');
+        $maxSection = $this->Events->getPriceSection($event->id);
+
+        if ($maxSection == 0 || is_null($maxSection)) {
+            return true;
+        }
+
+        if ($sectionNumbers > $maxSection) {
+            if ($flash) {
+                $this->Flash->error(__('Event is nearly Full. Too many attendees.'));
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param int $eventId The ID of the event
+     * @param array $bookingData The Booking Data Array to be checked.
+     * @param bool $flash Should the method emit Flash messages
+     *
+     * @return bool
+     */
+    public function checkBooking($eventId, $bookingData, $flash)
+    {
+        $this->Events = TableRegistry::getTableLocator()->get('Events');
+        $event = $this->Events->get($eventId, [
+            'contain' => [
+                'SectionTypes.Roles',
+                'EventTypes',
+            ]
+        ]);
+
+        if (!$this->checkEventOpen($event, $flash)) {
+            return false;
+        }
+
+        if (key_exists('booking_type', $bookingData)) {
+            if (!$this->checkBookingType($bookingData['booking_type'], $event->event_type, $flash)) {
+                return false;
+            }
+        }
+
+        if (key_exists('section', $bookingData)) {
+            if (!$this->checkBookingSection($bookingData['section'], $event, $flash)) {
+                return false;
+            }
+        }
+
+        if (!$this->checkBookingApp($event, $flash)) {
+            return false;
+        }
+
+        return true;
     }
 }
