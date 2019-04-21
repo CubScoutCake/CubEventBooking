@@ -16,19 +16,20 @@ class SettingsControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.settings',
-        'app.events', 'app.event_statuses',
-        'app.discounts',
-        'app.users',
-        'app.roles',
-        'app.password_states',
-        'app.sections',
-        'app.section_types',
-        'app.scoutgroups',
         'app.districts',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
         'app.auth_roles',
-        'app.event_types',
-        'app.setting_types'
+        'app.item_types',
+        'app.roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
+        'app.application_statuses',
+        'app.setting_types',
+        'app.settings',
     ];
 
     /**

@@ -50,8 +50,6 @@ class ApplicationsAttendeesTableTest extends TestCase
         'app.events',
         'app.prices',
         'app.applications',
-        'app.task_types',
-        'app.tasks',
         'app.attendees',
         'app.applications_attendees',
     ];
