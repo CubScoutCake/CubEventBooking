@@ -20,16 +20,17 @@ class ScoutgroupsFixture extends TestFixture
         'district_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'number_stripped' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
-//        '_indexes' => [
-//            'scoutgroups_district_id' => ['type' => 'index', 'columns' => ['district_id'], 'length' => []],
-//        ],
+        '_indexes' => [
+            'scoutgroups_district_id' => ['type' => 'index', 'columns' => ['district_id'], 'length' => []],
+        ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-//            'scoutgroups_scoutgroup' => ['type' => 'unique', 'columns' => ['scoutgroup'], 'length' => []],
-//            'fk_scoutgroups_district_id' => ['type' => 'foreign', 'columns' => ['district_id'], 'references' => ['districts', 'id'], 'length' => []],
+            'scoutgroups_scoutgroup' => ['type' => 'unique', 'columns' => ['scoutgroup'], 'length' => []],
+            'scoutgroups_district_id' => ['type' => 'foreign', 'columns' => ['district_id'], 'references' => ['districts', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
+
     /**
      * Init method
      *
@@ -62,6 +63,6 @@ class ScoutgroupsFixture extends TestFixture
               'number_stripped' => 11,
               'deleted' => null
           ],
-      ];
+        ];
     }
 }
