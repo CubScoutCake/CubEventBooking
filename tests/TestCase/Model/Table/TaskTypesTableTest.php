@@ -25,15 +25,6 @@ class TaskTypesTableTest extends TestCase
      */
     public $fixtures = [
         'app.TaskTypes',
-        'app.Tasks',
-        'app.Users',
-        'app.AuthRoles',
-        'app.PasswordStates',
-        'app.Roles',
-        'app.Districts',
-        'app.Scoutgroups',
-        'app.Sections',
-        'app.SectionTypes',
     ];
 
     /**

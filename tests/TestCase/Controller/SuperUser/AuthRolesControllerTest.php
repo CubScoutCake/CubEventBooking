@@ -16,16 +16,17 @@ class AuthRolesControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.auth_roles',
-        'app.notifications',
-        'app.notification_types',
-        'app.users',
-        'app.sections',
-        'app.section_types',
         'app.districts',
         'app.scoutgroups',
-        'app.roles',
+        'app.section_types',
+        'app.sections',
         'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
     ];
 
     /**

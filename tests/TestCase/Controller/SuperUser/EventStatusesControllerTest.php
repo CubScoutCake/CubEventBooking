@@ -14,44 +14,28 @@ class EventStatusesControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
-        'app.events',
-        'app.event_statuses',
-        'app.settings',
-        'app.password_states',
-        'app.setting_types',
-        'app.discounts',
-        'app.applications',
-        'app.application_statuses',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.sections',
-        'app.section_types',
-        'app.scoutgroups',
         'app.districts',
-        'app.champions',
-        'app.applications_attendees',
-        'app.allergies',
-        'app.attendees_allergies',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
         'app.auth_roles',
-        'app.invoices',
-        'app.invoice_items',
         'app.item_types',
-        'app.prices',
-        'app.notes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.notifications',
+        'app.roles',
+        'app.users',
         'app.notification_types',
-        'app.logistic_items',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
+        'app.notifications',
+        'app.application_statuses',
+        'app.setting_types',
+        'app.settings',
         'app.event_types',
-    ];*/
+        'app.event_statuses',
+        'app.discounts',
+        'app.events',
+        'app.prices',
+    ];
 
     /**
      * Test index method

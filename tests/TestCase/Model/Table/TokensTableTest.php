@@ -28,7 +28,7 @@ class TokensTableTest extends TestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
         'app.allergies',
         'app.application_statuses',
@@ -90,7 +90,7 @@ class TokensTableTest extends TestCase
         $now = new Time('2016-12-26 23:22:30');
         Time::setTestNow($now);
 
-        $this->travisPass = Configure::read('travis');
+        $this->travisPass = false; //Configure::read('travis');
     }
 
     /**
