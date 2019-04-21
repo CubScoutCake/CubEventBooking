@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * ScoutgroupsFixture
- *
  */
 class ScoutgroupsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -34,34 +32,37 @@ class ScoutgroupsFixture extends TestFixture
     // @codingStandardsIgnoreEnd
 
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'scoutgroup' => '12th Letchworth',
-            'district_id' => 1,
-            'number_stripped' => 1,
-            'deleted' => null
-        ],
-        [
-            'scoutgroup' => '4th Octopus',
-            'district_id' => 2,
-            'number_stripped' => 4,
-            'deleted' => null
-        ],
-        [
-            'scoutgroup' => '1st Llamaland',
-            'district_id' => 1,
-            'number_stripped' => 1,
-            'deleted' => null
-        ],
-        [
-            'scoutgroup' => '11th Goatface',
-            'district_id' => 2,
-            'number_stripped' => 11,
-            'deleted' => null
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+          [
+              'scoutgroup' => '12th Letchworth',
+              'district_id' => 1,
+              'number_stripped' => 1,
+              'deleted' => null
+          ],
+          [
+              'scoutgroup' => '4th Octopus',
+              'district_id' => 2,
+              'number_stripped' => 4,
+              'deleted' => null
+          ],
+          [
+              'scoutgroup' => '1st Llamaland',
+              'district_id' => 1,
+              'number_stripped' => 1,
+              'deleted' => null
+          ],
+          [
+              'scoutgroup' => '11th Goatface',
+              'district_id' => 2,
+              'number_stripped' => 11,
+              'deleted' => null
+          ],
+        ];
+    }
 }
