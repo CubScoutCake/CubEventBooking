@@ -34,7 +34,7 @@ class ApplicationStatusesTable extends Table
         parent::initialize($config);
 
         $this->setTable('application_statuses');
-        $this->setDisplayField('id');
+        $this->setDisplayField('application_status');
         $this->setPrimaryKey('id');
 
         $this->hasMany('Applications', [
