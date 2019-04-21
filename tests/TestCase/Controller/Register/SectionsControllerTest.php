@@ -229,7 +229,7 @@ class SectionsControllerTest extends IntegrationTestCase
         $this->assertEquals(1, $groupId);
         $this->assertEquals(2, $typeId);
 
-        $this->assertSame($suggested, 'Lorem ip - Cubs');
+        $this->assertSame('12th Let - Cubs', $suggested);
 
         // Assert Post Functional
         $this->enableSecurityToken();
