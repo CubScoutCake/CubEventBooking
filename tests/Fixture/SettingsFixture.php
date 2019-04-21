@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * SettingsFixture
- *
  */
 class SettingsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -34,11 +32,10 @@ class SettingsFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
     public function init()
     {

@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * LogisticsFixture
- *
  */
 class LogisticsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -35,7 +33,6 @@ class LogisticsFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *

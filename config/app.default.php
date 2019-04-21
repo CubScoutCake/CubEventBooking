@@ -193,25 +193,25 @@ return [
      */
     'EmailTransport' => [
         'default' => [
-            'className' => 'Mail',
-            // The following keys are used in SMTP transports
-            'host' => 'localhost',
-            'port' => 25,
-            'timeout' => 30,
-            'username' => 'user',
-            'password' => 'secret',
-            'client' => null,
-            'tls' => null,
+            'className' => 'SparkPost',
+            'apiKey' => '__SPARKPOST_API_KEY__'
         ],
     ],
 
     'Email' => [
         'default' => [
-            'transport' => 'default',
-            'from' => 'you@localhost',
+            'transport' => 'sparkpost',
+            'from' => '__FROM_EMAIL__',
+            'to' => '__TO_EMAIL__'
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
+    ],
+
+    'SparkPost' => [
+        'Api' => [
+            'key' => '__SPARKPOST_API_KEY__'
+        ]
     ],
 
     /**

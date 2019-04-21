@@ -130,7 +130,8 @@ class ApplicationsTableTest extends TestCase
                 'cc_inv_cubs' => 1,
                 'cc_inv_yls' => 1,
                 'cc_inv_leaders' => 1,
-                'deleted' => null
+                'deleted' => null,
+                'hold_numbers' => '',
             ],
             [
                 'id' => 3,
@@ -154,7 +155,8 @@ class ApplicationsTableTest extends TestCase
                 'cc_inv_cubs' => 1,
                 'cc_inv_yls' => 1,
                 'cc_inv_leaders' => 1,
-                'deleted' => null
+                'deleted' => null,
+                'hold_numbers' => '',
             ],
         ];
 

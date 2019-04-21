@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * InvoicesPaymentsFixture
- *
  */
 class InvoicesPaymentsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -17,29 +15,34 @@ class InvoicesPaymentsFixture extends TestFixture
      */
     // @codingStandardsIgnoreStart
     public $fields = [
-        'invoice_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'payment_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'x_value' => ['type' => 'float', 'length' => null, 'precision' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => ''],
+        'invoice_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'payment_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'x_value' => ['type' => 'float', 'length' => null, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
         '_indexes' => [
-            'invoice_id_idx' => ['type' => 'index', 'columns' => ['invoice_id'], 'length' => []],
+            'invoices_payments_invoice_id' => ['type' => 'index', 'columns' => ['invoice_id'], 'length' => []],
+            'invoices_payments_payment_id' => ['type' => 'index', 'columns' => ['payment_id'], 'length' => []],
         ],
         '_constraints' => [
-            'invoice_key' => ['type' => 'foreign', 'columns' => ['invoice_id'], 'references' => ['invoices', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
-            'payment_key' => ['type' => 'foreign', 'columns' => ['payment_id'], 'references' => ['payments', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
+            'primary' => ['type' => 'primary', 'columns' => ['invoice_id', 'payment_id'], 'length' => []],
+            'invoices_payments_invoice_id' => ['type' => 'foreign', 'columns' => ['invoice_id'], 'references' => ['invoices', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
+            'invoices_payments_payment_id' => ['type' => 'foreign', 'columns' => ['payment_id'], 'references' => ['payments', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'invoice_id' => 1,
-            'payment_id' => 1,
-            'x_value' => 1
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'invoice_id' => 1,
+                'payment_id' => 1,
+                'x_value' => 1
+            ],
+        ];
+        parent::init();
+    }
 }

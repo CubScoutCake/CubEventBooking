@@ -8,7 +8,10 @@
  * @var array $osmEvents
  *
  * @var \App\Form\AttNumberForm $attForm
+ * @var \App\Form\AttNumberForm $holdForm
  * @var \App\Form\SyncBookForm $syncForm
+ *
+ * @var \App\View\AppView $this
  */
 ?>
 <div class="row">
@@ -112,7 +115,7 @@
             </div>
         <?php endif; ?>
 
-        <?php if ($max_section !== 0)  : ?>
+        <?php if ($max_section !== 0 && !$event->event_type->parent_applications)  : ?>
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
@@ -127,6 +130,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="row">
+                    <?php if ($event->event_type->sync_book) : ?>
                     <div class="col-lg-6 col-md-6">
                         <div class="panel panel-green">
                             <div class="panel-heading">
@@ -135,8 +139,8 @@
                                         <i class="fal fa-exchange fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">Sync Book</div>
-                                        <div>Book using OSM. This is a multi-step process, but means less data entry.</div>
+                                        <div class="huge">OSM Event Book</div>
+                                        <div>Book using an event listed in your OSM.<br/>This is a multi-step process, but means less data entry.</div>
                                     </div>
                                 </div>
                             </div>
@@ -149,6 +153,8 @@
                             </a>
                         </div>
                     </div>
+                    <?php endif; ?>
+                    <?php if ($event->event_type->simple_booking) : ?>
                     <div class="col-lg-6 col-md-6">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
@@ -158,7 +164,7 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">List Book</div>
-                                        <div>Book in a List. This process uses a simple list to enter attendees.</div>
+                                        <div>Book in a List.<br/>This method uses a simple list to enter attendees.</div>
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +177,82 @@
                             </a>
                         </div>
                     </div>
+                    <?php endif; ?>
+                    <?php if ($event->event_type->attendee_booking) : ?>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="panel panel-yellow">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fal fa-poll-people fa-5x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            <div class="huge">Attendee Booking</div>
+                                            <div>Book with attendees in the System.<br/>This method uses your attendees in the system to book.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#attModal">
+                                    <div class="panel-footer">
+                                        <span class="pull-left">Book</span>
+                                        <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php /*if ($event->event_type->district_booking) : */?><!--
+                        <div class="col-lg-6 col-md-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fal fa-list fa-5x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            <div class="huge">District Book</div>
+                                            <div>Book in a List. This process uses a simple list to enter attendees.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#listModal">
+                                    <div class="panel-footer">
+                                        <span class="pull-left">Book</span>
+                                        <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    --><?php /*endif; */?>
+                    <?php if ($event->event_type->hold_booking) : ?>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="panel panel-red">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fal fa-flag fa-5x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right">
+                                            <div class="huge">Hold Book</div>
+                                            <div>Reserve a team.<br/>Enables you to book a team in, without adding names until later.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#holdModal">
+                                    <div class="panel-footer">
+                                        <span class="pull-left">Book</span>
+                                        <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    <?php endif; ?>
 
+
+                    <?php if ($event->event_type->simple_booking) : ?>
                     <div class="modal fade" id="listModal" tabindex="-1" role="dialog" aria-labelledby="listModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -196,15 +277,16 @@
                                                 <legend><?= __('Number of Attendees Being Registered') ?></legend>
                                                 <p>Please enter the number of attendees of each type you are booking for.</p>
                                                 <?php
+                                                echo $this->Form->hidden('booking_type', ['value' => 'list']);
                                                 $sectionLabel = $event->section_type->section_type;
                                                 //if ($cubsVis == 1) {
-                                                echo $this->Form->input('section', ['label' => $sectionLabel]);
+                                                echo $this->Form->control('section', ['label' => $sectionLabel]);
                                                 //}
                                                 //if ($ylsVis == 1) {
-                                                echo $this->Form->input('non_section', [ 'label' => 'Non ' . $sectionLabel . ' (e.g. Young Leaders)']);
+                                                echo $this->Form->control('non_section', [ 'label' => 'Non ' . $sectionLabel . ' (e.g. Young Leaders)']);
                                                 //}
                                                 //if ($leadersVis == 1) {
-                                                echo $this->Form->input('leaders', [ 'label' => 'Leaders & DBS Adults']);
+                                                echo $this->Form->control('leaders', [ 'label' => 'Leaders & DBS Adults']);
                                                 //}
                                                 ?>
                                             <br/>
@@ -228,8 +310,129 @@
                         </div>
                         <!-- /.modal-dialog -->
                     </div>
+                    <?php endif; ?>
 
+                    <?php if ($event->event_type->hold_booking) : ?>
+                        <div class="modal fade" id="holdModal" tabindex="-1" role="dialog" aria-labelledby="holdModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div class="row">
+                                            <div class="col-xs-3">
+                                                <i class="fal fa-list fa-5x"></i>
+                                            </div>
+                                            <div class="col-xs-7 text-right">
+                                                <div class="huge">Hold Book</div>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <br/>
+                                            <div class="col-lg-offset-1 col-lg-10">
+                                                <?= $this->Form->create($holdForm); ?>
+                                                <legend><?= __('Estimated Number of Attendees') ?></legend>
+                                                <p>Please enter the expected number of attendees of each type you are booking for.</p>
+                                                <?php
+                                                $sectionLabel = $event->section_type->section_type;
+                                                echo $this->Form->hidden('booking_type', ['value' => 'hold']);
+                                                //if ($cubsVis == 1) {
+                                                echo $this->Form->control('section', ['label' => $sectionLabel]);
+                                                //}
+                                                //if ($ylsVis == 1) {
+                                                echo $this->Form->control('non_section', [ 'label' => 'Non ' . $sectionLabel . ' (e.g. Young Leaders)']);
+                                                //}
+                                                //if ($leadersVis == 1) {
+                                                echo $this->Form->control('leaders', [ 'label' => 'Leaders & DBS Adults']);
+                                                //}
+                                                ?>
+                                                <br/>
+                                                <br/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="row">
+                                            <div class="col-xs-3">
+                                                Step 1 of 1
+                                            </div>
+                                            <div class="col-xs-9 pull-right">
+                                                <?php echo $this->Form->submit(__('Submit'), ['class' => 'btn btn-danger']); ?>
+                                                <?php echo $this->Form->end(); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    <?php endif; ?>
 
+                    <?php if ($event->event_type->attendee_booking) : ?>
+                        <div class="modal fade" id="attModal" tabindex="-1" role="dialog" aria-labelledby="attModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div class="row">
+                                            <div class="col-xs-3">
+                                                <i class="fal fa-list fa-5x"></i>
+                                            </div>
+                                            <div class="col-xs-7 text-right">
+                                                <div class="huge">Attendee Booking</div>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <br/>
+                                            <div class="col-lg-offset-1 col-lg-10">
+                                                <?= $this->Form->create($attForm); ?>
+                                                <legend><?= __('Number of Attendees Being Registered') ?></legend>
+                                                <p>Please enter the number of attendees of each type you are booking for.</p>
+                                                <?php
+                                                $sectionLabel = $event->section_type->section_type;
+                                                echo $this->Form->hidden('booking_type', ['value' => 'list']);
+                                                //if ($cubsVis == 1) {
+                                                echo $this->Form->control('section', ['label' => $sectionLabel]);
+                                                //}
+                                                //if ($ylsVis == 1) {
+                                                echo $this->Form->control('non_section', [ 'label' => 'Non ' . $sectionLabel . ' (e.g. Young Leaders)']);
+                                                //}
+                                                //if ($leadersVis == 1) {
+                                                echo $this->Form->control('leaders', [ 'label' => 'Leaders & DBS Adults']);
+                                                //}
+                                                ?>
+                                                <br/>
+                                                <br/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="row">
+                                            <div class="col-xs-3">
+                                                Step 1 of 3
+                                            </div>
+                                            <div class="col-xs-9 pull-right">
+                                                <?php echo $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary']); ?>
+                                                <?php echo $this->Form->end(); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($event->event_type->sync_book) : ?>
                     <div class="modal fade" id="syncModal" tabindex="-1" role="dialog" aria-labelledby="syncModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
 	                        <?php if ($readyForSync) : ?>
@@ -255,7 +458,7 @@
                                                 <legend><?= __('Select Event') ?></legend>
                                                 <p>Please choose the OSM Event Associated.</p>
                                                 <?php
-                                                echo $this->Form->input('osm_event', ['options' => $osmEvents]);
+                                                echo $this->Form->control('osm_event', ['options' => $osmEvents]);
                                                 ?>
                                                 <br/>
                                                 <br/>
@@ -307,8 +510,28 @@
                         </div>
                         <!-- /.modal-dialog -->
                     </div>
+                    <?php endif; ?>
 
-
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+    <?php if ($event->event_type->parent_applications) : ?>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fal fa-calendar-exclamation fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">Parent Booking</div>
+                                <hr/>
+                                <div>This event is being booked on a different area of the site, directly by parents on an individual basis.</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

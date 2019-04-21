@@ -38,7 +38,10 @@ class LandingControllerTest extends IntegrationTestCase
         'app.invoices',
         'app.payments',
         'app.invoices_payments',
-        'app.notes'
+        'app.notes',
+        'app.reservations',
+        'app.attendees',
+        'app.reservation_statuses',
     ];
 
     /**
@@ -58,20 +61,25 @@ class LandingControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
+    /**
+     * @return void
+     *
+     * @throws \PHPUnit\Exception
+     */
     public function testUserHomeUnauthenticatedFails()
     {
-        $this->markTestIncomplete('SuperUser');
-
         // No session data set.
-        $this->get('/champion/landing/champion-home');
+        $this->get('/super_user/landing/super-user-home');
 
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login']);
+        $this->assertRedirect();
     }
 
     /**
      * Test welcome method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testWelcome()
     {

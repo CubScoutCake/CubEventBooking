@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * NotificationTypesFixture
- *
  */
 class NotificationTypesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -26,18 +24,20 @@ class NotificationTypesFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 1,
-            'notification_type' => 'Lorem ipsum dolor sit amet',
-            'notification_description' => 'Lorem ipsum dolor sit amet',
-            'icon' => 'Lorem ipsum dolor sit amet'
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'notification_type' => 'Lorem ipsum dolor sit amet',
+                'notification_description' => 'Lorem ipsum dolor sit amet',
+                'icon' => 'Lorem ipsum dolor sit amet'
+            ],
+        ];
+        parent::init();
+    }
 }

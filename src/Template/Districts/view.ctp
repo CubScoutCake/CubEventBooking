@@ -1,27 +1,11 @@
+<?php
+/**
+* @var \App\Model\Entity\District $district
+ */
+?>
 <div class="row">
-    <div class="col-lg-10 col-md-10">
+    <div class="col-lg-12 col-md-12">
         <h1 class="page-header"><i class="fal fa-sitemap fa-fw"></i> <?= h($district->district); ?></h1>
-    </div>
-    <div class="col-lg-2 col-md-2">
-        </br>
-        <div class="pull-right">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown">
-                    Actions
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Districts',
-                        'action' => 'edit',
-                        'prefix' => 'admin',
-                        $district->id],['_full']); ?>">Edit District</a>
-                    </li>
-                    <li><?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $district->id], ['confirm' => __('Are you sure you want to delete # {0}?', $district->id)]) ?></li>
-                </ul>
-            </div>
-        </div>
-        </br>
     </div>
 </div>
 <div class="row">

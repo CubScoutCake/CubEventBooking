@@ -36,7 +36,7 @@ class EmailSendsController extends AppController
     public function view($emailSendId = null)
     {
         $emailSend = $this->EmailSends->get($emailSendId, [
-            'contain' => ['Messages', 'Users', 'NotificationTypes', 'Notifications', 'EmailResponses', 'Tokens']
+            'contain' => ['Users', 'NotificationTypes', 'Notifications', 'EmailResponses', 'Tokens']
         ]);
 
         $this->set('emailSend', $emailSend);
@@ -60,11 +60,10 @@ class EmailSendsController extends AppController
             }
             $this->Flash->error(__('The email send could not be saved. Please, try again.'));
         }
-        $messages = $this->EmailSends->Messages->find('list', ['limit' => 200]);
         $users = $this->EmailSends->Users->find('list', ['limit' => 200]);
         $notificationTypes = $this->EmailSends->NotificationTypes->find('list', ['limit' => 200]);
         $notifications = $this->EmailSends->Notifications->find('list', ['limit' => 200]);
-        $this->set(compact('emailSend', 'messages', 'users', 'notificationTypes', 'notifications'));
+        $this->set(compact('emailSend', 'users', 'notificationTypes', 'notifications'));
         $this->set('_serialize', ['emailSend']);
     }
 
@@ -90,11 +89,10 @@ class EmailSendsController extends AppController
             }
             $this->Flash->error(__('The email send could not be saved. Please, try again.'));
         }
-        $messages = $this->EmailSends->Messages->find('list', ['limit' => 200]);
         $users = $this->EmailSends->Users->find('list', ['limit' => 200]);
         $notificationTypes = $this->EmailSends->NotificationTypes->find('list', ['limit' => 200]);
         $notifications = $this->EmailSends->Notifications->find('list', ['limit' => 200]);
-        $this->set(compact('emailSend', 'messages', 'users', 'notificationTypes', 'notifications'));
+        $this->set(compact('emailSend', 'users', 'notificationTypes', 'notifications'));
         $this->set('_serialize', ['emailSend']);
     }
 

@@ -24,22 +24,20 @@ class EmailResponsesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.email_response_types',
         'app.email_responses',
         'app.email_sends',
-        'app.email_response_types',
+        'app.notification_types',
+        'app.notifications',
+
         'app.users',
         'app.roles',
-        'app.scoutgroups',
-        'app.password_states',
-        'app.districts',
-        'app.champions',
-        'app.sections',
-        'app.section_types',
         'app.auth_roles',
-        'app.settings',
-        'app.settingtypes',
-        'app.notifications',
-        'app.notification_types',
+        'app.districts',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
     ];
 
     /**
@@ -67,23 +65,116 @@ class EmailResponsesTableTest extends TestCase
     }
 
     /**
+     * Get Good Set Function
+     *
+     * @return array
+     *
+     * @throws
+     */
+    private function getGood()
+    {
+        $good = [
+            'email_send_id' => 1,
+            'email_response_type_id' => 1,
+            'link_clicked' => 'Lorem ipsum dolor sit amet',
+            'ip_address' => 'Lorem ipsum dolor sit amet',
+            'bounce_reason' => 'Lorem ipsum dolor sit amet',
+            'message_size' => 1,
+        ];
+
+        return $good;
+    }
+
+    /**
      * Test initialize method
      *
      * @return void
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $actual = $this->EmailResponses->get(1)->toArray();
+
+        $dates = [
+            'received',
+            'created',
+            'deleted',
+        ];
+
+        foreach ($dates as $date) {
+            $dateValue = $actual[$date];
+            if (!is_null($dateValue)) {
+                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+            }
+            unset($actual[$date]);
+        }
+
+        $expected = [
+            'id' => 1,
+            'email_send_id' => 1,
+            'email_response_type_id' => 1,
+            'link_clicked' => 'Lorem ipsum dolor sit amet',
+            'ip_address' => 'Lorem ipsum dolor sit amet',
+            'bounce_reason' => 'Lorem ipsum dolor sit amet',
+            'message_size' => 1,
+        ];
+        $this->assertEquals($expected, $actual);
+
+        $count = $this->EmailResponses->find('all')->count();
+        $this->assertEquals(1, $count);
     }
 
     /**
      * Test validationDefault method
      *
      * @return void
+     *
+     * @throws
      */
     public function testValidationDefault()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $good = $this->getGood();
+
+        $new = $this->EmailResponses->newEntity($good);
+        $this->assertInstanceOf('App\Model\Entity\EmailResponse', $this->EmailResponses->save($new));
+
+        $required = [
+            'email_send_id',
+            'email_response_type_id',
+        ];
+
+        foreach ($required as $require) {
+            $reqArray = $this->getGood();
+            unset($reqArray[$require]);
+            $new = $this->EmailResponses->newEntity($reqArray);
+            $this->assertFalse($this->EmailResponses->save($new));
+        }
+
+        $empties = [
+            'link_clicked',
+            'ip_address',
+            'bounce_reason',
+            'message_size',
+        ];
+
+        foreach ($empties as $empty) {
+            $reqArray = $good;
+            $reqArray[$empty] = '';
+            $new = $this->EmailResponses->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\EmailResponse', $this->EmailResponses->save($new));
+        }
+
+        $notEmpties = [
+            'received',
+            'email_send_id',
+            'email_response_type_id',
+        ];
+
+        foreach ($notEmpties as $notEmpty) {
+            $reqArray = $this->getGood();
+            $reqArray[$notEmpty] = '';
+            $new = $this->EmailResponses->newEntity($reqArray);
+            $this->assertFalse($this->EmailResponses->save($new));
+        }
     }
 
     /**
@@ -93,6 +184,34 @@ class EmailResponsesTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // EmailResponse Type Exists
+        $values = $this->getGood();
+
+        $types = $this->EmailResponses->EmailResponseTypes->find('list')->toArray();
+
+        $type = max(array_keys($types));
+
+        $values['email_response_type_id'] = $type;
+        $new = $this->EmailResponses->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\EmailResponse', $this->EmailResponses->save($new));
+
+        $values['email_response_type_id'] = $type + 1;
+        $new = $this->EmailResponses->newEntity($values);
+        $this->assertFalse($this->EmailResponses->save($new));
+
+        // Email Send Exists
+        $values = $this->getGood();
+
+        $types = $this->EmailResponses->EmailSends->find('list')->toArray();
+
+        $type = max(array_keys($types));
+
+        $values['email_send_id'] = $type;
+        $new = $this->EmailResponses->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\EmailResponse', $this->EmailResponses->save($new));
+
+        $values['email_send_id'] = $type + 1;
+        $new = $this->EmailResponses->newEntity($values);
+        $this->assertFalse($this->EmailResponses->save($new));
     }
 }

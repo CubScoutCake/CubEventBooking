@@ -145,6 +145,22 @@ class PricesTableTest extends TestCase
                 'value' => 15.0,
                 'description' => 'Adult Price'
             ],
+            [
+                'id' => 7,
+                'item_type_id' => 7,
+                'event_id' => 3,
+                'max_number' => 0,
+                'value' => 20,
+                'description' => 'Team Deposit Price'
+            ],
+            [
+                'id' => 8,
+                'item_type_id' => 8,
+                'event_id' => 3,
+                'max_number' => 20,
+                'value' => 10,
+                'description' => 'Section Deposit Price'
+            ],
         ];
 
         $this->assertEquals($expected, $result);

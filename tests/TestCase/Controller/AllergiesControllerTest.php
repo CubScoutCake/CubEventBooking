@@ -18,24 +18,18 @@ class AllergiesControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.allergies',
-        'app.attendees',
-        'app.roles',
-        'app.districts',
-        'app.scoutgroups',
-        'app.users',
-        'app.password_states',
         'app.attendees_allergies',
-        'app.sections',
+        'app.attendees',
+
+        'app.roles',
         'app.section_types',
+        'app.sections',
+        'app.scoutgroups',
+        'app.districts',
+
+        'app.password_states',
         'app.auth_roles',
-        'app.email_responses',
-        'app.email_sends',
-        'app.sections',
-        'app.section_types',
-        'app.notifications',
-        'app.notification_types',
-        'app.tokens',
-        'app.email_response_types'
+        'app.users',
     ];
 
     public function testIndexUnauthenticatedFails()

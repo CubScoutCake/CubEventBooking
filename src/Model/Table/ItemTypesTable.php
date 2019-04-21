@@ -9,21 +9,21 @@ use Cake\Validation\Validator;
 /**
  * ItemTypes Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Roles
- * @property \Cake\ORM\Association\HasMany $InvoiceItems
- * @property \Cake\ORM\Association\HasMany $Prices
+ * @property \App\Model\Table\RolesTable|\Cake\ORM\Association\BelongsTo $Roles
+ * @property \App\Model\Table\InvoiceItemsTable|\Cake\ORM\Association\HasMany $InvoiceItems
+ * @property \App\Model\Table\PricesTable|\Cake\ORM\Association\HasMany $Prices
  *
  * @method \App\Model\Entity\ItemType get($primaryKey, $options = [])
  * @method \App\Model\Entity\ItemType newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\ItemType[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\ItemType|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\ItemType saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\ItemType patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\ItemType[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\ItemType findOrCreate($search, callable $callback = null, $options = [])
  */
 class ItemTypesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -59,24 +59,35 @@ class ItemTypesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
+            ->scalar('item_type')
+            ->maxLength('item_type', 45)
             ->requirePresence('item_type', 'create')
-            ->notEmpty('item_type');
+            ->allowEmptyString('item_type', false);
 
         $validator
             ->boolean('minor')
-            ->requirePresence('minor', 'create')
-            ->notEmpty('minor');
+            ->allowEmptyString('minor');
 
         $validator
             ->boolean('cancelled')
-            ->allowEmpty('cancelled');
+            ->allowEmptyString('cancelled');
 
         $validator
             ->boolean('available')
-            ->allowEmpty('available');
+            ->allowEmptyString('available');
+
+        $validator
+            ->boolean('team_price')
+            ->requirePresence('team_price', 'create')
+            ->allowEmptyString('team_price');
+
+        $validator
+            ->boolean('deposit')
+            ->requirePresence('deposit', 'create')
+            ->allowEmptyString('deposit');
 
         return $validator;
     }

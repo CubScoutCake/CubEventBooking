@@ -8,7 +8,7 @@
                 <div class="panel-body">
 					<?= $this->Form->create($resForm); ?>
 					<?= $this->Form->input('email'); ?>
-					<?= $this->Form->input('scoutgroup', ['options' => $scoutgroups]); ?>
+					<?= $this->Form->input('scoutgroup', ['options' => $scoutgroups, 'class' => 'hierarchy-select']); ?>
 					<?= $this->Form->button('Request Password Reset') ?>
 					<?= $this->Form->end(); ?>
 				</div>

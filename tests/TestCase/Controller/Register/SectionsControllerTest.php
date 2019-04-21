@@ -156,7 +156,10 @@ class SectionsControllerTest extends IntegrationTestCase
 
         $this->assertResponseOk();
         $sectionsFound = $this->viewVariable('existing')->toArray();
-        $this->assertEquals([1 => 'Lorem ipsum dolor sit amet'], $sectionsFound);
+        $this->assertEquals([
+            1 => 'Lorem ipsum dolor sit amet',
+            2 => 'Lorem ipsum uj sit amet',
+        ], $sectionsFound);
 
         // Test New Section Redirect
         $this->get([

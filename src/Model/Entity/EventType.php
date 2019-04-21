@@ -8,19 +8,22 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $event_type
- * @property bool $simple_booking
- * @property bool $date_of_birth
- * @property bool $medical
- * @property bool $dietary
- * @property bool $parent_applications
- * @property int $invoice_text_id
- * @property int $legal_text_id
- * @property bool $team_leader
- * @property bool $permit_holder
+ * @property bool|null $simple_booking
+ * @property bool|null $date_of_birth
+ * @property bool|null $medical
+ * @property bool|null $dietary
+ * @property bool|null $parent_applications
+ * @property int|null $invoice_text_id
+ * @property int|null $legal_text_id
+ * @property bool|null $team_leader
+ * @property bool|null $permit_holder
  * @property bool $display_availability
  * @property int $application_ref_id
  * @property bool $sync_book
- * @property int $payable_setting_id
+ * @property int|null $payable_setting_id
+ * @property bool $hold_booking
+ * @property bool $attendee_booking
+ * @property bool $district_booking
  *
  * @property \App\Model\Entity\Setting $invoice_text
  * @property \App\Model\Entity\Setting $legal_text
@@ -30,7 +33,6 @@ use Cake\ORM\Entity;
  */
 class EventType extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -55,6 +57,9 @@ class EventType extends Entity
         'application_ref_id' => true,
         'sync_book' => true,
         'payable_setting_id' => true,
+        'hold_booking' => true,
+        'attendee_booking' => true,
+        'district_booking' => true,
         'invoice_text' => true,
         'legal_text' => true,
         'application_ref' => true,

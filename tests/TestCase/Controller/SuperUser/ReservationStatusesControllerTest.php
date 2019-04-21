@@ -16,7 +16,7 @@ class ReservationStatusesControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.allergies',
+        /*'app.allergies',
         'app.application_statuses',
         'app.applications',
         'app.applications_attendees',
@@ -26,9 +26,9 @@ class ReservationStatusesControllerTest extends IntegrationTestCase
         'app.champions',
         'app.discounts',
         'app.districts',
-        'app.email_response_types',
-        'app.email_responses',
-        'app.email_sends',
+//        'app.email_response_types',
+//        'app.email_responses',
+//        'app.email_sends',
         'app.event_statuses',
         'app.event_types',
         'app.events',
@@ -55,7 +55,10 @@ class ReservationStatusesControllerTest extends IntegrationTestCase
         'app.sections',
         'app.setting_types',
         'app.settings',
-        'app.users',
+        'app.task_types',
+        'app.tasks',
+//        'app.tokens',
+        'app.users',*/
     ];
 
     /**

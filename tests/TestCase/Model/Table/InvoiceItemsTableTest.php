@@ -48,6 +48,8 @@ class InvoiceItemsTableTest extends TestCase
         'app.notification_types',
         'app.item_types',
         'app.prices',
+        'app.reservations',
+        'app.reservation_statuses',
     ];
 
     /**
