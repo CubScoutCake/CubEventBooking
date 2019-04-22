@@ -8,26 +8,28 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $user_id
- * @property string $legacy_section
- * @property string $permit_holder
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
+ * @property string|null $legacy_section
+ * @property string|null $permit_holder
+ * @property \Cake\I18n\Time|null $created
+ * @property \Cake\I18n\Time|null $modified
  * @property int $modification
- * @property int $event_id
- * @property int $osm_event_id
- * @property int $cc_att_total
- * @property int $cc_att_cubs
- * @property int $cc_att_yls
- * @property int $cc_att_leaders
- * @property int $cc_inv_count
- * @property int $cc_inv_total
- * @property int $cc_inv_cubs
- * @property int $cc_inv_yls
- * @property int $cc_inv_leaders
- * @property \Cake\I18n\Time $deleted
- * @property int $section_id
+ * @property int|null $event_id
+ * @property int|null $osm_event_id
+ * @property int|null $cc_att_total
+ * @property int|null $cc_att_cubs
+ * @property int|null $cc_att_yls
+ * @property int|null $cc_att_leaders
+ * @property int|null $cc_inv_count
+ * @property int|null $cc_inv_total
+ * @property int|null $cc_inv_cubs
+ * @property int|null $cc_inv_yls
+ * @property int|null $cc_inv_leaders
+ * @property \Cake\I18n\Time|null $deleted
+ * @property int|null $section_id
  * @property int $application_status_id
- * @property string $team_leader
+ * @property array|null $hold_numbers
+ *
+ * @property string|null $team_leader
  * @property string $leader
  *
  * @property string $display_code
@@ -35,8 +37,8 @@ use Cake\ORM\Entity;
  * @property string $permitholder
  *
  * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\ApplicationStatus $application_status
  * @property \App\Model\Entity\Section $section
+ * @property \App\Model\Entity\ApplicationStatus $application_status
  * @property \App\Model\Entity\Event $event
  * @property \App\Model\Entity\Invoice $invoice
  * @property \App\Model\Entity\LogisticItem[] $logistic_items
@@ -45,7 +47,6 @@ use Cake\ORM\Entity;
  */
 class Application extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -76,8 +77,11 @@ class Application extends Entity
         'deleted' => true,
         'section_id' => true,
         'team_leader' => true,
+        'application_status_id' => true,
+        'hold_numbers' => true,
         'user' => true,
         'section' => true,
+        'application_status' => true,
         'event' => true,
         'invoice' => true,
         'logistic_items' => true,

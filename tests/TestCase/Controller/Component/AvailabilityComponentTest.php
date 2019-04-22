@@ -3,12 +3,14 @@ namespace App\Test\TestCase\Controller\Component;
 
 use App\Controller\Component\AvailabilityComponent;
 use Cake\Controller\ComponentRegistry;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\Component\AvailabilityComponent Test Case
  *
  * @property \App\Controller\Component\AvailabilityComponent $Availability
+ * @property \App\Model\Table\ApplicationsTable Applications
  */
 class AvailabilityComponentTest extends TestCase
 {
@@ -119,6 +121,40 @@ class AvailabilityComponentTest extends TestCase
             'NumLeaders' => 2,
             'NumTeams' => 1,
         ];
+        $this->assertEquals($expected, $numbers);
+    }
+
+    /**
+     * Test getApplicationNumbers method
+     *
+     * @return void
+     */
+    public function testGetReservedNumbers()
+    {
+        // Application 1
+        $this->Applications = TableRegistry::getTableLocator()->get('Applications');
+        $application = $this->Applications->get(3);
+
+        $expected = [
+            'NumSection' => 9,
+            'NumNonSection' => 8,
+            'NumLeaders' => 4,
+            'NumTeams' => 1,
+            'Reserved' => true,
+        ];
+
+        $holdNumbers = [
+            'section' => 9,
+            'non_section' => 8,
+            'leaders' => 4,
+        ];
+
+        $application->set('hold_numbers', $holdNumbers);
+        $application->set('application_status_id', 3);
+        $this->Applications->save($application);
+
+        // Event 3
+        $numbers = $this->Availability->getApplicationNumbers(3);
         $this->assertEquals($expected, $numbers);
     }
 

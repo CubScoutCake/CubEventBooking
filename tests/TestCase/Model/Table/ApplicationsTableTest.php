@@ -7,11 +7,10 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\ApplicationsTable Test Case
+ * App\Model\Table\ApplicationsTable Test Case
  */
 class ApplicationsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -75,8 +74,8 @@ class ApplicationsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Applications') ? [] : ['className' => 'App\Model\Table\ApplicationsTable'];
-        $this->Applications = TableRegistry::get('Applications', $config);
+        $config = TableRegistry::getTableLocator()->exists('Applications') ? [] : ['className' => ApplicationsTable::class];
+        $this->Applications = TableRegistry::getTableLocator()->get('Applications', $config);
 
         $now = new Time('2016-12-26 23:22:30');
         Time::setTestNow($now);
@@ -214,7 +213,7 @@ class ApplicationsTableTest extends TestCase
     }
 
     /**
-     * Test findCubs method
+     * Test findSection method
      *
      * @return void
      */
@@ -237,7 +236,7 @@ class ApplicationsTableTest extends TestCase
     }
 
     /**
-     * Test findYoungLeaders method
+     * Test findNonSection method
      *
      * @return void
      */
@@ -270,5 +269,15 @@ class ApplicationsTableTest extends TestCase
         $this->assertInstanceOf('Cake\ORM\Query', $query);
 
         $this->assertEquals(3, $query->count());
+    }
+
+    /**
+     * Test findRoles method
+     *
+     * @return void
+     */
+    public function testFindRoles()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
     }
 }

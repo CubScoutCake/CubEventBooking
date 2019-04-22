@@ -195,12 +195,67 @@ class ApplicationsControllerTest extends TestCase
         $this->assertEquals(1, $invoice->get('user_id'));
         $this->assertEquals(20, $invoice->get('balance'));
         $this->assertSame('INV #5', $invoice->get('display_code'));
-        foreach ($invoice->invoice_items as $invoice_item) {
-            $this->assertTrue($invoice_item->get('visible'));
-            $this->assertEquals(20, $invoice_item->get('value'));
-            $this->assertSame('Team Booking Price', $invoice_item->get('description'));
-            $this->assertSame('Team Booking', $invoice_item->item_type->item_type);
-            $this->assertTrue($invoice_item->item_type->team_price);
+        foreach ($invoice->invoice_items as $invoiceItem) {
+            $this->assertTrue($invoiceItem->get('visible'));
+            $this->assertEquals(20, $invoiceItem->get('value'));
+            $this->assertSame('Team Booking Price', $invoiceItem->get('description'));
+            $this->assertSame('Team Booking', $invoiceItem->item_type->item_type);
+            $this->assertTrue($invoiceItem->item_type->team_price);
+        }
+    }
+
+    /**
+     * Test simpleBook method
+     *
+     * @return void
+     *
+     * @throws
+     */
+    public function testHoldBook()
+    {
+        $this->enableRetainFlashMessages();
+        $this->enableSecurityToken();
+        $this->enableCsrfToken();
+
+        $this->session([
+            'Auth.User.id' => 1,
+        ]);
+
+        $this->Applications = $this->getTableLocator()->get('Applications');
+
+        $this->post(['controller' => 'Applications', 'action' => 'hold_book', 2, '?' => ['section' => 7, 'non_section' => 1, 'leaders' => 1]]);
+        $this->assertRedirect(['controller' => 'Events', 'action' => 'book', 2]);
+        $this->assertFlashElement('Flash/error');
+        $this->assertFlashMessageAt(0, 'Event is nearly Full. Too many attendees.');
+
+        $this->post(['controller' => 'Applications', 'action' => 'hold_book', 2, '?' => ['section' => 6, 'non_section' => 1, 'leaders' => 1]]);
+        $this->assertFlashElement('Flash/success');
+        $this->assertFlashMessageAt(0, 'Your Booking Reservation has been made.');
+        $this->assertFlashMessageAt(1, 'Your Invoice has been created automatically.');
+        $this->assertRedirect(['controller' => 'Applications', 'action' => 'view', 4]);
+
+        $application = $this->Applications->get(4, ['contain' => [
+            'Invoices.InvoiceItems.ItemTypes',
+            'Attendees.Roles',
+        ]]);
+
+        $this->assertEquals(['section' => '6', 'non_section' => '1', 'leaders' => '1', 'booking_type' => 'hold'], $application->hold_numbers);
+
+        /**
+         * @var \App\Model\Entity\Invoice $invoice
+         */
+        $invoice = $application->invoice;
+
+        $this->assertInstanceOf('App\Model\Entity\Invoice', $invoice);
+        $this->assertEquals(1, $invoice->get('user_id'));
+        $this->assertEquals(20, $invoice->get('balance'));
+        $this->assertSame('INV #5', $invoice->get('display_code'));
+        foreach ($invoice->invoice_items as $invoiceItem) {
+            $this->assertTrue($invoiceItem->get('visible'));
+            $this->assertEquals(20, $invoiceItem->get('value'));
+            $this->assertSame('Team Booking Price', $invoiceItem->get('description'));
+            $this->assertSame('Team Booking', $invoiceItem->item_type->item_type);
+            $this->assertTrue($invoiceItem->item_type->team_price);
         }
     }
 

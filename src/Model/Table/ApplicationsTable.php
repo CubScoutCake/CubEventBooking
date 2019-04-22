@@ -12,16 +12,28 @@ use Cake\Validation\Validator;
  * Applications Model
  *
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\BelongsTo $ApplicationStatuses
- * @property \App\Model\Table\SectionsTable|\Cake\ORM\Association\BelongsTo $Sections
  * @property \App\Model\Table\EventsTable|\Cake\ORM\Association\BelongsTo $Events
- * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\HasOne $Invoices
+ * @property |\Cake\ORM\Association\BelongsTo $OsmEvents
+ * @property \App\Model\Table\SectionsTable|\Cake\ORM\Association\BelongsTo $Sections
+ * @property \App\Model\Table\ApplicationStatusesTable|\Cake\ORM\Association\BelongsTo $ApplicationStatuses
+ * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\HasMany $Invoices
+ * @property \App\Model\Table\LogisticItemsTable|\Cake\ORM\Association\HasMany $LogisticItems
  * @property \App\Model\Table\NotesTable|\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\AttendeesTable|\Cake\ORM\Association\BelongsToMany $Attendees
+ *
+ * @method \App\Model\Entity\Application get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Application newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Application[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Application|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Application saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Application patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Application[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Application findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class ApplicationsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -101,20 +113,25 @@ class ApplicationsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('id', 'create');
+            ->integer('id')
+            ->allowEmptyString('id', 'create');
 
         $validator
-            ->allowEmpty('section');
+            ->scalar('permit_holder')
+            ->maxLength('permit_holder', 255)
+            ->allowEmptyString('permit_holder');
 
         $validator
-            ->allowEmpty('modification');
+            ->integer('cc_inv_leaders')
+            ->allowEmptyString('cc_inv_leaders');
 
         $validator
-            ->notEmpty('permit_holder');
+            ->scalar('team_leader')
+            ->maxLength('team_leader', 255)
+            ->allowEmptyString('team_leader');
 
         $validator
-            ->notEmpty('team_leader');
+            ->allowEmptyString('hold_numbers');
 
         return $validator;
     }
@@ -129,9 +146,9 @@ class ApplicationsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['sections_id'], 'Sections'));
-        $rules->add($rules->existsIn(['application_status_id'], 'ApplicationStatuses'));
         $rules->add($rules->existsIn(['event_id'], 'Events'));
+        $rules->add($rules->existsIn(['section_id'], 'Sections'));
+        $rules->add($rules->existsIn(['application_status_id'], 'ApplicationStatuses'));
 
         return $rules;
     }
