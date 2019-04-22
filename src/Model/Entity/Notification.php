@@ -42,6 +42,9 @@ class Notification extends Entity
      * @param string $linkPrefix Link Prefix Variable
      *
      * @return bool
+     *
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getLinkPrefix($linkPrefix)
     {

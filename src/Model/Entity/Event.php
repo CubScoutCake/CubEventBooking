@@ -115,6 +115,8 @@ class Event extends Entity
      * Specifies the method for determining Application Booking Full.
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getAppFull()
     {

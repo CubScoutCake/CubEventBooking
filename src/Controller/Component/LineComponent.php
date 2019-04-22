@@ -91,10 +91,11 @@ class LineComponent extends Component
      * @param int $priceID The Price ID
      * @param int $quantity The Quantity on the Line Item
      * @param bool $admin Lock to max.
+     * @param bool $invert Add a counterpart Invoice Item
      *
      * @return bool
      */
-    public function parseLine($invoiceID, $priceID, $quantity, $admin = false)
+    public function parseLine($invoiceID, $priceID, $quantity, $admin = false, $invert = false)
     {
         $this->Invoices = TableRegistry::getTableLocator()->get('Invoices');
         $this->InvoiceItems = $this->Invoices->InvoiceItems;

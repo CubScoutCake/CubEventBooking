@@ -14,6 +14,8 @@ use Cake\ORM\Entity;
  * @property bool $is_dietary
  *
  * @property \App\Model\Entity\Attendee[] $attendees
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Allergy extends Entity
 {

@@ -44,6 +44,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\LogisticItem[] $logistic_items
  * @property \App\Model\Entity\Note[] $notes
  * @property \App\Model\Entity\Attendee[] $attendees
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Application extends Entity
 {
@@ -93,6 +95,8 @@ class Application extends Entity
      * Specification of a standard method of building a display code.
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getDisplayCode()
     {
@@ -103,6 +107,8 @@ class Application extends Entity
      * Specification of a standard method of building a display code.
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getPermitholder()
     {
@@ -117,6 +123,8 @@ class Application extends Entity
      * Specification of a standard method of building a display code.
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getLeader()
     {
