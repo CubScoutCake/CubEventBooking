@@ -96,7 +96,7 @@ class LogisticsTable extends Table
      */
     protected function _initializeSchema($schema)
     {
-        $schema->setColumnType('capabilities', 'json');
+        $schema->setColumnType('variable_max_values', 'json');
 
         return $schema;
     }

@@ -1,56 +1,104 @@
 <?php
 namespace App\Test\TestCase\Controller\SuperUser;
 
-use App\Controller\ItemtypesController;
-use Cake\TestSuite\IntegrationTestCase;
+use App\Controller\SuperUser\ItemTypesController;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\ItemtypesController Test Case
+ * App\Controller\SuperUser\ItemTypesController Test Case
  */
-class ItemtypesControllerTest extends IntegrationTestCase
+class ItemTypesControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
-        'app.invoices',
-        'app.users',
-        'app.roles',
-        'app.attendees',
-        'app.scoutgroups',
         'app.districts',
-        'app.champions',
-        'app.applications', 'app.application_statuses',
-        'app.events', 'app.event_statuses',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
+        'app.application_statuses',
+        'app.setting_types',
         'app.settings',
-        'app.settingtypes',
+        'app.event_types',
+        'app.event_statuses',
         'app.discounts',
-        'app.logistics',
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
-        'app.logistic_items',
-        'app.notes',
+        'app.events',
+        'app.prices',
+        'app.applications',
+        'app.task_types',
+        'app.tasks',
+        'app.attendees',
         'app.applications_attendees',
         'app.allergies',
         'app.attendees_allergies',
-        'app.notifications',
-        'app.notificationtypes',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.invoices',
         'app.invoice_items',
-        'app.itemtypes',
         'app.payments',
-        'app.invoices_payments'
+        'app.invoices_payments',
+        'app.notes',
     ];
 
     /**
-     * Test initial setup
+     * Test index method
      *
      * @return void
      */
-    public function testInitialization()
+    public function testIndex()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test view method
+     *
+     * @return void
+     */
+    public function testView()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test add method
+     *
+     * @return void
+     */
+    public function testAdd()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test edit method
+     *
+     * @return void
+     */
+    public function testEdit()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test delete method
+     *
+     * @return void
+     */
+    public function testDelete()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

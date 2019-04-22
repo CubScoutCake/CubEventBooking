@@ -11,6 +11,9 @@
         <?php
             echo $this->Form->control('application_status');
             echo $this->Form->control('active');
+            echo $this->Form->control('no_money');
+            echo $this->Form->control('reserved');
+            echo $this->Form->control('attendees_added');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

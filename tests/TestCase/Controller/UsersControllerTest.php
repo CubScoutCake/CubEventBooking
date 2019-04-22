@@ -3,13 +3,15 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\UsersController;
 use Cake\ORM\TableRegistry;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
  * App\Admin\UsersController Test Case
  */
-class UsersControllerTest extends IntegrationTestCase
+class UsersControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * Fixtures
@@ -17,45 +19,14 @@ class UsersControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.allergies',
-        'app.application_statuses',
-        'app.applications',
-        'app.applications_attendees',
-        'app.attendees',
-        'app.attendees_allergies',
-        'app.auth_roles',
-        'app.champions',
-        'app.discounts',
         'app.districts',
-        'app.email_response_types',
-        'app.email_responses',
-        'app.email_sends',
-        'app.event_statuses',
-        'app.event_types',
-        'app.events',
-        'app.invoice_items',
-        'app.invoices',
-        'app.invoices_payments',
-        'app.item_types',
-        'app.logistic_items',
-        'app.logistics',
-        'app.notes',
-        'app.notification_types',
-        'app.notifications',
-        'app.parameter_sets',
-        'app.parameters',
-        'app.params',
-        'app.password_states',
-        'app.payments',
-        'app.prices',
-        'app.reservation_statuses',
-        'app.reservations',
-        'app.roles',
         'app.scoutgroups',
         'app.section_types',
         'app.sections',
-        'app.setting_types',
-        'app.settings',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
         'app.users',
     ];
 
@@ -63,6 +34,8 @@ class UsersControllerTest extends IntegrationTestCase
      * Test index method
      *
      * @return void
+     *
+     * @throws
      */
     public function testIndex()
     {
@@ -80,6 +53,8 @@ class UsersControllerTest extends IntegrationTestCase
      * Test view method
      *
      * @return void
+     *
+     * @throws
      */
     public function testView()
     {
@@ -97,6 +72,8 @@ class UsersControllerTest extends IntegrationTestCase
      * Test edit method
      *
      * @return void
+     *
+     * @throws
      */
     public function testEdit()
     {
@@ -114,6 +91,8 @@ class UsersControllerTest extends IntegrationTestCase
      * Test Sync method
      *
      * @return void
+     *
+     * @throws
      */
     public function testSync()
     {
@@ -128,6 +107,13 @@ class UsersControllerTest extends IntegrationTestCase
         $this->assertRedirect(['controller' => 'Landing', 'action' => 'user_home']);
     }
 
+    /**
+     * Test Reset Method
+     *
+     * @return void
+     *
+     * @throws
+     */
     public function testReset()
     {
         $this->get('/users/reset');
@@ -135,6 +121,13 @@ class UsersControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
+    /**
+     * Test Login Method
+     *
+     * @return void
+     *
+     * @throws
+     */
     public function testLogin()
     {
         $this->assertEquals(1, 1);

@@ -18,12 +18,15 @@ class SectionTypesControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.districts',
         'app.scoutgroups',
-        'app.auth_roles',
-        'app.users',
-        'app.roles',
+        'app.section_types',
         'app.sections',
         'app.password_states',
-        'app.section_types',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
     ];
 
     /**

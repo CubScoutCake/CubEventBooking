@@ -4,16 +4,17 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Settingtype Entity.
+ * SettingType Entity
  *
  * @property int $id
- * @property string $settingtype
- * @property string $description
+ * @property string $setting_type
+ * @property string|null $description
+ * @property int $min_auth
+ *
  * @property \App\Model\Entity\Setting[] $settings
  */
 class SettingType extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -24,7 +25,9 @@ class SettingType extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false,
+        'setting_type' => true,
+        'description' => true,
+        'min_auth' => true,
+        'settings' => true
     ];
 }

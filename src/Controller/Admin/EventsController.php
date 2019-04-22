@@ -401,9 +401,19 @@ class EventsController extends AppController
             }
         }
 
-        $itemTypeOptions = $this->Events->Prices->ItemTypes->find('list')->where(['team_price' => false]);
+        $itemTypeOptions = $this->Events->Prices->ItemTypes->find('list')->where([
+            'OR' => [
+                'team_price' => false,
+                'deposit' => true,
+            ],
+        ]);
         if ($event->team_price) {
-            $itemTypeOptions = $this->Events->Prices->ItemTypes->find('list')->where(['team_price' => true]);
+            $itemTypeOptions = $this->Events->Prices->ItemTypes->find('list')->where([
+                'OR' => [
+                    'team_price' => true,
+                    'deposit' => true,
+                ],
+            ]);
         }
 
         $this->set(compact('prices', 'additional', 'event', 'itemTypeOptions'));

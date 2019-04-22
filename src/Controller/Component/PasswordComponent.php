@@ -2,7 +2,6 @@
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
-use Cake\Controller\ComponentRegistry;
 use Cake\I18n\Time;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
@@ -18,13 +17,6 @@ class PasswordComponent extends Component
 {
     public $components = ['Flash'];
 
-    /**
-     * Default configuration.
-     *
-     * @var array
-     */
-    protected $_defaultConfig = [];
-
     use MailerAwareTrait;
 
     /**
@@ -36,16 +28,16 @@ class PasswordComponent extends Component
      */
     public function sendReset($userId)
     {
-        $this->Users = TableRegistry::getTableLocator()->get('Users');
         $this->Tokens = TableRegistry::getTableLocator()->get('Tokens');
+        $this->Users = $this->Tokens->Users;
         $this->NotificationTypes = TableRegistry::getTableLocator()->get('NotificationTypes');
 
         $user = $this->Users->get($userId);
 
         $now = Time::now();
 
-        $notification_type = $this->NotificationTypes->find()->where(['notification_type' => 'Password Reset'])->first();
-        $notification_type_id = $notification_type->id;
+        $notificationType = $this->NotificationTypes->find()->where(['notification_type' => 'Password Reset'])->first();
+        $notificationTypeId = $notificationType->id;
 
         $data = [
             'token' => 'Password Reset Token for ' . $user->full_name,
@@ -54,15 +46,23 @@ class PasswordComponent extends Component
                 'sent' => $now,
                 'user_id' => $user->id,
                 'subject' => 'Password Reset for ' . $user->full_name,
-                'notification_type_id' => $notification_type_id,
+                'notification_type_id' => $notificationTypeId,
                 'notification' => [
                     'notification_header' => 'User Password Reset',
-                    'notification_type_id' => $notification_type_id,
+                    'notification_type_id' => $notificationTypeId,
                     'user_id' => $user->id,
                     'new' => true,
                     'notification_source' => 'User',
                     'text' => 'User Password Reset Email Sent for user ' . $user->full_name,
                 ]
+            ],
+            'header' => [
+                'redirect' => [
+                    'controller' => 'Users',
+                    'action' => 'token',
+                    'prefix' => false,
+                ],
+                'authenticate' => false,
             ]
         ];
 

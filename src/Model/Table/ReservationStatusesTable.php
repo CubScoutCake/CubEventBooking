@@ -15,14 +15,13 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ReservationStatus newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\ReservationStatus[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\ReservationStatus|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ReservationStatus|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\ReservationStatus saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\ReservationStatus patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\ReservationStatus[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\ReservationStatus findOrCreate($search, callable $callback = null, $options = [])
  */
 class ReservationStatusesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -34,7 +33,7 @@ class ReservationStatusesTable extends Table
         parent::initialize($config);
 
         $this->setTable('reservation_statuses');
-        $this->setDisplayField('id');
+        $this->setDisplayField('reservation_status');
         $this->setPrimaryKey('id');
 
         $this->hasMany('Reservations', [
@@ -52,24 +51,38 @@ class ReservationStatusesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->scalar('reservation_status')
             ->maxLength('reservation_status', 255)
             ->requirePresence('reservation_status', 'create')
-            ->notEmpty('reservation_status');
+            ->allowEmptyString('reservation_status', false);
 
         $validator
             ->boolean('active')
             ->requirePresence('active', 'create')
-            ->notEmpty('active');
+            ->allowEmptyString('active', false);
 
         $validator
             ->boolean('complete')
             ->requirePresence('complete', 'create')
-            ->notEmpty('complete');
+            ->allowEmptyString('complete', false);
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['reservation_status']));
+
+        return $rules;
     }
 }

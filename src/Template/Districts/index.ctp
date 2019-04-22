@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\Model\Entity\District[] $districts
+ */
+?>
 <div class="row">
     <div class="col-lg-12">
         <h3><i class="fal fa-sitemap fa-fw"></i> All Districts</h3>

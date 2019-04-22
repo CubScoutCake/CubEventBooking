@@ -1,7 +1,7 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\ScoutgroupsTable;
+use App\Model\Entity\Scoutgroup;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -66,16 +66,30 @@ class ScoutgroupsTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'scoutgroup' => 'Lorem ipsum dolor sit amet',
+                'scoutgroup' => '12th Letchworth',
                 'district_id' => 1,
                 'number_stripped' => 1,
                 'deleted' => null
             ],
             [
                 'id' => 2,
-                'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
+                'scoutgroup' => '4th Octopus',
                 'district_id' => 2,
+                'number_stripped' => 4,
+                'deleted' => null
+            ],
+            [
+                'id' => 3,
+                'scoutgroup' => '1st Llamaland',
+                'district_id' => 1,
                 'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 4,
+                'scoutgroup' => '11th Goatface',
+                'district_id' => 2,
+                'number_stripped' => 11,
                 'deleted' => null
             ],
         ];
@@ -99,7 +113,6 @@ class ScoutgroupsTableTest extends TestCase
         ];
 
         $goodData = [
-            'id' => 5,
             'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
             'district_id' => 1,
             'number_stripped' => 1,
@@ -109,16 +122,30 @@ class ScoutgroupsTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'scoutgroup' => 'Lorem ipsum dolor sit amet',
+                'scoutgroup' => '12th Letchworth',
                 'district_id' => 1,
                 'number_stripped' => 1,
                 'deleted' => null
             ],
             [
                 'id' => 2,
-                'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
+                'scoutgroup' => '4th Octopus',
                 'district_id' => 2,
+                'number_stripped' => 4,
+                'deleted' => null
+            ],
+            [
+                'id' => 3,
+                'scoutgroup' => '1st Llamaland',
+                'district_id' => 1,
                 'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 4,
+                'scoutgroup' => '11th Goatface',
+                'district_id' => 2,
+                'number_stripped' => 11,
                 'deleted' => null
             ],
             [
@@ -134,7 +161,7 @@ class ScoutgroupsTableTest extends TestCase
         $goodEntity = $this->Scoutgroups->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
 
         $this->assertFalse($this->Scoutgroups->save($badEntity));
-        $this->Scoutgroups->save($goodEntity);
+        $this->assertInstanceOf(Scoutgroup::class, $this->Scoutgroups->save($goodEntity));
 
         $query = $this->Scoutgroups->find('all');
 
@@ -153,14 +180,13 @@ class ScoutgroupsTableTest extends TestCase
     {
         $badData = [
             'id' => 5,
-            'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
-            'district_id' => 2,
+            'district_id' => 4,
+            'scoutgroup' => null,
             'number_stripped' => 1,
             'deleted' => null
         ];
 
         $goodData = [
-            'id' => 5,
             'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
             'district_id' => 1,
             'number_stripped' => 1,
@@ -170,16 +196,30 @@ class ScoutgroupsTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'scoutgroup' => 'Lorem ipsum dolor sit amet',
+                'scoutgroup' => '12th Letchworth',
                 'district_id' => 1,
                 'number_stripped' => 1,
                 'deleted' => null
             ],
             [
                 'id' => 2,
-                'scoutgroup' => 'Lorem ipsum dolor aorumn amet',
+                'scoutgroup' => '4th Octopus',
                 'district_id' => 2,
+                'number_stripped' => 4,
+                'deleted' => null
+            ],
+            [
+                'id' => 3,
+                'scoutgroup' => '1st Llamaland',
+                'district_id' => 1,
                 'number_stripped' => 1,
+                'deleted' => null
+            ],
+            [
+                'id' => 4,
+                'scoutgroup' => '11th Goatface',
+                'district_id' => 2,
+                'number_stripped' => 11,
                 'deleted' => null
             ],
             [
@@ -191,11 +231,11 @@ class ScoutgroupsTableTest extends TestCase
             ],
         ];
 
-        $badEntity = $this->Scoutgroups->newEntity($badData, ['accessibleFields' => ['id' => true]]);
-        $goodEntity = $this->Scoutgroups->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        $badEntity = $this->Scoutgroups->newEntity($badData);
+        $goodEntity = $this->Scoutgroups->newEntity($goodData);
 
         $this->assertFalse($this->Scoutgroups->save($badEntity));
-        $this->Scoutgroups->save($goodEntity);
+        $this->assertInstanceOf(Scoutgroup::class, $this->Scoutgroups->save($goodEntity));
 
         $query = $this->Scoutgroups->find('all');
 

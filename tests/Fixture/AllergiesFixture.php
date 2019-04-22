@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * AllergiesFixture
- *
  */
 class AllergiesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -28,7 +26,6 @@ class AllergiesFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *

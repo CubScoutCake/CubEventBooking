@@ -1,16 +1,21 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Entity\District;
 use App\Model\Table\DistrictsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\ModelLevel\Table\DistrictsTable Test Case
+ * App\Model\Table\DistrictsTable Test Case
  */
 class DistrictsTableTest extends TestCase
 {
+    /**
+     * Test subject
+     *
+     * @var \App\Model\Table\DistrictsTable
+     */
+    public $Districts;
 
     /**
      * Fixtures
@@ -18,7 +23,7 @@ class DistrictsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.districts'
+        'app.Districts',
     ];
 
     /**
@@ -29,8 +34,8 @@ class DistrictsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Districts') ? [] : ['className' => 'App\Model\Table\DistrictsTable'];
-        $this->Districts = TableRegistry::get('Districts', $config);
+        $config = TableRegistry::getTableLocator()->exists('Districts') ? [] : ['className' => DistrictsTable::class];
+        $this->Districts = TableRegistry::getTableLocator()->get('Districts', $config);
     }
 
     /**
@@ -59,18 +64,25 @@ class DistrictsTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'district' => 'Lorem ipsum dolor sit amet',
-                'county' => 'Lorem ipsum dolor sit amet',
+                'district' => 'Letchworth & Baldock',
+                'county' => 'Fugu',
+                'deleted' => null,
+                'short_name' => 'Lorem',
+            ],
+            [
+                'id' => 2,
+                'district' => 'Kingdom of Oz',
+                'county' => 'Fugu',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],
             [
                 'id' => 3,
-                'district' => 'Lorem ipsum sit amet',
-                'county' => 'Lorem dolor sit amet',
+                'district' => 'The Farm Place',
+                'county' => 'Fugu',
                 'deleted' => null,
                 'short_name' => 'Lorem',
-            ]
+            ],
         ];
 
         $this->assertEquals($expected, $result);
@@ -100,15 +112,22 @@ class DistrictsTableTest extends TestCase
         $expected = [
             [
                 'id' => 1,
-                'district' => 'Lorem ipsum dolor sit amet',
-                'county' => 'Lorem ipsum dolor sit amet',
+                'district' => 'Letchworth & Baldock',
+                'county' => 'Fugu',
+                'deleted' => null,
+                'short_name' => 'Lorem',
+            ],
+            [
+                'id' => 2,
+                'district' => 'Kingdom of Oz',
+                'county' => 'Fugu',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],
             [
                 'id' => 3,
-                'district' => 'Lorem ipsum sit amet',
-                'county' => 'Lorem dolor sit amet',
+                'district' => 'The Farm Place',
+                'county' => 'Fugu',
                 'deleted' => null,
                 'short_name' => 'Lorem',
             ],

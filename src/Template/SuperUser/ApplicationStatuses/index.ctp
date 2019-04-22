@@ -15,31 +15,39 @@
                     <th scope="col"><?= $this->Paginator->sort('application_status') ?></th>
                     <th scope="col" class="actions"><?= __('Actions') ?></th>
                     <th scope="col"><?= $this->Paginator->sort('active') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('no_money') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('reserved') ?></th>
+                    <th scope="col"><?= $this->Paginator->sort('attendees_added') ?></th>
                 </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($applicationStatuses as $applicationStatus): ?>
-                        <tr>
-                            <td><?= $this->Number->format($applicationStatus->id) ?></td>
-                            <td><?= h($applicationStatus->application_status) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link('<i class="fal fa-eye"></i>', ['action' => 'view', $applicationStatus->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
-                                <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['action' => 'edit', $applicationStatus->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
-                                <?= $this->Form->postLink('<i class="fal fa-trash-alt"></i>', ['action' => 'delete', $applicationStatus->id], ['confirm' => __('Are you sure you want to delete # {0}?', $applicationStatus->id), 'title' => __('Delete'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
-                            </td>
-                            <td><?= $applicationStatus->active ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
-                        </tr>
+                    <tr>
+                        <td><?= $this->Number->format($applicationStatus->id) ?></td>
+                        <td><?= h($applicationStatus->application_status) ?></td>
+                        <td class="actions">
+                            <?= $this->Html->link(__('View'), ['action' => 'view', $applicationStatus->id]) ?>
+                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $applicationStatus->id]) ?>
+                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $applicationStatus->id], ['confirm' => __('Are you sure you want to delete # {0}?', $applicationStatus->id)]) ?>
+                        </td>
+                        <td><?= $applicationStatus->active ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
+                        <td><?= $applicationStatus->no_money ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
+                        <td><?= $applicationStatus->reserved ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
+                        <td><?= $applicationStatus->attendees_added ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
+                    </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
         <div class="paginator">
             <ul class="pagination">
-				<?= $this->Paginator->prev('< ' . __('previous')) ?>
-				<?= $this->Paginator->numbers() ?>
-				<?= $this->Paginator->next(__('next') . ' >') ?>
+                <?= $this->Paginator->first('<< ' . __('first')) ?>
+                <?= $this->Paginator->prev('< ' . __('previous')) ?>
+                <?= $this->Paginator->numbers() ?>
+                <?= $this->Paginator->next(__('next') . ' >') ?>
+                <?= $this->Paginator->last(__('last') . ' >>') ?>
             </ul>
-            <p><?= $this->Paginator->counter() ?></p>
+            <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
         </div>
     </div>
 </div>

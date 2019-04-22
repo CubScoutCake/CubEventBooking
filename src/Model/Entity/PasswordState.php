@@ -15,7 +15,6 @@ use Cake\ORM\Entity;
  */
 class PasswordState extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -26,7 +25,9 @@ class PasswordState extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false
+        'password_state' => true,
+        'active' => true,
+        'expired' => true,
+        'users' => true
     ];
 }

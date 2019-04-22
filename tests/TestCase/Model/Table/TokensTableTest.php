@@ -2,13 +2,17 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\TokensTable;
+use Cake\Core\Configure;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use Cake\Utility\Security;
 
 /**
  * App\Model\Table\TokensTable Test Case
+ *
+ * @property bool $travisPass
  */
 class TokensTableTest extends TestCase
 {
@@ -26,21 +30,50 @@ class TokensTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.tokens',
+        'app.allergies',
+        'app.application_statuses',
+        'app.applications',
+        'app.applications_attendees',
+        'app.attendees',
+        'app.attendees_allergies',
+        'app.auth_roles',
+        'app.champions',
+        'app.discounts',
+        'app.districts',
+        'app.email_response_types',
+        'app.email_responses',
         'app.email_sends',
-        'app.notifications',
+        'app.event_statuses',
+        'app.event_types',
+        'app.events',
+        'app.invoice_items',
+        'app.invoices',
+        'app.invoices_payments',
+        'app.item_types',
+        'app.logistic_items',
+        'app.logistics',
+        'app.notes',
         'app.notification_types',
-        'app.users',
+        'app.notifications',
+        'app.parameter_sets',
+        'app.parameters',
+        'app.params',
+        'app.password_states',
+        'app.payments',
+        'app.prices',
+        'app.reservation_statuses',
+        'app.reservations',
         'app.roles',
         'app.scoutgroups',
-        'app.password_states',
-        'app.districts',
-        'app.champions',
-        'app.sections',
         'app.section_types',
-        'app.auth_roles',
-        'app.settings',
+        'app.sections',
+        'app.sessions',
         'app.setting_types',
+        'app.settings',
+        'app.task_types',
+        'app.tasks',
+        'app.tokens',
+        'app.users',
     ];
 
     /**
@@ -56,6 +89,8 @@ class TokensTableTest extends TestCase
 
         $now = new Time('2016-12-26 23:22:30');
         Time::setTestNow($now);
+
+        $this->travisPass = false; //Configure::read('travis');
     }
 
     /**
@@ -66,8 +101,35 @@ class TokensTableTest extends TestCase
     public function tearDown()
     {
         unset($this->Tokens);
+        unset($this->travisPass);
 
         parent::tearDown();
+    }
+
+    /**
+     * Get Good Entity Data
+     *
+     * @return array
+     *
+     * @throws
+     */
+    private function getGood()
+    {
+        return [
+            'token' => 'Password Reset for Jacob',
+            'email_send_id' => 1,
+            'active' => true,
+            'random_number' => 1789,
+            'token_header' => [
+                'redirect' => [
+                    'controller' => 'Applications',
+                    'action' => 'view',
+                    'prefix' => false,
+                    1
+                ],
+                'authenticate' => true,
+            ]
+        ];
     }
 
     /**
@@ -77,31 +139,39 @@ class TokensTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $startNow = Time::now();
+        if ($this->travisPass) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
-        $query = $this->Tokens->find('all');
+        $actual = $this->Tokens->get(1)->toArray();
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
-        $expected = [
-            [
-                'id' => 1,
-                'token' => 'Lorem ipsum dolor sit amet',
-                'user_id' => 1,
-                'email_send_id' => 1,
-                'created' => $startNow,
-                'modified' => $startNow,
-                'expires' => $startNow,
-                'utilised' => $startNow,
-                'active' => 1,
-                'deleted' => null,
-                'hash' => 'Lorem ipsum dolor sit amet',
-                'random_number' => 1,
-                'header' => 'Lorem ipsum dolor sit amet'
-            ],
+        $dates = [
+            'expires',
+            'created',
+            'modified',
+            'utilised',
+            'deleted',
         ];
 
-        $this->assertEquals($expected, $result);
+        foreach ($dates as $date) {
+            $dateValue = $actual[$date];
+            if (!is_null($dateValue)) {
+                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+            }
+            unset($actual[$date]);
+        }
+
+        $expected = [
+            'id' => 1,
+            'email_send_id' => 1,
+            'active' => true,
+            'random_number' => 54498,
+            'token_header' => null
+        ];
+        $this->assertEquals($expected, $actual);
+
+        $count = $this->Tokens->find('all')->count();
+        $this->assertEquals(1, $count);
     }
 
     /**
@@ -111,88 +181,62 @@ class TokensTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $startNow = Time::now();
+        if ($this->travisPass) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
-        $badData = [
-            'id' => 6,
-            'token' => 'Lorem ipsum dolor sit',
-            'user_id' => null,
-            'email_send_id' => null,
-            'created' => $startNow,
-            'modified' => $startNow,
-            'deleted' => null,
-            'hash' => 'Lorem dolor sit amet',
-            'random_number' => 1,
-            'header' => 'Lorem ipsum dolor amet'
+        $good = $this->getGood();
+
+        $new = $this->Tokens->newEntity($good);
+        $this->assertInstanceOf('App\Model\Entity\Token', $this->Tokens->save($new));
+
+        $required = [
+            'token',
+            'token_header',
         ];
 
-        $goodData = [
-            'token' => 'Lorem ipsum dolor sit',
-            'user_id' => 1,
-            'email_send_id' => 1,
-            'created' => $startNow,
-            'modified' => $startNow,
-            'deleted' => null,
-            'hash' => 'Lorem dolor sit amet',
-            'random_number' => 12,
-            'header' => 'Lorem ipsum sk sit amet'
+        foreach ($required as $require) {
+            $reqArray = $this->getGood();
+            unset($reqArray[$require]);
+            $new = $this->Tokens->newEntity($reqArray);
+            $this->assertFalse($this->Tokens->save($new));
+        }
+
+        $notRequired = [
+            'expires',
+            'utilised',
         ];
 
-        $expected = [
-            [
-                'id' => 1,
-                'token' => 'Lorem ipsum dolor sit amet',
-                'user_id' => 1,
-                'email_send_id' => 1,
-                'created' => $startNow,
-                'modified' => $startNow,
-                'utilised' => $startNow,
-                'active' => 1,
-                'deleted' => null,
-                'hash' => 'Lorem ipsum dolor sit amet',
-                'header' => 'Lorem ipsum dolor sit amet'
-            ],
-            [
-                'id' => 3,
-                'token' => 'Lorem ipsum dolor sit',
-                'user_id' => 1,
-                'email_send_id' => 1,
-                'created' => $startNow,
-                'modified' => $startNow,
-                'utilised' => null,
-                'active' => true,
-                'deleted' => null,
-                'hash' => 'Lorem dolor sit amet',
-                'header' => 'Lorem ipsum sk sit amet'
-            ],
+        foreach ($notRequired as $notRequire) {
+            $reqArray = $this->getGood();
+            unset($reqArray[$notRequire]);
+            $new = $this->Tokens->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\Token', $this->Tokens->save($new));
+        }
+
+        $empties = [
+            'expires',
+            'utilised',
         ];
 
-        $badEntity = $this->Tokens->newEntity($badData);
-        $goodEntity = $this->Tokens->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        foreach ($empties as $empty) {
+            $reqArray = $this->getGood();
+            $reqArray[$empty] = '';
+            $new = $this->Tokens->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\Token', $this->Tokens->save($new));
+        }
 
-        $this->assertFalse($this->Tokens->save($badEntity));
-        $this->Tokens->save($goodEntity);
+        $notEmpties = [
+            'token',
+            'token_header',
+        ];
 
-        $query = $this->Tokens->find('all', [
-            'fields' => [
-                'id',
-                'token',
-                'user_id',
-                'email_send_id',
-                'created',
-                'modified',
-                'utilised',
-                'active',
-                'deleted',
-                'hash',
-                'header',
-            ]
-        ]);
-
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
-
-        $this->assertEquals($expected, $result);
+        foreach ($notEmpties as $notEmpty) {
+            $reqArray = $this->getGood();
+            $reqArray[$notEmpty] = '';
+            $new = $this->Tokens->newEntity($reqArray);
+            $this->assertFalse($this->Tokens->save($new));
+        }
     }
 
     /**
@@ -202,89 +246,24 @@ class TokensTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $startNow = Time::now();
+        if ($this->travisPass) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
 
-        $badData = [
-            'id' => 8,
-            'token' => 'Lorem dolor sit',
-            'user_id' => 109,
-            'email_send_id' => 109,
-            'created' => $startNow,
-            'modified' => $startNow,
-            'deleted' => null,
-            'hash' => 'Lorem dolor sit amet',
-            'random_number' => 12,
-            'header' => 'Lorem ipsum sk sit amet'
-        ];
+        // Email Send Exists
+        $values = $this->getGood();
 
-        $goodData = [
-            'id' => 9,
-            'token' => 'Lorem sit',
-            'user_id' => 1,
-            'email_send_id' => 1,
-            'created' => $startNow,
-            'modified' => $startNow,
-            'deleted' => null,
-            'hash' => 'Lorem dolor sit',
-            'random_number' => 12,
-            'header' => 'Lorem ipsum sk amet'
-        ];
+        $sends = $this->Tokens->EmailSends->find('list')->toArray();
 
-        $expected = [
-            [
-                'id' => 1,
-                'token' => 'Lorem ipsum dolor sit amet',
-                'user_id' => 1,
-                'email_send_id' => 1,
-                'created' => $startNow,
-                'modified' => $startNow,
-                'utilised' => $startNow,
-                'active' => 1,
-                'deleted' => null,
-                'hash' => 'Lorem ipsum dolor sit amet',
-                'header' => 'Lorem ipsum dolor sit amet'
-            ],
-            [
-                'id' => 9,
-                'token' => 'Lorem sit',
-                'user_id' => 1,
-                'email_send_id' => 1,
-                'created' => $startNow,
-                'modified' => $startNow,
-                'utilised' => null,
-                'active' => true,
-                'deleted' => null,
-                'hash' => 'Lorem dolor sit',
-                'header' => 'Lorem ipsum sk amet'
-            ],
-        ];
+        $send = max(array_keys($sends));
 
-        $badEntity = $this->Tokens->newEntity($badData);
-        $goodEntity = $this->Tokens->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        $values['email_send_id'] = $send;
+        $new = $this->Tokens->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\Token', $this->Tokens->save($new));
 
-        $this->assertFalse($this->Tokens->save($badEntity));
-        $this->Tokens->save($goodEntity);
-
-        $query = $this->Tokens->find('all', [
-            'fields' => [
-                'id',
-                'token',
-                'user_id',
-                'email_send_id',
-                'created',
-                'modified',
-                'utilised',
-                'active',
-                'deleted',
-                'hash',
-                'header',
-            ]
-        ]);
-
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
-
-        $this->assertEquals($expected, $result);
+        $values['email_send_id'] = $send + 1;
+        $new = $this->Tokens->newEntity($values);
+        $this->assertFalse($this->Tokens->save($new));
     }
 
     /**
@@ -292,6 +271,10 @@ class TokensTableTest extends TestCase
      */
     public function testBuildToken()
     {
+        if ($this->travisPass) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
+
         $token = $this->Tokens->buildToken(1);
         $token = urldecode($token);
         //$token = gzuncompress($token);
@@ -308,7 +291,7 @@ class TokensTableTest extends TestCase
 
         $data = [
             'id' => 1,
-            'random_number' => 1,
+            'random_number' => 54498,
         ];
 
         $this->assertEquals($data['id'], $token->id);
@@ -319,31 +302,48 @@ class TokensTableTest extends TestCase
 
     public function testBeforeSave()
     {
+        if ($this->travisPass) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
+
         $goodData = [
-            'id' => 3,
-            'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,
             'token' => 'GOAT',
+            'token_header' => [
+                'redirect' => [
+                    'controller' => 'Applications',
+                    'action' => 'view',
+                    'prefix' => false,
+                ],
+                'authenticate' => true,
+            ]
         ];
 
         $expected = [
-            'id' => 3,
-            'user_id' => 1,
+            'id' => 2,
             'email_send_id' => 1,
             'active' => true,
+            'token_header' => [
+                'redirect' => [
+                    'controller' => 'Applications',
+                    'action' => 'view',
+                    'prefix' => false,
+                ],
+                'authenticate' => true,
+            ]
         ];
 
-        $goodEntity = $this->Tokens->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        $goodEntity = $this->Tokens->newEntity($goodData);
 
         $this->Tokens->save($goodEntity);
 
-        $query = $this->Tokens->get(3, [
+        $query = $this->Tokens->get(2, [
             'fields' => [
                 'id',
-                'user_id',
                 'email_send_id',
                 'active',
+                'token_header',
             ]
         ]);
 
@@ -351,7 +351,7 @@ class TokensTableTest extends TestCase
 
         $this->assertEquals($expected, $result);
 
-        $query = $this->Tokens->get(3, [
+        $query = $this->Tokens->get(2, [
             'fields' => [
                 'random_number',
                 'active'
@@ -366,16 +366,26 @@ class TokensTableTest extends TestCase
 
     public function testValidateToken()
     {
+        if ($this->travisPass) {
+            $this->markTestSkipped('Skipped for Travis until Mocked.');
+        }
+
         $goodData = [
-            'user_id' => 1,
             'email_send_id' => 1,
             'active' => true,
             'token' => 'GOAT',
+            'token_header' => [
+                'redirect' => [
+                    'controller' => 'Applications',
+                    'action' => 'view',
+                    'prefix' => false,
+                ],
+                'authenticate' => true,
+            ]
         ];
 
         $expected = [
-            'id' => 3,
-            'user_id' => 1,
+            'id' => 2,
             'email_send_id' => 1,
             'active' => true,
         ];
@@ -384,10 +394,9 @@ class TokensTableTest extends TestCase
 
         $this->Tokens->save($goodEntity);
 
-        $query = $this->Tokens->get(3, [
+        $query = $this->Tokens->get(2, [
             'fields' => [
                 'id',
-                'user_id',
                 'email_send_id',
                 'active',
             ]
@@ -397,7 +406,7 @@ class TokensTableTest extends TestCase
 
         $this->assertEquals($expected, $result);
 
-        $query = $this->Tokens->get(3, [
+        $query = $this->Tokens->get(2, [
             'fields' => [
                 'random_number',
                 'active'
@@ -409,7 +418,7 @@ class TokensTableTest extends TestCase
         $this->assertTrue(is_numeric($result['random_number']));
         $this->assertTrue($result['active']);
 
-        $token = $this->Tokens->buildToken(3);
+        $token = $this->Tokens->buildToken(2);
 
         $result = $this->Tokens->validateToken($token);
 

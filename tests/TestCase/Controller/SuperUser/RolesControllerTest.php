@@ -14,16 +14,17 @@ class RolesControllerTest extends IntegrationTestCase
      * Fixtures
      *
      * @var array
-     *
+     */
     public $fixtures = [
-        'app.roles',
-        'app.attendees',
-        'app.users',
-        'app.scoutgroups',
         'app.districts',
-        'app.applications', 'app.application_statuses',
-        'app.allergies',
-        'app.events'
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
+        'app.users',
     ];
 
     /**

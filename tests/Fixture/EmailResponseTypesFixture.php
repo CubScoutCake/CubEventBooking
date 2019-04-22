@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * EmailResponseTypesFixture
- *
  */
 class EmailResponseTypesFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -25,7 +23,6 @@ class EmailResponseTypesFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
      * Init method
      *
@@ -35,7 +32,7 @@ class EmailResponseTypesFixture extends TestFixture
     {
         $this->records = [
             [
-                'email_response_type' => 'Lorem ipsum dolor sit amet',
+                'email_response_type' => 'Email Open',
                 'bounce' => true,
             ],
         ];

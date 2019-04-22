@@ -17,16 +17,17 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
      */
 
     public $fixtures = [
-        'app.scoutgroups',
         'app.districts',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
         'app.roles',
         'app.users',
-        'app.auth_roles',
-        'app.attendees',
-        'app.password_states',
-        'app.sections',
-        'app.section_types',
-        'app.auth_roles',
+        'app.notification_types',
+        'app.notifications',
     ];
 
     public function testIndexUnauthenticatedFails()

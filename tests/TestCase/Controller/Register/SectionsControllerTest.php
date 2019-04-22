@@ -16,46 +16,18 @@ class SectionsControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.allergies',
-        'app.application_statuses',
-        'app.applications',
-        'app.applications_attendees',
-        'app.attendees',
-        'app.attendees_allergies',
-        'app.auth_roles',
-        'app.champions',
-        'app.discounts',
+        'app.sessions',
         'app.districts',
-        'app.email_response_types',
-        'app.email_responses',
-        'app.email_sends',
-        'app.event_statuses',
-        'app.event_types',
-        'app.events',
-        'app.invoice_items',
-        'app.invoices',
-        'app.invoices_payments',
-        'app.item_types',
-        'app.logistic_items',
-        'app.logistics',
-        'app.notes',
-        'app.notification_types',
-        'app.notifications',
-        'app.parameter_sets',
-        'app.parameters',
-        'app.params',
-        'app.password_states',
-        'app.payments',
-        'app.prices',
-        'app.reservation_statuses',
-        'app.reservations',
-        'app.roles',
         'app.scoutgroups',
         'app.section_types',
         'app.sections',
-        'app.setting_types',
-        'app.settings',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
         'app.users',
+        'app.notification_types',
+        'app.notifications',
     ];
 
     /**
@@ -156,7 +128,10 @@ class SectionsControllerTest extends IntegrationTestCase
 
         $this->assertResponseOk();
         $sectionsFound = $this->viewVariable('existing')->toArray();
-        $this->assertEquals([1 => 'Lorem ipsum dolor sit amet'], $sectionsFound);
+        $this->assertEquals([
+            1 => 'Lorem ipsum dolor sit amet',
+            2 => 'Lorem ipsum uj sit amet',
+        ], $sectionsFound);
 
         // Test New Section Redirect
         $this->get([
@@ -229,7 +204,7 @@ class SectionsControllerTest extends IntegrationTestCase
         $this->assertEquals(1, $groupId);
         $this->assertEquals(2, $typeId);
 
-        $this->assertSame($suggested, 'Lorem ip - Cubs');
+        $this->assertSame('12th Let - Cubs', $suggested);
 
         // Assert Post Functional
         $this->enableSecurityToken();

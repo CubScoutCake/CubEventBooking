@@ -9,17 +9,17 @@ use Cake\Validation\Validator;
 /**
  * EmailSends Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Messages
- * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsTo $NotificationTypes
- * @property \Cake\ORM\Association\BelongsTo $Notifications
- * @property \Cake\ORM\Association\HasMany $EmailResponses
- * @property \Cake\ORM\Association\HasMany $Tokens
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\NotificationTypesTable|\Cake\ORM\Association\BelongsTo $NotificationTypes
+ * @property \App\Model\Table\NotificationsTable|\Cake\ORM\Association\BelongsTo $Notifications
+ * @property \App\Model\Table\EmailResponsesTable|\Cake\ORM\Association\HasMany $EmailResponses
+ * @property \App\Model\Table\TokensTable|\Cake\ORM\Association\HasMany $Tokens
  *
  * @method \App\Model\Entity\EmailSend get($primaryKey, $options = [])
  * @method \App\Model\Entity\EmailSend newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\EmailSend[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\EmailSend|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\EmailSend saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\EmailSend patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\EmailSend[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\EmailSend findOrCreate($search, callable $callback = null, $options = [])
@@ -28,7 +28,6 @@ use Cake\Validation\Validator;
  */
 class EmailSendsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -83,23 +82,35 @@ class EmailSendsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->dateTime('sent')
-            ->allowEmpty('sent');
+            ->allowEmptyDateTime('sent');
 
         $validator
-            ->allowEmpty('subject');
+            ->scalar('subject')
+            ->maxLength('subject', 511)
+            ->allowEmptyString('subject');
 
         $validator
-            ->allowEmpty('routing_domain');
+            ->scalar('routing_domain')
+            ->maxLength('routing_domain', 255)
+            ->allowEmptyString('routing_domain');
 
         $validator
-            ->allowEmpty('from_address');
+            ->scalar('from_address')
+            ->maxLength('from_address', 511)
+            ->allowEmptyString('from_address');
 
         $validator
-            ->allowEmpty('friendly_from');
+            ->scalar('friendly_from')
+            ->maxLength('friendly_from', 255)
+            ->allowEmptyString('friendly_from');
+
+        $validator
+            ->dateTime('deleted')
+            ->allowEmptyDateTime('deleted');
 
         return $validator;
     }

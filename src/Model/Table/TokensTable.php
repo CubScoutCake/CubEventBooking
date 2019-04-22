@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
 /**
  * Tokens Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Users
  * @property \Cake\ORM\Association\BelongsTo $EmailSends
  *
  * @method \App\Model\Entity\Token get($primaryKey, $options = [])
@@ -55,10 +54,6 @@ class TokensTable extends Table
             'field' => 'deleted'
         ]);
 
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
-        ]);
         $this->belongsTo('EmailSends', [
             'foreignKey' => 'email_send_id',
             'joinType' => 'INNER'
@@ -75,25 +70,41 @@ class TokensTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->requirePresence('token', 'create')
-            ->notEmpty('token');
+            ->allowEmptyString('token', false);
 
         $validator
             ->dateTime('expires')
-            ->allowEmpty('expires');
+            ->allowEmptyDateTime('expires');
 
         $validator
             ->dateTime('utilised')
-            ->allowEmpty('utilised');
+            ->allowEmptyDateTime('utilised');
 
         $validator
             ->boolean('active')
             ->requirePresence('active', 'create');
 
+        $validator
+            ->requirePresence('token_header', 'create')
+            ->allowEmptyString('token_header', false);
+
         return $validator;
+    }
+
+    /**
+     * @param \Cake\Database\Schema\TableSchema $schema The Schema to be modified
+     *
+     * @return TableSchema|\Cake\Database\Schema\TableSchema
+     */
+    protected function _initializeSchema($schema)
+    {
+        $schema->setColumnType('token_header', 'json');
+
+        return $schema;
     }
 
     /**
@@ -105,7 +116,6 @@ class TokensTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['email_send_id'], 'EmailSends'));
 
         return $rules;
@@ -138,6 +148,7 @@ class TokensTable extends Table
      */
     public function beforeSave(Event $event)
     {
+        /** @var \App\Model\Entity\Token $entity */
         $entity = $event->getData('entity');
 
         if ($entity->isNew()) {
@@ -156,38 +167,42 @@ class TokensTable extends Table
      *
      * @return string
      */
-    public function buildToken($tokenId)
+    public function prepareToken($tokenId)
     {
-        $tokenRow = $this->get($tokenId, [
-            'contain' => 'Users'
-        ]);
+        $tokenRow = $this->get($tokenId);
 
         $decrypter = Security::randomBytes(64);
         $decrypter = base64_encode($decrypter);
         $decrypter = substr($decrypter, 0, 8);
 
-        $hash = $decrypter . $tokenRow->user->lastname . $tokenRow->created . $tokenRow['random_number'];
+        $hash = $decrypter . $tokenRow->created . $tokenRow->random_number;
 
         $hash = Security::hash($hash, 'sha256');
 
-        $hashData = [
-            'hash' => $hash
-        ];
-
-        $this->patchEntity($tokenRow, $hashData);
-
+        $tokenRow->set('hash', $hash);
         $this->save($tokenRow);
 
         $tokenData = [
             'id' => $tokenId,
-            'random_number' => $tokenRow['random_number'],
+            'random_number' => $tokenRow->random_number,
         ];
 
         $token = json_encode($tokenData);
         $token = base64_encode($token);
 
         $token = $decrypter . $token;
-//        $token = gzcompress($token, 9);
+
+        return $token;
+    }
+
+    /**
+     * @param int $tokenId The Id of the Token
+     *
+     * @return string
+     */
+    public function buildToken($tokenId)
+    {
+        $token = $this->prepareToken($tokenId);
         $token = urlencode($token);
 
         return $token;
@@ -212,15 +227,20 @@ class TokensTable extends Table
             return false;
         }
 
-        $tokenRow = $this->get($token->id, [
-            'contain' => 'Users'
-        ]);
+        $tokenRow = $this->get($token->id);
+
+        if (!$tokenRow->active) {
+            return false;
+        }
+
+        $tokenRow->set('utilised', Time::now());
+        $this->save($tokenRow);
 
         if ($tokenRow->random_number <> $token->random_number) {
             return false;
         }
 
-        $testHash = $decrypter . $tokenRow->user->lastname . $tokenRow->created . $tokenRow['random_number'];
+        $testHash = $decrypter . $tokenRow->created . $tokenRow->random_number;
         $testHash = Security::hash($testHash, 'sha256');
 
         $tokenRowHash = $tokenRow['hash'];

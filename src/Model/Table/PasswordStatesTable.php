@@ -9,19 +9,19 @@ use Cake\Validation\Validator;
 /**
  * PasswordStates Model
  *
- * @property \Cake\ORM\Association\HasMany $Users
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\HasMany $Users
  *
  * @method \App\Model\Entity\PasswordState get($primaryKey, $options = [])
  * @method \App\Model\Entity\PasswordState newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\PasswordState[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\PasswordState|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\PasswordState saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\PasswordState patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\PasswordState[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\PasswordState findOrCreate($search, callable $callback = null, $options = [])
  */
 class PasswordStatesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -33,7 +33,7 @@ class PasswordStatesTable extends Table
         parent::initialize($config);
 
         $this->setTable('password_states');
-        $this->setDisplayField('id');
+        $this->setDisplayField('password_state');
         $this->setPrimaryKey('id');
 
         $this->hasMany('Users', [
@@ -51,22 +51,38 @@ class PasswordStatesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
+            ->scalar('password_state')
+            ->maxLength('password_state', 255)
             ->requirePresence('password_state', 'create')
-            ->notEmpty('password_state');
+            ->allowEmptyString('password_state', false);
 
         $validator
             ->boolean('active')
             ->requirePresence('active', 'create')
-            ->notEmpty('active');
+            ->allowEmptyString('active', false);
 
         $validator
             ->boolean('expired')
             ->requirePresence('expired', 'create')
-            ->notEmpty('expired');
+            ->allowEmptyString('expired', false);
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['password_state']));
+
+        return $rules;
     }
 }

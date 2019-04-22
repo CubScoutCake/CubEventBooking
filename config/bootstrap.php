@@ -66,6 +66,7 @@ try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
     Configure::load('app_DB', 'default');
+    Configure::load('statuses', 'default', false);
 } catch (\Exception $e) {
     die($e->getMessage() . "\n");
 }

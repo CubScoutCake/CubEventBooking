@@ -9,22 +9,22 @@ use Cake\Validation\Validator;
 /**
  * EventTypes Model
  *
- * @property \Cake\ORM\Association\BelongsTo $LegalTexts
- * @property \Cake\ORM\Association\BelongsTo $InvoiceTexts
- * @property \Cake\ORM\Association\BelongsTo $ApplicationRefs
- * @property \Cake\ORM\Association\HasMany $Events
+ * @property \App\Model\Table\SettingsTable|\Cake\ORM\Association\BelongsTo $LegalTexts
+ * @property \App\Model\Table\SettingsTable|\Cake\ORM\Association\BelongsTo $InvoiceTexts
+ * @property \App\Model\Table\SettingsTable|\Cake\ORM\Association\BelongsTo $ApplicationRefs
+ * @property \App\Model\Table\EventsTable|\Cake\ORM\Association\HasMany $Events
  *
  * @method \App\Model\Entity\EventType get($primaryKey, $options = [])
  * @method \App\Model\Entity\EventType newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\EventType[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\EventType|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\EventType saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\EventType patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\EventType[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\EventType findOrCreate($search, callable $callback = null, $options = [])
  */
 class EventTypesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -63,7 +63,6 @@ class EventTypesTable extends Table
             'property' => 'payable',
             'conditions' => ['Payable.setting_type_id' => 7],
         ]);
-
         $this->hasMany('Events', [
             'foreignKey' => 'event_type_id'
         ]);
@@ -79,31 +78,66 @@ class EventTypesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
+            ->scalar('event_type')
+            ->maxLength('event_type', 255)
             ->requirePresence('event_type', 'create')
-            ->notEmpty('event_type');
+            ->allowEmptyString('event_type', false);
 
         $validator
             ->boolean('simple_booking')
-            ->allowEmpty('simple_booking');
+            ->allowEmptyString('simple_booking');
 
         $validator
             ->boolean('date_of_birth')
-            ->allowEmpty('date_of_birth');
+            ->allowEmptyString('date_of_birth');
 
         $validator
             ->boolean('medical')
-            ->allowEmpty('medical');
+            ->allowEmptyString('medical');
 
         $validator
             ->boolean('dietary')
-            ->allowEmpty('dietary');
+            ->allowEmptyString('dietary');
 
         $validator
             ->boolean('parent_applications')
-            ->allowEmpty('parent_applications');
+            ->allowEmptyString('parent_applications');
+
+        $validator
+            ->boolean('team_leader')
+            ->allowEmptyString('team_leader');
+
+        $validator
+            ->boolean('permit_holder')
+            ->allowEmptyString('permit_holder');
+
+        $validator
+            ->boolean('display_availability')
+            ->requirePresence('display_availability', 'create')
+            ->allowEmptyString('display_availability');
+
+        $validator
+            ->boolean('sync_book')
+            ->requirePresence('sync_book', 'create')
+            ->allowEmptyString('sync_book');
+
+        $validator
+            ->boolean('hold_booking')
+            ->requirePresence('hold_booking', 'create')
+            ->allowEmptyString('hold_booking');
+
+        $validator
+            ->boolean('attendee_booking')
+            ->requirePresence('attendee_booking', 'create')
+            ->allowEmptyString('attendee_booking');
+
+        $validator
+            ->boolean('district_booking')
+            ->requirePresence('district_booking', 'create')
+            ->allowEmptyString('district_booking');
 
         return $validator;
     }

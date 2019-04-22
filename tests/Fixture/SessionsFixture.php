@@ -5,11 +5,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * SessionsFixture
- *
  */
 class SessionsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -25,17 +23,20 @@ class SessionsFixture extends TestFixture
         ],
     ];
     // @codingStandardsIgnoreEnd
-
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 'd982ca23-c9b1-4e49-815c-a9c115943ade',
-            'data' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-            'expires' => 1468316269
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'id' => 'd982ca23-c9b1-4e49-815c-a9c115943ade',
+                'data' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+                'expires' => 1468316269
+            ],
+        ];
+        parent::init();
+    }
 }

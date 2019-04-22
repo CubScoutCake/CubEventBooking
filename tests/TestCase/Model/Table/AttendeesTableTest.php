@@ -134,6 +134,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => true,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 2,
@@ -160,6 +162,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 3,
@@ -186,6 +190,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 4,
@@ -212,6 +218,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 5,
@@ -238,6 +246,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 6,
@@ -264,6 +274,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 7,
@@ -290,6 +302,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 8,
@@ -316,6 +330,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 9,
@@ -342,6 +358,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 10,
@@ -368,6 +386,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 11,
@@ -394,6 +414,8 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
             [
                 'id' => 12,
@@ -420,17 +442,18 @@ class AttendeesTableTest extends TestCase
                 'user_attendee' => false,
                 'deleted' => null,
                 'cc_apps' => 0,
+                'identity_hash' => null,
+                'obfuscated' => false,
             ],
         ];
     }
 
-    public function transformGood($inserted, $id = 13)
+    private function transformGood($inserted, $attId = 13)
     {
         $startNow = Time::now();
-        $nowDate = new Date('2016-12-26');
 
         $addition = [
-            'id' => $id,
+            'id' => $attId,
             'cc_apps' => 0,
             'deleted' => null,
             'created' => $startNow,
@@ -483,13 +506,15 @@ class AttendeesTableTest extends TestCase
             'city' => 'Lorem ipsum dolor sit amet',
             'county' => 'Lorem ipsum dolor sit amet',
             'postcode' => 'AB1 3DE',
-            'nightsawaypermit' => 1,
-            'vegetarian' => 1,
+            'nightsawaypermit' => true,
+            'vegetarian' => true,
             'osm_generated' => true,
             'osm_id' => 1,
             'user_attendee' => true,
             'cc_apps' => 0,
-            'full_name' => 'Joe Bloggs'
+            'full_name' => 'Joe Bloggs',
+            'identity_hash' => null,
+            'obfuscated' => false,
         ];
         $this->assertEquals($expected, $actual);
 
@@ -542,9 +567,9 @@ class AttendeesTableTest extends TestCase
             'osm_sync_date',
         ];
 
-        foreach ($notRequired as $not_required) {
+        foreach ($notRequired as $notRequire) {
             $reqArray = $this->getGood();
-            unset($reqArray[$not_required]);
+            unset($reqArray[$notRequire]);
             $new = $this->Attendees->newEntity($reqArray);
             $this->assertInstanceOf('App\Model\Entity\Attendee', $this->Attendees->save($new));
         }
@@ -577,9 +602,9 @@ class AttendeesTableTest extends TestCase
             'lastname',
         ];
 
-        foreach ($notEmpties as $not_empty) {
+        foreach ($notEmpties as $notEmpty) {
             $reqArray = $this->getGood();
-            $reqArray[$not_empty] = '';
+            $reqArray[$notEmpty] = '';
             $new = $this->Attendees->newEntity($reqArray);
             $this->assertFalse($this->Attendees->save($new));
         }
@@ -600,14 +625,14 @@ class AttendeesTableTest extends TestCase
         $string .= $string;
         $string .= $string;
 
-        foreach ($maxLengths as $maxField => $max_length) {
+        foreach ($maxLengths as $maxField => $maxLength) {
             $reqArray = $this->getGood();
-            $reqArray[$maxField] = substr($string, 1, $max_length);
+            $reqArray[$maxField] = substr($string, 1, $maxLength);
             $new = $this->Attendees->newEntity($reqArray);
             $this->assertInstanceOf('App\Model\Entity\Attendee', $this->Attendees->save($new));
 
             $reqArray = $this->getGood();
-            $reqArray[$maxField] = substr($string, 1, $max_length + 1);
+            $reqArray[$maxField] = substr($string, 1, $maxLength + 1);
             $new = $this->Attendees->newEntity($reqArray);
             $this->assertFalse($this->Attendees->save($new));
         }
@@ -744,13 +769,13 @@ class AttendeesTableTest extends TestCase
             'osm_id' => 987654,
             'osm_sync_date' => $startNow,
             'user_attendee' => true,
+            'identity_hash' => null,
+            'obfuscated' => false,
         ];
 
         $caseEntity = $this->Attendees->newEntity($caseData);
 
         $this->assertInstanceOf('\App\Model\Entity\Attendee', $this->Attendees->save($caseEntity));
-
-        $this->Attendees->changeArrayCase($caseData);
 
         $expected = $this->getExpected();
         $inserted = $this->transformGood($caseData);
@@ -774,8 +799,8 @@ class AttendeesTableTest extends TestCase
     {
         $expectedAttendees = $this->getExpected();
 
-        foreach ($expectedAttendees as $expected_attendee) {
-            $attendeeEnt = $this->Attendees->get($expected_attendee['id']);
+        foreach ($expectedAttendees as $expectedAttendee) {
+            $attendeeEnt = $this->Attendees->get($expectedAttendee['id']);
 
             $newEntityData = [];
             $extractedData = [
@@ -822,8 +847,8 @@ class AttendeesTableTest extends TestCase
             }
         }
 
-        foreach ($notDeleted as $expected_attendee) {
-            $attendeeEnt = $this->Attendees->get($expected_attendee['id']);
+        foreach ($notDeleted as $expectedAttendee) {
+            $attendeeEnt = $this->Attendees->get($expectedAttendee['id']);
 
             $newEntityData = [];
             $extractedData = [
@@ -868,6 +893,8 @@ class AttendeesTableTest extends TestCase
             'osm_id' => 987654,
             'osm_sync_date' => $startNow,
             'user_attendee' => true,
+            'identity_hash' => null,
+            'obfuscated' => false,
         ];
         $new = $this->Attendees->newEntity($caseData);
         $this->assertInstanceOf('\App\Model\Entity\Attendee', $this->Attendees->save($new));

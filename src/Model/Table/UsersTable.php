@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\User;
+use ArrayObject;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Auth\DigestAuthenticate;
 use Cake\Event\Event;
@@ -17,6 +18,8 @@ use Search\Manager;
  * Users Model
  *
  * @property \App\Model\Table\RolesTable|\Cake\ORM\Association\BelongsTo $Roles
+ * @property |\Cake\ORM\Association\BelongsTo $OsmUsers
+ * @property |\Cake\ORM\Association\BelongsTo $OsmSections
  * @property \App\Model\Table\AuthRolesTable|\Cake\ORM\Association\BelongsTo $AuthRoles
  * @property \App\Model\Table\PasswordStatesTable|\Cake\ORM\Association\BelongsTo $PasswordStates
  * @property \App\Model\Table\SectionsTable|\Cake\ORM\Association\BelongsTo $Sections
@@ -28,12 +31,14 @@ use Search\Manager;
  * @property \App\Model\Table\NotesTable|\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\NotificationsTable|\Cake\ORM\Association\HasMany $Notifications
  * @property \App\Model\Table\PaymentsTable|\Cake\ORM\Association\HasMany $Payments
- * @property \App\Model\Table\TokensTable|\Cake\ORM\Association\HasMany $Tokens
+ * @property \App\Model\Table\ReservationsTable|\Cake\ORM\Association\HasMany $Reservations
+ * @property \App\Model\Table\TasksTable|\Cake\ORM\Association\HasMany $Tasks
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\User|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\User saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\User findOrCreate($search, callable $callback = null, $options = [])
@@ -42,7 +47,6 @@ use Search\Manager;
  */
 class UsersTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -116,7 +120,10 @@ class UsersTable extends Table
         $this->hasMany('Payments', [
             'foreignKey' => 'user_id'
         ]);
-        $this->hasMany('Tokens', [
+        $this->hasMany('Reservations', [
+            'foreignKey' => 'user_id'
+        ]);
+        $this->hasMany('Tasks', [
             'foreignKey' => 'user_id'
         ]);
 
@@ -148,152 +155,180 @@ class UsersTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->scalar('firstname')
             ->maxLength('firstname', 125)
             ->requirePresence('firstname', 'create')
-            ->notEmpty('firstname');
+            ->allowEmptyString('firstname', false);
 
         $validator
             ->scalar('lastname')
             ->maxLength('lastname', 125)
             ->requirePresence('lastname', 'create')
-            ->notEmpty('lastname');
+            ->allowEmptyString('lastname', false);
 
         $validator
             ->email('email')
             ->requirePresence('email', 'create')
-            ->notEmpty('email');
+            ->allowEmptyString('email', false);
 
         $validator
             ->scalar('password')
             ->maxLength('password', 255)
-            ->minLength('password', 6)
             ->requirePresence('password', 'create')
-            ->notEmpty('password');
+            ->allowEmptyString('password', false);
 
         $validator
             ->scalar('phone')
             ->maxLength('phone', 12)
             ->requirePresence('phone', 'create')
-            ->notEmpty('phone');
+            ->allowEmptyString('phone', false);
 
         $validator
             ->scalar('address_1')
             ->maxLength('address_1', 255)
             ->requirePresence('address_1', 'create')
-            ->notEmpty('address_1');
+            ->allowEmptyString('address_1', false);
 
         $validator
             ->scalar('address_2')
             ->maxLength('address_2', 255)
-            ->allowEmpty('address_2');
+            ->allowEmptyString('address_2');
 
         $validator
             ->scalar('city')
             ->maxLength('city', 125)
             ->requirePresence('city', 'create')
-            ->notEmpty('city');
+            ->allowEmptyString('city', false);
 
         $validator
             ->scalar('county')
             ->maxLength('county', 125)
             ->requirePresence('county', 'create')
-            ->notEmpty('county');
+            ->allowEmptyString('county', false);
 
         $validator
             ->scalar('postcode')
             ->maxLength('postcode', 8)
             ->requirePresence('postcode', 'create')
-            ->notEmpty('postcode');
+            ->allowEmptyString('postcode', false);
+
+        $validator
+            ->scalar('legacy_section')
+            ->maxLength('legacy_section', 255)
+            ->allowEmptyString('legacy_section');
 
         $validator
             ->scalar('username')
             ->maxLength('username', 45)
             ->requirePresence('username', 'create')
-            ->notEmpty('username')
+            ->allowEmptyString('username', false)
             ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('osm_secret')
             ->maxLength('osm_secret', 255)
-            ->allowEmpty('osm_secret');
+            ->allowEmptyString('osm_secret');
 
         $validator
             ->integer('osm_linked')
-            ->allowEmpty('osm_linked');
+            ->allowEmptyString('osm_linked');
 
         $validator
             ->dateTime('osm_linkdate')
-            ->allowEmpty('osm_linkdate');
+            ->allowEmptyDateTime('osm_linkdate');
 
         $validator
             ->integer('osm_current_term')
-            ->allowEmpty('osm_current_term');
+            ->allowEmptyString('osm_current_term');
 
         $validator
             ->dateTime('osm_term_end')
-            ->allowEmpty('osm_term_end');
+            ->allowEmptyDateTime('osm_term_end');
 
         $validator
             ->scalar('pw_reset')
             ->maxLength('pw_reset', 255)
-            ->allowEmpty('pw_reset');
+            ->allowEmptyString('pw_reset');
 
         $validator
             ->dateTime('last_login')
-            ->allowEmpty('last_login');
+            ->allowEmptyDateTime('last_login');
 
         $validator
             ->integer('logins')
-            ->allowEmpty('logins');
+            ->allowEmptyString('logins');
 
         $validator
             ->boolean('validated')
-            ->allowEmpty('validated');
-
-        $validator
-            ->dateTime('deleted')
-            ->allowEmpty('deleted');
+            ->requirePresence('validated', 'create')
+            ->allowEmptyString('validated', false);
 
         $validator
             ->scalar('digest_hash')
             ->maxLength('digest_hash', 255)
-            ->allowEmpty('digest_hash');
+            ->allowEmptyString('digest_hash');
 
         $validator
             ->scalar('pw_salt')
             ->maxLength('pw_salt', 255)
-            ->allowEmpty('pw_salt');
+            ->allowEmptyString('pw_salt');
 
         $validator
             ->scalar('api_key_plain')
             ->maxLength('api_key_plain', 999)
-            ->allowEmpty('api_key_plain');
+            ->allowEmptyString('api_key_plain');
 
         $validator
             ->scalar('api_key')
             ->maxLength('api_key', 999)
-            ->allowEmpty('api_key');
+            ->allowEmptyString('api_key');
 
         $validator
             ->integer('membership_number')
-            ->requirePresence('membership_number')
-            ->notEmpty('membership_number');
+            ->requirePresence('membership_number', 'create')
+            ->allowEmptyString('membership_number', false);
+
+        $validator
+            ->integer('simple_attendees')
+            ->allowEmptyString('simple_attendees');
+
+        $validator
+            ->boolean('member_validated')
+            ->requirePresence('member_validated', 'create')
+            ->allowEmptyString('member_validated', false);
 
         $validator
             ->boolean('section_validated')
-            ->allowEmpty('section_validated');
+            ->requirePresence('section_validated', 'create')
+            ->allowEmptyString('section_validated', false);
 
         $validator
             ->boolean('email_validated')
-            ->allowEmpty('email_validated');
+            ->requirePresence('email_validated', 'create')
+            ->allowEmptyString('email_validated', false);
 
         $validator
-            ->boolean('simple_attendees')
-            ->allowEmpty('simple_attendees');
+            ->integer('role_id')
+            ->requirePresence('role_id', 'create')
+            ->allowEmptyString('role_id', false);
+
+        $validator
+            ->integer('auth_role_id')
+            ->requirePresence('auth_role_id', 'create')
+            ->allowEmptyString('auth_role_id', false);
+
+        $validator
+            ->integer('password_state_id')
+            ->requirePresence('password_state_id', 'create')
+            ->allowEmptyString('password_state_id', false);
+
+        $validator
+            ->integer('section_id')
+            ->requirePresence('section_id', 'create')
+            ->allowEmptyString('section_id', false);
 
         return $validator;
     }
@@ -327,6 +362,7 @@ class UsersTable extends Table
      */
     public function beforeSave(Event $event)
     {
+        /** @var \App\Model\Entity\User $entity */
         $entity = $event->getData('entity');
 
         // Make a password for digest auth.
@@ -358,6 +394,43 @@ class UsersTable extends Table
     }
 
     /**
+     * @var array The Array for Uppercase Conversion
+     */
+    public $upperCase = ['postcode'];
+
+    /**
+     * @var array The Array for Uppercase Conversion
+     */
+    public $lowerCase = ['email'];
+
+    /**
+     * @var array The Array for Title Case Conversion
+     */
+    public $initCase = ['firstname', 'lastname', 'address_1', 'address_2', 'city', 'county'];
+
+    /**
+     * @param User $entity The Attendee Entity to be Case Fixed
+     *
+     * @return User
+     */
+    public function changeCase($entity)
+    {
+        foreach ($this->initCase as $initValue) {
+            $entity = $entity->set($initValue, ucwords(strtolower($entity->get($initValue))));
+        }
+
+        foreach ($this->upperCase as $upperValue) {
+            $entity = $entity->set($upperValue, strtoupper($entity->get($upperValue)));
+        }
+
+        foreach ($this->lowerCase as $initValue) {
+            $entity = $entity->set($initValue, strtolower($entity->get($initValue)));
+        }
+
+        return $entity;
+    }
+
+    /**
      * Stores emails as lower case.
      *
      * @param \Cake\Event\Event $event The event being processed.
@@ -365,16 +438,37 @@ class UsersTable extends Table
      */
     public function beforeRules(Event $event)
     {
+        /** @var \App\Model\Entity\User $entity */
         $entity = $event->getData('entity');
 
-        $entity->email = strtolower($entity->email);
-        $entity->firstname = ucwords(strtolower($entity->firstname));
-        $entity->lastname = ucwords(strtolower($entity->lastname));
-        $entity->address_1 = ucwords(strtolower($entity->address_1));
-        $entity->address_2 = ucwords(strtolower($entity->address_2));
-        $entity->city = ucwords(strtolower($entity->city));
-        $entity->county = ucwords(strtolower($entity->county));
-        $entity->postcode = strtoupper($entity->postcode);
+        $entity = $this->changeCase($entity);
+
+        return true;
+    }
+
+    /**
+     * Before Marshal Transformation
+     *
+     * @param \Cake\Event\Event $event The Event Data
+     * @param \ArrayObject $data Data Array
+     * @param \ArrayObject $options Options Array
+     *
+     * @return bool
+     */
+    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
+    {
+        $toSet = [
+            'validated' => false,
+            'member_validated' => false,
+            'section_validated' => false,
+            'email_validated' => false,
+        ];
+
+        foreach ($toSet as $key => $value) {
+            if (!($data[$key] === true)) {
+                $data[$key] = $value;
+            }
+        }
 
         return true;
     }
@@ -407,6 +501,31 @@ class UsersTable extends Table
             'lastname ILIKE' => $userArray['lastname'],
             'email ILIKE' => $userArray['email'],
             'postcode ILIKE' => $userArray['postcode'],
+        ]);
+
+        if (!is_null($parentFind->count()) && $parentFind->count() == 1) {
+            return $parentFind->first();
+        }
+
+        return false;
+    }
+
+    /**
+     * Function to Detect Parent Accounts
+     *
+     * @param array $userArray The Array Data sent
+     *
+     * @return bool|array|\Cake\Datasource\EntityInterface
+     */
+    public function detectExisting($userArray)
+    {
+        $parentFind = $this->find('all')->where([
+            'firstname ILIKE' => $userArray['firstname'],
+            'lastname ILIKE' => $userArray['lastname'],
+            'OR' => [
+                'email ILIKE' => $userArray['email'],
+                'postcode ILIKE' => $userArray['postcode'],
+            ]
         ]);
 
         if (!is_null($parentFind->count()) && $parentFind->count() == 1) {

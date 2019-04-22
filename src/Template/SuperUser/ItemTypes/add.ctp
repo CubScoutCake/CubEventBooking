@@ -3,12 +3,13 @@
     <fieldset>
         <legend><?= __('Add Item Type') ?></legend>
         <?php
-            echo $this->Form->input('item_type');
-            echo $this->Form->input('role_id', ['empty' => true]);
-            echo $this->Form->input('minor');
-            echo $this->Form->input('cancelled');
-            echo $this->Form->input('available');
-            echo $this->Form->input('team_price');
+            echo $this->Form->control('item_type');
+            echo $this->Form->control('role_id', ['options' => $roles, 'empty' => true]);
+            echo $this->Form->control('minor');
+            echo $this->Form->control('cancelled');
+            echo $this->Form->control('available');
+            echo $this->Form->control('team_price');
+            echo $this->Form->control('deposit');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller\Admin;
 
+use Cake\ORM\TableRegistry;
+
 /**
  * Tokens Controller
  *
@@ -61,6 +63,7 @@ class TokensController extends AppController
         }
         $users = $this->Tokens->Users->find('list', ['limit' => 200]);
         $emailSends = $this->Tokens->EmailSends->find('list', ['limit' => 200]);
+
         $this->set(compact('token', 'users', 'emailSends'));
         $this->set('_serialize', ['token']);
     }

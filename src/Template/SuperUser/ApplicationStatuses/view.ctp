@@ -16,7 +16,7 @@
     </ul>
 </nav>
 <div class="applicationStatuses view large-9 medium-8 columns content">
-    <h3><?= h($applicationStatus->id) ?></h3>
+    <h3><?= h($applicationStatus->application_status) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Application Status') ?></th>
@@ -29,6 +29,18 @@
         <tr>
             <th scope="row"><?= __('Active') ?></th>
             <td><?= $applicationStatus->active ? __('Yes') : __('No'); ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('No Money') ?></th>
+            <td><?= $applicationStatus->no_money ? __('Yes') : __('No'); ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Reserved') ?></th>
+            <td><?= $applicationStatus->reserved ? __('Yes') : __('No'); ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Attendees Added') ?></th>
+            <td><?= $applicationStatus->attendees_added ? __('Yes') : __('No'); ?></td>
         </tr>
     </table>
     <div class="related">
@@ -58,6 +70,7 @@
                 <th scope="col"><?= __('Section Id') ?></th>
                 <th scope="col"><?= __('Team Leader') ?></th>
                 <th scope="col"><?= __('Application Status Id') ?></th>
+                <th scope="col"><?= __('Hold Numbers') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($applicationStatus->applications as $applications): ?>
@@ -84,6 +97,7 @@
                 <td><?= h($applications->section_id) ?></td>
                 <td><?= h($applications->team_leader) ?></td>
                 <td><?= h($applications->application_status_id) ?></td>
+                <td><?= h($applications->hold_numbers) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Applications', 'action' => 'view', $applications->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'Applications', 'action' => 'edit', $applications->id]) ?>

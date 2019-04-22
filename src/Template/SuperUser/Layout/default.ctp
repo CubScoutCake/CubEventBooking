@@ -453,6 +453,23 @@ $cakeDescription = 'HertsCubs Booking System';
                                         </li>
                                     </ul>
                                 </li>
+                                <li>
+                                    <a class="has-arrow" href="#"><i class="fal fa-check-circle fa-fw"></i> Task Types</a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'TaskTypes',
+                                                'action' => 'index',
+                                                'prefix' => 'super_user']); ?>"> View Task Types</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->Url->build([
+                                                'controller' => 'TaskTypes',
+                                                'action' => 'add',
+                                                'prefix' => 'super_user']); ?>">Add an Task Type</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li>
