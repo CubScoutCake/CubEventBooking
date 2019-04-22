@@ -112,6 +112,8 @@ class InvoiceItemsTable extends Table
      */
     public function findMinors(Query $query, $options)
     {
+        $query = $query->contain('ItemTypes')->where(['ItemTypes.deposit' => false]);
+
         if (!key_exists('application_id', $options)) {
             return $query
                 ->contain(['Invoices.Applications', 'ItemTypes'])
@@ -141,6 +143,8 @@ class InvoiceItemsTable extends Table
      */
     public function findAdults(Query $query, $options)
     {
+        $query = $query->contain('ItemTypes')->where(['ItemTypes.deposit' => false]);
+
         if (!key_exists('application_id', $options)) {
             return $query
                 ->contain(['Invoices.Applications', 'ItemTypes'])
@@ -159,6 +163,7 @@ class InvoiceItemsTable extends Table
      */
     public function findTotalQuantity($query)
     {
+        $query = $query->contain('ItemTypes')->where(['ItemTypes.deposit' => false]);
         $query = $query->select(['count' => $query->func()->sum('quantity')]);
 
         return $query;

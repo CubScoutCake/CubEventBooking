@@ -47,7 +47,7 @@
                         <?php endforeach; ?>
                         <?php
                         $total = $prices + $additional;
-                        for ($priceNum = $prices; $priceNum <= $additional; $priceNum ++) : ?>
+                        for ($priceNum = $prices; $priceNum < $total; $priceNum ++) : ?>
                             <tr>
                                 <td>
                                     <p>Price <?= $priceNum + 1 ?></p>
