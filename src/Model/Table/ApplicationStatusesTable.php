@@ -15,14 +15,13 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ApplicationStatus newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\ApplicationStatus[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\ApplicationStatus|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ApplicationStatus|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\ApplicationStatus saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\ApplicationStatus patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\ApplicationStatus[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\ApplicationStatus findOrCreate($search, callable $callback = null, $options = [])
  */
 class ApplicationStatusesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -63,7 +62,22 @@ class ApplicationStatusesTable extends Table
         $validator
             ->boolean('active')
             ->requirePresence('active', 'create')
-            ->allowEmptyString('active', false);
+            ->allowEmptyString('active');
+
+        $validator
+            ->boolean('no_money')
+            ->requirePresence('no_money', 'create')
+            ->allowEmptyString('no_money');
+
+        $validator
+            ->boolean('reserved')
+            ->requirePresence('reserved', 'create')
+            ->allowEmptyString('reserved');
+
+        $validator
+            ->boolean('attendees_added')
+            ->requirePresence('attendees_added', 'create')
+            ->allowEmptyString('attendees_added');
 
         return $validator;
     }

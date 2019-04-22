@@ -9,12 +9,14 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $application_status
  * @property bool $active
+ * @property bool $no_money
+ * @property bool $reserved
+ * @property bool $attendees_added
  *
  * @property \App\Model\Entity\Application[] $applications
  */
 class ApplicationStatus extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -27,6 +29,9 @@ class ApplicationStatus extends Entity
     protected $_accessible = [
         'application_status' => true,
         'active' => true,
+        'no_money' => true,
+        'reserved' => true,
+        'attendees_added' => true,
         'applications' => true
     ];
 }

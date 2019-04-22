@@ -379,88 +379,47 @@ class ApplicationsController extends AppController
         $bookingData = $this->request->getQueryParams();
 
         if (!isset($eventId) || !key_exists('section', $bookingData)) {
-            $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
+            return $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
         }
 
-        $attendees = $bookingData['section'];
-        $nonSectionAtts = $bookingData['non_section'];
-        $leaderAtts = $bookingData['leaders'];
         $bookingData['booking_type'] = 'hold';
-
         if (!$this->Availability->checkBooking($eventId, $bookingData, true)) {
-            $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
+            return $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
         }
 
         /** @var \App\Model\Entity\Event $event */
-        $event = $this->Applications->Events->get($eventId, ['contain' => ['EventTypes' => ['ApplicationRefs']]]);
-
-        /** @var \App\Model\Entity\Application $application */
-        $application = $this->Applications->newEntity();
-
         $userId = $this->Auth->user('id');
         /** @var \App\Model\Entity\User $user */
         $user = $this->Applications->Users->get($userId, ['contain' => ['Sections.SectionTypes.Roles']]);
-        $sectionId = $user['section_id'];
 
-        if ($this->request->is('post')) {
-            // Patch Data
+        $newData = [
+            'modification' => 0,
+            'user_id' => $user->id,
+            'section_id' => $user->section_id,
+            'event_id' => $eventId,
+            'invoice' => [
+                'user_id' => $user->id,
+            ],
+            'hold_numbers' => $bookingData,
+        ];
 
-            $newData = [
-                'modification' => 0,
-                'user_id' => $userId,
-                'section_id' => $sectionId,
-                'event_id' => $eventId,
-                'invoice' => [
-                    'user_id' => $userId,
-                ]
-            ];
+        /** @var \App\Model\Entity\Application $application */
+        $application = $this->Applications->newEntity($newData, ['associated' => ['Invoices']]);
 
-            $application = $this->Applications->patchEntity(
-                $application,
-                $newData,
-                ['associated' => [ 'Invoices' ]]
-            );
+        if ($this->Applications->save($application)) {
+            $this->loadComponent('Line');
+            $parse = $this->Line->parseInvoice($application->invoice->id);
 
-            $application = $this->Applications->patchEntity(
-                $application,
-                $this->request->getData(),
-                ['associated' => [ 'Attendees', 'Invoices' ]]
-            );
+            $this->Flash->success(__('Your Booking Reservation has been made.'));
 
-            foreach ($application->attendees as $idx => $attendee) {
-                $attendee['user_id'] = $userId;
-                $attendee['section_id'] = $sectionId;
-
-                $application->attendees[$idx] = $this->Applications->Attendees->checkDuplicate($attendee);
+            if ($parse) {
+                $this->Flash->success(__('Your Invoice has been created automatically.'));
             }
 
-            if ($this->Applications->save($application)) {
-                $appId = $application->get('id');
-
-                $this->loadComponent('Line');
-                $parse = $this->Line->parseInvoice($application->invoice->id);
-
-                $this->Flash->success(__('Your ' . $event->event_type->application_ref->text . ' has been registered.'));
-
-                if ($parse) {
-                    $this->Flash->success(__('Your Invoice has been created automatically.'));
-                }
-
-                return $this->redirect(['action' => 'view', $appId]);
-            } else {
-                $this->Flash->error(__('The application could not be saved. Please, try again.'));
-            }
+            return $this->redirect(['action' => 'view', $application->get('id')]);
+        } else {
+            $this->Flash->error(__('The application could not be saved. Please, try again.'));
         }
-
-        $this->set(compact('application', 'event', 'user', 'attendees', 'nonSectionAtts', 'leaderAtts'));
-
-        // Option Groups
-        $sectionRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->where(['id' => $user->section->section_type->role_id]);
-        $nonSectionRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('nonAuto')->find('minors')->where(['id <>' => $user->section->section_type->role_id]);
-        $leaderRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('leaders')->find('nonAuto');
-        $this->set(compact('sectionRoles', 'nonSectionRoles', 'leaderRoles'));
-
-        $this->set('_serialize', ['application']);
     }
 
     /**

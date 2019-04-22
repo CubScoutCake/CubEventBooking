@@ -11,7 +11,6 @@ use Cake\Utility\Security;
  */
 class ApplicationStatusesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -25,7 +24,7 @@ class ApplicationStatusesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.application_statuses',
+        'app.ApplicationStatuses',
     ];
 
     /**
@@ -64,6 +63,9 @@ class ApplicationStatusesTableTest extends TestCase
         $good = [
             'application_status' => 'Status ' . random_int(111, 999) . ' ' . random_int(111, 999),
             'active' => true,
+            'no_money' => true,
+            'reserved' => false,
+            'attendees_added' => false
         ];
 
         return $good;
@@ -80,13 +82,16 @@ class ApplicationStatusesTableTest extends TestCase
 
         $expected = [
             'id' => 1,
-            'application_status' => 'Lorem ipsum dolor sit amet',
+            'application_status' => 'New',
             'active' => 1,
+            'no_money' => 1,
+            'reserved' => 0,
+            'attendees_added' => 0,
         ];
         $this->assertEquals($expected, $actual);
 
         $count = $this->ApplicationStatuses->find('all')->count();
-        $this->assertEquals(1, $count);
+        $this->assertEquals(5, $count);
     }
 
     /**
@@ -104,6 +109,9 @@ class ApplicationStatusesTableTest extends TestCase
         $required = [
             'application_status',
             'active',
+            'no_money',
+            'reserved',
+            'attendees_added',
         ];
 
         foreach ($required as $require) {
@@ -135,7 +143,6 @@ class ApplicationStatusesTableTest extends TestCase
 
         $notEmpties = [
             'application_status',
-            'active',
         ];
 
         foreach ($notEmpties as $notEmpty) {

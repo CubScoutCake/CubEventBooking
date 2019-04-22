@@ -10,6 +10,7 @@ namespace App\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
 
 /**
  * Class ApplicationComponent
@@ -26,6 +27,31 @@ class AvailabilityComponent extends Component
     public $components = ['Flash'];
 
     /**
+     * Reserved Numbers
+     *
+     * @param \App\Model\Entity\Application $application The Application including ApplicationStatus
+     *
+     * @return array|bool
+     */
+    private function getReservedNumbers($application)
+    {
+        if ($application->application_status->reserved) {
+            if (key_exists('section', $application->hold_numbers)) {
+                foreach ($application->hold_numbers as $key => $value) {
+                    $newKey = 'Num' . Inflector::camelize($key);
+                    $results[$newKey] = $value;
+                }
+                $results['NumTeams'] = 1;
+                $results['Reserved'] = true;
+
+                return $results;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Retrieve an Array of Numbers for the Number of Attendees.
      *
      * @param int $applicationId The application to be analysed
@@ -34,10 +60,13 @@ class AvailabilityComponent extends Component
     public function getApplicationNumbers($applicationId)
     {
         $this->Applications = TableRegistry::getTableLocator()->get('Applications');
-        /**
-         * @var \App\Model\Entity\Application $application
-         */
-        $application = $this->Applications->get($applicationId, ['contain' => 'Events.SectionTypes.Roles']);
+        /** @var \App\Model\Entity\Application $application */
+        $application = $this->Applications->get($applicationId, ['contain' => [ 'Events.SectionTypes.Roles', 'ApplicationStatuses']]);
+
+        if (is_array($results = $this->getReservedNumbers($application))) {
+            return $results;
+        }
+
         $roleId = $application->event->section_type->role->id;
 
         $section = $this->Applications->find('section', ['role_id' => $roleId])->where(['Applications.id' => $applicationId])->count();
