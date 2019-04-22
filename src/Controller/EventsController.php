@@ -54,7 +54,7 @@ class EventsController extends AppController
 
         $this->loadComponent('Availability');
         $eventNumbers = $this->Availability->getEventApplicationNumbers($eventID);
-        $eventFull = $this->Availability->checkEventFull($eventID);
+        $eventFull = $this->Availability->checkEventFull($eventID, true);
 
         $readyForSync = false;
 
