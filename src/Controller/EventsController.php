@@ -13,6 +13,7 @@ use Cake\Utility\Inflector;
  *
  * @property \App\Model\Table\EventsTable $Events
  * @property \App\Controller\Component\ScoutManagerComponent $ScoutManager
+ * @property \App\Controller\Component\AvailabilityComponent $Availability
  */
 class EventsController extends AppController
 {
@@ -51,6 +52,10 @@ class EventsController extends AppController
         $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
         $max_section = $this->Events->getPriceSection($eventID);
 
+        $this->loadComponent('Availability');
+        $eventNumbers = $this->Availability->getEventApplicationNumbers($eventID);
+        $eventFull = $this->Availability->checkEventFull($eventID);
+
         $readyForSync = false;
 
         if ($checkArray['linked'] && $checkArray['sectionSet'] && $checkArray['termCurrent']) {
@@ -64,25 +69,15 @@ class EventsController extends AppController
         $syncForm = new SyncBookForm();
 
         if ($this->request->is('post')) {
-            if ($event->cc_apps >= $event->max_apps && $event->max_apps != 0 && $event->max && !is_null($event->cc_apps)) {
-                $this->Flash->error('This event is Full.');
-
-                return;
-            }
-
             $section = $this->request->getData('section');
             $nonSection = $this->request->getData('non_section');
             $leaders = $this->request->getData('leaders');
             $osm_event = $this->request->getData('osm_event');
-            $bookingType = $this->request->getData('booking_type');
+            $bookingData = $this->request->getData();
 
             if (!is_null($section)) {
-                if ($section > $max_section && $max_section != 0 && !is_null($max_section)) {
-                    $this->Flash->error('Booking Exceeds Maximum Numbers.');
-                }
-
-                if ($section <= $max_section || $max_section == 0 || is_null($max_section)) {
-                    switch ($bookingType) {
+                if ($this->Availability->checkBooking($eventID, $bookingData, true)) {
+                    switch ($bookingData['booking_type']) {
                         case 'list':
                             return $this->redirect([
                                 'controller' => 'Applications',
@@ -132,7 +127,7 @@ class EventsController extends AppController
             $term = $pluralTerm;
         }
 
-        $this->set(compact('event', 'term', 'attForm', 'holdForm', 'syncForm', 'section', 'non_section'));
+        $this->set(compact('event', 'term', 'attForm', 'syncForm', 'section', 'nonSection', 'eventNumbers', 'eventFull'));
         $this->set(compact('max_section', 'leaders', 'osmEvents', 'readyForSync', 'singleTerm'));
     }
 }

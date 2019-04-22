@@ -158,7 +158,7 @@ class ApplicationsControllerTest extends TestCase
         $this->get(['controller' => 'Applications', 'action' => 'simple_book', 2, '?' => ['section' => 7, 'non_section' => 1, 'leaders' => 1]]);
         $this->assertRedirect(['controller' => 'Events', 'action' => 'book', 2]);
         $this->assertFlashElement('Flash/error');
-        $this->assertFlashMessage('Event is nearly Full. Too many attendees.');
+        $this->assertFlashMessage('The team size is limited, please select fewer attendees.');
 
         $this->post(
             ['controller' => 'Applications', 'action' => 'simple_book', 2, '?' => ['section' => 6, 'non_section' => 1, 'leaders' => 1]],
@@ -216,6 +216,18 @@ class ApplicationsControllerTest extends TestCase
      */
     public function testHoldBook()
     {
+        $registry = new ComponentRegistry();
+        $this->Availability = new AvailabilityComponent($registry);
+
+        $numbers = $this->Availability->getEventApplicationNumbers(2);
+        $expected = [
+            'NumSection' => 5,
+            'NumNonSection' => 4,
+            'NumLeaders' => 1,
+            'NumTeams' => 1,
+        ];
+        $this->assertEquals($expected, $numbers);
+
         $this->enableRetainFlashMessages();
         $this->enableSecurityToken();
         $this->enableCsrfToken();
@@ -229,7 +241,7 @@ class ApplicationsControllerTest extends TestCase
         $this->post(['controller' => 'Applications', 'action' => 'hold_book', 2, '?' => ['section' => 7, 'non_section' => 1, 'leaders' => 1]]);
         $this->assertRedirect(['controller' => 'Events', 'action' => 'book', 2]);
         $this->assertFlashElement('Flash/error');
-        $this->assertFlashMessageAt(0, 'Event is nearly Full. Too many attendees.');
+        $this->assertFlashMessageAt(0, 'The team size is limited, please select fewer attendees.');
 
         $this->post(['controller' => 'Applications', 'action' => 'hold_book', 2, '?' => ['section' => 6, 'non_section' => 4, 'leaders' => 3]]);
         $this->assertFlashElement('Flash/success');
@@ -244,8 +256,16 @@ class ApplicationsControllerTest extends TestCase
 
         $this->assertEquals(['section' => '6', 'non_section' => '4', 'leaders' => '3', 'booking_type' => 'hold'], $application->hold_numbers);
 
-        $registry = new ComponentRegistry();
-        $this->Availability = new AvailabilityComponent($registry);
+        $numbers = $this->Availability->getEventApplicationNumbers(2);
+        $expected = [
+            'NumSection' => 11,
+            'NumNonSection' => 8,
+            'NumLeaders' => 4,
+            'NumTeams' => 2,
+            'BookingType' => 0,
+            'Reserved' => true,
+        ];
+        $this->assertEquals($expected, $numbers);
 
         $numbers = $this->Availability->getApplicationNumbers(4);
         $expectedNumbers = [
