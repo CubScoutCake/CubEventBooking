@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -94,5 +95,26 @@ class ApplicationStatusesTable extends Table
         $rules->add($rules->isUnique(['application_status']));
 
         return $rules;
+    }
+
+    /**
+     * install the application status config
+     *
+     * @return mixed
+     */
+    public function installBaseStatuses()
+    {
+        $base = Configure::read('applicationStatuses');
+
+        $total = 0;
+
+        foreach ($base as $baseStatus) {
+            $status = $this->newEntity($baseStatus);
+            if ($this->save($status)) {
+                $total += 1;
+            };
+        }
+
+        return $total;
     }
 }

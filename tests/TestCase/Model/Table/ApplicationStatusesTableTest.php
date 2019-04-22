@@ -192,4 +192,24 @@ class ApplicationStatusesTableTest extends TestCase
         $new = $this->ApplicationStatuses->newEntity($values);
         $this->assertFalse($this->ApplicationStatuses->save($new));
     }
+
+    /**
+     * Test installBaseCapabilities method
+     *
+     * @return void
+     */
+    public function testInstallBaseStatuses()
+    {
+        $before = $this->ApplicationStatuses->find('all')->count();
+
+        $installed = $this->ApplicationStatuses->installBaseStatuses();
+
+        $this->assertNotEquals($before, $installed);
+        $this->assertNotEquals(0, $installed);
+
+        $new = $before + $installed;
+        $after = $this->ApplicationStatuses->find('all')->count();
+
+        $this->assertEquals($new, $after);
+    }
 }

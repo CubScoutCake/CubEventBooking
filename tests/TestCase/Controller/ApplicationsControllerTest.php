@@ -2,6 +2,8 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ApplicationsController;
+use App\Controller\Component\AvailabilityComponent;
+use Cake\Controller\ComponentRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -9,6 +11,7 @@ use Cake\TestSuite\TestCase;
  * App\Controller\ApplicationsController Test Case
  *
  * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Controller\Component\AvailabilityComponent Availability
  */
 class ApplicationsControllerTest extends TestCase
 {
@@ -228,7 +231,7 @@ class ApplicationsControllerTest extends TestCase
         $this->assertFlashElement('Flash/error');
         $this->assertFlashMessageAt(0, 'Event is nearly Full. Too many attendees.');
 
-        $this->post(['controller' => 'Applications', 'action' => 'hold_book', 2, '?' => ['section' => 6, 'non_section' => 1, 'leaders' => 1]]);
+        $this->post(['controller' => 'Applications', 'action' => 'hold_book', 2, '?' => ['section' => 6, 'non_section' => 4, 'leaders' => 3]]);
         $this->assertFlashElement('Flash/success');
         $this->assertFlashMessageAt(0, 'Your Booking Reservation has been made.');
         $this->assertFlashMessageAt(1, 'Your Invoice has been created automatically.');
@@ -239,7 +242,21 @@ class ApplicationsControllerTest extends TestCase
             'Attendees.Roles',
         ]]);
 
-        $this->assertEquals(['section' => '6', 'non_section' => '1', 'leaders' => '1', 'booking_type' => 'hold'], $application->hold_numbers);
+        $this->assertEquals(['section' => '6', 'non_section' => '4', 'leaders' => '3', 'booking_type' => 'hold'], $application->hold_numbers);
+
+        $registry = new ComponentRegistry();
+        $this->Availability = new AvailabilityComponent($registry);
+
+        $numbers = $this->Availability->getApplicationNumbers(4);
+        $expectedNumbers = [
+            'NumSection' => '6',
+            'NumNonSection' => '4',
+            'NumLeaders' => '3',
+            'NumTeams' => '1',
+            'BookingType' => 'hold',
+            'Reserved' => true,
+        ];
+        $this->assertEquals($expectedNumbers, $numbers);
 
         /**
          * @var \App\Model\Entity\Invoice $invoice

@@ -35,10 +35,15 @@ class AvailabilityComponent extends Component
      */
     private function getReservedNumbers($application)
     {
+        $numTerms = ['Section', 'NonSection', 'Leaders'];
+
         if ($application->application_status->reserved) {
             if (key_exists('section', $application->hold_numbers)) {
                 foreach ($application->hold_numbers as $key => $value) {
-                    $newKey = 'Num' . Inflector::camelize($key);
+                    $newKey = Inflector::camelize($key);
+                    if (in_array($newKey, $numTerms)) {
+                        $newKey = 'Num' . $newKey;
+                    }
                     $results[$newKey] = $value;
                 }
                 $results['NumTeams'] = 1;

@@ -392,6 +392,9 @@ class ApplicationsController extends AppController
         /** @var \App\Model\Entity\User $user */
         $user = $this->Applications->Users->get($userId, ['contain' => ['Sections.SectionTypes.Roles']]);
 
+        $this->Applications->ApplicationStatuses->installBaseStatuses();
+        $status = $this->Applications->ApplicationStatuses->find('all')->where(['application_status' => 'Reserved'])->first();
+
         $newData = [
             'modification' => 0,
             'user_id' => $user->id,
@@ -400,6 +403,7 @@ class ApplicationsController extends AppController
             'invoice' => [
                 'user_id' => $user->id,
             ],
+            'application_status_id' => $status->id,
             'hold_numbers' => $bookingData,
         ];
 

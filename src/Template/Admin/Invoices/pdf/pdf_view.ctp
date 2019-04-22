@@ -55,9 +55,7 @@
         </table>
     <?php endif; ?>
         <div class="warning">
-
-            <p>Deposits for invoices should be made payable to <strong><?= h($invPayable) ?></strong> and sent to <strong><?= h($eventName) ?>, <?= h($invAddress) ?>, <?= h($invCity) ?>, <?= h($invPostcode) ?></strong> by <strong><?= $this->Time->i18nformat($invDeadline,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invPrefix) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
-
+            <?= $this->element('terms', ['invoice' => $invoice]) ?>
         </div>
     </div>
     <div class="related">
