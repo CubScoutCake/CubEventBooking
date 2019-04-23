@@ -10,46 +10,50 @@ class EventsControllerTest extends IntegrationTestCase
 {
 
     public $fixtures = [
-        'app.allergies',
-        'app.application_statuses',
-        'app.applications',
-        'app.attendees',
-        'app.attendees_allergies',
-        'app.auth_roles',
-        'app.champions',
-        'app.discounts',
+        'app.sessions',
         'app.districts',
-        'app.email_response_types',
-        'app.email_responses',
-        'app.email_sends',
-        'app.event_statuses',
-        'app.event_types',
-        'app.events',
-        'app.invoice_items',
-        'app.invoices',
-        'app.invoices_payments',
-        'app.item_types',
-        'app.logistic_items',
-        'app.logistics',
-        'app.notes',
-        'app.notification_types',
-        'app.notifications',
-        'app.parameter_sets',
-        'app.parameters',
-        'app.params',
-        'app.password_states',
-        'app.payments',
-        'app.prices',
-        'app.reservation_statuses',
-        'app.reservations',
-        'app.roles',
         'app.scoutgroups',
         'app.section_types',
         'app.sections',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
+        'app.application_statuses',
         'app.setting_types',
         'app.settings',
-        'app.users',
-        'app.sessions',
+        'app.event_types',
+        'app.event_statuses',
+        'app.discounts',
+        'app.events',
+        'app.prices',
+        'app.applications',
+        'app.task_types',
+        'app.tasks',
+        'app.attendees',
+        'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.invoices',
+        'app.invoice_items',
+        'app.payments',
+        'app.invoices_payments',
+        'app.notes',
+        'app.parameter_sets',
+        'app.parameters',
+        'app.params',
+        'app.logistics',
+        'app.logistic_items',
+        'app.email_sends',
+        'app.tokens',
+        'app.email_response_types',
+        'app.email_responses',
+        'app.champions',
     ];
 
     /**
@@ -132,13 +136,13 @@ class EventsControllerTest extends IntegrationTestCase
 
         /** @var \App\Model\Entity\Event $limitedEvent */
 
-        $limitedEvent = $events->get(3, ['contain' => 'Prices']);
+        $limitedEvent = $events->get(2, ['contain' => 'Prices']);
 
         $this->assertTrue($limitedEvent->max);
         $this->assertEquals(2, $limitedEvent->max_apps);
         foreach ($limitedEvent->prices as $price) {
-            if ($price->item_type_id == 2) {
-                $this->assertEquals(5, $price->max_number);
+            if ($price->item_type_id == 1) {
+                $this->assertEquals(6, $price->max_number);
             }
         }
 
@@ -146,26 +150,26 @@ class EventsControllerTest extends IntegrationTestCase
         $this->enableSecurityToken();
         $this->enableRetainFlashMessages();
 
-        $this->post('/events/book/3', ['section' => 6, 'non_section' => 2, 'leaders' => 3]);
+        $this->post('/events/book/2', ['section' => 7, 'non_section' => 2, 'leaders' => 3]);
 
         $this->assertNoRedirect();
         $this->assertFlashElement('Flash/error');
-        $this->assertFlashMessage('Booking Exceeds Maximum Numbers.');
+        $this->assertFlashMessage('The team size is limited, please select fewer attendees.');
 
-        $this->post('/events/book/3', ['section' => 5, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'list']);
-        $this->assertRedirect(['controller' => 'Applications', 'action' => 'simple_book', 3, '?' => ['section' => 5, 'non_section' => 2, 'leaders' => 3]]);
+        $this->post('/events/book/2', ['section' => 5, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'list']);
+        $this->assertRedirect(['controller' => 'Applications', 'action' => 'simple_book', 2, '?' => ['section' => 5, 'non_section' => 2, 'leaders' => 3]]);
 
-        $this->post('/events/book/3', ['section' => 5, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'hold']);
-        $this->assertRedirect(['controller' => 'Applications', 'action' => 'hold_book', 3, '?' => ['section' => 5, 'non_section' => 2, 'leaders' => 3]]);
+        $this->post('/events/book/2', ['section' => 5, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'hold']);
+        $this->assertRedirect(['controller' => 'Applications', 'action' => 'hold_book', 2, '?' => ['section' => 5, 'non_section' => 2, 'leaders' => 3]]);
 
         $limitedEvent->set('max_apps', 1);
         $limitedEvent = $events->save($limitedEvent);
 
         $this->assertEquals(1, $limitedEvent->max_apps);
 
-        $this->post('/events/book/3', ['section' => 5, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'list']);
+        $this->post('/events/book/2', ['section' => 5, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'list']);
         $this->assertNoRedirect();
         $this->assertFlashElement('Flash/error');
-        $this->assertFlashMessage('This event is Full.');
+        $this->assertFlashMessage('Apologies this Event is Full.');
     }
 }

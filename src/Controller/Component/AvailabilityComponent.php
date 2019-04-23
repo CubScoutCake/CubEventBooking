@@ -296,7 +296,7 @@ class AvailabilityComponent extends Component
         $this->Applications = TableRegistry::getTableLocator()->get('Applications');
         $applicationCount = $this->Applications->find('all')->where(['event_id' => $event->id])->count();
 
-        if ($applicationCount > $event->max_apps) {
+        if ($applicationCount >= $event->max_apps) {
             if ($flash) {
                 $this->Flash->error(__('Apologies this Event is Full.'));
             }

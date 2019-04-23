@@ -68,15 +68,15 @@ class EventsController extends AppController
         $attForm = new AttNumberForm();
         $syncForm = new SyncBookForm();
 
-        if ($this->request->is('post')) {
-            $section = $this->request->getData('section');
-            $nonSection = $this->request->getData('non_section');
-            $leaders = $this->request->getData('leaders');
-            $osm_event = $this->request->getData('osm_event');
+        if ($this->request->is('post') && !$eventFull) {
             $bookingData = $this->request->getData();
-
-            if (!is_null($section)) {
+            if (!empty($this->request->getData('section'))) {
                 if ($this->Availability->checkBooking($eventID, $bookingData, true)) {
+                    $redirectArray = [
+                        'section' => $bookingData['section'],
+                        'non_section' => $bookingData['non_section'],
+                        'leaders' => $bookingData['leaders'],
+                    ];
                     switch ($bookingData['booking_type']) {
                         case 'list':
                             return $this->redirect([
@@ -84,11 +84,7 @@ class EventsController extends AppController
                                 'action' => 'simple_book',
                                 'prefix' => false,
                                 $event->id,
-                                '?' => [
-                                    'section' => $section,
-                                    'non_section' => $nonSection,
-                                    'leaders' => $leaders,
-                                ],
+                                '?' => $redirectArray,
                             ]);
                         case 'hold':
                             return $this->redirect([
@@ -96,11 +92,7 @@ class EventsController extends AppController
                                 'action' => 'hold_book',
                                 'prefix' => false,
                                 $event->id,
-                                '?' => [
-                                    'section' => $section,
-                                    'non_section' => $nonSection,
-                                    'leaders' => $leaders,
-                                ],
+                                '?' => $redirectArray,
                             ]);
                         default:
                             break;
@@ -108,13 +100,13 @@ class EventsController extends AppController
                 }
             }
 
-            if (!is_null($osm_event)) {
+            if (!is_null($bookingData['osm_event'])) {
                 $this->redirect([
                     'controller' => 'Applications',
                     'action' => 'sync_book',
                     'prefix' => false,
                     $event->id,
-                    $osm_event
+                    $bookingData['osm_event']
                 ]);
             }
         }
@@ -127,7 +119,7 @@ class EventsController extends AppController
             $term = $pluralTerm;
         }
 
-        $this->set(compact('event', 'term', 'attForm', 'syncForm', 'section', 'nonSection', 'eventNumbers', 'eventFull'));
-        $this->set(compact('max_section', 'leaders', 'osmEvents', 'readyForSync', 'singleTerm'));
+        $this->set(compact('event', 'term', 'attForm', 'syncForm', 'eventNumbers', 'eventFull'));
+        $this->set(compact('max_section', 'osmEvents', 'readyForSync', 'singleTerm'));
     }
 }
