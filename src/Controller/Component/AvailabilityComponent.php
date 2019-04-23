@@ -89,6 +89,36 @@ class AvailabilityComponent extends Component
     }
 
     /**
+     * Get all of the Numbers for an Event
+     *
+     * @param int $eventId The ID of the Event
+     *
+     * @return array
+     */
+    public function getEventApplicationNumbers($eventId)
+    {
+        $this->Events = TableRegistry::getTableLocator()->get('Events');
+        $event = $this->Events->get($eventId, ['contain' => 'Applications']);
+
+        $results = [
+            'NumSection' => 0,
+            'NumNonSection' => 0,
+            'NumLeaders' => 0,
+            'NumTeams' => 0,
+        ];
+
+        foreach ($event->applications as $application) {
+            $appResults = $this->getApplicationNumbers($application->id);
+
+            foreach ($appResults as $appResult => $value) {
+                $results[$appResult] += $value;
+            }
+        }
+
+        return $results;
+    }
+
+    /**
      * function to get Invoice Numbers
      *
      * @param int $invoiceID the Invoice to be analysed
@@ -170,7 +200,8 @@ class AvailabilityComponent extends Component
         $results = [
             'NumSection' => $section,
             'NumNonSection' => $nonSection,
-            'NumLeaders' => $leaders
+            'NumLeaders' => $leaders,
+            'NumTeams' => $event->cc_apps,
         ];
 
         return $results;
@@ -257,11 +288,15 @@ class AvailabilityComponent extends Component
             return true;
         }
 
+        if ($event->max_apps == 0 || is_null($event->max_apps)) {
+            return true;
+        }
+
         /** @var \App\Model\Table\ApplicationsTable Applications */
         $this->Applications = TableRegistry::getTableLocator()->get('Applications');
         $applicationCount = $this->Applications->find('all')->where(['event_id' => $event->id])->count();
 
-        if ($applicationCount > $event->max_apps) {
+        if ($applicationCount >= $event->max_apps) {
             if ($flash) {
                 $this->Flash->error(__('Apologies this Event is Full.'));
             }
@@ -289,13 +324,24 @@ class AvailabilityComponent extends Component
         $this->Events = TableRegistry::getTableLocator()->get('Events');
         $maxSection = $this->Events->getPriceSection($event->id);
 
-        if ($maxSection == 0 || is_null($maxSection)) {
+        if ($sectionNumbers > $maxSection && !$maxSection == 0 && !is_null($maxSection)) {
+            if ($flash) {
+                $this->Flash->error(__('The team size is limited, please select fewer attendees.'));
+            }
+
+            return false;
+        }
+
+        if ($event->max_section == 0 || is_null($event->max_section)) {
             return true;
         }
 
-        if ($sectionNumbers > $maxSection) {
+        $overallNumbers = $this->getEventNumbers($event->id);
+        $testNumbers = $sectionNumbers + $overallNumbers['NumSection'];
+
+        if ($testNumbers >= $event->max_section) {
             if ($flash) {
-                $this->Flash->error(__('Event is nearly Full. Too many attendees.'));
+                $this->Flash->error(__('The Event is Nearly Full, please reduce your numbers and try again.'));
             }
 
             return false;
@@ -342,5 +388,34 @@ class AvailabilityComponent extends Component
         }
 
         return true;
+    }
+
+    /**
+     * Check if an Event is Full
+     *
+     * @param int $eventId The ID of the Event
+     * @param bool $flash Do Flash Messages
+     *
+     * @return bool
+     */
+    public function checkEventFull($eventId, $flash)
+    {
+        $this->Events = TableRegistry::getTableLocator()->get('Events');
+        $event = $this->Events->get($eventId, [
+            'contain' => [
+                'SectionTypes.Roles',
+                'EventTypes',
+            ]
+        ]);
+
+        if (!$this->checkEventOpen($event, $flash)) {
+            return true;
+        }
+
+        if (!$this->checkBookingApp($event, $flash)) {
+            return true;
+        }
+
+        return false;
     }
 }

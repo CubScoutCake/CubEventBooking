@@ -57,6 +57,8 @@ class Invoice extends Entity
      * Specify the balance of the invoice as determined by balance less payments.
      *
      * @return mixed
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getBalance()
     {
@@ -67,6 +69,8 @@ class Invoice extends Entity
      * Build the display code property.
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getDisplayCode()
     {

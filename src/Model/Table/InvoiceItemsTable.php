@@ -9,20 +9,20 @@ use Cake\Validation\Validator;
 /**
  * InvoiceItems Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Invoices
- * @property \Cake\ORM\Association\BelongsTo $ItemTypes
+ * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\BelongsTo $Invoices
+ * @property \App\Model\Table\ItemTypesTable|\Cake\ORM\Association\BelongsTo $ItemTypes
  *
  * @method \App\Model\Entity\InvoiceItem get($primaryKey, $options = [])
  * @method \App\Model\Entity\InvoiceItem newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\InvoiceItem[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\InvoiceItem|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\InvoiceItem saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\InvoiceItem patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\InvoiceItem[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\InvoiceItem findOrCreate($search, callable $callback = null, $options = [])
  */
 class InvoiceItemsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -69,22 +69,28 @@ class InvoiceItemsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->numeric('value')
-            ->allowEmpty('value');
+            ->allowEmptyString('value');
 
         $validator
-            ->allowEmpty('description');
+            ->scalar('description')
+            ->maxLength('description', 255)
+            ->allowEmptyString('description');
 
         $validator
             ->integer('quantity')
-            ->allowEmpty('quantity');
+            ->allowEmptyString('quantity');
 
         $validator
             ->boolean('visible')
-            ->allowEmpty('visible');
+            ->allowEmptyString('visible');
+
+        $validator
+            ->boolean('schedule_line')
+            ->allowEmptyString('schedule_line');
 
         return $validator;
     }

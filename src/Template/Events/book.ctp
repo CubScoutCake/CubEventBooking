@@ -6,6 +6,8 @@
  * @var string $singleTerm
  * @var bool $readyForSync
  * @var array $osmEvents
+ * @var array $eventNumbers
+ * @var bool $eventFull
  *
  * @var \App\Form\AttNumberForm $attForm
  * @var \App\Form\AttNumberForm $holdForm
@@ -21,7 +23,7 @@
 </div>
 <br/>
 <?php if ($event->new_apps && $event->complete) : ?>
-    <?php if ($event->app_full) : ?>
+    <?php if ($event->app_full || $eventFull) : ?>
         <div class="row">
             <div class="col-lg-12">
                 <div class="row">
@@ -45,7 +47,7 @@
             </div>
         </div>
     <?php endif; ?>
-    <?php if (!$event->app_full) : ?>
+    <?php if (!$event->app_full && !$eventFull) : ?>
         <?php if ($event->event_type->display_availability && $event->max) : ?>
             <div class="row">
                 <?php if ($event->max_apps > 0 && !is_null($event->max_apps)) : ?>
@@ -90,8 +92,8 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="progress progress-striped active">
-                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($event->cc_apps / $event->max_section) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($event->cc_apps / $event->max_section),1,['multiply' => true]); ?>">
-                                    <span class="sr-only"><?= $this->Number->toPercentage(($event->cc_apps / $event->max_section),1,['multiply' => true]); ?> Complete</span>
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($eventNumbers['NumSection'] / $event->max_section) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($event->cc_apps / $event->max_section),1,['multiply' => true]); ?>">
+                                    <span class="sr-only"><?= $this->Number->toPercentage(($eventNumbers['NumSection'] / $event->max_section),1,['multiply' => true]); ?> Complete</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -100,7 +102,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div>Event Availability</div>
-                                    <div><h2><?= $this->Number->format($event->max_section - $event->cc_apps) ?> Attendee Slots Available</h2></div>
+                                    <div><h2><?= $this->Number->format($event->max_section - $eventNumbers['NumSection']) ?> Attendee Slots Available</h2></div>
                                 </div>
                             </div>
                         </div>

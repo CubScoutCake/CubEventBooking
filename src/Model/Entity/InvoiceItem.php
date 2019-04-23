@@ -8,11 +8,13 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $invoice_id
- * @property float $value
- * @property string $description
- * @property int $quantity
- * @property int $item_type_id
- * @property bool $visible
+ * @property float|null $value
+ * @property string|null $description
+ * @property int|null $quantity
+ * @property int|null $item_type_id
+ * @property bool|null $visible
+ * @property bool $schedule_line
+ *
  * @property float $quantity_price
  *
  * @property \App\Model\Entity\Invoice $invoice
@@ -20,7 +22,6 @@ use Cake\ORM\Entity;
  */
 class InvoiceItem extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -31,14 +32,23 @@ class InvoiceItem extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false
+        'invoice_id' => true,
+        'value' => true,
+        'description' => true,
+        'quantity' => true,
+        'item_type_id' => true,
+        'visible' => true,
+        'schedule_line' => true,
+        'invoice' => true,
+        'item_type' => true
     ];
 
     /**
      * Find the price of the invoice item specified.
      *
      * @return mixed
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getQuantityPrice()
     {

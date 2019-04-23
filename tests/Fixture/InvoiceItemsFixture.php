@@ -22,6 +22,7 @@ class InvoiceItemsFixture extends TestFixture
         'quantity' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'item_type_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'visible' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+        'schedule_line' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
         '_indexes' => [
             'invoice_items_invoice_id' => ['type' => 'index', 'columns' => ['invoice_id'], 'length' => []],
             'invoice_items_itemtype_id' => ['type' => 'index', 'columns' => ['item_type_id'], 'length' => []],
@@ -47,7 +48,8 @@ class InvoiceItemsFixture extends TestFixture
                 'description' => 'CUBS',
                 'quantity' => 5,
                 'item_type_id' => 2,
-                'visible' => 1
+                'visible' => 1,
+                'schedule_line' => 0
             ],
             [
                 'invoice_id' => 1,
@@ -55,7 +57,8 @@ class InvoiceItemsFixture extends TestFixture
                 'description' => 'YOUNG LEADERS',
                 'quantity' => 4,
                 'item_type_id' => 5,
-                'visible' => 1
+                'visible' => 1,
+                'schedule_line' => 0
             ],
             [
                 'invoice_id' => 1,
@@ -63,7 +66,8 @@ class InvoiceItemsFixture extends TestFixture
                 'description' => 'LEADERS',
                 'quantity' => 1,
                 'item_type_id' => 6,
-                'visible' => 1
+                'visible' => 1,
+                'schedule_line' => 0,
             ],
         ];
         parent::init();

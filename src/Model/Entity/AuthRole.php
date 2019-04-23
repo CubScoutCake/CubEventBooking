@@ -17,6 +17,8 @@ use Cake\ORM\Entity;
  * @property int $auth_value
  *
  * @property \App\Model\Entity\User[] $users
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class AuthRole extends Entity
 {
@@ -39,6 +41,10 @@ class AuthRole extends Entity
      * Virtual property to get a binary hash of the auth permissions.
      *
      * @return int
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function _getAuthValue()
     {

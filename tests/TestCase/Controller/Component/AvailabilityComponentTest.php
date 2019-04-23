@@ -129,6 +129,66 @@ class AvailabilityComponentTest extends TestCase
      *
      * @return void
      */
+    public function testGetEventApplicationNumbers()
+    {
+        // Application 1
+        $numbers = $this->Availability->getEventApplicationNumbers(2);
+
+        $expected = [
+            'NumSection' => 5,
+            'NumNonSection' => 4,
+            'NumLeaders' => 1,
+            'NumTeams' => 1,
+        ];
+        $this->assertEquals($expected, $numbers);
+
+        // Event 3
+        $numbers = $this->Availability->getEventApplicationNumbers(3);
+
+        $expected = [
+            'NumSection' => 5,
+            'NumNonSection' => 5,
+            'NumLeaders' => 2,
+            'NumTeams' => 1,
+        ];
+        $this->assertEquals($expected, $numbers);
+    }
+
+    /**
+     * Test getApplicationNumbers method
+     *
+     * @return void
+     */
+    public function testGetEventNumbers()
+    {
+        // Application 1
+        $numbers = $this->Availability->getEventNumbers(2);
+
+        $expected = [
+            'NumSection' => 5,
+            'NumNonSection' => 4,
+            'NumLeaders' => 1,
+            'NumTeams' => 1,
+        ];
+        $this->assertEquals($expected, $numbers);
+
+        // Event 3
+        $numbers = $this->Availability->getEventNumbers(3);
+
+        $expected = [
+            'NumSection' => 5,
+            'NumNonSection' => 5,
+            'NumLeaders' => 2,
+            'NumTeams' => 1,
+        ];
+        $this->assertEquals($expected, $numbers);
+    }
+
+    /**
+     * Test getApplicationNumbers method
+     *
+     * @return void
+     */
     public function testGetReservedNumbers()
     {
         // Application 1

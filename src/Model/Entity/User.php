@@ -133,6 +133,8 @@ class User extends Entity
      *
      * @param string $value This is the password as entered to be hashed.
      * @return bool|string
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _setPassword($value)
     {
@@ -152,6 +154,8 @@ class User extends Entity
      * Specifies the method for building up a user's full name.
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getFullName()
     {
