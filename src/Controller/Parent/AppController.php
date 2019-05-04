@@ -30,6 +30,8 @@ class AppController extends Controller
     /**
      * Initialise Function - Setup Application Config
      * @return void
+     *
+     * @throws \Exception
      */
     public function initialize()
     {
@@ -62,6 +64,6 @@ class AppController extends Controller
      */
     public function isAuthorized($user)
     {
-        return true;
+        return false;
     }
 }

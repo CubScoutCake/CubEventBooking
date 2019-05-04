@@ -2,29 +2,9 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Reservation $reservation
+ * @var \App\Model\Entity\Event $event
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Reservation'), ['action' => 'edit', $reservation->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Reservation'), ['action' => 'delete', $reservation->id], ['confirm' => __('Are you sure you want to delete # {0}?', $reservation->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Reservations'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Reservation'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Events'), ['controller' => 'Events', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Event'), ['controller' => 'Events', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Attendees'), ['controller' => 'Attendees', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Attendee'), ['controller' => 'Attendees', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Reservation Statuses'), ['controller' => 'ReservationStatuses', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Reservation Status'), ['controller' => 'ReservationStatuses', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Invoices'), ['controller' => 'Invoices', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Invoice'), ['controller' => 'Invoices', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Logistic Items'), ['controller' => 'LogisticItems', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Logistic Item'), ['controller' => 'LogisticItems', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
 <div class="reservations view large-9 medium-8 columns content">
     <h3><?= h($reservation->id) ?></h3>
     <table class="vertical-table">
@@ -108,35 +88,19 @@
         </table>
         <?php endif; ?>
     </div>
-    <div class="related">
-        <h4><?= __('Related Logistic Items') ?></h4>
-        <?php if (!empty($reservation->logistic_items)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Application Id') ?></th>
-                <th scope="col"><?= __('Logistic Id') ?></th>
-                <th scope="col"><?= __('Param Id') ?></th>
-                <th scope="col"><?= __('Deleted') ?></th>
-                <th scope="col"><?= __('Reservation Id') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($reservation->logistic_items as $logisticItems): ?>
-            <tr>
-                <td><?= h($logisticItems->id) ?></td>
-                <td><?= h($logisticItems->application_id) ?></td>
-                <td><?= h($logisticItems->logistic_id) ?></td>
-                <td><?= h($logisticItems->param_id) ?></td>
-                <td><?= h($logisticItems->deleted) ?></td>
-                <td><?= h($logisticItems->reservation_id) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'LogisticItems', 'action' => 'view', $logisticItems->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'LogisticItems', 'action' => 'edit', $logisticItems->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'LogisticItems', 'action' => 'delete', $logisticItems->id], ['confirm' => __('Are you sure you want to delete # {0}?', $logisticItems->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
+    <p>
+        Deposits for invoices should be made payable to <strong>
+            <?= h($reservation->event->event_type->payable->text) ?>
+        </strong> and sent to
+        <strong><?= h($reservation->event->name) ?>,
+            <?= h($reservation->event->admin_user->address_1) ?>,
+            <?= $reservation->event->admin_user->has('address_2') && !empty($reservation->event->admin_user->address_2) ? h($reservation->event->admin_user->address_2) . ', ' : '' ?>
+            <?= h($reservation->event->admin_user->city) ?>, <?= h($reservation->event->admin_user->county) ?>.
+            <?= h($reservation->event->admin_user->postcode) ?>
+        </strong> by <strong>
+            <?= $this->Time->i18nformat($reservation->expires,'dd-MMM-yyyy') ?>
+        </strong>. Please write <strong>
+            <?= $this->Number->format($reservation->id) ?>-<?= $this->Number->format($reservation->user->id) ?>-<?= h($reservation->reservation_code) ?>
+        </strong> on the back of the cheque.
+    </p>
 </div>

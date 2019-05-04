@@ -126,7 +126,7 @@ class AttendeesTable extends Table
 
         $validator
             ->date('dateofbirth')
-            ->allowEmpty('dateofbirth');
+            ->allowEmptyString('dateofbirth');
 
         $validator
             ->scalar('phone')

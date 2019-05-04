@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\AuthRole $authRole
+ */
+?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -17,11 +23,14 @@
     <fieldset>
         <legend><?= __('Edit Auth Role') ?></legend>
         <?php
-            echo $this->Form->input('auth_role');
-            echo $this->Form->input('admin_access');
-            echo $this->Form->input('champion_access');
-            echo $this->Form->input('super_user');
-            echo $this->Form->input('auth');
+            echo $this->Form->control('auth_role');
+            echo $this->Form->control('admin_access');
+            echo $this->Form->control('champion_access');
+            echo $this->Form->control('super_user');
+            echo $this->Form->control('auth');
+            echo $this->Form->control('parent_access');
+            echo $this->Form->control('user_access');
+            echo $this->Form->control('section_limited');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

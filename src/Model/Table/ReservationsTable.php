@@ -80,20 +80,32 @@ class ReservationsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
-            ->dateTime('deleted')
-            ->allowEmpty('deleted');
+            ->allowEmptyString('user_id', false)
+            ->requirePresence('user_id');
+
+        $validator
+            ->allowEmptyString('attendee_id', false)
+            ->requirePresence('attendee_id');
+
+        $validator
+            ->allowEmptyString('event_id', false)
+            ->requirePresence('event_id');
+
+        $validator
+            ->allowEmptyString('reservation_status_id', false)
+            ->requirePresence('reservation_status_id');
 
         $validator
             ->dateTime('expires')
-            ->allowEmpty('expires');
+            ->allowEmptyDateTime('expires');
 
         $validator
             ->scalar('reservation_code')
-            ->maxLength('reservation_code', 255)
-            ->allowEmpty('reservation_code');
+            ->maxLength('reservation_code', 3)
+            ->allowEmptyString('reservation_code');
 
         return $validator;
     }
@@ -113,5 +125,18 @@ class ReservationsTable extends Table
         $rules->add($rules->existsIn(['reservation_status_id'], 'ReservationStatuses'));
 
         return $rules;
+    }
+
+    /**
+     * Ownership test function for Authentication.
+     *
+     * @param int $reservationId The Application Id to be checked.
+     * @param int $userId The asserted User.
+     *
+     * @return bool
+     */
+    public function isOwnedBy($reservationId, $userId)
+    {
+        return $this->exists(['id' => $reservationId, 'user_id' => $userId]);
     }
 }

@@ -334,6 +334,96 @@ class UsersTable extends Table
     }
 
     /**
+     * Parent User Validation
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationParent($validator)
+    {
+        $validator
+            ->integer('id')
+            ->allowEmptyString('id', 'create');
+
+        $validator
+            ->scalar('firstname')
+            ->maxLength('firstname', 125)
+            ->requirePresence('firstname', 'create')
+            ->allowEmptyString('firstname', false);
+
+        $validator
+            ->scalar('lastname')
+            ->maxLength('lastname', 125)
+            ->requirePresence('lastname', 'create')
+            ->allowEmptyString('lastname', false);
+
+        $validator
+            ->email('email')
+            ->requirePresence('email', 'create')
+            ->allowEmptyString('email', false);
+
+        $validator
+            ->scalar('password')
+            ->maxLength('password', 255)
+            ->requirePresence('password', 'create')
+            ->allowEmptyString('password', false);
+
+        $validator
+            ->scalar('phone')
+            ->maxLength('phone', 12)
+            ->requirePresence('phone', 'create')
+            ->allowEmptyString('phone', false);
+
+        $validator
+            ->scalar('address_1')
+            ->maxLength('address_1', 255)
+            ->requirePresence('address_1', 'create')
+            ->allowEmptyString('address_1', false);
+
+        $validator
+            ->scalar('address_2')
+            ->maxLength('address_2', 255)
+            ->allowEmptyString('address_2');
+
+        $validator
+            ->scalar('city')
+            ->maxLength('city', 125)
+            ->requirePresence('city', 'create')
+            ->allowEmptyString('city', false);
+
+        $validator
+            ->scalar('county')
+            ->maxLength('county', 125)
+            ->requirePresence('county', 'create')
+            ->allowEmptyString('county', false);
+
+        $validator
+            ->scalar('postcode')
+            ->maxLength('postcode', 8)
+            ->requirePresence('postcode', 'create')
+            ->allowEmptyString('postcode', false);
+
+        $validator
+            ->scalar('username')
+            ->maxLength('username', 45)
+            ->requirePresence('username', 'create')
+            ->allowEmptyString('username', false)
+            ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->integer('role_id')
+            ->requirePresence('role_id', 'create')
+            ->allowEmptyString('role_id', false);
+
+        $validator
+            ->integer('auth_role_id')
+            ->requirePresence('auth_role_id', 'create')
+            ->allowEmptyString('auth_role_id', false);
+
+        return $validator;
+    }
+
+    /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *

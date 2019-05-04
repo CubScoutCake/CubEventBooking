@@ -2,18 +2,16 @@
 namespace App\Controller\Admin;
 
 use Cake\Cache\Cache;
-use Cake\Http\ServerRequest;
-use Cake\I18n\Time;
+use Cake\Event\Event;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
-use Cake\Utility\Security;
-
-//use DataTables\Controller\Component;
 
 /**
  * Users Controller
  *
  * @property \App\Model\Table\UsersTable $Users
+ *
+ * @property \App\Controller\Component\PasswordComponent $Password
  */
 class UsersController extends AppController
 {
@@ -23,13 +21,13 @@ class UsersController extends AppController
      * Setup the User Search Config
      *
      * @return void
+     *
+     * @throws \Exception
      */
     public function initialize()
     {
         parent::initialize();
         $this->loadComponent('Search.Prg', [
-            // This is default config. You can modify "actions" as needed to make
-            // the PRG component work only for specified methods.
             'actions' => ['index', 'lookup']
         ]);
     }
@@ -41,20 +39,23 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $this->Sections = TableRegistry::get('Sections');
-        $section = $this->Sections->get($this->Auth->user('section_id'));
+        /** @var \App\Model\Entity\Section $section */
+        $section = $this->Users->Sections->get($this->Auth->user('section_id'));
 
         $query = $this->Users
             ->find('search', ['search' => $this->request->getQueryParams()])
             ->contain(['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes', 'AuthRoles'])
-            ->where(['SectionTypes.id' => $section['section_type_id']]);
+            ->where([
+                'SectionTypes.id' => $section->section_type_id,
+                'AuthRoles.user_access' => true,
+            ]);
 
         $this->set('users', $this->paginate($query));
 
         $this->paginate = [
             'contain' => ['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes'],
             'order' => ['last_login' => 'DESC'],
-            'conditions' => ['SectionTypes.id' => $section['section_type_id']]
+            'conditions' => ['SectionTypes.id' => $section->section_type_id]
         ];
         //$this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
@@ -77,13 +78,14 @@ class UsersController extends AppController
     /**
      * View method
      *
-     * @param string|null $id User id.
+     * @param string|null $userId User id.
+     *
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($userId = null)
     {
-        $user = $this->Users->get($id, [
+        $user = $this->Users->get($userId, [
             'contain' => ['Roles',
                 'Sections.Scoutgroups',
                 'Applications' => ['Sections.Scoutgroups', 'Events'],
@@ -95,9 +97,7 @@ class UsersController extends AppController
             ]
         ]);
 
-        $atts = TableRegistry::get('Attendees');
-
-        $numOSM = $atts->find('osm')->where(['user_id' => $user->id])->count();
+        $numOSM = $this->Users->Attendees->find('osm')->where(['user_id' => $user->id])->count();
 
         $this->set(compact('user', 'numOSM'));
         $this->set('_serialize', ['user']);
@@ -107,6 +107,8 @@ class UsersController extends AppController
      * Add method
      *
      * @return \Cake\Network\Response Redirects on successful add, renders view otherwise.
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
     public function add()
     {
@@ -163,18 +165,24 @@ class UsersController extends AppController
      * Create & Sync the User Attendee and the User
      *
      * @param int $userId The ID of the User
-     * @return \Cake\Http\Response|null
+     *
+     * @return bool
      */
-    public function sync($userId)
+    private function syncUser($userId)
     {
         $user = $this->Users->get($userId);
 
-        $atts = TableRegistry::get('Attendees');
+        $attRef = $this->Users->Attendees->find('all')->where([
+            'user_attendee' => true,
+            'user_id' => $user->id
+        ]);
+        $attName = $this->Users->Attendees->find('all')->where([
+            'firstname' => $user->firstname,
+            'lastname' => $user->lastname,
+            'user_id' => $user->id
+        ]);
 
-        $attRef = $atts->find('all')->where(['user_attendee' => true, 'user_id' => $user->id]);
-        $attName = $atts->find('all')->where(['firstname' => $user->firstname, 'lastname' => $user->lastname, 'user_id' => $user->id]);
-
-        $count = MAX($attRef->count(), $attName->count());
+        $count = max($attRef->count(), $attName->count());
 
         if ($count == 1) {
             if ($attRef->count() == 1) {
@@ -183,8 +191,7 @@ class UsersController extends AppController
                 $att = $attName->first();
             }
         } else {
-            $newAttendeeData = ['dateofbirth' => '1990-01-01'];
-            $att = $atts->newEntity($newAttendeeData);
+            $att = $this->Users->Attendees->newEntity();
         }
 
         $attendeeData = [
@@ -202,15 +209,33 @@ class UsersController extends AppController
             'phone' => $user->phone
         ];
 
-        $att = $atts->patchEntity($att, $attendeeData);
+        $att = $this->Users->Attendees->patchEntity($att, $attendeeData);
 
-        if ($atts->save($att)) {
+        if ($this->Users->Attendees->save($att)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Create & Sync the User Attendee and the User
+     *
+     * @param int $userId The ID of the User
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function sync($userId)
+    {
+        $syncResponse = $this->syncUser($userId);
+
+        if ($syncResponse) {
             $this->Flash->success(__('An Attendee for the User has been Syncronised.'));
         } else {
             $this->Flash->error(__('An Attendee for the User could not be Syncronised. Please, try again.'));
         }
 
-        return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $user->id]);
+        return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $userId]);
     }
 
     /**
@@ -220,53 +245,18 @@ class UsersController extends AppController
      */
     public function syncAll()
     {
-        $usrs = $this->Users->find('all');
+        $usersToSync = $this->Users->find('all');
 
         $success = 0;
         $error = 0;
 
-        foreach ($usrs as $userAll) {
-            $user = $this->Users->get($userAll->id);
+        foreach ($usersToSync as $userAll) {
+            $syncResponse = $this->syncUser($userAll->id);
 
-            $atts = TableRegistry::get('Attendees');
-
-            $attRef = $atts->find('all')->where(['user_attendee' => true, 'user_id' => $user->id]);
-            $attName = $atts->find('all')->where(['firstname' => $user->firstname, 'lastname' => $user->lastname, 'user_id' => $user->id]);
-
-            $count = MAX($attRef->count(), $attName->count());
-
-            if ($count == 1) {
-                if ($attRef->count() == 1) {
-                    $att = $attRef->first();
-                } else {
-                    $att = $attName->first();
-                }
+            if ($syncResponse) {
+                $success += 1;
             } else {
-                $newAttendeeData = ['dateofbirth' => '1990-01-01'];
-                $att = $atts->newEntity($newAttendeeData);
-            }
-
-            $attendeeData = [
-                'user_id' => $user->id,
-                'firstname' => $user->firstname,
-                'lastname' => $user->lastname,
-                'address_1' => $user->address_1,
-                'address_2' => $user->address_2,
-                'city' => $user->city,
-                'county' => $user->county,
-                'user_attendee' => true,
-                'postcode' => $user->postcode,
-                'role_id' => $user->role_id,
-                'section_id' => $user->section_id,
-                'phone' => $user->phone
-            ];
-
-            $att = $atts->patchEntity($att, $attendeeData);
-
-            if ($atts->save($att)) {
-                $success = $success + 1;
-            } else {
-                $error = $error + 1;
+                $error += 1;
             }
         }
         $this->Flash->error('There were ' . $error . ' Syncronisation Errors.');
@@ -281,6 +271,8 @@ class UsersController extends AppController
      * @param int $userId The ID of the User to be Edited.
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
     public function edit($userId = null)
     {
@@ -320,40 +312,13 @@ class UsersController extends AppController
     }
 
     /**
-     * @param int $UserId the ID of the User
-     * @return \Cake\Http\Response|null
-     */
-    public function update($UserId = null)
-    {
-        $user = $this->Users->get($id);
-
-        $upperUser = ['firstname' => ucwords(strtolower($user->firstname)),
-            'lastname' => ucwords(strtolower($user->lastname)),
-            'address_1' => ucwords(strtolower($user->address_1)),
-            'address_2' => ucwords(strtolower($user->address_2)),
-            'city' => ucwords(strtolower($user->city)),
-            'county' => ucwords(strtolower($user->county)),
-            'postcode' => strtoupper($user->postcode),
-            'section' => ucwords(strtolower($user->section))];
-
-        $user = $this->Users->patchEntity($user, $upperUser);
-
-        if ($this->Users->save($user)) {
-            $this->Flash->success(__('The user has been updated.'));
-
-            return $this->redirect(['action' => 'view', $user->id]);
-        } else {
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
-
-            return $this->redirect(['action' => 'view', $user->id]);
-        }
-    }
-
-    /**
      * Reset a User's Password
      *
      * @param int $userId The ID of the User
+     *
      * @return \Cake\Http\Response|null
+     *
+     * @throws \Exception
      */
     public function reset($userId)
     {
@@ -421,8 +386,10 @@ class UsersController extends AppController
      *
      * @param \Cake\Event\Event $event The Event Trigger
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedMethodParameters)
      */
-    public function beforeFilter(\Cake\Event\Event $event)
+    public function beforeFilter(Event $event)
     {
         $this->Auth->allow(['register']);
         $this->Auth->allow(['login']);

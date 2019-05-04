@@ -111,7 +111,7 @@ class UsersFixture extends TestFixture
                 'pw_salt' => 'Lorem ipsum dolor sit amet',
                 'api_key_plain' => 'Lorem ipsum dolor sit amet',
                 'api_key' => 'Lorem ipsum dolor sit amet',
-                'auth_role_id' => 1,
+                'auth_role_id' => 1, // User
                 'password_state_id' => 1,
                 'membership_number' => 1,
                 'section_id' => 1,
@@ -153,7 +153,7 @@ class UsersFixture extends TestFixture
                 'logins' => '12',
                 'validated' => null,
                 'deleted' => date_create('2016-12-26 23:22:30'),
-                'auth_role_id' => 2,
+                'auth_role_id' => 2, // SuperUser
                 'password_state_id' => 1,
                 'membership_number' => 123,
                 'simple_attendees' => 1,
@@ -194,7 +194,7 @@ class UsersFixture extends TestFixture
                 'logins' => '12',
                 'validated' => null,
                 'deleted' => null,
-                'auth_role_id' => 3,
+                'auth_role_id' => 3, // Admin
                 'password_state_id' => 1,
                 'membership_number' => 789,
                 'simple_attendees' => 1,
@@ -235,7 +235,7 @@ class UsersFixture extends TestFixture
                 'logins' => '12',
                 'validated' => null,
                 'deleted' => null,
-                'auth_role_id' => 4,
+                'auth_role_id' => 4, // Parent
                 'password_state_id' => 1,
                 'membership_number' => 456,
                 'simple_attendees' => 1,
@@ -276,7 +276,7 @@ class UsersFixture extends TestFixture
                 'logins' => '12',
                 'validated' => null,
                 'deleted' => null,
-                'auth_role_id' => 5,
+                'auth_role_id' => 5, // Parent User
                 'password_state_id' => 1,
                 'membership_number' => 769213,
                 'simple_attendees' => 1,

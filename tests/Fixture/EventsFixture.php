@@ -74,6 +74,7 @@ class EventsFixture extends TestFixture
     public function init()
     {
         $this->records = [
+            // Deleted Event
             [
                 'name' => 'Lorem ipsum dolo',
                 'full_name' => 'Lorem ipsum dolor sit amet',

@@ -83,10 +83,33 @@ class ReservationsControllerTest extends IntegrationTestCase
      * Test view method
      *
      * @return void
+     *
+     * @throws
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get([
+            'prefix' => 'parent',
+            'controller' => 'Reservations',
+            'action' => 'view',
+            1
+        ]);
+
+        $this->assertRedirect();
+
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 4
+        ]);
+
+        $this->get([
+            'prefix' => 'parent',
+            'controller' => 'Reservations',
+            'action' => 'view',
+            1
+        ]);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -101,10 +124,45 @@ class ReservationsControllerTest extends IntegrationTestCase
         $this->get([
             'prefix' => 'parent',
             'controller' => 'Reservations',
-            'action' => 'reserve'
+            'action' => 'reserve',
+            3
         ]);
 
         $this->assertResponseOk();
+
+        $testData = [
+            'user' => [
+                'firstname' => 'Jacob',
+                'lastname' => 'Tyler',
+                'email' => 'j.a.g.tyler@me.com',
+                'phone' => '07804 918252',
+                'address_1' => '17 Appleton Mead',
+                'address_2' => '',
+                'city' => 'Biggleswade',
+                'county' => 'Bedfordshire',
+                'country' => 'United Kingdom',
+                'postcode' => 'SG18 8HS'
+            ],
+            'attendee' => [
+                'firstname' => 'Timmy',
+                'lastname' => 'Tyler',
+                'section_id' => '1'
+            ]
+        ];
+
+        $this->post([
+            'prefix' => 'parent',
+            'controller' => 'Reservations',
+            'action' => 'reserve',
+            3
+        ], $testData);
+
+        $this->assertRedirect([
+            'prefix' => 'parent',
+            'controller' => 'Reservations',
+            'action' => 'view',
+            2
+        ]);
     }
 
     /**
