@@ -555,7 +555,7 @@ class UsersTable extends Table
         ];
 
         foreach ($toSet as $key => $value) {
-            if (!($data[$key] === true)) {
+            if (!($data[$key] == true)) {
                 $data[$key] = $value;
             }
         }
