@@ -17,6 +17,7 @@ use Cake\Utility\Inflector;
  * @package App\Controller\Component
  *
  * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Model\Table\ReservationsTable $Reservations
  * @property \App\Model\Table\InvoicesTable $Invoices
  * @property \App\Model\Table\EventsTable $Events
  *
@@ -270,6 +271,16 @@ class AvailabilityComponent extends Component
                 }
 
                 return true;
+            case 'parent':
+                if (!$eventType->parent_applications) {
+                    if ($flash) {
+                        $this->Flash->error(__('This event is not configured for Parent Applications.'));
+                    }
+
+                    return false;
+                }
+
+                return true;
             default:
                 return true;
         }
@@ -297,6 +308,37 @@ class AvailabilityComponent extends Component
         $applicationCount = $this->Applications->find('all')->where(['event_id' => $event->id])->count();
 
         if ($applicationCount >= $event->max_apps) {
+            if ($flash) {
+                $this->Flash->error(__('Apologies this Event is Full.'));
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param \App\Model\Entity\Event $event The EventType of the Event
+     * @param bool $flash Should the method emit Flash messages
+     *
+     * @return bool
+     */
+    private function checkBookingRes($event, $flash)
+    {
+        if (!$event->max) {
+            return true;
+        }
+
+        if ($event->max_apps == 0 || is_null($event->max_apps)) {
+            return true;
+        }
+
+        /** @var \App\Model\Table\ReservationsTable Reservations */
+        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
+        $reservationCount = $this->Reservations->find('all')->where(['event_id' => $event->id])->count();
+
+        if ($reservationCount >= $event->max_apps) {
             if ($flash) {
                 $this->Flash->error(__('Apologies this Event is Full.'));
             }
@@ -417,5 +459,40 @@ class AvailabilityComponent extends Component
         }
 
         return false;
+    }
+
+    /**
+     * @param int $eventId The ID of the event
+     * @param bool $flash Should the method emit Flash messages
+     *
+     * @return bool
+     */
+    public function checkReservation($eventId, $flash)
+    {
+        $this->Events = TableRegistry::getTableLocator()->get('Events');
+        $event = $this->Events->get($eventId, [
+            'contain' => [
+                'SectionTypes.Roles',
+                'EventTypes',
+            ]
+        ]);
+
+        if (!$this->checkEventOpen($event, $flash)) {
+            return false;
+        }
+
+        if (!$this->checkBookingType('parent', $event->event_type, $flash)) {
+            return false;
+        }
+
+        if (!$this->checkBookingSection(1, $event, $flash)) {
+            return false;
+        }
+
+        if (!$this->checkBookingRes($event, $flash)) {
+            return false;
+        }
+
+        return true;
     }
 }

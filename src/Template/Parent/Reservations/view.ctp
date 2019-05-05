@@ -8,11 +8,11 @@
 $this->assign('title', 'View Reservation');
 
 $this->append('parent-nav', '<li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#event">Event</a>
+                    <a class="nav-link js-scroll-trigger" href="#booking">Reservation</a>
                 </li>');
 
 $this->append('parent-nav', '<li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#booking">Reservation</a>
+                    <a class="nav-link js-scroll-trigger" href="#status">Reservation Status</a>
                 </li>');
 
 $this->append('parent-nav', '<li class="nav-item">
@@ -63,6 +63,42 @@ $this->append('parent-nav', '<li class="nav-item">
                         <div><h1 class="display-4 text-black"><?= $this->Time->format($reservation->expires, 'dd-MMM-yy HH:mm')  ?></h1></div>
 
                         <p>Your reservation will be automatically cancelled if payment is not received before the expiry date.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reservation Section -->
+<section id="status" class="contact-section">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card py-4 h-100">
+                    <div class="card-body text-center">
+                        <i class="fal fa-3x fa-question mb-2"></i>
+                        <br/>
+                        <h3 class="text-uppercase">Reservation Status</h3>
+                        <hr class="my-4">
+                        <div><h1 class="display-4 text-black"><?= $reservation->reservation_status->reservation_status ?></h1></div>
+                        <p><?= $reservation->reservation_status->complete ? 'Reservation is Complete.' : 'Reservation is not Complete.' ?></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card py-4 h-100">
+                    <div class="card-body text-center">
+                        <i class="fal fa-3x fa-calendar-check mb-2"></i>
+                        <br/>
+                        <h3 class="text-uppercase">Session</h3>
+                        <hr class="my-4">
+                        <?php foreach ($reservation->logistic_items as $idx => $logistic_item) : ?>
+                        <div><h1 class="display-4 text-black"><?= h($logistic_item->param->constant)  ?></h1></div>
+                        <?php endforeach; ?>
+
+                        <p>The Session that is reserved.</p>
                     </div>
                 </div>
             </div>
@@ -149,42 +185,3 @@ $this->append('parent-nav', '<li class="nav-item">
         </div>
     </div>
 </section>
-
-<div class="reservations view large-9 medium-8 columns content">
-    <?php if (!empty($reservation->invoices)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('User Id') ?></th>
-                <th scope="col"><?= __('Application Id') ?></th>
-                <th scope="col"><?= __('Value') ?></th>
-                <th scope="col"><?= __('Created') ?></th>
-                <th scope="col"><?= __('Modified') ?></th>
-                <th scope="col"><?= __('Paid') ?></th>
-                <th scope="col"><?= __('Initialvalue') ?></th>
-                <th scope="col"><?= __('Deleted') ?></th>
-                <th scope="col"><?= __('Reservation Id') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($reservation->invoices as $invoices): ?>
-            <tr>
-                <td><?= h($invoices->id) ?></td>
-                <td><?= h($invoices->user_id) ?></td>
-                <td><?= h($invoices->application_id) ?></td>
-                <td><?= h($invoices->value) ?></td>
-                <td><?= h($invoices->created) ?></td>
-                <td><?= h($invoices->modified) ?></td>
-                <td><?= h($invoices->paid) ?></td>
-                <td><?= h($invoices->initialvalue) ?></td>
-                <td><?= h($invoices->deleted) ?></td>
-                <td><?= h($invoices->reservation_id) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoices->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Invoices', 'action' => 'edit', $invoices->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Invoices', 'action' => 'delete', $invoices->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoices->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-    <?php endif; ?>
-</div>

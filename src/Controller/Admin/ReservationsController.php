@@ -95,6 +95,60 @@ class ReservationsController extends AppController
     }
 
     /**
+     * Edit method
+     *
+     * @param string|null $reservationId Reservation id.
+     *
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
+     */
+    public function process($reservationId = null)
+    {
+        if ($this->request->is(['post']) && $this->request->getData('id')) {
+            $reservationId = $this->request->getData('id');
+        }
+
+        if (!empty($reservationId)) {
+            $reservation = $this->Reservations->get($reservationId, [
+                'contain' => [
+                    'Events' => [
+                        'EventTypes' => [
+                            'Payable',
+                            'ApplicationRefs',
+                            'LegalTexts',
+                        ],
+                        'AdminUsers',
+                    ],
+                    'Users',
+                    'Attendees' => [
+                        'Sections.Scoutgroups.Districts'
+                    ],
+                    'ReservationStatuses',
+                    'Invoices',
+                    'LogisticItems'
+                ]
+            ]);
+            if ($this->request->is(['patch', 'post', 'put']) && !$this->request->getData('id')) {
+                $reservation = $this->Reservations->patchEntity($reservation, $this->request->getData());
+                if ($this->Reservations->save($reservation)) {
+                    $this->Flash->success(__('The reservation has been saved.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The reservation could not be saved. Please, try again.'));
+            }
+
+            $this->set(compact('reservation'));
+        }
+
+        $events = $this->Reservations->Events->find('list', ['limit' => 200]);
+        $users = $this->Reservations->Users->find('list', ['limit' => 200]);
+        $attendees = $this->Reservations->Attendees->find('list', ['limit' => 200]);
+        $reservationStatuses = $this->Reservations->ReservationStatuses->find('list', ['limit' => 200]);
+        $this->set(compact('events', 'users', 'attendees', 'reservationStatuses'));
+    }
+
+    /**
      * Delete method
      *
      * @param string|null $id Reservation id.

@@ -33,7 +33,6 @@ class EventStatusesFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
                 'event_status' => 'Lorem ipsum dolor sit amet',
                 'live' => 1,
                 'accepting_applications' => 1

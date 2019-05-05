@@ -9,6 +9,7 @@
  * @var array $attendees
  * @var array $reservationStatuses
  * @var array $sections
+ * @var array $sessions
  */
 
 $this->assign('title', 'Reserve a place');
@@ -51,7 +52,7 @@ $this->append('parent-nav', '<li class="nav-item">
         <div class="row">
             <div class="col-md-10 col-lg-8 mx-auto text-center">
 
-                <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
+                <i class="far fa-ticket-alt fa-3x mb-2 text-white"></i>
                 <h2 class="text-white mb-5">Book for Event</h2>
 
                 <?= $this->Form->create($reservation, ['class' => 'form']) ?>
@@ -77,6 +78,13 @@ $this->append('parent-nav', '<li class="nav-item">
                         <div class="col"><?= $this->Form->control('attendee.lastname', ['label' => 'Young Person Last Name']) ?></div>
                     </div>
                     <?= $this->Form->control('attendee.section_id', ['options' => $sections, 'empty' => true, 'class' => 'hierarchy-select form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0']); ?>
+
+                    <?php foreach ($event->logistics as $idx => $logistic) : ?>
+
+                        <?= $this->Form->control('logistics_item.' . $idx . '.logistic_id', ['value' => $logistic->id, 'type' => 'hidden']); ?>
+                        <?= $this->Form->control('logistics_item.' . $idx . '.param_id', ['options' => $sessions, 'type' => 'radio', 'label' => 'Session']); ?>
+
+                    <?php endforeach; ?>
                 </fieldset>
                 <?= $this->Form->button(__('Submit'), ['class' => 'btn']) ?>
                 <?= $this->Form->end() ?>

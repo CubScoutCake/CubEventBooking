@@ -17,7 +17,7 @@ use Cake\Core\Configure;
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = 'HertsCubs Booking System';
+$cakeDescription = 'HCBS';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -359,6 +359,24 @@ $cakeDescription = 'HertsCubs Booking System';
                                 'controller' => 'Applications',
                                 'action' => 'add',  
                                 'prefix' => 'admin']); ?>">Add New Application</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="#"><i class="fal fa-ticket-alt fa-fw"></i> Reservations</a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Reservations',
+                                        'action' => 'index',
+                                        'prefix' => 'admin']); ?>">View Reservations</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $this->Url->build([
+                                        'controller' => 'Reservations',
+                                        'action' => 'process',
+                                        'prefix' => 'admin']); ?>">Process Reservation</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

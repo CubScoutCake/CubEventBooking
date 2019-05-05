@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -71,5 +72,26 @@ class EventStatusesTable extends Table
             ->notEmpty('accepting_applications');
 
         return $validator;
+    }
+
+    /**
+     * install the application status config
+     *
+     * @return mixed
+     */
+    public function installBaseStatuses()
+    {
+        $base = Configure::read('eventStatuses');
+
+        $total = 0;
+
+        foreach ($base as $baseStatus) {
+            $status = $this->newEntity($baseStatus);
+            if ($this->save($status)) {
+                $total += 1;
+            };
+        }
+
+        return $total;
     }
 }

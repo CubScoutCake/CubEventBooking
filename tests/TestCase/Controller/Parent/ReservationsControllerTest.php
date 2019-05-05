@@ -166,21 +166,11 @@ class ReservationsControllerTest extends IntegrationTestCase
     }
 
     /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test delete method
      *
      * @return void
      */
-    public function testDelete()
+    public function testCancel()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

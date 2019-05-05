@@ -11,6 +11,14 @@ use Cake\Console\Shell;
 use Cake\ORM\TableRegistry;
 use Migrations\Migrations;
 
+/**
+ * Class DatabaseShell
+ *
+ * @package App\Shell
+ *
+ * @property \App\Model\Table\EventStatusesTable $EventStatuses
+ * @property \App\Model\Table\ApplicationStatusesTable $ApplicationStatuses
+ */
 class DatabaseShell extends Shell
 {
     /**
@@ -64,7 +72,7 @@ class DatabaseShell extends Shell
      */
     public function password()
     {
-        $users = TableRegistry::get('Users');
+        $users = TableRegistry::getTableLocator()->get('Users');
 
         $default = $users->findByUsername('Jacob')->first();
         $default->password = 'TestMe';
@@ -75,5 +83,21 @@ class DatabaseShell extends Shell
             return;
         }
         $this->out('User Password Reset Succeeded.');
+    }
+
+    /**
+     * Installs standard Values
+     *
+     * @return void
+     */
+    public function base()
+    {
+        $this->EventStatuses = TableRegistry::getTableLocator()->get('EventStatuses');
+        $statuses = $this->EventStatuses->installBaseStatuses();
+        $this->out($statuses . ' Event Statuses Installed.');
+
+        $this->ApplicationStatuses = TableRegistry::getTableLocator()->get('ApplicationStatuses');
+        $statuses = $this->ApplicationStatuses->installBaseStatuses();
+        $this->out($statuses . ' Application Statuses Installed.');
     }
 }

@@ -9,7 +9,9 @@ use Cake\Utility\Security;
  * Reservations Controller
  *
  * @property \App\Model\Table\ReservationsTable $Reservations
+ *
  * @property \App\Controller\Component\LineComponent $Line
+ * @property \App\Controller\Component\AvailabilityComponent $Availability
  *
  * @method \App\Model\Entity\Reservation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -41,13 +43,14 @@ class ReservationsController extends AppController
     public function view($id = null)
     {
         $reservation = $this->Reservations->get($id, [
-            'contain' => ['Events' => [
-                'EventTypes' => [
-                    'Payable',
-                    'ApplicationRefs',
-                    'LegalTexts',
+            'contain' => [
+                'Events' => [
+                    'EventTypes' => [
+                        'Payable',
+                        'ApplicationRefs',
+                        'LegalTexts',
                     ],
-                'AdminUsers',
+                    'AdminUsers',
                 ],
                 'Users',
                 'Attendees' => [
@@ -55,7 +58,10 @@ class ReservationsController extends AppController
                 ],
                 'ReservationStatuses',
                 'Invoices',
-                'LogisticItems'
+                'LogisticItems' => [
+                    'Logistics',
+                    'Params',
+                ]
             ]
         ]);
 
@@ -76,13 +82,17 @@ class ReservationsController extends AppController
         $reservation = $this->Reservations->newEntity();
 
         if (!is_null($eventId) && isset($eventId)) {
-            $event = $this->Reservations->Events->get($eventId, ['contain' => [ 'Logistics', 'EventTypes', 'Prices']]);
+            $event = $this->Reservations->Events->get($eventId, ['contain' => [ 'Logistics.Parameters.Params', 'EventTypes', 'Prices']]);
             $reservation->set('event_id', $event->id);
         }
 
-        if (!isset($event) || !$event->event_type->parent_applications) {
+        $this->loadComponent('Availability');
+
+        if (!isset($event)) {
             return $this->redirect('/');
         }
+
+        $this->Availability->checkReservation($eventId, true);
 
         if ($this->request->is('post')) {
             // Set User & Attendee Data
@@ -195,19 +205,22 @@ class ReservationsController extends AppController
 //        ->where(['section_type_id' => $section['section_type_id']])
           ->contain(['Scoutgroups.Districts']);
 
-        $this->set(compact('reservation', 'events', 'event', 'sections', 'attendees'));
+        $sessions = $this->Reservations->Events->Logistics->Parameters->Params->find('list');
+
+        $this->set(compact('reservation', 'events', 'event', 'sections', 'attendees', 'sessions'));
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Reservation id.
+     * @param string|null $reservationId Reservation id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function cancel($reservationId = null)
     {
-        $reservation = $this->Reservations->get($id, [
+        $reservation = $this->Reservations->get($reservationId, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -227,33 +240,13 @@ class ReservationsController extends AppController
     }
 
     /**
-     * Delete method
-     *
-     * @param string|null $id Reservation id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $reservation = $this->Reservations->get($id);
-        if ($this->Reservations->delete($reservation)) {
-            $this->Flash->success(__('The reservation has been deleted.'));
-        } else {
-            $this->Flash->error(__('The reservation could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
-    }
-
-    /**
      * @param \Cake\Event\Event $event The CakePHP emissive Event
      *
      * @return \Cake\Event\Event
      */
     public function beforeFilter(\Cake\Event\Event $event)
     {
-        $this->Auth->allow(['reserve', 'events', 'confirmation']);
+        $this->Auth->allow(['reserve', 'events']);
 
         return $event;
     }
@@ -271,9 +264,9 @@ class ReservationsController extends AppController
         }
 
         // The owner of an application can edit and delete it
-        if (in_array($this->request->getParam('action'), ['edit', 'view'])) {
-            $applicationId = $this->request->getParam('pass')[0];
-            if ($this->Reservations->isOwnedBy($applicationId, $user['id'])) {
+        if (in_array($this->request->getParam('action'), ['cancel', 'view'])) {
+            $reservationId = $this->request->getParam('pass')[0];
+            if ($this->Reservations->isOwnedBy($reservationId, $user['id'])) {
                 return true;
             }
 
