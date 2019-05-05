@@ -9,6 +9,7 @@ use Cake\Utility\Security;
  * Reservations Controller
  *
  * @property \App\Model\Table\ReservationsTable $Reservations
+ * @property \App\Controller\Component\LineComponent $Line
  *
  * @method \App\Model\Entity\Reservation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -47,7 +48,15 @@ class ReservationsController extends AppController
                     'LegalTexts',
                     ],
                 'AdminUsers',
-                ], 'Users', 'Attendees', 'ReservationStatuses', 'Invoices', 'LogisticItems']
+                ],
+                'Users',
+                'Attendees' => [
+                    'Sections.Scoutgroups.Districts'
+                ],
+                'ReservationStatuses',
+                'Invoices',
+                'LogisticItems'
+            ]
         ]);
 
         $this->set('reservation', $reservation);
@@ -59,6 +68,8 @@ class ReservationsController extends AppController
      * @param int|null $eventId The Event to be Reserved
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     *
+     * @throws \Exception
      */
     public function reserve($eventId)
     {
@@ -158,6 +169,9 @@ class ReservationsController extends AppController
             $reservation->set('reservation_status_id', $reservationStatus->id);
 
             if ($this->Reservations->save($reservation)) {
+                $this->loadComponent('Line');
+                $this->Line->parseReservation($reservation->id);
+
                 $this->Flash->success(__('The reservation has been saved.'));
 
                 $this->Auth->setUser($user->toArray());

@@ -122,7 +122,8 @@ class ReservationsTableTest extends TestCase
             'user_id' => 1,
             'attendee_id' => 1,
             'reservation_status_id' => 1,
-            'reservation_code' => 'PLX'
+            'reservation_code' => 'PLX',
+            'reservation_number' => '1-1-PLX',
         ];
         $this->assertEquals($expected, $actual);
 

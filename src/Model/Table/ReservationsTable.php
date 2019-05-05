@@ -13,7 +13,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\AttendeesTable|\Cake\ORM\Association\BelongsTo $Attendees
  * @property \App\Model\Table\ReservationStatusesTable|\Cake\ORM\Association\BelongsTo $ReservationStatuses
- * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\HasMany $Invoices
+ * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\HasOne $Invoices
  * @property \App\Model\Table\LogisticItemsTable|\Cake\ORM\Association\HasMany $LogisticItems
  *
  * @method \App\Model\Entity\Reservation get($primaryKey, $options = [])
@@ -48,23 +48,22 @@ class ReservationsTable extends Table
 
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('Attendees', [
             'foreignKey' => 'attendee_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('ReservationStatuses', [
             'foreignKey' => 'reservation_status_id',
-            'joinType' => 'INNER'
         ]);
-        $this->hasMany('Invoices', [
-            'foreignKey' => 'reservation_id'
-        ]);
+        $this->hasOne('Invoices', [
+            'foreignKey' => 'reservation_id',
+        ])
+             ->setDependent(true)
+             ->setCascadeCallbacks(true);
+
         $this->hasMany('LogisticItems', [
             'foreignKey' => 'reservation_id'
         ]);

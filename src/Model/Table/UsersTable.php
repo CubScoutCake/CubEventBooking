@@ -578,6 +578,20 @@ class UsersTable extends Table
     }
 
     /**
+     * Finder to locate Access User Accounts
+     *
+     * @param Query $query the Query to be modified.
+     *
+     * @return Query
+     */
+    public function findAccess($query)
+    {
+        return $query
+            ->contain('AuthRoles')
+            ->where(['AuthRoles.user_access' => true]);
+    }
+
+    /**
      * Function to Detect Parent Accounts
      *
      * @param array $userArray The Array Data sent

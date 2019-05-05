@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\ApplicationsTable|\Cake\ORM\Association\BelongsTo $Applications
+ * @property \App\Model\Table\ReservationsTable|\Cake\ORM\Association\BelongsTo $Reservations
  * @property \App\Model\Table\InvoiceItemsTable|\Cake\ORM\Association\HasMany $InvoiceItems
  * @property \App\Model\Table\NotesTable|\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\PaymentsTable|\Cake\ORM\Association\BelongsToMany $Payments
@@ -19,6 +20,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Invoice newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Invoice[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Invoice|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Invoice saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Invoice patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Invoice[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Invoice findOrCreate($search, callable $callback = null, $options = [])
@@ -27,7 +29,6 @@ use Cake\Validation\Validator;
  */
 class InvoicesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -62,6 +63,9 @@ class InvoicesTable extends Table
         $this->belongsTo('Applications', [
             'foreignKey' => 'application_id'
         ]);
+        $this->belongsTo('Reservations', [
+            'foreignKey' => 'reservation_id'
+        ]);
         $this->hasMany('InvoiceItems', [
             'foreignKey' => 'invoice_id'
         ]);
@@ -89,19 +93,19 @@ class InvoicesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->numeric('value')
-            ->allowEmpty('value');
+            ->allowEmptyString('value');
 
         $validator
             ->boolean('paid')
-            ->allowEmpty('paid');
+            ->allowEmptyString('paid');
 
         $validator
             ->numeric('initialvalue')
-            ->allowEmpty('initialvalue');
+            ->allowEmptyString('initialvalue');
 
         return $validator;
     }
@@ -117,6 +121,7 @@ class InvoicesTable extends Table
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['application_id'], 'Applications'));
+        $rules->add($rules->existsIn(['reservation_id'], 'Reservations'));
 
         return $rules;
     }
@@ -177,8 +182,51 @@ class InvoicesTable extends Table
      */
     public function findUnarchived($query)
     {
-        return $query->contain('Applications.Events')->where(['Events.live' => true]);
+        $matchingReservations = $this
+            ->getAssociation('Reservations.Events')->find()
+            ->select(['Invoices.id'])
+            ->innerJoinWith('Reservations.Invoices')
+            ->distinct()
+            ->where(['Events.live' => true]);
+
+        $matchingApplications = $this
+            ->getAssociation('Applications.Events')->find()
+            ->select(['Invoices.id'])
+            ->innerJoinWith('Applications.Invoices')
+            ->distinct()
+            ->where(['Events.live' => true]);
+
+        return $query->where([
+            'OR' => [
+                'Invoices.id IN' => $matchingApplications,
+                'Invoices.id IN ' => $matchingReservations,
+            ]
+         ]);
     }
+
+//    /**
+//     * Find with I
+//     *
+//     * @param \Cake\ORM\Query $query an existing ORM Query.
+//     *
+//     * @return \Cake\ORM\Query
+//     */
+//    public function findBoth($query)
+//    {
+//        return $query
+//            ->leftJoin([
+//                'Reservations' => [
+//                    'table' => 'reservations',
+//                    'type' => 'LEFT',
+//                    'conditions' => 'Reservations.id = Invoices.reservation_id',
+//                ],
+//                'Applications' => [
+//                    'table' => 'applications',
+//                    'type' => 'LEFT',
+//                    'conditions' => 'Applications.id = Invoices.application_id',
+//                ]
+//            ]);
+//    }
 
     /**
      * Find Invoices which are not on an event which has been archived.

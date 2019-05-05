@@ -38,7 +38,6 @@ class ScoutgroupsTable extends Table
 
         $this->belongsTo('Districts', [
             'foreignKey' => 'district_id',
-            'joinType' => 'INNER'
         ]);
         $this->hasMany('Sections', [
             'foreignKey' => 'scoutgroup_id'

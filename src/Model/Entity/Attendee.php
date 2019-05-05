@@ -31,6 +31,8 @@ use Cake\ORM\Entity;
  * @property int $section_id
  * @property int $cc_apps
  *
+ * @property string $full_name
+ *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Section $section
  * @property \App\Model\Entity\Role $role
