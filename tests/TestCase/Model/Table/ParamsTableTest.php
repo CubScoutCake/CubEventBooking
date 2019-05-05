@@ -63,7 +63,12 @@ class ParamsTableTest extends TestCase
             [
                 'id' => 1,
                 'parameter_id' => 1,
-                'constant' => 'Lorem ipsum dolor sit amet'
+                'constant' => 'Morning'
+            ],
+            [
+                'id' => 2,
+                'parameter_id' => 1,
+                'constant' => 'Afternoon'
             ],
         ];
 

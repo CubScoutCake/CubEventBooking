@@ -147,7 +147,11 @@ class ReservationsControllerTest extends IntegrationTestCase
                 'firstname' => 'Timmy',
                 'lastname' => 'Tyler',
                 'section_id' => '1'
-            ]
+            ],
+            'logistics_item' => [
+                'logistic_id' => 1,
+                'param_id' => 2,
+            ],
         ];
 
         $this->post([

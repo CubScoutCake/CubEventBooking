@@ -3,6 +3,7 @@ namespace App\Controller\Parent;
 
 use App\Model\Entity\Attendee;
 use App\Model\Entity\User;
+use Cake\Log\Log;
 use Cake\Utility\Security;
 
 /**
@@ -11,6 +12,7 @@ use Cake\Utility\Security;
  * @property \App\Model\Table\ReservationsTable $Reservations
  *
  * @property \App\Controller\Component\LineComponent $Line
+ * @property \App\Controller\Component\BookingComponent $Booking
  * @property \App\Controller\Component\AvailabilityComponent $Availability
  *
  * @method \App\Model\Entity\Reservation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
@@ -87,18 +89,27 @@ class ReservationsController extends AppController
         }
 
         $this->loadComponent('Availability');
+        $this->loadComponent('Booking');
 
         if (!isset($event)) {
             return $this->redirect('/');
         }
 
-        $this->Availability->checkReservation($eventId, true);
-
-        if ($this->request->is('post')) {
+        if ($this->request->is('post') && $this->Availability->checkReservation($eventId, true)) {
             // Set User & Attendee Data
             $requestData = $this->request->getData();
             $attendeeData = $requestData['attendee'];
             $userData = $requestData['user'];
+            $logisticData = $requestData['logistics_item'];
+
+            Log::info('Reservation Submitted.', $requestData);
+//            debug($requestData);
+
+            if (!$this->Booking->variableLogistic($logisticData['logistic_id'], $logisticData['param_id'])) {
+                $this->Flash->error('Spaces not available on Session');
+
+                return $this->redirect($this->referer());
+            }
 
             // Start Creating User
             /** @var \App\Model\Entity\User $user */
@@ -179,6 +190,9 @@ class ReservationsController extends AppController
             $reservation->set('reservation_status_id', $reservationStatus->id);
 
             if ($this->Reservations->save($reservation)) {
+                // Check overall availability
+
+
                 $this->loadComponent('Line');
                 $this->Line->parseReservation($reservation->id);
 

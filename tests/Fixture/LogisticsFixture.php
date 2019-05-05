@@ -42,12 +42,19 @@ class LogisticsFixture extends TestFixture
     {
         $this->records = [
             [
-                'event_id' => 1,
+                'event_id' => 3,
                 'header' => 'Lorem ipsum dolor sit amet',
                 'text' => 'Lorem ipsum dolor sit amet',
                 'deleted' => null,
                 'parameter_id' => 1,
-                'variable_max_values' => '',
+                'variable_max_values' => [
+                    1 => [
+                        'limit' => 3,
+                    ],
+                    2 => [
+                        'limit' => 2,
+                    ]
+                ],
                 'max_value' => 1
             ],
         ];

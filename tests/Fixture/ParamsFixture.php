@@ -37,7 +37,11 @@ class ParamsFixture extends TestFixture
         $this->records = [
             [
                 'parameter_id' => 1,
-                'constant' => 'Lorem ipsum dolor sit amet'
+                'constant' => 'Morning'
+            ],
+            [
+                'parameter_id' => 1,
+                'constant' => 'Afternoon'
             ],
         ];
         parent::init();

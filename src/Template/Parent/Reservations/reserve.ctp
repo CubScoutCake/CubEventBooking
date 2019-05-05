@@ -21,6 +21,12 @@ $this->append('parent-nav', '<li class="nav-item">
 $this->append('parent-nav', '<li class="nav-item">
                     <a class="nav-link js-scroll-trigger" href="#book">Book</a>
                 </li>');
+
+$this->append('parent-nav', '<li class="nav-item">' . $this->Html->link('Front Page', [
+        'controller' => 'Landing',
+        'action' => 'welcome',
+        'prefix' => false,
+    ], ['class' => 'nav-link']) . '</li>');
 ?>
 
 <!-- Header -->
@@ -82,10 +88,15 @@ $this->append('parent-nav', '<li class="nav-item">
                     <?php foreach ($event->logistics as $idx => $logistic) : ?>
 
                         <?= $this->Form->control('logistics_item.' . $idx . '.logistic_id', ['value' => $logistic->id, 'type' => 'hidden']); ?>
-                        <?= $this->Form->control('logistics_item.' . $idx . '.param_id', ['options' => $sessions, 'type' => 'radio', 'label' => 'Session']); ?>
+                        <?= $this->Form->control('logistics_item.' . $idx . '.param_id', ['options' => $sessions, 'type' => 'select', 'label' => 'Session']); ?>
+
+                        <?php foreach ($logistic->parameter->params as $param) : ?>
+                            <?= $param->constant ?> <?= $this->Number->format($logistic->variable_max_values[$param->id]['remaining']) ?> Remaining.
+                        <?php endforeach; ?>
 
                     <?php endforeach; ?>
                 </fieldset>
+                <br/>
                 <?= $this->Form->button(__('Submit'), ['class' => 'btn']) ?>
                 <?= $this->Form->end() ?>
             </div>

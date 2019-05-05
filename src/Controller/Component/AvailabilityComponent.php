@@ -485,9 +485,9 @@ class AvailabilityComponent extends Component
             return false;
         }
 
-        if (!$this->checkBookingSection(1, $event, $flash)) {
-            return false;
-        }
+//        if (!$this->checkBookingSection(1, $event, $flash)) {
+//            return false;
+//        }
 
         if (!$this->checkBookingRes($event, $flash)) {
             return false;

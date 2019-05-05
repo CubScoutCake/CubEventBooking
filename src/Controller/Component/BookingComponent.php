@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Component;
 
+use App\Model\Entity\LogisticItem;
 use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
 use Cake\I18n\Date;
@@ -8,6 +9,11 @@ use Cake\ORM\TableRegistry;
 
 /**
  * Booking component
+ *
+ * @property \App\Model\Table\LogisticsTable $Logistics
+ * @property \App\Model\Table\ReservationsTable $Reservations
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class BookingComponent extends Component
 {
@@ -115,6 +121,80 @@ class BookingComponent extends Component
 
         if (isset($guessID)) {
             return $guessID;
+        }
+
+        return false;
+    }
+
+    /**
+     * Function to load and deplete Logistic Limits
+     *
+     * @param int $logisticId ID of the Logistic in Question
+     * @param int $paramId ID of the Param Selected
+     *
+     * @return null|bool
+     */
+    public function variableLogistic($logisticId, $paramId)
+    {
+        $this->Logistics = TableRegistry::getTableLocator()->get('Logistics');
+
+        $this->Logistics->parseLogisticAvailability($logisticId);
+
+        $logistic = $this->Logistics->get($logisticId, ['contain' => ['Parameters.Params']]);
+
+        $maxVariable = $logistic->get('variable_max_values');
+
+        if (!key_exists($paramId, $maxVariable)) {
+            return false;
+        }
+
+        $variable = $maxVariable[$paramId];
+
+        if ($variable['limit'] != 0 && $variable['remaining'] <= 0) {
+            return false;
+        }
+
+        if ($variable['remaining'] >= 1) {
+            return true;
+        }
+    }
+
+    /**
+     * Make a Session or Param Reservation
+     *
+     * @param int $reservationId The Reservation to be Attached
+     * @param int $paramId The Param Selected
+     *
+     * @return bool|int|mixed
+     */
+    public function addReservation($reservationId, $paramId)
+    {
+        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
+        /** @var \App\Model\Entity\Param $param */
+        $param = $this->Reservations->LogisticItems->Params->get($paramId);
+        /** @var \App\Model\Entity\Reservation $reservation */
+        $reservation = $this->Reservations->get($reservationId, ['contain' => 'Events.Logistics']);
+
+        foreach ($reservation->event->logistics as $logistic) {
+            if ($logistic->parameter_id == $param->parameter_id) {
+                $available = $this->variableLogistic($logistic->id, $param->id);
+
+                if ($available) {
+                    // Create & Save new Logistic Item
+                    /** @var \App\Model\Entity\LogisticItem $logisticItem */
+                    $logisticItem = $this->Reservations->LogisticItems->newEntity([
+                        'reservation_id' => $reservation->id,
+                        'logistic_id' => $logistic->id,
+                        'param_id' => $paramId,
+                    ]);
+
+                    $logisticItem = $this->Reservations->LogisticItems->save($logisticItem);
+
+                    if ($logisticItem != false) {
+                        return $logisticItem->id;
+                    }
+                }
+            }
         }
 
         return false;
