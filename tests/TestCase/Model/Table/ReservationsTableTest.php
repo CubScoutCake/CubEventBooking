@@ -144,7 +144,6 @@ class ReservationsTableTest extends TestCase
         $good = $this->getGood();
 
         $new = $this->Reservations->newEntity($good);
-        debug($new);
         $this->assertInstanceOf('App\Model\Entity\Reservation', $this->Reservations->save($new));
 
         $required = [

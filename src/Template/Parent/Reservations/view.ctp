@@ -29,7 +29,7 @@ $this->append('parent-nav', '<li class="nav-item">
         <div class="row">
             <div class="col-lg-8 mx-auto">
                 <h2 class="text-white mb-4"><?= $reservation->event->full_name ?></h2>
-                <h4 class="text-white-100">Reservation for <?= $reservation->attendee->full_name ?></h4>
+                <h3 class="text-white-100">Reservation for <?= $reservation->attendee->full_name ?></h3>
             </div>
         </div>
     </div>

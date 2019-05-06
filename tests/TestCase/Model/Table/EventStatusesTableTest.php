@@ -86,9 +86,9 @@ class EventStatusesTableTest extends TestCase
             'event_status' => 'Live',
             'live' => true,
             'accepting_applications' => true,
-//            'spaces_full' => true,
-//            'pending_date' => true,
-//            'status_order' => 1
+            'spaces_full' => true,
+            'pending_date' => true,
+            'status_order' => 1
         ];
         $this->assertEquals($expected, $actual);
 
@@ -109,11 +109,7 @@ class EventStatusesTableTest extends TestCase
         $this->assertInstanceOf('App\Model\Entity\EventStatus', $this->EventStatuses->save($new));
 
         $required = [
-            'application_status',
-            'live',
-            'accepting_applications',
-            'reserved',
-            'spaces_full',
+            'event_status',
         ];
 
         foreach ($required as $require) {
@@ -124,6 +120,10 @@ class EventStatusesTableTest extends TestCase
         }
 
         $notRequired = [
+            'live',
+            'accepting_applications',
+            'reserved',
+            'spaces_full',
         ];
 
         foreach ($notRequired as $notRequire) {
@@ -144,7 +144,7 @@ class EventStatusesTableTest extends TestCase
         }
 
         $notEmpties = [
-            'application_status',
+            'event_status',
         ];
 
         foreach ($notEmpties as $notEmpty) {
@@ -155,7 +155,7 @@ class EventStatusesTableTest extends TestCase
         }
 
         $maxLengths = [
-            'application_status' => 255,
+            'event_status' => 255,
         ];
 
         $string = hash('sha512', Security::randomBytes(64));
@@ -188,9 +188,9 @@ class EventStatusesTableTest extends TestCase
 
         $values['event_status'] = 'My new Camp Role Type';
         $new = $this->EventStatuses->newEntity($values);
-        $this->assertInstanceOf('App\Model\Entity\ApplicationStatus', $this->EventStatuses->save($new));
+        $this->assertInstanceOf('App\Model\Entity\EventStatus', $this->EventStatuses->save($new));
 
-        $values['event_status'] = $existing['application_status'];
+        $values['event_status'] = $existing['event_status'];
         $new = $this->EventStatuses->newEntity($values);
         $this->assertFalse($this->EventStatuses->save($new));
     }

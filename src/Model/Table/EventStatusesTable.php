@@ -56,6 +56,7 @@ class EventStatusesTable extends Table
 
         $validator
             ->scalar('event_status')
+            ->requirePresence('event_status', 'create')
             ->maxLength('event_status', 255)
             ->add('event_status', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
             ->allowEmptyString('event_status', false);

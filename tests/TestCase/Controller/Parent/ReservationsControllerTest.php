@@ -2,13 +2,15 @@
 namespace App\Test\TestCase\Controller\Parent;
 
 use App\Controller\Parent\ReservationsController;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\Parent\ReservationsController Test Case
  */
-class ReservationsControllerTest extends IntegrationTestCase
+class ReservationsControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * Fixtures
@@ -110,6 +112,20 @@ class ReservationsControllerTest extends IntegrationTestCase
         ]);
 
         $this->assertResponseOk();
+
+        $this->session([
+            'Auth.User.id' => 2,
+            'Auth.User.auth_role_id' => 4
+        ]);
+
+        $this->get([
+            'prefix' => 'parent',
+            'controller' => 'Reservations',
+            'action' => 'view',
+            1
+        ]);
+
+        $this->assertRedirect();
     }
 
     /**
@@ -173,6 +189,35 @@ class ReservationsControllerTest extends IntegrationTestCase
             'action' => 'view',
             2
         ]);
+
+        $testData['attendee']['firstname'] = 'Joan';
+
+        $this->post([
+            'prefix' => 'parent',
+            'controller' => 'Reservations',
+            'action' => 'reserve',
+            3
+        ], $testData);
+
+        $this->assertRedirect([
+            'prefix' => 'parent',
+            'controller' => 'Reservations',
+            'action' => 'view',
+            3
+        ]);
+
+        // Check Fills Up
+        $testData['attendee']['firstname'] = 'Julie';
+
+        $this->post([
+            'prefix' => 'parent',
+            'controller' => 'Reservations',
+            'action' => 'reserve',
+            3
+        ], $testData);
+
+        $this->assertNoRedirect();
+        $this->assertFlashMessageAt(0, 'Spaces not available on Session.');
     }
 
     /**
