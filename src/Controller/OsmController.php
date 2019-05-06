@@ -172,7 +172,7 @@ class OsmController extends AppController
         $users = TableRegistry::get('Users');
         $atts = TableRegistry::get('Attendees');
 
-        $session = $this->request->session();
+        $session = $this->request->getSession();
 
         $user = $users->get($this->Auth->user('id'));
 

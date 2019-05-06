@@ -134,7 +134,7 @@ return [
             'prefix' => 'myapp_cake_model_',
             'path' => CACHE . 'cells/',
             'serialize' => true,
-            'duration' => '+2 minutes',
+            'duration' => '+20 minutes',
         ],
 
         /**

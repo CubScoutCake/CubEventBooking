@@ -1,19 +1,24 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link      http://cakephp.org CakePHP(tm) Project
+ * @copyright Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link      https://cakephp.org CakePHP(tm) Project
  * @since     3.0.0
- * @license   http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace App\Console;
 
+if (!defined('STDIN')) {
+    define('STDIN', fopen('php://stdin', 'r'));
+}
+
+use Cake\Utility\Security;
 use Composer\Script\Event;
 use Exception;
 
@@ -23,6 +28,20 @@ use Exception;
  */
 class Installer
 {
+
+    /**
+     * An array of directories to be made writable
+     */
+    const WRITABLE_DIRS = [
+        'logs',
+        'tmp',
+        'tmp/cache',
+        'tmp/cache/models',
+        'tmp/cache/persistent',
+        'tmp/cache/views',
+        'tmp/sessions',
+        'tmp/tests'
+    ];
 
     /**
      * Does some routine installation tasks so people don't have to.
@@ -64,8 +83,9 @@ class Installer
 
         static::setSecuritySalt($rootDir, $io);
 
-        if (class_exists('\Cake\Codeception\Console\Installer')) {
-            \Cake\Codeception\Console\Installer::customizeCodeceptionBinary($event);
+        $class = 'Cake\Codeception\Console\Installer';
+        if (class_exists($class)) {
+            $class::customizeCodeceptionBinary($event);
         }
     }
 
@@ -102,18 +122,7 @@ class Installer
      */
     public static function createWritableDirectories($dir, $io)
     {
-        $paths = [
-            'logs',
-            'tmp',
-            'tmp/cache',
-            'tmp/cache/models',
-            'tmp/cache/persistent',
-            'tmp/cache/views',
-            'tmp/sessions',
-            'tmp/tests'
-        ];
-
-        foreach ($paths as $path) {
+        foreach (static::WRITABLE_DIRS as $path) {
             $path = $dir . '/' . $path;
             if (!file_exists($path)) {
                 mkdir($path);
@@ -134,14 +143,14 @@ class Installer
     public static function setFolderPermissions($dir, $io)
     {
         // Change the permissions on a path and output the results.
-        $changePerms = function ($path, $perms, $io) {
-            // Get current permissions in decimal format so we can bitmask it.
-            $currentPerms = octdec(substr(sprintf('%o', fileperms($path)), -4));
-            if (($currentPerms & $perms) == $perms) {
+        $changePerms = function ($path) use ($io) {
+            $currentPerms = fileperms($path) & 0777;
+            $worldWritable = $currentPerms | 0007;
+            if ($worldWritable == $currentPerms) {
                 return;
             }
 
-            $res = chmod($path, $currentPerms | $perms);
+            $res = chmod($path, $worldWritable);
             if ($res) {
                 $io->write('Permissions set on ' . $path);
             } else {
@@ -149,7 +158,7 @@ class Installer
             }
         };
 
-        $walker = function ($dir, $perms, $io) use (&$walker, $changePerms) {
+        $walker = function ($dir) use (&$walker, $changePerms) {
             $files = array_diff(scandir($dir), ['.', '..']);
             foreach ($files as $file) {
                 $path = $dir . '/' . $file;
@@ -158,15 +167,14 @@ class Installer
                     continue;
                 }
 
-                $changePerms($path, $perms, $io);
-                $walker($path, $perms, $io);
+                $changePerms($path);
+                $walker($path);
             }
         };
 
-        $worldWritable = bindec('0000000111');
-        $walker($dir . '/tmp', $worldWritable, $io);
-        $changePerms($dir . '/tmp', $worldWritable, $io);
-        $changePerms($dir . '/logs', $worldWritable, $io);
+        $walker($dir . '/tmp');
+        $changePerms($dir . '/tmp');
+        $changePerms($dir . '/logs');
     }
 
     /**
@@ -206,5 +214,35 @@ class Installer
             return;
         }
         $io->write('Unable to update Security.salt value.');
+    }
+
+    /**
+     * Set the APP_NAME value in a given file
+     *
+     * @param string $dir The application's root directory.
+     * @param \Composer\IO\IOInterface $io IO interface to write to console.
+     * @param string $appName app name to set in the file
+     * @param string $file A path to a file relative to the application's root
+     * @return void
+     */
+    public static function setAppNameInFile($dir, $io, $appName, $file)
+    {
+        $config = $dir . '/config/' . $file;
+        $content = file_get_contents($config);
+        $content = str_replace('__APP_NAME__', $appName, $content, $count);
+
+        if ($count == 0) {
+            $io->write('No __APP_NAME__ placeholder to replace.');
+
+            return;
+        }
+
+        $result = file_put_contents($config, $content);
+        if ($result) {
+            $io->write('Updated __APP_NAME__ value in config/' . $file);
+
+            return;
+        }
+        $io->write('Unable to update __APP_NAME__ value.');
     }
 }

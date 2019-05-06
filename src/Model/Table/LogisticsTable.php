@@ -2,7 +2,6 @@
 namespace App\Model\Table;
 
 use Cake\Database\Schema\TableSchema;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -22,6 +21,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Logistic patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Logistic[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Logistic findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  */
 class LogisticsTable extends Table
 {
@@ -94,7 +95,7 @@ class LogisticsTable extends Table
      *
      * @return TableSchema|\Cake\Database\Schema\TableSchema
      */
-    protected function _initializeSchema($schema)
+    protected function _initializeSchema(TableSchema $schema)
     {
         $schema->setColumnType('variable_max_values', 'json');
 
