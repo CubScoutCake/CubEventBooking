@@ -22,7 +22,7 @@ class DistrictsControllerTest extends IntegrationTestCase
         'app.PasswordStates',
         'app.Sections',
         'app.Notifications',
-        'app.notificationtypes',
+        'app.NotificationTypes',
         'app.Roles',
         'app.SectionTypes',
         'app.AuthRoles',

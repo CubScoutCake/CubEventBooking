@@ -42,7 +42,7 @@ class ParameterSetsControllerTest extends IntegrationTestCase
         'app.ApplicationsAttendees',
         'app.Allergies',
         'app.AttendeesAllergies',
-        'app.notificationtypes'
+        'app.NotificationTypes'
     ];
 
     /**

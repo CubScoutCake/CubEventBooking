@@ -38,7 +38,7 @@ class ItemtypesControllerTest extends IntegrationTestCase
         'app.Allergies',
         'app.AttendeesAllergies',
         'app.Notifications',
-        'app.notificationtypes',
+        'app.NotificationTypes',
         'app.InvoiceItems',
         'app.itemtypes',
         'app.Payments',

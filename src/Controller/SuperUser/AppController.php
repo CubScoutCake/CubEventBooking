@@ -53,7 +53,9 @@ class AppController extends Controller
 
         $this->loadComponent('Security');
         $this->loadComponent('Csrf');
-        $this->loadComponent('RequestHandler');
+        $this->loadComponent('RequestHandler', [
+            'enableBeforeRedirect' => false,
+        ]);
 
         $this->loadComponent('Alert');
         $this->Alert->appLoad($this->Auth->user('id'));

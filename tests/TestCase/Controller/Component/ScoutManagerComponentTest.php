@@ -39,7 +39,7 @@ class ScoutManagerComponentTest extends TestCase
         'app.SectionTypes',
         'app.AuthRoles',
         'app.Notifications',
-        'app.notificationtypes',
+        'app.NotificationTypes',
     ];
 
     /**

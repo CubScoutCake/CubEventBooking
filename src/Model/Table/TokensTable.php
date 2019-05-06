@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Database\Schema\TableSchema;
 use Cake\Event\Event;
 use Cake\I18n\Time;
 use Cake\ORM\Query;
@@ -23,6 +24,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Token findOrCreate($search, callable $callback = null, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ *
+ * @SuppressWarnings(PHPMD.CamelCaseMethodName)
  */
 class TokensTable extends Table
 {
@@ -100,7 +103,7 @@ class TokensTable extends Table
      *
      * @return TableSchema|\Cake\Database\Schema\TableSchema
      */
-    protected function _initializeSchema($schema)
+    protected function _initializeSchema(TableSchema $schema)
     {
         $schema->setColumnType('token_header', 'json');
 
@@ -128,6 +131,8 @@ class TokensTable extends Table
      * @param ArrayObject $options The Options Contained
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function beforeMarshal(Event $event, $data, $options)
     {

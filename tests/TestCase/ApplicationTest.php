@@ -15,18 +15,23 @@
 namespace App\Test\TestCase;
 
 use App\Application;
+use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\MiddlewareQueue;
+use Cake\Http\Middleware\EncryptedCookieMiddleware;
+use Cake\Http\Middleware\SecurityHeadersMiddleware;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 
 /**
  * ApplicationTest class
  */
-class ApplicationTest extends IntegrationTestCase
+class ApplicationTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * testBootstrap
@@ -39,10 +44,21 @@ class ApplicationTest extends IntegrationTestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
-        $this->assertCount(3, $plugins);
+        $this->assertCount(8, $plugins);
+
         $this->assertSame('Bake', $plugins->get('Bake')->getName());
         $this->assertSame('Migrations', $plugins->get('Migrations')->getName());
-        $this->assertSame('DebugKit', $plugins->get('DebugKit')->getName());
+
+        if (Configure::read('debug')) {
+            $this->assertSame('DebugKit', $plugins->get('DebugKit')->getName());
+        }
+
+        $this->assertSame('Muffin/Trash', $plugins->get('Muffin/Trash')->getName());
+        $this->assertSame('DatabaseLog', $plugins->get('DatabaseLog')->getName());
+        $this->assertSame('CsvView', $plugins->get('CsvView')->getName());
+        $this->assertSame('BootstrapUI', $plugins->get('BootstrapUI')->getName());
+        $this->assertSame('Search', $plugins->get('Search')->getName());
+        $this->assertSame('CakePdf', $plugins->get('CakePdf')->getName());
     }
 
     /**
@@ -80,5 +96,7 @@ class ApplicationTest extends IntegrationTestCase
         $this->assertInstanceOf(ErrorHandlerMiddleware::class, $middleware->get(0));
         $this->assertInstanceOf(AssetMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(RoutingMiddleware::class, $middleware->get(2));
+        $this->assertInstanceOf(SecurityHeadersMiddleware::class, $middleware->get(3));
+        $this->assertInstanceOf(EncryptedCookieMiddleware::class, $middleware->get(4));
     }
 }

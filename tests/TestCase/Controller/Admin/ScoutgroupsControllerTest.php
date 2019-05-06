@@ -28,7 +28,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
         'app.Sections',
         'app.SectionTypes',
         'app.Notifications',
-        'app.notificationtypes',
+        'app.NotificationTypes',
     ];
 
     public function testIndexUnauthenticatedFails()
