@@ -52,19 +52,19 @@ $cakeDescription = 'HCBS';
                 </button>
                 <?php 
 
-                if (is_null($this->request->session()->read('Auth.User.username'))) {
+                if (is_null($this->request->getSession()->read('Auth.User.username'))) {
 
                     echo $this->Html->link($this->fetch('title')
                         ,['controller' => 'Landing', 'action' => 'welcome', 'prefix' => false]
                         ,['class' => 'navbar-brand']);
 
-                } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
+                } elseif ($this->request->getSession()->read('Auth.User.authrole') === 'admin') {
 
                     echo $this->Html->link($this->fetch('title')
                         ,['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']
                         ,['class' => 'navbar-brand']);
 
-                } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
+                } elseif ($this->request->getSession()->read('Auth.User.authrole') === 'champion') {
 
                     echo $this->Html->link($this->fetch('title')
                         ,['controller' => 'Landing', 'action' => 'champion_home', 'prefix' => 'champion']
@@ -136,7 +136,7 @@ $cakeDescription = 'HCBS';
                         <i class="fal fa-clipboard-list fa-fw"></i>  <i class="fal fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
-                        <?php   //$usr = $this->request->session()->read('Auth.User.id');
+                        <?php   //$usr = $this->request->getSession()->read('Auth.User.id');
                                 //$apps = $this->cell('Apps', [$usr]); 
                                 //echo $apps; ?>
                         <li>
@@ -218,7 +218,7 @@ $cakeDescription = 'HCBS';
                         <i class="fal fa-bell fa-fw"></i>  <i class="fal fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
-                        <?php   $usr = $this->request->session()->read('Auth.User.id');
+                        <?php   $usr = $this->request->getSession()->read('Auth.User.id');
                                 $cell = $this->cell('Bell', [$usr], [
                                     'cache' => ['config' => 'cell_cache', 'key' => 'bell_' . $usr]
                                 ]);
@@ -236,7 +236,7 @@ $cakeDescription = 'HCBS';
                     <!-- /.dropdown-alerts -->
                 </li>
                 <!-- /.dropdown -->
-                <?php   $usr = $this->request->session()->read('Auth.User.id');
+                <?php   $usr = $this->request->getSession()->read('Auth.User.id');
                 $cell = $this->cell('Profile', [$usr], [
                     'cache' => ['config' => 'cell_cache', 'key' => 'profile_' . $usr]
                 ]);
@@ -249,7 +249,7 @@ $cakeDescription = 'HCBS';
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="metismenu">
                         <?php   echo $this->cell('QuickLink'); ?>
-                        <?php   $usr = $this->request->session()->read('Auth.User.id');
+                        <?php   $usr = $this->request->getSession()->read('Auth.User.id');
                         $cell = $this->cell('Roleside', [$usr], [
                             'cache' => ['config' => 'cell_cache', 'key' => 'roleside_' . $usr]
                         ]);

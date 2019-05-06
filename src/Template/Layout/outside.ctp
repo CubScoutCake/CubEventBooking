@@ -53,19 +53,19 @@ $cakeDescription = 'HertsCubs Booking System';
 
             $title = $cakeDescription;
 
-            if (is_null($this->request->session()->read('Auth.User.username'))) {
+            if (is_null($this->request->getSession()->read('Auth.User.username'))) {
 
                 echo $this->Html->link($title
                     ,['controller' => 'Landing', 'action' => 'welcome', 'prefix' => false]
                     ,['class' => 'navbar-brand']);
 
-            } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
+            } elseif ($this->request->getSession()->read('Auth.User.authrole') === 'admin') {
 
                 echo $this->Html->link($title
                     ,['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']
                     ,['class' => 'navbar-brand']);
 
-            } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
+            } elseif ($this->request->getSession()->read('Auth.User.authrole') === 'champion') {
 
                 echo $this->Html->link($title
                     ,['controller' => 'Landing', 'action' => 'champion_home', 'prefix' => 'champion']

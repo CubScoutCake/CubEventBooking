@@ -48,8 +48,8 @@ $cakeDescription = 'HertsCubs Booking System';
     <?php
     // New Google Analytics code to set User ID.
     // $userId is a unique, persistent, and non-personally identifiable string ID.
-    if (!is_null($this->request->session()->read('Auth.User.id'))) {
-      $gaucode = "ga('create', 'UA-71500319-2', 'auto', {'userId': 'HERTS-USR:" . $this->request->session()->read('Auth.User.id') . "'});";
+    if (!is_null($this->request->getSession()->read('Auth.User.id'))) {
+      $gaucode = "ga('create', 'UA-71500319-2', 'auto', {'userId': 'HERTS-USR:" . $this->request->getSession()->read('Auth.User.id') . "'});";
       echo sprintf($gaucode);
     } else {
       $gacode = "ga('create', 'UA-71500319-2', 'auto');";
@@ -72,19 +72,19 @@ $cakeDescription = 'HertsCubs Booking System';
             </button>
             <?php 
 
-            if (is_null($this->request->session()->read('Auth.User.username'))) {
+            if (is_null($this->request->getSession()->read('Auth.User.username'))) {
 
                 echo $this->Html->link($this->fetch('title')
                     ,['controller' => 'Landing', 'action' => 'welcome', 'prefix' => false]
                     ,['class' => 'navbar-brand']);
 
-            } elseif ($this->request->session()->read('Auth.User.authrole') === 'admin') {
+            } elseif ($this->request->getSession()->read('Auth.User.authrole') === 'admin') {
 
                 echo $this->Html->link($this->fetch('title')
                     ,['controller' => 'Landing', 'action' => 'admin_home', 'prefix' => 'admin']
                     ,['class' => 'navbar-brand']);
 
-            } elseif ($this->request->session()->read('Auth.User.authrole') === 'champion') {
+            } elseif ($this->request->getSession()->read('Auth.User.authrole') === 'champion') {
 
                 echo $this->Html->link($this->fetch('title')
                     ,['controller' => 'Landing', 'action' => 'champion_home', 'prefix' => 'champion']

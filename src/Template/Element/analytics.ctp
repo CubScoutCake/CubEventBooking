@@ -16,8 +16,8 @@ use Cake\Core\Configure;
     $GACode = Configure::read('GA.ua');
     $GAUser = Configure::read('GA.userCode');
     // $userId is a unique, persistent, and non-personally identifiable string ID.
-    if (!is_null($this->request->session()->read('Auth.User.id'))) {
-        $gaucode = "ga('create', '" . $GACode . "', 'auto', {'userId': '" . $GAUser . $this->request->session()->read('Auth.User.id') . "'});";
+    if (!is_null($this->request->getSession()->read('Auth.User.id'))) {
+        $gaucode = "ga('create', '" . $GACode . "', 'auto', {'userId': '" . $GAUser . $this->request->getSession()->read('Auth.User.id') . "'});";
         echo sprintf($gaucode);
     } else {
         $gacode = "ga('create', '" . $GACode . "', 'auto');";

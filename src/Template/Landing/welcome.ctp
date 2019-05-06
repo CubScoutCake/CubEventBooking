@@ -83,7 +83,7 @@ $this->append('parent-nav', '<li class="nav-item">' . $this->Html->link('Login',
                             <br/>
                             <p>This event is currently only available to book as a leader.</p>
                         <?php endif; ?>
-                        <div><h1 class="display-4 text-black"><?= $reservation->reservation_number ?></h1></div>
+                        <div><h1 class="display-4 text-black"><?= h($event->event_status->event_status) ?></h1></div>
                     </div>
                 </div>
             </div>

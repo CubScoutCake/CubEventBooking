@@ -67,7 +67,7 @@ $cakeDescription = 'HertsCubs Booking System';
                         <i class="fal fa-bell fa-fw"></i>  <i class="fal fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
-                        <?php   $usr = $this->request->session()->read('Auth.User.id');
+                        <?php   $usr = $this->request->getSession()->read('Auth.User.id');
                                 $cell = $this->cell('Bell', [$usr], [
                                     'cache' => ['config' => 'cell_cache', 'key' => 'bell_' . $usr]
                                 ]);
@@ -85,7 +85,7 @@ $cakeDescription = 'HertsCubs Booking System';
                     <!-- /.dropdown-alerts -->
                 </li>
                 <!-- /.dropdown -->
-                <?php   $usr = $this->request->session()->read('Auth.User.id');
+                <?php   $usr = $this->request->getSession()->read('Auth.User.id');
                 $cell = $this->cell('Profile', [$usr], [
                     'cache' => ['config' => 'cell_cache', 'key' => 'profile_' . $usr]
                 ]);
@@ -98,7 +98,7 @@ $cakeDescription = 'HertsCubs Booking System';
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="metismenu">
                         <?php   echo $this->cell('QuickLink'); ?>
-                        <?php   $usr = $this->request->session()->read('Auth.User.id');
+                        <?php   $usr = $this->request->getSession()->read('Auth.User.id');
                         $cell = $this->cell('Roleside', [$usr], [
                             'cache' => ['config' => 'cell_cache', 'key' => 'roleside_' . $usr]
                         ]);
