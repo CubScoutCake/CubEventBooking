@@ -105,10 +105,12 @@ class ReservationsController extends AppController
             if (is_array($requestData['logistics_item'])) {
                 $logisticData = $requestData['logistics_item'];
 
-                if (!$this->Booking->variableLogistic($logisticData['logistic_id'], $logisticData['param_id'])) {
-                    $this->Flash->error('Spaces not available on Session');
+                foreach ($logisticData as $logisticDatum) {
+                    if (!$this->Booking->variableLogistic($logisticDatum['logistic_id'], $logisticDatum['param_id'])) {
+                        $this->Flash->error('Spaces not available on Session');
 
-                    return $this->redirect($this->referer());
+                        return $this->redirect($this->referer());
+                    }
                 }
             }
 
@@ -195,8 +197,10 @@ class ReservationsController extends AppController
                 $this->loadComponent('Line');
                 $this->Line->parseReservation($reservation->id);
 
-                if (!empty($logisticData['param_id'])) {
-                    $this->Booking->addReservation($reservation->id, $logisticData['param_id']);
+                if (isset($logisticData)) {
+                    foreach ($logisticData as $logisticDatum) {
+                        $this->Booking->addReservation($reservation->id, $logisticDatum['param_id']);
+                    }
                 }
 
                 $this->Flash->success(__('The reservation has been saved.'));
