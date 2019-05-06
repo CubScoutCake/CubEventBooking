@@ -100,16 +100,18 @@ class ReservationsController extends AppController
             $requestData = $this->request->getData();
             $attendeeData = $requestData['attendee'];
             $userData = $requestData['user'];
-            $logisticData = $requestData['logistics_item'];
+            if (is_array($requestData['logistics_item'])) {
+                $logisticData = $requestData['logistics_item'];
+
+                if (!$this->Booking->variableLogistic($logisticData['logistic_id'], $logisticData['param_id'])) {
+                    $this->Flash->error('Spaces not available on Session');
+
+                    return $this->redirect($this->referer());
+                }
+            }
 
             Log::info('Reservation Submitted.', $requestData);
 //            debug($requestData);
-
-            if (!$this->Booking->variableLogistic($logisticData['logistic_id'], $logisticData['param_id'])) {
-                $this->Flash->error('Spaces not available on Session');
-
-                return $this->redirect($this->referer());
-            }
 
             // Start Creating User
             /** @var \App\Model\Entity\User $user */
@@ -191,10 +193,12 @@ class ReservationsController extends AppController
 
             if ($this->Reservations->save($reservation)) {
                 // Check overall availability
-
-
                 $this->loadComponent('Line');
                 $this->Line->parseReservation($reservation->id);
+
+                if (!empty($logisticData['param_id'])) {
+                    $this->Booking->addReservation($logisticData['logistic_id'], $logisticData['param_id']);
+                }
 
                 $this->Flash->success(__('The reservation has been saved.'));
 

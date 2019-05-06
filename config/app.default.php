@@ -307,5 +307,9 @@ return [
         'project_id' => 'secret project id',
         'read_key' => 'the secret read key',
         'write_key' => 'the secret write key'
-    ]
+    ],
+
+    'Schedule' => [
+        'reservation' => '+10 days',
+    ],
 ];

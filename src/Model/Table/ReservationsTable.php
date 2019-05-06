@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Core\Configure;
+use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -137,5 +139,33 @@ class ReservationsTable extends Table
     public function isOwnedBy($reservationId, $userId)
     {
         return $this->exists(['id' => $reservationId, 'user_id' => $userId]);
+    }
+
+    /**
+     * Writes the max value to the Logistic
+     *
+     * @param \Cake\Event\Event $event The event trigger.
+     *
+     * @return true
+     */
+    public function beforeSave($event)
+    {
+        /** @var \App\Model\Entity\Reservation $entity */
+        $entity = $event->getData('entity');
+
+        if ($entity->isNew()) {
+            $resCode = substr(str_shuffle(str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5)), 0, 3);
+
+            $entity->set('reservation_code', $resCode);
+
+            $expiry = Configure::read('Schedule.reservation', '+10 days');
+
+            $now = Time::now();
+            $expiryDate = $now->modify($expiry);
+
+            $entity->set('expires', $expiryDate);
+        }
+
+        return true;
     }
 }

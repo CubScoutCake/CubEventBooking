@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ReservationsTable;
+use Cake\Core\Configure;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -12,7 +13,6 @@ use Cake\Utility\Security;
  */
 class ReservationsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -58,6 +58,9 @@ class ReservationsTableTest extends TestCase
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('Reservations') ? [] : ['className' => ReservationsTable::class];
         $this->Reservations = TableRegistry::getTableLocator()->get('Reservations', $config);
+
+        $now = new Time('2016-12-26 23:22:30');
+        Time::setTestNow($now);
     }
 
     /**
@@ -257,5 +260,56 @@ class ReservationsTableTest extends TestCase
         $values['attendee_id'] = $type + 1;
         $new = $this->Reservations->newEntity($values);
         $this->assertFalse($this->Reservations->save($new));
+    }
+
+    /**
+     * Test isOwnedBy method
+     *
+     * @return void
+     */
+    public function testIsOwnedBy()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test beforeSave method
+     *
+     * @return void
+     */
+    public function testBeforeSave()
+    {
+        $before = $this->Reservations->get(1);
+
+        $change = $this->Reservations->get(1);
+        $change->set('event_id', 2);
+        $this->Reservations->save($change);
+
+        // Testing Change doesn't happen on not New
+        $after = $this->Reservations->get(1);
+        $this->assertEquals($before->reservation_code, $after->reservation_code);
+        $this->assertEquals($before->expires, $after->expires);
+
+        $new = $this->Reservations->newEntity([
+            'event_id' => 3,
+            'user_id' => 4,
+            'attendee_id' => 1,
+            'reservation_status_id' => 1,
+        ]);
+        $this->assertInstanceOf('App\Model\Entity\Reservation', $this->Reservations->save($new));
+
+        $saved = $this->Reservations->get(2);
+
+        // Check 3 Letter
+        $output_array = [];
+        preg_match('/[A-Z]{3}/', $saved->get('reservation_code'), $output_array);
+        $this->assertEquals($saved->get('reservation_code'), $output_array[0]);
+
+        $expiry = Configure::read('Schedule.reservation', '+10 days');
+        $now = Time::now();
+        $expiryDate = $now->modify($expiry);
+
+        $this->assertNotEquals(Time::now(), $expiryDate);
+        $this->assertEquals($expiryDate, $saved->expires);
     }
 }
