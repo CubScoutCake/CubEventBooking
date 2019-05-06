@@ -24,8 +24,8 @@ class ItemTypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.item_types',
-        'app.roles',
+        'app.ItemTypes',
+        'app.Roles',
     ];
 
     /**

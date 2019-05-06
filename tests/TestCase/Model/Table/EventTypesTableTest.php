@@ -23,9 +23,9 @@ class EventTypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.event_types',
+        'app.EventTypes',
         'app.settingtypes',
-        'app.settings',
+        'app.Settings',
     ];
 
     /**

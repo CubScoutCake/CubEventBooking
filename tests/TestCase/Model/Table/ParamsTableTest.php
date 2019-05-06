@@ -19,9 +19,9 @@ class ParamsTableTest extends TestCase
     public $Params;
 
     public $fixtures = [
-        'app.parameters',
-        'app.parameter_sets',
-        'app.params',
+        'app.Parameters',
+        'app.ParameterSets',
+        'app.Params',
     ];
 
     /**

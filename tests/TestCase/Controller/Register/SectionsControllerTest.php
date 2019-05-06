@@ -16,18 +16,18 @@ class SectionsControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.sessions',
-        'app.districts',
-        'app.scoutgroups',
-        'app.section_types',
-        'app.sections',
-        'app.password_states',
-        'app.auth_roles',
-        'app.item_types',
-        'app.roles',
-        'app.users',
-        'app.notification_types',
-        'app.notifications',
+        'app.Sessions',
+        'app.Districts',
+        'app.Scoutgroups',
+        'app.SectionTypes',
+        'app.Sections',
+        'app.PasswordStates',
+        'app.AuthRoles',
+        'app.ItemTypes',
+        'app.Roles',
+        'app.Users',
+        'app.NotificationTypes',
+        'app.Notifications',
     ];
 
     /**

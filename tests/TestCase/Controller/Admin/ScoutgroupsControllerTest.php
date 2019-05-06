@@ -17,17 +17,17 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
      */
 
     public $fixtures = [
-        'app.scoutgroups',
-        'app.districts',
-        'app.roles',
-        'app.users',
-        'app.auth_roles',
-        'app.attendees',
-        'app.auth_roles',
-        'app.password_states',
-        'app.sections',
-        'app.section_types',
-        'app.notifications',
+        'app.Scoutgroups',
+        'app.Districts',
+        'app.Roles',
+        'app.Users',
+        'app.AuthRoles',
+        'app.Attendees',
+        'app.AuthRoles',
+        'app.PasswordStates',
+        'app.Sections',
+        'app.SectionTypes',
+        'app.Notifications',
         'app.notificationtypes',
     ];
 

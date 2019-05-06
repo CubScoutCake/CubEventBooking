@@ -25,7 +25,7 @@ class EmailResponseTypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.email_response_types',
+        'app.EmailResponseTypes',
     ];
 
     /**

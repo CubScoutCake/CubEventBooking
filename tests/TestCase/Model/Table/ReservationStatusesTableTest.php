@@ -25,7 +25,7 @@ class ReservationStatusesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.reservation_statuses',
+        'app.ReservationStatuses',
     ];
 
     /**

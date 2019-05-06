@@ -24,7 +24,7 @@ class AuthRolesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.auth_roles'
+        'app.AuthRoles'
     ];
 
     /**

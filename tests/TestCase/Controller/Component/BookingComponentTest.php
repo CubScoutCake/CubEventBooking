@@ -21,8 +21,8 @@ class BookingComponentTest extends TestCase
     public $Booking;
 
     public $fixtures = [
-        'app.roles',
-        'app.section_types',
+        'app.Roles',
+        'app.SectionTypes',
     ];
 
     /**

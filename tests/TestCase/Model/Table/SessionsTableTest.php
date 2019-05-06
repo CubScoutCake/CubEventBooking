@@ -24,7 +24,7 @@ class SessionsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.sessions'
+        'app.Sessions'
     ];
 
     /**

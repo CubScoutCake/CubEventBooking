@@ -25,11 +25,11 @@ class SectionsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.sections',
-        'app.section_types',
-        'app.scoutgroups',
-        'app.districts',
-        'app.roles',
+        'app.Sections',
+        'app.SectionTypes',
+        'app.Scoutgroups',
+        'app.Districts',
+        'app.Roles',
     ];
 
     /**

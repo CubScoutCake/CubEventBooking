@@ -27,18 +27,18 @@ class ScoutManagerComponentTest extends TestCase
     public $ScoutManager;
 
     public $fixtures = [
-        'app.allergies',
-        'app.attendees',
-        'app.roles',
-        'app.districts',
-        'app.scoutgroups',
-        'app.users',
-        'app.password_states',
-        'app.attendees_allergies',
-        'app.sections',
-        'app.section_types',
-        'app.auth_roles',
-        'app.notifications',
+        'app.Allergies',
+        'app.Attendees',
+        'app.Roles',
+        'app.Districts',
+        'app.Scoutgroups',
+        'app.Users',
+        'app.PasswordStates',
+        'app.AttendeesAllergies',
+        'app.Sections',
+        'app.SectionTypes',
+        'app.AuthRoles',
+        'app.Notifications',
         'app.notificationtypes',
     ];
 

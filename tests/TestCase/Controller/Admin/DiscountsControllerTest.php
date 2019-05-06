@@ -16,12 +16,12 @@ class DiscountsControllerTest extends IntegrationTestCase
      * @var array
 
     public $fixtures = [
-        'app.invoices',
-        'app.invoice_items',
+        'app.Invoices',
+        'app.InvoiceItems',
         'app.itemtypes',
-        'app.payments',
-        'app.invoices_payments',
-        'app.discounts'
+        'app.Payments',
+        'app.InvoicesPayments',
+        'app.Discounts'
     ];
      */
     /**

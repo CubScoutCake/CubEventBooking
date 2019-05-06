@@ -24,15 +24,15 @@ class ChampionsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.champions',
-        'app.districts',
-        'app.password_states',
-        'app.scoutgroups',
-        'app.users',
-        'app.roles',
-        'app.auth_roles',
-        'app.sections',
-        'app.section_types'
+        'app.Champions',
+        'app.Districts',
+        'app.PasswordStates',
+        'app.Scoutgroups',
+        'app.Users',
+        'app.Roles',
+        'app.AuthRoles',
+        'app.Sections',
+        'app.SectionTypes'
     ];
 
     /**

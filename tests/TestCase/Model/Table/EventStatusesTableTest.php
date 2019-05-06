@@ -24,7 +24,7 @@ class EventStatusesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.event_statuses',
+        'app.EventStatuses',
     ];
 
     /**

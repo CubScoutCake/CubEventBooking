@@ -16,15 +16,15 @@ class ChampionsControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.champions',
-        'app.districts',
-        'app.scoutgroups',
-        'app.users',
-        'app.password_states',
-        'app.roles',
-        'app.auth_roles',
-        'app.sections',
-        'app.section_types',
+        'app.Champions',
+        'app.Districts',
+        'app.Scoutgroups',
+        'app.Users',
+        'app.PasswordStates',
+        'app.Roles',
+        'app.AuthRoles',
+        'app.Sections',
+        'app.SectionTypes',
     ];
 
     /**

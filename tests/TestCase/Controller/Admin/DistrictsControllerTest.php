@@ -16,22 +16,22 @@ class DistrictsControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.districts',
-        'app.scoutgroups',
-        'app.users',
-        'app.password_states',
-        'app.sections',
-        'app.notifications',
+        'app.Districts',
+        'app.Scoutgroups',
+        'app.Users',
+        'app.PasswordStates',
+        'app.Sections',
+        'app.Notifications',
         'app.notificationtypes',
-        'app.roles',
-        'app.section_types',
-        'app.auth_roles',
-        'app.applications', 'app.application_statuses',
-        'app.events', 'app.event_statuses',
-        'app.settings',
-        'app.setting_types',
-        'app.discounts',
-        'app.event_types',
+        'app.Roles',
+        'app.SectionTypes',
+        'app.AuthRoles',
+        'app.Applications', 'app.ApplicationStatuses',
+        'app.Events', 'app.EventStatuses',
+        'app.Settings',
+        'app.SettingTypes',
+        'app.Discounts',
+        'app.EventTypes',
     ];
 
     public function testIndexUnauthenticatedFails()

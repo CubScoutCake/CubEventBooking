@@ -25,15 +25,15 @@ class PaymentsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.payments',
-        'app.districts',
-        'app.auth_roles',
-        'app.scoutgroups',
-        'app.sections',
-        'app.section_types',
-        'app.roles',
-        'app.password_states',
-        'app.users',
+        'app.Payments',
+        'app.Districts',
+        'app.AuthRoles',
+        'app.Scoutgroups',
+        'app.Sections',
+        'app.SectionTypes',
+        'app.Roles',
+        'app.PasswordStates',
+        'app.Users',
     ];
 
     /**

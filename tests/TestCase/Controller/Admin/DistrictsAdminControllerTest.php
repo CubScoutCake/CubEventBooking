@@ -11,8 +11,8 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
 {
 
     public $fixtures = [
-        'app.districts',
-        'app.auth_roles',
+        'app.Districts',
+        'app.AuthRoles',
     ];
 
     public function testIndexUnauthenticatedFails()

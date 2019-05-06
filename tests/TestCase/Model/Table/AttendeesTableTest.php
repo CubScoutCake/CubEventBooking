@@ -30,17 +30,17 @@ class AttendeesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.attendees',
-        'app.sections',
-        'app.section_types',
-        'app.users',
-        'app.roles',
-        'app.password_states',
-        'app.scoutgroups',
-        'app.districts',
-        'app.allergies',
-        'app.attendees_allergies',
-        'app.auth_roles',
+        'app.Attendees',
+        'app.Sections',
+        'app.SectionTypes',
+        'app.Users',
+        'app.Roles',
+        'app.PasswordStates',
+        'app.Scoutgroups',
+        'app.Districts',
+        'app.Allergies',
+        'app.AttendeesAllergies',
+        'app.AuthRoles',
     ];
 
     /**

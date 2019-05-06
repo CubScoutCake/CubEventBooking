@@ -24,19 +24,19 @@ class NotificationsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.notifications',
-        'app.notification_types',
+        'app.Notifications',
+        'app.NotificationTypes',
         'app.settingtypes',
-        'app.settings',
-        'app.users',
-        'app.roles',
-        'app.scoutgroups',
-        'app.password_states',
-        'app.districts',
-        'app.champions',
-        'app.sections',
-        'app.section_types',
-        'app.auth_roles',
+        'app.Settings',
+        'app.Users',
+        'app.Roles',
+        'app.Scoutgroups',
+        'app.PasswordStates',
+        'app.Districts',
+        'app.Champions',
+        'app.Sections',
+        'app.SectionTypes',
+        'app.AuthRoles',
     ];
 
     /**

@@ -21,23 +21,23 @@ class PasswordComponentTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.tokens',
-        'app.users',
-        'app.roles',
-        'app.sections',
-        'app.section_types',
-        'app.scoutgroups',
-        'app.districts',
-        'app.password_states',
-        'app.settings',
-        'app.setting_types',
-        'app.event_types',
-        'app.auth_roles',
-        'app.notifications',
-        'app.notification_types',
-        'app.email_sends',
-        'app.email_responses',
-        'app.email_response_types'
+        'app.Tokens',
+        'app.Users',
+        'app.Roles',
+        'app.Sections',
+        'app.SectionTypes',
+        'app.Scoutgroups',
+        'app.Districts',
+        'app.PasswordStates',
+        'app.Settings',
+        'app.SettingTypes',
+        'app.EventTypes',
+        'app.AuthRoles',
+        'app.Notifications',
+        'app.NotificationTypes',
+        'app.EmailSends',
+        'app.EmailResponses',
+        'app.EmailResponseTypes'
     ];
 
     /**
