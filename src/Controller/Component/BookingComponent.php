@@ -136,6 +136,10 @@ class BookingComponent extends Component
      */
     public function variableLogistic($logisticId, $paramId)
     {
+        if (is_null($logisticId) || is_null($paramId)) {
+            return false;
+        }
+
         $this->Logistics = TableRegistry::getTableLocator()->get('Logistics');
 
         $this->Logistics->parseLogisticAvailability($logisticId);
@@ -169,6 +173,10 @@ class BookingComponent extends Component
      */
     public function addReservation($reservationId, $paramId)
     {
+        if (is_null($reservationId) || is_null($paramId)) {
+            return false;
+        }
+
         $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
         /** @var \App\Model\Entity\Param $param */
         $param = $this->Reservations->LogisticItems->Params->get($paramId);

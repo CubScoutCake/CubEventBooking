@@ -98,6 +98,8 @@ class ReservationsController extends AppController
         if ($this->request->is('post') && $this->Availability->checkReservation($eventId, true)) {
             // Set User & Attendee Data
             $requestData = $this->request->getData();
+            Log::info('Reservation Submitted.', $requestData);
+
             $attendeeData = $requestData['attendee'];
             $userData = $requestData['user'];
             if (is_array($requestData['logistics_item'])) {
@@ -109,9 +111,6 @@ class ReservationsController extends AppController
                     return $this->redirect($this->referer());
                 }
             }
-
-            Log::info('Reservation Submitted.', $requestData);
-//            debug($requestData);
 
             // Start Creating User
             /** @var \App\Model\Entity\User $user */
@@ -197,7 +196,7 @@ class ReservationsController extends AppController
                 $this->Line->parseReservation($reservation->id);
 
                 if (!empty($logisticData['param_id'])) {
-                    $this->Booking->addReservation($logisticData['logistic_id'], $logisticData['param_id']);
+                    $this->Booking->addReservation($reservation->id, $logisticData['param_id']);
                 }
 
                 $this->Flash->success(__('The reservation has been saved.'));
