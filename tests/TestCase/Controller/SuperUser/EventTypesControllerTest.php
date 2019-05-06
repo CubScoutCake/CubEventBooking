@@ -41,6 +41,8 @@ class EventTypesControllerTest extends IntegrationTestCase
      * Test index method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testIndex()
     {
@@ -60,6 +62,8 @@ class EventTypesControllerTest extends IntegrationTestCase
      * Test view method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testView()
     {
@@ -79,6 +83,8 @@ class EventTypesControllerTest extends IntegrationTestCase
      * Test add method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testAdd()
     {
@@ -98,6 +104,8 @@ class EventTypesControllerTest extends IntegrationTestCase
      * Test edit method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testEdit()
     {
@@ -117,6 +125,8 @@ class EventTypesControllerTest extends IntegrationTestCase
      * Test delete method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testDelete()
     {
@@ -139,6 +149,8 @@ class EventTypesControllerTest extends IntegrationTestCase
      * Test index Unauthorised method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testIndexUnauthorised()
     {
@@ -153,6 +165,8 @@ class EventTypesControllerTest extends IntegrationTestCase
      * Test view Unauthorised method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testViewUnauthorised()
     {
@@ -167,6 +181,8 @@ class EventTypesControllerTest extends IntegrationTestCase
      * Test add Unauthorised method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testAddUnauthorised()
     {
@@ -181,6 +197,8 @@ class EventTypesControllerTest extends IntegrationTestCase
      * Test edit Unauthorised method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testEditUnauthorised()
     {
@@ -195,13 +213,20 @@ class EventTypesControllerTest extends IntegrationTestCase
      * Test delete Unauthorised method
      *
      * @return void
+     *
+     * @throws \PHPUnit\Exception
      */
     public function testDeleteUnauthorised()
     {
         //$this->markTestSkipped('This has been skipped.');
 
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
+
         $this->post(['prefix' => 'super_user', 'controller' => 'EventTypes', 'action' => 'delete', 1]);
 
-        $this->assertRedirect('/login');
+        $this->assertRedirect(['prefix' => false, 'controller' => 'Users', 'action' => 'login']);
+//        $this->assertFlashMessageAt(0, 'You are not authorized to perform this action.');
     }
 }

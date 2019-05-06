@@ -18,6 +18,8 @@ use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use Cake\Http\Middleware\SecurityHeadersMiddleware;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 
@@ -71,6 +73,16 @@ class Application extends BaseApplication
             // using it's second constructor argument:
             // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this));
+
+        $securityHeaders = new SecurityHeadersMiddleware();
+        $securityHeaders
+            ->setCrossDomainPolicy()
+            ->setReferrerPolicy()
+            ->setXFrameOptions()
+            ->setXssProtection()
+            ->noOpen()
+            ->noSniff();
+        $middlewareQueue->add($securityHeaders);
 
         return $middlewareQueue;
     }

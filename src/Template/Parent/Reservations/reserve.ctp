@@ -91,7 +91,7 @@ $this->append('parent-nav', '<li class="nav-item">' . $this->Html->link('Front P
                         <?= $this->Form->control('logistics_item.' . $idx . '.param_id', ['options' => $sessions, 'type' => 'select', 'label' => 'Session']); ?>
 
                         <?php foreach ($logistic->parameter->params as $param) : ?>
-                            <?= $param->constant ?> <?= $this->Number->format($logistic->variable_max_values[$param->id]['remaining']) ?> Remaining.
+                            <?= $param->constant ?><?php if (key_exists('remaining', $logistic->variable_max_values[$param->id])) : ?><?= $this->Number->format($logistic->variable_max_values[$param->id]['remaining']) ?> Remaining. <?php endif; ?>
                         <?php endforeach; ?>
 
                     <?php endforeach; ?>

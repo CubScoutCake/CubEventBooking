@@ -16,14 +16,13 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\EventStatus newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\EventStatus[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\EventStatus|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\EventStatus|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\EventStatus saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\EventStatus patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\EventStatus[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\EventStatus findOrCreate($search, callable $callback = null, $options = [])
  */
 class EventStatusesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -35,7 +34,7 @@ class EventStatusesTable extends Table
         parent::initialize($config);
 
         $this->setTable('event_statuses');
-        $this->setDisplayField('id');
+        $this->setDisplayField('event_status');
         $this->setPrimaryKey('id');
 
         $this->hasMany('Events', [
@@ -53,23 +52,33 @@ class EventStatusesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->scalar('event_status')
             ->maxLength('event_status', 255)
-            ->requirePresence('event_status', 'create')
-            ->notEmpty('event_status');
+            ->add('event_status', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
+            ->allowEmptyString('event_status', false);
 
         $validator
             ->boolean('live')
-            ->requirePresence('live', 'create')
-            ->notEmpty('live');
+            ->allowEmptyString('live');
 
         $validator
             ->boolean('accepting_applications')
-            ->requirePresence('accepting_applications', 'create')
-            ->notEmpty('accepting_applications');
+            ->allowEmptyString('accepting_applications');
+
+        $validator
+            ->boolean('spaces_full')
+            ->allowEmptyString('spaces_full');
+
+        $validator
+            ->boolean('pending_date')
+            ->allowEmptyString('pending_date');
+
+        $validator
+            ->integer('status_order')
+            ->allowEmptyString('status_order', false);
 
         return $validator;
     }
@@ -86,7 +95,7 @@ class EventStatusesTable extends Table
         $total = 0;
 
         foreach ($base as $baseStatus) {
-            $status = $this->newEntity($baseStatus);
+            $status = $this->findOrCreate($baseStatus);
             if ($this->save($status)) {
                 $total += 1;
             };

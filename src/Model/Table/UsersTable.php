@@ -360,7 +360,8 @@ class UsersTable extends Table
         $validator
             ->email('email')
             ->requirePresence('email', 'create')
-            ->allowEmptyString('email', false);
+            ->allowEmptyString('email', false)
+            ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('password')
@@ -555,7 +556,7 @@ class UsersTable extends Table
         ];
 
         foreach ($toSet as $key => $value) {
-            if (!($data[$key] == true)) {
+            if (!key_exists($key, $data)) {
                 $data[$key] = $value;
             }
         }

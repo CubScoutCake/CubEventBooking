@@ -93,8 +93,10 @@ class LogisticsTable extends Table
      * @param \Cake\Database\Schema\TableSchema $schema The Schema to be modified
      *
      * @return TableSchema|\Cake\Database\Schema\TableSchema
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
-    protected function _initializeSchema($schema)
+    protected function _initializeSchema(TableSchema $schema)
     {
         $schema->setColumnType('variable_max_values', 'json');
 

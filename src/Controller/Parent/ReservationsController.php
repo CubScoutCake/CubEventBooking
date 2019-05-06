@@ -119,21 +119,24 @@ class ReservationsController extends AppController
             $user = $this->Reservations->Users->detectExisting($userData);
 
             if ($user instanceof User) {
-                $user = $this->Reservations->Users->get($user->id, ['contain' => 'AuthRoles']);
+                $userId = $user->id;
+                $user = $this->Reservations->Users->get($userId, ['contain' => 'AuthRoles']);
 
-                $authArray = $user->auth_role->toArray();
-                if (strpos('Parent', $authArray['auth_role'])) {
-                    $authArray['auth_role'] = $authArray['auth_role'] . ' Parent';
-                }
-                if ($authArray['parent_access'] == false) {
-                    $authArray['parent_access'] = true;
-                }
-                unset($authArray['auth_value']);
+                if (!$user->auth_role->parent) {
+                    $authArray = $user->auth_role->toArray();
+                    if (strpos('Parent', $authArray['auth_role'])) {
+                        $authArray['auth_role'] = $authArray['auth_role'] . ' Parent';
+                    }
+                    if ($authArray['parent_access'] == false) {
+                        $authArray['parent_access'] = true;
+                    }
+                    unset($authArray['auth_value']);
 
-                /** @var \App\Model\Entity\AuthRole $authRole */
-                $authRole = $this->Reservations->Users->AuthRoles->findOrCreate($authArray);
-                $user->set('auth_role_id', $authRole->id);
-                $this->Reservations->Users->save($user);
+                    /** @var \App\Model\Entity\AuthRole $authRole */
+                    $authRole = $this->Reservations->Users->AuthRoles->findOrCreate($authArray);
+                    $user->set('auth_role_id', $authRole->id);
+                    $this->Reservations->Users->save($user);
+                }
             }
 
             if ($user == false) {

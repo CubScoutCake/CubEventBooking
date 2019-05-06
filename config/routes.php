@@ -19,6 +19,8 @@
  */
 
 use Cake\Core\Plugin;
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 
 /**
@@ -42,7 +44,13 @@ use Cake\Routing\Router;
 Router::extensions(['pdf']);
 Router::extensions(['csv']);
 
-Router::scope('/', function ($routes) {
+Router::scope('/', function (RouteBuilder $routes) {
+
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => true
+    ]));
+
+    $routes->applyMiddleware('csrf');
 
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
@@ -81,56 +89,96 @@ Router::scope('/', function ($routes) {
     $routes->fallbacks('DashedRoute');
 });
 
-Router::prefix('admin', function ($routes) {
+Router::prefix('admin', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'adminHome', 'admin_home']);
 
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => true
+    ]));
+
+    $routes->applyMiddleware('csrf');
+
     $routes->fallbacks('DashedRoute');
 });
 
-Router::prefix('super_user', function ($routes) {
+Router::prefix('super_user', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'superUserHome', 'super_user_home']);
 
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => false
+    ]));
+
+    /**
+     * Apply a middleware to the current route scope.
+     * Requires middleware to be registered via `Application::routes()` with `registerMiddleware()`
+     */
+    $routes->applyMiddleware('csrf');
+
     $routes->fallbacks('DashedRoute');
 });
 
-Router::prefix('champion', function ($routes) {
+Router::prefix('champion', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'championHome', 'champion_home']);
 
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => true
+    ]));
+
+    $routes->applyMiddleware('csrf');
+
     $routes->fallbacks('DashedRoute');
 });
 
-Router::prefix('parent', function ($routes) {
+Router::prefix('parent', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Reservation', 'action' => 'index', 'index']);
 
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => true
+    ]));
+
+    $routes->applyMiddleware('csrf');
+
     $routes->fallbacks('DashedRoute');
 });
 
-Router::prefix('register', function ($routes) {
+Router::prefix('register', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Users', 'action' => 'register']);
 
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => true
+    ]));
+
+    $routes->applyMiddleware('csrf');
+
     $routes->fallbacks('DashedRoute');
 });
 
-Router::prefix('api', function ($routes) {
+Router::prefix('api', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Users', 'action' => 'register']);
+
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => true
+    ]));
+
+    $routes->applyMiddleware('csrf');
 
     $routes->fallbacks('DashedRoute');
 });

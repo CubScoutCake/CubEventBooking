@@ -121,6 +121,10 @@ class ReservationsControllerTest extends IntegrationTestCase
      */
     public function testReserve()
     {
+        $this->enableRetainFlashMessages();
+        $this->enableSecurityToken();
+        $this->enableCsrfToken();
+
         $this->get([
             'prefix' => 'parent',
             'controller' => 'Reservations',
@@ -149,8 +153,10 @@ class ReservationsControllerTest extends IntegrationTestCase
                 'section_id' => '1'
             ],
             'logistics_item' => [
-                'logistic_id' => 1,
-                'param_id' => 2,
+                0 => [
+                    'logistic_id' => 1,
+                    'param_id' => 2,
+                ]
             ],
         ];
 
