@@ -104,4 +104,15 @@ class EventStatusesTable extends Table
 
         return $total;
     }
+
+    /**
+     * Is a finder which will return a query with non-live (pre-release & archive) events only.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
+    public function findCore($query)
+    {
+        return $query->where(['event_status <>' => 'Live']);
+    }
 }

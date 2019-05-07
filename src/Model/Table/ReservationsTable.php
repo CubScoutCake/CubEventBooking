@@ -46,7 +46,26 @@ class ReservationsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
+        $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created' => 'new',
+                    'modified' => 'always',
+                ]
+            ]
+        ]);
+
+        $this->addBehavior('CounterCache', [
+            'Events' => [
+                'cc_res' => [
+                    'finder' => 'active'
+                ]
+            ],
+        ]);
+
+        $this->addBehavior('Muffin/Trash.Trash', [
+            'field' => 'deleted'
+        ]);
 
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id',
@@ -153,6 +172,21 @@ class ReservationsTable extends Table
         $userId = $options['userId'];
 
         return $query->where(['Reservations.user_id' => $userId]);
+    }
+
+    /**
+     * Finds the Reservations owned by the user.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options An array containing the user to be searched for.
+     *
+     * @return \Cake\ORM\Query The modified query.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function findActive($query, $options)
+    {
+        return $query->contain('ReservationStatuses')->where(['ReservationStatuses.active' => true]);
     }
 
     /**

@@ -88,7 +88,7 @@ class ReservationStatusesTableTest extends TestCase
         $this->assertEquals($expected, $actual);
 
         $count = $this->ReservationStatuses->find('all')->count();
-        $this->assertEquals(1, $count);
+        $this->assertEquals(2, $count);
     }
 
     /**

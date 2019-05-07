@@ -193,7 +193,9 @@ class InvoicesControllerTest extends IntegrationTestCase
 
         $this->assertFlashMessage('This event has been LOCKED to prevent updates to invoices. Please contact Admin Joe.');
 
+        /** @var \App\Model\Table\EventsTable $events */
         $events = TableRegistry::getTableLocator()->get('Events');
+        $events->EventStatuses->installBaseStatuses();
         $event = $events->get(2);
         $event->set('invoices_locked', false);
         $events->save($event);

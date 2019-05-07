@@ -120,8 +120,14 @@ class Event extends Entity
      */
     protected function _getAppFull()
     {
-        if (isset($this->_properties['cc_apps']) && isset($this->_properties['max_apps'])) {
+        if ((isset($this->_properties['cc_apps']) || isset($this->_properties['cc_res'])) && isset($this->_properties['max_apps'])) {
             if ($this->_properties['cc_apps'] >= $this->_properties['max_apps'] && $this->_properties['max']) {
+                return true;
+            }
+            if ($this->_properties['cc_res'] >= $this->_properties['max_apps'] && $this->_properties['max']) {
+                return true;
+            }
+            if ($this->_properties['cc_res'] >= $this->_properties['max_section'] && $this->_properties['max']) {
                 return true;
             }
         }
