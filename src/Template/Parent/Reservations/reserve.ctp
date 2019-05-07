@@ -75,7 +75,6 @@ $this->append('parent-nav', '<li class="nav-item">' . $this->Html->link('Front P
                     echo $this->Form->control('user.address_2');
                     echo $this->Form->control('user.city');
                     echo $this->Form->control('user.county', ['default' => 'Hertfordshire']);
-                    echo $this->Form->control('user.country', ['default' => 'United Kingdom']);
                     echo $this->Form->control('user.postcode');
 
 	                ?>

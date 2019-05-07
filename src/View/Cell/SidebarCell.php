@@ -4,7 +4,9 @@ namespace App\View\Cell;
 use Cake\View\Cell;
 
 /**
- * Notifications cell
+ * Sidebar cell
+ *
+ * @property \App\Model\Table\AuthRolesTable $AuthRoles
  */
 class SidebarCell extends Cell
 {
@@ -20,14 +22,16 @@ class SidebarCell extends Cell
     /**
      * Default display method.
      *
-     * @param int $userId The User ID being displayed.
+     * @param int $authRoleId The Auth Role ID being displayed.
      *
      * @return void
      */
-    public function display($userId = null)
+    public function display($authRoleId)
     {
-        $this->loadModel('Notifications');
-        $unread = $this->Notifications->find('unread')->where(['user_id' => $userId]);
-        $this->set('unread_count', $unread->count());
+        $this->loadModel('AuthRoles');
+        $authRole = $this->AuthRoles->get($authRoleId);
+
+        $this->set('auth_role', $authRole);
+        $this->set('prefix', $this->request->getParam('prefix'));
     }
 }

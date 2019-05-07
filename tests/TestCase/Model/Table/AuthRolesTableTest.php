@@ -282,7 +282,6 @@ class AuthRolesTableTest extends TestCase
                 $this->assertEquals($authRole->id, $return);
                 $this->assertEquals($authRole->auth_role, $new->auth_role);
             }
-
         }
 
         // Test Detect

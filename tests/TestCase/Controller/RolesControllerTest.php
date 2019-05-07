@@ -45,7 +45,10 @@ class RolesControllerTest extends IntegrationTestCase
      */
     public function testIndexAuthorised()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->get('/roles');
 
@@ -61,7 +64,10 @@ class RolesControllerTest extends IntegrationTestCase
     {
         $this->markTestSkipped('Need to associate Scoutgroups to Sections');
 
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->get('/roles/view/1');
 

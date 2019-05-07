@@ -1,9 +1,9 @@
 <?php
-
 /**
-* @var \App\Model\Entity\Invoice $invoice
+ * @var \App\Model\Entity\Invoice $invoice
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\AuthRole $auth_role
  */
-
 ?>
 <div class="row">
     <div class="col-lg-11 col-md-11">
@@ -18,12 +18,14 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Invoices',
-                        'action' => 'regenerate',
-                        'prefix' => false,
-                        $invoice->id],['_full']); ?>">Update Invoice</a>
-                    </li>
+                    <?php if ($auth_role->user_access) : ?>
+                        <li><a href="<?php echo $this->Url->build([
+                            'controller' => 'Invoices',
+                            'action' => 'regenerate',
+                            'prefix' => false,
+                            $invoice->id],['_full']); ?>">Update Invoice</a>
+                        </li>
+                    <?php endif; ?>
                     <li><a href="<?php echo $this->Url->build([
 		                    'controller' => 'Invoices',
 		                    'action' => 'view',
@@ -45,7 +47,12 @@
             <div class="panel-body">
                 <span><?= __('User') ?>: <?= $invoice->has('user') ? $this->Html->link($invoice->user->full_name, ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></span>
                 <br/>
+                <?php if ($invoice->has('application')) : ?>
                 <span><?= __('Application') ?>: <?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></span>
+                <?php endif; ?>
+                <?php if ($invoice->has('reservation')) : ?>
+                    <span><?= __('Reservation') ?>: <?= $invoice->has('reservation') ? $this->Html->link($invoice->reservation->reservation_number, ['controller' => 'Reservations', 'action' => 'view', $invoice->reservation->id]) : '' ?></span>
+                <?php endif; ?>
             </div>
         </div>
     </div>

@@ -142,6 +142,20 @@ class ReservationsTable extends Table
     }
 
     /**
+     * Finds the Reservations owned by the user.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options An array containing the user to be searched for.
+     * @return \Cake\ORM\Query The modified query.
+     */
+    public function findOwnedBy($query, $options)
+    {
+        $userId = $options['userId'];
+
+        return $query->where(['Reservations.user_id' => $userId]);
+    }
+
+    /**
      * Writes the max value to the Logistic
      *
      * @param \Cake\Event\Event $event The event trigger.

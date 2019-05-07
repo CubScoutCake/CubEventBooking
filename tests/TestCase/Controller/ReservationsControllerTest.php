@@ -1,14 +1,16 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\LandingController;
-use Cake\TestSuite\IntegrationTestCase;
+use App\Controller\ReservationsController;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
- * App\Admin\LandingController Test Case
+ * App\Controller\ReservationsController Test Case
  */
-class LandingControllerTest extends IntegrationTestCase
+class ReservationsControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * Fixtures
@@ -16,6 +18,7 @@ class LandingControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
+        'app.sessions',
         'app.districts',
         'app.scoutgroups',
         'app.section_types',
@@ -58,52 +61,38 @@ class LandingControllerTest extends IntegrationTestCase
         'app.tokens',
         'app.email_response_types',
         'app.email_responses',
-        'app.champions',
-        'app.sessions',
     ];
 
     /**
-     * Test userHome method
+     * Test index method
      *
      * @return void
      */
-    public function testUserHome()
+    public function testIndex()
     {
         $this->session([
             'Auth.User.id' => 1,
             'Auth.User.auth_role_id' => 1,
         ]);
 
-        $this->get(['controller' => 'Landing', 'action' => 'user_home', 'prefix' => false]);
+        $this->get('/payments');
 
         $this->assertResponseOk();
     }
 
-    public function testUserHomeUnauthenticatedFails()
-    {
-        // No session data set.
-        $this->get(['controller' => 'Landing', 'action' => 'user_home', 'prefix' => false]);
-
-        $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/landing/user-home']);
-
-        $this->session([
-            'Auth.User.auth_role_id' => 4,
-            'Auth.User.id' => 1,
-        ]);
-
-        $this->get(['controller' => 'Payments', 'action' => 'index', 'prefix' => false]);
-
-        $this->assertRedirect();
-    }
-
     /**
-     * Test welcome method
+     * Test view method
      *
      * @return void
      */
-    public function testWelcome()
+    public function testView()
     {
-        $this->get('/');
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
+
+        $this->get('/payments');
 
         $this->assertResponseOk();
     }
