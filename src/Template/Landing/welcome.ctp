@@ -75,21 +75,24 @@ $this->append('parent-nav', '<li class="nav-item">' . $this->Html->link('Login',
                         <h1 class="display-4 text-uppercase"><?= h($event->full_name) ?></h1>
                         <h2 class="text-black-50"><?= $this->Time->i18nformat($event->start_date,'dd-MMM-yy')  ?></h2>
                         <hr class="my-4">
-                        <?php if ($event->event_status->accepting_applications && $event->event_type->parent_applications) : ?>
+                        <?php if ($event->event_status->accepting_applications && !$event->event_status->spaces_full && $event->event_type->parent_applications) : ?>
                             <div><?= $this->Html->link('Book as a Parent', ['prefix' => 'parent', 'controller' => 'Reservations', 'action' => 'reserve', $event->id], ['class' => 'btn btn-primary'])  ?></div>
                             <br/>
                             <div><h1 class="text-black-50"><?= h($event->event_status->event_status) ?></h1></div>
                             <p>This event is available for Parents to book for individual Cubs.</p>
-                        <?php elseif ($event->event_status->accepting_applications && !$event->event_type->parent_applications) : ?>
+                        <?php elseif ($event->event_status->accepting_applications && !$event->event_status->spaces_full && !$event->event_type->parent_applications) : ?>
                             <div><?= $this->Html->link('Book as a Leader', ['controller' => 'Events', 'action' => 'book', $event->id], ['class' => 'btn btn-primary'])  ?></div>
                             <br/>
                             <div><h1 class="text-black-50"><?= h($event->event_status->event_status) ?></h1></div>
                             <p>This event is currently only available to book as group by a leader.</p>
                         <?php endif; ?>
 
-                        <?php if (!$event->event_status->pending_date) : ?>
-                            <div><h1 class="text-black-50"><?= $this->Time->i18nformat($event->opening_date,'dd-MMM-yy') ?></h1></div>
-                            <p>This event is currently only available to book as group by a leader.</p>
+                        <?php if ($event->event_status->pending_date) : ?>
+                            <div><h1 class="text-black-50">Booking opens: <?= $this->Time->i18nformat($event->opening_date,'dd-MMM-yy HH:mm') ?></h1></div>
+                        <?php endif; ?>
+
+                        <?php if ($event->event_status->spaces_full) : ?>
+                            <div><h1 class="text-black-50">Event is Currently Full.</h1></div>
                         <?php endif; ?>
                     </div>
                 </div>

@@ -82,7 +82,10 @@ class InvoicesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->get('/invoices');
 
@@ -113,7 +116,10 @@ class InvoicesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->get('/invoices/view/1');
 
