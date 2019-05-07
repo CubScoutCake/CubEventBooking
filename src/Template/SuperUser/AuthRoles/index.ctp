@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\AuthRole[]|\Cake\Collection\CollectionInterface $authRoles
+ */
+?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
@@ -17,6 +23,9 @@
                 <th scope="col"><?= $this->Paginator->sort('champion_access') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('super_user') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('auth') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('parent_access') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('user_access') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('section_limited') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -24,11 +33,14 @@
             <?php foreach ($authRoles as $authRole): ?>
             <tr>
                 <td><?= $this->Number->format($authRole->id) ?></td>
-                <td><?= $this->Number->format($authRole->auth_role) ?></td>
-                <td><?= $this->Number->format($authRole->admin_access) ?></td>
-                <td><?= $this->Number->format($authRole->champion_access) ?></td>
-                <td><?= $this->Number->format($authRole->super_user) ?></td>
+                <td><?= h($authRole->auth_role) ?></td>
+                <td><?= h($authRole->admin_access) ?></td>
+                <td><?= h($authRole->champion_access) ?></td>
+                <td><?= h($authRole->super_user) ?></td>
                 <td><?= $this->Number->format($authRole->auth) ?></td>
+                <td><?= h($authRole->parent_access) ?></td>
+                <td><?= h($authRole->user_access) ?></td>
+                <td><?= h($authRole->section_limited) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $authRole->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $authRole->id]) ?>
@@ -40,10 +52,12 @@
     </table>
     <div class="paginator">
         <ul class="pagination">
+            <?= $this->Paginator->first('<< ' . __('first')) ?>
             <?= $this->Paginator->prev('< ' . __('previous')) ?>
             <?= $this->Paginator->numbers() ?>
             <?= $this->Paginator->next(__('next') . ' >') ?>
+            <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter() ?></p>
+        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
     </div>
 </div>

@@ -41,6 +41,9 @@ class InvoicesController extends AppController
         ];
         $this->set('invoices', $this->paginate($this->Invoices));
         $this->set('_serialize', ['invoices']);
+
+        $this->loadModel('AuthRoles');
+        $this->set('auth_role', $this->AuthRoles->get($this->Auth->user('auth_role_id')));
     }
 
     /**
@@ -53,6 +56,9 @@ class InvoicesController extends AppController
      */
     public function view($invoiceId = null)
     {
+        $this->loadModel('AuthRoles');
+        $this->set('auth_role', $this->AuthRoles->get($this->Auth->user('auth_role_id')));
+
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
@@ -77,6 +83,14 @@ class InvoicesController extends AppController
                         'AdminUsers',
                     ],
                     'Sections.Scoutgroups.Districts',
+                ],
+                'Reservations' => [
+                    'Events' => [
+                        'EventTypes' => [
+                            'LegalTexts', 'InvoiceTexts', 'Payable'
+                        ],
+                        'AdminUsers',
+                    ],
                 ],
                 'Notes' => [
                     'conditions' => [

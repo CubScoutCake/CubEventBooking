@@ -2,13 +2,18 @@
 namespace App\Test\TestCase\Shell;
 
 use App\Shell\DatabaseShell;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\ORM\TableRegistry;
+use Cake\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
  * App\Shell\DatabaseShell Test Case
  */
-class DatabaseShellTest extends IntegrationTestCase
+class DatabaseShellTest extends TestCase
 {
+    use ConsoleIntegrationTestTrait;
+//    use IntegrationTestTrait;
 
     /**
      * Fixtures
@@ -16,14 +21,49 @@ class DatabaseShellTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.users',
-        'app.password_states',
-        'app.roles',
-        'app.sections',
-        'app.section_types',
-        'app.scoutgroups',
+        'app.sessions',
         'app.districts',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
         'app.auth_roles',
+        'app.item_types',
+        'app.roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
+        'app.application_statuses',
+        'app.setting_types',
+        'app.settings',
+        'app.event_types',
+        'app.event_statuses',
+        'app.discounts',
+        'app.events',
+        'app.prices',
+        'app.applications',
+        'app.task_types',
+        'app.tasks',
+        'app.attendees',
+        'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.invoices',
+        'app.invoice_items',
+        'app.payments',
+        'app.invoices_payments',
+        'app.notes',
+        'app.parameter_sets',
+        'app.parameters',
+        'app.params',
+        'app.logistics',
+        'app.logistic_items',
+        'app.email_sends',
+        'app.tokens',
+        'app.email_response_types',
+        'app.email_responses',
     ];
 
     /**
@@ -50,6 +90,8 @@ class DatabaseShellTest extends IntegrationTestCase
         parent::setUp();
         $this->io = $this->getMockBuilder('Cake\Console\ConsoleIo')->getMock();
         $this->Database = new DatabaseShell($this->io);
+
+        $this->useCommandRunner();
     }
 
     /**
@@ -91,9 +133,11 @@ class DatabaseShellTest extends IntegrationTestCase
      */
     public function testPassword()
     {
+        $this->markTestSkipped('to be rebuilt as command');
+
         $this->Database->password();
 
-        $users = TableRegistry::get('Users');
+        $users = TableRegistry::getTableLocator()->get('Users');
 
         $unHashed = 'TestMe';
 
@@ -101,5 +145,22 @@ class DatabaseShellTest extends IntegrationTestCase
         $password = $default->password;
 
         $this->assertNotEquals($unHashed, $password);
+    }
+
+    /**
+     * Test base method
+     *
+     * @return void
+     */
+    public function testBase()
+    {
+        $this->markTestSkipped('to be rebuilt as command');
+
+        $this->exec('database base');
+
+        $this->assertExitCode(0);
+
+        $this->assertOutputContains('6 Event Statuses Installed.');
+        $this->assertOutputContains('6 Application Statuses Installed.');
     }
 }

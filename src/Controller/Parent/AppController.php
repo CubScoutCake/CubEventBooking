@@ -30,6 +30,8 @@ class AppController extends Controller
     /**
      * Initialise Function - Setup Application Config
      * @return void
+     *
+     * @throws \Exception
      */
     public function initialize()
     {
@@ -52,6 +54,12 @@ class AppController extends Controller
                 'prefix' => false,
                 ]
         ]);
+
+        $this->loadComponent('RequestHandler', [
+            'enableBeforeRedirect' => false,
+        ]);
+
+        $this->viewBuilder()->setLayout('public');
     }
 
     /**
@@ -62,6 +70,6 @@ class AppController extends Controller
      */
     public function isAuthorized($user)
     {
-        return true;
+        return false;
     }
 }

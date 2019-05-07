@@ -126,7 +126,7 @@ class AttendeesTable extends Table
 
         $validator
             ->date('dateofbirth')
-            ->allowEmpty('dateofbirth');
+            ->allowEmptyString('dateofbirth');
 
         $validator
             ->scalar('phone')
@@ -536,5 +536,34 @@ class AttendeesTable extends Table
         Log::info('There was an error merging the attendee #' . $attendeeId);
 
         return 0;
+    }
+
+    /**
+     * Function to create an attendee for Reservation with slimline Data
+     *
+     * @param array $attendeeData Attendee Request data
+     * @param int $userId The User ID
+     *
+     * @return bool|Attendee
+     */
+    public function createReservationAttendee($attendeeData, $userId)
+    {
+        // Start Creating Attendee
+        $attendeeData['user_id'] = $userId;
+
+        // Find Cub Role
+        $cubRole = $this->Roles->findOrCreate([
+            'role' => 'Cub Scout',
+            'invested' => true,
+            'minor' => true,
+            'automated' => false,
+            'short_role' => 'Cub',
+        ]);
+        $attendeeData['role_id'] = $cubRole->id;
+
+        $attendee = $this->newEntity($attendeeData);
+
+        /** @var \App\Model\Entity\Attendee $attendee */
+        return $this->save($attendee);
     }
 }

@@ -93,8 +93,10 @@ class LogisticsTable extends Table
      * @param \Cake\Database\Schema\TableSchema $schema The Schema to be modified
      *
      * @return TableSchema|\Cake\Database\Schema\TableSchema
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
-    protected function _initializeSchema($schema)
+    protected function _initializeSchema(TableSchema $schema)
     {
         $schema->setColumnType('variable_max_values', 'json');
 
@@ -114,6 +116,34 @@ class LogisticsTable extends Table
         $rules->add($rules->existsIn(['parameter_id'], 'Parameters'));
 
         return $rules;
+    }
+
+    /**
+     * @param int $logisticId Parse Logistic Availability
+     *
+     * @return void
+     */
+    public function parseLogisticAvailability($logisticId)
+    {
+        $logistic = $this->get($logisticId, ['contain' => ['Parameters.Params']]);
+        $maxVariable = $logistic->get('variable_max_values');
+
+        if (!is_array($maxVariable)) {
+            return;
+        }
+
+        foreach ($logistic->parameter->params as $param) {
+            $current = $this->LogisticItems->find('all')->where([
+                'logistic_id' => $logistic->id,
+                'param_id' => $param->id,
+            ])->count();
+
+            $maxVariable[$param->id]['current'] = $current;
+            $maxVariable[$param->id]['remaining'] = $maxVariable[$param->id]['limit'] - $current;
+        }
+
+        $logistic->set('variable_max_values', $maxVariable);
+        $this->save($logistic);
     }
 
     /**

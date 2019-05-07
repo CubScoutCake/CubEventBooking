@@ -40,14 +40,14 @@ class SectionAuthBehavior extends Behavior
                 return $query;
             }
 
-            if ($assoc->has('Applications')) {
-                $query = $query->contain('Applications.Sections.SectionTypes')->where(['SectionTypes.id' => $options['section_type_id']]);
+            if ($assoc->has('Users')) {
+                $query = $query->contain('Users.Sections.SectionTypes')->where(['SectionTypes.id' => $options['section_type_id']]);
 
                 return $query;
             }
 
-            if ($assoc->has('Users')) {
-                $query = $query->contain('Users.Sections.SectionTypes')->where(['SectionTypes.id' => $options['section_type_id']]);
+            if ($assoc->has('Applications')) {
+                $query = $query->contain('Applications.Sections.SectionTypes')->where(['SectionTypes.id' => $options['section_type_id']]);
 
                 return $query;
             }

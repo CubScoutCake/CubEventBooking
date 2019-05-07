@@ -43,6 +43,8 @@ class AppController extends Controller
             'storage' => 'Memory',
             'unauthorizedRedirect' => false
         ]);
-        $this->loadComponent('RequestHandler');
+        $this->loadComponent('RequestHandler', [
+            'enableBeforeRedirect' => false,
+        ]);
     }
 }

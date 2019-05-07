@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var int $userId
+ * @var string $name
+ */
+?>
 <?php if (empty($kill)): ?>
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">

@@ -50,11 +50,9 @@ class SectionsTable extends Table
 
         $this->belongsTo('SectionTypes', [
             'foreignKey' => 'section_type_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('Scoutgroups', [
             'foreignKey' => 'scoutgroup_id',
-            'joinType' => 'INNER'
         ]);
         $this->hasMany('Applications', [
             'foreignKey' => 'section_id'

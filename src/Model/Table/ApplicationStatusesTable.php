@@ -109,7 +109,7 @@ class ApplicationStatusesTable extends Table
         $total = 0;
 
         foreach ($base as $baseStatus) {
-            $status = $this->newEntity($baseStatus);
+            $status = $this->findOrCreate($baseStatus);
             if ($this->save($status)) {
                 $total += 1;
             };

@@ -124,7 +124,6 @@ class UsersTableTest extends TestCase
         $actual = $this->Users->get(1)->toArray();
 
         $dates = [
-            'expires',
             'created',
             'modified',
             'osm_linkdate',
@@ -421,7 +420,7 @@ class UsersTableTest extends TestCase
         $fieldsMarshaled = ['validated', 'member_validated', 'section_validated', 'email_validated'];
 
         foreach ($fieldsMarshaled as $field) {
-            $before[$field] = null;
+            unset($before[$field]);
         }
 
         $new = $this->Users->newEntity($before);
@@ -458,13 +457,25 @@ class UsersTableTest extends TestCase
      */
     public function testDetectParent()
     {
-        $existingParent = [
-            'firstname' => 'Joe',
-            'lastname' => 'Parent',
-            'email' => 'goat@fish.monkey',
-            'postcode' => 'POSTCODE',
-        ];
-        $this->assertInstanceOf(User::class, $this->Users->detectParent($existingParent));
+        foreach ($this->Users->find('all')->contain('AuthRoles') as $existing) {
+            /** @var User $existing */
+            $existingParent = [
+                'firstname' => $existing->firstname,
+                'lastname' => $existing->lastname,
+                'email' => $existing->email,
+                'postcode' => $existing->postcode,
+            ];
+
+            /** @var User $updated */
+            $updated = $this->Users->detectParent($existingParent);
+            $this->assertInstanceOf(User::class, $updated);
+
+            if (!$existing->auth_role->parent_access) {
+                $this->assertNotEquals($existing->auth_role_id, $updated->auth_role_id);
+            } else {
+                $this->assertEquals($existing->auth_role_id, $updated->auth_role_id);
+            }
+        }
 
         $newParent = [
             'firstname' => 'Joe',
@@ -497,5 +508,76 @@ class UsersTableTest extends TestCase
             'postcode' => 'SG1 TAR',
         ];
         $this->assertFalse($this->Users->detectExisting($newUser));
+    }
+
+    /**
+     * Test detectParent method
+     *
+     * @return void
+     */
+    public function testCreateParent()
+    {
+        $user = $this->Users->createParent([
+            'firstname' => 'Jacob',
+            'lastname' => 'Tyler',
+            'email' => 'j.a.g.tyler@me.com',
+            'phone' => '07804 918252',
+            'address_1' => '17 Appleton Mead',
+            'address_2' => '',
+            'city' => 'Biggleswade',
+            'county' => 'Bedfordshire',
+            'country' => 'United Kingdom',
+            'postcode' => 'SG18 8HS'
+        ], 1);
+
+        $this->assertInstanceOf('\App\Model\Entity\User', $user);
+    }
+
+    /**
+     * Test detectParent method
+     *
+     * @return void
+     */
+    public function testCreateOrDetectParent()
+    {
+        foreach ($this->Users->find('all')->contain('AuthRoles') as $existing) {
+            /** @var User $existing */
+            $existingParent = $this->Users->get($existing->id, ['fields' => [
+                'firstname',
+                'lastname',
+                'email',
+                'phone',
+                'address_1',
+                'address_2',
+                'city',
+                'county',
+                'postcode',
+            ]])->toArray();
+
+            /** @var User $updated */
+            $updated = $this->Users->createOrDetectParent($existingParent, $existing->section_id);
+            $this->assertInstanceOf(User::class, $updated);
+
+            if (!$existing->auth_role->parent_access) {
+                $this->assertNotEquals($existing->auth_role_id, $updated->auth_role_id);
+            } else {
+                $this->assertEquals($existing->auth_role_id, $updated->auth_role_id);
+            }
+        }
+
+        $user = $this->Users->createOrDetectParent([
+            'firstname' => 'Jacob',
+            'lastname' => 'Tyler',
+            'email' => 'j.a.g.tyler@me.com',
+            'phone' => '07804 918252',
+            'address_1' => '17 Appleton Mead',
+            'address_2' => '',
+            'city' => 'Biggleswade',
+            'county' => 'Bedfordshire',
+            'country' => 'United Kingdom',
+            'postcode' => 'SG18 8HS'
+        ], '1');
+
+        $this->assertInstanceOf('\App\Model\Entity\User', $user);
     }
 }

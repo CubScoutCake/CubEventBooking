@@ -31,6 +31,8 @@ use Cake\ORM\Entity;
  * @property int $section_id
  * @property int $cc_apps
  *
+ * @property string $full_name
+ *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Section $section
  * @property \App\Model\Entity\Role $role
@@ -39,6 +41,8 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Allergy[] $medical_issues
  * @property \App\Model\Entity\Allergy[] $dietary_restrictions
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Attendee extends Entity
 {
@@ -89,6 +93,8 @@ class Attendee extends Entity
      * Specification of the method of building a full name property.
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _getFullName()
     {

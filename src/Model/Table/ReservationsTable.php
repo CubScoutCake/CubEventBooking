@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Core\Configure;
+use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -13,7 +15,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\AttendeesTable|\Cake\ORM\Association\BelongsTo $Attendees
  * @property \App\Model\Table\ReservationStatusesTable|\Cake\ORM\Association\BelongsTo $ReservationStatuses
- * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\HasMany $Invoices
+ * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\HasOne $Invoices
  * @property \App\Model\Table\LogisticItemsTable|\Cake\ORM\Association\HasMany $LogisticItems
  *
  * @method \App\Model\Entity\Reservation get($primaryKey, $options = [])
@@ -48,23 +50,22 @@ class ReservationsTable extends Table
 
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('Attendees', [
             'foreignKey' => 'attendee_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('ReservationStatuses', [
             'foreignKey' => 'reservation_status_id',
-            'joinType' => 'INNER'
         ]);
-        $this->hasMany('Invoices', [
-            'foreignKey' => 'reservation_id'
-        ]);
+        $this->hasOne('Invoices', [
+            'foreignKey' => 'reservation_id',
+        ])
+             ->setDependent(true)
+             ->setCascadeCallbacks(true);
+
         $this->hasMany('LogisticItems', [
             'foreignKey' => 'reservation_id'
         ]);
@@ -80,20 +81,32 @@ class ReservationsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
-            ->dateTime('deleted')
-            ->allowEmpty('deleted');
+            ->allowEmptyString('user_id', false)
+            ->requirePresence('user_id');
+
+        $validator
+            ->allowEmptyString('attendee_id', false)
+            ->requirePresence('attendee_id');
+
+        $validator
+            ->allowEmptyString('event_id', false)
+            ->requirePresence('event_id');
+
+        $validator
+            ->allowEmptyString('reservation_status_id', false)
+            ->requirePresence('reservation_status_id');
 
         $validator
             ->dateTime('expires')
-            ->allowEmpty('expires');
+            ->allowEmptyDateTime('expires');
 
         $validator
             ->scalar('reservation_code')
-            ->maxLength('reservation_code', 255)
-            ->allowEmpty('reservation_code');
+            ->maxLength('reservation_code', 3)
+            ->allowEmptyString('reservation_code');
 
         return $validator;
     }
@@ -113,5 +126,60 @@ class ReservationsTable extends Table
         $rules->add($rules->existsIn(['reservation_status_id'], 'ReservationStatuses'));
 
         return $rules;
+    }
+
+    /**
+     * Ownership test function for Authentication.
+     *
+     * @param int $reservationId The Application Id to be checked.
+     * @param int $userId The asserted User.
+     *
+     * @return bool
+     */
+    public function isOwnedBy($reservationId, $userId)
+    {
+        return $this->exists(['id' => $reservationId, 'user_id' => $userId]);
+    }
+
+    /**
+     * Finds the Reservations owned by the user.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options An array containing the user to be searched for.
+     * @return \Cake\ORM\Query The modified query.
+     */
+    public function findOwnedBy($query, $options)
+    {
+        $userId = $options['userId'];
+
+        return $query->where(['Reservations.user_id' => $userId]);
+    }
+
+    /**
+     * Writes the max value to the Logistic
+     *
+     * @param \Cake\Event\Event $event The event trigger.
+     *
+     * @return true
+     */
+    public function beforeSave($event)
+    {
+        /** @var \App\Model\Entity\Reservation $entity */
+        $entity = $event->getData('entity');
+
+        if ($entity->isNew()) {
+            $resCode = substr(str_shuffle(str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5)), 0, 3);
+
+            $entity->set('reservation_code', $resCode);
+
+            $expiry = Configure::read('Schedule.reservation', '+10 days');
+
+            $now = Time::now();
+            $expiryDate = $now->modify($expiry);
+
+            $entity->set('expires', $expiryDate);
+        }
+
+        return true;
     }
 }

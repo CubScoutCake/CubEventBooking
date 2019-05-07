@@ -150,6 +150,7 @@ class ApplicationsControllerTest extends TestCase
 
         $this->session([
             'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get(['controller' => 'Applications', 'action' => 'simple_book', 2, '?' => ['section' => 6, 'non_section' => 1, 'leaders' => 1]]);
@@ -234,6 +235,7 @@ class ApplicationsControllerTest extends TestCase
 
         $this->session([
             'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->Applications = $this->getTableLocator()->get('Applications');

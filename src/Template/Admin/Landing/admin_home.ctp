@@ -350,7 +350,7 @@
                                         <th><?= h('id') ?></th>
                                         <th class="actions"><?= __('Actions') ?></th>
                                         <th><?= h('User') ?></th>
-                                        <th><?= h('Application') ?></th>
+                                        <th><?= h('App / Res') ?></th>
                                         <th><?= h('Value') ?></th>
                                         <th><?= h('Received') ?></th>
                                         <th><?= h('Balance') ?></th>
@@ -365,7 +365,13 @@
                                                 <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Invoices', 'action' => 'view', $invoice->id], ['title' => __('View'), 'class' => 'btn btn-warning btn-sm', 'escape' => false]) ?>
                                             </td>
                                             <td><?= $invoice->has('user') ? $this->Html->link($this->Text->truncate($invoice->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></td>
-                                            <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
+                                            <td><?php
+                                                if ($invoice->has('application')) {
+                                                    echo $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]);
+                                                } elseif ($invoice->has('reservation')) {
+                                                    echo $this->Html->link($invoice->reservation->reservation_number, ['controller' => 'Reservations', 'action' => 'view', $invoice->reservation->id]);
+                                                }
+                                                ?></td>
                                             <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                             <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                             <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>

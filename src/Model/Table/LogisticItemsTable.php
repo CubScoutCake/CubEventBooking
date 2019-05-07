@@ -93,4 +93,20 @@ class LogisticItemsTable extends Table
 
         return $rules;
     }
+
+    /**
+     * Event Trigger for After Saving a Logistic Item.
+     *
+     * @param \Cake\Event\Event $event The Cake Event being triggered
+     * @param \App\Model\Entity\LogisticItem $entity The Entity being Changed
+     * @param array $options The Options Array.
+     *
+     * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function afterSave($event, $entity, $options)
+    {
+        $this->Logistics->parseLogisticAvailability($entity->logistic_id);
+    }
 }

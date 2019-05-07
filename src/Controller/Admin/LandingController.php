@@ -68,14 +68,14 @@ class LandingController extends AppController
     public function adminHome()
     {
         // Get Entities from Registry
-        $apps = TableRegistry::get('Applications');
-        $evs = TableRegistry::get('Events');
-        $invs = TableRegistry::get('Invoices');
-        $usrs = TableRegistry::get('Users');
-        $pays = TableRegistry::get('Payments');
-        $atts = TableRegistry::get('Attendees');
-        $nts = TableRegistry::get('Notes');
-        $notifs = TableRegistry::get('Notifications');
+        $apps = TableRegistry::getTableLocator()->get('Applications');
+        $evs = TableRegistry::getTableLocator()->get('Events');
+        $invs = TableRegistry::getTableLocator()->get('Invoices');
+        $usrs = TableRegistry::getTableLocator()->get('Users');
+        $pays = TableRegistry::getTableLocator()->get('Payments');
+        $atts = TableRegistry::getTableLocator()->get('Attendees');
+        $nts = TableRegistry::getTableLocator()->get('Notes');
+        $notifs = TableRegistry::getTableLocator()->get('Notifications');
 
         $userId = $this->Auth->user('id');
 
@@ -88,8 +88,8 @@ class LandingController extends AppController
         // Limited Table Entities
         $applications = $apps->find('sameSection', $authArray)->contain(['Users', 'Sections.Scoutgroups.Districts'])->order(['Applications.modified' => 'DESC'])->limit(10);
         $events = $evs->find('upcoming')->find('sameSection', $authArray)->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
-        $invoices = $invs->find('sameSection', $authArray)->contain(['Users', 'Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
-        $users = $usrs->find('sameSection', $authArray)->contain(['Roles', 'Sections.Scoutgroups.Districts', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
+        $invoices = $invs->find('sameSection', $authArray)->contain(['Users', 'Applications', 'Reservations'])->order(['Invoices.modified' => 'DESC'])->limit(10);
+        $users = $usrs->find('sameSection', $authArray)->find('access')->contain(['Roles', 'Sections.Scoutgroups.Districts', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
         $payments = $pays->find('sameSection', $authArray)->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
         $notes = $nts->find('sameSection', $authArray)->contain(['Invoices', 'Applications', 'Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
         $notifications = $notifs->find('sameSection', $authArray)->contain(['NotificationTypes', 'Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
@@ -166,8 +166,8 @@ class LandingController extends AppController
         }
 
         if (!is_int($idNum) || $idNum == 0 || is_null($idNum)) {
-            $this->Sections = TableRegistry::get('Sections');
-            $this->Users = TableRegistry::get('Users');
+            $this->Sections = TableRegistry::getTableLocator()->get('Sections');
+            $this->Users = TableRegistry::getTableLocator()->get('Users');
             $section = $this->Sections->get($this->Auth->user('section_id'));
 
             $userQuery = $this->Users
@@ -184,7 +184,7 @@ class LandingController extends AppController
                 'conditions' => ['SectionTypes.id' => $section['section_type_id']]
             ];
 
-            $this->Scoutgroups = TableRegistry::get('Scoutgroups');
+            $this->Scoutgroups = TableRegistry::getTableLocator()->get('Scoutgroups');
 
             $sections = $this->Users->Sections
                 ->find(

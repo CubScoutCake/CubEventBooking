@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Component;
 
+use App\Model\Entity\Invoice;
 use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
 use Cake\ORM\Entity;
@@ -10,10 +11,10 @@ use Cake\ORM\TableRegistry;
  * Line component
  *
  * @property \App\Model\Table\InvoicesTable $Invoices
- * @property \App\Model\Table\ApplicationsTable $Applications
  * @property \App\Model\Table\InvoiceItemsTable $InvoiceItems
  * @property \App\Model\Table\PricesTable $Prices
  * @property \App\Model\Table\EventsTable $Events
+ * @property \App\Model\Table\ReservationsTable $Reservations
  *
  * @property \App\Controller\Component\AvailabilityComponent $Availability
  * @property \Cake\Controller\Component\FlashComponent $Flash
@@ -38,7 +39,6 @@ class LineComponent extends Component
     public function parseInvoice($invoiceID, $admin = false)
     {
         $this->Invoices = TableRegistry::getTableLocator()->get('Invoices');
-        $this->Applications = TableRegistry::getTableLocator()->get('Applications');
 
         /** @var \App\Model\Entity\Invoice $invoice */
         $invoice = $this->Invoices->get($invoiceID, [
@@ -50,40 +50,64 @@ class LineComponent extends Component
                         ],
                         'SectionTypes',
                     ],
-                ]
+                ],
+                'Reservations' => [
+                    'Events' => [
+                        'Prices' => [
+                            'ItemTypes',
+                        ],
+                        'SectionTypes',
+                    ],
+                ],
             ]
         ]);
 
-        // Find Team, Cub, YL & Leader Counts
-        $appNumbers = $this->Availability->getApplicationNumbers($invoice->application->id);
+        if ($invoice->has('application')) {
+            // Find Team, Cub, YL & Leader Counts
+            $appNumbers = $this->Availability->getApplicationNumbers($invoice->application->id);
 
-        $this->parseDeposit($invoice->application->event_id, $invoice->id, $appNumbers, $admin);
+            $this->parseDeposit($invoice->application->event_id, $invoice->id, $appNumbers, $admin);
 
-        foreach ($invoice->application->event->prices as $price) {
-            if ($price->item_type->team_price) {
-                $this->parseLine($invoiceID, $price->id, $appNumbers['NumTeams'], $admin);
-            } else {
-                if (!is_null($price->item_type->role_id)
-                    && $price->item_type->role_id == $invoice->application->event->section_type->role_id
-                ) {
-                    $this->parseLine($invoiceID, $price->id, $appNumbers['NumSection'], $admin);
-                }
+            foreach ($invoice->application->event->prices as $price) {
+                if ($price->item_type->team_price) {
+                    $this->parseLine($invoiceID, $price->id, $appNumbers['NumTeams'], $admin);
+                } else {
+                    if (!is_null($price->item_type->role_id)
+                        && $price->item_type->role_id == $invoice->application->event->section_type->role_id
+                    ) {
+                        $this->parseLine($invoiceID, $price->id, $appNumbers['NumSection'], $admin);
+                    }
 
-                if (!$price->item_type->minor
-                    && (is_null($price->item_type->role_id) || $price->item_type->role_id != $invoice->application->event->section_type->role_id)
-                ) {
-                    $this->parseLine($invoiceID, $price->id, $appNumbers['NumLeaders'], $admin);
-                }
+                    if (!$price->item_type->minor
+                        && (is_null($price->item_type->role_id) || $price->item_type->role_id != $invoice->application->event->section_type->role_id)
+                    ) {
+                        $this->parseLine($invoiceID, $price->id, $appNumbers['NumLeaders'], $admin);
+                    }
 
-                if ($price->item_type->minor
-                    && (is_null($price->item_type->role_id) || $price->item_type->role_id != $invoice->application->event->section_type->role_id)
-                ) {
-                    $this->parseLine($invoiceID, $price->id, $appNumbers['NumNonSection'], $admin);
+                    if ($price->item_type->minor
+                        && (is_null($price->item_type->role_id) || $price->item_type->role_id != $invoice->application->event->section_type->role_id)
+                    ) {
+                        $this->parseLine($invoiceID, $price->id, $appNumbers['NumNonSection'], $admin);
+                    }
                 }
             }
+
+            return true;
         }
 
-        return true;
+        if ($invoice->has('reservation')) {
+            foreach ($invoice->reservation->event->prices as $price) {
+                if ($price->item_type->team_price) {
+                    return $this->parseLine($invoiceID, $price->id, 1, $admin);
+                } else {
+                    if ($price->item_type->minor) {
+                        return $this->parseLine($invoiceID, $price->id, 1, $admin);
+                    }
+                }
+            }
+
+            return true;
+        }
     }
 
     /**
@@ -107,9 +131,17 @@ class LineComponent extends Component
             return false;
         }
 
-        $invoice = $this->Invoices->get($invoiceID, ['contain' => 'Applications']);
+        $invoice = $this->Invoices->get($invoiceID, ['contain' => ['Applications', 'Reservations']]);
 
-        if ($price->event_id <> $invoice->application->event_id) {
+        if ($invoice->has('application')) {
+            $eventId = $invoice->application->event_id;
+        }
+
+        if ($invoice->has('reservation')) {
+            $eventId = $invoice->reservation->event_id;
+        }
+
+        if (isset($eventId) && $price->event_id <> $eventId) {
             return false;
         }
 
@@ -186,5 +218,39 @@ class LineComponent extends Component
         }
 
         return true;
+    }
+
+    /**
+     * @param int $reservationId The ID of the Reservation
+     * @param bool $admin Whether it is an admin regenerate (override locks)
+     *
+     * @return bool
+     */
+    public function parseReservation($reservationId, $admin = false)
+    {
+        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
+
+        /** @var \App\Model\Entity\Reservation $reservation */
+        $reservation = $this->Reservations->get($reservationId, [
+            'contain' => ['Invoices'],
+        ]);
+
+        if (!$reservation->has('invoice')) {
+            $invoice = $this->Reservations->Invoices->newEntity([
+                'user_id' => $reservation->user_id,
+                'reservation_id' => $reservation->id,
+            ]);
+
+            /** @var \App\Model\Entity\Invoice $invoice */
+            $invoice = $this->Reservations->Invoices->save($invoice);
+
+            if ($invoice instanceof Invoice) {
+                return $this->parseInvoice($invoice->id, $admin);
+            }
+        }
+
+        if ($reservation->has('invoice')) {
+            return $this->parseInvoice($reservation->invoice->id, $admin);
+        }
     }
 }

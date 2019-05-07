@@ -10,12 +10,14 @@ use Cake\ORM\Entity;
  * @property string $event_status
  * @property bool $live
  * @property bool $accepting_applications
+ * @property bool $spaces_full
+ * @property bool $pending_date
+ * @property int $status_order
  *
  * @property \App\Model\Entity\Event[] $events
  */
 class EventStatus extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -29,6 +31,9 @@ class EventStatus extends Entity
         'event_status' => true,
         'live' => true,
         'accepting_applications' => true,
+        'spaces_full' => true,
+        'pending_date' => true,
+        'status_order' => true,
         'events' => true
     ];
 }

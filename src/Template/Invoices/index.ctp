@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var \App\Model\Entity\Invoice[] $invoices
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\AuthRole $auth_role
+ */
+?>
 <div class="row">
     <div class="col-lg-12">
         <h3><i class="fal fa-file-invoice-dollar fa-fw"></i> Your Invoices</h3>
@@ -7,7 +14,7 @@
                     <tr>
                         <th><?= $this->Paginator->sort('id','Invoice Number') ?></th>
                         <th class="actions"><?= __('Actions') ?></th>
-                        <th><?= $this->Paginator->sort('user_id', 'User ID') ?></th>
+                        <th><?= $this->Paginator->sort('user_id', 'User') ?></th>
                         <th><?= $this->Paginator->sort('initialvalue', 'Total Invoice Value') ?></th>
                         <th><?= $this->Paginator->sort('value', 'Payments Received') ?></th>
                         <th><?= $this->Paginator->sort('Balance') ?></th>
@@ -25,11 +32,11 @@
                                 </button>
                                 <ul class="dropdown-menu " role="menu">
                                     <li><?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoice->id]) ?></li>
-                                    <li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoice->id]) ?></li>
+                                    <?php if ($auth_role->user_access) : ?><li><?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoice->id]) ?></li><?php endif; ?>
                                 </ul>
                             </div>
                         </td>
-                        <td><?= $invoice->has('user') ? $this->Html->link($this->Text->truncate($invoice->user->username,18), ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></td>
+                        <td><?= $invoice->has('user') ? $this->Html->link($invoice->user->full_name, ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></td>
                         <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                         <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                         <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>

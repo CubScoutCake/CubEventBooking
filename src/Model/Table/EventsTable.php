@@ -70,19 +70,15 @@ class EventsTable extends Table
         $this->belongsTo('AdminUsers', [
             'className' => 'Users',
             'foreignKey' => 'admin_user_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('EventTypes', [
             'foreignKey' => 'event_type_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('SectionTypes', [
             'foreignKey' => 'section_type_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('EventStatuses', [
             'foreignKey' => 'event_status_id',
-            'joinType' => 'INNER'
         ]);
         $this->hasMany('Applications', [
             'foreignKey' => 'event_id'

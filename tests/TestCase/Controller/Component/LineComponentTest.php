@@ -8,6 +8,8 @@ use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\Component\LineComponent Test Case
+ *
+ * @property \App\Model\Table\ReservationsTable $Reservations
  */
 class LineComponentTest extends TestCase
 {
@@ -236,5 +238,31 @@ class LineComponentTest extends TestCase
         // Test Price & Invoice Mismatch
         $response = $this->Line->parseLine(1, 6, 1);
         $this->assertFalse($response);
+    }
+
+    /**
+     * Test ParseReservation Function
+     *
+     * @return void
+     */
+    public function testParseReservation()
+    {
+        $this->Reservations = $this->getTableLocator()->get('Reservations');
+        $reservation = $this->Reservations->get(1, ['contain' => 'Invoices.InvoiceItems']);
+
+        $this->assertTrue($reservation->has('invoice'));
+
+        $this->assertEquals(1, $reservation->invoice->initialvalue);
+        $this->assertEquals(0, $reservation->invoice->balance);
+        $this->assertEquals(0, count($reservation->invoice->invoice_items));
+
+        $response = $this->Line->parseReservation($reservation->id);
+
+        $reservation = $this->Reservations->get(1, ['contain' => 'Invoices.InvoiceItems']);
+
+        $this->assertTrue($response);
+        $this->assertEquals(20, $reservation->invoice->initialvalue);
+        $this->assertEquals(19, $reservation->invoice->balance);
+        $this->assertEquals(1, count($reservation->invoice->invoice_items));
     }
 }

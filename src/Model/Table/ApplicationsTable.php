@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  * @property |\Cake\ORM\Association\BelongsTo $OsmEvents
  * @property \App\Model\Table\SectionsTable|\Cake\ORM\Association\BelongsTo $Sections
  * @property \App\Model\Table\ApplicationStatusesTable|\Cake\ORM\Association\BelongsTo $ApplicationStatuses
- * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\HasMany $Invoices
+ * @property \App\Model\Table\InvoicesTable|\Cake\ORM\Association\HasOne $Invoice
  * @property \App\Model\Table\LogisticItemsTable|\Cake\ORM\Association\HasMany $LogisticItems
  * @property \App\Model\Table\NotesTable|\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\AttendeesTable|\Cake\ORM\Association\BelongsToMany $Attendees
@@ -74,15 +74,12 @@ class ApplicationsTable extends Table
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('Sections', [
             'foreignKey' => 'section_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('ApplicationStatuses', [
             'foreignKey' => 'application_status_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id'

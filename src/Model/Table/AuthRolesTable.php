@@ -120,4 +120,52 @@ class AuthRolesTable extends Table
 
         return true;
     }
+
+    /**
+     * Validate or Create an Equivalent Parent Auth Role
+     *
+     * @param \App\Model\Entity\AuthRole|null $authRole The AuthRole to be Parent checked
+     *
+     * @return int
+     */
+    public function parentAuthRole($authRole = null)
+    {
+        if (is_null($authRole)) {
+            $parentFind = $this->find('all')->where(['auth' => 1, 'parent_access' => true]);
+
+            if ($parentFind->count() > 0) {
+                return $parentFind->firstOrFail()->id;
+            }
+
+            $newAuthRole = $this->newEntity([
+                'auth_role' => 'Parent',
+                'admin_access' => false,
+                'champion_access' => false,
+                'super_user' => false,
+                'auth' => 1,
+                'parent_access' => true,
+                'user_access' => false,
+                'section_limited' => true,
+            ]);
+            $newAuthRole = $this->save($newAuthRole);
+
+            return $newAuthRole->id;
+        }
+
+        $authArray = $authRole->toArray();
+
+        if (!(strpos($authRole->auth_role, 'Parent') !== false)) {
+            $authArray['auth_role'] .= ' Parent';
+        }
+
+        if (!$authArray['parent_access']) {
+            $authArray['parent_access'] = true;
+            unset($authArray['id']);
+        }
+
+        unset($authArray['auth_value']);
+        $newAuthRole = $this->findOrCreate($authArray);
+
+        return $newAuthRole->id;
+    }
 }

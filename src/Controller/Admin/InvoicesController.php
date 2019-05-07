@@ -21,7 +21,7 @@ class InvoicesController extends AppController
     public function index($eventId = null)
     {
         $query = $this->request->getQueryParams();
-        $data = $this->Invoices->find('all');
+        $data = $this->Invoices->find('unarchived');
         $term = 'All';
 
         if (key_exists('unpaid', $query)) {
@@ -35,8 +35,7 @@ class InvoicesController extends AppController
         }
 
         $this->paginate = [
-            'contain' => ['Users', 'Applications.Events'],
-            'conditions' => ['Events.Live' => true],
+            'contain' => ['Users'],
             'order' => ['modified' => 'DESC'],
         ];
 
@@ -79,6 +78,15 @@ class InvoicesController extends AppController
                         'AdminUsers',
                     ],
                     'Sections.Scoutgroups.Districts',
+                ],
+                'Reservations' => [
+                    'Events' => [
+                        'EventTypes' => [
+                            'LegalTexts', 'InvoiceTexts', 'Payable'
+                        ],
+                        'AdminUsers',
+                    ],
+                    'Attendees.Sections.Scoutgroups.Districts',
                 ],
                 'Notes'
             ]

@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Database\Schema\TableSchema;
 use Cake\Event\Event;
 use Cake\I18n\Time;
 use Cake\ORM\Query;
@@ -99,8 +100,10 @@ class TokensTable extends Table
      * @param \Cake\Database\Schema\TableSchema $schema The Schema to be modified
      *
      * @return TableSchema|\Cake\Database\Schema\TableSchema
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
-    protected function _initializeSchema($schema)
+    protected function _initializeSchema(TableSchema $schema)
     {
         $schema->setColumnType('token_header', 'json');
 

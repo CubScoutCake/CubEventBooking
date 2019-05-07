@@ -1,6 +1,7 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
+use App\Model\Entity\LogisticItem;
 use App\Model\Table\LogisticsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -11,7 +12,6 @@ use Cake\Utility\Security;
  */
 class LogisticsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -130,11 +130,18 @@ class LogisticsTableTest extends TestCase
 
         $expected = [
             'id' => 1,
-            'event_id' => 1,
+            'event_id' => 3,
             'header' => 'Lorem ipsum dolor sit amet',
             'text' => 'Lorem ipsum dolor sit amet',
             'parameter_id' => 1,
-            'variable_max_values' => '',
+            'variable_max_values' => [
+                1 => [
+                    'limit' => 3,
+                ],
+                2 => [
+                    'limit' => 2,
+                ]
+            ],
             'max_value' => 1
         ];
         $this->assertEquals($expected, $actual);
@@ -241,5 +248,76 @@ class LogisticsTableTest extends TestCase
         $values['event_id'] = $event + 1;
         $new = $this->Logistics->newEntity($values);
         $this->assertFalse($this->Logistics->save($new));
+    }
+
+    /**
+     * Test parseLogisticAvailability method
+     *
+     * @return void
+     */
+    public function testParseLogisticAvailability()
+    {
+        // Initial Processing
+        $before = $this->Logistics->get(1);
+        $this->assertEquals(1, $before->max_value);
+        $this->assertEquals([1 => ['limit' => 3], 2 => ['limit' => 2]], $before->variable_max_values);
+
+        $this->Logistics->parseLogisticAvailability(1);
+
+        $after = $this->Logistics->get(1);
+        $this->assertEquals(5, $after->max_value);
+
+        $expected = [
+            1 => [
+                'limit' => 3,
+                'current' => 1,
+                'remaining' => 2
+            ],
+            2 => [
+                'limit' => 2,
+                'current' => 0,
+                'remaining' => 2
+            ]
+        ];
+        $this->assertEquals($expected, $after->variable_max_values);
+
+        $newBooking = $this->Logistics->LogisticItems->newEntity([
+            'reservation_id' => 1,
+            'logistic_id' => 1,
+            'param_id' => 1,
+        ]);
+        $this->assertInstanceOf(LogisticItem::class, $this->Logistics->LogisticItems->save($newBooking));
+
+        $newBooking = $this->Logistics->LogisticItems->newEntity([
+            'reservation_id' => 1,
+            'logistic_id' => 1,
+            'param_id' => 2,
+        ]);
+        $this->assertInstanceOf(LogisticItem::class, $this->Logistics->LogisticItems->save($newBooking));
+
+        $booked = $this->Logistics->get(1);
+        $expected = [
+            1 => [
+                'limit' => 3,
+                'current' => 2,
+                'remaining' => 1
+            ],
+            2 => [
+                'limit' => 2,
+                'current' => 1,
+                'remaining' => 1
+            ]
+        ];
+        $this->assertEquals($expected, $booked->variable_max_values);
+    }
+
+    /**
+     * Test beforeSave method
+     *
+     * @return void
+     */
+    public function testBeforeSave()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
     }
 }

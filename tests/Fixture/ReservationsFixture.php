@@ -43,7 +43,7 @@ class ReservationsFixture extends TestFixture
     {
         $this->records = [
             [
-                'event_id' => 1,
+                'event_id' => 3,
                 'user_id' => 1,
                 'attendee_id' => 1,
                 'reservation_status_id' => 1,
@@ -51,7 +51,7 @@ class ReservationsFixture extends TestFixture
                 'modified' => 1554766739,
                 'deleted' => null,
                 'expires' => 1554766739,
-                'reservation_code' => 'Lorem ipsum dolor sit amet'
+                'reservation_code' => 'PLX'
             ],
         ];
         parent::init();

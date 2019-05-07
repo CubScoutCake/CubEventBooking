@@ -69,9 +69,12 @@ class LandingControllerTest extends IntegrationTestCase
      */
     public function testUserHome()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
-        $this->get('/landing/user-home');
+        $this->get(['controller' => 'Landing', 'action' => 'user_home', 'prefix' => false]);
 
         $this->assertResponseOk();
     }
@@ -79,9 +82,18 @@ class LandingControllerTest extends IntegrationTestCase
     public function testUserHomeUnauthenticatedFails()
     {
         // No session data set.
-        $this->get('/landing/user-home');
+        $this->get(['controller' => 'Landing', 'action' => 'user_home', 'prefix' => false]);
 
         $this->assertRedirect(['controller' => 'Users', 'action' => 'login', 'redirect' => '/landing/user-home']);
+
+        $this->session([
+            'Auth.User.auth_role_id' => 4,
+            'Auth.User.id' => 1,
+        ]);
+
+        $this->get(['controller' => 'Payments', 'action' => 'index', 'prefix' => false]);
+
+        $this->assertRedirect();
     }
 
     /**

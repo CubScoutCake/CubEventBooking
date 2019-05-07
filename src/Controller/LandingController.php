@@ -22,7 +22,7 @@ use Cake\ORM\TableRegistry;
  *
  * This controller will render views from Template/Pages/
  *
- * @link http://book.cakephp.org/3.0/en/controllers/pages-controller.html
+ * @property \App\Model\Table\EventsTable $Events
  */
 class LandingController extends AppController
 {
@@ -78,16 +78,16 @@ class LandingController extends AppController
     }
 
     /**
-     * @param null $eventId Event Id
-     *
      * @return \Cake\Http\Response|void
      */
-    public function welcome($eventId = null)
+    public function welcome()
     {
         // Set the layout.
-        $this->viewBuilder()->setLayout('outside');
+        $this->viewBuilder()->setLayout('public');
 
-        $this->set(compact('eventId'));
+        $this->Events = $this->getTableLocator()->get('Events');
+        $events = $this->Events->find('upcoming')->contain(['EventStatuses', 'EventTypes']);
+        $this->set(compact('events'));
     }
 
     /**

@@ -17,12 +17,16 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $expires
  * @property string $reservation_code
  *
+ * @property string $reservation_number
+ *
  * @property \App\Model\Entity\Event $event
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Attendee $attendee
  * @property \App\Model\Entity\ReservationStatus $reservation_status
- * @property \App\Model\Entity\Invoice[] $invoices
+ * @property \App\Model\Entity\Invoice $invoice
  * @property \App\Model\Entity\LogisticItem[] $logistic_items
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Reservation extends Entity
 {
@@ -50,7 +54,21 @@ class Reservation extends Entity
         'user' => true,
         'attendee' => true,
         'reservation_status' => true,
-        'invoices' => true,
+        'invoice' => true,
         'logistic_items' => true
     ];
+
+    /**
+     * Specification of the method of building a full name property.
+     *
+     * @return string
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+     */
+    protected function _getReservationNumber()
+    {
+        return $this->_properties['id'] . '-' . $this->_properties['attendee_id'] . '-' . $this->_properties['reservation_code'];
+    }
+
+    protected $_virtual = ['reservation_number'];
 }
