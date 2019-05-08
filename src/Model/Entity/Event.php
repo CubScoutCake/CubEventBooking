@@ -40,6 +40,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time|null $opening_date
  * @property int $cc_res
  * @property int $cc_atts
+ * @property bool $force_full
  *
  * @property bool $app_full
  *
@@ -108,7 +109,8 @@ class Event extends Entity
         'logistics' => true,
         'prices' => true,
         'reservations' => true,
-        'settings' => true
+        'settings' => true,
+        'force_full' => true,
     ];
 
     /**
@@ -120,6 +122,12 @@ class Event extends Entity
      */
     protected function _getAppFull()
     {
+        if (isset($this->_properties['force_full'])) {
+            if ($this->_properties['force_full']) {
+                return true;
+            }
+        }
+
         if ((isset($this->_properties['cc_apps']) || isset($this->_properties['cc_res'])) && isset($this->_properties['max_apps'])) {
             if ($this->_properties['cc_apps'] >= $this->_properties['max_apps'] && $this->_properties['max']) {
                 return true;

@@ -52,6 +52,7 @@ class EventsController extends AppController
                     'ApplicationRefs',
                     'InvoiceTexts'
                 ],
+                'EventStatuses',
                 'SectionTypes.Roles',
                 'Prices.ItemTypes.Roles',
             ]
@@ -100,7 +101,7 @@ class EventsController extends AppController
     public function accounts($eventId = null)
     {
         $event = $this->Events->get($eventId, [
-            'contain' => ['Settings', 'Discounts', 'Prices.ItemTypes', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups.Districts']
+            'contain' => ['Settings', 'EventStatuses', 'Discounts', 'Prices.ItemTypes', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups.Districts']
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);

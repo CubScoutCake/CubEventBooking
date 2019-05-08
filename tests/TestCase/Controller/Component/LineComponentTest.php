@@ -261,8 +261,8 @@ class LineComponentTest extends TestCase
         $reservation = $this->Reservations->get(1, ['contain' => 'Invoices.InvoiceItems']);
 
         $this->assertTrue($response);
-        // $this->assertEquals(25, $reservation->invoice->initialvalue);
-        // $this->assertEquals(19, $reservation->invoice->balance);
+//        $this->assertEquals(20, $reservation->invoice->initialvalue);
+//        $this->assertEquals(19, $reservation->invoice->balance);
         $this->assertEquals(1, count($reservation->invoice->invoice_items));
     }
 }

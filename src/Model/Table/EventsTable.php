@@ -5,6 +5,7 @@ use App\Model\Entity\Event;
 use App\Model\Entity\Param;
 use Cake\Core\Configure;
 use Cake\I18n\Time;
+use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -126,6 +127,10 @@ class EventsTable extends Table
         $validator
             ->boolean('live')
             ->allowEmptyString('live');
+
+        $validator
+            ->boolean('force_full')
+            ->allowEmptyString('force_full');
 
         $validator
             ->boolean('new_apps')
@@ -491,6 +496,29 @@ class EventsTable extends Table
     }
 
     /**
+     * @param int $eventId The Event ID
+     *
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function schedule($eventId)
+    {
+        $event = $this->get($eventId);
+
+        $status = $this->determineEventStatus($eventId);
+
+        if ($status <> $event->event_status_id) {
+            $event->set('event_status_id', $status);
+            $this->save($event);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Writes the max value to the Logistic
      *
      * @param \Cake\Event\Event $event The event trigger.
@@ -499,7 +527,7 @@ class EventsTable extends Table
      */
     public function beforeSave($event)
     {
-        /** @var \App\Model\Entity\Reservation $entity */
+        /** @var \App\Model\Entity\Event $entity */
         $entity = $event->getData('entity');
 
         if (isset($entity->id)) {
@@ -513,6 +541,10 @@ class EventsTable extends Table
             $entity->set('live', $status->live);
 
             $entity->set('complete', $this->determineComplete($entity->id));
+
+            if ($entity->isDirty('event_status_id')) {
+                Log::info($entity->name . ' Status ' . $this->EventStatuses->get($entity->event_status_id)->event_status);
+            }
         }
 
         return true;

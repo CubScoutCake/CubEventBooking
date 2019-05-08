@@ -94,10 +94,10 @@
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <tr>
-                            <td><?= $pluralTerm ?> are limited to <?= $maxSection ?> <?= $event->section_type->role->role ?>s per <?= $singleTerm ?></td>
+                            <td><strong>Event Status:</strong> <?= h($event->event_status->event_status) ?></td>
                         </tr>
                         <tr>
-                            <td><?= $event->live ? __('Event is Live') : __('Event is Hidden'); ?></td>
+                            <td><?= $pluralTerm ?> are limited to <?= $maxSection ?> <?= $event->section_type->role->role ?>s per <?= $singleTerm ?></td>
                         </tr>
                         <tr>
                             <td><?= $event->max ? __('Numbers Limited') : __('Numbers Not Limited'); ?></td>

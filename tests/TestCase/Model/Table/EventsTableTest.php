@@ -145,6 +145,7 @@ class EventsTableTest extends TestCase
             'cc_res' => 1,
             'cc_atts' => 1,
             'app_full' => false,
+            'force_full' => false,
         ];
         $this->assertEquals($expected, $actual);
 
@@ -399,6 +400,31 @@ class EventsTableTest extends TestCase
 
         $this->assertEquals(5, $this->Events->determineEventStatus(2));
 
+        Time::setTestNow('2019-01-11 18:00:00');
+        $event->set('max', false);
+        $event->set('cc_apps', 0);
+        $event->set('cc_res', 0);
+        $this->Events->save($event, ['validate' => false]);
+
+        $this->assertFalse($this->Events->determinePending(2));
+        $this->assertFalse($this->Events->determineStarted(2));
+        $this->assertTrue($this->Events->determineComplete(2));
+        $this->assertFalse($this->Events->determineOver(2));
+        $this->assertFalse($this->Events->determineFull(2));
+
+        $this->assertEquals(4, $this->Events->determineEventStatus(2));
+
+        $event->set('force_full', true);
+        $this->Events->save($event, ['validate' => false]);
+
+        $this->assertFalse($this->Events->determinePending(2));
+        $this->assertFalse($this->Events->determineStarted(2));
+        $this->assertTrue($this->Events->determineComplete(2));
+        $this->assertFalse($this->Events->determineOver(2));
+        $this->assertTrue($this->Events->determineFull(2));
+
+        $this->assertEquals(5, $this->Events->determineEventStatus(2));
+
         // In Progress - 6
         Time::setTestNow('2019-01-16 18:00:00');
 
@@ -434,6 +460,35 @@ class EventsTableTest extends TestCase
         // Individual Price Event
         $section = $this->Events->getPriceSection(3);
         $this->assertEquals(5, $section);
+    }
+
+    /**
+     * Test findUpcoming method
+     *
+     * @return void
+     */
+    public function testSchedule()
+    {
+        $this->Events->EventStatuses->installBaseStatuses();
+        $event = $this->Events->get(2);
+        Time::setTestNow('2019-01-01 18:00:00');
+
+        $event->set('opening_date', '2019-01-05 18:00:00');
+        $event->set('closing_date', '2019-01-10 18:00:00');
+        $event->set('start_date', '2019-01-15 18:00:00');
+        $event->set('end_date', '2019-01-20 18:00:00');
+
+        $this->Events->save($event, ['validate' => false]);
+
+        // Fixture to Real
+        $this->assertTrue($this->Events->schedule(2));
+
+        // Real to Real
+        $this->assertFalse($this->Events->schedule(2));
+
+        // Time Change
+        Time::setTestNow('2019-01-16 18:00:00');
+        $this->assertTrue($this->Events->schedule(2));
     }
 
     /**

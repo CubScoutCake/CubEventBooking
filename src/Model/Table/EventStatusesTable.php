@@ -96,7 +96,12 @@ class EventStatusesTable extends Table
         $total = 0;
 
         foreach ($base as $baseStatus) {
-            $status = $this->findOrCreate($baseStatus);
+            $query = $this->find()->where(['event_status' => 'event_status']);
+            $status = $this->newEntity();
+            if ($query->count() > 0) {
+                $status = $query->first();
+            }
+            $this->patchEntity($status, $baseStatus);
             if ($this->save($status)) {
                 $total += 1;
             };
