@@ -219,7 +219,7 @@ class AvailabilityComponent extends Component
      */
     private function checkEventOpen($event, $flash)
     {
-        if (!$event->new_apps) {
+        if (!$this->Events->checkEventOpen($event->id)) {
             if ($flash) {
                 $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
             }
@@ -304,6 +304,14 @@ class AvailabilityComponent extends Component
             return true;
         }
 
+        if ($event->app_full) {
+            if ($flash) {
+                $this->Flash->error(__('Apologies this Event is Full.'));
+            }
+
+            return false;
+        }
+
         /** @var \App\Model\Table\ApplicationsTable Applications */
         $this->Applications = TableRegistry::getTableLocator()->get('Applications');
         $applicationCount = $this->Applications->find('all')->where(['event_id' => $event->id])->count();
@@ -333,6 +341,14 @@ class AvailabilityComponent extends Component
 
         if ($event->max_apps == 0 || is_null($event->max_apps)) {
             return true;
+        }
+
+        if ($event->app_full) {
+            if ($flash) {
+                $this->Flash->error(__('Apologies this Event is Full.'));
+            }
+
+            return false;
         }
 
         /** @var \App\Model\Table\ReservationsTable Reservations */

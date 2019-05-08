@@ -96,12 +96,28 @@ class EventStatusesTable extends Table
         $total = 0;
 
         foreach ($base as $baseStatus) {
-            $status = $this->findOrCreate($baseStatus);
+            $query = $this->find()->where(['event_status' => 'event_status']);
+            $status = $this->newEntity();
+            if ($query->count() > 0) {
+                $status = $query->first();
+            }
+            $this->patchEntity($status, $baseStatus);
             if ($this->save($status)) {
                 $total += 1;
             };
         }
 
         return $total;
+    }
+
+    /**
+     * Is a finder which will return a query with non-live (pre-release & archive) events only.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
+    public function findCore($query)
+    {
+        return $query->where(['event_status <>' => 'Live']);
     }
 }

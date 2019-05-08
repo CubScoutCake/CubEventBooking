@@ -58,6 +58,7 @@ class ApplicationStatusesTable extends Table
             ->scalar('application_status')
             ->maxLength('application_status', 255)
             ->requirePresence('application_status', 'create')
+            ->add('application_status', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
             ->allowEmptyString('application_status', false);
 
         $validator
@@ -109,7 +110,12 @@ class ApplicationStatusesTable extends Table
         $total = 0;
 
         foreach ($base as $baseStatus) {
-            $status = $this->findOrCreate($baseStatus);
+            $query = $this->find()->where(['application_status' => 'application_status']);
+            $status = $this->newEntity();
+            if ($query->count() > 0) {
+                $status = $query->first();
+            }
+            $this->patchEntity($status, $baseStatus);
             if ($this->save($status)) {
                 $total += 1;
             };

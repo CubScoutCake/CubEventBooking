@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\EventStatusesTable;
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
@@ -213,5 +214,30 @@ class EventStatusesTableTest extends TestCase
         $after = $this->EventStatuses->find('all')->count();
 
         $this->assertEquals($new, $after);
+    }
+
+    /**
+     * Test installBaseStatuses method
+     *
+     * @return void
+     */
+    public function testFindCore()
+    {
+        $this->EventStatuses->installBaseStatuses();
+
+        $before = $this->EventStatuses->find('all')->count();
+        $core = $this->EventStatuses->find('core')->count();
+
+        $difference = $before - $core;
+
+        $this->assertEquals(1, $difference);
+
+        $query = $this->EventStatuses->find('all');
+
+        foreach (Configure::read('eventStatuses') as $baseStatus) {
+            $query = $query->where(['event_status <>' => $baseStatus['event_status']]);
+        }
+
+        $this->assertEquals($difference, $query->count());
     }
 }

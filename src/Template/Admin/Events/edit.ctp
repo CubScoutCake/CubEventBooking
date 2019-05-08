@@ -38,9 +38,7 @@
 
             echo '<div class="row"> <div class="col-lg-12">';
             echo '<div class="table-responsive"> <table class="table table-hover"> <tr> <td>';
-            echo $this->Form->control('live', ['label' => 'Live (will show up on the site)']);
-            echo '</td> <td>';
-            echo $this->Form->control('new_apps', ['label' => 'Accepting New Applications']);
+            echo $this->Form->control('force_full', ['label' => 'Override Event to Full']);
             echo '</td> <td>';
             echo $this->Form->control('allow_reductions', ['label' => 'Allow invoices to be reduced']);
             echo '</td> <td>';

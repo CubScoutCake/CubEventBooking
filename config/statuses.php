@@ -51,6 +51,33 @@ return [
             'attendees_added' => 0
         ],
     ],
+    'reservationStatuses' => [
+        [
+            'reservation_status' => 'Pending Payment',
+            'active' => 1,
+            'complete' => 0,
+        ],
+        [
+            'reservation_status' => 'Cancelled',
+            'active' => 0,
+            'complete' => 0,
+        ],
+        [
+            'reservation_status' => 'Complete',
+            'active' => 1,
+            'complete' => 1,
+        ],
+        [
+            'reservation_status' => 'On Waiting List',
+            'active' => 0,
+            'complete' => 0,
+        ],
+        [
+            'reservation_status' => 'Expired',
+            'active' => 0,
+            'complete' => 0,
+        ],
+    ],
     'eventStatuses' => [
         [
             'event_status' => 'New',

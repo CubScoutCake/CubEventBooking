@@ -88,7 +88,7 @@ class ReservationStatusesTableTest extends TestCase
         $this->assertEquals($expected, $actual);
 
         $count = $this->ReservationStatuses->find('all')->count();
-        $this->assertEquals(1, $count);
+        $this->assertEquals(2, $count);
     }
 
     /**
@@ -188,5 +188,23 @@ class ReservationStatusesTableTest extends TestCase
         $values['reservation_status'] = $existing['reservation_status'];
         $new = $this->ReservationStatuses->newEntity($values);
         $this->assertFalse($this->ReservationStatuses->save($new));
+    }
+
+    /**
+     * Test installBaseCapabilities method
+     *
+     * @return void
+     */
+    public function testInstallBaseStatuses()
+    {
+        $before = $this->ReservationStatuses->find('all')->count();
+
+        $installed = $this->ReservationStatuses->installBaseStatuses();
+
+        $this->assertNotEquals($before, $installed);
+        $this->assertNotEquals(0, $installed);
+
+        $after = $this->ReservationStatuses->find('all')->count();
+        $this->assertTrue($after > $before);
     }
 }

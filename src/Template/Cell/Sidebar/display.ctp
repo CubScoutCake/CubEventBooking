@@ -161,7 +161,7 @@
 //            'action' => 'index',
 //            'prefix' => false]); ?><!--">-->
 <!--            <i class="fal fa-check-circle fa-fw"></i> Tasks</a>-->
-<!--        <!-- /.nav-second-level -->-->
+       <!-- /.nav-second-level -->
 <!--    </li>-->
     <li>
         <a class="has-arrow" href="#"><i class="fal fa-sitemap fa-fw"></i> More</a>

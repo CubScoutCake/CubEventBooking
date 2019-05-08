@@ -2,7 +2,10 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\Event;
+use App\Model\Entity\Param;
+use Cake\Core\Configure;
 use Cake\I18n\Time;
+use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -124,6 +127,10 @@ class EventsTable extends Table
         $validator
             ->boolean('live')
             ->allowEmptyString('live');
+
+        $validator
+            ->boolean('force_full')
+            ->allowEmptyString('force_full');
 
         $validator
             ->boolean('new_apps')
@@ -281,11 +288,6 @@ class EventsTable extends Table
         $def = '1' . '1';
 
         if (bindec($bin) == bindec($def)) {
-            $activeStatus = $this->EventStatuses->find()->where(['event_status' => 'Active'])->first();
-            $event->set('application_status_id', $activeStatus->id);
-            $event->set('complete', true);
-            $this->save($event);
-
             return true;
         }
 
@@ -333,5 +335,218 @@ class EventsTable extends Table
         }
 
         return $max;
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param \Cake\I18n\Time $date The Date to be checked
+     *
+     * @return bool
+     */
+    private function determineDateOccurred($date)
+    {
+        if (is_null($date)) {
+            return false;
+        }
+
+        $now = Time::now();
+        $difference = $now->diff($date);
+
+        if ($difference->invert != 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $eventId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determinePending($eventId)
+    {
+        $event = $this->get($eventId);
+
+        return !$this->determineDateOccurred($event->opening_date);
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $eventId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determineClosed($eventId)
+    {
+        $event = $this->get($eventId);
+
+        return $this->determineDateOccurred($event->closing_date);
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $eventId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determineStarted($eventId)
+    {
+        $event = $this->get($eventId);
+
+        return $this->determineDateOccurred($event->start_date);
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $eventId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determineOver($eventId)
+    {
+        $event = $this->get($eventId);
+
+        return $this->determineDateOccurred($event->end_date);
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $eventId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determineFull($eventId)
+    {
+        $event = $this->get($eventId);
+
+        return $event->app_full;
+    }
+
+    /**
+     * Method to determine the maximum section numbers for an event.
+     *
+     * @param int $eventId The booking Event
+     *
+     * @return int
+     */
+    public function determineEventStatus($eventId)
+    {
+        $complete = $this->determineComplete($eventId);
+        $pending = $this->determinePending($eventId);
+        $started = $this->determineStarted($eventId);
+        $over = $this->determineOver($eventId);
+        $full = $this->determineFull($eventId);
+
+        if ($over || $started) {
+            $query = $this->EventStatuses->find('core')->orderDesc('status_order');
+            $lastStatus = $query->first();
+            if ($over) {
+                return $lastStatus->id;
+            }
+
+            return $query->where(['id <>' => $lastStatus->id])->first()->id;
+        }
+
+        if ($full) {
+            return $this->EventStatuses->find('core')->where([
+                'live' => $complete,
+                'pending_date' => $pending,
+                'accepting_applications' => !$full,
+                'spaces_full' => $full,
+            ])->orderAsc('status_order')->first()->id;
+        }
+
+        $matching = $this->EventStatuses->find('core')->where([
+            'live' => $complete,
+            'pending_date' => $pending,
+            'accepting_applications' => (!$pending && $complete && !$full),
+        ])->orderAsc('status_order');
+
+        if ($matching->count() == 1) {
+            return $matching->first()->id;
+        }
+
+        return $this->EventStatuses->find('core')->orderAsc('status_order')->first()->id;
+    }
+
+    /**
+     * @param int $eventId The Event ID
+     *
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function checkEventOpen($eventId)
+    {
+        $event = $this->get($eventId, ['contain' => 'EventStatuses']);
+
+        if (!$event->event_status->accepting_applications) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param int $eventId The Event ID
+     *
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function schedule($eventId)
+    {
+        $event = $this->get($eventId);
+
+        $status = $this->determineEventStatus($eventId);
+
+        if ($status <> $event->event_status_id) {
+            $event->set('event_status_id', $status);
+            $this->save($event);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Writes the max value to the Logistic
+     *
+     * @param \Cake\Event\Event $event The event trigger.
+     *
+     * @return true
+     */
+    public function beforeSave($event)
+    {
+        /** @var \App\Model\Entity\Event $entity */
+        $entity = $event->getData('entity');
+
+        if (isset($entity->id)) {
+            $correctStatus = $this->determineEventStatus($entity->id);
+            $entity->set('event_status_id', $correctStatus);
+
+            /** @var \App\Model\Entity\EventStatus $status */
+            $status = $this->EventStatuses->get($correctStatus);
+
+            $entity->set('new_apps', $status->accepting_applications);
+            $entity->set('live', $status->live);
+
+            $entity->set('complete', $this->determineComplete($entity->id));
+
+            if ($entity->isDirty('event_status_id')) {
+                Log::info($entity->name . ' Status ' . $this->EventStatuses->get($entity->event_status_id)->event_status);
+            }
+        }
+
+        return true;
     }
 }
