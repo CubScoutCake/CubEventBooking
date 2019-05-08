@@ -78,7 +78,7 @@
                             <th><?= __('Closing Date') ?></th>
                         </tr>
                         <tr>
-                            <td><?= $event->deposit ? $this->Time->format($event->deposit_date, 'dd-MMM-yy HH:mm') : __('No Deposit Date'); ?></td>
+                            <td><?= $this->Time->format($event->opening_date, 'dd-MMM-yy HH:mm') ?></td>
                             <td><?= $this->Time->format($event->closing_date, 'dd-MMM-yy HH:mm') ?></td>
                         </tr>
                     </table>
