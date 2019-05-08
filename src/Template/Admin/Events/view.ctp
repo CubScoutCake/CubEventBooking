@@ -70,16 +70,16 @@
                             <th><?= __('Event End') ?></th>
                         </tr>
                         <tr>
-                            <td><?= $this->Time->format($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
-                            <td><?= $this->Time->format($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->format($event->start_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                            <td><?= $this->Time->format($event->end_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Deposit Deadline') ?></th>
                             <th><?= __('Closing Date') ?></th>
                         </tr>
                         <tr>
-                            <td><?= $this->Time->format($event->opening_date, 'dd-MMM-yy HH:mm') ?></td>
-                            <td><?= $this->Time->format($event->closing_date, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->format($event->opening_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                            <td><?= $this->Time->format($event->closing_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
                     </table>
                 </div>
@@ -281,7 +281,7 @@
                         <tr>
                             <td><?= $event->deposit ? __('Yes') : __('No'); ?></td>
                             <td><?= $event->deposit_inc_leaders ? __('Yes') : __('No'); ?></td>
-                            <td><?= $this->Time->format($event->deposit_date, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->format($event->deposit_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                             <td><?= $this->Number->currency($event->deposit_value,'GBP') ?></td>
                             <td><?= h($event->deposit_text) ?></td>
                         </tr>

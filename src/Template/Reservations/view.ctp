@@ -67,7 +67,7 @@ $this->append('parent-nav', '<li class="nav-item">' . $this->Html->link('User Ho
                         <br/>
                         <h3 class="text-uppercase">Reservation Expires</h3>
                         <hr class="my-4">
-                        <div><h1 class="display-4 text-black"><?= $this->Time->format($reservation->expires, 'dd-MMM-yy HH:mm')  ?></h1></div>
+                        <div><h1 class="display-4 text-black"><?= $this->Time->format($reservation->expires, 'dd-MMM-YY HH:mm', 'Europe/London')  ?></h1></div>
 
                         <p>Your reservation will be automatically cancelled if payment is not received before the expiry date.</p>
                     </div>

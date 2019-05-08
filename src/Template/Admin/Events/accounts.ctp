@@ -229,7 +229,7 @@
                                 <tr>
                                     <td><?= $event->deposit ? __('Yes') : __('No'); ?></td>
                                     <td><?= $event->deposit_inc_leaders ? __('Yes') : __('No'); ?></td>
-                                    <td><?= $this->Time->i18nFormat($event->deposit_date, 'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nFormat($event->deposit_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                     <td><?= $this->Number->currency($event->deposit_value,'GBP') ?></td>
                                     <td><?= h($event->deposit_text) ?></td>
                                 </tr>
@@ -335,7 +335,7 @@
                                                 <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
-                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -380,7 +380,7 @@
                                                 <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
-                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -425,7 +425,7 @@
                                                 <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
-                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

@@ -19,5 +19,5 @@
 
 <p>This link will work for a week.</p>
 
-<p>Your user was created at <?= $this->Time->i18nFormat($date_created, 'HH:mm') ?> on <?= $this->Time->i18nFormat($date_created, 'dd-MMM-yy') ?>. If this was not you, please email <?= $this->Html->link('info@hertscubs.uk', 'mailto:info@hertscubs.uk') ?>.</p>
+<p>Your user was created at <?= $this->Time->i18nFormat($date_created, 'HH:mm', 'Europe/London') ?> on <?= $this->Time->i18nFormat($date_created, 'dd-MMM-yy', 'Europe/London') ?>. If this was not you, please email <?= $this->Html->link('info@hertscubs.uk', 'mailto:info@hertscubs.uk') ?>.</p>
 <p>We will occasionally contact you from time to time with account notifications (e.g. <span>'your payment has been received'</span>) and with upcoming events. These won't be frequent and you will have the option to unsubscribe.</p>

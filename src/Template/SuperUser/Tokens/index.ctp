@@ -32,9 +32,9 @@
                         </td>
                         <td><?= $token->has('user') ? $this->Html->link($token->user->full_name, ['controller' => 'Users', 'action' => 'view', $token->user->id]) : '' ?></td>
                         <td><?= $token->has('email_send') ? $this->Html->link($token->email_send->id, ['controller' => 'EmailSends', 'action' => 'view', $token->email_send->id]) : '' ?></td>
-                        <td><?= $this->Time->i18nformat($token->created,'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nformat($token->modified,'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nformat($token->expires,'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nformat($token->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->i18nformat($token->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->i18nformat($token->expires,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         <td><?= $token->utilised ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
                         <td><?= $token->active ? '<i class="fal fa-check fa-fw"></i>' : '' ?></td>
                     </tr>

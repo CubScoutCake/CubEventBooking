@@ -103,7 +103,7 @@
                                                 <td><?= h($users->full_name) ?></td>
                                                 <td><?= $this->Text->autolink($users->email) ?></td>
                                                 <td><?= $users->has('role') ? $this->Html->link($users->role->role, ['controller' => 'Roles', 'action' => 'view', $users->role->id]) : '' ?></td>
-                                                <td><?= $this->Time->i18nformat($users->modified,'dd-MMM-yy HH:mm') ?></td>
+                                                <td><?= $this->Time->i18nformat($users->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -196,8 +196,8 @@
                                                 <td><?= h($attendees->lastname) ?></td>
                                                 <td><?= $this->Time->i18nFormat($attendees->dateofbirth, 'dd-MMM-yy') ?></td>
                                                 <td><?= h($attendees->nightsawaypermit) ?></td>
-                                                <td><?= $this->Time->i18nFormat($attendees->created, 'dd-MMM-yy HH:mm') ?></td>
-                                                <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                                <td><?= $this->Time->i18nFormat($attendees->created, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                                <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

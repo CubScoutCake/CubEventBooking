@@ -75,7 +75,7 @@
                             <td><?= $user->has('section') ? $this->Html->link($this->Text->truncate($user->section->section,18), ['controller' => 'Sections', 'action' => 'view', $user->section->id]) : '' ?></td>
                             <td><?= $user->has('role') ? $this->Html->link($this->Text->truncate($user->role->role,32), ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></td>
                             <td><?= $this->Text->autoLinkEmails($user->email) ?></td>
-                            <td><?= $user->has('last_login') ? $this->Time->i18nFormat($user->last_login, 'dd-MMM-yy HH:mm') : '' ?></td>
+                            <td><?= $user->has('last_login') ? $this->Time->i18nFormat($user->last_login, 'dd-MMM-YY HH:mm', 'Europe/London') : '' ?></td>
                             <td><?= $user->has('auth_role') ? $this->Html->link($user->auth_role->auth_role, ['controller' => 'AuthRoles', 'action' => 'view', $user->auth_role->id]) : '' ?></td>
                         </tr>
                     <?php endforeach; ?>

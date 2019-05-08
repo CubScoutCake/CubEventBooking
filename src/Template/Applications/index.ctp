@@ -36,7 +36,7 @@
                         <td><?= $application->has('user') ? $this->Html->link($application->user->full_name, ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></td>
                         <td><?= h($application->team_leader) ?></td>
                         <td><?= h($application->permit_holder) ?></td>
-                        <td><?= $this->Time->i18nformat($application->created,'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nformat($application->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

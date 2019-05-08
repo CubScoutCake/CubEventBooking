@@ -69,11 +69,11 @@
                         </tr>
                         <tr>
                             <th><?= __('Created') ?></th>
-                            <td><?= $this->Time->i18nformat($payment->created,'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->i18nformat($payment->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Paid') ?></th>
-                            <td><?= $this->Time->i18nformat($payment->paid,'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->i18nformat($payment->paid,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Cheque Number') ?></th>
@@ -135,7 +135,7 @@
                                 <td><?= $this->Number->currency($invoices->initialvalue,'GBP') ?></td>
                                 <td><?= $this->Number->currency($invoices->value,'GBP') ?></td>
                                 <td><?= $this->Number->currency($invoices->balance,'GBP') ?></td>
-                                <td><?= $this->Time->i18nformat($invoices->created,'dd-MMM-yy HH:mm') ?></td>
+                                <td><?= $this->Time->i18nformat($invoices->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>

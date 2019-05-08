@@ -21,7 +21,7 @@
                         <br/>
                         <span><strong><?= __('Event') ?>:</strong> <?= h($invoice->application->event->full_name) ?></span>
                         <br/>
-                        <span><strong><?= __('Date Created') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YYYY HH:mm')) ?></span>
+                        <span><strong><?= __('Date Created') ?>:</strong> <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London')) ?></span>
                         <br/>
                         <span><strong><?= __('User') ?>:</strong> <?= $invoice->has('user') ? $invoice->user->full_name : '' ?></span>
                         <br/>

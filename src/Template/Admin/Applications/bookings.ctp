@@ -18,7 +18,7 @@
             <td><?= $application->has('scoutgroup') ? $this->Html->link($this->Text->truncate($application->scoutgroup->scoutgroup,18), ['controller' => 'Scoutgroups', 'action' => 'view', $application->scoutgroup->id]) : '' ?></td>
             <td><?= h($application->section) ?></td>
             <td><?= $this->Text->truncate($application->permitholder,18) ?></td>
-            <td><?= $this->Time->i18nFormat($application->modified, 'dd-MMM-yy HH:mm') ?></td>
+            <td><?= $this->Time->i18nFormat($application->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
             <td class="actions">
                 <?= $this->Html->link(__('View'), ['action' => 'view', $application->id]) ?>
                 <?= $this->Html->link(__('Edit'), ['action' => 'edit', $application->id]) ?>

@@ -33,7 +33,7 @@ echo $this->Html->tag('h2', $invoice['id']);
         </tr>
         <tr>
             <th><?= __('Date Created') ?></th>
-            <td><?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YYYY HH:mm')) ?></tr>
+            <td><?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London')) ?></tr>
         </tr>
     </table>
     <div class="related">
@@ -77,8 +77,8 @@ echo $this->Html->tag('h2', $invoice['id']);
             <tr>
                 <td><?= h($payments->id) ?></td>
                 <td><?= $this->Number->currency($payments->value,'GBP') ?></td>
-                <td><?= $this->Time->i18nformat($payments->created,'dd-MMM-yy HH:mm') ?></td>
-                <td><?= $this->Time->i18nformat($payments->paid,'dd-MMM-yy HH:mm') ?></td>
+                <td><?= $this->Time->i18nformat($payments->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                <td><?= $this->Time->i18nformat($payments->paid,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Payments', 'action' => 'view', $payments->id]) ?>
 

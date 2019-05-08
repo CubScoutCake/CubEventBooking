@@ -24,9 +24,9 @@
                             <?= $this->Html->link('<i class="fal fa-chart-bar"></i>', ['action' => 'accounts', $event->id], ['title' => __('Accounts'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                             <?= $this->Html->link('<i class="fal fa-inventory"></i>', ['action' => 'logistics', $event->id], ['title' => __('Logistics'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                         </td>
-                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         <td><?= h($event->location) ?></td>
                     </tr>
                     <?php endforeach; ?>
