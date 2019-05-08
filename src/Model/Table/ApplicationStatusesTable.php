@@ -58,6 +58,7 @@ class ApplicationStatusesTable extends Table
             ->scalar('application_status')
             ->maxLength('application_status', 255)
             ->requirePresence('application_status', 'create')
+            ->add('application_status', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
             ->allowEmptyString('application_status', false);
 
         $validator
