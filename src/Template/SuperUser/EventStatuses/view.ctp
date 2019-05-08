@@ -28,7 +28,7 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Order') ?></th>
-            <td><?= $this->Number->format($eventStatus->order) ?></td>
+            <td><?= $this->Number->format($eventStatus->status_order) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Live') ?></th>

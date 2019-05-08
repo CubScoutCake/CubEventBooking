@@ -99,7 +99,7 @@ class ReservationStatusesTable extends Table
         $total = 0;
 
         foreach ($base as $baseStatus) {
-            $query = $this->find()->where(['reservation_status' => 'reservation_status']);
+            $query = $this->find()->where(['reservation_status' => $baseStatus['reservation_status']]);
             $status = $this->newEntity();
             if ($query->count() > 0) {
                 $status = $query->first();
