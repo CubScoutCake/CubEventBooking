@@ -52,6 +52,7 @@ class EventsController extends AppController
                     'ApplicationRefs',
                     'InvoiceTexts'
                 ],
+                'Logistics.Parameters.Params',
                 'EventStatuses',
                 'SectionTypes.Roles',
                 'Prices.ItemTypes.Roles',
