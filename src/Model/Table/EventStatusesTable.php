@@ -96,7 +96,7 @@ class EventStatusesTable extends Table
         $total = 0;
 
         foreach ($base as $baseStatus) {
-            $query = $this->find()->where(['event_status' => 'event_status']);
+            $query = $this->find()->where(['event_status' => $baseStatus['event_status']]);
             $status = $this->newEntity();
             if ($query->count() > 0) {
                 $status = $query->first();

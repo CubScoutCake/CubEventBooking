@@ -43,7 +43,7 @@
                             <td><?= $application->section->has('scoutgroup') ? $this->Html->link($this->Text->truncate($application->section->scoutgroup->scoutgroup,18), ['controller' => 'Scoutgroups', 'action' => 'view', $application->section->scoutgroup->id]) : '' ?></td>
                             <td><?= $application->has('section') ? $this->Html->link($this->Text->truncate($application->section->section,18), ['controller' => 'Sections', 'action' => 'view', $application->section->id]) : '' ?></td>
                             <td><?= $this->Text->truncate($application->team_leader,18) ?></td>
-                            <td><?= $this->Time->i18nFormat($application->modified, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->i18nFormat($application->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
 
                     <?php endforeach; ?>

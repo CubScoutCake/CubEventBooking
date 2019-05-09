@@ -28,8 +28,8 @@
                             <?= $this->Html->link(__('View'), ['action' => 'view', $task->id], ['title' => __('Book'), 'class' => 'btn btn-default']) ?>
                             <?= $task->completed ? '' : $this->Html->link('Do Task', ['action' => 'complete', $task->id], ['title' => __('Book'), 'class' => 'btn btn-default']) ?>
                         </td>
-                        <td><?= $this->Time->i18nFormat($task->created, 'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nFormat($task->date_completed, 'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nFormat($task->created, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->i18nFormat($task->date_completed, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         <td><?= $task->has('completing_user') ? h($task->completing_user->full_name) : '' ?></td>
                     </tr>
                 <?php endforeach; ?>

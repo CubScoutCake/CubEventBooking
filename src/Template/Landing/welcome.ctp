@@ -88,7 +88,7 @@ $this->append('parent-nav', '<li class="nav-item">' . $this->Html->link('Login',
                         <?php endif; ?>
 
                         <?php if ($event->event_status->pending_date) : ?>
-                            <div><h1 class="text-black-50">Booking opens: <?= $this->Time->i18nformat($event->opening_date,'dd-MMM-yy HH:mm') ?></h1></div>
+                            <div><h1 class="text-black-50">Booking opens: <?= $this->Time->i18nformat($event->opening_date,'dd-MMM-YY HH:mm', 'Europe/London') ?></h1></div>
                         <?php endif; ?>
 
                         <?php if ($event->event_status->spaces_full) : ?>

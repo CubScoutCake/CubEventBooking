@@ -26,8 +26,8 @@
                         </td>
                         <td><?= $section->has('section_type') ? $this->Html->link($section->section_type->section_type, ['controller' => 'SectionTypes', 'action' => 'view', $section->section_type->id]) : '' ?></td>
                         <td><?= $section->has('scoutgroup') ? $this->Html->link($section->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $section->scoutgroup->id]) : '' ?></td>
-                        <td><?= $this->Time->i18nformat($section->created,'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nformat($section->modified,'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nformat($section->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->i18nformat($section->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

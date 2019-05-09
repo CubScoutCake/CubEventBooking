@@ -33,9 +33,9 @@
                         <td><?= $reservation->has('user') ? $this->Html->link($reservation->user->full_name, ['controller' => 'Users', 'action' => 'view', $reservation->user->id]) : '' ?></td>
                         <td><?= $reservation->has('attendee') ? $this->Html->link($reservation->attendee->full_name, ['controller' => 'Attendees', 'action' => 'view', $reservation->attendee->id]) : '' ?></td>
                         <td><?= $reservation->has('reservation_status') ? h($reservation->reservation_status->reservation_status) : '' ?></td>
-                        <td><?= $this->Time->format($reservation->created, 'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->format($reservation->modified, 'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->format($reservation->expires, 'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->format($reservation->created, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->format($reservation->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->format($reservation->expires, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

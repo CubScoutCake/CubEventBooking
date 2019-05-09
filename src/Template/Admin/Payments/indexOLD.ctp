@@ -29,8 +29,8 @@
             <tr>
                 <td><?= $this->Number->format($payment->id) ?></td>
                 <td><?= $this->Number->currency($payment->value,'GBP') ?></td>
-                <td><?= $this->Time->i18nformat($payment->created,'dd-MMM-yy HH:mm') ?></td>
-                <td><?= $this->Time->i18nformat($payment->paid,'dd-MMM-yy HH:mm') ?></td>
+                <td><?= $this->Time->i18nformat($payment->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                <td><?= $this->Time->i18nformat($payment->paid,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $payment->id]) ?>
                     <?= $this->Html->link(__('Notify'), ['controller' => 'Notifications', 'action' => 'notify_payment', $payment->id]) ?>

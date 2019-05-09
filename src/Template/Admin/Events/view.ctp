@@ -11,6 +11,12 @@
  * @var \App\Model\Entity\Event $event
  *
  * @var array $lineArray
+ *
+ * @var bool $complete
+ * @var bool $pending
+ * @var bool $started
+ * @var bool $over
+ * @var bool $full
  */
 ?>
 <?php echo $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css'); ?>
@@ -70,16 +76,16 @@
                             <th><?= __('Event End') ?></th>
                         </tr>
                         <tr>
-                            <td><?= $this->Time->format($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
-                            <td><?= $this->Time->format($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->format($event->start_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                            <td><?= $this->Time->format($event->end_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Deposit Deadline') ?></th>
                             <th><?= __('Closing Date') ?></th>
                         </tr>
                         <tr>
-                            <td><?= $this->Time->format($event->opening_date, 'dd-MMM-yy HH:mm') ?></td>
-                            <td><?= $this->Time->format($event->closing_date, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->format($event->opening_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                            <td><?= $this->Time->format($event->closing_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
                     </table>
                 </div>
@@ -94,9 +100,6 @@
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <tr>
-                            <td><strong>Event Status:</strong> <?= h($event->event_status->event_status) ?></td>
-                        </tr>
-                        <tr>
                             <td><?= $pluralTerm ?> are limited to <?= $maxSection ?> <?= $event->section_type->role->role ?>s per <?= $singleTerm ?></td>
                         </tr>
                         <tr>
@@ -107,6 +110,35 @@
                         </tr>
                         <tr>
                             <td><?= $event->invoices_locked ? __('Invoices are Locked') : __('Invoices can be Updated'); ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fal fa-clock fa-fw"></i> Event Status
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tr>
+                            <td><strong>Event Status:</strong> <?= h($event->event_status->event_status) ?></td>
+                        </tr>
+                        <tr>
+                            <td>Complete: <?= $complete ? __('Y') : __('N'); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Pending: <?= $pending ? __('Y') : __('N'); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Started: <?= $started ? __('Y') : __('N'); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Over: <?= $over ? __('Y') : __('N'); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Full: <?= $full ? __('Y') : __('N'); ?></td>
                         </tr>
                     </table>
                 </div>
@@ -281,7 +313,7 @@
                         <tr>
                             <td><?= $event->deposit ? __('Yes') : __('No'); ?></td>
                             <td><?= $event->deposit_inc_leaders ? __('Yes') : __('No'); ?></td>
-                            <td><?= $this->Time->format($event->deposit_date, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->format($event->deposit_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                             <td><?= $this->Number->currency($event->deposit_value,'GBP') ?></td>
                             <td><?= h($event->deposit_text) ?></td>
                         </tr>

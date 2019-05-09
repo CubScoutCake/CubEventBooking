@@ -89,6 +89,14 @@ class EventsController extends AppController
 
         // Pass to View
         $this->set(compact('term', 'singleTerm', 'maxSection', 'pluralTerm'));
+
+        $complete = $this->Events->determineComplete($event->id);
+        $pending = $this->Events->determinePending($event->id);
+        $started = $this->Events->determineStarted($event->id);
+        $over = $this->Events->determineOver($event->id);
+        $full = $this->Events->determineFull($event->id);
+
+        $this->set(compact('complete', 'pending', 'started', 'over', 'full'));
     }
 
     /**
