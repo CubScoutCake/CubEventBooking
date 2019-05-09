@@ -203,7 +203,7 @@
                                 <div class="panel-body">
                                     <?php if (key_exists('remaining', $logistic->variable_max_values[$param->id])) : ?>
                                         <div class="progress progress-striped active">
-                                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($logistic->variable_max_values[$param->id]['current'] / $logistic->variable_max_values[$param->id]['limit']) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($logistic->variable_max_values[$param->id]['current'] / $logistic->variable_max_values[$param->id]['limit']),1,['multiply' => true]); ?>">
+                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo (($logistic->variable_max_values[$param->id]['current'] / $logistic->variable_max_values[$param->id]['limit']) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($logistic->variable_max_values[$param->id]['current'] / $logistic->variable_max_values[$param->id]['limit']),1,['multiply' => true]); ?>">
                                                 <span class="sr-only"><?= $this->Number->toPercentage(($logistic->variable_max_values[$param->id]['current'] / $logistic->variable_max_values[$param->id]['limit']),1,['multiply' => true]); ?> Complete</span>
                                             </div>
                                         </div>
