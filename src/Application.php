@@ -19,6 +19,7 @@ use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use Cake\Http\Middleware\EncryptedCookieMiddleware;
 use Cake\Http\Middleware\SecurityHeadersMiddleware;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
@@ -48,7 +49,14 @@ class Application extends BaseApplication
         if (Configure::read('debug')) {
             $this->addPlugin(\DebugKit\Plugin::class);
         }
-        // Load more plugins here
+        // Include Plugins
+        $this->addPlugin('Muffin/Trash');
+        $this->addPlugin('DatabaseLog', ['bootstrap' => true, 'routes' => true]);
+        $this->addPlugin('CsvView');
+        $this->addPlugin('Migrations');
+        $this->addPlugin('BootstrapUI');
+        $this->addPlugin('Search');
+        $this->addPlugin('CakePdf', ['bootstrap' => true, 'routes' => true]);
     }
     /**
      * Setup the middleware queue your application will use.
@@ -58,21 +66,20 @@ class Application extends BaseApplication
      */
     public function middleware($middlewareQueue)
     {
-        $middlewareQueue
-            // Catch any exceptions in the lower layers,
-            // and make an error page/response
-            ->add(new ErrorHandlerMiddleware(null, Configure::read('Error')))
-            // Handle plugin/theme assets like CakePHP normally does.
-            ->add(new AssetMiddleware([
-                'cacheTime' => Configure::read('Asset.cacheTime')
-            ]))
-            // Add routing middleware.
-            // If you have a large number of routes connected, turning on routes
-            // caching in production could improve performance. For that when
-            // creating the middleware instance specify the cache config name by
-            // using it's second constructor argument:
-            // `new RoutingMiddleware($this, '_cake_routes_')`
-            ->add(new RoutingMiddleware($this));
+        // Catch any exceptions in the lower layers,
+        // and make an error page/response
+        $middlewareQueue->add(new ErrorHandlerMiddleware(null, Configure::read('Error')));
+
+        // Handle plugin/theme assets like CakePHP normally does.
+        $middlewareQueue->add(new AssetMiddleware([
+            'cacheTime' => Configure::read('Asset.cacheTime')
+        ]));
+
+        // Add routing middleware.
+        // Routes collection cache enabled by default, to disable route caching
+        // pass null as cacheConfig, example: `new RoutingMiddleware($this)`
+        // you might want to disable this cache in case your routing is extremely simple
+        $middlewareQueue->add(new RoutingMiddleware($this));
 
         $securityHeaders = new SecurityHeadersMiddleware();
         $securityHeaders
@@ -83,6 +90,12 @@ class Application extends BaseApplication
             ->noOpen()
             ->noSniff();
         $middlewareQueue->add($securityHeaders);
+
+        $middlewareQueue->add(new EncryptedCookieMiddleware(
+            // Names of cookies to protect
+            ['CookieAuth'],
+            Configure::read('Security.cookieKey')
+        ));
 
         return $middlewareQueue;
     }
