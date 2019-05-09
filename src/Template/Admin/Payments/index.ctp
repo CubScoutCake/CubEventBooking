@@ -32,7 +32,7 @@
                             </div>
                         </td>
                         <td><?= $this->Number->currency($payment->value,'GBP') ?></td>
-                        <td><?= $this->Time->i18nFormat($payment->created, 'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nFormat($payment->created, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         <td><?= $this->Time->i18nFormat($payment->paid, 'dd-MMM-yy') ?></td>
                         <td><?= h($payment->name_on_cheque) ?></td>
                     </tr>

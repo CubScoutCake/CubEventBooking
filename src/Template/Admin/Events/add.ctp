@@ -17,10 +17,6 @@
 
         echo '<div class="row"> <div class="col-lg-12">';
         echo '<div class="table-responsive"> <table class="table table-hover"> <tr> <td>';
-        echo $this->Form->input('live', ['label' => 'Live (will show up on the site)']);
-        echo '</td> <td>';
-        echo $this->Form->input('new_apps', ['label' => 'Accepting New Applications']);
-        echo '</td> <td>';
         echo $this->Form->input('team_price', ['label' => 'Price per Team']);
         echo '</td> <td>';
         echo $this->Form->input('allow_reductions', ['label' => 'Allow invoices to be reduced']);

@@ -257,4 +257,47 @@ class AuthRolesTableTest extends TestCase
         $this->assertNotEquals(150, $new->get('auth'));
         $this->assertEquals(14, $new->get('auth'));
     }
+
+    /**
+     * Test Before Save
+     *
+     * @return void
+     */
+    public function testParentAuthRole()
+    {
+        // Test Alter
+        foreach ($this->AuthRoles->find('all') as $authRole) {
+            /** @var \App\Model\Entity\AuthRole $authRole */
+            $return = $this->AuthRoles->parentAuthRole($authRole);
+            $this->assertTrue(is_numeric($return));
+
+            $new = $this->AuthRoles->get($return);
+            $this->assertTrue($new->parent_access);
+
+            if (!$authRole->parent_access) {
+                $this->assertNotEquals($authRole->id, $return);
+                $this->assertNotEquals($authRole->auth_role, $new->auth_role);
+                $this->assertEquals($authRole->auth_role . ' Parent', $new->auth_role);
+            } else {
+                $this->assertEquals($authRole->id, $return);
+                $this->assertEquals($authRole->auth_role, $new->auth_role);
+            }
+        }
+
+        // Test Detect
+        $nullReturn = $this->AuthRoles->parentAuthRole();
+        $this->assertTrue(is_numeric($nullReturn));
+        $this->assertEquals(4, $nullReturn);
+
+        // Test Create
+        $matching = $this->AuthRoles->get(4);
+        $matching->set('super_user', true);
+        $matching->set('auth_role', 'NOT PARENT');
+        $this->AuthRoles->save($matching);
+        $this->assertEquals(17, $matching->auth_value);
+
+        $nullReturn = $this->AuthRoles->parentAuthRole();
+        $this->assertTrue(is_numeric($nullReturn));
+        $this->assertEquals(9, $nullReturn);
+    }
 }

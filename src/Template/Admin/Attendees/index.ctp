@@ -39,7 +39,7 @@
                             <td><?= $attendee->section->has('scoutgroup') ? $this->Html->link($this->Text->truncate($attendee->section->scoutgroup->scoutgroup,12), ['controller' => 'Scoutgroups', 'action' => 'view', $attendee->section->scoutgroup->id]) : '' ?></td>
                             <td><?= $attendee->has('role') ? $this->Html->link($this->Text->truncate($attendee->role->role,10), ['controller' => 'Roles', 'action' => 'view', $attendee->role->id]) : '' ?></td>
                             <td><?= $this->Time->i18nFormat($attendee->dateofbirth, 'dd-MMM-yy') ?></td>
-                            <td><?= $this->Time->i18nFormat($attendee->modified, 'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->i18nFormat($attendee->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

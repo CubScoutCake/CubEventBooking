@@ -17,7 +17,9 @@
  * @link          https://cakephp.org CakePHP(tm) Project
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
+
+use Cake\Core\Plugin;
+use Cake\Http\Middleware\CsrfProtectionMiddleware
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
@@ -49,7 +51,7 @@ Router::extensions(['csv']);
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
-    // Register scoped middleware for in scopes.
+
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
         'httpOnly' => true
     ]));
@@ -65,6 +67,10 @@ Router::scope('/', function (RouteBuilder $routes) {
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
+
+    //$routes->connect('/', ['controller' => 'Maintainance', 'action' => 'display', 'home']);
+
+
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'welcome', '_ssl' => true]);
 
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'welcome']);
@@ -105,58 +111,92 @@ Router::scope('/', function (RouteBuilder $routes) {
  * ```
  */
 
-Router::prefix('admin', function ($routes) {
+Router::prefix('admin', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'adminHome', 'admin_home']);
 
-    $routes->fallbacks('DashedRoute');
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => true
+    ]));
+
+    $routes->applyMiddleware('csrf');
+
+    $routes->fallbacks(DashedRoute::class);
 });
 
-Router::prefix('super_user', function ($routes) {
+Router::prefix('super_user', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'superUserHome', 'super_user_home']);
 
-    $routes->fallbacks('DashedRoute');
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => false
+    ]));
+
+    /**
+     * Apply a middleware to the current route scope.
+     * Requires middleware to be registered via `Application::routes()` with `registerMiddleware()`
+     */
+    $routes->applyMiddleware('csrf');
+
+    $routes->fallbacks(DashedRoute::class);
 });
 
-Router::prefix('champion', function ($routes) {
+Router::prefix('champion', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'championHome', 'champion_home']);
 
-    $routes->fallbacks('DashedRoute');
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => true
+    ]));
+
+    $routes->applyMiddleware('csrf');
+
+    $routes->fallbacks(DashedRoute::class);
 });
 
-Router::prefix('parent', function ($routes) {
+Router::prefix('parent', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Reservation', 'action' => 'index', 'index']);
 
-    $routes->fallbacks('DashedRoute');
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => true
+    ]));
+
+    $routes->applyMiddleware('csrf');
+
+    $routes->fallbacks(DashedRoute::class);
 });
 
-Router::prefix('register', function ($routes) {
+Router::prefix('register', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Users', 'action' => 'register']);
 
-    $routes->fallbacks('DashedRoute');
+    $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
+        'httpOnly' => true
+    ]));
+
+    $routes->applyMiddleware('csrf');
+
+    $routes->fallbacks(DashedRoute::class);
 });
 
-Router::prefix('api', function ($routes) {
+Router::prefix('api', function (RouteBuilder $routes) {
     // Because you are in the admin scope,
     // you do not need to include the /admin prefix
     // or the admin route element.
     $routes->connect('/', ['controller' => 'Users', 'action' => 'register']);
 
-    $routes->fallbacks('DashedRoute');
+    $routes->fallbacks(DashedRoute::class);
 });
 
 Router::connect('/login', ['controller' => 'Users', 'action' => 'login']);

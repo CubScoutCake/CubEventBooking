@@ -20,9 +20,9 @@
                         <td class="actions">
                             <?= $this->Html->link('Book', ['action' => 'book', $event->id], ['title' => __('Book'), 'class' => 'btn btn-default']) ?>
                         </td>
-                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
-                        <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         <td><?= h($event->location) ?></td>
                     </tr>
                     <?php endforeach; ?>

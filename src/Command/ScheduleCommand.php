@@ -33,16 +33,18 @@ class ScheduleCommand extends Command
      */
     protected function buildOptionParser(ConsoleOptionParser $parser)
     {
+        $parser->setDescription('Schedule Effector Job.');
+
         $parser
-            ->addArgument('all', [
-                'help' => 'All of the Schedules Configured.',
-                'boolean' => true,
+            ->addOption('all', [
                 'short' => 'a',
-            ])
-            ->addArgument('events', [
-                'help' => 'Events Schedule.',
+                'help' => 'All Schedules',
                 'boolean' => true,
+            ])
+            ->addOption('events', [
                 'short' => 'e',
+                'help' => 'Event Schedules',
+                'boolean' => true,
             ]);
 
         return $parser;
@@ -58,7 +60,7 @@ class ScheduleCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        if ($args->getArgument('all') || $args->getArgument('events')) {
+        if ($args->getOption('all') || $args->getOption('events')) {
             /** @var \App\Model\Entity\Event $event */
             $events = $this->Events->find('upcoming');
 
@@ -66,8 +68,12 @@ class ScheduleCommand extends Command
 
             foreach ($events as $event) {
                 $io->out('Processing ' . $event->name);
-                $happenings += $this->Events->schedule($event->id);
+                if ($this->Events->schedule($event->id)) {
+                    $happenings += 1;
+                }
             }
+
+            $io->info('Changes: ' . $happenings);
         }
     }
 }

@@ -88,122 +88,20 @@ class ReservationsController extends AppController
             $reservation->set('event_id', $event->id);
         }
 
-        $this->loadComponent('Availability');
+//        $this->loadComponent('Availability');
         $this->loadComponent('Booking');
 
         if (!isset($event)) {
             return $this->redirect('/');
         }
 
-        if ($this->request->is('post') && $this->Availability->checkReservation($eventId, true)) {
-            // Set User & Attendee Data
+        if ($this->request->is('post')) {
             $requestData = $this->request->getData();
-            $attendeeData = $requestData['attendee'];
-            $userData = $requestData['user'];
-            if (is_array($requestData['logistics_item'])) {
-                $logisticData = $requestData['logistics_item'];
-
-                if (!$this->Booking->variableLogistic($logisticData['logistic_id'], $logisticData['param_id'])) {
-                    $this->Flash->error('Spaces not available on Session');
-
-                    return $this->redirect($this->referer());
-                }
-            }
-
             Log::info('Reservation Submitted.', $requestData);
-//            debug($requestData);
 
-            // Start Creating User
-            /** @var \App\Model\Entity\User $user */
-            $user = $this->Reservations->Users->detectExisting($userData);
+            $bookingResponse = $this->Booking->addReservation($reservation, $eventId, $requestData, true);
 
-            if ($user instanceof User) {
-                $user = $this->Reservations->Users->get($user->id, ['contain' => 'AuthRoles']);
-
-                $authArray = $user->auth_role->toArray();
-                if (strpos('Parent', $authArray['auth_role'])) {
-                    $authArray['auth_role'] = $authArray['auth_role'] . ' Parent';
-                }
-                if ($authArray['parent_access'] == false) {
-                    $authArray['parent_access'] = true;
-                }
-                unset($authArray['auth_value']);
-
-                /** @var \App\Model\Entity\AuthRole $authRole */
-                $authRole = $this->Reservations->Users->AuthRoles->findOrCreate($authArray);
-                $user->set('auth_role_id', $authRole->id);
-                $this->Reservations->Users->save($user);
-            }
-
-            if ($user == false) {
-                $userData['username'] = $userData['email'];
-                $userData['password'] = Security::randomString(18);
-
-                // AuthRole
-                $authRole = $this->Reservations->Users->AuthRoles->find('all')->where(['auth' => 1])->firstOrFail();
-                $userData['auth_role_id'] = $authRole->id;
-
-                $userData['section_id'] = $attendeeData['section_id'];
-
-                // Parent Role
-                $parentRole = $this->Reservations->Users->Roles->findOrCreate([
-                    'role' => 'Parent',
-                    'invested' => false,
-                    'minor' => false,
-                    'automated' => false,
-                    'short_role' => 'Parent',
-                ]);
-                $userData['role_id'] = $parentRole->id;
-
-                $user = $this->Reservations->Users->newEntity($userData, ['validate' => 'parent']);
-                $user = $this->Reservations->Users->save($user);
-            }
-
-            if ($user instanceof User) {
-                $reservation->set('user_id', $user->id);
-            }
-
-            // Start Creating Attendee
-            $attendeeData['user_id'] = $user->id;
-
-            // Find Cub Role
-            $cubRole = $this->Reservations->Users->Roles->findOrCreate([
-                'role' => 'Cub Scout',
-                'invested' => true,
-                'minor' => true,
-                'automated' => false,
-                'short_role' => 'Cub',
-            ]);
-            $attendeeData['role_id'] = $cubRole->id;
-
-            $attendee = $this->Reservations->Attendees->newEntity($attendeeData);
-            /** @var \App\Model\Entity\Attendee $attendee */
-            $attendee = $this->Reservations->Attendees->save($attendee);
-            if ($attendee instanceof Attendee) {
-                $reservation->set('attendee_id', $attendee->id);
-            }
-
-            // Reservation Status
-            $reservationStatus = $this->Reservations->ReservationStatuses->findOrCreate([
-                'reservation_status' => 'Pending Payment',
-                'active' => true,
-                'complete' => false
-            ]);
-            $reservation->set('reservation_status_id', $reservationStatus->id);
-
-            if ($this->Reservations->save($reservation)) {
-                // Check overall availability
-                $this->loadComponent('Line');
-                $this->Line->parseReservation($reservation->id);
-
-                if (!empty($logisticData['param_id'])) {
-                    $this->Booking->addReservation($logisticData['logistic_id'], $logisticData['param_id']);
-                }
-
-                $this->Flash->success(__('The reservation has been saved.'));
-
-                $this->Auth->setUser($user->toArray());
-
+            if ($bookingResponse) {
                 return $this->redirect(['action' => 'view', $reservation->id]);
             }
             $this->Flash->error(__('The reservation could not be saved. Please, try again.'));

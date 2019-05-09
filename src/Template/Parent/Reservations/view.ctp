@@ -29,7 +29,7 @@ $this->append('parent-nav', '<li class="nav-item">
         <div class="row">
             <div class="col-lg-8 mx-auto">
                 <h2 class="text-white mb-4"><?= $reservation->event->full_name ?></h2>
-                <h4 class="text-white-100">Reservation for <?= $reservation->attendee->full_name ?></h4>
+                <h3 class="text-white-100">Reservation for <?= $reservation->attendee->full_name ?></h3>
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@ $this->append('parent-nav', '<li class="nav-item">
                         <br/>
                         <h3 class="text-uppercase">Reservation Expires</h3>
                         <hr class="my-4">
-                        <div><h1 class="display-4 text-black"><?= $this->Time->format($reservation->expires, 'dd-MMM-yy HH:mm')  ?></h1></div>
+                        <div><h1 class="display-4 text-black"><?= $this->Time->format($reservation->expires, 'dd-MMM-YY HH:mm', 'Europe/London')  ?></h1></div>
 
                         <p>Your reservation will be automatically cancelled if payment is not received before the expiry date.</p>
                     </div>

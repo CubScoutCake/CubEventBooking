@@ -142,9 +142,9 @@
                 <br/>
                 <span><?= __('App Number') ?>: <?= $this->Number->format($application->id) ?></span>
                 <br/>
-                <span><?= __('Date Created') ?>: <?= $this->Time->i18nFormat($application->created, 'dd-MMM-yy HH:mm') ?></span>
+                <span><?= __('Date Created') ?>: <?= $this->Time->i18nFormat($application->created, 'dd-MMM-YY HH:mm', 'Europe/London') ?></span>
                 <br/>
-                <span><?= __('Last Modified') ?>: <?= $this->Time->i18nFormat($application->modified, 'dd-MMM-yy HH:mm') ?></span>
+                <span><?= __('Last Modified') ?>: <?= $this->Time->i18nFormat($application->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></span>
             </div>
         </div>
     </div>
@@ -373,7 +373,7 @@
                                 <td><?= $this->Number->currency($application->invoice->initialvalue,'GBP') ?></td>
                                 <td><?= $this->Number->currency($application->invoice->value,'GBP') ?></td>
                                 <td><?= $this->Number->currency($application->invoice->balance,'GBP') ?></td>
-                                <td><?= $this->Time->i18nformat($application->invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                                <td><?= $this->Time->i18nformat($application->invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                             </tr>
                         </table>
                     </div>
@@ -430,7 +430,7 @@
                                         </div>
                                     </td>
                                     <td><?= $attendees->has('role') ? $this->Html->link($this->Text->truncate($attendees->role->role,30), ['controller' => 'Roles', 'action' => 'view', $attendees->role->id]) : '' ?></td>
-                                    <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nFormat($attendees->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>
@@ -460,7 +460,7 @@
                                 <tr>
                                     <td><?= h($notes->id) ?></td>
                                     <td><?= $this->Text->autoParagraph($notes->note_text) ?></td>
-                                    <td><?= $this->Time->i18nformat($notes->modified,'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nformat($notes->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>

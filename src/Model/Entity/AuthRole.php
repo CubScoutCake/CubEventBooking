@@ -8,11 +8,13 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $auth_role
- * @property bool $admin_access
- * @property bool $champion_access
- * @property bool $super_user
- * @property bool $parent
+ * @property bool|null $admin_access
+ * @property bool|null $champion_access
+ * @property bool|null $super_user
  * @property int $auth
+ * @property bool|null $parent_access
+ * @property bool|null $user_access
+ * @property bool|null $section_limited
  *
  * @property int $auth_value
  *
@@ -22,7 +24,6 @@ use Cake\ORM\Entity;
  */
 class AuthRole extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -33,8 +34,15 @@ class AuthRole extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false
+        'auth_role' => true,
+        'admin_access' => true,
+        'champion_access' => true,
+        'super_user' => true,
+        'auth' => true,
+        'parent_access' => true,
+        'user_access' => true,
+        'section_limited' => true,
+        'users' => true
     ];
 
     /**

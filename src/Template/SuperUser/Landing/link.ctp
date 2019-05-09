@@ -83,7 +83,7 @@
                                                             </td>
                                                             <td><?= $user->has('section') ? $this->Text->truncate($user->section->section,18) : '' ?></td>
                                                             <td><?= $user->has('role') ? $this->Text->truncate($user->role->role,18) : '' ?></td>
-                                                            <td><?= $this->Time->i18nFormat($user->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                                            <td><?= $this->Time->i18nFormat($user->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                                             <td><?= $user->has('auth_role') ? $user->auth_role->auth_role : '' ?></td>
                                                         </tr>
                                                     <?php endforeach; ?>

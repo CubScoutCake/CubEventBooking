@@ -131,7 +131,7 @@
             <td></td>
             <td><?= h($event->address) ?></td>
             <th><?= __('Deposit Date') ?></th>
-            <td><?= $this->Time->i18nFormat($event->deposit_date, 'dd-MMM-yy HH:mm') ?></td>
+            <td><?= $this->Time->i18nFormat($event->deposit_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
         </tr>
         <tr>
             <td></td>
@@ -153,15 +153,15 @@
         </tr>
         <tr>
             <th><?= __('Event Start') ?></th>
-            <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-yy HH:mm') ?></td>
+            <td><?= $this->Time->i18nFormat($event->start, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
             <th><?= __('Date Created') ?></th>
-            <td><?= $this->Time->i18nFormat($event->created, 'dd-MMM-yy HH:mm') ?></td>
+            <td><?= $this->Time->i18nFormat($event->created, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
         </tr>
         <tr>
             <th><?= __('Event End') ?></th>
-            <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-yy HH:mm') ?></td>
+            <td><?= $this->Time->i18nFormat($event->end, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
             <th><?= __('Date Modified') ?></th>
-            <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
+            <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
         </tr>
         <tr>
             <th><?= __('Invtext Id') ?></th>
@@ -298,7 +298,7 @@
                 <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
-                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoice->id]) ?>
                     <?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoice->id]) ?>

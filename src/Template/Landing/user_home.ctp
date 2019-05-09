@@ -139,7 +139,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12"
-                    <span><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?> to <?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></span>
+                    <span><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?> to <?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></span>
                 </div>
             </div>
         </div>
@@ -214,7 +214,7 @@
                                     <td><?= $application->has('event') ? $this->Html->link($this->Text->truncate($application->event->name,30), ['controller' => 'Events', 'action' => 'view', $application->event->id]) : '' ?></td>
                                     <td><?= $application->has('section') ? $this->Html->link($this->Text->truncate($application->section->section,30), ['controller' => 'Sections', 'action' => 'view', $application->section->id]) : '' ?></td>
                                     <td><?= $this->Text->truncate($application->permit_holder,18) ?></td>
-                                    <td><?= $this->Time->i18nFormat($application->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nFormat($application->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>

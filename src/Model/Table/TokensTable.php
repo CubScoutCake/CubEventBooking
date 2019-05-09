@@ -102,6 +102,8 @@ class TokensTable extends Table
      * @param \Cake\Database\Schema\TableSchema $schema The Schema to be modified
      *
      * @return TableSchema|\Cake\Database\Schema\TableSchema
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _initializeSchema(TableSchema $schema)
     {

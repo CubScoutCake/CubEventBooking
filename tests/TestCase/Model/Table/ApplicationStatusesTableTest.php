@@ -207,9 +207,7 @@ class ApplicationStatusesTableTest extends TestCase
         $this->assertNotEquals($before, $installed);
         $this->assertNotEquals(0, $installed);
 
-        $new = $before + $installed;
         $after = $this->ApplicationStatuses->find('all')->count();
-
-        $this->assertEquals($new, $after);
+        $this->assertTrue($after > $before);
     }
 }

@@ -132,7 +132,9 @@ class EventsControllerTest extends IntegrationTestCase
             'Auth.User.auth_role_id' => 2
         ]);
 
+        /** @var \App\Model\Table\EventsTable $events */
         $events = $this->getTableLocator()->get('Events');
+        $events->EventStatuses->installBaseStatuses();
 
         /** @var \App\Model\Entity\Event $limitedEvent */
 
@@ -170,6 +172,6 @@ class EventsControllerTest extends IntegrationTestCase
         $this->post('/events/book/2', ['section' => 5, 'non_section' => 2, 'leaders' => 3, 'booking_type' => 'list']);
         $this->assertNoRedirect();
         $this->assertFlashElement('Flash/error');
-        $this->assertFlashMessage('Apologies this Event is Full.');
+        $this->assertFlashMessage('Apologies this Event is Not Currently Accepting Applications.');
     }
 }

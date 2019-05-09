@@ -27,7 +27,7 @@
                             <br/>
                             <h3 class="text-uppercase">Reservation Expires</h3>
                             <hr class="my-4">
-                            <div><h1 class="display-4 text-black"><?= $this->Time->format($reservation->expires, 'dd-MMM-yy HH:mm')  ?></h1></div>
+                            <div><h1 class="display-4 text-black"><?= $this->Time->format($reservation->expires, 'dd-MMM-YY HH:mm', 'Europe/London')  ?></h1></div>
                         </div>
                     </div>
                 </div>

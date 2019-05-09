@@ -52,6 +52,7 @@ class EventsController extends AppController
                     'ApplicationRefs',
                     'InvoiceTexts'
                 ],
+                'EventStatuses',
                 'SectionTypes.Roles',
                 'Prices.ItemTypes.Roles',
             ]
@@ -88,6 +89,14 @@ class EventsController extends AppController
 
         // Pass to View
         $this->set(compact('term', 'singleTerm', 'maxSection', 'pluralTerm'));
+
+        $complete = $this->Events->determineComplete($event->id);
+        $pending = $this->Events->determinePending($event->id);
+        $started = $this->Events->determineStarted($event->id);
+        $over = $this->Events->determineOver($event->id);
+        $full = $this->Events->determineFull($event->id);
+
+        $this->set(compact('complete', 'pending', 'started', 'over', 'full'));
     }
 
     /**
@@ -100,7 +109,7 @@ class EventsController extends AppController
     public function accounts($eventId = null)
     {
         $event = $this->Events->get($eventId, [
-            'contain' => ['Settings', 'Discounts', 'Prices.ItemTypes', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups.Districts']
+            'contain' => ['Settings', 'EventStatuses', 'Discounts', 'Prices.ItemTypes', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups.Districts']
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);

@@ -48,9 +48,9 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <h5 class="subheader"><?= __('Date Record Created') ?></h5>
-                        <p><?= $this->Time->i18nFormat($attendee->created, 'dd-MMM-yy HH:mm') ?></p>
+                        <p><?= $this->Time->i18nFormat($attendee->created, 'dd-MMM-YY HH:mm', 'Europe/London') ?></p>
                         <h5 class="subheader"><?= __('Date Record Last Modified') ?></h5>
-                        <p><?= $this->Time->i18nFormat($attendee->modified, 'dd-MMM-yy HH:mm') ?></p>
+                        <p><?= $this->Time->i18nFormat($attendee->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></p>
                     </div>
                     <div class="col-lg-6">
                         <h5 class="subheader"><?= __('Attendee Id') ?></h5>

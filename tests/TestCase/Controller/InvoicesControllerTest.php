@@ -82,7 +82,10 @@ class InvoicesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->get('/invoices');
 
@@ -113,7 +116,10 @@ class InvoicesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->get('/invoices/view/1');
 
@@ -187,7 +193,9 @@ class InvoicesControllerTest extends IntegrationTestCase
 
         $this->assertFlashMessage('This event has been LOCKED to prevent updates to invoices. Please contact Admin Joe.');
 
+        /** @var \App\Model\Table\EventsTable $events */
         $events = TableRegistry::getTableLocator()->get('Events');
+        $events->EventStatuses->installBaseStatuses();
         $event = $events->get(2);
         $event->set('invoices_locked', false);
         $events->save($event);

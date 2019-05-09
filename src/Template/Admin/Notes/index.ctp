@@ -36,7 +36,7 @@
                             <td><?= $note->has('invoice') ? $this->Html->link($note->invoice->id, ['controller' => 'Invoices', 'action' => 'view', $note->invoice->id]) : '' ?></td>
                             <td><?= $note->has('user') ? $this->Html->link($note->user->full_name, ['controller' => 'Users', 'action' => 'view', $note->user->id]) : '' ?></td>
                             <td><?= $note->visible ? __('Yes') : __('No'); ?></td>
-                            <td><?= $this->Time->i18nformat($note->modified,'dd-MMM-yy HH:mm') ?></td>
+                            <td><?= $this->Time->i18nformat($note->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

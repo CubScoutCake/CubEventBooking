@@ -45,7 +45,10 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->get('/scoutgroups');
 
@@ -71,7 +74,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.authrole' => 'user'
+            'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get('/scoutgroups/view/1');

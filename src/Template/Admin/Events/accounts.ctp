@@ -1,3 +1,36 @@
+<?php
+/**
+ * @var \App\Model\Entity\Event $event
+ * @var int $cntApplications
+ * @var int $cntInvoices
+ *
+ * @var float $sumValues
+ * @var float $sumPayments
+ * @var float $sumBalances
+ *
+ * @var int $appCubs
+ * @var int $invCubs
+ * @var int $canCubs
+ *
+ * @var int $appYls
+ * @var int $invYls
+ * @var int $canYls
+ *
+ * @var int $appLeaders
+ * @var int $invLeaders
+ * @var int $canLeaders
+ *
+ * @var float $invValueCubs
+ * @var float $canValueCubs
+ * @var float $invValueYls
+ * @var float $canValueYls
+ * @var float $invValueLeaders
+ * @var float $canValueLeaders
+ *
+ * @var int $unpaid
+ * @var int $outstanding
+ */
+?>
 <div class="row">
     <div class="col-lg-9 col-md-8">
         <h1 class="page-header"><?= h($event->name) ?></h1>
@@ -42,7 +75,7 @@
                         <thead>
                             <tr>
                                 <th><?= __('Property') ?></th>
-                                <th><?= __('Applications') ?></th>
+                                <th><?= __('Applications / Reservations') ?></th>
                                 <th><?= __('Invoices') ?></th>
                                 <th><?= __('Cancelled') ?></th>
                             </tr>
@@ -50,7 +83,7 @@
                         <tbody>
                             <tr>
                                 <th><?= __('Count') ?></th>
-                                <td><?= $this->Number->format($cntApplications) ?></td>
+                                <td><?= is_null($cntApplications) && $event->cc_res > 0 ? $this->Number->format($cntApplications) : $event->cc_res ?></td>
                                 <td><?= $this->Number->format($cntInvoices) ?></td>
                                 <td></td>
                             </tr>
@@ -196,7 +229,7 @@
                                 <tr>
                                     <td><?= $event->deposit ? __('Yes') : __('No'); ?></td>
                                     <td><?= $event->deposit_inc_leaders ? __('Yes') : __('No'); ?></td>
-                                    <td><?= $this->Time->i18nFormat($event->deposit_date, 'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nFormat($event->deposit_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                     <td><?= $this->Number->currency($event->deposit_value,'GBP') ?></td>
                                     <td><?= h($event->deposit_text) ?></td>
                                 </tr>
@@ -302,7 +335,7 @@
                                                 <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
-                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -347,7 +380,7 @@
                                                 <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
-                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -392,7 +425,7 @@
                                                 <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
-                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                                                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

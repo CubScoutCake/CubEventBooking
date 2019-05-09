@@ -1,9 +1,9 @@
 <?php
-
 /**
-* @var \App\Model\Entity\Invoice $invoice
+ * @var \App\Model\Entity\Invoice $invoice
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\AuthRole $auth_role
  */
-
 ?>
 <div class="row">
     <div class="col-lg-11 col-md-11">
@@ -18,12 +18,14 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="<?php echo $this->Url->build([
-                        'controller' => 'Invoices',
-                        'action' => 'regenerate',
-                        'prefix' => false,
-                        $invoice->id],['_full']); ?>">Update Invoice</a>
-                    </li>
+                    <?php if ($auth_role->user_access) : ?>
+                        <li><a href="<?php echo $this->Url->build([
+                            'controller' => 'Invoices',
+                            'action' => 'regenerate',
+                            'prefix' => false,
+                            $invoice->id],['_full']); ?>">Update Invoice</a>
+                        </li>
+                    <?php endif; ?>
                     <li><a href="<?php echo $this->Url->build([
 		                    'controller' => 'Invoices',
 		                    'action' => 'view',
@@ -45,16 +47,21 @@
             <div class="panel-body">
                 <span><?= __('User') ?>: <?= $invoice->has('user') ? $this->Html->link($invoice->user->full_name, ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></span>
                 <br/>
+                <?php if ($invoice->has('application')) : ?>
                 <span><?= __('Application') ?>: <?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></span>
+                <?php endif; ?>
+                <?php if ($invoice->has('reservation')) : ?>
+                    <span><?= __('Reservation') ?>: <?= $invoice->has('reservation') ? $this->Html->link($invoice->reservation->reservation_number, ['controller' => 'Reservations', 'action' => 'view', $invoice->reservation->id]) : '' ?></span>
+                <?php endif; ?>
             </div>
         </div>
     </div>
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-yellow">
             <div class="panel-body">
-                <span><?= __('Date Created') ?>: <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YYYY HH:mm')) ?></span>
+                <span><?= __('Date Created') ?>: <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London')) ?></span>
                 <br/>
-                <span><?= __('Date Last Modified') ?>: <?= h($this->Time->i18nFormat($invoice->modified,'dd-MMM-YYYY HH:mm')) ?></span>
+                <span><?= __('Date Last Modified') ?>: <?= h($this->Time->i18nFormat($invoice->modified,'dd-MMM-YY HH:mm', 'Europe/London')) ?></span>
             </div>
         </div>
     </div>
@@ -144,8 +151,8 @@
                                 <tr>
                                     <td><?= h($payments->id) ?></td>
                                     <td><?= $this->Number->currency($payments->value,'GBP') ?></td>
-                                    <td><?= $this->Time->i18nformat($payments->created,'dd-MMM-yy HH:mm') ?></td>
-                                    <td><?= $this->Time->i18nformat($payments->paid,'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nformat($payments->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                    <td><?= $this->Time->i18nformat($payments->paid,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                     <td><?= h($payments->name_on_cheque) ?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -183,7 +190,7 @@
                                 <tr>
                                     <td><?= h($notes->id) ?></td>
                                     <td><?= $this->Text->autoParagraph($notes->note_text) ?></td>
-                                    <td><?= $this->Time->i18nformat($notes->modified,'dd-MMM-yy HH:mm') ?></td>
+                                    <td><?= $this->Time->i18nformat($notes->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>

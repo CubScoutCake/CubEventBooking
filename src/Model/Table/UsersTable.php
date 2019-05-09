@@ -10,6 +10,7 @@ use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Security;
 use Cake\Utility\Text;
 use Cake\Validation\Validator;
 use Search\Manager;
@@ -360,7 +361,8 @@ class UsersTable extends Table
         $validator
             ->email('email')
             ->requirePresence('email', 'create')
-            ->allowEmptyString('email', false);
+            ->allowEmptyString('email', false)
+            ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('password')
@@ -555,7 +557,7 @@ class UsersTable extends Table
         ];
 
         foreach ($toSet as $key => $value) {
-            if (!($data[$key] == true)) {
+            if (!key_exists($key, $data)) {
                 $data[$key] = $value;
             }
         }
@@ -600,18 +602,18 @@ class UsersTable extends Table
      */
     public function detectParent($userArray)
     {
-        $parentFind = $this->find('parents')->where([
-            'firstname ILIKE' => $userArray['firstname'],
-            'lastname ILIKE' => $userArray['lastname'],
-            'email ILIKE' => $userArray['email'],
-            'postcode ILIKE' => $userArray['postcode'],
-        ]);
+        $user = $this->detectExisting($userArray);
 
-        if (!is_null($parentFind->count()) && $parentFind->count() == 1) {
-            return $parentFind->first();
+        if ($user !== false) {
+            /** @var User $user */
+            $userId = $user->id;
+            $user = $this->get($userId, ['contain' => 'AuthRoles']);
+
+            $user->set('auth_role_id', $this->AuthRoles->parentAuthRole($user->auth_role));
+            $user = $this->save($user);
         }
 
-        return false;
+        return $user;
     }
 
     /**
@@ -623,7 +625,7 @@ class UsersTable extends Table
      */
     public function detectExisting($userArray)
     {
-        $parentFind = $this->find('all')->where([
+        $existingFind = $this->find('all')->where([
             'firstname ILIKE' => $userArray['firstname'],
             'lastname ILIKE' => $userArray['lastname'],
             'OR' => [
@@ -632,10 +634,61 @@ class UsersTable extends Table
             ]
         ]);
 
-        if (!is_null($parentFind->count()) && $parentFind->count() == 1) {
-            return $parentFind->first();
+        if (!is_null($existingFind->count()) && $existingFind->count() == 1) {
+            return $existingFind->first();
         }
 
         return false;
+    }
+
+    /**
+     * Function to create a Parent User from Limited Data
+     *
+     * @param array $userData Request Data for User
+     * @param int $sectionId ID of the Section
+     *
+     * @return bool|User
+     */
+    public function createParent($userData, $sectionId)
+    {
+        $userData['username'] = $userData['email'];
+        $userData['password'] = Security::randomString(18);
+
+        // AuthRole
+        $userData['auth_role_id'] = $this->AuthRoles->parentAuthRole();
+        $userData['section_id'] = $sectionId;
+
+        // Parent Role
+        $parentRole = $this->Roles->findOrCreate([
+            'role' => 'Parent',
+            'invested' => false,
+            'minor' => false,
+            'automated' => false,
+            'short_role' => 'Parent',
+        ]);
+        $userData['role_id'] = $parentRole->id;
+
+        $user = $this->newEntity($userData, ['validate' => 'parent']);
+
+        return $this->save($user);
+    }
+
+    /**
+     * Function to create a Parent User from Limited Data
+     *
+     * @param array $userData Request Data for User
+     * @param int $sectionId ID of the Section
+     *
+     * @return bool|User
+     */
+    public function createOrDetectParent($userData, $sectionId)
+    {
+        $user = $this->detectParent($userData);
+
+        if ($user !== false) {
+            return $user;
+        }
+
+        return $this->createParent($userData, $sectionId);
     }
 }

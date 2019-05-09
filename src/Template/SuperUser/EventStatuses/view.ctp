@@ -27,12 +27,24 @@
             <td><?= $this->Number->format($eventStatus->id) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Order') ?></th>
+            <td><?= $this->Number->format($eventStatus->status_order) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Live') ?></th>
             <td><?= $eventStatus->live ? __('Yes') : __('No'); ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Accepting Applications') ?></th>
             <td><?= $eventStatus->accepting_applications ? __('Yes') : __('No'); ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Spaces Full') ?></th>
+            <td><?= $eventStatus->spaces_full ? __('Yes') : __('No'); ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Pending Date') ?></th>
+            <td><?= $eventStatus->pending_date ? __('Yes') : __('No'); ?></td>
         </tr>
     </table>
     <div class="related">
@@ -51,41 +63,15 @@
                 <th scope="col"><?= __('Modified') ?></th>
                 <th scope="col"><?= __('Deposit') ?></th>
                 <th scope="col"><?= __('Deposit Date') ?></th>
-                <th scope="col"><?= __('Deposit Value') ?></th>
                 <th scope="col"><?= __('Deposit Inc Leaders') ?></th>
-                <th scope="col"><?= __('Deposit Text') ?></th>
-                <th scope="col"><?= __('Cubs') ?></th>
-                <th scope="col"><?= __('Cubs Value') ?></th>
-                <th scope="col"><?= __('Cubs Text') ?></th>
-                <th scope="col"><?= __('Yls') ?></th>
-                <th scope="col"><?= __('Yls Value') ?></th>
-                <th scope="col"><?= __('Yls Text') ?></th>
-                <th scope="col"><?= __('Leaders') ?></th>
-                <th scope="col"><?= __('Leaders Value') ?></th>
-                <th scope="col"><?= __('Leaders Text') ?></th>
                 <th scope="col"><?= __('Logo') ?></th>
-                <th scope="col"><?= __('Address') ?></th>
-                <th scope="col"><?= __('City') ?></th>
-                <th scope="col"><?= __('County') ?></th>
-                <th scope="col"><?= __('Postcode') ?></th>
-                <th scope="col"><?= __('Invtext Id') ?></th>
-                <th scope="col"><?= __('Legaltext Id') ?></th>
                 <th scope="col"><?= __('Discount Id') ?></th>
                 <th scope="col"><?= __('Intro Text') ?></th>
-                <th scope="col"><?= __('Tagline Text') ?></th>
                 <th scope="col"><?= __('Location') ?></th>
                 <th scope="col"><?= __('Max') ?></th>
-                <th scope="col"><?= __('Max Cubs') ?></th>
-                <th scope="col"><?= __('Max Yls') ?></th>
-                <th scope="col"><?= __('Max Leaders') ?></th>
                 <th scope="col"><?= __('Allow Reductions') ?></th>
-                <th scope="col"><?= __('Logo Ratio') ?></th>
                 <th scope="col"><?= __('Invoices Locked') ?></th>
-                <th scope="col"><?= __('Admin Firstname') ?></th>
-                <th scope="col"><?= __('Admin Lastname') ?></th>
-                <th scope="col"><?= __('Admin Email') ?></th>
                 <th scope="col"><?= __('Admin User Id') ?></th>
-                <th scope="col"><?= __('Parent Applications') ?></th>
                 <th scope="col"><?= __('Max Apps') ?></th>
                 <th scope="col"><?= __('Max Section') ?></th>
                 <th scope="col"><?= __('Deleted') ?></th>
@@ -97,6 +83,10 @@
                 <th scope="col"><?= __('Cc Prices') ?></th>
                 <th scope="col"><?= __('Team Price') ?></th>
                 <th scope="col"><?= __('Event Status Id') ?></th>
+                <th scope="col"><?= __('Opening Date') ?></th>
+                <th scope="col"><?= __('Cc Res') ?></th>
+                <th scope="col"><?= __('Cc Atts') ?></th>
+                <th scope="col"><?= __('Deposit Is Schedule') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($eventStatus->events as $events): ?>
@@ -112,41 +102,15 @@
                 <td><?= h($events->modified) ?></td>
                 <td><?= h($events->deposit) ?></td>
                 <td><?= h($events->deposit_date) ?></td>
-                <td><?= h($events->deposit_value) ?></td>
                 <td><?= h($events->deposit_inc_leaders) ?></td>
-                <td><?= h($events->deposit_text) ?></td>
-                <td><?= h($events->cubs) ?></td>
-                <td><?= h($events->cubs_value) ?></td>
-                <td><?= h($events->cubs_text) ?></td>
-                <td><?= h($events->yls) ?></td>
-                <td><?= h($events->yls_value) ?></td>
-                <td><?= h($events->yls_text) ?></td>
-                <td><?= h($events->leaders) ?></td>
-                <td><?= h($events->leaders_value) ?></td>
-                <td><?= h($events->leaders_text) ?></td>
                 <td><?= h($events->logo) ?></td>
-                <td><?= h($events->address) ?></td>
-                <td><?= h($events->city) ?></td>
-                <td><?= h($events->county) ?></td>
-                <td><?= h($events->postcode) ?></td>
-                <td><?= h($events->invtext_id) ?></td>
-                <td><?= h($events->legaltext_id) ?></td>
                 <td><?= h($events->discount_id) ?></td>
                 <td><?= h($events->intro_text) ?></td>
-                <td><?= h($events->tagline_text) ?></td>
                 <td><?= h($events->location) ?></td>
                 <td><?= h($events->max) ?></td>
-                <td><?= h($events->max_cubs) ?></td>
-                <td><?= h($events->max_yls) ?></td>
-                <td><?= h($events->max_leaders) ?></td>
                 <td><?= h($events->allow_reductions) ?></td>
-                <td><?= h($events->logo_ratio) ?></td>
                 <td><?= h($events->invoices_locked) ?></td>
-                <td><?= h($events->admin_firstname) ?></td>
-                <td><?= h($events->admin_lastname) ?></td>
-                <td><?= h($events->admin_email) ?></td>
                 <td><?= h($events->admin_user_id) ?></td>
-                <td><?= h($events->parent_applications) ?></td>
                 <td><?= h($events->max_apps) ?></td>
                 <td><?= h($events->max_section) ?></td>
                 <td><?= h($events->deleted) ?></td>
@@ -158,6 +122,10 @@
                 <td><?= h($events->cc_prices) ?></td>
                 <td><?= h($events->team_price) ?></td>
                 <td><?= h($events->event_status_id) ?></td>
+                <td><?= h($events->opening_date) ?></td>
+                <td><?= h($events->cc_res) ?></td>
+                <td><?= h($events->cc_atts) ?></td>
+                <td><?= h($events->deposit_is_schedule) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Events', 'action' => 'view', $events->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'Events', 'action' => 'edit', $events->id]) ?>

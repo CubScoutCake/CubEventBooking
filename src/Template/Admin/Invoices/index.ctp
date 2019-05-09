@@ -35,7 +35,7 @@
                         <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                         <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                         <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
-                        <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                        <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

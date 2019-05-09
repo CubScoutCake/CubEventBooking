@@ -92,11 +92,10 @@ class Application extends BaseApplication
             ->setXssProtection()
             ->noOpen()
             ->noSniff();
-
         $middlewareQueue->add($securityHeaders);
 
         $middlewareQueue->add(new EncryptedCookieMiddleware(
-            // Names of cookies to protect
+        // Names of cookies to protect
             ['CookieAuth'],
             Configure::read('Security.cookieKey')
         ));

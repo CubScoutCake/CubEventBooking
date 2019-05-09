@@ -144,7 +144,6 @@ class ReservationsTableTest extends TestCase
         $good = $this->getGood();
 
         $new = $this->Reservations->newEntity($good);
-        debug($new);
         $this->assertInstanceOf('App\Model\Entity\Reservation', $this->Reservations->save($new));
 
         $required = [
@@ -311,5 +310,26 @@ class ReservationsTableTest extends TestCase
 
         $this->assertNotEquals(Time::now(), $expiryDate);
         $this->assertEquals($expiryDate, $saved->expires);
+    }
+
+    /**
+     * Test Counter Cache method
+     *
+     * @return void
+     */
+    public function testCounterCache()
+    {
+        $res = $this->Reservations->get(1);
+        $res->set('reservation_status_id', 2);
+        $this->Reservations->save($res);
+
+        $event = $this->Reservations->Events->get(3);
+        $this->assertEquals(0, $event->cc_res);
+
+        $res->set('reservation_status_id', 1);
+        $this->Reservations->save($res);
+
+        $event = $this->Reservations->Events->get(3);
+        $this->assertEquals(1, $event->cc_res);
     }
 }

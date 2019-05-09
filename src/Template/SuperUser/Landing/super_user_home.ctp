@@ -223,7 +223,7 @@
                                             <td><?= $application->has('user') ? $this->Html->link($this->Text->truncate($application->user->full_name,30), ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></td>
                                             <td><?= $application->has('section') ? $this->Html->link($this->Text->truncate($application->section->section,30), ['controller' => 'Sections', 'action' => 'view', $application->section->id]) : '' ?></td>
                                             <td><?= $this->Text->truncate($application->permitholder,18) ?></td>
-                                            <td><?= $this->Time->i18nFormat($application->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                            <td><?= $this->Time->i18nFormat($application->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -264,9 +264,9 @@
                                                 </ul>
                                             </div>
                                         </td>
-                                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-yy HH:mm') ?></td>
-                                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-yy HH:mm') ?></td>
-                                        <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-yy HH:mm') ?></td>
+                                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                        <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         <td><?= h($event->location) ?></td>
                                     </tr>
                                     <?php endforeach; ?>
@@ -311,7 +311,7 @@
                                             <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                             <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                             <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
-                                            <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-yy HH:mm') ?></td>
+                                            <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -346,8 +346,8 @@
                                                 </div>
                                             </td>
                                             <td><?= $this->Number->currency($payment->value,'GBP') ?></td>
-                                            <td><?= $this->Time->i18nformat($payment->created,'dd-MMM-yy HH:mm') ?></td>
-                                            <td><?= $this->Time->i18nformat($payment->paid,'dd-MMM-yy HH:mm') ?></td>
+                                            <td><?= $this->Time->i18nformat($payment->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                            <td><?= $this->Time->i18nformat($payment->paid,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -387,7 +387,7 @@
                                             <td><?= $note->has('user') ? $this->Html->link($this->Text->truncate($note->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $note->user->id]) : '' ?></td>
                                             <td><?= $note->has('application') ? $this->Html->link($note->application->display_code, ['controller' => 'Applications', 'action' => 'view', $note->application->id]) : '' ?></td>
                                             <td><?= $note->has('invoice') ? $this->Html->link($note->invoice->display_code, ['controller' => 'Invoices', 'action' => 'view', $note->invoice->id]) : '' ?></td>
-                                            <td><?= $this->Time->i18nformat($note->modified,'dd-MMM-yy HH:mm') ?></td>
+                                            <td><?= $this->Time->i18nformat($note->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -428,7 +428,7 @@
                                             <td><?= $notification->has('notification_type') ? $notification->notification_type->notification_type : '' ?></td>
                                             <td><?= h($notification->notification_source) ?></td>
                                             <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
-                                            <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-yy HH:mm') ?></td>
+                                            <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

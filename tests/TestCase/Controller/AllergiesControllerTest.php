@@ -63,7 +63,10 @@ class AllergiesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->get('/allergies');
 
@@ -72,7 +75,10 @@ class AllergiesControllerTest extends IntegrationTestCase
 
     public function testIndexQueryData()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->get('/allergies?page=1');
 
@@ -95,7 +101,10 @@ class AllergiesControllerTest extends IntegrationTestCase
 
     public function testView()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->get('/allergies/view/1');
 
@@ -112,7 +121,10 @@ class AllergiesControllerTest extends IntegrationTestCase
 
     public function testAdd()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->get('/allergies/add');
 
@@ -121,7 +133,10 @@ class AllergiesControllerTest extends IntegrationTestCase
 
     public function testAddPostBadCsrf()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $this->enableSecurityToken();
 
@@ -163,7 +178,10 @@ class AllergiesControllerTest extends IntegrationTestCase
 
     public function testAddPostBadData()
     {
-        $this->session(['Auth.User.id' => 1]);
+        $this->session([
+            'Auth.User.id' => 1,
+            'Auth.User.auth_role_id' => 1,
+        ]);
 
         $data = [
             'id' => '4',

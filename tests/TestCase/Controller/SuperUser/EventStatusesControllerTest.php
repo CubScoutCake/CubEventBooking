@@ -2,13 +2,15 @@
 namespace App\Test\TestCase\Controller\SuperUser;
 
 use App\Controller\SuperUser\EventStatusesController;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\EventStatusesController Test Case
+ * App\Controller\SuperUser\EventStatusesController Test Case
  */
-class EventStatusesControllerTest extends IntegrationTestCase
+class EventStatusesControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * Fixtures

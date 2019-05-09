@@ -9,10 +9,11 @@ use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\Component\BookingComponent Test Case
+ *
+ * @property \App\Model\Table\ReservationsTable $Reservations
  */
 class BookingComponentTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -21,8 +22,49 @@ class BookingComponentTest extends TestCase
     public $Booking;
 
     public $fixtures = [
-        'app.Roles',
-        'app.SectionTypes',
+        'app.sessions',
+        'app.districts',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
+        'app.application_statuses',
+        'app.setting_types',
+        'app.settings',
+        'app.event_types',
+        'app.event_statuses',
+        'app.discounts',
+        'app.events',
+        'app.prices',
+        'app.applications',
+        'app.task_types',
+        'app.tasks',
+        'app.attendees',
+        'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.invoices',
+        'app.invoice_items',
+        'app.payments',
+        'app.invoices_payments',
+        'app.notes',
+        'app.parameter_sets',
+        'app.parameters',
+        'app.params',
+        'app.logistics',
+        'app.logistic_items',
+        'app.email_sends',
+        'app.tokens',
+        'app.email_response_types',
+        'app.email_responses',
     ];
 
     /**
@@ -105,5 +147,79 @@ class BookingComponentTest extends TestCase
 
         $response = $this->Booking->guessRole('8sajgs');
         $this->assertFalse($response);
+    }
+
+    /**
+     * Test GuessSectionType Function
+     *
+     * @return void
+     */
+    public function testAddReservation()
+    {
+        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
+
+        $testData = [
+            'user' => [
+                'firstname' => 'Jacob',
+                'lastname' => 'Tyler',
+                'email' => 'j.a.g.tyler@me.com',
+                'phone' => '07804 918252',
+                'address_1' => '17 Appleton Mead',
+                'address_2' => '',
+                'city' => 'Biggleswade',
+                'county' => 'Bedfordshire',
+                'country' => 'United Kingdom',
+                'postcode' => 'SG18 8HS'
+            ],
+            'attendee' => [
+                'firstname' => 'Timmy',
+                'lastname' => 'Tyler',
+                'section_id' => '1'
+            ],
+            'logistics_item' => [
+                0 => [
+                    'logistic_id' => 1,
+                    'param_id' => 2,
+                ]
+            ],
+        ];
+
+        $reservation = $this->Reservations->newEntity();
+        $response = $this->Booking->addReservation($reservation, 3, $testData, false);
+        $this->assertNotFalse($response);
+
+        $firstRes = $this->Reservations->get(2, ['contain' => ['Invoices', 'LogisticItems']]);
+        $this->assertTrue(preg_match('/[0-9]+\-[0-9]+\-[A-Z]{3}/', $firstRes->reservation_number) !== 0);
+        $this->assertNotEmpty($firstRes->invoice);
+        $this->assertNotEmpty($firstRes->logistic_items);
+
+        // Check Second Child Works
+        $testData['attendee']['firstname'] = 'Julie';
+        $reservation = $this->Reservations->newEntity();
+        $response = $this->Booking->addReservation($reservation, 3, $testData, false);
+        $this->assertNotFalse($response);
+
+        $secondRes = $this->Reservations->get(3, ['contain' => ['Invoices', 'LogisticItems']]);
+        $this->assertTrue(preg_match('/[0-9]+\-[0-9]+\-[A-Z]{3}/', $secondRes->reservation_number) !== 0);
+        $this->assertNotEmpty($secondRes->invoice);
+        $this->assertNotEmpty($secondRes->logistic_items);
+
+        // Assert Session Full
+        $testData['attendee']['firstname'] = 'Julian';
+        $reservation = $this->Reservations->newEntity();
+        $response = $this->Booking->addReservation($reservation, 3, $testData, false);
+        $this->assertFalse($response);
+
+        // Check No Logistics
+        unset($testData['logistics_item']);
+        $testData['attendee']['firstname'] = 'Joan';
+        $reservation = $this->Reservations->newEntity();
+        $response = $this->Booking->addReservation($reservation, 3, $testData, false);
+        $this->assertNotFalse($response);
+
+        $thirdRes = $this->Reservations->get(4, ['contain' => ['Invoices', 'LogisticItems']]);
+        $this->assertTrue(preg_match('/[0-9]+\-[0-9]+\-[A-Z]{3}/', $thirdRes->reservation_number) !== 0);
+        $this->assertNotEmpty($thirdRes->invoice);
+        $this->assertEmpty($thirdRes->logistic_items);
     }
 }

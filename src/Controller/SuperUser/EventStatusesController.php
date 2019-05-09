@@ -12,7 +12,6 @@ use App\Controller\SuperUser\AppController;
  */
 class EventStatusesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -66,7 +65,7 @@ class EventStatusesController extends AppController
      *
      * @param string|null $id Event Status id.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Http\Exception\NotFoundException When record not found.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
     {

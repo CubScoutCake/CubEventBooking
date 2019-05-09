@@ -5,6 +5,8 @@
  * @var int $logisticsCount
  * @var int $additional
  * @var array $itemTypeOptions
+ * 
+ * @var array $parameters
  */
 ?>
 
@@ -57,10 +59,9 @@
                                 <td>
                                     <p>Logistic <?= $logisticNum + 1 ?></p>
                                 </td>
-                                <td><?= $this->Form->control('logistics.' . $logisticNum . '.item_type_id', ['label' => 'Role or Item Type', 'options' => $parameters, 'empty' => true]) ?></td>
-                                <td><?= $this->Form->control('logistics.' . $logisticNum . '.max_number') ?></td>
-                                <td><?= $this->Form->control('logistics.' . $logisticNum . '.value') ?></td>
-                                <td><?= $this->Form->control('logistics.' . $logisticNum . '.description') ?></td>
+                                <td><?= $this->Form->control('logistics.' . $logisticNum . '.item_type_id', ['label' => 'Parameter', 'options' => $parameters, 'empty' => true]) ?></td>
+                                <td><?= $this->Form->control('logistics.' . $logisticNum . '.header') ?></td>
+                                <td><?= $this->Form->control('logistics.' . $logisticNum . '.text') ?></td>
                             </tr>
                         <?php endfor; ?>
                     </table>

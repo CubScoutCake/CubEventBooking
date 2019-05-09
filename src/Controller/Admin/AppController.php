@@ -51,8 +51,6 @@ class AppController extends Controller
                 ]
         ]);
 
-        $this->loadComponent('Security');
-        $this->loadComponent('Csrf');
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
         ]);
