@@ -143,6 +143,7 @@
             </div>
         </div>
         <?php if ($event->max) : ?>
+            <?php $spaces = $event->cc_res + $event->cc_apps; ?>
             <br />
             <div class="row">
                 <?php if ($event->max_apps > 0 && !is_null($event->max_apps)) : ?>
@@ -150,8 +151,8 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="progress progress-striped active">
-                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($event->cc_apps / $event->max_apps) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($event->cc_apps / $event->max_apps),1,['multiply' => true]); ?>">
-                                    <span class="sr-only"><?= $this->Number->toPercentage(($event->cc_apps / $event->max_apps),1,['multiply' => true]); ?> Complete</span>
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($spaces / $event->max_apps) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($spaces / $event->max_apps),1,['multiply' => true]); ?>">
+                                    <span class="sr-only"><?= $this->Number->toPercentage(($spaces / $event->max_apps),1,['multiply' => true]); ?> Complete</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -159,8 +160,8 @@
                                     <i class="fal fa-thermometer-half fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="large"><?= $this->Number->format($event->cc_apps) ?> <?= h($term) ?> of <?= $this->Number->format($event->max_apps) ?> Available</div>
-                                    <div class="huge"><?= $this->Number->toPercentage(($event->cc_apps / $event->max_apps),1,['multiply' => true]); ?></div>
+                                    <div class="large"><?= $this->Number->format($spaces) ?> <?= h($term) ?> of <?= $this->Number->format($event->max_apps) ?> Taken</div>
+                                    <div class="huge"><?= $this->Number->toPercentage(($spaces / $event->max_apps),1,['multiply' => true]); ?></div>
                                 </div>
                             </div>
                         </div>
@@ -172,8 +173,8 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($event->places_taken / $event->max_section) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($event->cc_apps / $event->max_section),1,['multiply' => true]); ?>">
-                                        <span class="sr-only"><?= $this->Number->toPercentage(($event->places_taken / $event->max_section),1,['multiply' => true]); ?> Complete</span>
+                                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo (($spaces / $event->max_section) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($spaces / $event->max_section),1,['multiply' => true]); ?>">
+                                        <span class="sr-only"><?= $this->Number->toPercentage(($spaces / $event->max_section),1,['multiply' => true]); ?> Complete</span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -181,13 +182,46 @@
                                         <i class="fal fa-thermometer-half fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="large"><?= $this->Number->format($event->places_taken) ?> <?= h($term) ?> of <?= $this->Number->format($event->max_section) ?> Available</div>
-                                        <div class="huge"><?= $this->Number->toPercentage(($event->places_taken / $event->max_section),1,['multiply' => true]); ?></div>
+                                        <div class="large"><?= $this->Number->format($spaces) ?> <?= h($term) ?> of <?= $this->Number->format($event->max_section) ?> Taken</div>
+                                        <div class="huge"><?= $this->Number->toPercentage(($spaces / $event->max_section),1,['multiply' => true]); ?></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                <?php endif; ?>
+                <?php if ($event->has('logistics')) : ?>
+                    <?php foreach ($event->logistics as $logistic) : ?>
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><?= h($logistic->header) ?></h4>
+                                </div>
+                                <?php foreach ($logistic->parameter->params as $param) : ?>
+                                <div class="panel-body">
+                                    <?php if (key_exists('remaining', $logistic->variable_max_values[$param->id])) : ?>
+                                        <div class="progress progress-striped active">
+                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo (($logistic->variable_max_values[$param->id]['current'] / $logistic->variable_max_values[$param->id]['limit']) * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage(($logistic->variable_max_values[$param->id]['current'] / $logistic->variable_max_values[$param->id]['limit']),1,['multiply' => true]); ?>">
+                                                <span class="sr-only"><?= $this->Number->toPercentage(($logistic->variable_max_values[$param->id]['current'] / $logistic->variable_max_values[$param->id]['limit']),1,['multiply' => true]); ?> Complete</span>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <h3><i class="fal fa-inventory fa-fw"></i> <?= $param->constant ?></h3>
+                                        </div>
+                                        <?php if (key_exists('remaining', $logistic->variable_max_values[$param->id])) : ?>
+                                            <div class="col-xs-4 text-right">
+                                                <div class="large"><?= $this->Number->format($logistic->variable_max_values[$param->id]['current']) ?> of <?= $this->Number->format($logistic->variable_max_values[$param->id]['limit']) ?> Taken</div>
+                                                <div class="huge"><?= $this->Number->toPercentage(($logistic->variable_max_values[$param->id]['current'] / $logistic->variable_max_values[$param->id]['limit']),1,['multiply' => true]); ?></div>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
