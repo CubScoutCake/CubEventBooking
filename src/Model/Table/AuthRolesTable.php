@@ -164,7 +164,13 @@ class AuthRolesTable extends Table
         }
 
         unset($authArray['auth_value']);
-        $newAuthRole = $this->findOrCreate($authArray);
+        $newAuthQuery = $this->find()->where($authArray);
+        if ($newAuthQuery->count() > 0) {
+            return $newAuthQuery->first()->id;
+        }
+
+        $newAuthRole = $this->newEntity($authArray);
+        $newAuthRole = $this->save($newAuthRole);
 
         return $newAuthRole->id;
     }

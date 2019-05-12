@@ -282,9 +282,16 @@ class AuthRolesTableTest extends TestCase
                 $this->assertEquals($authRole->id, $return);
                 $this->assertEquals($authRole->auth_role, $new->auth_role);
             }
+
+            $secondReturn = $this->AuthRoles->parentAuthRole($new);
+            $secondReturnAuth = $this->AuthRoles->get($secondReturn);
+            $this->assertTrue($secondReturnAuth->parent_access);
+
+            $this->assertEquals($return, $secondReturn);
+            $this->assertEquals($new->auth_role, $secondReturnAuth->auth_role);
         }
 
-        // Test Detect
+        // Test Empty Parameter Returns
         $nullReturn = $this->AuthRoles->parentAuthRole();
         $this->assertTrue(is_numeric($nullReturn));
         $this->assertEquals(4, $nullReturn);
