@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Scoutgroup;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -11,14 +10,20 @@ use Search\Manager;
 /**
  * Scoutgroups Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Districts
- * @property \Cake\ORM\Association\HasMany $Applications
- * @property \Cake\ORM\Association\HasMany $Attendees
- * @property \Cake\ORM\Association\HasMany $Users
+ * @property \App\Model\Table\DistrictsTable|\Cake\ORM\Association\BelongsTo $Districts
+ * @property \App\Model\Table\SectionsTable|\Cake\ORM\Association\HasMany $Sections
+ *
+ * @method \App\Model\Entity\Scoutgroup get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Scoutgroup newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Scoutgroup[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Scoutgroup|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Scoutgroup saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Scoutgroup patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Scoutgroup[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Scoutgroup findOrCreate($search, callable $callback = null, $options = [])
  */
 class ScoutgroupsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -27,6 +32,8 @@ class ScoutgroupsTable extends Table
      */
     public function initialize(array $config)
     {
+        parent::initialize($config);
+
         $this->setTable('scoutgroups');
         $this->setDisplayField('scoutgroup');
         $this->setPrimaryKey('id');
@@ -65,16 +72,23 @@ class ScoutgroupsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('id', 'create');
+            ->integer('id')
+            ->allowEmptyString('id', 'create');
 
         $validator
+            ->scalar('scoutgroup')
+            ->maxLength('scoutgroup', 255)
             ->requirePresence('scoutgroup', 'create')
-            ->notEmpty('scoutgroup');
+            ->allowEmptyString('scoutgroup', false)
+            ->add('scoutgroup', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
-            ->requirePresence('number_stripped', 'create')
-            ->notEmpty('number_stripped');
+            ->integer('number_stripped')
+            ->allowEmptyString('number_stripped');
+
+        $validator
+            ->dateTime('deleted')
+            ->allowEmptyDateTime('deleted');
 
         return $validator;
     }
@@ -88,6 +102,7 @@ class ScoutgroupsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->isUnique(['scoutgroup']));
         $rules->add($rules->existsIn(['district_id'], 'Districts'));
 
         return $rules;

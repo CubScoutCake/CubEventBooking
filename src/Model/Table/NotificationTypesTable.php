@@ -47,14 +47,31 @@ class NotificationTypesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('notification_type');
+            ->requirePresence('notification_type')
+            ->maxLength('notification_type', 45);
 
         $validator
-            ->requirePresence('notification_description');
+            ->requirePresence('notification_description')
+            ->maxLength('notification_description', 255);
 
         $validator
-            ->requirePresence('icon');
+            ->requirePresence('icon')
+            ->maxLength('icon', 45);
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['notification_type']));
+
+        return $rules;
     }
 }

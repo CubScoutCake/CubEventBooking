@@ -67,7 +67,6 @@ class PasswordComponent extends Component
         ];
 
         $tokenEntity = $this->Tokens->newEntity($data);
-        debug($tokenEntity);
 
         if ($this->Tokens->save($tokenEntity, ['associated' => 'EmailSends.Notifications'])) {
             $tokenId = $tokenEntity->get('id');

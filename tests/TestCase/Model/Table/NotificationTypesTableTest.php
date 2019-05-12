@@ -4,6 +4,7 @@ namespace App\Test\TestCase\Model\Table;
 use App\Model\Table\NotificationTypesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Security;
 
 /**
  * App\ModelLevel\Table\NotificationTypesTable Test Case
@@ -52,26 +53,42 @@ class NotificationTypesTableTest extends TestCase
     }
 
     /**
+     * Get Good Set Function
+     *
+     * @return array
+     *
+     * @throws
+     */
+    private function getGood()
+    {
+        $good = [
+            'notification_type' => 'Notification ' . random_int(11111, 99999) . ' dolor ' . random_int(11111, 99999) . ' amet',
+            'notification_description' => 'Balance Outstanding on Invoice',
+            'icon' => 'fa-clock',
+        ];
+
+        return $good;
+    }
+
+    /**
      * Test initialize method
      *
      * @return void
      */
     public function testInitialize()
     {
-        $query = $this->NotificationTypes->find('all');
+        $actual = $this->NotificationTypes->get(1)->toArray();
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
         $expected = [
-            [
-                'id' => 1,
-                'notification_type' => 'Lorem ipsum dolor sit amet',
-                'notification_description' => 'Lorem ipsum dolor sit amet',
-                'icon' => 'Lorem ipsum dolor sit amet'
-            ],
+            'id' => 1,
+            'notification_type' => 'Welcome',
+            'notification_description' => 'Welcome to the System Email & Notification.',
+            'icon' => 'fa-user'
         ];
+        $this->assertEquals($expected, $actual);
 
-        $this->assertEquals($expected, $result);
+        $count = $this->NotificationTypes->find('all')->count();
+        $this->assertEquals(9, $count);
     }
 
     /**
@@ -81,46 +98,87 @@ class NotificationTypesTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $badData = [
-            'id' => 2,
-            'notification_type' => null,
-            'notification_description' => null,
-            'icon' => null
+        $good = $this->getGood();
+
+        $new = $this->NotificationTypes->newEntity($good);
+        $this->assertInstanceOf('App\Model\Entity\NotificationType', $this->NotificationTypes->save($new));
+
+        $required = [
+            'notification_type',
+            'icon',
+            'notification_description',
         ];
 
-        $goodData = [
-            'id' => 2,
-            'notification_type' => 'Lorem dolor sit amet',
-            'notification_description' => 'Lorem ipsum sit amet',
-            'icon' => 'Lorem ipsum dolor sit'
+        foreach ($required as $require) {
+            $reqArray = $good;
+            unset($reqArray[$require]);
+            $new = $this->NotificationTypes->newEntity($reqArray);
+            $this->assertFalse($this->NotificationTypes->save($new));
+        }
+
+        $empties = [
         ];
 
-        $expected = [
-            [
-                'id' => 1,
-                'notification_type' => 'Lorem ipsum dolor sit amet',
-                'notification_description' => 'Lorem ipsum dolor sit amet',
-                'icon' => 'Lorem ipsum dolor sit amet'
-            ],
-            [
-                'id' => 2,
-                'notification_type' => 'Lorem dolor sit amet',
-                'notification_description' => 'Lorem ipsum sit amet',
-                'icon' => 'Lorem ipsum dolor sit'
-            ],
+        foreach ($empties as $empty) {
+            $reqArray = $good;
+            $reqArray[$empty] = '';
+            $new = $this->NotificationTypes->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\NotificationType', $this->NotificationTypes->save($new));
+        }
+
+        $notEmpties = [
+            'notification_type',
+            'icon',
+            'notification_description',
         ];
 
-        $badEntity = $this->NotificationTypes->newEntity($badData, ['accessibleFields' => ['id' => true]]);
-        $goodEntity = $this->NotificationTypes->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        foreach ($notEmpties as $notEmpty) {
+            $reqArray = $good;
+            $reqArray[$notEmpty] = '';
+            $new = $this->NotificationTypes->newEntity($reqArray);
+            $this->assertFalse($this->NotificationTypes->save($new));
+        }
 
-        $this->assertFalse($this->NotificationTypes->save($badEntity));
-        $this->NotificationTypes->save($goodEntity);
+        $maxLengths = [
+            'notification_description' => 255,
+            'notification_type' => 45,
+            'icon' => 45,
+        ];
 
-        $query = $this->NotificationTypes->find('all');
+        $string = hash('sha512', Security::randomBytes(64));
+        $string .= $string;
+        $string .= $string;
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
+        foreach ($maxLengths as $maxField => $maxLength) {
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $maxLength);
+            $new = $this->NotificationTypes->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\NotificationType', $this->NotificationTypes->save($new));
 
-        $this->assertEquals($expected, $result);
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $maxLength + 1);
+            $new = $this->NotificationTypes->newEntity($reqArray);
+            $this->assertFalse($this->NotificationTypes->save($new));
+        }
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
+    {
+        $values = $this->getGood();
+
+        $existing = $this->NotificationTypes->get(1)->toArray();
+
+        $values['notification_type'] = 'My new Camp Role Type';
+        $new = $this->NotificationTypes->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\NotificationType', $this->NotificationTypes->save($new));
+
+        $values['notification_type'] = $existing['notification_type'];
+        $new = $this->NotificationTypes->newEntity($values);
+        $this->assertFalse($this->NotificationTypes->save($new));
     }
 }

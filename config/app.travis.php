@@ -47,7 +47,7 @@ return [
         'namespace' => 'App',
         'encoding' => env('APP_ENCODING', 'UTF-8'),
         'defaultLocale' => env('APP_DEFAULT_LOCALE', 'en_GB'),
-        'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'BST'),
+        'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'UTC'),
         'base' => false,
         'dir' => 'src',
         'webroot' => 'webroot',
@@ -232,7 +232,7 @@ return [
         'default' => [
             'transport' => 'sparkpost',
             'from' => 'info@hertscubs.uk',
-            'to' => '__TO_EMAIL__'
+            'to' => 'info@hertscubs.uk'
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
@@ -257,7 +257,8 @@ return [
             'levels' => ['debug'],
         ],
         'database' => [
-            'className' => 'DatabaseLog.Database',
+            'className' => 'Cake\Log\Engine\FileLog',
+            'file' => 'error',
             'levels' => ['notice', 'info', 'warning', 'error', 'critical', 'alert', 'emergency'],
         ],
         // To enable this dedicated query log, you need set your datasource's log flag to true
