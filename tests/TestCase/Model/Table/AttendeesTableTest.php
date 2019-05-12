@@ -3,8 +3,8 @@ namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Entity\Attendees;
 use App\Model\Table\AttendeesTable;
-use Cake\I18n\Date;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
@@ -54,8 +54,8 @@ class AttendeesTableTest extends TestCase
         $config = TableRegistry::exists('Attendees') ? [] : ['className' => 'App\Model\Table\AttendeesTable'];
         $this->Attendees = TableRegistry::get('Attendees', $config);
 
-        $now = new Time('2016-12-26 23:22:30');
-        Time::setTestNow($now);
+        $now = new FrozenTime('2016-12-26 23:22:30');
+        FrozenTime::setTestNow($now);
     }
 
     /**
@@ -77,8 +77,8 @@ class AttendeesTableTest extends TestCase
      */
     private function getGood()
     {
-        $startNow = Time::now();
-        $nowDate = new Date('2016-12-26');
+        $startNow = FrozenTime::now();
+        $nowDate = new FrozenDate('2016-12-26');
 
         return [
             'user_id' => 1,
@@ -105,8 +105,8 @@ class AttendeesTableTest extends TestCase
 
     public function getExpected()
     {
-        $startNow = Time::now();
-        $nowDate = new Date('2016-12-26');
+        $startNow = FrozenTime::now();
+        $nowDate = new FrozenDate('2016-12-26');
 
         return $expectedArray = [
             [
@@ -450,7 +450,7 @@ class AttendeesTableTest extends TestCase
 
     private function transformGood($inserted, $attId = 13)
     {
-        $startNow = Time::now();
+        $startNow = FrozenTime::now();
 
         $addition = [
             'id' => $attId,
@@ -481,13 +481,13 @@ class AttendeesTableTest extends TestCase
             'osm_sync_date'
         ];
 
-        $this->assertInstanceOf('Cake\I18n\Date', $actual['dateofbirth']);
+        $this->assertInstanceOf('Cake\I18n\FrozenDate', $actual['dateofbirth']);
         unset($actual['dateofbirth']);
 
         foreach ($dates as $date) {
             $dateValue = $actual[$date];
             if (!is_null($dateValue)) {
-                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+                $this->assertInstanceOf('Cake\I18n\FrozenTime', $dateValue);
             }
             unset($actual[$date]);
         }
@@ -746,8 +746,8 @@ class AttendeesTableTest extends TestCase
      */
     public function testCaseBeforeRules()
     {
-        $startNow = Time::now();
-        $nowDate = new Date('2016-12-26');
+        $startNow = FrozenTime::now();
+        $nowDate = new FrozenDate('2016-12-26');
 
         $caseData = [
             'user_id' => 1,
@@ -870,8 +870,8 @@ class AttendeesTableTest extends TestCase
             $this->assertInstanceOf('App\Model\Entity\Attendee', $response);
         }
 
-        $startNow = Time::now();
-        $nowDate = new Date('2016-12-26');
+        $startNow = FrozenTime::now();
+        $nowDate = new FrozenDate('2016-12-26');
 
         $caseData = [
             'user_id' => 1,
@@ -918,13 +918,13 @@ class AttendeesTableTest extends TestCase
     {
         $this->markTestIncomplete();
 
-        $nowDate = new Date('2016-12-26'); // Date Only
+        $nowDate = new FrozenDate('2016-12-26'); // Date Only
 
-        $earlierNow = new Time('2016-11-26 23:22:30'); // 1
+        $earlierNow = new FrozenTime('2016-11-26 23:22:30'); // 1
 
-        $now = new Time('2016-12-26 23:22:30'); // 2
+        $now = new FrozenTime('2016-12-26 23:22:30'); // 2
 
-        $laterNow = new Time('2017-01-26 23:22:30'); // 3
+        $laterNow = new FrozenTime('2017-01-26 23:22:30'); // 3
 
         $goodData = [
             'id' => 2,

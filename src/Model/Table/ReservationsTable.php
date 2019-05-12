@@ -87,7 +87,9 @@ class ReservationsTable extends Table
 
         $this->hasMany('LogisticItems', [
             'foreignKey' => 'reservation_id'
-        ]);
+        ])
+            ->setDependent(true)
+            ->setCascadeCallbacks(true);
     }
 
     /**

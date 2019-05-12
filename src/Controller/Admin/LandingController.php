@@ -87,7 +87,7 @@ class LandingController extends AppController
 
         // Limited Table Entities
         $applications = $apps->find('sameSection', $authArray)->contain(['Users', 'Sections.Scoutgroups.Districts'])->order(['Applications.modified' => 'DESC'])->limit(10);
-        $events = $evs->find('upcoming')->find('sameSection', $authArray)->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
+        $events = $evs->find('upcoming')->find('sameSection', $authArray)->contain(['EventStatuses'])->order(['Events.start_date' => 'ASC']);
         $invoices = $invs->find('sameSection', $authArray)->contain(['Users', 'Applications', 'Reservations'])->order(['Invoices.modified' => 'DESC'])->limit(10);
         $users = $usrs->find('sameSection', $authArray)->find('access')->contain(['Roles', 'Sections.Scoutgroups.Districts', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
         $payments = $pays->find('sameSection', $authArray)->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
@@ -137,28 +137,22 @@ class LandingController extends AppController
                 switch ($cont) {
                     case "U":
                         return $this->redirect(['controller' => 'Users', 'action' => 'view', $idNum]);
-//                        break;
                     case "I":
                         return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $idNum]);
-//                        break;
                     case "A":
                         return $this->redirect(['controller' => 'Applications', 'action' => 'view', $idNum]);
-//                        break;
                     case "N":
                         return $this->redirect(['controller' => 'Notes', 'action' => 'view', $idNum]);
-//                        break;
                     case "P":
                         return $this->redirect(['controller' => 'Payments', 'action' => 'view', $idNum]);
-//                        break;
                     case "T":
                         return $this->redirect(['controller' => 'Attendees', 'action' => 'view', $idNum]);
-//                        break;
                     case "E":
                         return $this->redirect(['controller' => 'Events', 'action' => 'view', $idNum]);
-//                        break;
                     case "S":
                         return $this->redirect(['controller' => 'Settings', 'action' => 'view', $idNum]);
-//                        break;
+                    case "R":
+                        return $this->redirect(['controller' => 'Reservations', 'action' => 'view', $idNum]);
                     default:
                         return $this->redirect(['action' => 'admin_home']);
                 }

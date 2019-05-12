@@ -3,7 +3,7 @@ namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Entity\User;
 use App\Model\Table\UsersTable;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
@@ -48,8 +48,8 @@ class UsersTableTest extends TestCase
         $config = TableRegistry::getTableLocator()->exists('Users') ? [] : ['className' => UsersTable::class];
         $this->Users = TableRegistry::getTableLocator()->get('Users', $config);
 
-        $now = new Time('2016-12-26 23:22:30');
-        Time::setTestNow($now);
+        $now = new FrozenTime('2016-12-26 23:22:30');
+        FrozenTime::setTestNow($now);
     }
 
     /**
@@ -73,7 +73,7 @@ class UsersTableTest extends TestCase
      */
     private function getGood()
     {
-        $startNow = Time::now();
+        $startNow = FrozenTime::now();
 
         return [
             'role_id' => 1,
@@ -135,7 +135,7 @@ class UsersTableTest extends TestCase
         foreach ($dates as $date) {
             $dateValue = $actual[$date];
             if (!is_null($dateValue)) {
-                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+                $this->assertInstanceOf('Cake\I18n\FrozenTime', $dateValue);
             }
             unset($actual[$date]);
         }

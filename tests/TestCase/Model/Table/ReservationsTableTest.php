@@ -3,7 +3,7 @@ namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ReservationsTable;
 use Cake\Core\Configure;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
@@ -59,8 +59,8 @@ class ReservationsTableTest extends TestCase
         $config = TableRegistry::getTableLocator()->exists('Reservations') ? [] : ['className' => ReservationsTable::class];
         $this->Reservations = TableRegistry::getTableLocator()->get('Reservations', $config);
 
-        $now = new Time('2016-12-26 23:22:30');
-        Time::setTestNow($now);
+        $now = new FrozenTime('2016-12-26 23:22:30');
+        FrozenTime::setTestNow($now);
     }
 
     /**
@@ -114,7 +114,7 @@ class ReservationsTableTest extends TestCase
         foreach ($dates as $date) {
             $dateValue = $actual[$date];
             if (!is_null($dateValue)) {
-                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+                $this->assertInstanceOf('Cake\I18n\FrozenTime', $dateValue);
             }
             unset($actual[$date]);
         }
@@ -305,10 +305,10 @@ class ReservationsTableTest extends TestCase
         $this->assertEquals($saved->get('reservation_code'), $output_array[0]);
 
         $expiry = Configure::read('Schedule.reservation', '+10 days');
-        $now = Time::now();
+        $now = FrozenTime::now();
         $expiryDate = $now->modify($expiry);
 
-        $this->assertNotEquals(Time::now(), $expiryDate);
+        $this->assertNotEquals(FrozenTime::now(), $expiryDate);
         $this->assertEquals($expiryDate, $saved->expires);
     }
 

@@ -6,7 +6,7 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Response;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -265,7 +265,7 @@ class ScoutManagerComponentTest extends TestCase
 
         $this->assertTrue($termComponent);
 
-        $now = Time::now();
+        $now = FrozenTime::now();
 
         $user = $users->get(1);
         $this->assertNotEmpty($user->osm_current_term);

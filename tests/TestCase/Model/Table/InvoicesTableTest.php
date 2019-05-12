@@ -2,7 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\InvoicesTable;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -59,8 +59,8 @@ class InvoicesTableTest extends TestCase
         $config = TableRegistry::exists('Invoices') ? [] : ['className' => 'App\Model\Table\InvoicesTable'];
         $this->Invoices = TableRegistry::get('Invoices', $config);
 
-        $now = new Time('2016-12-26 23:22:30');
-        Time::setTestNow($now);
+        $now = new FrozenTime('2016-12-26 23:22:30');
+        FrozenTime::setTestNow($now);
     }
 
     /**
@@ -82,7 +82,7 @@ class InvoicesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $timeNow = Time::now();
+        $timeNow = FrozenTime::now();
 
         $query = $this->Invoices->find('all');
 

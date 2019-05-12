@@ -315,6 +315,7 @@
                                     <tr>
                                         <th><?= h('Name') ?></th>
                                         <th class="actions"><?= __('Actions') ?></th>
+                                        <th><?= h('Status') ?></th>
                                         <th><?= h('Start Date') ?></th>
                                         <th><?= h('End Date') ?></th>
                                         <th><?= h('Last Modified') ?></th>
@@ -332,6 +333,7 @@
                                             <?= $this->Html->link('<i class="fal fa-chart-bar"></i>', ['controller' => 'Events', 'action' => 'accounts', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                             <?= $this->Html->link('<i class="fal fa-inventory"></i>', ['controller' => 'Events', 'action' => 'logistics', $event->id], ['title' => __('Logistics'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                         </td>
+                                        <td><?= $event->has('event_status') ? $event->event_status->event_status : '' ?></td>
                                         <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
