@@ -106,7 +106,9 @@ class SectionsController extends AppController
                     'section_type_id',
                     'scoutgroup_id',
                     'section',
-                ]]);
+                ],
+                'validate' => 'Register',
+            ]);
             if ($this->Sections->save($section)) {
                 $this->Flash->success(__('The section has been saved.'));
                 $redir = $section->get('id');
