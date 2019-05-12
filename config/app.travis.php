@@ -231,7 +231,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'sparkpost',
-            'from' => '__FROM_EMAIL__',
+            'from' => 'info@hertscubs.uk',
             'to' => '__TO_EMAIL__'
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',

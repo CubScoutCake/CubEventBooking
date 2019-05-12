@@ -2,7 +2,7 @@
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
 
@@ -29,19 +29,19 @@ class PasswordComponent extends Component
     public function sendReset($userId)
     {
         $this->Tokens = TableRegistry::getTableLocator()->get('Tokens');
-        $this->Users = $this->Tokens->Users;
+        $this->Users = $this->Tokens->EmailSends->Users;
         $this->NotificationTypes = TableRegistry::getTableLocator()->get('NotificationTypes');
 
+        /** @var \App\Model\Entity\User $user */
         $user = $this->Users->get($userId);
 
-        $now = Time::now();
+        $now = FrozenTime::now();
 
         $notificationType = $this->NotificationTypes->find()->where(['notification_type' => 'Password Reset'])->first();
         $notificationTypeId = $notificationType->id;
 
         $data = [
             'token' => 'Password Reset Token for ' . $user->full_name,
-            'user_id' => $user->id,
             'email_send' => [
                 'sent' => $now,
                 'user_id' => $user->id,
@@ -56,7 +56,7 @@ class PasswordComponent extends Component
                     'text' => 'User Password Reset Email Sent for user ' . $user->full_name,
                 ]
             ],
-            'header' => [
+            'token_header' => [
                 'redirect' => [
                     'controller' => 'Users',
                     'action' => 'token',
@@ -67,6 +67,7 @@ class PasswordComponent extends Component
         ];
 
         $tokenEntity = $this->Tokens->newEntity($data);
+        debug($tokenEntity);
 
         if ($this->Tokens->save($tokenEntity, ['associated' => 'EmailSends.Notifications'])) {
             $tokenId = $tokenEntity->get('id');

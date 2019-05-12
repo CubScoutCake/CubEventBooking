@@ -13,7 +13,7 @@ use Cake\Validation\Validator;
 /**
  * Tokens Model
  *
- * @property \Cake\ORM\Association\BelongsTo $EmailSends
+ * @property \App\Model\Table\EmailSendsTable|\Cake\ORM\Association\BelongsTo $EmailSends
  *
  * @method \App\Model\Entity\Token get($primaryKey, $options = [])
  * @method \App\Model\Entity\Token newEntity($data = null, array $options = [])
@@ -172,13 +172,13 @@ class TokensTable extends Table
      */
     public function prepareToken($tokenId)
     {
-        $tokenRow = $this->get($tokenId);
+        $tokenRow = $this->get($tokenId, ['contain' => 'EmailSends']);
 
         $decrypter = Security::randomBytes(64);
         $decrypter = base64_encode($decrypter);
         $decrypter = substr($decrypter, 0, 8);
 
-        $hash = $decrypter . $tokenRow->created . $tokenRow->random_number;
+        $hash = $decrypter . $tokenRow->created . $tokenRow->random_number . $tokenRow->email_send->user_id;
 
         $hash = Security::hash($hash, 'sha256');
 
@@ -230,7 +230,7 @@ class TokensTable extends Table
             return false;
         }
 
-        $tokenRow = $this->get($token->id);
+        $tokenRow = $this->get($token->id, ['contain' => 'EmailSends']);
 
         if (!$tokenRow->active) {
             return false;
@@ -243,7 +243,7 @@ class TokensTable extends Table
             return false;
         }
 
-        $testHash = $decrypter . $tokenRow->created . $tokenRow->random_number;
+        $testHash = $decrypter . $tokenRow->created . $tokenRow->random_number . $tokenRow->email_send->user_id;
         $testHash = Security::hash($testHash, 'sha256');
 
         $tokenRowHash = $tokenRow['hash'];

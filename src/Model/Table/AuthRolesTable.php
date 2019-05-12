@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * AuthRoles Model
  *
- * @property \Cake\ORM\Association\HasMany $Users
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\HasMany $Users
  *
  * @method \App\Model\Entity\AuthRole get($primaryKey, $options = [])
  * @method \App\Model\Entity\AuthRole newEntity($data = null, array $options = [])

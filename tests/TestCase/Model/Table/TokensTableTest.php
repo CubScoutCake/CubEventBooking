@@ -139,10 +139,6 @@ class TokensTableTest extends TestCase
      */
     public function testInitialize()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $actual = $this->Tokens->get(1)->toArray();
 
         $dates = [
@@ -181,10 +177,6 @@ class TokensTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $good = $this->getGood();
 
         $new = $this->Tokens->newEntity($good);
@@ -246,10 +238,6 @@ class TokensTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         // Email Send Exists
         $values = $this->getGood();
 
@@ -271,10 +259,6 @@ class TokensTableTest extends TestCase
      */
     public function testBuildToken()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $token = $this->Tokens->buildToken(1);
         $token = urldecode($token);
         //$token = gzuncompress($token);
@@ -302,10 +286,6 @@ class TokensTableTest extends TestCase
 
     public function testBeforeSave()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $goodData = [
             'email_send_id' => 1,
             'active' => true,
@@ -366,10 +346,6 @@ class TokensTableTest extends TestCase
 
     public function testValidateToken()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $goodData = [
             'email_send_id' => 1,
             'active' => true,
