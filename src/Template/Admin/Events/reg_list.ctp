@@ -298,7 +298,7 @@
                 <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
-                <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                <td><?= $this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Invoices', 'action' => 'view', $invoice->id]) ?>
                     <?= $this->Html->link(__('Update'), ['controller' => 'Invoices', 'action' => 'regenerate', $invoice->id]) ?>

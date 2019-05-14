@@ -58,17 +58,12 @@ class NotificationTypesFixture extends TestFixture
                 'icon' => 'fa-clock'
             ],
             [
-                'notification_type' => 'Invoice Attached',
-                'notification_description' => 'Invoice is attached to the email.',
-                'icon' => 'fa-paperclip'
-            ],
-            [
                 'notification_type' => 'Deposit Outstanding',
                 'notification_description' => 'Notification of an Invoice where the deposit is past due.',
                 'icon' => 'fa-clock'
             ],
             [
-                'notification_type' => 'Reservation Confirmed',
+                'notification_type' => 'Reservation Confirmation',
                 'notification_description' => 'Notification of an Invoice where the deposit is past due.',
                 'icon' => 'fa-ticket-alt'
             ],

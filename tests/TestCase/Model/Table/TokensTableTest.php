@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\TokensTable;
+use App\Utility\TextSafe;
 use Cake\Core\Configure;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
@@ -162,7 +163,15 @@ class TokensTableTest extends TestCase
             'email_send_id' => 1,
             'active' => true,
             'random_number' => 54498,
-            'token_header' => null
+            'token_header' => [
+                'redirect' => [
+                    'controller' => 'Applications',
+                    'action' => 'view',
+                    'prefix' => false,
+                    1
+                ],
+                'authenticate' => false,
+            ]
         ];
         $this->assertEquals($expected, $actual);
 
@@ -261,7 +270,7 @@ class TokensTableTest extends TestCase
     {
         $token = $this->Tokens->buildToken(1);
         $token = urldecode($token);
-        //$token = gzuncompress($token);
+        $token = TextSafe::decode($token);
 
         $this->assertGreaterThanOrEqual(32, strlen($token), 'Token is too short.');
 

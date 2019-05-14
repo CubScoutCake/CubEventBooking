@@ -67,7 +67,11 @@ class Reservation extends Entity
      */
     protected function _getReservationNumber()
     {
-        return $this->_properties['id'] . '-' . $this->_properties['attendee_id'] . '-' . $this->_properties['reservation_code'];
+        if (!$this->isNew()) {
+            return $this->_properties['id'] . '-' . $this->_properties['attendee_id'] . '-' . $this->_properties['reservation_code'];
+        }
+
+        return 'Unsaved Reservation';
     }
 
     protected $_virtual = ['reservation_number'];

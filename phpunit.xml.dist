@@ -23,6 +23,7 @@
 			<directory>./tests/TestCase/Model</directory>
 		</testsuite>
 		<testsuite name="Other">
+			<directory>./tests/TestCase/Utility</directory>
 			<directory>./tests/TestCase/Form</directory>
 			<directory>./tests/TestCase/Mailer</directory>
 			<directory>./tests/TestCase/View</directory>

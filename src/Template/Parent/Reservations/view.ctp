@@ -58,11 +58,20 @@ $this->append('parent-nav', '<li class="nav-item">
                     <div class="card-body text-center">
                         <i class="fal fa-3x fa-stopwatch mb-2"></i>
                         <br/>
-                        <h3 class="text-uppercase">Reservation Expires</h3>
-                        <hr class="my-4">
-                        <div><h1 class="display-4 text-black"><?= $this->Time->format($reservation->expires, 'dd-MMM-YY HH:mm', 'Europe/London')  ?></h1></div>
+                        <?php if (!$reservation->reservation_status->complete) : ?>
+                            <h3 class="text-uppercase">Reservation Expires</h3>
+                            <hr class="my-4">
+                            <div><h1 class="display-4 text-black"><?= $this->Time->format($reservation->expires->addHour(), 'dd-MMM-YY HH:mm', 'Europe/London')  ?></h1></div>
 
-                        <p>Your reservation will be automatically cancelled if payment is not received before the expiry date.</p>
+                            <p>Your reservation will be automatically cancelled if payment is not received before the expiry date.</p>
+                        <?php else : ?>
+                            <h3 class="text-uppercase">Reservation Created</h3>
+                            <hr class="my-4">
+                            <div><h1 class="display-4 text-black"><?= $this->Time->format($reservation->created->addHour(), 'dd-MMM-YY HH:mm', 'Europe/London')  ?></h1></div>
+
+                            <p>Date the Reservation was created.</p>
+
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -88,19 +97,20 @@ $this->append('parent-nav', '<li class="nav-item">
             </div>
 
             <div class="col">
+                <?php foreach ($reservation->logistic_items as $idx => $logistic_item) : ?>
                 <div class="card py-4 h-100">
                     <div class="card-body text-center">
                         <i class="fal fa-3x fa-calendar-check mb-2"></i>
                         <br/>
-                        <h3 class="text-uppercase">Session</h3>
+                        <h3 class="text-uppercase"><?= $logistic_item->logistic->header ?></h3>
                         <hr class="my-4">
-                        <?php foreach ($reservation->logistic_items as $idx => $logistic_item) : ?>
+
                         <div><h1 class="display-4 text-black"><?= h($logistic_item->param->constant)  ?></h1></div>
-                        <?php endforeach; ?>
 
                         <p>The Session that is reserved.</p>
                     </div>
                 </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
@@ -129,7 +139,7 @@ $this->append('parent-nav', '<li class="nav-item">
                                     <?= h($reservation->event->admin_user->city) ?>, <?= h($reservation->event->admin_user->county) ?>.
                                     <?= h($reservation->event->admin_user->postcode) ?>
                                 </strong> by <strong>
-                                    <?= $this->Time->i18nformat($reservation->expires,'dd-MMM-yy') ?>
+                                    <?= $this->Time->i18nFormat($reservation->expires,'dd-MMM-yy') ?>
                                 </strong>.
                             </p>
                             <p>
@@ -140,6 +150,8 @@ $this->append('parent-nav', '<li class="nav-item">
                                     <?= h($reservation->reservation_number) ?>
                                 </strong> on the back of the cheque.
                             </p>
+                        <?php else : ?>
+                            <div><h1 class="display-4 text-black"><?= $this->Number->currency($reservation->invoice->value, 'GBP') ?> received.</h1></div>
                         <?php endif; ?>
                     </div>
                 </div>

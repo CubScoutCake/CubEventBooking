@@ -26,7 +26,6 @@ class SettingTypesTableTest extends TestCase
      */
     public $fixtures = [
         'app.setting_types',
-        'app.settings'
     ];
 
     /**

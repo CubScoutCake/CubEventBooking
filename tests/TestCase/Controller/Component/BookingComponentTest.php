@@ -223,4 +223,15 @@ class BookingComponentTest extends TestCase
         $this->assertNotEmpty($thirdRes->invoice);
         $this->assertEmpty($thirdRes->logistic_items);
     }
+
+    /**
+     * Test initial setup
+     *
+     * @return void
+     */
+    public function testNotifyReservation()
+    {
+        $response = $this->Booking->notifyReservation(1);
+        $this->assertTrue($response);
+    }
 }

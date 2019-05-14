@@ -89,7 +89,7 @@ class Invoice extends Entity
      * @return bool
      *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
-     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     protected function _getIsPaid()
     {

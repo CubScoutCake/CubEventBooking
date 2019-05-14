@@ -18,6 +18,7 @@ use Migrations\Migrations;
  *
  * @property \App\Model\Table\EventStatusesTable $EventStatuses
  * @property \App\Model\Table\ApplicationStatusesTable $ApplicationStatuses
+ * @property \App\Model\Table\NotificationTypesTable $NotificationTypes
  */
 class DatabaseShell extends Shell
 {
@@ -99,5 +100,9 @@ class DatabaseShell extends Shell
         $this->ApplicationStatuses = TableRegistry::getTableLocator()->get('ApplicationStatuses');
         $statuses = $this->ApplicationStatuses->installBaseStatuses();
         $this->out($statuses . ' Application Statuses Installed.');
+
+        $this->NotificationTypes = TableRegistry::getTableLocator()->get('NotificationTypes');
+        $types = $this->NotificationTypes->installBaseTypes();
+        $this->out($types . ' Notification Types Installed.');
     }
 }

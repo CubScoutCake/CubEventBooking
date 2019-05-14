@@ -71,10 +71,6 @@ class TokensControllerTest extends TestCase
      */
     public function testValidate()
     {
-        if (Configure::read('travis')) {
-            $this->markTestSkipped('Token odd behaviour!');
-        }
-
         /** @var \App\Model\Table\TokensTable $tokens */
         $tokens = TableRegistry::getTableLocator()->get('Tokens');
 
@@ -84,7 +80,7 @@ class TokensControllerTest extends TestCase
             'controller' => 'Tokens',
             'action' => 'validate',
             'prefix' => false,
-            urlencode($token)
+            $token
         ]);
 
         $this->assertRedirect([

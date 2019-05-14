@@ -55,7 +55,15 @@ class TokensFixture extends TestFixture
                 'deleted' => null,
                 'hash' => 'de3fcc4b18f723440bda95f40ef791e9953b0c03044b3a736065759800861012',
                 'random_number' => 54498,
-                'token_header' => null
+                'token_header' => [
+                    'authenticate' => false,
+                    'redirect' => [
+                        'controller' => 'Applications',
+                        'action' => 'view',
+                        'prefix' => false,
+                        1,
+                    ]
+                ]
             ],
         ];
         parent::init();

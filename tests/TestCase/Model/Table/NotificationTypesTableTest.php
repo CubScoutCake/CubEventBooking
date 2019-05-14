@@ -25,7 +25,7 @@ class NotificationTypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.notification_types'
+        'app.NotificationTypes'
     ];
 
     /**
@@ -88,7 +88,7 @@ class NotificationTypesTableTest extends TestCase
         $this->assertEquals($expected, $actual);
 
         $count = $this->NotificationTypes->find('all')->count();
-        $this->assertEquals(9, $count);
+        $this->assertEquals(8, $count);
     }
 
     /**
@@ -180,5 +180,23 @@ class NotificationTypesTableTest extends TestCase
         $values['notification_type'] = $existing['notification_type'];
         $new = $this->NotificationTypes->newEntity($values);
         $this->assertFalse($this->NotificationTypes->save($new));
+    }
+
+    /**
+     * Test installBaseStatuses method
+     *
+     * @return void
+     */
+    public function testInstallBaseTypes()
+    {
+        $before = $this->NotificationTypes->find('all')->count();
+
+        $installed = $this->NotificationTypes->installBaseTypes();
+
+        $this->assertNotEquals($before, $installed);
+        $this->assertNotEquals(0, $installed);
+
+        $after = $this->NotificationTypes->find('all')->count();
+        $this->assertTrue($after > $before);
     }
 }

@@ -70,7 +70,7 @@ use \Cake\I18n\Date;
                             <tr>
                                 <td><?= h($attendee->firstname) ?></td>
                                 <td><?= h($attendee->lastname) ?></td>
-                                <td><?= $this->Time->i18nformat($attendee->dateofbirth,'dd-MMM-yyyy') ?></td>
+                                <td><?= $this->Time->i18nFormat($attendee->dateofbirth,'dd-MMM-yyyy') ?></td>
                                 <td><?php $age = date_diff($attendee->dateofbirth, Date::now()); echo '<strong>' . $age->y . '</strong>' . ' years & ' . $age->m . ' months'; ?></td>
                                 <td><?= $this->Form->input('attendees.' . $idx . '.role_id', ['options' => $roles, 'label' => '', /*, 'disabled' => 'disabled'*/])  ?></td>
                             </tr>

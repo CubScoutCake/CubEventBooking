@@ -1,21 +1,20 @@
 <?php
 namespace App\Controller\Component;
 
-use App\Model\Entity\Attendee;
-use App\Model\Entity\LogisticItem;
-use App\Model\Entity\User;
 use Cake\Controller\Component;
-use Cake\Controller\ComponentRegistry;
 use Cake\I18n\Date;
-use Cake\Log\Log;
+use Cake\I18n\FrozenTime;
+use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
-use Cake\Utility\Security;
 
 /**
  * Booking component
  *
  * @property \App\Model\Table\LogisticsTable $Logistics
  * @property \App\Model\Table\ReservationsTable $Reservations
+ * @property \App\Model\Table\TokensTable $Tokens
+ * @property \App\Model\Table\UsersTable $Users
+ * @property \App\Model\Table\SectionTypesTable $SectionTypes
  *
  * @property \App\Controller\Component\AvailabilityComponent Availability
  * @property \Cake\Controller\Component\FlashComponent $Flash
@@ -23,10 +22,13 @@ use Cake\Utility\Security;
  * @property \Cake\Controller\Component\AuthComponent $Auth
  *
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class BookingComponent extends Component
 {
     public $components = ['Availability', 'Flash', 'Line', 'Auth'];
+
+    use MailerAwareTrait;
 
     /**
      * Default configuration.
@@ -40,12 +42,16 @@ class BookingComponent extends Component
      * @param bool $leaderPatrol The Leader Patrol
      *
      * @return int|bool
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function guessRole($dateOfBirth, $leaderPatrol = null)
     {
-        $sectionTypesTable = TableRegistry::get('SectionTypes');
+        $this->SectionTypes = TableRegistry::getTableLocator()->get('SectionTypes');
 
-        $leaderSecType = $sectionTypesTable->find('all')->where(['lower_age' => 18])->first();
+        /** @var \App\Model\Entity\SectionType $leaderSecType */
+        $leaderSecType = $this->SectionTypes->find('all')->where(['lower_age' => 18])->first();
         $leaderRole = $leaderSecType->role_id;
 
         if (!isset($dateOfBirth) || !preg_match('/[0-9]+-[0-9]+-[0-9]+/', $dateOfBirth)) {
@@ -57,7 +63,7 @@ class BookingComponent extends Component
             }
         }
 
-        $sectionTypes = $sectionTypesTable
+        $sectionTypes = $this->SectionTypes
             ->find('all')
             ->orderDesc('upper_age')
             ->toArray();
@@ -190,6 +196,9 @@ class BookingComponent extends Component
      * @param bool $flash Should Flash Messages be emitted
      *
      * @return bool|int|mixed
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function addReservation($reservation, $eventId, $requestData, $flash = false)
     {
@@ -271,7 +280,7 @@ class BookingComponent extends Component
                     $result = $this->addResLogistic($reservation->id, $logisticDatum['param_id']);
                     if (!$result) {
                         if ($flash) {
-                            $this->Flash->error('There was an Adding you to the Session');
+                            $this->Flash->error('There was an Error Adding you to the Session');
                         }
 
                         return false;
@@ -285,7 +294,74 @@ class BookingComponent extends Component
                 $this->Auth->setUser($user->toArray());
             }
 
+            $this->notifyReservation($reservation->get('id'));
+
             return true;
         }
+    }
+
+    /**
+     * Make a Session or Param Reservation
+     *
+     * @param int $reservationId The Reservation to be Attached
+     *
+     * @return bool|int|mixed
+     */
+    public function notifyReservation($reservationId)
+    {
+        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
+        $reservation = $this->Reservations->get($reservationId, ['contain' => 'Users']);
+
+        $this->Tokens = TableRegistry::getTableLocator()->get('Tokens');
+        $this->Users = $this->Tokens->EmailSends->Users;
+
+        $now = FrozenTime::now();
+
+        $notificationType = $this->Tokens->EmailSends->NotificationTypes->find()->where(['notification_type' => 'Reservation Confirmation'])->first();
+        $notificationTypeId = $notificationType->id;
+
+        $subject = 'Reservation Confirmation ' . $reservation->reservation_number;
+
+        $data = [
+            'token' => 'Token for ' . $subject,
+            'email_send' => [
+                'sent' => $now,
+                'user_id' => $reservation->user->id,
+                'subject' => $subject,
+                'notification_type_id' => $notificationTypeId,
+                'notification' => [
+                    'notification_header' => 'Reservation Confirmation',
+                    'notification_type_id' => $notificationTypeId,
+                    'user_id' => $reservation->user->id,
+                    'new' => true,
+                    'notification_source' => 'User',
+                    'text' => 'Reservation Confirmation sent for ' . $reservation->reservation_number,
+                ]
+            ],
+            'token_header' => [
+                'redirect' => [
+                    'controller' => 'Reservations',
+                    'action' => 'view',
+                    'prefix' => 'parent',
+                    $reservation->id
+                ],
+                'authenticate' => true,
+            ]
+        ];
+
+        $tokenEntity = $this->Tokens->newEntity($data);
+
+        if ($this->Tokens->save($tokenEntity, ['associated' => 'EmailSends.Notifications'])) {
+            $tokenId = $tokenEntity->get('id');
+
+            $token = $this->Tokens->buildToken($tokenId);
+            $tokenEntity = $this->Tokens->get($tokenId, ['contain' => ['EmailSends' => ['Users', 'Tokens', 'Notifications']]]);
+
+            $this->getMailer('Reserve')->send('confirmation', [$tokenEntity->email_send, $reservation, $token]);
+
+            return true;
+        }
+
+        return false;
     }
 }

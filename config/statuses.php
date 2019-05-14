@@ -165,7 +165,7 @@ return [
             'icon' => 'fa-clock'
         ],
         [
-            'notification_type' => 'Reservation Confirmed',
+            'notification_type' => 'Reservation Confirmation',
             'notification_description' => 'Notification of an Invoice where the deposit is past due.',
             'icon' => 'fa-ticket-alt'
         ],

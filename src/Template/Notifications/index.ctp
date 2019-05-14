@@ -22,7 +22,7 @@
                         </td>
                         <td><?= $notification->new ? '' : '<i class="fal fa-check fa-fw"></i>' ?></td>
                         <td><?= $notification->has('notification_type') ? h($notification->notification_type->notification_type) : '' ?></td>
-                        <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->i18nFormat($notification->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

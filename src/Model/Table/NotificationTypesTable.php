@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\NotificationType;
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -73,5 +74,31 @@ class NotificationTypesTable extends Table
         $rules->add($rules->isUnique(['notification_type']));
 
         return $rules;
+    }
+
+    /**
+     * install the application status config
+     *
+     * @return mixed
+     */
+    public function installBaseTypes()
+    {
+        $base = Configure::read('notificationTypes');
+
+        $total = 0;
+
+        foreach ($base as $baseType) {
+            $query = $this->find()->where(['notification_type' => $baseType['notification_type']]);
+            $status = $this->newEntity();
+            if ($query->count() > 0) {
+                $status = $query->first();
+            }
+            $this->patchEntity($status, $baseType);
+            if ($this->save($status)) {
+                $total += 1;
+            };
+        }
+
+        return $total;
     }
 }

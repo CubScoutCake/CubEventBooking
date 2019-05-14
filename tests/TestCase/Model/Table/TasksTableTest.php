@@ -156,9 +156,9 @@ class TasksTableTest extends TestCase
             'completed',
         ];
 
-        foreach ($notEmpties as $not_empty) {
+        foreach ($notEmpties as $notEmpty) {
             $reqArray = $this->getGood();
-            $reqArray[$not_empty] = '';
+            $reqArray[$notEmpty] = '';
             $new = $this->Tasks->newEntity($reqArray);
             $this->assertFalse($this->Tasks->save($new));
         }

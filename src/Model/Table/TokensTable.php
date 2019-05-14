@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use App\Utility\TextSafe;
 use Cake\Database\Schema\TableSchema;
 use Cake\Event\Event;
 use Cake\I18n\Time;
@@ -194,6 +195,7 @@ class TokensTable extends Table
         $token = base64_encode($token);
 
         $token = $decrypter . $token;
+        $token = TextSafe::encode($token);
 
         return $token;
     }
@@ -219,7 +221,7 @@ class TokensTable extends Table
     public function validateToken($token)
     {
         $token = urldecode($token);
-        //$token = gzuncompress($token);
+        $token = TextSafe::decode($token);
         $decrypter = substr($token, 0, 8);
 
         $token = substr($token, 8);
