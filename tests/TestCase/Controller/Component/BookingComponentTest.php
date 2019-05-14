@@ -3,7 +3,6 @@ namespace App\Test\TestCase\Controller\Component;
 
 use App\Controller\Component\BookingComponent;
 use Cake\Controller\ComponentRegistry;
-use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -232,6 +231,17 @@ class BookingComponentTest extends TestCase
     public function testNotifyReservation()
     {
         $response = $this->Booking->notifyReservation(1);
+        $this->assertTrue($response);
+    }
+
+    /**
+     * Test initial setup
+     *
+     * @return void
+     */
+    public function testConfirmReservation()
+    {
+        $response = $this->Booking->confirmReservation(1);
         $this->assertTrue($response);
     }
 }

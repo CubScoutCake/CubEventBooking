@@ -364,4 +364,74 @@ class BookingComponent extends Component
 
         return false;
     }
+
+    /**
+     * Make a Session or Param Reservation
+     *
+     * @param int $reservationId The Reservation to be Attached
+     *
+     * @return bool|int|mixed
+     */
+    public function confirmReservation($reservationId)
+    {
+        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
+        $reservation = $this->Reservations->get($reservationId, ['contain' => ['Users', 'ReservationStatuses']]);
+
+        $reservation->set('reservation_status_id', $this->Reservations->determineStatus($reservation->id));
+        if ($this->Reservations->save($reservation, ['validate' => false])) {
+            $reservation = $this->Reservations->get($reservationId, ['contain' => ['Users', 'ReservationStatuses']]);
+        }
+
+        $this->Tokens = TableRegistry::getTableLocator()->get('Tokens');
+        $this->Users = $this->Tokens->EmailSends->Users;
+
+        $now = FrozenTime::now();
+
+        $notificationType = $this->Tokens->EmailSends->NotificationTypes->find()->where(['notification_type' => 'Reservation Payment Received'])->first();
+        $notificationTypeId = $notificationType->id;
+
+        $subject = 'Payment Received for Reservation ' . $reservation->reservation_number;
+
+        $data = [
+            'token' => 'Token for ' . $subject,
+            'email_send' => [
+                'sent' => $now,
+                'user_id' => $reservation->user->id,
+                'subject' => $subject,
+                'notification_type_id' => $notificationTypeId,
+                'notification' => [
+                    'notification_header' => 'Reservation Payment Received',
+                    'notification_type_id' => $notificationTypeId,
+                    'user_id' => $reservation->user->id,
+                    'new' => true,
+                    'notification_source' => 'Admin',
+                    'text' => $subject,
+                ]
+            ],
+            'token_header' => [
+                'redirect' => [
+                    'controller' => 'Reservations',
+                    'action' => 'view',
+                    'prefix' => 'parent',
+                    $reservation->id
+                ],
+                'authenticate' => true,
+            ]
+        ];
+
+        $tokenEntity = $this->Tokens->newEntity($data);
+
+        if ($this->Tokens->save($tokenEntity, ['associated' => 'EmailSends.Notifications'])) {
+            $tokenId = $tokenEntity->get('id');
+
+            $token = $this->Tokens->buildToken($tokenId);
+            $tokenEntity = $this->Tokens->get($tokenId, ['contain' => ['EmailSends' => ['Users', 'Tokens', 'Notifications']]]);
+
+            $this->getMailer('Reserve')->send('confirmation', [$tokenEntity->email_send, $reservation, $token]);
+
+            return true;
+        }
+
+        return false;
+    }
 }

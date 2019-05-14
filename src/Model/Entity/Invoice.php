@@ -93,7 +93,7 @@ class Invoice extends Entity
      */
     protected function _getIsPaid()
     {
-        if ($this->_properties['initialvalue'] == $this->_properties['value'] && $this->_properties['initialvalue'] != 0) {
+        if ($this->_properties['initialvalue'] <= $this->_properties['value'] && $this->_properties['initialvalue'] != 0) {
             return true;
         }
 

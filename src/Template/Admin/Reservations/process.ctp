@@ -5,11 +5,41 @@
  */
 ?>
 <?php if (!empty($reservation)): ?>
+    <!-- Event Section -->
+    <section id="event" class="signup-section text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline btn-success dropdown-toggle" data-toggle="dropdown">
+                                Actions
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu">
+                                <li><?= $this->Html->link(__('View Reservation'), ['controller' => 'Reservations', 'action' => 'view', 'prefix' => 'admin', $reservation->id]) ?></li>
+                                <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Reservations', 'action' => 'delete', $reservation->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $reservation->id)]) ?></li>
+                                <li class='divider'></li>
+                                <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'prefix' => 'admin', 'action' => 'new_reservation', $reservation->id]) ?></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 mx-auto">
+                    <h2 class="text-white mb-4"><?= $reservation->event->full_name ?></h2>
+                    <h3 class="text-white-100">Reservation for <?= $reservation->attendee->full_name ?></h3>
+                </div>
+            </div>
+        </div>
+    </section>
     <section id="booking" class="contact-section">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="panel py-4 h-100">
+                    <div class="panel panel-default py-4 h-100">
                         <div class="panel-body text-center">
                             <i class="fal fa-3x fa-ticket-alt mb-2"></i>
                             <br/>
@@ -21,7 +51,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="panel py-4 h-100">
+                    <div class="panel panel-default py-4 h-100">
                         <div class="panel-body text-center">
                             <i class="fal fa-3x fa-stopwatch mb-2"></i>
                             <br/>
@@ -35,11 +65,48 @@
         </div>
     </section>
 
+    <!-- Reservation Section -->
+    <section id="status" class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default py-4 h-100">
+                        <div class="panel-body text-center">
+                            <i class="fal fa-3x fa-question mb-2"></i>
+                            <br/>
+                            <h3 class="text-uppercase">Reservation Status</h3>
+                            <hr class="my-4">
+                            <div><h1 class="display-4 text-black"><?= $reservation->reservation_status->reservation_status ?></h1></div>
+                            <p><?= $reservation->reservation_status->complete ? 'Reservation is Complete.' : 'Reservation is not Complete.' ?></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <?php foreach ($reservation->logistic_items as $idx => $logistic_item) : ?>
+                        <div class="panel panel-default py-4 h-100">
+                            <div class="panel-body text-center">
+                                <i class="fal fa-3x fa-calendar-check mb-2"></i>
+                                <br/>
+                                <h3 class="text-uppercase"><?= $logistic_item->logistic->header ?></h3>
+                                <hr class="my-4">
+
+                                <div><h1 class="display-4 text-black"><?= h($logistic_item->param->constant)  ?></h1></div>
+
+                                <p>The Session that is reserved.</p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="payment" class="contact-section">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="panel py-4 h-100">
+                    <div class="panel panel-default py-4 h-100">
                         <div class="panel-body text-center">
                             <i class="fal fa-3x fa-money-check-alt mb-2"></i>
                             <br/>
@@ -56,24 +123,24 @@
                                         <?= $this->Form->create($reservation) ?>
                                         <fieldset>
                                         <?php
-                                        echo $this->Form->dateTime('invoices.payments.0.paid', ['label' => 'Date of Payment (date on cheque)', 'default' => 'now']);
+                                        echo $this->Form->dateTime('invoice.payments.0.paid', ['label' => 'Date of Payment (date on cheque)', 'default' => 'now']);
                                         ?>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <?php echo $this->Form->control('invoices.payments.0.name_on_cheque'); ?>
+                                                <?php echo $this->Form->control('invoice.payments.0.name_on_cheque'); ?>
                                             </div>
                                             <div class="col-md-6">
-                                                <?php echo $this->Form->control('invoices.payments.0.payment_notes'); ?>
+                                                <?php echo $this->Form->control('invoice.payments.0.payment_notes'); ?>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <?php echo $this->Form->control('invoices.payments.0.cheque_number'); ?>
+                                                <?php echo $this->Form->control('invoice.payments.0.cheque_number'); ?>
                                             </div>
                                             <div class="col-md-6">
                                                 <?php
-                                                    echo $this->Form->control('invoices.payments.0.id', ['type' => 'hidden', 'default' => $reservation->invoice->id, 'label' => 'Invoice Associated']);
-                                                    echo $this->Form->control('invoices.payments.0._joinData.x_value', ['label' => 'Value to Invoice']);
+                                                    echo $this->Form->control('invoice.payments.0.id', ['type' => 'hidden']);
+                                                    echo $this->Form->control('invoice.payments.0._joinData.x_value', ['label' => 'Value to Invoice']);
                                                 ?>
                                             </div>
                                         </div>
@@ -101,7 +168,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="panel py-4 h-100">
+                    <div class="panel panel-default py-4 h-100">
                         <div class="panel-body text-center">
                             <i class="fal fa-3x fa-child mb-2"></i>
                             <br/>
@@ -116,7 +183,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="panel py-4 h-100">
+                    <div class="panel panel-default py-4 h-100">
                         <div class="panel-body text-center">
                             <i class="fal fa-3x fa-user-alt mb-2"></i>
                             <br/>

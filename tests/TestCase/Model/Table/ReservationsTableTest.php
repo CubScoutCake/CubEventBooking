@@ -26,26 +26,39 @@ class ReservationsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.reservations',
-        'app.events',
-        'app.event_statuses',
-        'app.event_types',
-        'app.discounts',
-        'app.notifications',
-        'app.notification_types',
-        'app.users',
-        'app.roles',
-        'app.scoutgroups',
-        'app.password_states',
+        'app.sessions',
         'app.districts',
-        'app.champions',
-        'app.sections',
+        'app.scoutgroups',
         'app.section_types',
+        'app.sections',
+        'app.password_states',
         'app.auth_roles',
-        'app.settings',
+        'app.item_types',
+        'app.roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
+        'app.application_statuses',
         'app.setting_types',
-        'app.reservation_statuses',
+        'app.settings',
+        'app.event_types',
+        'app.event_statuses',
+        'app.discounts',
+        'app.events',
+        'app.prices',
+        'app.applications',
+        'app.task_types',
+        'app.tasks',
         'app.attendees',
+        'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.invoices',
+        'app.invoice_items',
+        'app.payments',
+        'app.invoices_payments',
     ];
 
     /**
@@ -127,6 +140,7 @@ class ReservationsTableTest extends TestCase
             'reservation_status_id' => 1,
             'reservation_code' => 'PLX',
             'reservation_number' => '1-1-PLX',
+            'cancelled' => false,
         ];
         $this->assertEquals($expected, $actual);
 
@@ -308,7 +322,19 @@ class ReservationsTableTest extends TestCase
      */
     public function testDetermineExpired()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
+        $reservation = $this->Reservations->get(1);
+
+        FrozenTime::setTestNow('2019-01-01 18:00:00');
+
+        $reservation->set('expires', '2019-01-05 18:00:00');
+        $this->Reservations->save($reservation, ['validate' => false]);
+
+        $this->assertFalse($this->Reservations->determineExpired(1));
+
+        FrozenTime::setTestNow('2019-01-05 18:05:00');
+
+        $this->assertTrue($this->Reservations->determineExpired(1));
     }
 
     /**
@@ -318,7 +344,41 @@ class ReservationsTableTest extends TestCase
      */
     public function testDeterminePaid()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
+        $reservation = $this->Reservations->get(1, ['contain' => 'Invoices']);
+
+        $invoice = $reservation->invoice;
+        $invoice->set('value', 0);
+        $this->Reservations->Invoices->save($invoice, ['validate' => false]);
+
+        $this->assertFalse($this->Reservations->determinePaid(1));
+
+        $invoice = $reservation->invoice;
+        $invoice->set('value', 1);
+        $this->Reservations->Invoices->save($invoice, ['validate' => false]);
+
+        $this->assertTrue($this->Reservations->determinePaid(1));
+    }
+
+    /**
+     * Test determinePaid method
+     *
+     * @return void
+     */
+    public function testDetermineCancelled()
+    {
+        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
+        $reservation = $this->Reservations->get(1);
+
+        $reservation->set('cancelled', false);
+        $this->Reservations->save($reservation, ['validate' => false]);
+
+        $this->assertFalse($this->Reservations->determineCancelled(1));
+
+        $reservation->set('cancelled', true);
+        $this->Reservations->save($reservation, ['validate' => false]);
+
+        $this->assertTrue($this->Reservations->determineCancelled(1));
     }
 
     /**
@@ -328,7 +388,56 @@ class ReservationsTableTest extends TestCase
      */
     public function testDetermineEventStatus()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
+        $reservation = $this->Reservations->get(1, ['contain' => 'Invoices']);
+
+        $this->Reservations->ReservationStatuses->installBaseStatuses();
+        FrozenTime::setTestNow('2019-01-01 18:00:00');
+
+        $reservation->set('expires', '2019-01-05 18:00:00');
+        $this->Reservations->save($reservation, ['validate' => false]);
+
+        // Pending Payment - 1
+        $this->assertFalse($this->Reservations->determineCancelled(1));
+        $this->assertFalse($this->Reservations->determineExpired(1));
+        $this->assertFalse($this->Reservations->determinePaid(1));
+
+        $this->assertEquals(1, $this->Reservations->determineStatus(1));
+
+        // Complete - 2
+        $invoice = $reservation->invoice;
+        $invoice->set('value', 1);
+        $this->Reservations->Invoices->save($invoice, ['validate' => false]);
+
+        $this->assertFalse($this->Reservations->determineCancelled(1));
+        $this->assertFalse($this->Reservations->determineExpired(1));
+        $this->assertTrue($this->Reservations->determinePaid(1));
+
+        $this->assertEquals(2, $this->Reservations->determineStatus(1));
+
+        // Expired - 3
+        $invoice = $reservation->invoice;
+        $invoice->set('value', 0);
+        $this->Reservations->Invoices->save($invoice, ['validate' => false]);
+
+        FrozenTime::setTestNow('2019-01-10 18:00:00');
+
+        $this->assertFalse($this->Reservations->determineCancelled(1));
+        $this->assertTrue($this->Reservations->determineExpired(1));
+        $this->assertFalse($this->Reservations->determinePaid(1));
+
+        $this->assertEquals(3, $this->Reservations->determineStatus(1));
+
+        // Cancelled - 4
+        FrozenTime::setTestNow('2019-01-01 18:00:00');
+        $reservation->set('cancelled', true);
+        $this->Reservations->save($reservation, ['validate' => false]);
+
+        $this->assertTrue($this->Reservations->determineCancelled(1));
+        $this->assertFalse($this->Reservations->determineExpired(1));
+        $this->assertFalse($this->Reservations->determinePaid(1));
+
+        $this->assertEquals(4, $this->Reservations->determineStatus(1));
     }
 
     /**

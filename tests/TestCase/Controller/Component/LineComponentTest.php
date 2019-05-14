@@ -250,10 +250,13 @@ class LineComponentTest extends TestCase
         $this->Reservations = $this->getTableLocator()->get('Reservations');
         $reservation = $this->Reservations->get(1, ['contain' => 'Invoices.InvoiceItems']);
 
+        $reservation->set('event_id', 2);
+        $this->Reservations->save($reservation, ['validate' => false]);
+
         $this->assertTrue($reservation->has('invoice'));
 
         $this->assertEquals(1, $reservation->invoice->initialvalue);
-        $this->assertEquals(0, $reservation->invoice->balance);
+        $this->assertEquals(1, $reservation->invoice->balance);
         $this->assertEquals(0, count($reservation->invoice->invoice_items));
 
         $response = $this->Line->parseReservation($reservation->id);
@@ -261,8 +264,8 @@ class LineComponentTest extends TestCase
         $reservation = $this->Reservations->get(1, ['contain' => 'Invoices.InvoiceItems']);
 
         $this->assertTrue($response);
-//        $this->assertEquals(20, $reservation->invoice->initialvalue);
-//        $this->assertEquals(19, $reservation->invoice->balance);
+        $this->assertEquals(20, $reservation->invoice->initialvalue);
+        $this->assertEquals(20, $reservation->invoice->balance);
         $this->assertEquals(1, count($reservation->invoice->invoice_items));
     }
 }

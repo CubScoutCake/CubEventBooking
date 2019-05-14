@@ -61,15 +61,15 @@ return [
         ],
         [
             'reservation_status' => 'Cancelled',
-            'active' => 0,
-            'complete' => 0,
+            'active' => false,
+            'complete' => false,
             'cancelled' => true,
             'status_order' => 0
         ],
         [
             'reservation_status' => 'Complete',
-            'active' => 1,
-            'complete' => 1,
+            'active' => true,
+            'complete' => true,
             'cancelled' => false,
             'status_order' => 3,
         ],

@@ -46,10 +46,17 @@ class ReservationStatusesFixture extends TestFixture
                 'active' => true,
                 'complete' => true,
                 'cancelled' => false,
-                'status_order' => 1
+                'status_order' => 3,
             ],
             [
-                'reservation_status' => 'cancelled',
+                'reservation_status' => 'Expired',
+                'active' => false,
+                'complete' => false,
+                'cancelled' => true,
+                'status_order' => 0,
+            ],
+            [
+                'reservation_status' => 'Cancelled',
                 'active' => false,
                 'complete' => false,
                 'cancelled' => true,

@@ -81,7 +81,7 @@ class InvoicesFixture extends TestFixture
             [
                 'user_id' => 1,
                 'application_id' => null,
-                'value' => 1,
+                'value' => 0,
                 'created' => date_create('2016-12-26 23:22:30'),
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'paid' => 1,

@@ -108,19 +108,19 @@ class ReservationsTable extends Table
 
         $validator
             ->allowEmptyString('user_id', false)
-            ->requirePresence('user_id');
+            ->requirePresence('user_id', 'create');
 
         $validator
             ->allowEmptyString('attendee_id', false)
-            ->requirePresence('attendee_id');
+            ->requirePresence('attendee_id', 'create');
 
         $validator
             ->allowEmptyString('event_id', false)
-            ->requirePresence('event_id');
+            ->requirePresence('event_id', 'create');
 
         $validator
             ->allowEmptyString('reservation_status_id', false)
-            ->requirePresence('reservation_status_id');
+            ->requirePresence('reservation_status_id', 'create');
 
         $validator
             ->dateTime('expires')
@@ -264,16 +264,31 @@ class ReservationsTable extends Table
     }
 
     /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $reservationId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determineCancelled($reservationId)
+    {
+        $reservation = $this->get($reservationId);
+
+        return $reservation->cancelled;
+    }
+
+    /**
      * Method to determine the maximum section numbers for an event.
      *
      * @param int $reservationId The booking Event
      *
      * @return int
      */
-    public function determineEventStatus($reservationId)
+    public function determineStatus($reservationId)
     {
         $complete = $this->determinePaid($reservationId);
         $expired = $this->determineExpired($reservationId);
+        $cancelled = $this->determineCancelled($reservationId);
 
         if ($expired) {
             $query = $this->ReservationStatuses->find()->where(['reservation_status' => 'Expired']);
@@ -281,11 +296,16 @@ class ReservationsTable extends Table
             return $query->first()->id;
         }
 
+        if ($cancelled) {
+            $query = $this->ReservationStatuses->find()->where(['reservation_status' => 'Cancelled']);
+
+            return $query->first()->id;
+        }
+
         if ($complete) {
-            return $this->ReservationStatuses->find()->where([
-                'active' => !$expired,
-                'complete' => $complete,
-            ])->first()->id;
+            $query = $this->ReservationStatuses->find()->where(['reservation_status' => 'Complete']);
+
+            return $query->first()->id;
         }
 
         return $this->ReservationStatuses->find()->where(['reservation_status' => 'Pending Payment'])->first()->id;
