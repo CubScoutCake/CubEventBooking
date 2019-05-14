@@ -11,12 +11,12 @@ use Cake\ORM\Entity;
  * @property string $full_name
  * @property bool|null $live
  * @property bool|null $new_apps
- * @property \Cake\I18n\Time $start_date
- * @property \Cake\I18n\Time $end_date
- * @property \Cake\I18n\Time|null $created
- * @property \Cake\I18n\Time|null $modified
+ * @property \Cake\I18n\FrozenTime $start_date
+ * @property \Cake\I18n\FrozenTime $end_date
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
  * @property bool|null $deposit
- * @property \Cake\I18n\Time|null $deposit_date
+ * @property \Cake\I18n\FrozenTime|null $deposit_date
  * @property bool|null $deposit_inc_leaders
  * @property string $logo
  * @property int|null $discount_id
@@ -28,19 +28,21 @@ use Cake\ORM\Entity;
  * @property int $admin_user_id
  * @property int|null $max_apps
  * @property int|null $max_section
- * @property \Cake\I18n\Time|null $deleted
+ * @property \Cake\I18n\FrozenTime|null $deleted
  * @property int $event_type_id
  * @property int $section_type_id
- * @property \Cake\I18n\Time|null $closing_date
+ * @property \Cake\I18n\FrozenTime|null $closing_date
  * @property int|null $cc_apps
  * @property bool $complete
  * @property int|null $cc_prices
  * @property bool $team_price
  * @property int $event_status_id
- * @property \Cake\I18n\Time|null $opening_date
+ * @property \Cake\I18n\FrozenTime|null $opening_date
  * @property int $cc_res
  * @property int $cc_atts
+ * @property bool $deposit_is_schedule
  * @property bool $force_full
+ * @property int|null $cc_complete_reservations
  *
  * @property bool $app_full
  *
@@ -100,6 +102,9 @@ class Event extends Entity
         'opening_date' => true,
         'cc_res' => true,
         'cc_atts' => true,
+        'deposit_is_schedule' => true,
+        'force_full' => true,
+        'cc_complete_reservations' => true,
         'discount' => true,
         'user' => true,
         'event_type' => true,
@@ -109,8 +114,7 @@ class Event extends Entity
         'logistics' => true,
         'prices' => true,
         'reservations' => true,
-        'settings' => true,
-        'force_full' => true,
+        'settings' => true
     ];
 
     /**
@@ -119,6 +123,7 @@ class Event extends Entity
      * @return string
      *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function _getAppFull()
     {

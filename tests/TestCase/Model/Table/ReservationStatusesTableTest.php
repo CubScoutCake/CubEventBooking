@@ -11,7 +11,6 @@ use Cake\Utility\Security;
  */
 class ReservationStatusesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -25,7 +24,7 @@ class ReservationStatusesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.reservation_statuses',
+        'app.ReservationStatuses',
     ];
 
     /**
@@ -64,7 +63,9 @@ class ReservationStatusesTableTest extends TestCase
         $good = [
             'reservation_status' => 'Status ' . random_int(111, 999) . ' ' . random_int(111, 999),
             'active' => true,
-            'complete' => true
+            'complete' => true,
+            'cancelled' => false,
+            'status_order' => random_int(0, 999)
         ];
 
         return $good;
@@ -81,14 +82,16 @@ class ReservationStatusesTableTest extends TestCase
 
         $expected = [
             'id' => 1,
-            'reservation_status' => 'Lorem ipsum dolor sit amet',
-            'active' => 1,
-            'complete' => 1
+            'reservation_status' => 'Pending Payment',
+            'active' => true,
+            'complete' => false,
+            'cancelled' => false,
+            'status_order' => 1,
         ];
         $this->assertEquals($expected, $actual);
 
         $count = $this->ReservationStatuses->find('all')->count();
-        $this->assertEquals(2, $count);
+        $this->assertEquals(3, $count);
     }
 
     /**
@@ -106,7 +109,8 @@ class ReservationStatusesTableTest extends TestCase
         $required = [
             'reservation_status',
             'active',
-            'complete'
+            'complete',
+            'cancelled'
         ];
 
         foreach ($required as $require) {
@@ -138,8 +142,6 @@ class ReservationStatusesTableTest extends TestCase
 
         $notEmpties = [
             'reservation_status',
-            'active',
-            'complete'
         ];
 
         foreach ($notEmpties as $notEmpty) {
@@ -191,7 +193,7 @@ class ReservationStatusesTableTest extends TestCase
     }
 
     /**
-     * Test installBaseCapabilities method
+     * Test installBaseStatuses method
      *
      * @return void
      */

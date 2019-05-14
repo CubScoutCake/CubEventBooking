@@ -2,7 +2,6 @@
 namespace App\Model\Table;
 
 use Cake\Core\Configure;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -63,12 +62,21 @@ class ReservationStatusesTable extends Table
         $validator
             ->boolean('active')
             ->requirePresence('active', 'create')
-            ->allowEmptyString('active', false);
+            ->allowEmptyString('active');
 
         $validator
             ->boolean('complete')
             ->requirePresence('complete', 'create')
-            ->allowEmptyString('complete', false);
+            ->allowEmptyString('complete');
+
+        $validator
+            ->boolean('cancelled')
+            ->requirePresence('cancelled', 'create')
+            ->allowEmptyString('cancelled');
+
+        $validator
+            ->integer('status_order')
+            ->allowEmptyString('status_order', false);
 
         return $validator;
     }

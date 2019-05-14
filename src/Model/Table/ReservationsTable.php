@@ -2,7 +2,7 @@
 namespace App\Model\Table;
 
 use Cake\Core\Configure;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -22,7 +22,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Reservation newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Reservation[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Reservation|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Reservation|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Reservation saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Reservation patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Reservation[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Reservation findOrCreate($search, callable $callback = null, $options = [])
@@ -31,7 +31,6 @@ use Cake\Validation\Validator;
  */
 class ReservationsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -58,7 +57,10 @@ class ReservationsTable extends Table
         $this->addBehavior('CounterCache', [
             'Events' => [
                 'cc_res' => [
-                    'finder' => 'active'
+                    'finder' => 'active',
+                ],
+                'cc_complete_reservations' => [
+                    'finder' => 'complete',
                 ]
             ],
         ]);
@@ -128,6 +130,10 @@ class ReservationsTable extends Table
             ->scalar('reservation_code')
             ->maxLength('reservation_code', 3)
             ->allowEmptyString('reservation_code');
+
+        $validator
+            ->boolean('cancelled')
+            ->allowEmptyString('cancelled', false);
 
         return $validator;
     }
@@ -206,7 +212,6 @@ class ReservationsTable extends Table
         return $query->contain('ReservationStatuses')->where(['ReservationStatuses.complete' => true]);
     }
 
-
     /**
      * Various Event Completion Analyses.
      *
@@ -220,7 +225,7 @@ class ReservationsTable extends Table
             return false;
         }
 
-        $now = Time::now();
+        $now = FrozenTime::now();
         $difference = $now->diff($date);
 
         if ($difference->invert != 0) {
@@ -305,7 +310,7 @@ class ReservationsTable extends Table
 
             $expiry = Configure::read('Schedule.reservation', '+10 days');
 
-            $now = Time::now();
+            $now = FrozenTime::now();
             $expiryDate = $now->modify($expiry);
 
             $entity->set('expires', $expiryDate);

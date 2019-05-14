@@ -27,14 +27,16 @@ class UsersTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.Users',
-        'app.Roles',
-        'app.AuthRoles',
-        'app.PasswordStates',
-        'app.Scoutgroups',
-        'app.Districts',
-        'app.SectionTypes',
-        'app.Sections',
+        'app.sessions',
+        'app.districts',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
+        'app.users',
     ];
 
     /**

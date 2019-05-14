@@ -30,6 +30,7 @@ class ApplicationsAttendeesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.sessions',
         'app.districts',
         'app.scoutgroups',
         'app.section_types',
@@ -50,8 +51,12 @@ class ApplicationsAttendeesTableTest extends TestCase
         'app.events',
         'app.prices',
         'app.applications',
+        'app.task_types',
+        'app.tasks',
         'app.attendees',
         'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
     ];
 
     /**

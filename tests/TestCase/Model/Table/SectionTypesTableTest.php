@@ -24,8 +24,15 @@ class SectionTypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.sessions',
+        'app.districts',
+        'app.scoutgroups',
         'app.section_types',
-        'app.roles'
+        'app.sections',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
     ];
 
     /**

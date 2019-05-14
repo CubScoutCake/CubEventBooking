@@ -3,7 +3,6 @@ namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\EventsTable;
 use Cake\I18n\FrozenTime;
-use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -12,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class EventsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -142,10 +140,12 @@ class EventsTableTest extends TestCase
             'complete' => false,
             'team_price' => true,
             'event_status_id' => 1,
-            'cc_res' => 1,
+            'cc_res' => 0,
             'cc_atts' => 1,
             'app_full' => false,
             'force_full' => false,
+            'deposit_is_schedule' => false,
+            'cc_complete_reservations' => 0,
         ];
         $this->assertEquals($expected, $actual);
 
@@ -205,7 +205,23 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test determineComplete method
+     * Test getPriceSection method
+     *
+     * @return void
+     */
+    public function testGetPriceSection()
+    {
+        // Team Price Event
+        $section = $this->Events->getPriceSection(2);
+        $this->assertEquals(6, $section);
+
+        // Individual Price Event
+        $section = $this->Events->getPriceSection(3);
+        $this->assertEquals(5, $section);
+    }
+
+    /**
+     * Test determinePending method
      *
      * @return void
      */
@@ -233,7 +249,7 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test determineComplete method
+     * Test determineStarted method
      *
      * @return void
      */
@@ -261,7 +277,7 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test determineComplete method
+     * Test determineClosed method
      *
      * @return void
      */
@@ -289,7 +305,7 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test determineComplete method
+     * Test determineOver method
      *
      * @return void
      */
@@ -317,7 +333,17 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test determineComplete method
+     * Test determineFull method
+     *
+     * @return void
+     */
+    public function testDetermineFull()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test determineEventStatus method
      *
      * @return void
      */
@@ -447,23 +473,17 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test findUpcoming method
+     * Test checkEventOpen method
      *
      * @return void
      */
-    public function testGetPriceSection()
+    public function testCheckEventOpen()
     {
-        // Team Price Event
-        $section = $this->Events->getPriceSection(2);
-        $this->assertEquals(6, $section);
-
-        // Individual Price Event
-        $section = $this->Events->getPriceSection(3);
-        $this->assertEquals(5, $section);
+        $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
-     * Test findUpcoming method
+     * Test schedule method
      *
      * @return void
      */
@@ -492,7 +512,7 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test determineComplete method
+     * Test beforeSave method
      *
      * @return void
      */

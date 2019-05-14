@@ -24,6 +24,7 @@ class TasksTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.sessions',
         'app.districts',
         'app.scoutgroups',
         'app.section_types',

@@ -11,11 +11,12 @@ use Cake\ORM\Entity;
  * @property int $user_id
  * @property int $attendee_id
  * @property int $reservation_status_id
- * @property \Cake\I18n\Time $created
- * @property \Cake\I18n\Time $modified
- * @property \Cake\I18n\Time $deleted
- * @property \Cake\I18n\Time $expires
- * @property string $reservation_code
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\FrozenTime|null $deleted
+ * @property \Cake\I18n\FrozenTime|null $expires
+ * @property string|null $reservation_code
+ * @property bool $cancelled
  *
  * @property string $reservation_number
  *
@@ -30,7 +31,6 @@ use Cake\ORM\Entity;
  */
 class Reservation extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -50,6 +50,7 @@ class Reservation extends Entity
         'deleted' => true,
         'expires' => true,
         'reservation_code' => true,
+        'cancelled' => true,
         'event' => true,
         'user' => true,
         'attendee' => true,

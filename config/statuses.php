@@ -54,28 +54,38 @@ return [
     'reservationStatuses' => [
         [
             'reservation_status' => 'Pending Payment',
-            'active' => 1,
-            'complete' => 0,
+            'active' => true,
+            'complete' => false,
+            'cancelled' => false,
+            'status_order' => 2,
         ],
         [
             'reservation_status' => 'Cancelled',
             'active' => 0,
             'complete' => 0,
+            'cancelled' => true,
+            'status_order' => 0
         ],
         [
             'reservation_status' => 'Complete',
             'active' => 1,
             'complete' => 1,
+            'cancelled' => false,
+            'status_order' => 3,
         ],
         [
             'reservation_status' => 'On Waiting List',
-            'active' => 0,
-            'complete' => 0,
+            'active' => false,
+            'complete' => false,
+            'cancelled' => false,
+            'status_order' => 1,
         ],
         [
             'reservation_status' => 'Expired',
-            'active' => 0,
-            'complete' => 0,
+            'active' => false,
+            'complete' => false,
+            'cancelled' => true,
+            'status_order' => 0,
         ],
     ],
     'eventStatuses' => [

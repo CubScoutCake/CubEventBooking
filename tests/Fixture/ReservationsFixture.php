@@ -25,6 +25,7 @@ class ReservationsFixture extends TestFixture
         'deleted' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'expires' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'reservation_code' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'collate' => null, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'cancelled' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'reservations_attendee_id_fkey' => ['type' => 'foreign', 'columns' => ['attendee_id'], 'references' => ['attendees', 'id'], 'update' => 'restrict', 'delete' => 'restrict', 'length' => []],
@@ -51,7 +52,8 @@ class ReservationsFixture extends TestFixture
                 'modified' => 1554766739,
                 'deleted' => null,
                 'expires' => 1554766739,
-                'reservation_code' => 'PLX'
+                'reservation_code' => 'PLX',
+                'cancelled' => false,
             ],
         ];
         parent::init();

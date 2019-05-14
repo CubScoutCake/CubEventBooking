@@ -272,6 +272,66 @@ class ReservationsTableTest extends TestCase
     }
 
     /**
+     * Test findOwnedBy method
+     *
+     * @return void
+     */
+    public function testFindOwnedBy()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test findActive method
+     *
+     * @return void
+     */
+    public function testFindActive()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test findComplete method
+     *
+     * @return void
+     */
+    public function testFindComplete()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test determineExpired method
+     *
+     * @return void
+     */
+    public function testDetermineExpired()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test determinePaid method
+     *
+     * @return void
+     */
+    public function testDeterminePaid()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test determineEventStatus method
+     *
+     * @return void
+     */
+    public function testDetermineEventStatus()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
      * Test beforeSave method
      *
      * @return void
@@ -320,16 +380,25 @@ class ReservationsTableTest extends TestCase
     public function testCounterCache()
     {
         $res = $this->Reservations->get(1);
-        $res->set('reservation_status_id', 2);
+        $res->set('reservation_status_id', 3);
         $this->Reservations->save($res);
 
         $event = $this->Reservations->Events->get(3);
         $this->assertEquals(0, $event->cc_res);
+        $this->assertEquals(0, $event->cc_complete_reservations);
 
         $res->set('reservation_status_id', 1);
         $this->Reservations->save($res);
 
         $event = $this->Reservations->Events->get(3);
         $this->assertEquals(1, $event->cc_res);
+        $this->assertEquals(0, $event->cc_complete_reservations);
+
+        $res->set('reservation_status_id', 2);
+        $this->Reservations->save($res);
+
+        $event = $this->Reservations->Events->get(3);
+        $this->assertEquals(1, $event->cc_res);
+        $this->assertEquals(1, $event->cc_complete_reservations);
     }
 }
