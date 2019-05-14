@@ -64,7 +64,7 @@ return [
             'active' => false,
             'complete' => false,
             'cancelled' => true,
-            'status_order' => 0
+            'status_order' => 4
         ],
         [
             'reservation_status' => 'Complete',
@@ -85,7 +85,7 @@ return [
             'active' => false,
             'complete' => false,
             'cancelled' => true,
-            'status_order' => 0,
+            'status_order' => 4,
         ],
     ],
     'eventStatuses' => [

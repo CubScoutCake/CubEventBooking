@@ -213,6 +213,24 @@ class ReservationsTable extends Table
     }
 
     /**
+     * Finds the Reservations owned by the user.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options An array containing the user to be searched for.
+     *
+     * @return \Cake\ORM\Query The modified query.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function findInProgress($query, $options)
+    {
+        return $query->contain('ReservationStatuses')->where([
+            'ReservationStatuses.complete' => false,
+            'ReservationStatuses.cancelled' => false,
+        ]);
+    }
+
+    /**
      * Various Event Completion Analyses.
      *
      * @param \Cake\I18n\Time $date The Date to be checked
@@ -259,6 +277,10 @@ class ReservationsTable extends Table
     public function determinePaid($reservationId)
     {
         $reservation = $this->get($reservationId, ['contain' => 'Invoices']);
+
+        if (!$reservation->has('invoice')) {
+            return false;
+        }
 
         return $reservation->invoice->is_paid;
     }
@@ -309,6 +331,29 @@ class ReservationsTable extends Table
         }
 
         return $this->ReservationStatuses->find()->where(['reservation_status' => 'Pending Payment'])->first()->id;
+    }
+
+    /**
+     * @param int $reservationId The Event ID
+     *
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function schedule($reservationId)
+    {
+        $reservation = $this->get($reservationId);
+
+        $status = $this->determineStatus($reservationId);
+
+        if ($status <> $reservation->reservation_status_id) {
+            $reservation->set('reservation_status_id', $status);
+            $this->save($reservation, ['validate' => false]);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
