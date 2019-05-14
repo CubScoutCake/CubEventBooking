@@ -192,6 +192,101 @@ class ReservationsTable extends Table
     }
 
     /**
+     * Finds the Reservations owned by the user.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options An array containing the user to be searched for.
+     *
+     * @return \Cake\ORM\Query The modified query.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function findComplete($query, $options)
+    {
+        return $query->contain('ReservationStatuses')->where(['ReservationStatuses.complete' => true]);
+    }
+
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param \Cake\I18n\Time $date The Date to be checked
+     *
+     * @return bool
+     */
+    private function determineDateOccurred($date)
+    {
+        if (is_null($date)) {
+            return false;
+        }
+
+        $now = Time::now();
+        $difference = $now->diff($date);
+
+        if ($difference->invert != 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $reservationId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determineExpired($reservationId)
+    {
+        $reservation = $this->get($reservationId);
+
+        return $this->determineDateOccurred($reservation->expires);
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $reservationId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determinePaid($reservationId)
+    {
+        $reservation = $this->get($reservationId, ['contain' => 'Invoices']);
+
+        return $reservation->invoice->is_paid;
+    }
+
+    /**
+     * Method to determine the maximum section numbers for an event.
+     *
+     * @param int $reservationId The booking Event
+     *
+     * @return int
+     */
+    public function determineEventStatus($reservationId)
+    {
+        $complete = $this->determinePaid($reservationId);
+        $expired = $this->determineExpired($reservationId);
+
+        if ($expired) {
+            $query = $this->ReservationStatuses->find()->where(['reservation_status' => 'Expired']);
+
+            return $query->first()->id;
+        }
+
+        if ($complete) {
+            return $this->ReservationStatuses->find()->where([
+                'active' => !$expired,
+                'complete' => $complete,
+            ])->first()->id;
+        }
+
+        return $this->ReservationStatuses->find()->where(['reservation_status' => 'Pending Payment'])->first()->id;
+    }
+
+    /**
      * Writes the max value to the Logistic
      *
      * @param \Cake\Event\Event $event The event trigger.
