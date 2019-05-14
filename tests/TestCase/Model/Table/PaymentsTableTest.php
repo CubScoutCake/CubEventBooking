@@ -2,7 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\PaymentsTable;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -25,15 +25,38 @@ class PaymentsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.payments',
+        'app.sessions',
         'app.districts',
-        'app.auth_roles',
         'app.scoutgroups',
-        'app.sections',
         'app.section_types',
-        'app.roles',
+        'app.sections',
         'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
         'app.users',
+        'app.notification_types',
+        'app.notifications',
+        'app.application_statuses',
+        'app.setting_types',
+        'app.settings',
+        'app.event_types',
+        'app.event_statuses',
+        'app.discounts',
+        'app.events',
+        'app.prices',
+        'app.applications',
+        'app.task_types',
+        'app.tasks',
+        'app.attendees',
+        'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
+        'app.reservation_statuses',
+        'app.reservations',
+        'app.invoices',
+        'app.invoice_items',
+        'app.payments',
     ];
 
     /**
@@ -47,8 +70,8 @@ class PaymentsTableTest extends TestCase
         $config = TableRegistry::exists('Payments') ? [] : ['className' => 'App\Model\Table\PaymentsTable'];
         $this->Payments = TableRegistry::get('Payments', $config);
 
-        $now = new Time('2016-12-26 23:22:30');
-        Time::setTestNow($now);
+        $now = new FrozenTime('2016-12-26 23:22:30');
+        FrozenTime::setTestNow($now);
     }
 
     /**

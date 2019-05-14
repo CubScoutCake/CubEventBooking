@@ -73,8 +73,8 @@
             <tr>
                 <td><?= h($payments->id) ?></td>
                 <td><?= $this->Number->currency($payments->value,'GBP') ?></td>
-                <td><?= $this->Time->i18nformat($payments->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
-                <td><?= $this->Time->i18nformat($payments->paid,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                <td><?= $this->Time->i18nFormat($payments->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                <td><?= $this->Time->i18nFormat($payments->paid,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                 <td><?= h($payments->name_on_cheque) ?></td>
             </tr>
             <?php endforeach; ?>

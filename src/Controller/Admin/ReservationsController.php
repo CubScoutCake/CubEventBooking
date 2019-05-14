@@ -1,10 +1,13 @@
 <?php
 namespace App\Controller\Admin;
 
+use Cake\ORM\Entity;
+
 /**
  * Reservations Controller
  *
  * @property \App\Model\Table\ReservationsTable $Reservations
+ * @property \App\Controller\Component\BookingComponent $Booking
  *
  * @method \App\Model\Entity\Reservation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -29,14 +32,34 @@ class ReservationsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Reservation id.
+     * @param string|null $reservationId Reservation id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($reservationId = null)
     {
-        $reservation = $this->Reservations->get($id, [
-            'contain' => ['Events', 'Users', 'Attendees', 'ReservationStatuses', 'Invoices', 'LogisticItems']
+        $reservation = $this->Reservations->get($reservationId, [
+            'contain' => [
+                'Events' => [
+                    'EventTypes' => [
+                        'Payable',
+                        'ApplicationRefs',
+                        'LegalTexts',
+                    ],
+                    'AdminUsers',
+                ],
+                'Users',
+                'Attendees' => [
+                    'Sections.Scoutgroups.Districts'
+                ],
+                'ReservationStatuses',
+                'Invoices',
+                'LogisticItems' => [
+                    'Logistics',
+                    'Params',
+                ]
+            ]
         ]);
 
         $this->set('reservation', $reservation);
@@ -124,16 +147,30 @@ class ReservationsController extends AppController
                         'Sections.Scoutgroups.Districts'
                     ],
                     'ReservationStatuses',
-                    'Invoices',
-                    'LogisticItems'
+                    'Invoices.Payments',
+                    'LogisticItems' => [
+                        'Logistics',
+                        'Params',
+                    ]
                 ]
             ]);
             if ($this->request->is(['patch', 'post', 'put']) && !$this->request->getData('id')) {
-                $reservation = $this->Reservations->patchEntity($reservation, $this->request->getData());
-                if ($this->Reservations->save($reservation)) {
-                    $this->Flash->success(__('The reservation has been saved.'));
+                $paymentData = $this->request->getData('invoice.payments.0');
+                $payment = $this->Reservations->Invoices->Payments->newEntity($paymentData);
+                $payment = $this->Reservations->Invoices->Payments->save($payment);
+                $invoice = $this->Reservations->Invoices->get($reservation->invoice->id);
 
-                    return $this->redirect(['action' => 'index']);
+                $payment->_joinData = new Entity($paymentData['_joinData']);
+                $return = $this->Reservations->Invoices->Payments->link($invoice, [$payment]);
+                if ($return) {
+                    $this->loadComponent('Booking');
+                    $bookingResponse = $this->Booking->confirmReservation($reservation->id);
+
+                    if ($bookingResponse) {
+                        $this->Flash->success(__('The reservation has been saved.'));
+
+                        return $this->redirect(['action' => 'view', $reservation->id]);
+                    }
                 }
                 $this->Flash->error(__('The reservation could not be saved. Please, try again.'));
             }

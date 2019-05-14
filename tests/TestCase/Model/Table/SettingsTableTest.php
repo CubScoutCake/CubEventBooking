@@ -2,7 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\SettingsTable;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -25,46 +25,8 @@ class SettingsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.allergies',
-        'app.application_statuses',
-        'app.applications_attendees',
-        'app.applications',
-        'app.attendees',
-        'app.attendees_allergies',
-        'app.auth_roles',
-        'app.champions',
-        'app.discounts',
-        'app.districts',
-        'app.email_response_types',
-        'app.email_responses',
-        'app.email_sends',
-        'app.event_statuses',
-        'app.event_types',
-        'app.events',
-        'app.invoice_items',
-        'app.invoices',
-        'app.invoices_payments',
-        'app.item_types',
-        'app.logistic_items',
-        'app.logistics',
-        'app.notes',
-        'app.notification_types',
-        'app.notifications',
-        'app.parameter_sets',
-        'app.parameters',
-        'app.params',
-        'app.password_states',
-        'app.payments',
-        'app.prices',
-        'app.reservation_statuses',
-        'app.reservations',
-        'app.roles',
-        'app.scoutgroups',
-        'app.section_types',
-        'app.sections',
         'app.setting_types',
         'app.settings',
-        'app.users',
     ];
 
     /**
@@ -78,8 +40,8 @@ class SettingsTableTest extends TestCase
         $config = TableRegistry::exists('Settings') ? [] : ['className' => 'App\Model\Table\SettingsTable'];
         $this->Settings = TableRegistry::get('Settings', $config);
 
-        $now = new Time('2016-12-26 23:22:30');
-        Time::setTestNow($now);
+        $now = new FrozenTime('2016-12-26 23:22:30');
+        FrozenTime::setTestNow($now);
     }
 
     /**
@@ -106,7 +68,7 @@ class SettingsTableTest extends TestCase
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->enableHydration(false)->toArray();
 
-        $timeNow = Time::now();
+        $timeNow = FrozenTime::now();
 
         $expected = [
             [
@@ -191,7 +153,7 @@ class SettingsTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $timeNow = Time::now();
+        $timeNow = FrozenTime::now();
 
         $badData = [
             'id' => null,
@@ -302,7 +264,7 @@ class SettingsTableTest extends TestCase
 
     public function testBuildRules()
     {
-        $timeNow = Time::now();
+        $timeNow = FrozenTime::now();
 
         $badData = [
             'id' => 7,
@@ -400,13 +362,13 @@ class SettingsTableTest extends TestCase
             ],
             [
                 'id' => 7,
-                'name' => 'Lorem Fishy dolor sit amet',
-                'text' => 'Lorem ipsum Goaty sit amet',
+                'name' => 'Payment Reference',
+                'text' => 'Payable to Cubs',
                 'created' => $timeNow,
                 'modified' => $timeNow,
-                'event_id' => 3,
-                'setting_type_id' => 1,
-                'number' => 2.9
+                'event_id' => 1,
+                'setting_type_id' => 7,
+                'number' => 1.0,
             ],
         ];
 

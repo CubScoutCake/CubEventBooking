@@ -2,7 +2,7 @@
 namespace App\Test\TestCase\Command;
 
 use Cake\Console\Command;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -90,8 +90,8 @@ class UpdateTableCommandTest extends TestCase
      */
     public function testUpdateModified()
     {
-        $now = new Time('2019-01-01 18:00:00');
-        Time::setTestNow($now);
+        $now = new FrozenTime('2019-01-01 18:00:00');
+        FrozenTime::setTestNow($now);
 
         $this->Events = TableRegistry::getTableLocator()->get('Events');
         $this->Events->EventStatuses->installBaseStatuses();

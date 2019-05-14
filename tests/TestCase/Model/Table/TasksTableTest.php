@@ -24,6 +24,7 @@ class TasksTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.sessions',
         'app.districts',
         'app.scoutgroups',
         'app.section_types',
@@ -110,7 +111,7 @@ class TasksTableTest extends TestCase
         foreach ($dates as $date) {
             $dateValue = $actual[$date];
             if (!is_null($dateValue)) {
-                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+                $this->assertInstanceOf('Cake\I18n\FrozenTime', $dateValue);
             }
             unset($actual[$date]);
         }
@@ -156,9 +157,9 @@ class TasksTableTest extends TestCase
             'completed',
         ];
 
-        foreach ($notEmpties as $not_empty) {
+        foreach ($notEmpties as $notEmpty) {
             $reqArray = $this->getGood();
-            $reqArray[$not_empty] = '';
+            $reqArray[$notEmpty] = '';
             $new = $this->Tasks->newEntity($reqArray);
             $this->assertFalse($this->Tasks->save($new));
         }

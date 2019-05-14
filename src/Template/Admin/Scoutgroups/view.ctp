@@ -103,7 +103,7 @@
                                                 <td><?= h($users->full_name) ?></td>
                                                 <td><?= $this->Text->autolink($users->email) ?></td>
                                                 <td><?= $users->has('role') ? $this->Html->link($users->role->role, ['controller' => 'Roles', 'action' => 'view', $users->role->id]) : '' ?></td>
-                                                <td><?= $this->Time->i18nformat($users->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                                <td><?= $this->Time->i18nFormat($users->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

@@ -109,4 +109,19 @@ class LogisticItemsTable extends Table
     {
         $this->Logistics->parseLogisticAvailability($entity->logistic_id);
     }
+
+    /**
+     * Finds the Reservations owned by the user.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options An array containing the user to be searched for.
+     *
+     * @return \Cake\ORM\Query The modified query.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function findActive($query, $options)
+    {
+        return $query->contain('Reservations.ReservationStatuses')->where(['ReservationStatuses.active' => true]);
+    }
 }

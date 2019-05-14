@@ -2,7 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\EmailSendsTable;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -103,7 +103,7 @@ class EmailSendsTableTest extends TestCase
      */
     private function getGood()
     {
-        $now = Time::getTestNow();
+        $now = FrozenTime::getTestNow();
         $good = [
             'sent' => $now,
             'message_id' => 'Lorem ipsum dolor sit amet',
@@ -139,7 +139,7 @@ class EmailSendsTableTest extends TestCase
         foreach ($dates as $date) {
             $dateValue = $actual[$date];
             if (!is_null($dateValue)) {
-                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+                $this->assertInstanceOf('Cake\I18n\FrozenTime', $dateValue);
             }
             unset($actual[$date]);
         }

@@ -37,7 +37,7 @@
                         <td><?= $this->Number->format($attendee->total_applications) ?></td>
                         <td><?= $attendee->has('scoutgroup') ? $this->Html->link($attendee->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $attendee->scoutgroup->id]) : '' ?></td>
                         <td><?= $attendee->has('role') ? $this->Html->link($attendee->role->role, ['controller' => 'Roles', 'action' => 'view', $attendee->role->id]) : '' ?></td>
-                        <td><?= $this->Time->i18nformat($attendee->dateofbirth,'dd-MMM-yyyy') ?></td>
+                        <td><?= $this->Time->i18nFormat($attendee->dateofbirth,'dd-MMM-yyyy') ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

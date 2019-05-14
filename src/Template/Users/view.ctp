@@ -44,9 +44,9 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <h5 class="subheader"><?= __('Created') ?></h5>
-                        <p><?= $this->Time->i18nformat($user->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></p>
+                        <p><?= $this->Time->i18nFormat($user->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></p>
                         <h5 class="subheader"><?= __('Modified') ?></h5>
-                        <p><?= $this->Time->i18nformat($user->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></p>
+                        <p><?= $this->Time->i18nFormat($user->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></p>
                     </div>
                     <div class="col-lg-6">
                         <h5 class="subheader"><?= __('Id') ?></h5>
@@ -187,7 +187,7 @@
                                                 <td><?= $this->Number->currency($invoices->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoices->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoices->balance,'GBP') ?></td>
-                                                <td><?= $this->Time->i18nformat($invoices->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                                <td><?= $this->Time->i18nFormat($invoices->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -300,7 +300,7 @@
                                                 <td><?= $notification->has('notification_type') ? $notification->notification_type->notification_type : '' ?></td>
                                                 <td><?= h($notification->notification_source) ?></td>
                                                 <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
-                                                <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                                <td><?= $this->Time->i18nFormat($notification->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

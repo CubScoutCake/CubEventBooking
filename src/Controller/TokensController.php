@@ -32,11 +32,11 @@ class TokensController extends AppController
         }
 
         if (is_numeric($validated)) {
-            $tokenRow = $this->Tokens->get($validated);
-            $header = $tokenRow->get('header');
+            $tokenRow = $this->Tokens->get($validated, ['contain' => 'EmailSends']);
+            $header = $tokenRow->get('token_header');
 
             if (key_exists('authenticate', $header) && $header['authenticate']) {
-                $transactor = $this->Tokens->Users->get($tokenRow->user_id);
+                $transactor = $this->Tokens->EmailSends->Users->get($tokenRow->email_send->user_id);
                 $this->Auth->setUser($transactor->toArray());
             }
 

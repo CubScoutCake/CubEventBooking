@@ -315,6 +315,7 @@
                                     <tr>
                                         <th><?= h('Name') ?></th>
                                         <th class="actions"><?= __('Actions') ?></th>
+                                        <th><?= h('Status') ?></th>
                                         <th><?= h('Start Date') ?></th>
                                         <th><?= h('End Date') ?></th>
                                         <th><?= h('Last Modified') ?></th>
@@ -332,6 +333,7 @@
                                             <?= $this->Html->link('<i class="fal fa-chart-bar"></i>', ['controller' => 'Events', 'action' => 'accounts', $event->id], ['title' => __('Prices'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                             <?= $this->Html->link('<i class="fal fa-inventory"></i>', ['controller' => 'Events', 'action' => 'logistics', $event->id], ['title' => __('Logistics'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                         </td>
+                                        <td><?= $event->has('event_status') ? $event->event_status->event_status : '' ?></td>
                                         <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
@@ -375,7 +377,7 @@
                                             <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                             <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                             <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
-                                            <td><?= $this->Time->i18nformat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                            <td><?= $this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -402,8 +404,8 @@
                                                 <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Payments', 'action' => 'view', $payment->id], ['title' => __('View'), 'class' => 'btn btn-danger btn-sm', 'escape' => false]) ?>
                                             </td>
                                             <td><?= $this->Number->currency($payment->value,'GBP') ?></td>
-                                            <td><?= $this->Time->i18nformat($payment->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
-                                            <td><?= $this->Time->i18nformat($payment->paid,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                            <td><?= $this->Time->i18nFormat($payment->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                            <td><?= $this->Time->i18nFormat($payment->paid,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -435,7 +437,7 @@
                                             <td><?= $note->has('user') ? $this->Html->link($this->Text->truncate($note->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $note->user->id]) : '' ?></td>
                                             <td><?= $note->has('application') ? $this->Html->link($note->application->display_code, ['controller' => 'Applications', 'action' => 'view', $note->application->id]) : '' ?></td>
                                             <td><?= $note->has('invoice') ? $this->Html->link($note->invoice->display_code, ['controller' => 'Invoices', 'action' => 'view', $note->invoice->id]) : '' ?></td>
-                                            <td><?= $this->Time->i18nformat($note->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                            <td><?= $this->Time->i18nFormat($note->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -467,7 +469,7 @@
                                             <td><i class="fal <?= $notification->has('notification_type') ? $notification->notification_type->icon : '' ?> fa-fw fa-2x"></i></td>
                                             <td><?= h($notification->notification_source) ?></td>
                                             <td><?= $notification->new ? __('No') : __('Yes'); ?></td>
-                                            <td><?= $this->Time->i18nformat($notification->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                            <td><?= $this->Time->i18nFormat($notification->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

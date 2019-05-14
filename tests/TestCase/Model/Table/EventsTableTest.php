@@ -2,8 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\EventsTable;
-use Cake\I18n\Time;
-use Cake\ORM\Query;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -12,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class EventsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -112,7 +110,7 @@ class EventsTableTest extends TestCase
         foreach ($dates as $date) {
             $dateValue = $actual[$date];
             if (!is_null($dateValue)) {
-                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+                $this->assertInstanceOf('Cake\I18n\FrozenTime', $dateValue);
             }
             unset($actual[$date]);
         }
@@ -142,10 +140,12 @@ class EventsTableTest extends TestCase
             'complete' => false,
             'team_price' => true,
             'event_status_id' => 1,
-            'cc_res' => 1,
+            'cc_res' => 0,
             'cc_atts' => 1,
             'app_full' => false,
             'force_full' => false,
+            'deposit_is_schedule' => false,
+            'cc_complete_reservations' => 0,
         ];
         $this->assertEquals($expected, $actual);
 
@@ -205,7 +205,23 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test determineComplete method
+     * Test getPriceSection method
+     *
+     * @return void
+     */
+    public function testGetPriceSection()
+    {
+        // Team Price Event
+        $section = $this->Events->getPriceSection(2);
+        $this->assertEquals(6, $section);
+
+        // Individual Price Event
+        $section = $this->Events->getPriceSection(3);
+        $this->assertEquals(5, $section);
+    }
+
+    /**
+     * Test determinePending method
      *
      * @return void
      */
@@ -220,8 +236,8 @@ class EventsTableTest extends TestCase
         ];
 
         foreach ($testArray as $time => $boolExpected) {
-            $now = new Time($time);
-            Time::setTestNow($now);
+            $now = new FrozenTime($time);
+            FrozenTime::setTestNow($now);
 
             $result = $this->Events->determinePending(2);
             if ($boolExpected) {
@@ -233,7 +249,7 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test determineComplete method
+     * Test determineStarted method
      *
      * @return void
      */
@@ -248,8 +264,8 @@ class EventsTableTest extends TestCase
         ];
 
         foreach ($testArray as $time => $boolExpected) {
-            $now = new Time($time);
-            Time::setTestNow($now);
+            $now = new FrozenTime($time);
+            FrozenTime::setTestNow($now);
 
             $result = $this->Events->determineStarted(2);
             if ($boolExpected) {
@@ -261,7 +277,7 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test determineComplete method
+     * Test determineClosed method
      *
      * @return void
      */
@@ -276,8 +292,8 @@ class EventsTableTest extends TestCase
         ];
 
         foreach ($testArray as $time => $boolExpected) {
-            $now = new Time($time);
-            Time::setTestNow($now);
+            $now = new FrozenTime($time);
+            FrozenTime::setTestNow($now);
 
             $result = $this->Events->determineClosed(2);
             if ($boolExpected) {
@@ -289,7 +305,7 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test determineComplete method
+     * Test determineOver method
      *
      * @return void
      */
@@ -304,8 +320,8 @@ class EventsTableTest extends TestCase
         ];
 
         foreach ($testArray as $time => $boolExpected) {
-            $now = new Time($time);
-            Time::setTestNow($now);
+            $now = new FrozenTime($time);
+            FrozenTime::setTestNow($now);
 
             $result = $this->Events->determineOver(2);
             if ($boolExpected) {
@@ -317,7 +333,17 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test determineComplete method
+     * Test determineFull method
+     *
+     * @return void
+     */
+    public function testDetermineFull()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test determineEventStatus method
      *
      * @return void
      */
@@ -327,7 +353,7 @@ class EventsTableTest extends TestCase
         $event = $this->Events->get(2);
 
         $this->Events->EventStatuses->installBaseStatuses();
-        Time::setTestNow('2019-01-01 18:00:00');
+        FrozenTime::setTestNow('2019-01-01 18:00:00');
 
         $event->set('opening_date', '2019-01-05 18:00:00');
         $event->set('closing_date', '2019-01-10 18:00:00');
@@ -361,7 +387,7 @@ class EventsTableTest extends TestCase
         $this->assertEquals(3, $this->Events->determineEventStatus(2));
 
         // Open - 4
-        Time::setTestNow('2019-01-06 18:00:00');
+        FrozenTime::setTestNow('2019-01-06 18:00:00');
 
         $this->assertFalse($this->Events->determinePending(2));
         $this->assertFalse($this->Events->determineStarted(2));
@@ -372,7 +398,7 @@ class EventsTableTest extends TestCase
         $this->assertEquals(4, $this->Events->determineEventStatus(2));
 
         // Full - 5 - Applications
-        Time::setTestNow('2019-01-11 18:00:00');
+        FrozenTime::setTestNow('2019-01-11 18:00:00');
         $event->set('max', true);
         $event->set('max_apps', 3);
         $event->set('cc_apps', 3);
@@ -387,7 +413,7 @@ class EventsTableTest extends TestCase
         $this->assertEquals(5, $this->Events->determineEventStatus(2));
 
         // Full - 5 - Reservations
-        Time::setTestNow('2019-01-11 18:00:00');
+        FrozenTime::setTestNow('2019-01-11 18:00:00');
         $event->set('cc_apps', 0);
         $event->set('cc_res', 3);
         $this->Events->save($event, ['validate' => false]);
@@ -400,7 +426,7 @@ class EventsTableTest extends TestCase
 
         $this->assertEquals(5, $this->Events->determineEventStatus(2));
 
-        Time::setTestNow('2019-01-11 18:00:00');
+        FrozenTime::setTestNow('2019-01-11 18:00:00');
         $event->set('max', false);
         $event->set('cc_apps', 0);
         $event->set('cc_res', 0);
@@ -426,7 +452,7 @@ class EventsTableTest extends TestCase
         $this->assertEquals(5, $this->Events->determineEventStatus(2));
 
         // In Progress - 6
-        Time::setTestNow('2019-01-16 18:00:00');
+        FrozenTime::setTestNow('2019-01-16 18:00:00');
 
         $this->assertFalse($this->Events->determinePending(2));
         $this->assertTrue($this->Events->determineStarted(2));
@@ -436,7 +462,7 @@ class EventsTableTest extends TestCase
         $this->assertEquals(6, $this->Events->determineEventStatus(2));
 
         // Over - 7
-        Time::setTestNow('2019-01-21 18:00:00');
+        FrozenTime::setTestNow('2019-01-21 18:00:00');
 
         $this->assertFalse($this->Events->determinePending(2));
         $this->assertTrue($this->Events->determineStarted(2));
@@ -447,23 +473,17 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * Test findUpcoming method
+     * Test checkEventOpen method
      *
      * @return void
      */
-    public function testGetPriceSection()
+    public function testCheckEventOpen()
     {
-        // Team Price Event
-        $section = $this->Events->getPriceSection(2);
-        $this->assertEquals(6, $section);
-
-        // Individual Price Event
-        $section = $this->Events->getPriceSection(3);
-        $this->assertEquals(5, $section);
+        $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
-     * Test findUpcoming method
+     * Test schedule method
      *
      * @return void
      */
@@ -471,7 +491,7 @@ class EventsTableTest extends TestCase
     {
         $this->Events->EventStatuses->installBaseStatuses();
         $event = $this->Events->get(2);
-        Time::setTestNow('2019-01-01 18:00:00');
+        FrozenTime::setTestNow('2019-01-01 18:00:00');
 
         $event->set('opening_date', '2019-01-05 18:00:00');
         $event->set('closing_date', '2019-01-10 18:00:00');
@@ -487,12 +507,12 @@ class EventsTableTest extends TestCase
         $this->assertFalse($this->Events->schedule(2));
 
         // Time Change
-        Time::setTestNow('2019-01-16 18:00:00');
+        FrozenTime::setTestNow('2019-01-16 18:00:00');
         $this->assertTrue($this->Events->schedule(2));
     }
 
     /**
-     * Test determineComplete method
+     * Test beforeSave method
      *
      * @return void
      */
@@ -502,7 +522,7 @@ class EventsTableTest extends TestCase
         $event = $this->Events->get(2);
 
         $this->Events->EventStatuses->installBaseStatuses();
-        Time::setTestNow('2019-01-01 18:00:00');
+        FrozenTime::setTestNow('2019-01-01 18:00:00');
 
         $event->set('opening_date', '2019-01-05 18:00:00');
         $event->set('closing_date', '2019-01-10 18:00:00');
@@ -544,7 +564,7 @@ class EventsTableTest extends TestCase
         $this->assertEquals(3, $event->event_status_id);
 
         // Open - 4
-        Time::setTestNow('2019-01-06 18:00:00');
+        FrozenTime::setTestNow('2019-01-06 18:00:00');
         $event->set('full_name', 'My TEST EVENT');
         $this->Events->save($event, ['validate' => false]);
         $event = $this->Events->get(2);
@@ -561,7 +581,7 @@ class EventsTableTest extends TestCase
         $this->assertEquals(4, $event->event_status_id);
 
         // Full - 5
-        Time::setTestNow('2019-01-11 18:00:00');
+        FrozenTime::setTestNow('2019-01-11 18:00:00');
         $event->set('max', true);
         $event->set('max_section', 3);
         $event->set('cc_apps', 3);
@@ -581,7 +601,7 @@ class EventsTableTest extends TestCase
         $this->assertEquals(5, $event->event_status_id);
 
         // In Progress - 6
-        Time::setTestNow('2019-01-16 18:00:00');
+        FrozenTime::setTestNow('2019-01-16 18:00:00');
         $event->set('full_name', 'My Goat EVENT');
         $this->Events->save($event, ['validate' => false]);
         $event = $this->Events->get(2);
@@ -598,7 +618,7 @@ class EventsTableTest extends TestCase
         $this->assertEquals(6, $event->event_status_id);
 
         // Over - 7
-        Time::setTestNow('2019-01-21 18:00:00');
+        FrozenTime::setTestNow('2019-01-21 18:00:00');
         $event->set('full_name', 'My Fave EVENT');
         $this->Events->save($event, ['validate' => false]);
         $event = $this->Events->get(2);

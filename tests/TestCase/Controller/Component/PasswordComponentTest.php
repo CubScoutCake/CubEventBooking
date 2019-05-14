@@ -80,10 +80,6 @@ class PasswordComponentTest extends TestCase
      */
     public function testSendReset()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $response = $this->Password->sendReset(1);
         $this->assertTrue($response);
     }

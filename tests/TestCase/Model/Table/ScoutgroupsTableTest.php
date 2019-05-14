@@ -1,16 +1,16 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Entity\Scoutgroup;
+use App\Model\Table\ScoutgroupsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Security;
 
 /**
- * App\ModelLevel\Table\ScoutgroupsTable Test Case
+ * App\Model\Table\ScoutgroupsTable Test Case
  */
 class ScoutgroupsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -24,8 +24,8 @@ class ScoutgroupsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.districts',
         'app.scoutgroups',
-        'app.districts'
     ];
 
     /**
@@ -36,8 +36,8 @@ class ScoutgroupsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Scoutgroups') ? [] : ['className' => 'App\Model\Table\ScoutgroupsTable'];
-        $this->Scoutgroups = TableRegistry::get('Scoutgroups', $config);
+        $config = TableRegistry::getTableLocator()->exists('Scoutgroups') ? [] : ['className' => ScoutgroupsTable::class];
+        $this->Scoutgroups = TableRegistry::getTableLocator()->get('Scoutgroups', $config);
     }
 
     /**
@@ -53,48 +53,45 @@ class ScoutgroupsTableTest extends TestCase
     }
 
     /**
+     * Get Good Set Function
+     *
+     * @return array
+     *
+     * @throws
+     */
+    private function getGood()
+    {
+        $rand = random_int(111, 9999999);
+        $good = [
+            'scoutgroup' => $rand . 'th Letchworth',
+            'district_id' => 1,
+            'number_stripped' => $rand,
+            'deleted' => null
+        ];
+
+        return $good;
+    }
+
+    /**
      * Test initialize method
      *
      * @return void
      */
     public function testInitialize()
     {
-        $query = $this->Scoutgroups->find('all');
+        $actual = $this->Scoutgroups->get(1)->toArray();
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
         $expected = [
-            [
-                'id' => 1,
-                'scoutgroup' => '12th Letchworth',
-                'district_id' => 1,
-                'number_stripped' => 1,
-                'deleted' => null
-            ],
-            [
-                'id' => 2,
-                'scoutgroup' => '4th Octopus',
-                'district_id' => 2,
-                'number_stripped' => 4,
-                'deleted' => null
-            ],
-            [
-                'id' => 3,
-                'scoutgroup' => '1st Llamaland',
-                'district_id' => 1,
-                'number_stripped' => 1,
-                'deleted' => null
-            ],
-            [
-                'id' => 4,
-                'scoutgroup' => '11th Goatface',
-                'district_id' => 2,
-                'number_stripped' => 11,
-                'deleted' => null
-            ],
+            'id' => 1,
+            'scoutgroup' => '12th Letchworth',
+            'district_id' => 1,
+            'number_stripped' => 1,
+            'deleted' => null
         ];
+        $this->assertEquals($expected, $actual);
 
-        $this->assertEquals($expected, $result);
+        $count = $this->Scoutgroups->find('all')->count();
+        $this->assertEquals(4, $count);
     }
 
     /**
@@ -104,71 +101,62 @@ class ScoutgroupsTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $badData = [
-            'id' => 5,
-            'scoutgroup' => null,
-            'district_id' => 2,
-            'number_stripped' => 1,
-            'deleted' => null
+        $good = $this->getGood();
+
+        $new = $this->Scoutgroups->newEntity($good);
+        $this->assertInstanceOf('App\Model\Entity\Scoutgroup', $this->Scoutgroups->save($new));
+
+        $required = [
+            'scoutgroup',
         ];
 
-        $goodData = [
-            'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
-            'district_id' => 1,
-            'number_stripped' => 1,
-            'deleted' => null
+        foreach ($required as $require) {
+            $reqArray = $good;
+            unset($reqArray[$require]);
+            $new = $this->Scoutgroups->newEntity($reqArray);
+            $this->assertFalse($this->Scoutgroups->save($new));
+        }
+
+        $empties = [
         ];
 
-        $expected = [
-            [
-                'id' => 1,
-                'scoutgroup' => '12th Letchworth',
-                'district_id' => 1,
-                'number_stripped' => 1,
-                'deleted' => null
-            ],
-            [
-                'id' => 2,
-                'scoutgroup' => '4th Octopus',
-                'district_id' => 2,
-                'number_stripped' => 4,
-                'deleted' => null
-            ],
-            [
-                'id' => 3,
-                'scoutgroup' => '1st Llamaland',
-                'district_id' => 1,
-                'number_stripped' => 1,
-                'deleted' => null
-            ],
-            [
-                'id' => 4,
-                'scoutgroup' => '11th Goatface',
-                'district_id' => 2,
-                'number_stripped' => 11,
-                'deleted' => null
-            ],
-            [
-                'id' => 5,
-                'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
-                'district_id' => 1,
-                'number_stripped' => 1,
-                'deleted' => null
-            ],
+        foreach ($empties as $empty) {
+            $reqArray = $good;
+            $reqArray[$empty] = '';
+            $new = $this->Scoutgroups->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\Scoutgroup', $this->Scoutgroups->save($new));
+        }
+
+        $notEmpties = [
+            'scoutgroup',
         ];
 
-        $badEntity = $this->Scoutgroups->newEntity($badData, ['accessibleFields' => ['id' => true]]);
-        $goodEntity = $this->Scoutgroups->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        foreach ($notEmpties as $notEmpty) {
+            $reqArray = $good;
+            $reqArray[$notEmpty] = '';
+            $new = $this->Scoutgroups->newEntity($reqArray);
+            $this->assertFalse($this->Scoutgroups->save($new));
+        }
 
-        $this->assertFalse($this->Scoutgroups->save($badEntity));
-        $this->assertInstanceOf(Scoutgroup::class, $this->Scoutgroups->save($goodEntity));
+        $maxLengths = [
+            'scoutgroup' => 255,
+        ];
 
-        $query = $this->Scoutgroups->find('all');
+        $string = hash('sha512', Security::randomBytes(64));
+        $string .= $string;
+        $string .= $string;
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
+        foreach ($maxLengths as $maxField => $maxLength) {
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $maxLength);
+            $new = $this->Scoutgroups->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\Scoutgroup', $this->Scoutgroups->save($new));
 
-        $this->assertEquals($expected, $result);
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $maxLength + 1);
+            $new = $this->Scoutgroups->newEntity($reqArray);
+            $this->assertFalse($this->Scoutgroups->save($new));
+        }
     }
 
     /**
@@ -178,70 +166,32 @@ class ScoutgroupsTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $badData = [
-            'id' => 5,
-            'district_id' => 4,
-            'scoutgroup' => null,
-            'number_stripped' => 1,
-            'deleted' => null
-        ];
+        // Unique Scoutgroup
+        $values = $this->getGood();
 
-        $goodData = [
-            'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
-            'district_id' => 1,
-            'number_stripped' => 1,
-            'deleted' => null
-        ];
+        $existing = $this->Scoutgroups->get(1)->toArray();
 
-        $expected = [
-            [
-                'id' => 1,
-                'scoutgroup' => '12th Letchworth',
-                'district_id' => 1,
-                'number_stripped' => 1,
-                'deleted' => null
-            ],
-            [
-                'id' => 2,
-                'scoutgroup' => '4th Octopus',
-                'district_id' => 2,
-                'number_stripped' => 4,
-                'deleted' => null
-            ],
-            [
-                'id' => 3,
-                'scoutgroup' => '1st Llamaland',
-                'district_id' => 1,
-                'number_stripped' => 1,
-                'deleted' => null
-            ],
-            [
-                'id' => 4,
-                'scoutgroup' => '11th Goatface',
-                'district_id' => 2,
-                'number_stripped' => 11,
-                'deleted' => null
-            ],
-            [
-                'id' => 5,
-                'scoutgroup' => 'Lorem ipsum monkey aorumn amet',
-                'district_id' => 1,
-                'number_stripped' => 1,
-                'deleted' => null
-            ],
-        ];
+        $values['scoutgroup'] = 'My new Camp Role Type';
+        $new = $this->Scoutgroups->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\Scoutgroup', $this->Scoutgroups->save($new));
 
-        $badEntity = $this->Scoutgroups->newEntity($badData);
-        $goodEntity = $this->Scoutgroups->newEntity($goodData);
+        $values['scoutgroup'] = $existing['scoutgroup'];
+        $new = $this->Scoutgroups->newEntity($values);
+        $this->assertFalse($this->Scoutgroups->save($new));
 
-        $this->assertFalse($this->Scoutgroups->save($badEntity));
-        $this->assertInstanceOf(Scoutgroup::class, $this->Scoutgroups->save($goodEntity));
+        // Email Send Exists
+        $values = $this->getGood();
 
-        $query = $this->Scoutgroups->find('all');
+        $sends = $this->Scoutgroups->Districts->find('list')->toArray();
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
+        $send = max(array_keys($sends));
 
-        $this->assertEquals($expected, $result);
+        $values['district_id'] = $send;
+        $new = $this->Scoutgroups->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\Scoutgroup', $this->Scoutgroups->save($new));
+
+        $values['district_id'] = $send + 1;
+        $new = $this->Scoutgroups->newEntity($values);
+        $this->assertFalse($this->Scoutgroups->save($new));
     }
 }

@@ -100,7 +100,7 @@
                                                 <td><?= h($champions->full_name) ?></td>
                                                 <td><?= $this->Text->autolink($champions->email) ?></td>
                                                 <td><?= $champions->has('user') ? $this->Html->link($this->Text->truncate($champions->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $champions->user->id]) : '' ?></td>
-                                                <td><?= $champions->has('user') ? $this->Time->i18nformat($champions->user->last_login,'dd-MMM-YY HH:mm', 'Europe/London') : '' ?></td>
+                                                <td><?= $champions->has('user') ? $this->Time->i18nFormat($champions->user->last_login,'dd-MMM-YY HH:mm', 'Europe/London') : '' ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

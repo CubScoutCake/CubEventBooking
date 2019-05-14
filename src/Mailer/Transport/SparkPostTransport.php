@@ -58,8 +58,8 @@ class SparkPostTransport extends AbstractTransport
         // Pre-process CakePHP email object fields
         $from = (array)$email->getFrom();
         $sender = sprintf('%s <%s>', array_values($from)[0], array_keys($from)[0]);
-        $to = (array)$email->getTo();
-        $recipients = [[ 'address' => [ 'name' => array_values($to)[0], 'email' => array_keys($to)[0] ]]];
+        $sendTo = (array)$email->getTo();
+        $recipients = [[ 'address' => [ 'name' => array_values($sendTo)[0], 'email' => array_keys($sendTo)[0] ]]];
 
         // Build message to send
         $message = [

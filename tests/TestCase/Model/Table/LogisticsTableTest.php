@@ -123,7 +123,7 @@ class LogisticsTableTest extends TestCase
         foreach ($dates as $date) {
             $dateValue = $actual[$date];
             if (!is_null($dateValue)) {
-                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+                $this->assertInstanceOf('Cake\I18n\FrozenTime', $dateValue);
             }
             unset($actual[$date]);
         }
@@ -178,9 +178,9 @@ class LogisticsTableTest extends TestCase
             'header',
         ];
 
-        foreach ($notEmpties as $not_empty) {
+        foreach ($notEmpties as $notEmpty) {
             $reqArray = $this->getGood();
-            $reqArray[$not_empty] = '';
+            $reqArray[$notEmpty] = '';
             $new = $this->Logistics->newEntity($reqArray);
             $this->assertFalse($this->Logistics->save($new));
         }
@@ -270,8 +270,8 @@ class LogisticsTableTest extends TestCase
         $expected = [
             1 => [
                 'limit' => 3,
-                'current' => 1,
-                'remaining' => 2
+                'current' => 0,
+                'remaining' => 3
             ],
             2 => [
                 'limit' => 2,
@@ -299,8 +299,8 @@ class LogisticsTableTest extends TestCase
         $expected = [
             1 => [
                 'limit' => 3,
-                'current' => 2,
-                'remaining' => 1
+                'current' => 1,
+                'remaining' => 2
             ],
             2 => [
                 'limit' => 2,

@@ -75,11 +75,42 @@ class SectionsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->requirePresence('section', 'create')
-            ->notEmpty('section');
+            ->maxLength('section', 255)
+            ->allowEmptyString('section', false);
+
+        $validator
+            ->integer('section_type_id')
+            ->requirePresence('section_type_id', 'create')
+            ->allowEmptyString('section_type_id', false);
+
+        $validator
+            ->integer('scoutgroup_id')
+            ->requirePresence('scoutgroup_id', 'create')
+            ->allowEmptyString('scoutgroup_id', false);
+
+        return $validator;
+    }
+
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationRegister(Validator $validator)
+    {
+        $validator
+            ->integer('id')
+            ->allowEmptyString('id', 'create');
+
+        $validator
+            ->requirePresence('section', 'create')
+            ->maxLength('section', 45)
+            ->allowEmptyString('section', false);
 
         return $validator;
     }

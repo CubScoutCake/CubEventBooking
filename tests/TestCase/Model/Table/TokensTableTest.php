@@ -2,8 +2,9 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\TokensTable;
+use App\Utility\TextSafe;
 use Cake\Core\Configure;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
@@ -87,8 +88,8 @@ class TokensTableTest extends TestCase
         $config = TableRegistry::getTableLocator()->exists('Tokens') ? [] : ['className' => TokensTable::class];
         $this->Tokens = TableRegistry::getTableLocator()->get('Tokens', $config);
 
-        $now = new Time('2016-12-26 23:22:30');
-        Time::setTestNow($now);
+        $now = new FrozenTime('2016-12-26 23:22:30');
+        FrozenTime::setTestNow($now);
 
         $this->travisPass = false; //Configure::read('travis');
     }
@@ -139,10 +140,6 @@ class TokensTableTest extends TestCase
      */
     public function testInitialize()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $actual = $this->Tokens->get(1)->toArray();
 
         $dates = [
@@ -156,7 +153,7 @@ class TokensTableTest extends TestCase
         foreach ($dates as $date) {
             $dateValue = $actual[$date];
             if (!is_null($dateValue)) {
-                $this->assertInstanceOf('Cake\I18n\Time', $dateValue);
+                $this->assertInstanceOf('Cake\I18n\FrozenTime', $dateValue);
             }
             unset($actual[$date]);
         }
@@ -166,7 +163,15 @@ class TokensTableTest extends TestCase
             'email_send_id' => 1,
             'active' => true,
             'random_number' => 54498,
-            'token_header' => null
+            'token_header' => [
+                'redirect' => [
+                    'controller' => 'Applications',
+                    'action' => 'view',
+                    'prefix' => false,
+                    1
+                ],
+                'authenticate' => false,
+            ]
         ];
         $this->assertEquals($expected, $actual);
 
@@ -181,10 +186,6 @@ class TokensTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $good = $this->getGood();
 
         $new = $this->Tokens->newEntity($good);
@@ -246,10 +247,6 @@ class TokensTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         // Email Send Exists
         $values = $this->getGood();
 
@@ -271,13 +268,9 @@ class TokensTableTest extends TestCase
      */
     public function testBuildToken()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $token = $this->Tokens->buildToken(1);
         $token = urldecode($token);
-        //$token = gzuncompress($token);
+        $token = TextSafe::decode($token);
 
         $this->assertGreaterThanOrEqual(32, strlen($token), 'Token is too short.');
 
@@ -302,10 +295,6 @@ class TokensTableTest extends TestCase
 
     public function testBeforeSave()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $goodData = [
             'email_send_id' => 1,
             'active' => true,
@@ -366,10 +355,6 @@ class TokensTableTest extends TestCase
 
     public function testValidateToken()
     {
-        if ($this->travisPass) {
-            $this->markTestSkipped('Skipped for Travis until Mocked.');
-        }
-
         $goodData = [
             'email_send_id' => 1,
             'active' => true,

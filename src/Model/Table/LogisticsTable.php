@@ -133,7 +133,7 @@ class LogisticsTable extends Table
         }
 
         foreach ($logistic->parameter->params as $param) {
-            $current = $this->LogisticItems->find('all')->where([
+            $current = $this->LogisticItems->find('active')->where([
                 'logistic_id' => $logistic->id,
                 'param_id' => $param->id,
             ])->count();

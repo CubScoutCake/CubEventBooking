@@ -126,7 +126,7 @@
                             <td><span><?= $this->Number->currency($application->invoice->initialvalue,'GBP') ?></span></td>
                             <td><span><?= $this->Number->currency($application->invoice->value,'GBP') ?></span></td>
                             <td><span><?= $this->Number->currency($application->invoice->balance,'GBP') ?></span></td>
-                            <td><span><?= $this->Time->i18nformat($application->invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></span></td>
+                            <td><span><?= $this->Time->i18nFormat($application->invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></span></td>
                         </tr>
                     </table>
                 </div>
@@ -153,7 +153,7 @@
                             <tr>
                                 <td><?= h($notes->id) ?></td>
                                 <td><?= $this->Text->autoParagraph($notes->note_text) ?></td>
-                                <td><?= $this->Time->i18nformat($notes->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                <td><?= $this->Time->i18nFormat($notes->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>

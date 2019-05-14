@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * AuthRoles Model
  *
- * @property \Cake\ORM\Association\HasMany $Users
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\HasMany $Users
  *
  * @method \App\Model\Entity\AuthRole get($primaryKey, $options = [])
  * @method \App\Model\Entity\AuthRole newEntity($data = null, array $options = [])
@@ -164,7 +164,13 @@ class AuthRolesTable extends Table
         }
 
         unset($authArray['auth_value']);
-        $newAuthRole = $this->findOrCreate($authArray);
+        $newAuthQuery = $this->find()->where($authArray);
+        if ($newAuthQuery->count() > 0) {
+            return $newAuthQuery->first()->id;
+        }
+
+        $newAuthRole = $this->newEntity($authArray);
+        $newAuthRole = $this->save($newAuthRole);
 
         return $newAuthRole->id;
     }

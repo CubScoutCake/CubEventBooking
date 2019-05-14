@@ -19,6 +19,7 @@ return [
      * Configure basic information about the application.
      *
      * - namespace - The namespace to find app classes under.
+     * - defaultLocale - The default locale for translation, formatting currencies and numbers, date and time.
      * - encoding - The encoding used for HTML + database connections.
      * - base - The base directory the app resides in. If false this
      *   will be auto detected.
@@ -31,7 +32,10 @@ return [
      *      /.htaccess
      *      /webroot/.htaccess
      *   And uncomment the baseUrl key below.
-     * - fullBaseUrl - A base URL to use for absolute links.
+     * - fullBaseUrl - A base URL to use for absolute links. When set to false (default)
+     *   CakePHP generates required value based on `HTTP_HOST` environment variable.
+     *   However, you can define it manually to optimize performance or if you
+     *   are concerned about people manipulating the `Host` header.
      * - imageBaseUrl - Web path to the public images directory under webroot.
      * - cssBaseUrl - Web path to the public css directory under webroot.
      * - jsBaseUrl - Web path to the public js directory under webroot.
@@ -41,7 +45,9 @@ return [
      */
     'App' => [
         'namespace' => 'App',
-        'encoding' => 'UTF-8',
+        'encoding' => env('APP_ENCODING', 'UTF-8'),
+        'defaultLocale' => env('APP_DEFAULT_LOCALE', 'en_GB'),
+        'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'UTC'),
         'base' => false,
         'dir' => 'src',
         'webroot' => 'webroot',
@@ -80,6 +86,7 @@ return [
      */
     'Asset' => [
         // 'timestamp' => true,
+        // 'cacheTime' => '+1 year'
     ],
 
     /**
@@ -87,42 +94,61 @@ return [
      */
     'Cache' => [
         'default' => [
-            'className' => 'File',
+            'className' => 'Cake\Cache\Engine\FileEngine',
             'path' => CACHE,
+            'url' => env('CACHE_DEFAULT_URL', null),
         ],
 
         /**
-         * Configure the cache used for general framework caching. Path information,
-         * object listings, and translation cache files are stored with this
-         * configuration.
+         * Configure the cache used for general framework caching.
+         * Translation cache files are stored with this configuration.
+         * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
+         * If you set 'className' => 'Null' core cache will be disabled.
          */
         '_cake_core_' => [
-            'className' => 'File',
+            'className' => 'Cake\Cache\Engine\FileEngine',
             'prefix' => 'myapp_cake_core_',
             'path' => CACHE . 'persistent/',
             'serialize' => true,
-            'duration' => '+2 minutes',
+            'duration' => '+1 years',
+            'url' => env('CACHE_CAKECORE_URL', null),
         ],
 
         /**
          * Configure the cache for model and datasource caches. This cache
          * configuration is used to store schema descriptions, and table listings
          * in connections.
+         * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
          */
         '_cake_model_' => [
-            'className' => 'File',
+            'className' => 'Cake\Cache\Engine\FileEngine',
             'prefix' => 'myapp_cake_model_',
             'path' => CACHE . 'models/',
             'serialize' => true,
-            'duration' => '+2 minutes',
+            'duration' => '+1 years',
+            'url' => env('CACHE_CAKEMODEL_URL', null),
         ],
 
         'cell_cache' => [
-            'className' => 'File',
+            'className' => 'Cake\Cache\Engine\FileEngine',
             'prefix' => 'myapp_cake_model_',
             'path' => CACHE . 'cells/',
             'serialize' => true,
-            'duration' => '+2 minutes',
+            'duration' => '+20 minutes',
+        ],
+
+        /**
+         * Configure the cache for routes. The cached routes collection is built the
+         * first time the routes are processed via `config/routes.php`.
+         * Duration will be set to '+2 seconds' in bootstrap.php when debug = true
+         */
+        '_cake_routes_' => [
+            'className' => 'Cake\Cache\Engine\FileEngine',
+            'prefix' => 'myapp_cake_routes_',
+            'path' => CACHE,
+            'serialize' => true,
+            'duration' => '+1 years',
+            'url' => env('CACHE_CAKEROUTES_URL', null),
         ],
     ],
 
@@ -144,13 +170,16 @@ return [
      *   logged errors/exceptions.
      * - `log` - boolean - Whether or not you want exceptions logged.
      * - `exceptionRenderer` - string - The class responsible for rendering
-     *   uncaught exceptions.  If you choose a custom class you should place
+     *   uncaught exceptions. If you choose a custom class you should place
      *   the file for that class in src/Error. This class needs to implement a
      *   render method.
      * - `skipLog` - array - List of exceptions to skip for logging. Exceptions that
      *   extend one of the listed exceptions will also be skipped for logging.
      *   E.g.:
-     *   `'skipLog' => ['Cake\Network\Exception\NotFoundException', 'Cake\Network\Exception\UnauthorizedException']`
+     *   `'skipLog' => ['Cake\Http\Exception\NotFoundException', 'Cake\Http\Exception\UnauthorizedException']`
+     * - `extraFatalErrorMemory` - int - The number of megabytes to increase
+     *   the memory limit by when a fatal error is encountered. This allows
+     *   breathing room to complete logging or error handling.
      */
     'Error' => [
         'errorLevel' => 'E_ALL & ~E_DEPRECATED',
@@ -158,6 +187,7 @@ return [
         'skipLog' => [],
         'log' => true,
         'trace' => true,
+        'extraFatalErrorMemory' => 20,
     ],
 
     /**
@@ -222,11 +252,21 @@ return [
             'className' => 'Cake\Log\Engine\FileLog',
             'path' => LOGS,
             'file' => 'debug',
+            'url' => env('LOG_DEBUG_URL', null),
+            'scopes' => false,
             'levels' => ['debug'],
         ],
         'database' => [
             'className' => 'DatabaseLog.Database',
             'levels' => ['notice', 'info', 'warning', 'error', 'critical', 'alert', 'emergency'],
+        ],
+        // To enable this dedicated query log, you need set your datasource's log flag to true
+        'queries' => [
+            'className' => 'Cake\Log\Engine\FileLog',
+            'path' => LOGS,
+            'file' => 'queries',
+            'url' => env('LOG_QUERIES_URL', null),
+            'scopes' => ['queriesLog'],
         ],
     ],
 
@@ -238,7 +278,6 @@ return [
     ],
 
     /**
-     *
      * Session configuration.
      *
      * Contains an array of settings to use for session configuration. The
@@ -247,11 +286,15 @@ return [
      *
      * ## Options
      *
-     * - `cookie` - The name of the cookie to use. Defaults to 'CAKEPHP'.
+     * - `cookie` - The name of the cookie to use. Defaults to 'CAKEPHP'. Avoid using `.` in cookie names,
+     *   as PHP will drop sessions from cookies with `.` in the name.
      * - `cookiePath` - The url path for which session cookie is set. Maps to the
      *   `session.cookie_path` php.ini config. Defaults to base path of app.
      * - `timeout` - The time in minutes the session should be valid for.
      *    Pass 0 to disable checking timeout.
+     *    Please note that php.ini's session.gc_maxlifetime must be equal to or greater
+     *    than the largest Session['timeout'] in all served websites for it to have the
+     *    desired effect.
      * - `defaults` - The default configuration set to use as a basis for your session.
      *    There are four built-in options: php, cake, cache, database.
      * - `handler` - Can be used to enable a custom session handler. Expects an
@@ -271,7 +314,7 @@ return [
      * Make sure the class implements PHP's `SessionHandlerInterface` and set
      * Session.handler to <name>
      *
-     * To use database sessions, load the SQL file located at config/Schema/sessions.sql
+     * To use database sessions, load the SQL file located at config/schema/sessions.sql
      */
     'Session' => [
         'defaults' => 'php',
@@ -312,4 +355,30 @@ return [
     'Schedule' => [
         'reservation' => '+10 days',
     ],
+
+    'CakePdf', [
+        'engine' => [
+            'className' => 'CakePdf.WkHtmlToPdf',
+            // Mac OS X / Linux is usually like:
+            'binary' => '/usr/local/bin/wkhtmltopdf',
+            // On Windows environmnent you NEED to use the path like
+            // old fashioned MS-DOS Paths, otherwise you will keep getting:
+            // WKHTMLTOPDF didn't return any data
+            // 'binary' => 'C:\\Progra~1\\wkhtmltopdf\\bin\\wkhtmltopdf.exe',
+            'options' => [
+                // 'print-media-type' => false,
+                'outline' => true,
+                'dpi' => 128
+            ],
+        ],
+        'margin' => [
+            'bottom' => 15,
+            'left' => 15,
+            'right' => 15,
+            'top' => 15
+        ],
+        'dpi' => 128,
+        'orientation' => 'portrait',
+        'download' => true
+    ]
 ];

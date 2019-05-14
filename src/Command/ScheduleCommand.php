@@ -12,6 +12,7 @@ use Cake\Console\ConsoleOptionParser;
  * @package App\Command
  *
  * @property \App\Model\Table\EventsTable $Events
+ * @property \App\Model\Table\ReservationsTable $Reservations
  */
 class ScheduleCommand extends Command
 {
@@ -24,6 +25,7 @@ class ScheduleCommand extends Command
     {
         parent::initialize();
         $this->loadModel('Events');
+        $this->loadModel('Reservations');
     }
 
     /**
@@ -45,6 +47,11 @@ class ScheduleCommand extends Command
                 'short' => 'e',
                 'help' => 'Event Schedules',
                 'boolean' => true,
+            ])
+            ->addOption('reservations', [
+                'short' => 'r',
+                'help' => 'Reservation Schedules',
+                'boolean' => true,
             ]);
 
         return $parser;
@@ -61,9 +68,8 @@ class ScheduleCommand extends Command
     public function execute(Arguments $args, ConsoleIo $io)
     {
         if ($args->getOption('all') || $args->getOption('events')) {
-            /** @var \App\Model\Entity\Event $event */
+            /** @var \App\Model\Entity\Event[] $events */
             $events = $this->Events->find('upcoming');
-
             $happenings = 0;
 
             foreach ($events as $event) {
@@ -73,7 +79,21 @@ class ScheduleCommand extends Command
                 }
             }
 
-            $io->info('Changes: ' . $happenings);
+            $io->info('Event Changes: ' . $happenings);
+        }
+
+        if ($args->getOption('all') || $args->getOption('reservations')) {
+            /** @var \App\Model\Entity\Reservation[] $reservations */
+            $reservations = $this->Reservations->find('inProgress');
+            $happenings = 0;
+
+            foreach ($reservations as $reservation) {
+                if ($this->Reservations->schedule($reservation->id)) {
+                    $happenings += 1;
+                }
+            }
+
+            $io->info('Reservation Changes: ' . $happenings);
         }
     }
 }

@@ -1,10 +1,10 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\SectionsTable;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Security;
 
 /**
  * App\Model\Table\SectionsTable Test Case
@@ -25,10 +25,14 @@ class SectionsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.sections',
-        'app.section_types',
-        'app.scoutgroups',
+        'app.sessions',
         'app.districts',
+        'app.scoutgroups',
+        'app.section_types',
+        'app.sections',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
         'app.roles',
     ];
 
@@ -40,11 +44,11 @@ class SectionsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Sections') ? [] : ['className' => 'App\Model\Table\SectionsTable'];
-        $this->Sections = TableRegistry::get('Sections', $config);
+        $config = TableRegistry::getTableLocator()->exists('Sections') ? [] : ['className' => 'App\Model\Table\SectionsTable'];
+        $this->Sections = TableRegistry::getTableLocator()->get('Sections', $config);
 
-        $now = new Time('2016-12-26 23:22:30');
-        Time::setTestNow($now);
+        $now = new FrozenTime('2016-12-26 23:22:30');
+        FrozenTime::setTestNow($now);
     }
 
     /**
@@ -60,51 +64,62 @@ class SectionsTableTest extends TestCase
     }
 
     /**
+     * Get Good Set Function
+     *
+     * @return array
+     *
+     * @throws
+     */
+    private function getGood()
+    {
+        return [
+            'section' => 'Section ' . random_int(0, 999) . random_int(0, 99),
+            'section_type_id' => 1,
+            'scoutgroup_id' => 1,
+            'validated' => true,
+            'cc_users' => null,
+            'cc_atts' => null,
+            'cc_apps' => null,
+        ];
+    }
+
+    /**
      * Test initialize method
      *
      * @return void
      */
     public function testInitialize()
     {
-        $query = $this->Sections->find('all');
+        $actual = $this->Sections->get(1)->toArray();
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
-
-        $startNow = Time::now();
-        $modifiedDate = $startNow->modify('-3 days');
-        $createdDate = $startNow->modify('-2 hours');
-
-        $expected = [
-            [
-                'id' => 1,
-                'created' => $createdDate,
-                'modified' => $modifiedDate,
-                'deleted' => null,
-                'section' => 'Lorem ipsum dolor sit amet',
-                'section_type_id' => 1,
-                'scoutgroup_id' => 1,
-                'validated' => true,
-                'cc_users' => null,
-                'cc_atts' => null,
-                'cc_apps' => null,
-            ],
-            [
-                'id' => 2,
-                'created' => $createdDate,
-                'modified' => $modifiedDate,
-                'deleted' => null,
-                'section' => 'Lorem ipsum uj sit amet',
-                'section_type_id' => 1,
-                'scoutgroup_id' => 1,
-                'validated' => true,
-                'cc_users' => null,
-                'cc_atts' => null,
-                'cc_apps' => null,
-            ],
+        $dates = [
+            'modified',
+            'created',
+            'deleted',
         ];
 
-        $this->assertEquals($expected, $result);
+        foreach ($dates as $date) {
+            $dateValue = $actual[$date];
+            if (!is_null($dateValue)) {
+                $this->assertInstanceOf('Cake\I18n\FrozenTime', $dateValue);
+            }
+            unset($actual[$date]);
+        }
+
+        $expected = [
+            'id' => 1,
+            'section' => 'Lorem ipsum dolor sit amet',
+            'section_type_id' => 1,
+            'scoutgroup_id' => 1,
+            'validated' => true,
+            'cc_users' => null,
+            'cc_atts' => null,
+            'cc_apps' => null,
+        ];
+        $this->assertEquals($expected, $actual);
+
+        $count = $this->Sections->find('all')->count();
+        $this->assertEquals(2, $count);
     }
 
     /**
@@ -114,82 +129,57 @@ class SectionsTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $startNow = Time::now();
-        $modifiedDate = $startNow->modify('-3 days');
-        $createdDate = $startNow->modify('-2 hours');
+        $good = $this->getGood();
 
-        $badData = [
-            'created' => $createdDate,
-            'modified' => $modifiedDate,
-            'deleted' => null,
-            'section' => null,
-            'section_type_id' => 1,
-            'scoutgroup_id' => 1
+        $new = $this->Sections->newEntity($good);
+        $this->assertInstanceOf('App\Model\Entity\Section', $this->Sections->save($new));
+
+        $required = [
+            'section',
+            'section_type_id',
+            'scoutgroup_id',
         ];
 
-        $goodData = [
-            'created' => $createdDate,
-            'modified' => $modifiedDate,
-            'deleted' => null,
-            'section' => 'Lorem LASO sit amet',
-            'section_type_id' => 1,
-            'scoutgroup_id' => 1
+        foreach ($required as $require) {
+            $reqArray = $this->getGood();
+            unset($reqArray[$require]);
+            $new = $this->Sections->newEntity($reqArray);
+            $this->assertFalse($this->Sections->save($new));
+        }
+
+        $notEmpties = [
+            'section',
+            'section_type_id',
+            'scoutgroup_id',
         ];
 
-        $expected = [
-            [
-                'id' => 1,
-                'created' => $createdDate,
-                'modified' => $modifiedDate,
-                'deleted' => null,
-                'section' => 'Lorem ipsum dolor sit amet',
-                'section_type_id' => 1,
-                'scoutgroup_id' => 1,
-                'validated' => true,
-                'cc_users' => null,
-                'cc_atts' => null,
-                'cc_apps' => null,
-            ],
-            [
-                'id' => 2,
-                'created' => $createdDate,
-                'modified' => $modifiedDate,
-                'deleted' => null,
-                'section' => 'Lorem ipsum uj sit amet',
-                'section_type_id' => 1,
-                'scoutgroup_id' => 1,
-                'validated' => true,
-                'cc_users' => null,
-                'cc_atts' => null,
-                'cc_apps' => null,
-            ],
-            [
-                'id' => 3,
-                'created' => $createdDate,
-                'modified' => $modifiedDate,
-                'deleted' => null,
-                'section' => 'Lorem LASO sit amet',
-                'section_type_id' => 1,
-                'scoutgroup_id' => 1,
-                'validated' => false,
-                'cc_users' => null,
-                'cc_atts' => null,
-                'cc_apps' => null,
-            ],
+        foreach ($notEmpties as $notEmpty) {
+            $reqArray = $this->getGood();
+            $reqArray[$notEmpty] = '';
+            $new = $this->Sections->newEntity($reqArray);
+            $this->assertFalse($this->Sections->save($new));
+        }
+
+        $maxLengths = [
+            'section' => 255,
         ];
 
-        $badEntity = $this->Sections->newEntity($badData);
-        $goodEntity = $this->Sections->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        $string = hash('sha512', Security::randomBytes(64));
+        $string .= $string;
+        $string .= $string;
+        $string .= $string;
 
-        $this->assertFalse($this->Sections->save($badEntity));
-        $this->Sections->save($goodEntity);
+        foreach ($maxLengths as $maxField => $maxLength) {
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $maxLength);
+            $new = $this->Sections->newEntity($reqArray);
+            $this->assertInstanceOf('App\Model\Entity\Section', $this->Sections->save($new));
 
-        $query = $this->Sections->find('all');
-
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
-
-        $this->assertEquals($expected, $result);
+            $reqArray = $this->getGood();
+            $reqArray[$maxField] = substr($string, 1, $maxLength + 1);
+            $new = $this->Sections->newEntity($reqArray);
+            $this->assertFalse($this->Sections->save($new));
+        }
     }
 
     /**
@@ -199,81 +189,34 @@ class SectionsTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $startNow = Time::now();
-        $modifiedDate = $startNow->modify('-3 days');
-        $createdDate = $startNow->modify('-2 hours');
+        // Scout Group Exists
+        $values = $this->getGood();
 
-        $badData = [
-            'created' => $createdDate,
-            'modified' => $modifiedDate,
-            'deleted' => null,
-            'section' => 'Lorem LASO sit amet',
-            'section_type_id' => 288,
-            'scoutgroup_id' => 912
-        ];
+        $types = $this->Sections->Scoutgroups->find('list')->toArray();
 
-        $goodData = [
-            'created' => $createdDate,
-            'modified' => $modifiedDate,
-            'deleted' => null,
-            'section' => 'Lorem LASO sit amet',
-            'section_type_id' => 1,
-            'scoutgroup_id' => 1
-        ];
+        $type = max(array_keys($types));
 
-        $expected = [
-            [
-                'id' => 1,
-                'created' => $createdDate,
-                'modified' => $modifiedDate,
-                'deleted' => null,
-                'section' => 'Lorem ipsum dolor sit amet',
-                'section_type_id' => 1,
-                'scoutgroup_id' => 1,
-                'validated' => true,
-                'cc_users' => null,
-                'cc_atts' => null,
-                'cc_apps' => null,
-            ],
-            [
-                'id' => 2,
-                'created' => $createdDate,
-                'modified' => $modifiedDate,
-                'deleted' => null,
-                'section' => 'Lorem ipsum uj sit amet',
-                'section_type_id' => 1,
-                'scoutgroup_id' => 1,
-                'validated' => true,
-                'cc_users' => null,
-                'cc_atts' => null,
-                'cc_apps' => null,
-            ],
-            [
-                'id' => 3,
-                'created' => $createdDate,
-                'modified' => $modifiedDate,
-                'deleted' => null,
-                'section' => 'Lorem LASO sit amet',
-                'section_type_id' => 1,
-                'scoutgroup_id' => 1,
-                'validated' => false,
-                'cc_users' => null,
-                'cc_atts' => null,
-                'cc_apps' => null,
-            ],
-        ];
+        $values['scoutgroup_id'] = $type;
+        $new = $this->Sections->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\Section', $this->Sections->save($new));
 
-        $badEntity = $this->Sections->newEntity($badData);
-        $goodEntity = $this->Sections->newEntity($goodData, ['accessibleFields' => ['id' => true]]);
+        $values['scoutgroup_id'] = $type + 1;
+        $new = $this->Sections->newEntity($values);
+        $this->assertFalse($this->Sections->save($new));
 
-        $this->assertFalse($this->Sections->save($badEntity));
-        $this->Sections->save($goodEntity);
+        // Section Type Exists
+        $values = $this->getGood();
 
-        $query = $this->Sections->find('all');
+        $types = $this->Sections->SectionTypes->find('list')->toArray();
 
-        $this->assertInstanceOf('Cake\ORM\Query', $query);
-        $result = $query->enableHydration(false)->toArray();
+        $type = max(array_keys($types));
 
-        $this->assertEquals($expected, $result);
+        $values['section_type_id'] = $type;
+        $new = $this->Sections->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\Section', $this->Sections->save($new));
+
+        $values['section_type_id'] = $type + 1;
+        $new = $this->Sections->newEntity($values);
+        $this->assertFalse($this->Sections->save($new));
     }
 }

@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var array $log
+ * @var \App\View\AppView $this
+ */
+?>
 <div class="database-log-plugin row">
 
 <div class="col-xs-12 view">
@@ -9,11 +15,11 @@
 			</dd>
 			<dt><?php echo __('Message'); ?></dt>
 			<dd>
-				<?php echo trim(nl2br(h($log['message']))); ?>
+				<?php echo trim(nl2br($log['message'])); ?>
 			</dd>
 			<dt><?php echo __('Context'); ?></dt>
 			<dd>
-				<?php echo nl2br(h($log['context'])); ?>
+				<?php echo nl2br($log['context']); ?>
 				&nbsp;
 			</dd>
 			<dt><?php echo __('Uri'); ?></dt>
@@ -42,7 +48,7 @@
 	<div class="actions col-xs-12">
 	<ul>
 		<li><?php echo $this->Form->postLink(__('Delete {0}', __('Log Entry')), ['action' => 'delete', $log['id']], ['confirm' => __('Are you sure?')]); ?></li>
-		<li><?php echo $this->Html->link(__('Back'), ['action' => 'index', '?' => $this->request->query]); ?></li>
+		<li><?php echo $this->Html->link(__('Back'), ['action' => 'index', '?' => $this->request->getQuery()]); ?></li>
 	</ul>
 	</div>
 

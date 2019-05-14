@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use App\Model\Entity\NotificationType;
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -47,14 +48,57 @@ class NotificationTypesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('notification_type');
+            ->requirePresence('notification_type')
+            ->maxLength('notification_type', 45);
 
         $validator
-            ->requirePresence('notification_description');
+            ->requirePresence('notification_description')
+            ->maxLength('notification_description', 255);
 
         $validator
-            ->requirePresence('icon');
+            ->requirePresence('icon')
+            ->maxLength('icon', 45);
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['notification_type']));
+
+        return $rules;
+    }
+
+    /**
+     * install the application status config
+     *
+     * @return mixed
+     */
+    public function installBaseTypes()
+    {
+        $base = Configure::read('notificationTypes');
+
+        $total = 0;
+
+        foreach ($base as $baseType) {
+            $query = $this->find()->where(['notification_type' => $baseType['notification_type']]);
+            $status = $this->newEntity();
+            if ($query->count() > 0) {
+                $status = $query->first();
+            }
+            $this->patchEntity($status, $baseType);
+            if ($this->save($status)) {
+                $total += 1;
+            };
+        }
+
+        return $total;
     }
 }

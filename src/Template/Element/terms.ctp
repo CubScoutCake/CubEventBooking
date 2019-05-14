@@ -19,7 +19,7 @@
             <?= h($invoice->application->event->admin_user->city) ?>, <?= h($invoice->application->event->admin_user->county) ?>.
             <?= h($invoice->application->event->admin_user->postcode) ?>
         </strong> by <strong>
-            <?= $this->Time->i18nformat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?>
+            <?= $this->Time->i18nFormat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?>
         </strong>. Please write <strong>
             <?= h($invoice->application->event->event_type->invoice_text->text) ?>
             <?= $this->Number->format($invoice->id) ?>
@@ -38,7 +38,7 @@
             <?= h($invoice->reservation->event->admin_user->city) ?>, <?= h($invoice->reservation->event->admin_user->county) ?>.
             <?= h($invoice->reservation->event->admin_user->postcode) ?>
         </strong> by <strong>
-            <?= $this->Time->i18nformat($invoice->reservation->expires,'dd-MMM-yy') ?>
+            <?= $this->Time->i18nFormat($invoice->reservation->expires,'dd-MMM-yy') ?>
         </strong>.
     </p>
 <?php endif; ?>

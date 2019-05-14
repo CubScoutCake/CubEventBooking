@@ -49,7 +49,9 @@ class EventsFixture extends TestFixture
         'opening_date' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'cc_res' => ['type' => 'integer', 'length' => 10, 'default' => '0', 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'cc_atts' => ['type' => 'integer', 'length' => 10, 'default' => '0', 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
-        'force_full' => ['type' => 'boolean', 'length' => null, 'default' => false, 'null' => false, 'comment' => null, 'precision' => null],
+        'deposit_is_schedule' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
+        'force_full' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null, 'precision' => null],
+        'cc_complete_reservations' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         '_indexes' => [
             'events_discount_id' => ['type' => 'index', 'columns' => ['discount_id'], 'length' => []],
             'events_admin_user_id' => ['type' => 'index', 'columns' => ['admin_user_id'], 'length' => []],
@@ -108,9 +110,11 @@ class EventsFixture extends TestFixture
                 'team_price' => 0,
                 'event_status_id' => 1,
                 'opening_date' => 1554730915,
-                'cc_res' => 1,
+                'cc_res' => 0,
                 'cc_atts' => 1,
+                'deposit_is_schedule' => false,
                 'force_full' => false,
+                'cc_complete_reservations' => 0
             ],
             // Available Event Type 1 - Leader
             [
@@ -145,9 +149,11 @@ class EventsFixture extends TestFixture
                 'team_price' => 1,
                 'event_status_id' => 1,
                 'opening_date' => date_format(date_add(date_create('2016-12-26 23:22:30'), date_interval_create_from_date_string("10 days")), 'Y-m-d H:i:s'),
-                'cc_res' => 1,
+                'cc_res' => 0,
                 'cc_atts' => 1,
+                'deposit_is_schedule' => false,
                 'force_full' => false,
+                'cc_complete_reservations' => 0,
             ],
             // Available Event Type 2 - Parent
             [
@@ -182,9 +188,11 @@ class EventsFixture extends TestFixture
                 'team_price' => 0,
                 'event_status_id' => 1,
                 'opening_date' => date_format(date_add(date_create('2016-12-26 23:22:30'), date_interval_create_from_date_string("10 days")), 'Y-m-d H:i:s'),
-                'cc_res' => 1,
+                'cc_res' => 0,
                 'cc_atts' => 1,
+                'deposit_is_schedule' => false,
                 'force_full' => false,
+                'cc_complete_reservations' => 0,
             ],
         ];
         parent::init();

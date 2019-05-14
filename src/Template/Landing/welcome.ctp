@@ -73,7 +73,7 @@ $this->append('parent-nav', '<li class="nav-item">' . $this->Html->link('Login',
                         <i class="fal fa-3x <?= $event->event_type->parent_applications ? 'fa-ticket-alt' : 'fa-clipboard-list' ?> mb-2"></i>
                         <br/>
                         <h1 class="display-4 text-uppercase"><?= h($event->full_name) ?></h1>
-                        <h2 class="text-black-50"><?= $this->Time->i18nformat($event->start_date,'dd-MMM-yy')  ?></h2>
+                        <h2 class="text-black-50"><?= $this->Time->i18nFormat($event->start_date,'dd-MMM-yy')  ?></h2>
                         <hr class="my-4">
                         <?php if ($event->event_status->accepting_applications && !$event->event_status->spaces_full && $event->event_type->parent_applications) : ?>
                             <div><?= $this->Html->link('Book as a Parent', ['prefix' => 'parent', 'controller' => 'Reservations', 'action' => 'reserve', $event->id], ['class' => 'btn btn-primary'])  ?></div>
@@ -88,7 +88,7 @@ $this->append('parent-nav', '<li class="nav-item">' . $this->Html->link('Login',
                         <?php endif; ?>
 
                         <?php if ($event->event_status->pending_date) : ?>
-                            <div><h1 class="text-black-50">Booking opens: <?= $this->Time->i18nformat($event->opening_date,'dd-MMM-YY HH:mm', 'Europe/London') ?></h1></div>
+                            <div><h1 class="text-black-50">Booking opens: <?= $this->Time->i18nFormat($event->opening_date,'dd-MMM-YY HH:mm', 'Europe/London') ?></h1></div>
                         <?php endif; ?>
 
                         <?php if ($event->event_status->spaces_full) : ?>

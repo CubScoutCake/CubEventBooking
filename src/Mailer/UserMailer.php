@@ -22,7 +22,8 @@ class UserMailer extends Mailer
     public function welcome($user, $group, $notification)
     {
         // $email = new Email('default');
-        $this->transport('sparkpost')
+        $this
+            ->transport('sparkpost')
             ->template('welcome', 'default')
             ->emailFormat('html')
             ->to([$user->email => $user->full_name])
@@ -48,9 +49,9 @@ class UserMailer extends Mailer
     }
 
     /**
-     * @param Entity $user The User Entity
-     * @param Scoutgroup $group The Scoutgroup associated
-     * @param Entity $notification The Notification Entity.
+     * @param \App\Model\Entity\User $user The User Entity
+     * @param \App\Model\Entity\Scoutgroup $group The Scoutgroup associated
+     * @param \App\Model\Entity\Notification $notification The Notification Entity.
      *
      * @return void
      */
@@ -85,7 +86,8 @@ class UserMailer extends Mailer
      */
     public function passwordReset($user, $token)
     {
-        $this->setTo($user->email, $user->full_name)
+        $this
+            ->setTo($user->email, $user->full_name)
             ->setTemplate('password_reset')
             ->setLayout('default')
             ->setTransport('sparkpost')

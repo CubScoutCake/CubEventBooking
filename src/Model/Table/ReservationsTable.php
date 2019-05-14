@@ -2,7 +2,7 @@
 namespace App\Model\Table;
 
 use Cake\Core\Configure;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -22,7 +22,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Reservation newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Reservation[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Reservation|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Reservation|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Reservation saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Reservation patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Reservation[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Reservation findOrCreate($search, callable $callback = null, $options = [])
@@ -31,7 +31,6 @@ use Cake\Validation\Validator;
  */
 class ReservationsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -58,7 +57,10 @@ class ReservationsTable extends Table
         $this->addBehavior('CounterCache', [
             'Events' => [
                 'cc_res' => [
-                    'finder' => 'active'
+                    'finder' => 'active',
+                ],
+                'cc_complete_reservations' => [
+                    'finder' => 'complete',
                 ]
             ],
         ]);
@@ -87,7 +89,9 @@ class ReservationsTable extends Table
 
         $this->hasMany('LogisticItems', [
             'foreignKey' => 'reservation_id'
-        ]);
+        ])
+            ->setDependent(true)
+            ->setCascadeCallbacks(true);
     }
 
     /**
@@ -104,19 +108,19 @@ class ReservationsTable extends Table
 
         $validator
             ->allowEmptyString('user_id', false)
-            ->requirePresence('user_id');
+            ->requirePresence('user_id', 'create');
 
         $validator
             ->allowEmptyString('attendee_id', false)
-            ->requirePresence('attendee_id');
+            ->requirePresence('attendee_id', 'create');
 
         $validator
             ->allowEmptyString('event_id', false)
-            ->requirePresence('event_id');
+            ->requirePresence('event_id', 'create');
 
         $validator
             ->allowEmptyString('reservation_status_id', false)
-            ->requirePresence('reservation_status_id');
+            ->requirePresence('reservation_status_id', 'create');
 
         $validator
             ->dateTime('expires')
@@ -126,6 +130,10 @@ class ReservationsTable extends Table
             ->scalar('reservation_code')
             ->maxLength('reservation_code', 3)
             ->allowEmptyString('reservation_code');
+
+        $validator
+            ->boolean('cancelled')
+            ->allowEmptyString('cancelled', false);
 
         return $validator;
     }
@@ -190,6 +198,165 @@ class ReservationsTable extends Table
     }
 
     /**
+     * Finds the Reservations owned by the user.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options An array containing the user to be searched for.
+     *
+     * @return \Cake\ORM\Query The modified query.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function findComplete($query, $options)
+    {
+        return $query->contain('ReservationStatuses')->where(['ReservationStatuses.complete' => true]);
+    }
+
+    /**
+     * Finds the Reservations owned by the user.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options An array containing the user to be searched for.
+     *
+     * @return \Cake\ORM\Query The modified query.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function findInProgress($query, $options)
+    {
+        return $query->contain('ReservationStatuses')->where([
+            'ReservationStatuses.complete' => false,
+            'ReservationStatuses.cancelled' => false,
+        ]);
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param \Cake\I18n\Time $date The Date to be checked
+     *
+     * @return bool
+     */
+    private function determineDateOccurred($date)
+    {
+        if (is_null($date)) {
+            return false;
+        }
+
+        $now = FrozenTime::now();
+        $difference = $now->diff($date);
+
+        if ($difference->invert != 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $reservationId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determineExpired($reservationId)
+    {
+        $reservation = $this->get($reservationId);
+
+        return $this->determineDateOccurred($reservation->expires);
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $reservationId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determinePaid($reservationId)
+    {
+        $reservation = $this->get($reservationId, ['contain' => 'Invoices']);
+
+        if (!$reservation->has('invoice')) {
+            return false;
+        }
+
+        return $reservation->invoice->is_paid;
+    }
+
+    /**
+     * Various Event Completion Analyses.
+     *
+     * @param int $reservationId The Id for the Event to be completed.
+     *
+     * @return bool
+     */
+    public function determineCancelled($reservationId)
+    {
+        $reservation = $this->get($reservationId);
+
+        return $reservation->cancelled;
+    }
+
+    /**
+     * Method to determine the maximum section numbers for an event.
+     *
+     * @param int $reservationId The booking Event
+     *
+     * @return int
+     */
+    public function determineStatus($reservationId)
+    {
+        $complete = $this->determinePaid($reservationId);
+        $expired = $this->determineExpired($reservationId);
+        $cancelled = $this->determineCancelled($reservationId);
+
+        if ($expired) {
+            $query = $this->ReservationStatuses->find()->where(['reservation_status' => 'Expired']);
+
+            return $query->first()->id;
+        }
+
+        if ($cancelled) {
+            $query = $this->ReservationStatuses->find()->where(['reservation_status' => 'Cancelled']);
+
+            return $query->first()->id;
+        }
+
+        if ($complete) {
+            $query = $this->ReservationStatuses->find()->where(['reservation_status' => 'Complete']);
+
+            return $query->first()->id;
+        }
+
+        return $this->ReservationStatuses->find()->where(['reservation_status' => 'Pending Payment'])->first()->id;
+    }
+
+    /**
+     * @param int $reservationId The Event ID
+     *
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function schedule($reservationId)
+    {
+        $reservation = $this->get($reservationId);
+
+        $status = $this->determineStatus($reservationId);
+
+        if ($status <> $reservation->reservation_status_id) {
+            $reservation->set('reservation_status_id', $status);
+            $this->save($reservation, ['validate' => false]);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Writes the max value to the Logistic
      *
      * @param \Cake\Event\Event $event The event trigger.
@@ -208,7 +375,7 @@ class ReservationsTable extends Table
 
             $expiry = Configure::read('Schedule.reservation', '+10 days');
 
-            $now = Time::now();
+            $now = FrozenTime::now();
             $expiryDate = $now->modify($expiry);
 
             $entity->set('expires', $expiryDate);

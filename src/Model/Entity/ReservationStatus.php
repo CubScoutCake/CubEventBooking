@@ -10,6 +10,8 @@ use Cake\ORM\Entity;
  * @property string $reservation_status
  * @property bool $active
  * @property bool $complete
+ * @property bool $cancelled
+ * @property int $status_order
  *
  * @property \App\Model\Entity\Reservation[] $reservations
  */
@@ -28,6 +30,8 @@ class ReservationStatus extends Entity
         'reservation_status' => true,
         'active' => true,
         'complete' => true,
+        'cancelled' => true,
+        'status_order' => true,
         'reservations' => true
     ];
 }

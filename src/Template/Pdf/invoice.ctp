@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <p>Deposits for invoices should be made payable to <strong><?= h($invoice->application->event->event_type->payable->text) ?></strong> and sent to <strong><?= h($invoice->application->event->name) ?>, <?= h($invoice->application->event->admin_user->address_1) ?>, <?= $invoice->application->event->admin_user->has('address_2') ? $invoice->application->event->admin_user->address_2 . ', ' : '' ?><?= h($invoice->application->event->admin_user->city) ?>, <?= h($invoice->application->event->admin_user->county) ?>. <?= h($invoice->application->event->admin_user->postcode) ?></strong> by <strong><?= $this->Time->i18nformat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invoice->application->event->event_type->invoice_text->text) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
+                <p>Deposits for invoices should be made payable to <strong><?= h($invoice->application->event->event_type->payable->text) ?></strong> and sent to <strong><?= h($invoice->application->event->name) ?>, <?= h($invoice->application->event->admin_user->address_1) ?>, <?= $invoice->application->event->admin_user->has('address_2') ? $invoice->application->event->admin_user->address_2 . ', ' : '' ?><?= h($invoice->application->event->admin_user->city) ?>, <?= h($invoice->application->event->admin_user->county) ?>. <?= h($invoice->application->event->admin_user->postcode) ?></strong> by <strong><?= $this->Time->i18nFormat($invoice->application->event->closing_date,'dd-MMM-yyyy') ?></strong>. Please write <strong><?= h($invoice->application->event->event_type->invoice_text->text) ?><?= $this->Number->format($invoice->id) ?></strong> on the back of the cheque.</p>
             </div>
         </div>
     </div>
@@ -111,7 +111,7 @@
                             <tr>
                                 <td><?= h($payments->id) ?></td>
                                 <td><?= $this->Number->currency($payments->value,'GBP') ?></td>
-                                <td><?= $this->Time->i18nformat($payments->paid,'dd-MMM-yy') ?></td>
+                                <td><?= $this->Time->i18nFormat($payments->paid,'dd-MMM-yy') ?></td>
                                 <td><?= $this->Text->wrap($payments->name_on_cheque,20); ?></td>
                             </tr>
                         <?php endforeach; ?>

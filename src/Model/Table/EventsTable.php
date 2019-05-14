@@ -129,10 +129,6 @@ class EventsTable extends Table
             ->allowEmptyString('live');
 
         $validator
-            ->boolean('force_full')
-            ->allowEmptyString('force_full');
-
-        $validator
             ->boolean('new_apps')
             ->allowEmptyString('new_apps');
 
@@ -212,12 +208,36 @@ class EventsTable extends Table
             ->allowEmptyString('complete');
 
         $validator
+            ->integer('cc_prices')
+            ->allowEmptyString('cc_prices');
+
+        $validator
             ->boolean('team_price')
             ->allowEmptyString('team_price');
 
         $validator
             ->dateTime('opening_date')
             ->allowEmptyDateTime('opening_date');
+
+        $validator
+            ->integer('cc_res')
+            ->allowEmptyString('cc_res', false);
+
+        $validator
+            ->integer('cc_atts')
+            ->allowEmptyString('cc_atts', false);
+
+        $validator
+            ->boolean('deposit_is_schedule')
+            ->allowEmptyString('deposit_is_schedule');
+
+        $validator
+            ->boolean('force_full')
+            ->allowEmptyString('force_full');
+
+        $validator
+            ->integer('cc_complete_reservations')
+            ->allowEmptyString('cc_complete_reservations');
 
         return $validator;
     }
@@ -300,6 +320,8 @@ class EventsTable extends Table
      * @param int $eventId The booking Event
      *
      * @return int|bool
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function getPriceSection($eventId)
     {
@@ -431,7 +453,7 @@ class EventsTable extends Table
     }
 
     /**
-     * Method to determine the maximum section numbers for an event.
+     * Method to determine the correct status for an event
      *
      * @param int $eventId The booking Event
      *

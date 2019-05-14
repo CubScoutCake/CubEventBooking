@@ -2,7 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ApplicationsTable;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -24,46 +24,33 @@ class ApplicationsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.allergies',
-        'app.application_statuses',
-        'app.applications_attendees',
-        'app.applications',
-        'app.attendees',
-        'app.attendees_allergies',
-        'app.auth_roles',
-        'app.champions',
-        'app.discounts',
+        'app.sessions',
         'app.districts',
-        'app.email_response_types',
-        'app.email_responses',
-        'app.email_sends',
-        'app.event_statuses',
-        'app.event_types',
-        'app.events',
-        'app.invoice_items',
-        'app.invoices',
-        'app.invoices_payments',
-        'app.item_types',
-        'app.logistic_items',
-        'app.logistics',
-        'app.notes',
-        'app.notification_types',
-        'app.notifications',
-        'app.parameter_sets',
-        'app.parameters',
-        'app.params',
-        'app.password_states',
-        'app.payments',
-        'app.prices',
-        'app.reservation_statuses',
-        'app.reservations',
-        'app.roles',
         'app.scoutgroups',
         'app.section_types',
         'app.sections',
+        'app.password_states',
+        'app.auth_roles',
+        'app.item_types',
+        'app.roles',
+        'app.users',
+        'app.notification_types',
+        'app.notifications',
+        'app.application_statuses',
         'app.setting_types',
         'app.settings',
-        'app.users',
+        'app.event_types',
+        'app.event_statuses',
+        'app.discounts',
+        'app.events',
+        'app.prices',
+        'app.applications',
+        'app.task_types',
+        'app.tasks',
+        'app.attendees',
+        'app.applications_attendees',
+        'app.allergies',
+        'app.attendees_allergies',
     ];
 
     /**
@@ -77,8 +64,8 @@ class ApplicationsTableTest extends TestCase
         $config = TableRegistry::getTableLocator()->exists('Applications') ? [] : ['className' => ApplicationsTable::class];
         $this->Applications = TableRegistry::getTableLocator()->get('Applications', $config);
 
-        $now = new Time('2016-12-26 23:22:30');
-        Time::setTestNow($now);
+        $now = new FrozenTime('2016-12-26 23:22:30');
+        FrozenTime::setTestNow($now);
     }
 
     /**
@@ -100,7 +87,7 @@ class ApplicationsTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $timeNow = Time::now();
+        $timeNow = FrozenTime::now();
 
         $query = $this->Applications->find('all');
 

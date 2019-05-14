@@ -136,7 +136,7 @@ $this->append('parent-nav', '<li class="nav-item">' . $this->Html->link('User Ho
                                     <?= h($reservation->event->admin_user->city) ?>, <?= h($reservation->event->admin_user->county) ?>.
                                     <?= h($reservation->event->admin_user->postcode) ?>
                                 </strong> by <strong>
-                                    <?= $this->Time->i18nformat($reservation->expires,'dd-MMM-yy') ?>
+                                    <?= $this->Time->i18nFormat($reservation->expires,'dd-MMM-yy') ?>
                                 </strong>.
                             </p>
                             <p>

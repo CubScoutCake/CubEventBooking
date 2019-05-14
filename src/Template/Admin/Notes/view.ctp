@@ -65,11 +65,11 @@
                          </tr>
                          <tr>
                             <th><?= __('Date Created') ?></th>
-                            <td><?= $this->Time->i18nformat($note->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                            <td><?= $this->Time->i18nFormat($note->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Last Modified') ?></th>
-                            <td><?= $this->Time->i18nformat($note->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                            <td><?= $this->Time->i18nFormat($note->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
                     </table>
                 </div>

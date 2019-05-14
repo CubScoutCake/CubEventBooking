@@ -2,7 +2,7 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\NotesTable;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -61,8 +61,8 @@ class NotesTableTest extends TestCase
         $config = TableRegistry::exists('Notes') ? [] : ['className' => 'App\Model\Table\NotesTable'];
         $this->Notes = TableRegistry::get('Notes', $config);
 
-        $now = new Time('2016-12-26 23:22:30');
-        Time::setTestNow($now);
+        $now = new FrozenTime('2016-12-26 23:22:30');
+        FrozenTime::setTestNow($now);
     }
 
     /**
@@ -86,7 +86,7 @@ class NotesTableTest extends TestCase
     {
         $query = $this->Notes->find('all');
 
-        $timeNow = Time::now();
+        $timeNow = FrozenTime::now();
 
         $this->assertInstanceOf('Cake\ORM\Query', $query);
         $result = $query->enableHydration(false)->toArray();
@@ -114,7 +114,7 @@ class NotesTableTest extends TestCase
      */
     public function testValidationDefault()
     {
-        $timeNow = Time::now();
+        $timeNow = FrozenTime::now();
 
         $badData = [
             'id' => 'go jump now',
@@ -186,7 +186,7 @@ class NotesTableTest extends TestCase
      */
     public function testBuildRules()
     {
-        $timeNow = Time::now();
+        $timeNow = FrozenTime::now();
 
         $badData = [
             'id' => 'go jump now',

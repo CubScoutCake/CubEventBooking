@@ -3,7 +3,7 @@ namespace App\Test\TestCase\Controller\Component;
 
 use App\Controller\Component\BookingComponent;
 use Cake\Controller\ComponentRegistry;
-use Cake\I18n\Date;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -111,35 +111,35 @@ class BookingComponentTest extends TestCase
         $roles = TableRegistry::get('Roles');
 
         // Six Year Old Beaver
-        $sixYearOld = Date::now();
+        $sixYearOld = FrozenTime::now();
         $sixYearOld = $sixYearOld->subYears(6);
         $response = $this->Booking->guessRole($sixYearOld->format('Y-m-d'));
         $beaver = $roles->get($response);
         $this->assertEquals('Beaver', $beaver->role);
 
         // Nine Year Old Cub
-        $nineYearOld = Date::now();
+        $nineYearOld = FrozenTime::now();
         $nineYearOld = $nineYearOld->subYears(9);
         $response = $this->Booking->guessRole($nineYearOld->format('Y-m-d'));
         $beaver = $roles->get($response);
         $this->assertEquals('Cub', $beaver->role);
 
         // Twelve Year Old Scout
-        $twelveYearOld = Date::now();
+        $twelveYearOld = FrozenTime::now();
         $twelveYearOld = $twelveYearOld->subYears(12);
         $response = $this->Booking->guessRole($twelveYearOld->format('Y-m-d'));
         $beaver = $roles->get($response);
         $this->assertEquals('Scout', $beaver->role);
 
         // Fifteen Year Old Explorer
-        $fifteenYearOld = Date::now();
+        $fifteenYearOld = FrozenTime::now();
         $fifteenYearOld = $fifteenYearOld->subYears(15);
         $response = $this->Booking->guessRole($fifteenYearOld->format('Y-m-d'));
         $beaver = $roles->get($response);
         $this->assertEquals('Explorer', $beaver->role);
 
         // Twenty Year Old Leader
-        $twentyYearOld = Date::now();
+        $twentyYearOld = FrozenTime::now();
         $twentyYearOld = $twentyYearOld->subYears(20);
         $response = $this->Booking->guessRole($twentyYearOld->format('Y-m-d'));
         $beaver = $roles->get($response);
@@ -221,5 +221,27 @@ class BookingComponentTest extends TestCase
         $this->assertTrue(preg_match('/[0-9]+\-[0-9]+\-[A-Z]{3}/', $thirdRes->reservation_number) !== 0);
         $this->assertNotEmpty($thirdRes->invoice);
         $this->assertEmpty($thirdRes->logistic_items);
+    }
+
+    /**
+     * Test initial setup
+     *
+     * @return void
+     */
+    public function testNotifyReservation()
+    {
+        $response = $this->Booking->notifyReservation(1);
+        $this->assertTrue($response);
+    }
+
+    /**
+     * Test initial setup
+     *
+     * @return void
+     */
+    public function testConfirmReservation()
+    {
+        $response = $this->Booking->confirmReservation(1);
+        $this->assertTrue($response);
     }
 }

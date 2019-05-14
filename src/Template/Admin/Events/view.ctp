@@ -80,8 +80,8 @@
                             <td><?= $this->Time->format($event->end_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Deposit Deadline') ?></th>
-                            <th><?= __('Closing Date') ?></th>
+                            <th><?= __('Booking Opening Date') ?></th>
+                            <th><?= __('Booking Closing Date') ?></th>
                         </tr>
                         <tr>
                             <td><?= $this->Time->format($event->opening_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
@@ -123,22 +123,20 @@
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <tr>
-                            <td><strong>Event Status:</strong> <?= h($event->event_status->event_status) ?></td>
+                            <th><strong>Event Status:</strong></th>
+                            <th><?= h($event->event_status->event_status) ?></th>
                         </tr>
                         <tr>
                             <td>Complete: <?= $complete ? __('Y') : __('N'); ?></td>
-                        </tr>
-                        <tr>
                             <td>Pending: <?= $pending ? __('Y') : __('N'); ?></td>
                         </tr>
                         <tr>
                             <td>Started: <?= $started ? __('Y') : __('N'); ?></td>
-                        </tr>
-                        <tr>
                             <td>Over: <?= $over ? __('Y') : __('N'); ?></td>
                         </tr>
                         <tr>
                             <td>Full: <?= $full ? __('Y') : __('N'); ?></td>
+                            <td>Force Full: <?= $event->force_full ? __('Y') : __('N'); ?></td>
                         </tr>
                     </table>
                 </div>

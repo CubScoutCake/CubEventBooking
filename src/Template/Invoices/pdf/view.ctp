@@ -111,7 +111,7 @@
                             <tr>
                                 <td><?= h($payments->id) ?></td>
                                 <td><?= $this->Number->currency($payments->value,'GBP') ?></td>
-                                <td><?= $this->Time->i18nformat($payments->paid,'dd-MMM-yy') ?></td>
+                                <td><?= $this->Time->i18nFormat($payments->paid,'dd-MMM-yy') ?></td>
                                 <td><?= $this->Text->wrap($payments->name_on_cheque,20); ?></td>
                             </tr>
                         <?php endforeach; ?>
