@@ -23,6 +23,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Application[] $applications
  * @property \App\Model\Entity\Attendee[] $attendees
  * @property \App\Model\Entity\User[] $users
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Section extends Entity
 {

@@ -7,10 +7,10 @@ use Cake\ORM\Entity;
  * EmailSend Entity
  *
  * @property int $id
- * @property \Cake\I18n\Time|null $created
- * @property \Cake\I18n\Time|null $modified
- * @property \Cake\I18n\Time|null $sent
- * @property string|null $message_id
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\FrozenTime|null $sent
+ * @property string|null $message_send_code
  * @property int|null $user_id
  * @property string|null $subject
  * @property string|null $routing_domain
@@ -18,13 +18,18 @@ use Cake\ORM\Entity;
  * @property string|null $friendly_from
  * @property int|null $notification_type_id
  * @property int|null $notification_id
- * @property \Cake\I18n\Time|null $deleted
+ * @property \Cake\I18n\FrozenTime|null $deleted
+ * @property string|null $email_generation_code
+ * @property string|null $email_template
+ * @property bool $include_token
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\NotificationType $notification_type
  * @property \App\Model\Entity\Notification $notification
  * @property \App\Model\Entity\EmailResponse[] $email_responses
  * @property \App\Model\Entity\Token[] $tokens
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class EmailSend extends Entity
 {
@@ -41,7 +46,7 @@ class EmailSend extends Entity
         'created' => true,
         'modified' => true,
         'sent' => true,
-        'message_id' => true,
+        'message_send_code' => true,
         'user_id' => true,
         'subject' => true,
         'routing_domain' => true,
@@ -50,6 +55,9 @@ class EmailSend extends Entity
         'notification_type_id' => true,
         'notification_id' => true,
         'deleted' => true,
+        'email_generation_code' => true,
+        'email_template' => true,
+        'include_token' => true,
         'user' => true,
         'notification_type' => true,
         'notification' => true,

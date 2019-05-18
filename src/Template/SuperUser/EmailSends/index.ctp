@@ -28,7 +28,7 @@
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('sent') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('message_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('message_send_code') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('subject') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('routing_domain') ?></th>
@@ -46,7 +46,7 @@
                 <td><?= h($emailSend->created) ?></td>
                 <td><?= h($emailSend->modified) ?></td>
                 <td><?= h($emailSend->sent) ?></td>
-                <td><?= h($emailSend->message_id) ?></td>
+                <td><?= h($emailSend->message_send_code) ?></td>
                 <td><?= $emailSend->has('user') ? $this->Html->link($emailSend->user->full_name, ['controller' => 'Users', 'action' => 'view', $emailSend->user->id]) : '' ?></td>
                 <td><?= h($emailSend->subject) ?></td>
                 <td><?= h($emailSend->routing_domain) ?></td>

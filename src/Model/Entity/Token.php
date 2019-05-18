@@ -20,6 +20,8 @@ use Cake\ORM\Entity;
  * @property array|null $token_header
  *
  * @property \App\Model\Entity\EmailSend $email_send
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Token extends Entity
 {

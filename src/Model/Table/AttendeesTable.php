@@ -74,7 +74,6 @@ class AttendeesTable extends Table
         ]);
         $this->belongsTo('Sections', [
             'foreignKey' => 'section_id',
-            'joinType' => 'INNER'
         ]);
         $this->belongsTo('Roles', [
             'foreignKey' => 'role_id',

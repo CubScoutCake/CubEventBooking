@@ -27,7 +27,7 @@
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Message Id') ?></th>
-            <td><?= h($emailSend->message_id) ?></td>
+            <td><?= h($emailSend->message_send_code) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('User') ?></th>

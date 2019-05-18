@@ -89,6 +89,12 @@ class EmailSendsTable extends Table
             ->allowEmptyDateTime('sent');
 
         $validator
+            ->scalar('message_send_code')
+            ->maxLength('message_send_code', 255)
+            ->add('message_send_code', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
+            ->allowEmptyString('message_send_code');
+
+        $validator
             ->scalar('subject')
             ->maxLength('subject', 511)
             ->allowEmptyString('subject');
@@ -112,6 +118,21 @@ class EmailSendsTable extends Table
             ->dateTime('deleted')
             ->allowEmptyDateTime('deleted');
 
+        $validator
+            ->scalar('email_generation_code')
+            ->maxLength('email_generation_code', 30)
+            ->add('message_send_code', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
+            ->allowEmptyString('email_generation_code');
+
+        $validator
+            ->scalar('email_template')
+            ->maxLength('email_template', 30)
+            ->allowEmptyString('email_template');
+
+        $validator
+            ->boolean('include_token')
+            ->allowEmptyString('include_token');
+
         return $validator;
     }
 
@@ -127,6 +148,9 @@ class EmailSendsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['notification_type_id'], 'NotificationTypes'));
         $rules->add($rules->existsIn(['notification_id'], 'Notifications'));
+
+        $rules->add($rules->isUnique(['email_generation_code']));
+        $rules->add($rules->isUnique(['message_send_code']));
 
         return $rules;
     }

@@ -15,6 +15,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\User $user
  * @property bool $visible
  * @property string $note_text
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Note extends Entity
 {
