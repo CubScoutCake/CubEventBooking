@@ -14,7 +14,7 @@
                 echo $this->Form->password('osm_password');
             ?>
         </fieldset>
-        </br>   
+        <br />   
         <?= $this->Form->button(__('Submit')) ?>
         <?= $this->Form->end() ?>
     </div>

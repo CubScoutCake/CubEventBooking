@@ -10,7 +10,7 @@
         <h1 class="page-header"><i class="fal fa-file-invoice-dollar fa-fw"></i> Payment Invoice INV #<?= $this->Number->format($invoice->id) ?></h1>
     </div>
     <div class="col-lg-1 col-md-1">
-        </br>
+        <br />
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-warning dropdown-toggle" data-toggle="dropdown">
@@ -23,10 +23,10 @@
                 </ul>
             </div>
         </div>
-        </br>
+        <br />
     </div>
     <div class="col-lg-1 col-md-2">
-        </br>
+        <br />
         <div class="pull-right pull-down">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-warning dropdown-toggle" data-toggle="dropdown">
@@ -72,7 +72,7 @@
                 </ul>
             </div>
         </div>
-        </br>
+        <br />
     </div>
 </div>
 
@@ -81,7 +81,7 @@
         <div class="panel panel-yellow">
             <div class="panel-body">
                 <span><?= __('User') ?>: <?= $invoice->has('user') ? $this->Html->link($invoice->user->full_name, ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></span>
-                </br>
+                <br />
                 <span><?= __('Application') ?>: <?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></span>
             </div>
         </div>
@@ -90,7 +90,7 @@
         <div class="panel panel-yellow">
             <div class="panel-body">
                 <span><?= __('Date Created') ?>: <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London')) ?></span>
-                </br>
+                <br />
                 <span><?= __('Date Last Modified') ?>: <?= h($this->Time->i18nFormat($invoice->modified,'dd-MMM-YY HH:mm', 'Europe/London')) ?></span>
             </div>
         </div>

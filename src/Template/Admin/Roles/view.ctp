@@ -7,13 +7,13 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <span><strong><?= __('Id') ?></strong>: <?= $this->Number->format($role->id) ?></span>
-                </br>
+                <br />
                 <span><strong><?= __('Role') ?></strong>: <?= h($role->role) ?></span>
-                </br>
+                <br />
                 <span><strong><?= __('Invested') ?></strong>: <?= $role->invested ? __('Yes') : __('No'); ?></span>
-                </br>
+                <br />
                 <span><strong><?= __('Minor') ?></strong>: <?= $role->minor ? __('Yes') : __('No'); ?></span>
-                </br>
+                <br />
             </div>
         </div>
     </div>

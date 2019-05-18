@@ -94,6 +94,7 @@ class UsersController extends AppController
                 'AuthRoles',
                 'Notes' => ['Invoices', 'Applications'],
                 'Notifications' => ['NotificationTypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']],
+                'Reservations' => ['Events', 'ReservationStatuses', 'Attendees'],
             ]
         ]);
 
@@ -379,19 +380,5 @@ class UsersController extends AppController
         $this->Flash->success('You are now logged out.');
 
         return $this->redirect($this->Auth->logout());
-    }
-
-    /**
-     * Authorisation Determination
-     *
-     * @param \Cake\Event\Event $event The Event Trigger
-     * @return void
-     *
-     * @SuppressWarnings(PHPMD.UnusedMethodParameters)
-     */
-    public function beforeFilter(Event $event)
-    {
-        $this->Auth->allow(['register']);
-        $this->Auth->allow(['login']);
     }
 }

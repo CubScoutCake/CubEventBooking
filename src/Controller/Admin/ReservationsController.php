@@ -123,12 +123,14 @@ class ReservationsController extends AppController
      * @param string|null $reservationId Reservation id.
      *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     *
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
+     * @throws \Exception
      */
     public function process($reservationId = null)
     {
         if ($this->request->is(['post']) && $this->request->getData('id')) {
-            $reservationId = $this->request->getData('id');
+            $this->redirect(['controller' => 'Reservations', 'action' => 'process', $this->request->getData('id')]);
         }
 
         if (!empty($reservationId)) {
@@ -177,12 +179,6 @@ class ReservationsController extends AppController
 
             $this->set(compact('reservation'));
         }
-
-        $events = $this->Reservations->Events->find('list', ['limit' => 200]);
-        $users = $this->Reservations->Users->find('list', ['limit' => 200]);
-        $attendees = $this->Reservations->Attendees->find('list', ['limit' => 200]);
-        $reservationStatuses = $this->Reservations->ReservationStatuses->find('list', ['limit' => 200]);
-        $this->set(compact('events', 'users', 'attendees', 'reservationStatuses'));
     }
 
     /**

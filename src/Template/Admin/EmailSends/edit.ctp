@@ -31,7 +31,7 @@
         <legend><?= __('Edit Email Send') ?></legend>
         <?php
             echo $this->Form->input('sent');
-            echo $this->Form->input('message_id');
+            echo $this->Form->input('message_send_code');
             echo $this->Form->input('user_id', ['options' => $users, 'empty' => true]);
             echo $this->Form->input('subject');
             echo $this->Form->input('routing_domain');

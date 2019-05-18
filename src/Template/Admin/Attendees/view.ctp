@@ -3,7 +3,7 @@
         <h1 class="page-header"><i class="fal fa-poll-people fa-fw"></i> Attendee Information</h1>
     </div>
     <div class="col-lg-2 col-md-2">
-        </br>
+        <br />
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -18,7 +18,7 @@
                 </ul>
             </div>
         </div>
-        </br>
+        <br />
     </div>
 </div>
 <div class="row">

@@ -94,7 +94,7 @@ class SparkPostTransport extends AbstractTransport
 
         $emailLogData = [
             'sent' => Time::now(),
-            'message_id' => $transmissionID,
+            'message_send_code' => $transmissionID,
             'subject' => $email->getSubject(),
             'from_address' => $sender,
         ];

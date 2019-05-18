@@ -11,7 +11,7 @@
                 echo $this->Form->select('osm_section', $sections, ['label' => 'Online Scout Manager Section']);
             ?>
         </fieldset>
-        </br>
+        <br />
         <?= $this->Form->button(__('Submit')) ?>
         <?= $this->Form->end() ?>
     </div>

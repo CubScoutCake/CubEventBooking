@@ -1,9 +1,15 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\User $user
+ */
+?>
 <div class="row">
     <div class="col-lg-9 col-md-8">
         <h1 class="page-header"><i class="fal fa-user-circle fa-fw"></i> <?= h($user->full_name); ?></h1>
     </div>
     <div class="col-lg-1 col-md-2">
-        </br>
+        <br/>
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
@@ -26,10 +32,10 @@
                 </ul>
             </div>
         </div>
-        </br>
+        <br />
     </div>
     <div class="col-lg-2 col-md-2">
-        </br>
+        <br />
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -49,7 +55,7 @@
                 </ul>
             </div>
         </div>
-        </br>
+        <br />
     </div>
 </div>
 <div class="row">
@@ -130,11 +136,14 @@
                     <?php if (!empty($user->applications)): ?>
                         <li <?php if (!empty($user->applications)) { echo 'class="active"'; } ?>><a href="#appl-pills" data-toggle="tab"><i class="fal fa-clipboard-list fa-fw"></i> User's Applications</a></li>
                     <?php endif; ?>
+                    <?php if (!empty($user->reservations)): ?>
+                        <li <?php if (empty($user->applications)) { echo 'class="active"'; } ?>><a href="#res-pills" data-toggle="tab"><i class="fal fa-ticket-alt fa-fw"></i> User's Reservations</a></li>
+                    <?php endif; ?>
                     <?php if (!empty($user->invoices)): ?>
                         <li><a href="#invo-pills" data-toggle="tab"><i class="fal fa-file-invoice-dollar fa-fw"></i> Users's Invoices</a></li>
                     <?php endif; ?>
                     <?php if (!empty($user->attendees)): ?>
-                        <li <?php if (empty($user->applications)) { echo 'class="active"'; } ?>>
+                        <li <?php if (empty($user->applications) && empty($user->reservations)) { echo 'class="active"'; } ?>>
                             <a href="#att-pills" data-toggle="tab"><i class="fal fa-poll-people fa-fw"></i> User's Attendees</a>
                         </li>
                     <?php endif; ?>
@@ -142,13 +151,14 @@
                         <li><a href="#note-pills" data-toggle="tab"><i class="fal fa-edit fa-fw"></i> User Notes</a></li>
                     <?php endif; ?>
                     <?php if (!empty($user->notifications)): ?>
-                        <li <?php if (empty($user->applications) && empty($user->attendees)) { echo 'class="active"'; } ?>>
+                        <li <?php if (empty($user->applications) && empty($user->reservations) && empty($user->attendees)) { echo 'class="active"'; } ?>>
                             <a href="#notif-pills" data-toggle="tab"><i class="fal fa-bell fa-fw"></i> User's Notifications</a></li>
                     <?php endif; ?>
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content">
+                    <?php if (!empty($user->applications)) : ?>
                     <div class="tab-pane fade <?php if (!empty($user->applications)) { echo 'in active'; } ?>" id="appl-pills">
                         <div class="table-responsive">
                             <table class="table table-hover">
@@ -194,6 +204,46 @@
                             </table>
                         </div>
                     </div>
+                    <?php endif; ?>
+                    <?php if (!empty($user->reservations)) : ?>
+                    <div class="tab-pane fade <?php if (empty($user->applications)) { echo 'in active'; } ?>" id="res-pills">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th><?= __('Id') ?></th>
+                                    <th class="actions"><?= __('Actions') ?></th>
+                                    <th><?= __('Attendee') ?></th>
+                                    <th><?= __('Event') ?></th>
+                                    <th><?= __('Status') ?></th>
+                                    <th><?= __('Expires') ?></th>
+                                    <th><?= __('Created') ?></th>
+                                    <th><?= __('Modified') ?></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($user->reservations as $reservation): ?>
+                                    <tr>
+                                        <td><?= h($reservation->reservation_number) ?></td>
+                                        <td class="actions">
+                                            <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Reservations', 'action' => 'view', $reservation->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                            <?= $this->Html->link('<i class="fal fa-check"></i>', ['controller' => 'Reservations', 'action' => 'process', $reservation->id], ['title' => __('Process'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                            <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['controller' => 'Reservations', 'action' => 'edit', $reservation->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                            <?= $this->Form->postLink('<i class="fal fa-trash-alt"></i>', ['controller' => 'Reservations', 'action' => 'delete', $reservation->id], ['confirm' => __('Are you sure you want to delete # {0}?', $reservation->id), 'title' => __('Delete'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                        </td>
+                                        <td><?= $reservation->has('attendee') ? $this->Html->link($reservation->attendee->full_name, ['prefix' => 'admin', 'controller' => 'Attendees', 'action' => 'view', $reservation->attendee->id]) : '' ?></td>
+                                        <td><?= $reservation->has('event') ? $this->Html->link($this->Text->truncate($reservation->event->name,18), ['prefix' => 'admin', 'controller' => 'Events', 'action' => 'view', $reservation->event->id]) : '' ?></td>
+                                        <td><?= $reservation->has('reservation_status') ? $reservation->reservation_status->reservation_status : '' ?></td>
+                                        <td><?= $this->Time->i18nFormat($reservation->expires,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                        <td><?= $this->Time->i18nFormat($reservation->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                        <td><?= $this->Time->i18nFormat($reservation->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     <?php if (!empty($user->invoices)): ?>
                         <div class="tab-pane fade" id="invo-pills">
                             <div class="table-responsive">
@@ -240,7 +290,7 @@
                         </div>
                     <?php endif; ?>
                     <?php if (!empty($user->attendees)): ?>
-                        <div class="tab-pane fade <?php if (empty($user->applications)) { echo 'in active'; } ?>" id="att-pills">
+                        <div class="tab-pane fade <?php if (empty($user->applications) && empty($user->reservations)) { echo 'in active'; } ?>" id="att-pills">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -332,7 +382,7 @@
                         </div>
                     <?php endif; ?>
                     <?php if (!empty($user->notifications)): ?>
-                        <div class="tab-pane fade" id="notif-pills">
+                        <div class="tab-pane fade <?php if (empty($user->applications) && empty($user->reservations) && empty($user->attendees)) { echo 'in active'; } ?>" id="notif-pills">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -350,16 +400,9 @@
                                             <tr>
                                                 <td><?= $this->Number->format($notification->id) ?></td>
                                                 <td class="actions">
-                                                    <div class="dropdown btn-group">
-                                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="fal fa-cog"></i>  <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu " role="menu">
-                                                            <li><?= $this->Html->link(__('View Notification'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'view', $notification->id]) ?></li>
-                                                            <li><?= $this->Html->link(__('View Subject'), ['controller' => $notification->link_controller,'action' => $notification->link_action, $notification->link_id]) ?></li>
-                                                            <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'edit', $notification->id]) ?></li>
-                                                        </ul>
-                                                    </div>
+                                                    <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Notifications', 'action' => 'view', $notification->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                                    <?= $this->Html->link('<i class="fal fa-clipboard"></i>', ['controller' => $notification->link_controller,'action' => $notification->link_action, $notification->link_id], ['title' => __('View Subject'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                                    <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['controller' => 'Notifications', 'action' => 'edit', $notification->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                                 </td>
                                                 <td><?= $notification->has('notification_type') ? $notification->notification_type->notification_type : '' ?></td>
                                                 <td><?= h($notification->notification_source) ?></td>

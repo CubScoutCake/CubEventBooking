@@ -18,6 +18,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Parameter $parameter
  * @property \App\Model\Entity\Event $event
  * @property \App\Model\Entity\LogisticItem[] $logistic_items
+ *
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class Logistic extends Entity
 {

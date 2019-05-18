@@ -11,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class EmailSendsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -78,8 +77,8 @@ class EmailSendsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('EmailSends') ? [] : ['className' => 'App\Model\Table\EmailSendsTable'];
-        $this->EmailSends = TableRegistry::get('EmailSends', $config);
+        $config = TableRegistry::getTableLocator()->exists('EmailSends') ? [] : ['className' => EmailSendsTable::class];
+        $this->EmailSends = TableRegistry::getTableLocator()->get('EmailSends', $config);
     }
 
     /**
@@ -106,7 +105,7 @@ class EmailSendsTableTest extends TestCase
         $now = FrozenTime::getTestNow();
         $good = [
             'sent' => $now,
-            'message_id' => 'Lorem ipsum dolor sit amet',
+            'message_send_code' => 'PSJs' . random_int(111, 999) . 'sxa928as' . random_int(111, 999) . 'SMZX9',
             'user_id' => 1,
             'subject' => 'Lorem ipsum dolor sit amet',
             'routing_domain' => 'Lorem ipsum dolor sit amet',
@@ -114,7 +113,10 @@ class EmailSendsTableTest extends TestCase
             'friendly_from' => 'Lorem ipsum dolor sit amet',
             'notification_type_id' => 1,
             'notification_id' => 1,
-            'deleted' => null
+            'deleted' => null,
+            'email_generation_code' => 'RSV-' . random_int(111, 999) . '-' . random_int(1, 9) . 'DR',
+            'email_template' => 'reservation',
+            'include_token' => true,
         ];
 
         return $good;
@@ -124,6 +126,8 @@ class EmailSendsTableTest extends TestCase
      * Test initialize method
      *
      * @return void
+     *
+     * @throws \Exception
      */
     public function testInitialize()
     {
@@ -146,7 +150,7 @@ class EmailSendsTableTest extends TestCase
 
         $expected = [
             'id' => 1,
-            'message_id' => 'Lorem ipsum dolor sit amet',
+            'message_send_code' => 'PSJs821sxa928as219SMZX9',
             'user_id' => 1,
             'subject' => 'Lorem ipsum dolor sit amet',
             'routing_domain' => 'Lorem ipsum dolor sit amet',
@@ -154,6 +158,9 @@ class EmailSendsTableTest extends TestCase
             'friendly_from' => 'Lorem ipsum dolor sit amet',
             'notification_type_id' => 1,
             'notification_id' => 1,
+            'email_generation_code' => 'RSV-2-5DR',
+            'email_template' => 'reservation',
+            'include_token' => true,
         ];
         $this->assertEquals($expected, $actual);
 
@@ -177,7 +184,7 @@ class EmailSendsTableTest extends TestCase
 
         $empties = [
             'sent',
-            'message_id',
+            'message_send_code',
             'user_id',
             'subject',
             'routing_domain',
@@ -188,7 +195,7 @@ class EmailSendsTableTest extends TestCase
         ];
 
         foreach ($empties as $empty) {
-            $reqArray = $good;
+            $reqArray = $this->getGood();
             $reqArray[$empty] = '';
             $new = $this->EmailSends->newEntity($reqArray);
             $this->assertInstanceOf('App\Model\Entity\EmailSend', $this->EmailSends->save($new));
