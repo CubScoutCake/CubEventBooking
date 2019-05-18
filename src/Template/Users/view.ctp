@@ -3,7 +3,7 @@
         <h1 class="page-header"><i class="fal fa-user-circle fa-fw"></i> <?= h($user->full_name); ?></h1>
     </div>
     <div class="col-lg-2 col-md-2">
-        </br>
+        <br />
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -22,7 +22,7 @@
                 </ul>
             </div>
         </div>
-        </br>
+        <br />
     </div>
 </div>
 <div class="row">
@@ -92,9 +92,11 @@
             <div class="panel-body">
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills">
+                    <?php if (!empty($user->applications)): ?>
                     <li class="active">
                         <a href="#appl-pills" data-toggle="tab"><i class="fal fa-clipboard-list fa-fw"></i> User's Applications</a>
                     </li>
+                    <?php endif; ?>
                     <?php if (!empty($user->invoices)): ?>
                         <li><a href="#invo-pills" data-toggle="tab"><i class="fal fa-file-invoice-dollar fa-fw"></i> Users's Invoices</a></li>
                     <?php endif; ?>

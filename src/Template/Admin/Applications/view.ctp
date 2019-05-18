@@ -9,7 +9,7 @@
         <h1 class="page-header"><i class="fal fa-clipboard-list fa-fw"></i> Application <?= h($application->display_code) ?></h1>
     </div>
     <div class="col-lg-2 col-md-2">
-        </br>
+        <br />
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
@@ -42,7 +42,7 @@
                 </ul>
             </div>
         </div>
-        </br>
+        <br />
     </div>
 </div>
 <div class="row">
@@ -50,13 +50,13 @@
         <div class="panel panel-green">
             <div class="panel-body">
                 <span><?= __('User') ?>: <?= $application->has('user') ? $this->Html->link($application->user->full_name, ['controller' => 'Users', 'action' => 'view', $application->user->id]) : '' ?></span>
-                </br>
+                <br />
                 <span><?= __('District') ?>: <?= $application->section->scoutgroup->has('district') ? $this->Html->link($application->section->scoutgroup->district->district, ['controller' => 'Scoutgroups', 'action' => 'view', $application->section->scoutgroup->district->id]) : '' ?></span>
-                </br>
+                <br />
                 <span><?= __('Scout Group') ?>: <?= $application->section->has('scoutgroup') ? $this->Html->link($application->section->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $application->section->scoutgroup->id]) : '' ?></span>
-                </br>
+                <br />
                 <span><?= __('Section') ?>: <?= $application->has('section') ? $this->Html->link($application->section->section, ['controller' => 'Sections', 'action' => 'view', $application->section->id]) : '' ?></span>
-                </br>
+                <br />
                 <span><?= __('Permitholder') ?>: <?= h($application->permit_holder) ?></span>
 
             </div>
@@ -66,11 +66,11 @@
         <div class="panel panel-green">
             <div class="panel-body">
                 <span><?= __('Event') ?>: <?= $application->has('event') ? $this->Html->link($application->event->full_name, ['controller' => 'Events', 'action' => 'view', $application->event->id]) : '' ?></span>
-                </br>
+                <br />
                 <span><?= __('App Number') ?>: <?= $this->Number->format($application->id) ?></span>
-                </br>
+                <br />
                 <span><?= __('Date Created') ?>: <?= $this->Time->i18nFormat($application->created, 'dd-MMM-YY HH:mm', 'Europe/London') ?></span>
-                </br>
+                <br />
                 <span><?= __('Last Modified') ?>: <?= $this->Time->i18nFormat($application->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></span>
             </div>
         </div>
@@ -107,9 +107,9 @@
                     <div>
                         <p>
                             <strong>Invoice Progress</strong>
-                            </br>
+                            <br />
                             <span class="pull-right text-muted"><?= $this->Number->format($invCount); ?> <?php if ($invCount == 1) : ?>Invoice<?php else : ?>Invoices<?php endif ?></span>
-                            </br>
+                            <br />
                         </p>
                         <div class="progress progress-striped active">
                             <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="<?php echo ($invDone * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage($invDone,1,['multiply' => true]); ?>">
@@ -154,9 +154,9 @@
                     <div>
                         <p>
                             <strong>Cub Attendee Progress</strong>
-                            </br>
+                            <br />
                             <span class="pull-right text-muted"><?= $this->Number->format($attCubs); ?> Cubs of <?= $this->Number->format($invCubs); ?> on Invoice</span>
-                            </br>
+                            <br />
                         </p>
                         <div class="progress progress-striped active">
                             <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo ($cubsDone * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage($cubsDone,1,['multiply' => true]); ?>">
@@ -187,9 +187,9 @@
                     <div>
                         <p>
                             <strong>Leader Attendee Progress</strong>
-                            </br>
+                            <br />
                             <span class="pull-right text-muted"><?= $this->Number->format($attNotCubs); ?> Leaders of <?= $this->Number->format($invNotCubs); ?> on Invoice</span>
-                            </br>
+                            <br />
                         </p>
                         <div class="progress progress-striped active">
                             <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo ($cubsNotDone * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage($cubsNotDone,1,['multiply' => true]); ?>">
@@ -220,9 +220,9 @@
                     <div>
                         <p>
                             <strong>Balance Paid Progress</strong>
-                            </br>
+                            <br />
                             <span class="pull-right text-muted"><?= $this->Number->currency($sumPayments,'GBP'); ?> of <?= $this->Number->currency($sumValues,'GBP'); ?></span>
-                            </br>
+                            <br />
                         </p>
                         <div class="progress progress-striped active">
                             <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="<?php echo ($payDone * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage($payDone,1,['multiply' => true]); ?>">

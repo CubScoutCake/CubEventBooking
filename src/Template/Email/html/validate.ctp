@@ -20,14 +20,14 @@
 <p><strong>User Name:</strong> <?= h($username) ?></p>
 <p><strong>Full Name:</strong> <?= h($full_name) ?></p>
 <p><strong>Scout Group:</strong> <?= h($scoutgroup) ?></p>
-</br>
+<br />
 <h3>Actions</h3>
 <ul>
 	<li><?= $this->Html->link('Login', ['_full' => true, 'controller' => 'Users', 'action' => 'login', 'prefix' => false]) ?></li>
 	<li><?= $this->Html->link('View this Notification', ['_full' => true, 'controller' => 'Notifications', 'prefix' => false, 'action' => 'view', $notification_id]) ?></li>
 	<li><?= $this->Html->link('Edit your User Information', ['_full' => true, 'controller' => $link_controller, 'prefix' => false, 'action' => 'edit', $link_id]) ?></li>
 </ul>
-</br>
+<br />
 <p><strong>Thank-you for Registering.</strong></p>
 <p>Your user was created at <?= $this->Time->i18nFormat($date_created, 'HH:mm') ?> on <?= $this->Time->i18nFormat($date_created, 'dd-MMM-yy') ?>. If this was not you, please email <?= $this->Html->link('info@hertscubs.uk', 'mailto:info@hertscubs.uk') ?>.</p>
 <p>We will occasionally contact you from time to time with account notifications (e.g. <span>'your payment has been recieved'</span>) and with upcoming events. These won't be frequent and you will have the option to unsubscribe.</p>

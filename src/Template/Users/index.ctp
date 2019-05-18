@@ -1,5 +1,5 @@
 <div class="users index large-10 medium-9 columns">
-</br>
+<br />
     <h3>Users in your Scout Group</h3>
 </div>
 <div class="users index large-10 medium-9 columns">

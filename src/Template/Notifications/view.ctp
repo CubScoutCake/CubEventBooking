@@ -3,7 +3,7 @@
         <h1 class="page-header"><i class="fal fa-bell fa-fw"></i> View Notification</h1>
     </div>
     <div class="col-lg-2 col-md-2">
-        </br>
+        <br />
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -15,7 +15,7 @@
                 </ul>
             </div>
         </div>
-        </br>
+        <br />
     </div>
 </div>
 <div class="row">
@@ -27,7 +27,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <h3><?= h($notification->notification_header) ?></h3>
-                </br>
+                <br />
                 <p><?= h($notification->text) ?></p>
             </div>
             <div class="panel-footer">

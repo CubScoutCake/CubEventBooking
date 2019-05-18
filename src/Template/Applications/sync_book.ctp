@@ -39,7 +39,7 @@ use \Cake\I18n\Date;
                 </ul>
             </div>
         </div>
-        </br>
+        <br />
     </div>
 </div>
 <div class="row">

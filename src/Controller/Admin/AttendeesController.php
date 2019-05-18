@@ -86,7 +86,7 @@ class AttendeesController extends AppController
         } else {
             $user = $this->Attendees->Users->get($userId);
 
-            $users = $this->Attendees->Users->find('list', ['limit' => 200, 'conditions' => ['id' => $userId]]);
+            $users = $this->Attendees->Users->find('list', ['conditions' => ['id' => $userId]]);
             $applications = $this->Attendees->Applications->find('list', [
                 'limit' => 200,
                 'conditions' => [
@@ -144,7 +144,7 @@ class AttendeesController extends AppController
                 $this->Flash->error(__('The attendee could not be saved. Please, try again.'));
             }
         }
-        $users = $this->Attendees->Users->find('list', ['limit' => 200]);
+        $users = $this->Attendees->Users->find('list');
         $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $attendee->user_id]]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
         $sections = $this->Attendees->Sections->find(

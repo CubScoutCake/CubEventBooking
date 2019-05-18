@@ -3,7 +3,7 @@
         <h1 class="page-header"><i class="fal fa-receipt fa-fw"></i> Payment <?= h($payment->id) ?></h1>
     </div>
     <!-- <div class="col-lg-1 col-md-2">
-        </br>
+        <br />
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
@@ -20,10 +20,10 @@
                 </ul>
             </div>
         </div>
-        </br>
+        <br />
     </div>
     <div class="col-lg-2 col-md-2">
-        </br>
+        <br />
         <div class="pull-right">
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -45,7 +45,7 @@
                 </ul>
             </div>
         </div>
-        </br>
+        <br />
     </div> -->
 </div>
 
