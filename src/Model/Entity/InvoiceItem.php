@@ -52,7 +52,9 @@ class InvoiceItem extends Entity
      */
     protected function _getQuantityPrice()
     {
-        return $this->_properties['value'] * $this->_properties['quantity'];
+        if (isset($this->_properties['quantity'])) {
+            return $this->_properties['value'] * $this->_properties['quantity'];
+        }
     }
 
     protected $_virtual = ['quantity_price'];

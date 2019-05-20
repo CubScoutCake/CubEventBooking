@@ -74,9 +74,25 @@ class EventsController extends AppController
 
         $lineArray = Hash::remove($lineArray, '[virtual]');
 
-        $lineArray = json_encode($lineArray);
+        $lineResQuery = $this->Events->Reservations
+            ->find('all', ['contain' => ['Attendees.Sections.Scoutgroups.Districts']])
+            ->where(['event_id' => $eventId]);
 
-        $this->set(compact('lineArray'));
+        $lineResQuery = $lineResQuery->select([
+            'value' => $lineResQuery->func()->count('*'),
+            'label' => 'Districts.district'
+        ])
+        ->group('Districts.district');
+
+        $lineResArray = $lineResQuery->enableHydration(false)->toArray();
+
+        $lineResArray = Hash::remove($lineResArray, '[virtual]');
+
+        $districtArray = array_merge($lineArray, $lineResArray);
+
+        $districtArray = json_encode($districtArray);
+
+        $this->set('lineArray', $districtArray);
 
         $maxSection = $this->Events->getPriceSection($eventId);
 
@@ -110,23 +126,84 @@ class EventsController extends AppController
     public function accounts($eventId = null)
     {
         $event = $this->Events->get($eventId, [
-            'contain' => ['Settings', 'EventStatuses', 'Discounts', 'Prices.ItemTypes', 'Applications', 'Applications.Users', 'Applications.Sections.Scoutgroups.Districts']
+            'contain' => [
+                'Settings',
+                'EventStatuses',
+                'Discounts',
+                'Prices.ItemTypes',
+                'Applications' => [
+                    'Users',
+                    'Sections.Scoutgroups.Districts',
+                ],
+                'Reservations' => [
+                    'Users',
+                    'Attendees.Sections.Scoutgroups.Districts',
+                    'LogisticItems.Params.Parameters',
+                    'Invoices',
+                    'ReservationStatuses',
+                    'Events',
+                ],
+            ]
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);
 
         // Get Entities from Registry
-        $apps = TableRegistry::get('Applications');
-        $invs = TableRegistry::get('Invoices');
-        $itms = TableRegistry::get('InvoiceItems');
-        $sets = TableRegistry::get('Settings');
-        $dscs = TableRegistry::get('Discounts');
-        $usrs = TableRegistry::get('Users');
+        $sets = TableRegistry::getTableLocator()->get('Settings');
+        $dscs = TableRegistry::getTableLocator()->get('Discounts');
+        $usrs = TableRegistry::getTableLocator()->get('Users');
 
         // Table Entities
-        $applications = $apps->find('all')->where(['event_id' => $event->id]);
-        $invoices = $invs->find('all')->contain(['Applications'])->where(['Applications.event_id' => $event->id]);
-        $allInvoices = $invs->find('all')->contain(['Applications'])->where(['Applications.event_id' => $event->id]);
+        $applications = $this->Events->Applications->find('all')->where(['event_id' => $event->id]);
+        $invoices = $this->Events->Reservations->Invoices
+            ->find()
+            ->contain([
+                'Applications',
+                'Reservations',
+            ])->where([
+                'OR' => [
+                    'Applications.event_id' => $event->id,
+                    'Reservations.event_id' => $event->id,
+                ],
+            ]);
+        $allInvoices = $this->Events->Reservations->Invoices
+            ->find()
+            ->contain([
+                'Applications',
+                'Reservations',
+            ])->where([
+                'OR' => [
+                    'Applications.event_id' => $event->id,
+                    'Reservations.event_id' => $event->id,
+                ],
+            ]);
+        $this->set('invoices', $allInvoices);
+
+        $outInvoices = $this->Events->Reservations->Invoices
+            ->find('outstanding')
+            ->contain([
+                'Applications',
+                'Reservations',
+            ])->where([
+                'OR' => [
+                    'Applications.event_id' => $event->id,
+                    'Reservations.event_id' => $event->id,
+                ],
+            ]);
+        $unpaidInvoices = $this->Events->Reservations->Invoices
+            ->find('unpaid')
+            ->contain([
+                'Applications',
+                'Reservations',
+            ])->where([
+                'OR' => [
+                    'Applications.event_id' => $event->id,
+                    'Reservations.event_id' => $event->id,
+                ],
+            ]);
+
+        $this->set(compact('outInvoices', 'unpaidInvoices'));
+
         if (isset($event->discount_id)) {
             $discount = $dscs->get($event->discount_id);
         }
@@ -142,7 +219,6 @@ class EventsController extends AppController
 
         // Pass to View
         $this->set(compact('applications', 'discount', 'invText', 'legal', 'administrator'));
-        $this->set('invoices', $allInvoices);
 
         // Counts of Entities
         $cntApplications = $applications->count();
@@ -185,54 +261,46 @@ class EventsController extends AppController
 
         if ($cntInvoices >= 1) {
             // Sum Values & Calculate Balances
-            $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->group('Applications.event_id')->first();
-            $sumPaymentItem = $invoices->select(['sum' => $invoices->func()->sum('value')])->group('Applications.event_id')->first();
+            $sumInvoices = $this->Events->Applications->Invoices->find()->contain(['Applications', 'Reservations'])->where(['OR' => ['Applications.event_id' => $event->id, 'Reservations.event_id' => $event->id]]);
+            $sumInvoices = $sumInvoices->select(['initial_sum' => $sumInvoices->func()->sum('initialvalue'), 'value_sum' => $sumInvoices->func()->sum('value')])->group(['Applications.event_id', 'Reservations.event_id'])->first();
 
-            $sumValues = $sumValueItem->sum;
-            $sumPayments = $sumPaymentItem->sum;
+            $sumValues = $sumInvoices->initial_sum;
+            $sumPayments = $sumInvoices->value_sum;
 
             $sumBalances = $sumValues - $sumPayments;
 
             // Count of Line Items
-            $invItemCounts = $itms->find('all')->contain(['Invoices.Applications'])->where(['Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('quantity'), 'value' => $invoices->func()->max('InvoiceItems.value')])->group('item_type_id')->toArray();
-
-            $invCubs = $invItemCounts[1]->sum;
-            $invYls = $invItemCounts[2]->sum;
-            $invLeaders = $invItemCounts[3]->sum;
-
-            $invValueCubs = $invItemCounts[1]->value * $invItemCounts[1]->sum;
-            $invValueYls = $invItemCounts[2]->value * $invItemCounts[2]->sum;
-            $invValueLeaders = $invItemCounts[3]->value * $invItemCounts[3]->sum;
+            $invItemCounts = $this->Events->Applications->Invoices->InvoiceItems->find()->contain(['Invoices' => ['Applications', 'Reservations'], 'ItemTypes'])->where(['OR' => ['Applications.event_id' => $event->id, 'Reservations.event_id' => $event->id]]);
+            $invItemCounts = $invItemCounts->select(['ItemTypes.item_type', 'sum_qty' => $invItemCounts->func()->sum('quantity'), 'value' => $invItemCounts->func()->max('InvoiceItems.value')])->group('ItemTypes.item_type')->toArray();
 
             $this->set(compact('invItemCounts'));
 
-            if (count($invItemCounts) > 6) {
-                // Count of Cancelled Items
-                $canItemCounts = $itms->find('all')->contain(['Invoices.Applications', 'Itemtypes'])->where(['Itemtypes.cancelled' => true, 'Applications.event_id' => $event->id])->select(['sum' => $invoices->func()->sum('Quantity'), 'value' => $invoices->func()->max('InvoiceItems.Value')])->group('item_type_id')->toArray();
-
-                $canCubs = $canItemCounts[1]->sum;
-                $canYls = $canItemCounts[2]->sum;
-                $canLeaders = $canItemCounts[3]->sum;
-
-                $canValueCubs = $canItemCounts[1]->value * $canItemCounts[1]->sum;
-                $canValueYls = $canItemCounts[2]->value * $canItemCounts[2]->sum;
-                $canValueLeaders = $canItemCounts[3]->value * $canItemCounts[3]->sum;
-            }
-
             //Find all Outstanding Invoices
-            $outInvoices = $invs
+            $outstanding = $this->Events->Reservations->Invoices
                 ->find('outstanding')
-                ->contain(['Applications'])
-                ->where(['Applications.event_id' => $event->id]);
+                ->contain([
+                    'Applications',
+                    'Reservations',
+                ])->where([
+                    'OR' => [
+                        'Applications.event_id' => $event->id,
+                        'Reservations.event_id' => $event->id,
+                    ],
+                ])
+                ->count();
 
-            $unpaidInvoices = $invs
-                ->find('outstanding')
+            $unpaid = $this->Events->Reservations->Invoices
                 ->find('unpaid')
-                ->contain(['Applications'])
-                ->where(['Applications.event_id' => $event->id]);
-
-            $outstanding = $outInvoices->count();
-            $unpaid = $unpaidInvoices->count();
+                ->contain([
+                    'Applications',
+                    'Reservations',
+                ])->where([
+                    'OR' => [
+                        'Applications.event_id' => $event->id,
+                        'Reservations.event_id' => $event->id,
+                    ],
+                ])
+                ->count();
 
             if ($outstanding == 0) {
                 $outInvoices = null;
@@ -242,7 +310,6 @@ class EventsController extends AppController
             }
         }
 
-        $this->set(compact('outInvoices', 'unpaidInvoices'));
         $this->set(compact('invCubs', 'invYls', 'invLeaders', 'invValueCubs', 'invValueYls', 'invValueLeaders'));
         $this->set(compact('canCubs', 'canYls', 'canLeaders', 'canValueCubs', 'canValueYls', 'canValueLeaders'));
         $this->set(compact('sumValues', 'sumBalances', 'sumPayments', 'outstanding', 'unpaid'));
