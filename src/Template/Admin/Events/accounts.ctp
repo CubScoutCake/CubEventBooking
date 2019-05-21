@@ -29,6 +29,10 @@
  *
  * @var int $unpaid
  * @var int $outstanding
+ *
+ * @var \App\Model\Entity\Invoice[] $invoices
+ *
+ * @var array $invItemCounts
  */
 ?>
 <div class="row">
@@ -76,8 +80,8 @@
                             <tr>
                                 <th><?= __('Property') ?></th>
                                 <th><?= __('Applications / Reservations') ?></th>
-                                <th><?= __('Invoices') ?></th>
-                                <th><?= __('Cancelled') ?></th>
+                                <th><?= __('Invoice Quantity') ?></th>
+                                <th><?= __('Invoice Value') ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,57 +95,29 @@
                                 <tr>
                                     <th><?= __('Total Income') ?></th>
                                     <td></td>
-                                    <td><?= $this->Number->currency($sumValues,'GBP') ?></td>
                                     <td></td>
+                                    <td><?= $this->Number->currency($sumValues,'GBP') ?></td>
                                 </tr>
                                 <tr>
                                     <th><?= __('Total Payments') ?></th>
                                     <td></td>
-                                    <td><?= $this->Number->currency($sumPayments,'GBP') ?></td>
                                     <td></td>
+                                    <td><?= $this->Number->currency($sumPayments,'GBP') ?></td>
                                 </tr>
                                 <tr>
                                     <th><?= __('Total Outstanding Balances') ?></th>
                                     <td></td>
+                                    <td></td>
                                     <td><?= $this->Number->currency($sumBalances,'GBP') ?></td>
-                                    <td></td>
                                 </tr>
-                                <tr>
-                                    <th><?= __('Total Number of Cubs') ?></th>
-                                    <td><?= $this->Number->format($appCubs) ?></td>
-                                    <td><?= $this->Number->format($invCubs) ?></td>
-                                    <td><?= $this->Number->format($canCubs) ?></td>
-                                </tr>
-                                <tr>
-                                    <th><?= __('Total Number of Young Leaders') ?></th>
-                                    <td><?= $this->Number->format($appYls) ?></td>
-                                    <td><?= $this->Number->format($invYls) ?></td>
-                                    <td><?= $this->Number->format($canYls) ?></td>
-                                </tr>
-                                <tr>
-                                    <th><?= __('Total Number of Leaders') ?></th>
-                                    <td><?= $this->Number->format($appLeaders) ?></td>
-                                    <td><?= $this->Number->format($invLeaders) ?></td>
-                                    <td><?= $this->Number->format($canLeaders) ?></td>
-                                </tr>
-                                <tr>
-                                    <th><?= __('Total Value of Cubs') ?></th>
-                                    <td></td>
-                                    <td><?= $this->Number->currency($invValueCubs,'GBP') ?></td>
-                                    <td><?= $this->Number->currency($canValueCubs,'GBP') ?></td>
-                                </tr>
-                                <tr>
-                                    <th><?= __('Total Value of Young Leaders') ?></th>
-                                    <td></td>
-                                    <td><?= $this->Number->currency($invValueYls,'GBP') ?></td>
-                                    <td><?= $this->Number->currency($canValueYls,'GBP') ?></td>
-                                </tr>
-                                <tr>
-                                    <th><?= __('Total Value of Leaders') ?></th>
-                                    <td></td>
-                                    <td><?= $this->Number->currency($invValueLeaders,'GBP') ?></td>
-                                    <td><?= $this->Number->currency($canValueLeaders,'GBP') ?></td>
-                                </tr>
+                                <?php foreach ($invItemCounts as $invItemCount) : ?>
+                                    <tr>
+                                        <th><?= __('Total Number of ') . $invItemCount['item_type']['item_type'] ?></th>
+                                        <td></td>
+                                        <td><?= $this->Number->format($invItemCount['sum_qty']) ?></td>
+                                        <td><?= $this->Number->currency(($invItemCount['value'] * $invItemCount['sum_qty']),'GBP') ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
                                 <tr>
                                     <th><?= __('Total Unpaid') ?></th>
                                     <td></td>
@@ -177,6 +153,9 @@
                     <li class="active"><a href="#pric-pills" data-toggle="tab"><i class="fal fa-tags fa-fw"></i> Prices</a></li>
                     <?php if (!empty($event->applications)): ?>
                         <li><a href="#appl-pills" data-toggle="tab"><i class="fal fa-clipboard-list fa-fw"></i> Applications</a></li>
+                    <?php endif; ?>
+                    <?php if (!empty($event->reservations)): ?>
+                        <li><a href="#res-pills" data-toggle="tab"><i class="fal fa-ticket-alt fa-fw"></i> Reservations</a></li>
                     <?php endif; ?>
                     <?php if (!empty($invoices)): ?>
                         <li><a href="#invo-pills" data-toggle="tab"><i class="fal fa-file-invoice-dollar fa-fw"></i> Invoices</a></li>
@@ -298,6 +277,45 @@
                         </div>
                     </div>
                     <?php endif; ?>
+                    <?php if (!empty($event->reservations)): ?>
+                        <div class="tab-pane fade in" id="res-pills">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th><?= __('Id') ?></th>
+                                        <th class="actions"><?= __('Actions') ?></th>
+                                        <th><?= __('User') ?></th>
+                                        <th><?= __('Attendee') ?></th>
+                                        <th><?= __('Status') ?></th>
+                                        <th><?= __('Expires') ?></th>
+                                        <th><?= __('Created') ?></th>
+                                        <th><?= __('Modified') ?></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($event->reservations as $reservation): ?>
+                                        <tr>
+                                            <td><?= h($reservation->reservation_number) ?></td>
+                                            <td class="actions">
+                                                <?= $this->Html->link('<i class="fal fa-eye"></i>', ['controller' => 'Reservations', 'action' => 'view', $reservation->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                                <?= $this->Html->link('<i class="fal fa-check"></i>', ['controller' => 'Reservations', 'action' => 'process', $reservation->id], ['title' => __('Process'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                                <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['controller' => 'Reservations', 'action' => 'edit', $reservation->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                                <?= $this->Form->postLink('<i class="fal fa-trash-alt"></i>', ['controller' => 'Reservations', 'action' => 'delete', $reservation->id], ['confirm' => __('Are you sure you want to delete # {0}?', $reservation->id), 'title' => __('Delete'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
+                                            </td>
+                                            <td><?= $reservation->has('user') ? $this->Html->link($reservation->user->full_name, ['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $reservation->user->id]) : '' ?></td>
+                                            <td><?= $reservation->has('attendee') ? $this->Html->link($reservation->attendee->full_name, ['prefix' => 'admin', 'controller' => 'Attendees', 'action' => 'view', $reservation->attendee->id]) : '' ?></td>
+                                            <td><?= $reservation->has('reservation_status') ? $reservation->reservation_status->reservation_status : '' ?></td>
+                                            <td><?= $this->Time->i18nFormat($reservation->expires,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                            <td><?= $this->Time->i18nFormat($reservation->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                            <td><?= $this->Time->i18nFormat($reservation->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     <?php if (!empty($invoices)): ?>
                         <div class="tab-pane fade in" id="invo-pills">
                             <div class="table-responsive">
@@ -306,7 +324,7 @@
                                         <tr>
                                             <th><?= __('Id') ?></th>
                                             <th class="actions"><?= __('Actions') ?></th>
-                                            <th><?= __('Application') ?></th>
+                                            <th><?= __('App / Res') ?></th>
                                             <th><?= __('Sum Value') ?></th>
                                             <th><?= __('Received') ?></th>
                                             <th><?= __('Balance') ?></th>
@@ -331,7 +349,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
+                                                <td><?= $invoice->has('application') && !empty($invoice->application) ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : ($invoice->has('reservation') ? $this->Html->link($invoice->reservation->reservation_number, ['controller' => 'Reservations', 'action' => 'view', $invoice->reservation->id]) : '' )?></td>
                                                 <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
@@ -351,7 +369,7 @@
                                         <tr>
                                             <th><?= __('Id') ?></th>
                                             <th class="actions"><?= __('Actions') ?></th>
-                                            <th><?= __('Application') ?></th>
+                                            <th><?= __('App / Res') ?></th>
                                             <th><?= __('Sum Value') ?></th>
                                             <th><?= __('Received') ?></th>
                                             <th><?= __('Balance') ?></th>
@@ -376,7 +394,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
+                                                <td><?= $invoice->has('application') && !empty($invoice->application) ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : ($invoice->has('reservation') ? $this->Html->link($invoice->reservation->reservation_number, ['controller' => 'Reservations', 'action' => 'view', $invoice->reservation->id]) : '' )?></td>
                                                 <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
@@ -396,7 +414,7 @@
                                         <tr>
                                             <th><?= __('Id') ?></th>
                                             <th class="actions"><?= __('Actions') ?></th>
-                                            <th><?= __('Application') ?></th>
+                                            <th><?= __('App / Res') ?></th>
                                             <th><?= __('Sum Value') ?></th>
                                             <th><?= __('Received') ?></th>
                                             <th><?= __('Balance') ?></th>
@@ -421,7 +439,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
+                                                <td><?= $invoice->has('application') && !empty($invoice->application) ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : ($invoice->has('reservation') ? $this->Html->link($invoice->reservation->reservation_number, ['controller' => 'Reservations', 'action' => 'view', $invoice->reservation->id]) : '' )?></td>
                                                 <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
