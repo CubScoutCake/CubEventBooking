@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use App\Utility\TextSafe;
 use Cake\Core\Configure;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
@@ -312,8 +313,8 @@ class ReservationsTable extends Table
         $expired = $this->determineExpired($reservationId);
         $cancelled = $this->determineCancelled($reservationId);
 
-        if ($expired) {
-            $query = $this->ReservationStatuses->find()->where(['reservation_status' => 'Expired']);
+        if ($complete) {
+            $query = $this->ReservationStatuses->find()->where(['reservation_status' => 'Complete']);
 
             return $query->first()->id;
         }
@@ -324,8 +325,8 @@ class ReservationsTable extends Table
             return $query->first()->id;
         }
 
-        if ($complete) {
-            $query = $this->ReservationStatuses->find()->where(['reservation_status' => 'Complete']);
+        if ($expired) {
+            $query = $this->ReservationStatuses->find()->where(['reservation_status' => 'Expired']);
 
             return $query->first()->id;
         }
@@ -350,10 +351,59 @@ class ReservationsTable extends Table
             $reservation->set('reservation_status_id', $status);
             $this->save($reservation, ['validate' => false]);
 
+            if ($this->ReservationStatuses->get($status)->cancelled) {
+                $this->cancelAssociated($reservationId);
+            }
+
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * @param int $reservationId The Event ID
+     *
+     * @return bool|\App\Model\Entity\Reservation
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function cancel($reservationId)
+    {
+        $reservation = $this->get($reservationId);
+        $reservation->set('cancelled', true);
+
+        $this->save($reservation, ['validate' => false]);
+
+        return $this->cancelAssociated($reservationId);
+    }
+
+    /**
+     * @param int $reservationId The Event ID
+     *
+     * @return bool|\App\Model\Entity\Reservation
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function cancelAssociated($reservationId)
+    {
+        $reservation = $this->get($reservationId, ['contain' => ['LogisticItems', 'Invoices', 'ReservationStatuses']]);
+
+        if ($reservation->cancelled) {
+            // Delete Invoices Associated
+            if ($reservation->has('invoice')) {
+                $this->Invoices->delete($reservation->invoice);
+            }
+
+            // Delete Logistic Items
+            foreach ($reservation->logistic_items as $logisticItem) {
+                $this->LogisticItems->delete($logisticItem);
+            }
+
+            return $this->save($reservation, ['validate' => false]);
+        }
+
+        return $reservation;
     }
 
     /**
@@ -369,7 +419,7 @@ class ReservationsTable extends Table
         $entity = $event->getData('entity');
 
         if ($entity->isNew()) {
-            $resCode = substr(str_shuffle(str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5)), 0, 3);
+            $resCode = TextSafe::shuffle(3);
 
             $entity->set('reservation_code', $resCode);
 

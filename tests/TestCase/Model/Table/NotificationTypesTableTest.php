@@ -2,16 +2,16 @@
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\NotificationTypesTable;
+use App\Utility\TextSafe;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 
 /**
- * App\ModelLevel\Table\NotificationTypesTable Test Case
+ * App\Model\Table\NotificationTypesTable Test Case
  */
 class NotificationTypesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -36,8 +36,8 @@ class NotificationTypesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('NotificationTypes') ? [] : ['className' => 'App\Model\Table\NotificationTypesTable'];
-        $this->NotificationTypes = TableRegistry::get('NotificationTypes', $config);
+        $config = TableRegistry::getTableLocator()->exists('NotificationTypes') ? [] : ['className' => NotificationTypesTable::class];
+        $this->NotificationTypes = TableRegistry::getTableLocator()->get('NotificationTypes', $config);
     }
 
     /**
@@ -65,6 +65,7 @@ class NotificationTypesTableTest extends TestCase
             'notification_type' => 'Notification ' . random_int(11111, 99999) . ' dolor ' . random_int(11111, 99999) . ' amet',
             'notification_description' => 'Balance Outstanding on Invoice',
             'icon' => 'fa-clock',
+            'type_code' => TextSafe::shuffle(3) . '-' . TextSafe::shuffle(3),
         ];
 
         return $good;
@@ -81,14 +82,15 @@ class NotificationTypesTableTest extends TestCase
 
         $expected = [
             'id' => 1,
-            'notification_type' => 'Welcome',
-            'notification_description' => 'Welcome to the System Email & Notification.',
-            'icon' => 'fa-user'
+            'notification_type' => 'Generic',
+            'notification_description' => 'Generic Notification.',
+            'icon' => 'fa-envelope',
+            'type_code' => 'GEN-NOT',
         ];
         $this->assertEquals($expected, $actual);
 
         $count = $this->NotificationTypes->find('all')->count();
-        $this->assertEquals(8, $count);
+        $this->assertEquals(11, $count);
     }
 
     /**
@@ -107,6 +109,7 @@ class NotificationTypesTableTest extends TestCase
             'notification_type',
             'icon',
             'notification_description',
+            'type_code',
         ];
 
         foreach ($required as $require) {
@@ -130,6 +133,7 @@ class NotificationTypesTableTest extends TestCase
             'notification_type',
             'icon',
             'notification_description',
+            'type_code',
         ];
 
         foreach ($notEmpties as $notEmpty) {
@@ -143,6 +147,7 @@ class NotificationTypesTableTest extends TestCase
             'notification_description' => 255,
             'notification_type' => 45,
             'icon' => 45,
+            'type_code' => 7,
         ];
 
         $string = hash('sha512', Security::randomBytes(64));
@@ -180,6 +185,18 @@ class NotificationTypesTableTest extends TestCase
         $values['notification_type'] = $existing['notification_type'];
         $new = $this->NotificationTypes->newEntity($values);
         $this->assertFalse($this->NotificationTypes->save($new));
+
+        $values = $this->getGood();
+
+        $existing = $this->NotificationTypes->get(1)->toArray();
+
+        $values['type_code'] = TextSafe::shuffle(3) . '-' . TextSafe::shuffle(3);
+        $new = $this->NotificationTypes->newEntity($values);
+        $this->assertInstanceOf('App\Model\Entity\NotificationType', $this->NotificationTypes->save($new));
+
+        $values['type_code'] = $existing['type_code'];
+        $new = $this->NotificationTypes->newEntity($values);
+        $this->assertFalse($this->NotificationTypes->save($new));
     }
 
     /**
@@ -198,5 +215,32 @@ class NotificationTypesTableTest extends TestCase
 
         $after = $this->NotificationTypes->find('all')->count();
         $this->assertTrue($after > $before);
+    }
+
+    /**
+     * Test installBaseStatuses method
+     *
+     * @return void
+     */
+    public function testGetTypeCode()
+    {
+        // Known
+        /** @var \App\Model\Entity\NotificationType $type */
+        foreach ($this->NotificationTypes->find() as $type) {
+            /** @var array $codes */
+            $codes = explode('-', $type->type_code);
+            $actual = $this->NotificationTypes->getTypeCode($codes[0], $codes[1]);
+            $this->assertEquals($type->id, $actual);
+        }
+
+        // Generic
+        $code = 'GEN';
+        $subCode = 'NOT';
+        $expected = $this->NotificationTypes->getTypeCode($code, $subCode);
+
+        $code = 'NOT';
+        $subCode = TextSafe::shuffle(3);
+        $actual = $this->NotificationTypes->getTypeCode($code, $subCode);
+        $this->assertEquals($expected, $actual);
     }
 }

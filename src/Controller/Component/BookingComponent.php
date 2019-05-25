@@ -12,7 +12,7 @@ use Cake\ORM\TableRegistry;
  *
  * @property \App\Model\Table\LogisticsTable $Logistics
  * @property \App\Model\Table\ReservationsTable $Reservations
- * @property \App\Model\Table\TokensTable $Tokens
+ * @property \App\Model\Table\EmailSendsTable $EmailSends
  * @property \App\Model\Table\UsersTable $Users
  * @property \App\Model\Table\SectionTypesTable $SectionTypes
  *
@@ -147,10 +147,11 @@ class BookingComponent extends Component
      *
      * @param int $reservationId The Reservation to be Attached
      * @param int $paramId The Param Selected
+     * @param bool $admin override availability checks
      *
      * @return bool|int|mixed
      */
-    private function addResLogistic($reservationId, $paramId)
+    private function addResLogistic($reservationId, $paramId, $admin = false)
     {
         if (is_null($reservationId) || is_null($paramId)) {
             return false;
@@ -166,7 +167,7 @@ class BookingComponent extends Component
             if ($logistic->parameter_id == $param->parameter_id) {
                 $available = $this->Availability->checkVariableLogistic($logistic->id, $param->id);
 
-                if ($available) {
+                if ($available || $admin) {
                     // Create & Save new Logistic Item
                     /** @var \App\Model\Entity\LogisticItem $logisticItem */
                     $logisticItem = $this->Reservations->LogisticItems->newEntity([
@@ -194,17 +195,18 @@ class BookingComponent extends Component
      * @param int $eventId The Event Selected
      * @param array $requestData The Data from the Request
      * @param bool $flash Should Flash Messages be emitted
+     * @param bool $admin Override Availability checks
      *
      * @return bool|int|mixed
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function addReservation($reservation, $eventId, $requestData, $flash = false)
+    public function addReservation($reservation, $eventId, $requestData, $flash = false, $admin = false)
     {
         $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
 
-        if (!$this->Availability->checkReservation($eventId, $flash)) {
+        if (!$this->Availability->checkReservation($eventId, $flash) && !$admin) {
             if ($flash) {
                 $this->Flash->error('Spaces not available on Event');
             }
@@ -213,7 +215,6 @@ class BookingComponent extends Component
         }
 
         $reservation->set('event_id', $eventId);
-
         $attendeeData = $requestData['attendee'];
         $userData = $requestData['user'];
 
@@ -228,7 +229,7 @@ class BookingComponent extends Component
                 $logisticData = $requestData['logistics_item'];
 
                 foreach ($logisticData as $logisticDatum) {
-                    if (!$this->Availability->checkVariableLogistic($logisticDatum['logistic_id'], $logisticDatum['param_id'])) {
+                    if (!$this->Availability->checkVariableLogistic($logisticDatum['logistic_id'], $logisticDatum['param_id']) && !$admin) {
                         if ($flash) {
                             $this->Flash->error('Spaces not available on Session.');
                         }
@@ -264,11 +265,11 @@ class BookingComponent extends Component
         }
 
         // Reservation Status
-        $reservationStatus = $this->Reservations->ReservationStatuses->findOrCreate([
+        $reservationStatus = $this->Reservations->ReservationStatuses->find()->where([
             'reservation_status' => 'Pending Payment',
-            'active' => true,
-            'complete' => false
-        ]);
+            'active' => true, 'complete' => false, 'cancelled' => false,
+            'status_order' => 2,
+        ])->first();
         $reservation->set('reservation_status_id', $reservationStatus->id);
 
         if ($this->Reservations->save($reservation)) {
@@ -277,7 +278,7 @@ class BookingComponent extends Component
 
             if ($doLogistics && isset($logisticData)) {
                 foreach ($logisticData as $logisticDatum) {
-                    $result = $this->addResLogistic($reservation->id, $logisticDatum['param_id']);
+                    $result = $this->addResLogistic($reservation->id, $logisticDatum['param_id'], $admin);
                     if (!$result) {
                         if ($flash) {
                             $this->Flash->error('There was an Error Adding you to the Session');
@@ -291,9 +292,10 @@ class BookingComponent extends Component
             if ($flash) {
                 $this->Flash->success(__('The reservation has been saved.'));
 
-                $this->Auth->setUser($user->toArray());
+                if (!$admin) {
+                    $this->Auth->setUser($user->toArray());
+                }
             }
-
             $this->notifyReservation($reservation->get('id'));
 
             return true;
@@ -309,60 +311,9 @@ class BookingComponent extends Component
      */
     public function notifyReservation($reservationId)
     {
-        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
-        $reservation = $this->Reservations->get($reservationId, ['contain' => 'Users']);
+        $this->EmailSends = TableRegistry::getTableLocator()->get('EmailSends');
 
-        $this->Tokens = TableRegistry::getTableLocator()->get('Tokens');
-        $this->Users = $this->Tokens->EmailSends->Users;
-
-        $now = FrozenTime::now();
-
-        $notificationType = $this->Tokens->EmailSends->NotificationTypes->find()->where(['notification_type' => 'Reservation Confirmation'])->first();
-        $notificationTypeId = $notificationType->id;
-
-        $subject = 'Reservation Confirmation ' . $reservation->reservation_number;
-
-        $data = [
-            'token' => 'Token for ' . $subject,
-            'email_send' => [
-                'sent' => $now,
-                'user_id' => $reservation->user->id,
-                'subject' => $subject,
-                'notification_type_id' => $notificationTypeId,
-                'notification' => [
-                    'notification_header' => 'Reservation Confirmation',
-                    'notification_type_id' => $notificationTypeId,
-                    'user_id' => $reservation->user->id,
-                    'new' => true,
-                    'notification_source' => 'User',
-                    'text' => 'Reservation Confirmation sent for ' . $reservation->reservation_number,
-                ]
-            ],
-            'token_header' => [
-                'redirect' => [
-                    'controller' => 'Reservations',
-                    'action' => 'view',
-                    'prefix' => 'parent',
-                    $reservation->id
-                ],
-                'authenticate' => true,
-            ]
-        ];
-
-        $tokenEntity = $this->Tokens->newEntity($data);
-
-        if ($this->Tokens->save($tokenEntity, ['associated' => 'EmailSends.Notifications'])) {
-            $tokenId = $tokenEntity->get('id');
-
-            $token = $this->Tokens->buildToken($tokenId);
-            $tokenEntity = $this->Tokens->get($tokenId, ['contain' => ['EmailSends' => ['Users', 'Tokens', 'Notifications']]]);
-
-            $this->getMailer('Reserve')->send('confirmation', [$tokenEntity->email_send, $reservation, $token]);
-
-            return true;
-        }
-
-        return false;
+        return $this->EmailSends->makeAndSend('RSV-' . $reservationId . '-NEW');
     }
 
     /**
@@ -374,65 +325,9 @@ class BookingComponent extends Component
      */
     public function confirmReservation($reservationId)
     {
-        $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
-        $reservation = $this->Reservations->get($reservationId, ['contain' => ['Users', 'ReservationStatuses']]);
+        $this->EmailSends = TableRegistry::getTableLocator()->get('EmailSends');
 
-        $reservation->set('reservation_status_id', $this->Reservations->determineStatus($reservation->id));
-        if ($this->Reservations->save($reservation, ['validate' => false])) {
-            $reservation = $this->Reservations->get($reservationId, ['contain' => ['Users', 'ReservationStatuses']]);
-        }
-
-        $this->Tokens = TableRegistry::getTableLocator()->get('Tokens');
-        $this->Users = $this->Tokens->EmailSends->Users;
-
-        $now = FrozenTime::now();
-
-        $notificationType = $this->Tokens->EmailSends->NotificationTypes->find()->where(['notification_type' => 'Reservation Payment Received'])->first();
-        $notificationTypeId = $notificationType->id;
-
-        $subject = 'Payment Received for Reservation ' . $reservation->reservation_number;
-
-        $data = [
-            'token' => 'Token for ' . $subject,
-            'email_send' => [
-                'sent' => $now,
-                'user_id' => $reservation->user->id,
-                'subject' => $subject,
-                'notification_type_id' => $notificationTypeId,
-                'notification' => [
-                    'notification_header' => 'Reservation Payment Received',
-                    'notification_type_id' => $notificationTypeId,
-                    'user_id' => $reservation->user->id,
-                    'new' => true,
-                    'notification_source' => 'Admin',
-                    'text' => $subject,
-                ]
-            ],
-            'token_header' => [
-                'redirect' => [
-                    'controller' => 'Reservations',
-                    'action' => 'view',
-                    'prefix' => 'parent',
-                    $reservation->id
-                ],
-                'authenticate' => true,
-            ]
-        ];
-
-        $tokenEntity = $this->Tokens->newEntity($data);
-
-        if ($this->Tokens->save($tokenEntity, ['associated' => 'EmailSends.Notifications'])) {
-            $tokenId = $tokenEntity->get('id');
-
-            $token = $this->Tokens->buildToken($tokenId);
-            $tokenEntity = $this->Tokens->get($tokenId, ['contain' => ['EmailSends' => ['Users', 'Tokens', 'Notifications']]]);
-
-            $this->getMailer('Reserve')->send('confirmation', [$tokenEntity->email_send, $reservation, $token]);
-
-            return true;
-        }
-
-        return false;
+        return $this->EmailSends->makeAndSend('RSV-' . $reservationId . '-CNF');
     }
 
     /**

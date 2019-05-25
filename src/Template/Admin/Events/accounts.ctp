@@ -58,6 +58,13 @@
                     <li><?= $this->Html->link(__('Edit Prices'), ['action' => 'prices', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Edit Logistics'), ['action' => 'logistics', $event->id]) ?></li>
                     <li class="divider"></li>
+                    <?php if ($event->event_status->live) : ?>
+                        <?php if ($event->event_type->parent_applications) : ?>
+                            <li><?= $this->Html->link(__('Add Reservation'), ['controller' => 'Reservations', 'action' => 'add', $event->id]) ?></li>
+                            <li class="divider"></li>
+                        <?php endif; ?>
+
+                    <?php endif; ?>
                     <li><?= $this->Html->link(__('Parse Invoices'), ['controller' => 'Invoices','action' => 'event_pdf', $event->id]) ?></li>
                     <li><?= $this->Html->link(__('Parse Applications'), ['controller' => 'Applications','action' => 'event_pdf', $event->id]) ?></li>
                 </ul>

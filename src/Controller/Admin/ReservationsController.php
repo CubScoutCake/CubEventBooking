@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Admin;
 
+use Cake\Log\Log;
 use Cake\ORM\Entity;
 
 /**
@@ -63,42 +64,82 @@ class ReservationsController extends AppController
         ]);
 
         $this->set('reservation', $reservation);
+
+        $complete = $this->Reservations->determinePaid($reservationId);
+        $expired = $this->Reservations->determineExpired($reservationId);
+        $cancelled = $this->Reservations->determineCancelled($reservationId);
+        $expectedStatus = $this->Reservations->determineStatus($reservationId);
+        $expectedStatus = $this->Reservations->ReservationStatuses->get($expectedStatus);
+        $this->set(compact('complete', 'expired', 'cancelled', 'expectedStatus'));
     }
 
     /**
      * Add method
      *
+     * @param int $eventId The ID of the Event
+     *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     *
+     * @throws \Exception
      */
-    public function add()
+    public function add($eventId)
     {
         $reservation = $this->Reservations->newEntity();
-        if ($this->request->is('post')) {
-            $reservation = $this->Reservations->patchEntity($reservation, $this->request->getData());
-            if ($this->Reservations->save($reservation)) {
-                $this->Flash->success(__('The reservation has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+        if (!is_null($eventId) && isset($eventId)) {
+            $event = $this->Reservations->Events->get($eventId, ['contain' => [ 'Logistics.Parameters.Params', 'EventTypes', 'Prices']]);
+            $reservation->set('event_id', $event->id);
+        }
+
+//        $this->loadComponent('Availability');
+        $this->loadComponent('Booking');
+
+        if (!isset($event)) {
+            return $this->redirect('/');
+        }
+
+        if ($this->request->is('post')) {
+            $requestData = $this->request->getData();
+            Log::info('Reservation Submitted.', $requestData);
+
+            $bookingResponse = $this->Booking->addReservation($reservation, $eventId, $requestData, true, true);
+
+            if ($bookingResponse) {
+                return $this->redirect(['action' => 'view', $reservation->id]);
             }
             $this->Flash->error(__('The reservation could not be saved. Please, try again.'));
         }
+
         $events = $this->Reservations->Events->find('list', ['limit' => 200]);
-        $users = $this->Reservations->Users->find('list', ['limit' => 200]);
-        $attendees = $this->Reservations->Attendees->find('list', ['limit' => 200]);
-        $reservationStatuses = $this->Reservations->ReservationStatuses->find('list', ['limit' => 200]);
-        $this->set(compact('reservation', 'events', 'users', 'attendees', 'reservationStatuses'));
+        $sections = $this->Reservations->Attendees->Sections->find(
+            'list',
+            [
+                'keyField' => 'id',
+                'valueField' => function ($e) {
+                    return $e->scoutgroup->scoutgroup . ' - ' . $e->section;
+                },
+                'groupField' => 'scoutgroup.district.district'
+            ]
+        )
+        ->where(['section_type_id' => $event->section_type_id])
+        ->contain(['Scoutgroups.Districts']);
+
+        $sessions = $this->Reservations->Events->Logistics->Parameters->Params->find('list');
+
+        $this->set(compact('reservation', 'events', 'event', 'sections', 'sessions'));
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Reservation id.
+     * @param string|null $reservationId Reservation id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($reservationId = null)
     {
-        $reservation = $this->Reservations->get($id, [
+        $reservation = $this->Reservations->get($reservationId, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -110,11 +151,36 @@ class ReservationsController extends AppController
             }
             $this->Flash->error(__('The reservation could not be saved. Please, try again.'));
         }
-        $events = $this->Reservations->Events->find('list', ['limit' => 200]);
-        $users = $this->Reservations->Users->find('list', ['limit' => 200]);
-        $attendees = $this->Reservations->Attendees->find('list', ['limit' => 200]);
-        $reservationStatuses = $this->Reservations->ReservationStatuses->find('list', ['limit' => 200]);
+        $events = $this->Reservations->Events->find('list');
+        $users = $this->Reservations->Users->find('list');
+        $attendees = $this->Reservations->Attendees->find('list');
+        $reservationStatuses = $this->Reservations->ReservationStatuses->find('list');
         $this->set(compact('reservation', 'events', 'users', 'attendees', 'reservationStatuses'));
+    }
+
+    /**
+     * Extend method
+     *
+     * @param string|null $reservationId Reservation id.
+     *
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
+     */
+    public function extend($reservationId = null)
+    {
+        $reservation = $this->Reservations->get($reservationId, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $reservation = $this->Reservations->patchEntity($reservation, $this->request->getData());
+            if ($this->Reservations->save($reservation)) {
+                $this->Flash->success(__('The reservation has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The reservation could not be saved. Please, try again.'));
+        }
+        $this->set(compact('reservation'));
     }
 
     /**
@@ -184,14 +250,15 @@ class ReservationsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Reservation id.
+     * @param string|null $reservationId Reservation id.
+     *
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($reservationId = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $reservation = $this->Reservations->get($id);
+        $reservation = $this->Reservations->get($reservationId);
         if ($this->Reservations->delete($reservation)) {
             $this->Flash->success(__('The reservation has been deleted.'));
         } else {
@@ -199,5 +266,27 @@ class ReservationsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Cancel method
+     *
+     * @param string|null $reservationId Reservation id.
+     *
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function cancel($reservationId = null)
+    {
+        $this->request->allowMethod(['post']);
+
+        if ($this->Reservations->cancel($reservationId)) {
+            $this->Reservations->schedule($reservationId);
+            $this->Flash->success(__('The reservation has been cancelled.'));
+        } else {
+            $this->Flash->error(__('The reservation could not be cancelled. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'view', $reservationId]);
     }
 }

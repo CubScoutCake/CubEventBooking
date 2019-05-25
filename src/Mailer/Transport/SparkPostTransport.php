@@ -19,7 +19,7 @@ namespace App\Mailer\Transport;
 
 use Cake\Core\Configure;
 use Cake\Http\Client;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\Mailer\AbstractTransport;
 use Cake\Mailer\Email;
 use Cake\Network\Exception\BadRequestException;
@@ -40,8 +40,8 @@ class SparkPostTransport extends AbstractTransport
      * Send mail via SparkPost REST API
      *
      * @param \Cake\Mailer\Email $email Email message
+     *
      * @return void
-     * @throws BadRequestException If the SparkPost API returns an error
      */
     public function send(Email $email)
     {
@@ -57,8 +57,11 @@ class SparkPostTransport extends AbstractTransport
 
         // Pre-process CakePHP email object fields
         $from = (array)$email->getFrom();
-        $sender = sprintf('%s <%s>', array_values($from)[0], array_keys($from)[0]);
+        $friendlyFrom = (array)$email->getSender();
+        debug($friendlyFrom);
+        $sender = sprintf('%s <%s>', array_values($from)[0], array_keys($friendlyFrom)[0]);
         $sendTo = (array)$email->getTo();
+        debug($sendTo);
         $recipients = [[ 'address' => [ 'name' => array_values($sendTo)[0], 'email' => array_keys($sendTo)[0] ]]];
 
         // Build message to send
@@ -83,23 +86,23 @@ class SparkPostTransport extends AbstractTransport
             ]
         ]);
 
-        /*$responseBody = json_decode($response->body());
+        $responseBody = json_decode($response->body());
         debug($responseBody);
         $results = $responseBody['results'];
         $transmissionID = $results['id'];
 
-        $code = $response->getStatusCode();
+//        $code = $response->getStatusCode();
 
-        $eSends = TableRegistry::get('EmailSends');
+        $eSends = TableRegistry::getTableLocator()->get('EmailSends');
 
         $emailLogData = [
-            'sent' => Time::now(),
+            'sent' => FrozenTime::now(),
             'message_send_code' => $transmissionID,
             'subject' => $email->getSubject(),
             'from_address' => $sender,
         ];
 
         $send = $eSends->newEntity($emailLogData);
-        $eSends->save($send);*/
+        $eSends->save($send);
     }
 }

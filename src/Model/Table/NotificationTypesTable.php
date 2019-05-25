@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\NotificationType;
 use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -11,11 +10,20 @@ use Cake\Validation\Validator;
 /**
  * NotificationTypes Model
  *
- * @property \Cake\ORM\Association\HasMany $Notifications
+ * @property \App\Model\Table\EmailSendsTable|\Cake\ORM\Association\HasMany $EmailSends
+ * @property \App\Model\Table\NotificationsTable|\Cake\ORM\Association\HasMany $Notifications
+ *
+ * @method \App\Model\Entity\NotificationType get($primaryKey, $options = [])
+ * @method \App\Model\Entity\NotificationType newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\NotificationType[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\NotificationType|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\NotificationType saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\NotificationType patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\NotificationType[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\NotificationType findOrCreate($search, callable $callback = null, $options = [])
  */
 class NotificationTypesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -30,6 +38,9 @@ class NotificationTypesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->hasMany('EmailSends', [
+            'foreignKey' => 'notification_type_id'
+        ]);
         $this->hasMany('Notifications', [
             'foreignKey' => 'notification_type_id'
         ]);
@@ -44,20 +55,28 @@ class NotificationTypesTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('id', 'create');
+            ->integer('id')
+            ->allowEmptyString('id', 'create');
 
         $validator
-            ->requirePresence('notification_type')
-            ->maxLength('notification_type', 45);
+            ->scalar('notification_type')
+            ->maxLength('notification_type', 45)
+            ->allowEmptyString('notification_type', false);
 
         $validator
-            ->requirePresence('notification_description')
-            ->maxLength('notification_description', 255);
+            ->scalar('notification_description')
+            ->maxLength('notification_description', 255)
+            ->allowEmptyString('notification_description');
 
         $validator
-            ->requirePresence('icon')
-            ->maxLength('icon', 45);
+            ->scalar('icon')
+            ->maxLength('icon', 45)
+            ->allowEmptyString('icon');
+
+        $validator
+            ->scalar('type_code')
+            ->maxLength('type_code', 7)
+            ->allowEmptyString('type_code', false);
 
         return $validator;
     }
@@ -72,6 +91,7 @@ class NotificationTypesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['notification_type']));
+        $rules->add($rules->isUnique(['type_code']));
 
         return $rules;
     }
@@ -100,5 +120,24 @@ class NotificationTypesTable extends Table
         }
 
         return $total;
+    }
+
+    /**
+     * install the application status config
+     *
+     * @param string $type The Type of the Notification
+     * @param string $subtype The SubType
+     *
+     * @return mixed
+     */
+    public function getTypeCode($type, $subtype)
+    {
+        $code = $type . '-' . $subtype;
+
+        if ($this->exists(['type_code' => $code])) {
+            return $this->find()->where(['type_code' => $code])->first()->id;
+        }
+
+        return $this->find()->where(['type_code' => 'GEN-NOT'])->first()->id;
     }
 }

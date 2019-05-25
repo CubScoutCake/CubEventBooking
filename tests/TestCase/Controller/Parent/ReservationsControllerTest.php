@@ -7,6 +7,8 @@ use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\Parent\ReservationsController Test Case
+ *
+ * @property \App\Model\Table\ReservationStatusesTable $ReservationStatuses
  */
 class ReservationsControllerTest extends TestCase
 {
@@ -137,6 +139,9 @@ class ReservationsControllerTest extends TestCase
      */
     public function testReserve()
     {
+        $this->ReservationStatuses = $this->getTableLocator()->get('ReservationStatuses');
+        $this->ReservationStatuses->installBaseStatuses();
+
         $this->enableRetainFlashMessages();
         $this->enableSecurityToken();
         $this->enableCsrfToken();
