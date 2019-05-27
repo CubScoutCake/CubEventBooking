@@ -337,16 +337,16 @@ class UsersController extends AppController
         $this->viewBuilder()->setLayout('outside');
         $qParams = $this->request->getQueryParams();
 
-        $valid = $this->Users->Tokens->validateToken($qParams['token']);
-        if (!$valid || $qParams['token_id' != $valid]) {
+        $valid = $this->Users->EmailSends->Tokens->validateToken($qParams['token']);
+        if (!$valid || $qParams['token_id'] != $valid) {
             $this->Flash->error('Password Reset Token could not be validated.');
 
             return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
         }
 
         if (is_numeric($valid)) {
-            $tokenRow = $this->Users->Tokens->get($valid);
-            $resetUser = $this->Users->get($tokenRow->user_id);
+            $tokenRow = $this->Users->EmailSends->Tokens->get($valid, ['contain' => ['EmailSends']]);
+            $resetUser = $this->Users->get($tokenRow->email_send->user_id);
 
             $passwordForm = new PasswordForm();
             $this->set(compact('passwordForm'));
@@ -373,7 +373,7 @@ class UsersController extends AppController
                             $this->Flash->success('Your password was saved successfully.');
 
                             $tokenRow->set('active', false);
-                            $this->Users->Tokens->save($tokenRow);
+                            $this->Users->EmailSends->Tokens->save($tokenRow);
 
                             $this->Auth->setUser($resetUser->toArray());
 

@@ -368,6 +368,7 @@ class EmailSendsTableTest extends TestCase
 
         $exemptMakeArray = [
             'RSV-1-VIE' => 4,
+            'USR-1-PWD' => 7,
         ];
 
         foreach ($exemptMakeArray as $genCode => $expId) {

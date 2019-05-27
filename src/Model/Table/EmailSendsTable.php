@@ -167,6 +167,8 @@ class EmailSendsTable extends Table
      * @return false|int
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function make($emailGenerationCode)
     {
@@ -178,7 +180,7 @@ class EmailSendsTable extends Table
         $entityId = $generationArray[1];
         $subType = $generationArray[2];
 
-        $existExempt = ['RSV-VIE'];
+        $existExempt = ['RSV-VIE', 'USR-PWD'];
         $notiTypeCode = $type . '-' . $subType;
         if ($exists && !in_array($notiTypeCode, $existExempt)) {
             return false;
@@ -247,6 +249,28 @@ class EmailSendsTable extends Table
                     default:
                         return false;
                 }
+                break;
+            case 'USR':
+                $user = $this->Users->get($entityId);
+                $userId = $entityId;
+                $authenticate = true;
+
+                switch ($subType) {
+                    case 'PWD':
+                        $layout = 'password_reset';
+                        $subject = 'Password Reset for ' . $user->full_name;
+                        $source = 'User';
+
+                        $redirect = [
+                            'controller' => 'Users',
+                            'action' => 'token',
+                            'prefix' => false,
+                        ];
+                        break;
+                    default:
+                        return false;
+                }
+
                 break;
             default:
                 return false;
@@ -317,11 +341,28 @@ class EmailSendsTable extends Table
 
         if ($email->include_token) {
             $token = $email->tokens[0];
+            $token = $this->Tokens->buildToken($token->id);
+        }
+
+        $generationArray = explode('-', $email->email_generation_code);
+
+        $type = $generationArray[0];
+        $entityId = $generationArray[1];
+
+        switch ($type) {
+            case 'USR':
+                $entity = $this->Users->get($entityId);
+                break;
+            case 'RSV':
+                $entity = $this->Users->Reservations->get($entityId);
+                break;
+            default:
+                $entity = null;
         }
 
         /** @var \App\Mailer\BasicMailer $mailer */
         $mailer = $this->getMailer('Basic');
-        $mailer->basic($email, $token);
+        $mailer->send('basic', [$email, $token, $entity]);
 
         $email->set('sent', FrozenTime::now());
         $this->save($email, ['validate' => false]);
@@ -349,5 +390,29 @@ class EmailSendsTable extends Table
         }
 
         return false;
+    }
+
+    /**
+     * Makes an Email Dispatch Event and then dispatches it.
+     *
+     * @param \stdClass $results The Returned Results Array
+     * @param array $sendHeaders The Send Headers
+     *
+     * @return bool
+     */
+    public function sendRegister($results, $sendHeaders)
+    {
+        if (!key_exists('X-Gen-ID', $sendHeaders)) {
+            $emailSend = $this->newEntity();
+        } else {
+            $emailSend = $this->get($sendHeaders['X-Gen-ID']);
+        }
+
+        $emailSend->set('message_send_code', $results->id);
+        $emailSend->set('sent', FrozenTime::now());
+
+        $this->save($emailSend);
+
+        return true;
     }
 }

@@ -33,6 +33,8 @@ use SparkPost\SparkPostException;
  * Provides an interface between the CakePHP Email functionality and the SparkPost API.
  *
  * @package SparkPost\Mailer\Transport
+ *
+ * @property \App\Model\Table\EmailSendsTable $EmailSends
  */
 class SparkPostTransport extends AbstractTransport
 {
@@ -56,12 +58,9 @@ class SparkPostTransport extends AbstractTransport
         $url = '/api/v1/transmissions';
 
         // Pre-process CakePHP email object fields
-        $from = (array)$email->getFrom();
-        $friendlyFrom = (array)$email->getSender();
-        debug($friendlyFrom);
-        $sender = sprintf('%s <%s>', array_values($from)[0], array_keys($friendlyFrom)[0]);
+        $from = (array)$email->getSender();
+        $sender = sprintf('%s <%s>', array_values($from)[0], array_keys($from)[0]);
         $sendTo = (array)$email->getTo();
-        debug($sendTo);
         $recipients = [[ 'address' => [ 'name' => array_values($sendTo)[0], 'email' => array_keys($sendTo)[0] ]]];
 
         // Build message to send
@@ -86,23 +85,15 @@ class SparkPostTransport extends AbstractTransport
             ]
         ]);
 
-        $responseBody = json_decode($response->body());
-        debug($responseBody);
-        $results = $responseBody['results'];
-        $transmissionID = $results['id'];
+        /** @var \stdClass $responseBody */
+        $responseBody = json_decode($response->getBody());
+        /** @var \stdClass $results */
+        $results = $responseBody->results;
 
-//        $code = $response->getStatusCode();
+        $sendHeaders = $email->getHeaders(['X-Email-Gen-Code', 'X-Gen-ID']);
 
-        $eSends = TableRegistry::getTableLocator()->get('EmailSends');
+        $this->EmailSends = TableRegistry::getTableLocator()->get('EmailSends');
 
-        $emailLogData = [
-            'sent' => FrozenTime::now(),
-            'message_send_code' => $transmissionID,
-            'subject' => $email->getSubject(),
-            'from_address' => $sender,
-        ];
-
-        $send = $eSends->newEntity($emailLogData);
-        $eSends->save($send);
+        $this->EmailSends->sendRegister($results, $sendHeaders);
     }
 }
