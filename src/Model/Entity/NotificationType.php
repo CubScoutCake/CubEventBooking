@@ -4,17 +4,19 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Notification Type Entity.
+ * NotificationType Entity
  *
  * @property int $id
- * @property string $notification_type
- * @property string $notification_description
- * @property string $icon
+ * @property string|null $notification_type
+ * @property string|null $notification_description
+ * @property string|null $icon
+ * @property string $type_code
+ *
+ * @property \App\Model\Entity\EmailSend[] $email_sends
  * @property \App\Model\Entity\Notification[] $notifications
  */
 class NotificationType extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -25,7 +27,11 @@ class NotificationType extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'id' => false,
+        'notification_type' => true,
+        'notification_description' => true,
+        'icon' => true,
+        'type_code' => true,
+        'email_sends' => true,
+        'notifications' => true
     ];
 }

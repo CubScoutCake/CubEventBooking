@@ -5,6 +5,7 @@ use Cake\Console\Arguments;
 use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\Mailer\MailerAwareTrait;
 
 /**
  * Class PasswordCommand
@@ -13,9 +14,12 @@ use Cake\Console\ConsoleOptionParser;
  *
  * @property \App\Model\Table\EventsTable $Events
  * @property \App\Model\Table\ReservationsTable $Reservations
+ * @property \App\Model\Table\EmailSendsTable $EmailSends
  */
 class ScheduleCommand extends Command
 {
+    use MailerAwareTrait;
+
     /**
      * Initialise method
      *
@@ -26,6 +30,7 @@ class ScheduleCommand extends Command
         parent::initialize();
         $this->loadModel('Events');
         $this->loadModel('Reservations');
+        $this->loadModel('EmailSends');
     }
 
     /**
@@ -48,6 +53,11 @@ class ScheduleCommand extends Command
                 'help' => 'Event Schedules',
                 'boolean' => true,
             ])
+            ->addOption('sends', [
+                'short' => 's',
+                'help' => 'Email Sends Dispatcher',
+                'boolean' => true,
+            ])
             ->addOption('reservations', [
                 'short' => 'r',
                 'help' => 'Reservation Schedules',
@@ -62,6 +72,8 @@ class ScheduleCommand extends Command
      * @param \Cake\Console\ConsoleIo $io The IO
      *
      * @return int|void|null
+     *
+     * @throws \Exception
      *
      * @SuppressWarnings(PHPMD.ShortVariable)
      */
@@ -90,10 +102,26 @@ class ScheduleCommand extends Command
             foreach ($reservations as $reservation) {
                 if ($this->Reservations->schedule($reservation->id)) {
                     $happenings += 1;
+
+                    $this->Reservations->Users->EmailSends->make('RSV-' . $reservation->id . '-EXP');
                 }
             }
 
             $io->info('Reservation Changes: ' . $happenings);
+        }
+
+        if ($args->getOption('all') || $args->getOption('sends')) {
+            /** @var \App\Model\Entity\EmailSend[] $toBeSent */
+            $toBeSent = $this->EmailSends->find('unsent');
+            $happenings = 0;
+
+            foreach ($toBeSent as $email) {
+                if ($this->EmailSends->send($email->id)) {
+                    $happenings += 1;
+                }
+            }
+
+            $io->info('Emails Dispatched: ' . $happenings);
         }
     }
 }

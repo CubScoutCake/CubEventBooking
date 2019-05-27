@@ -66,4 +66,16 @@ class TextSafe
 
         return preg_replace($pattern, $replacement, $string);
     }
+
+    /**
+     * @param int $length The length of the String
+     *
+     * @return string
+     */
+    public static function shuffle($length = 3)
+    {
+        $repeats = $length * 2;
+
+        return substr(str_shuffle(str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ", $repeats)), 0, $length);
+    }
 }

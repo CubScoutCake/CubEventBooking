@@ -118,8 +118,8 @@ class ReservationsController extends AppController
                 'groupField' => 'scoutgroup.district.district'
             ]
         )
-//        ->where(['section_type_id' => $section['section_type_id']])
-          ->contain(['Scoutgroups.Districts']);
+        ->where(['section_type_id' => $event->section_type_id])
+        ->contain(['Scoutgroups.Districts']);
 
         $sessions = $this->Reservations->Events->Logistics->Parameters->Params->find('list');
 

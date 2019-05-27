@@ -157,19 +157,20 @@ class BookingComponentTest extends TestCase
     public function testAddReservation()
     {
         $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
+        $this->Reservations->ReservationStatuses->installBaseStatuses();
 
         $testData = [
             'user' => [
                 'firstname' => 'Jacob',
                 'lastname' => 'Tyler',
-                'email' => 'j.a.g.tyler@me.com',
-                'phone' => '07804 918252',
-                'address_1' => '17 Appleton Mead',
+                'email' => 'farm@me.com',
+                'phone' => '07799 123456',
+                'address_1' => '17 Piglet Mead',
                 'address_2' => '',
-                'city' => 'Biggleswade',
-                'county' => 'Bedfordshire',
+                'city' => 'Farmland',
+                'county' => 'Farmshire',
                 'country' => 'United Kingdom',
-                'postcode' => 'SG18 8HS'
+                'postcode' => 'FARM 123'
             ],
             'attendee' => [
                 'firstname' => 'Timmy',

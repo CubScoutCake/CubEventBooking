@@ -123,6 +123,69 @@ class EmailSendsTableTest extends TestCase
     }
 
     /**
+     * Get Expected Function
+     *
+     * @return array
+     *
+     * @throws
+     */
+    private function getExpected()
+    {
+        return [
+            'id' => 2,
+            'message_send_code' => null,
+            'user_id' => 1,
+            'subject' => 'Reservation Confirmation 1-1-PLX',
+            'routing_domain' => null,
+            'from_address' => null,
+            'friendly_from' => null,
+            'notification_type_id' => 8,
+            'notification_id' => 2,
+            'email_generation_code' => 'RSV-1-NEW',
+            'email_template' => 'reservation',
+            'include_token' => true,
+            'tokens' => [
+                [
+                    'id' => 2,
+                    'email_send_id' => 2,
+                    'utilised' => null,
+                    'active' => true,
+                    'token_header' => [
+                        'redirect' => [
+                            0 => 1,
+                            'action' => 'view',
+                            'prefix' => 'parent',
+                            'controller' => 'Reservations',
+                        ],
+                        'authenticate' => true,
+                    ],
+                ]
+            ],
+            'notification' => [
+                'notification_header' => 'Reservation Confirmation 1-1-PLX',
+                'id' => 2,
+                'user_id' => 1,
+                'notification_type_id' => 8,
+                'new' => true,
+                'text' => null,
+                'read_date' => null,
+                'notification_source' => 'User',
+                'link_id' => null,
+                'link_controller' => null,
+                'link_prefix' => false,
+                'link_action' => null,
+            ],
+            'notification_type' => [
+                'id' => 8,
+                'notification_type' => 'Reservation Confirmation',
+                'notification_description' => 'Reservation received, awaiting payment.',
+                'icon' => 'fa-ticket-alt',
+                'type_code' => 'RSV-NEW',
+            ]
+        ];
+    }
+
+    /**
      * Test initialize method
      *
      * @return void
@@ -253,5 +316,70 @@ class EmailSendsTableTest extends TestCase
         $values['user_id'] = $user + 1;
         $new = $this->EmailSends->newEntity($values);
         $this->assertFalse($this->EmailSends->save($new));
+    }
+
+    /**
+     * Test Make method
+     *
+     * @return void
+     *
+     * @throws
+     */
+    public function testMake()
+    {
+        $makeArray = [
+            'RSV-1-NEW' => 2,
+            'RSV-1-CNF' => 3
+        ];
+
+        foreach ($makeArray as $genCode => $expId) {
+            $result = $this->EmailSends->make($genCode);
+            $this->assertEquals($expId, $result);
+
+            // Check second is blocked.
+            $this->assertFalse($this->EmailSends->make($genCode));
+        }
+
+        $expected = $this->getExpected();
+
+        $actual = $this->EmailSends->get(2, [
+            'contain' => [
+                'NotificationTypes',
+                'Notifications',
+                'Tokens'
+            ]])->toArray();
+
+        $dates = [
+            'sent',
+            'created',
+            'modified',
+            'deleted',
+            'expires',
+        ];
+
+        foreach ($dates as $date) {
+            unset($actual[$date]);
+            unset($actual['tokens'][0][$date]);
+            unset($actual['notification'][$date]);
+        }
+        unset($actual['tokens'][0]['random_number']);
+
+        $this->assertEquals($expected, $actual);
+
+        $exemptMakeArray = [
+            'RSV-1-VIE' => 4,
+            'USR-1-PWD' => 7,
+        ];
+
+        foreach ($exemptMakeArray as $genCode => $expId) {
+            $result = $this->EmailSends->make($genCode);
+            $this->assertEquals($expId, $result);
+
+            // Check second is not blocked.
+            $this->assertEquals($expId + 1, $this->EmailSends->make($genCode));
+
+            // Check third is not blocked
+            $this->assertEquals($expId + 2, $this->EmailSends->make($genCode));
+        }
     }
 }

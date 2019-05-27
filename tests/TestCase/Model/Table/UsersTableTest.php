@@ -101,7 +101,7 @@ class UsersTableTest extends TestCase
             'pw_salt' => 'Lorem ipsum dolor sit amet',
             'api_key_plain' => 'Lorem ipsum dolor sit amet',
             'api_key' => 'Lorem ipsum dolor sit amet',
-            'membership_number' => random_int(1111, 9999) + random_int(119, 9919),
+            'membership_number' => random_int(1111, 9999) . random_int(1111, 9999),
             'legacy_section' => 'Lorem ipsum dolor sit amet',
             'osm_user_id' => 1,
             'osm_secret' => 'Lorem ipsum dolor sit amet',
