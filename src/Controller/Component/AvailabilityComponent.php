@@ -353,7 +353,7 @@ class AvailabilityComponent extends Component
 
         /** @var \App\Model\Table\ReservationsTable Reservations */
         $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
-        $reservationCount = $this->Reservations->find('all')->where(['event_id' => $event->id])->count();
+        $reservationCount = $this->Reservations->find('active')->where(['event_id' => $event->id])->count();
 
         if ($reservationCount >= $event->max_apps) {
             if ($flash) {
