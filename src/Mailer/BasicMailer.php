@@ -15,7 +15,6 @@ class BasicMailer extends Mailer
      */
     public function basic($emailSend, $token = null, $entity = null)
     {
-        debug('basic');
         $this
             ->setTo($emailSend->user->email, $emailSend->user->full_name)
             ->setLayout('default')

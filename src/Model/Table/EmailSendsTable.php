@@ -160,6 +160,20 @@ class EmailSendsTable extends Table
     }
 
     /**
+     * Is a finder which will return a query with non-live (pre-release & archive) events only.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @return \Cake\ORM\Query The modified query.
+     */
+    public function findUnsent($query)
+    {
+        return $query->where(function ($exp) {
+            /** @var \Cake\Database\Expression\QueryExpression $exp */
+            return $exp->isNull('sent');
+        });
+    }
+
+    /**
      * Hashes the password before save
      *
      * @param string $emailGenerationCode The Type & SubType of Token to Make
@@ -354,7 +368,7 @@ class EmailSendsTable extends Table
                 $entity = $this->Users->get($entityId);
                 break;
             case 'RSV':
-                $entity = $this->Users->Reservations->get($entityId);
+                $entity = $this->Users->Reservations->get($entityId, ['contain' => ['ReservationStatuses']]);
                 break;
             default:
                 $entity = null;
