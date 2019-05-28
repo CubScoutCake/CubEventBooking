@@ -104,7 +104,7 @@ class ScheduleCommand extends Command
     private function scheduleReservations($io)
     {
         /** @var \App\Model\Entity\Reservation[] $reservations */
-        $reservations = $this->Reservations->find();
+        $reservations = $this->Reservations->find('eventInProgress');
         $happenings = 0;
 
         foreach ($reservations as $reservation) {

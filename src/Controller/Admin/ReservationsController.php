@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Table\ReservationsTable $Reservations
  * @property \App\Controller\Component\BookingComponent $Booking
+ * @property \App\Model\Table\EmailSendsTable $EmailSends
  *
  * @method \App\Model\Entity\Reservation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -127,6 +128,26 @@ class ReservationsController extends AppController
         $sessions = $this->Reservations->Events->Logistics->Parameters->Params->find('list');
 
         $this->set(compact('reservation', 'events', 'event', 'sections', 'sessions'));
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string|null $reservationId Reservation id.
+     *
+     * @return \Cake\Http\Response Redirects on successful edit, renders view otherwise.
+     */
+    public function confirm($reservationId = null)
+    {
+        $this->loadModel('EmailSends');
+
+        $response = $this->EmailSends->makeAndSend('RSV-' . $reservationId . '-VIE');
+
+        if ($response) {
+            $this->Flash->success('Email Sent');
+        }
+
+        return $this->redirect($this->referer(['controller' => 'Reservations', 'action' => 'view', $reservationId]));
     }
 
     /**

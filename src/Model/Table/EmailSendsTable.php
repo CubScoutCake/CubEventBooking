@@ -290,8 +290,6 @@ class EmailSendsTable extends Table
                 return false;
         }
 
-        $notificationTypeID = $this->NotificationTypes->getTypeCode($type, $subType);
-
         $data = [
             'email_generation_code' => $emailGenerationCode,
             'sent' => null,
@@ -302,6 +300,7 @@ class EmailSendsTable extends Table
         ];
 
         if ($includeNotification) {
+            $notificationTypeID = $this->NotificationTypes->getTypeCode($type, $subType);
             $notificationData = [
                 'notification_type_id' => $notificationTypeID,
                 'notification' => [
