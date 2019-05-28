@@ -68,6 +68,81 @@ class ScheduleCommand extends Command
     }
 
     /**
+     * Schedule Function for Events
+     *
+     * @param \Cake\Console\ConsoleIo $io The IO
+     *
+     * @return void
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     */
+    private function scheduleEvents($io)
+    {
+        /** @var \App\Model\Entity\Event[] $events */
+        $events = $this->Events->find('upcoming');
+        $happenings = 0;
+
+        foreach ($events as $event) {
+            $io->out('Processing ' . $event->name);
+            if ($this->Events->schedule($event->id)) {
+                $happenings += 1;
+            }
+        }
+
+        $io->info('Event Changes: ' . $happenings);
+    }
+
+    /**
+     * Schedule Function for Reservations
+     *
+     * @param \Cake\Console\ConsoleIo $io The IO
+     *
+     * @return void
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     */
+    private function scheduleReservations($io)
+    {
+        /** @var \App\Model\Entity\Reservation[] $reservations */
+        $reservations = $this->Reservations->find();
+        $happenings = 0;
+
+        foreach ($reservations as $reservation) {
+            if ($this->Reservations->schedule($reservation->id)) {
+                $happenings += 1;
+
+                $this->Reservations->Users->EmailSends->make('RSV-' . $reservation->id . '-EXP');
+            }
+        }
+
+        $io->info('Reservation Changes: ' . $happenings);
+    }
+
+    /**
+     * Schedule Function for Email Sends
+     *
+     * @param \Cake\Console\ConsoleIo $io The IO
+     *
+     * @return void
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     */
+    private function scheduleEmailSends($io)
+    {
+        /** @var \App\Model\Entity\EmailSend[] $toBeSent */
+        $toBeSent = $this->EmailSends->find('unsent');
+        $happenings = 0;
+
+        foreach ($toBeSent as $email) {
+            if ($this->EmailSends->send($email->id)) {
+                $happenings += 1;
+            }
+        }
+
+        $io->info('Emails Dispatched: ' . $happenings);
+    }
+
+    /**
      * @param \Cake\Console\Arguments $args Arguments for the Console
      * @param \Cake\Console\ConsoleIo $io The IO
      *
@@ -76,52 +151,20 @@ class ScheduleCommand extends Command
      * @throws \Exception
      *
      * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
         if ($args->getOption('all') || $args->getOption('events')) {
-            /** @var \App\Model\Entity\Event[] $events */
-            $events = $this->Events->find('upcoming');
-            $happenings = 0;
-
-            foreach ($events as $event) {
-                $io->out('Processing ' . $event->name);
-                if ($this->Events->schedule($event->id)) {
-                    $happenings += 1;
-                }
-            }
-
-            $io->info('Event Changes: ' . $happenings);
+            $this->scheduleEvents($io);
         }
 
         if ($args->getOption('all') || $args->getOption('reservations')) {
-            /** @var \App\Model\Entity\Reservation[] $reservations */
-            $reservations = $this->Reservations->find('inProgress');
-            $happenings = 0;
-
-            foreach ($reservations as $reservation) {
-                if ($this->Reservations->schedule($reservation->id)) {
-                    $happenings += 1;
-
-                    $this->Reservations->Users->EmailSends->make('RSV-' . $reservation->id . '-EXP');
-                }
-            }
-
-            $io->info('Reservation Changes: ' . $happenings);
+            $this->scheduleReservations($io);
         }
 
         if ($args->getOption('all') || $args->getOption('sends')) {
-            /** @var \App\Model\Entity\EmailSend[] $toBeSent */
-            $toBeSent = $this->EmailSends->find('unsent');
-            $happenings = 0;
-
-            foreach ($toBeSent as $email) {
-                if ($this->EmailSends->send($email->id)) {
-                    $happenings += 1;
-                }
-            }
-
-            $io->info('Emails Dispatched: ' . $happenings);
+            $this->scheduleEmailSends($io);
         }
     }
 }

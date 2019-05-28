@@ -1,14 +1,17 @@
 <?php
 /**
  * @var \App\Model\Entity\EmailSend $emailSend
- * @var \App\Model\Entity\Reservation $reservation
+ * @var \App\Model\Entity\Reservation $entity
  * @var string $token
  */
 ?>
-<h2><?= $emailSend->subject ?></h2>
+<h1><?= $emailSend->subject ?></h1>
 
 <p>You are receiving this email because a reservation was added in your name.</p>
 
+<?php if (!$entity->reservation_status->complete) : ?>
+    <h3>Your reservation expires on: <strong><?= $this->Time->i18nFormat($entity->expires, 'dd-MMM-yy HH:mm', 'Europe/London') ?></strong></h3>
+<?php endif; ?>
 <hr />
 <p>Use link below to view the current state of your reservation.</p>
 
