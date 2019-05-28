@@ -232,6 +232,23 @@ class ReservationsTable extends Table
     }
 
     /**
+     * Finds the Reservations owned by the user.
+     *
+     * @param \Cake\ORM\Query $query The original query to be modified.
+     * @param array $options An array containing the user to be searched for.
+     *
+     * @return \Cake\ORM\Query The modified query.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function findEventInProgress($query, $options)
+    {
+        return $query->contain('Events.EventStatuses')->where([
+            'EventStatuses.live' => true,
+        ]);
+    }
+
+    /**
      * Various Event Completion Analyses.
      *
      * @param \Cake\I18n\Time $date The Date to be checked

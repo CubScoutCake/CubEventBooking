@@ -32,6 +32,7 @@ $this->assign('title', 'View Reservation');
                         <li><?= $this->Form->postLink(__('Cancel'), ['controller' => 'Reservations', 'action' => 'cancel', $reservation->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to cancel # {0}?', $reservation->id)]) ?></li>
                         <li><?= $this->Form->postLink(__('Delete'), ['controller' => 'Reservations', 'action' => 'delete', $reservation->id, 'prefix' => 'admin'], ['confirm' => __('Are you sure you want to delete # {0}?', $reservation->id)]) ?></li>
                         <li class='divider'></li>
+                        <li><?= $this->Html->link(__('Send Email'), ['controller' => 'Reservations', 'prefix' => 'admin', 'action' => 'confirm', $reservation->id]) ?></li>
                         <li><?= $this->Html->link(__('Add Note'), ['controller' => 'Notes', 'prefix' => 'admin', 'action' => 'new_reservation', $reservation->id]) ?></li>
                     </ul>
                 </div>
