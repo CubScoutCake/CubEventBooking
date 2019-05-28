@@ -390,6 +390,8 @@ class ReservationsTable extends Table
         $reservation = $this->get($reservationId);
         $reservation->set('cancelled', true);
 
+        $this->Users->EmailSends->make('RSV-' . $reservationId . '-CAN');
+
         $this->save($reservation, ['validate' => false]);
 
         return $this->cancelAssociated($reservationId);
