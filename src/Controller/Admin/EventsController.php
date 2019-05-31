@@ -75,7 +75,7 @@ class EventsController extends AppController
         $lineArray = Hash::remove($lineArray, '[virtual]');
 
         $lineResQuery = $this->Events->Reservations
-            ->find('all', ['contain' => ['Attendees.Sections.Scoutgroups.Districts']])
+            ->find('active', ['contain' => ['Attendees.Sections.Scoutgroups.Districts']])
             ->where(['event_id' => $eventId]);
 
         $lineResQuery = $lineResQuery->select([
