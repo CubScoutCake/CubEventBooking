@@ -35,7 +35,7 @@
 <?php //echo $this->Html->script('https://cdn.jsdelivr.net/jquery.datatables/1.10.10/js/jquery.dataTables.min.js', ['integrity' => 'sha256-YKbJo9/cZwgjue3I4jsFKdE+oGkrSpqZz6voxlmn2Fo=', 'crossorigin' => 'anonymous']); ?>
 
 <!-- Font Awesome CDN -->
-<?php echo $this->Html->script('https://kit.fontawesome.com/fd1f53a625.js', ['defer' => true]); ?>
+<?php echo $this->Html->script('https://kit.fontawesome.com/fd1f53a625.js', ['integrity' =>'sha384-KxG4KBLJfyMY+FdvxC7ieUCtO/f68XYYVcOEKJBkynvW6TlNpk7AJJ8yphyUzFoH', 'crossorigin' => 'anonymous', 'defer' => true]); ?>
 
 <!-- Custom Theme JavaScript -->
 <?php echo $this->Html->script('sb-admin-2.js');?>
