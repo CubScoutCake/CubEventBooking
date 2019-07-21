@@ -56,6 +56,7 @@ class PaymentsTable extends Table
         ]);
         $this->belongsToMany('Invoices', [
             'through' => 'InvoicesPayments',
+            'cascadeCallbacks' => true,
         ]);
     }
 

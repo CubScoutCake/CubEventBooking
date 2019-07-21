@@ -74,6 +74,7 @@ class InvoicesTable extends Table
         ]);
         $this->belongsToMany('Payments', [
             'through' => 'InvoicesPayments',
+            'cascadeCallbacks' => true,
         ]);
 
         // Adding Counter Caches
@@ -172,6 +173,27 @@ class InvoicesTable extends Table
     public function findUnpaid($query)
     {
         return $query->where(['Invoices.value IS' => 0])->orWhere(['Invoices.value IS' => null]);
+    }
+
+    /**
+     * Find Active Invoices
+     *
+     * @param \Cake\ORM\Query $query an existing ORM Query.
+     * @return \Cake\ORM\Query
+     */
+    public function findActive($query)
+    {
+        return $query
+            ->contain([
+                'Reservations.ReservationStatuses',
+                'Applications.ApplicationStatuses'
+            ])
+            ->where([
+                'OR' => [
+                    'ApplicationStatuses.active' => true,
+                    'ReservationStatuses.active' => true,
+                ]
+            ]);
     }
 
     /**

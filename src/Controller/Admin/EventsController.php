@@ -129,6 +129,7 @@ class EventsController extends AppController
             'contain' => [
                 'Settings',
                 'EventStatuses',
+                'EventTypes',
                 'Discounts',
                 'Prices.ItemTypes',
                 'Applications' => [
@@ -156,7 +157,7 @@ class EventsController extends AppController
         // Table Entities
         $applications = $this->Events->Applications->find('all')->where(['event_id' => $event->id]);
         $invoices = $this->Events->Reservations->Invoices
-            ->find()
+            ->find('active')
             ->contain([
                 'Applications',
                 'Reservations',
@@ -167,7 +168,7 @@ class EventsController extends AppController
                 ],
             ]);
         $allInvoices = $this->Events->Reservations->Invoices
-            ->find()
+            ->find('active')
             ->contain([
                 'Applications',
                 'Reservations',
@@ -181,6 +182,7 @@ class EventsController extends AppController
 
         $outInvoices = $this->Events->Reservations->Invoices
             ->find('outstanding')
+            ->find('active')
             ->contain([
                 'Applications',
                 'Reservations',
@@ -192,6 +194,7 @@ class EventsController extends AppController
             ]);
         $unpaidInvoices = $this->Events->Reservations->Invoices
             ->find('unpaid')
+            ->find('active')
             ->contain([
                 'Applications',
                 'Reservations',
@@ -261,7 +264,7 @@ class EventsController extends AppController
 
         if ($cntInvoices >= 1) {
             // Sum Values & Calculate Balances
-            $sumInvoices = $this->Events->Applications->Invoices->find()->contain(['Applications', 'Reservations'])->where(['OR' => ['Applications.event_id' => $event->id, 'Reservations.event_id' => $event->id]]);
+            $sumInvoices = $this->Events->Applications->Invoices->find('active')->contain(['Applications', 'Reservations'])->where(['OR' => ['Applications.event_id' => $event->id, 'Reservations.event_id' => $event->id]]);
             $sumInvoices = $sumInvoices->select(['initial_sum' => $sumInvoices->func()->sum('initialvalue'), 'value_sum' => $sumInvoices->func()->sum('value')])->group(['Applications.event_id', 'Reservations.event_id'])->first();
 
             $sumValues = $sumInvoices->initial_sum;
@@ -270,7 +273,11 @@ class EventsController extends AppController
             $sumBalances = $sumValues - $sumPayments;
 
             // Count of Line Items
-            $invItemCounts = $this->Events->Applications->Invoices->InvoiceItems->find()->contain(['Invoices' => ['Applications', 'Reservations'], 'ItemTypes'])->where(['OR' => ['Applications.event_id' => $event->id, 'Reservations.event_id' => $event->id]]);
+            $invItemCounts = $this->Events->Applications->Invoices->InvoiceItems->find()->contain(['Invoices' => ['Applications.ApplicationStatuses', 'Reservations.ReservationStatuses'], 'ItemTypes'])->where([
+                'OR' => [
+                    ['Applications.event_id' => $event->id, 'ApplicationStatuses.active' => true],
+                    ['Reservations.event_id' => $event->id, 'ReservationStatuses.active' => true],
+                ]]);
             $invItemCounts = $invItemCounts->select(['ItemTypes.item_type', 'sum_qty' => $invItemCounts->func()->sum('quantity'), 'value' => $invItemCounts->func()->max('InvoiceItems.value')])->group('ItemTypes.item_type')->toArray();
 
             $this->set(compact('invItemCounts'));
@@ -278,6 +285,7 @@ class EventsController extends AppController
             //Find all Outstanding Invoices
             $outstanding = $this->Events->Reservations->Invoices
                 ->find('outstanding')
+                ->find('active')
                 ->contain([
                     'Applications',
                     'Reservations',
@@ -291,6 +299,7 @@ class EventsController extends AppController
 
             $unpaid = $this->Events->Reservations->Invoices
                 ->find('unpaid')
+                ->find('active')
                 ->contain([
                     'Applications',
                     'Reservations',
