@@ -28,6 +28,8 @@ class InvoiceItemsTable extends Table
      *
      * @param array $config The configuration for the Table.
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariables)
      */
     public function initialize(array $config)
     {
@@ -49,7 +51,10 @@ class InvoiceItemsTable extends Table
             'Invoices' => [
                 'initialvalue' => function ($event, $entity, $table) {
 
-                    $query = $this->find()->where(['invoice_id' => $entity->invoice_id]);
+                    $query = $this->find()->where([
+                        'invoice_id' => $entity->invoice_id,
+                        'schedule_line' => false,
+                    ]);
                     $query = $query->select(['sum' => $query->func()->sum('(value * quantity)')]);
                     $query = $query->first();
 
