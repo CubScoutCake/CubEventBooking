@@ -67,7 +67,14 @@ class InvoicesTable extends Table
             'foreignKey' => 'reservation_id'
         ]);
         $this->hasMany('InvoiceItems', [
-            'foreignKey' => 'invoice_id'
+            'foreignKey' => 'invoice_id',
+            'conditions' => ['InvoiceItems.schedule_line' => false],
+        ]);
+        $this->hasMany('ScheduleItems', [
+            'className' => 'InvoiceItems',
+            'foreignKey' => 'invoice_id',
+            'property' => 'schedule_items',
+            'conditions' => ['ScheduleItems.schedule_line' => true],
         ]);
         $this->hasMany('Notes', [
             'foreignKey' => 'invoice_id'

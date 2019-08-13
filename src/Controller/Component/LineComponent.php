@@ -115,17 +115,16 @@ class LineComponent extends Component
      * @param int $priceID The Price ID
      * @param int $quantity The Quantity on the Line Item
      * @param bool $admin Lock to max.
-     * @param bool $invert Add a counterpart Invoice Item
      *
      * @return bool
      */
-    public function parseLine($invoiceID, $priceID, $quantity, $admin = false, $invert = false)
+    public function parseLine($invoiceID, $priceID, $quantity, $admin = false)
     {
         $this->Invoices = TableRegistry::getTableLocator()->get('Invoices');
         $this->InvoiceItems = $this->Invoices->InvoiceItems;
         $this->Prices = $this->Invoices->Applications->Events->Prices;
 
-        $price = $this->Prices->get($priceID, ['contain' => 'ItemTypes']);
+        $price = $this->Prices->get($priceID, ['contain' => ['ItemTypes', 'Events']]);
 
         if (is_null($price->item_type_id)) {
             return false;
@@ -154,6 +153,11 @@ class LineComponent extends Component
             $visible = true;
         }
 
+        $schedule = false;
+        if ($price->event->deposit_is_schedule && $price->item_type->deposit) {
+            $schedule = true;
+        }
+
         $invoiceItem = $this->InvoiceItems->findOrCreate([
             'invoice_id' => $invoiceID,
             'item_type_id' => $price->item_type_id,
@@ -168,10 +172,11 @@ class LineComponent extends Component
             'description' => $price->description,
             'quantity' => $quantity,
             'visible' => $visible,
+            'schedule_line' => $schedule,
         ];
 
         $invoiceItem = $this->InvoiceItems->patchEntity($invoiceItem, $data, ['fields' => [
-            'value', 'description', 'quantity', 'visible'
+            'value', 'description', 'quantity', 'visible', 'schedule_line'
         ]]);
 
         if ($this->InvoiceItems->save($invoiceItem)) {

@@ -10,7 +10,7 @@
 ?>
 <?php if ($invoice->has('application')) : ?>
     <p>
-        Deposits for invoices should be made payable to <strong>
+        Payments for invoices should be made payable to <strong>
             <?= h($invoice->application->event->event_type->payable->text) ?>
         </strong> and sent to
         <strong><?= h($invoice->application->event->name) ?>,

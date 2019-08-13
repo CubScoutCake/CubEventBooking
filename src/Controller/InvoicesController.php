@@ -75,6 +75,11 @@ class InvoicesController extends AppController
                         'visible' => true
                     ]
                 ],
+                'ScheduleItems' => [
+                    'conditions' => [
+                        'visible' => true
+                    ]
+                ],
                 'Applications' => [
                     'Events' => [
                         'EventTypes' => [
