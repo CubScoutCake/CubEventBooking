@@ -25,6 +25,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Application $application
  * @property \App\Model\Entity\Reservation $reservation
  * @property \App\Model\Entity\InvoiceItem[] $invoice_items
+ * @property \App\Model\Entity\InvoiceItem[] $schedule_items
  * @property \App\Model\Entity\Note[] $notes
  * @property \App\Model\Entity\Payment[] $payments
  *

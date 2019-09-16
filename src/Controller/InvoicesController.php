@@ -9,6 +9,7 @@ use Cake\ORM\TableRegistry;
  * Invoices Controller
  *
  * @property \App\Model\Table\InvoicesTable $Invoices
+ * @property \App\Model\Table\AuthRolesTable $AuthRoles
  *
  * @property \App\Controller\Component\LineComponent $Line
  */

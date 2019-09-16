@@ -81,8 +81,14 @@
         <div class="panel panel-yellow">
             <div class="panel-body">
                 <span><?= __('User') ?>: <?= $invoice->has('user') ? $this->Html->link($invoice->user->full_name, ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></span>
+                <?php if ($invoice->has('application')) : ?>
                 <br />
-                <span><?= __('Application') ?>: <?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></span>
+                <span><?= __('Application') ?>: <?= $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) ?></span>
+                <?php endif; ?>
+                <?php if ($invoice->has('reservation')) : ?>
+                    <br />
+                    <span><?= __('Reservation') ?>: <?= $this->Html->link($invoice->reservation->reservation_number, ['controller' => 'Reservations', 'action' => 'view', $invoice->reservation->id]) ?></span>
+                <?php endif; ?>
             </div>
         </div>
     </div>

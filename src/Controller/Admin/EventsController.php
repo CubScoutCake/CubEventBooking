@@ -22,7 +22,7 @@ class EventsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Settings', 'Discounts'],
+            'contain' => ['Settings', 'Discounts', 'EventStatuses'],
             'order' => ['modified' => 'DESC']
         ];
         $this->set('events', $this->paginate($this->Events));

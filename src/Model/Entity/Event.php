@@ -47,7 +47,7 @@ use Cake\ORM\Entity;
  * @property bool $app_full
  *
  * @property \App\Model\Entity\Discount $discount
- * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\User $admin_user
  * @property \App\Model\Entity\EventType $event_type
  * @property \App\Model\Entity\SectionType $section_type
  * @property \App\Model\Entity\EventStatus $event_status
@@ -106,7 +106,7 @@ class Event extends Entity
         'force_full' => true,
         'cc_complete_reservations' => true,
         'discount' => true,
-        'user' => true,
+        'admin_user' => true,
         'event_type' => true,
         'section_type' => true,
         'event_status' => true,

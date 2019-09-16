@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Event[] $events
+ */
+?>
 <div class="row">
     <div class="col-lg-12">
         <h3><i class="fal fa-calendar fa-fw"></i> Upcoming Events</h3>
@@ -7,10 +13,9 @@
                     <tr>
                         <th><?= h('Name') ?></th>
                         <th class="actions"><?= __('Actions') ?></th>
+                        <th><?= h('Event Status') ?></th>
                         <th><?= h('Start Date') ?></th>
                         <th><?= h('End Date') ?></th>
-                        <th><?= h('Last Modified') ?></th>
-                        <th><?= h('Venue') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,10 +29,9 @@
                             <?= $this->Html->link('<i class="fal fa-chart-bar"></i>', ['action' => 'accounts', $event->id], ['title' => __('Accounts'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                             <?= $this->Html->link('<i class="fal fa-inventory"></i>', ['action' => 'logistics', $event->id], ['title' => __('Logistics'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                         </td>
-                        <td><?= $this->Time->i18nFormat($event->start_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
-                        <td><?= $this->Time->i18nFormat($event->end_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
-                        <td><?= $this->Time->i18nFormat($event->modified, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
-                        <td><?= h($event->location) ?></td>
+                        <td><?= $event->has('event_status') ? h($event->event_status->event_status) : '' ?></td>
+                        <td><?= $this->Time->format($event->start_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->format($event->end_date, 'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
