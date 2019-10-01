@@ -90,8 +90,8 @@ class PaymentsController extends AppController
                 }
             }
 
-            $invoices = $this->Payments->Invoices->find('unarchived')->find('list', [
-                'limit' => 200,
+            $invoices = $this->Payments->Invoices->find('unarchived')->find('outstanding')->find('active')->find('list', [
+                'limit' => 500,
                 'order' => [ 'Invoices.id' => 'DESC' ]
             ]);
 

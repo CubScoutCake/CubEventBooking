@@ -215,15 +215,18 @@ class InvoicesTable extends Table
             ->getAssociation('Reservations.Events')->find()
             ->select(['Invoices.id'])
             ->innerJoinWith('Reservations.Invoices')
+            ->innerJoinWith('EventStatuses')
             ->distinct()
-            ->where(['Events.live' => true]);
+            ->where(['EventStatuses.live' => true]);
 
         $matchingApplications = $this
-            ->getAssociation('Applications.Events')->find()
+            ->getAssociation('Applications.Events')
+            ->find()
             ->select(['Invoices.id'])
             ->innerJoinWith('Applications.Invoices')
+            ->innerJoinWith('EventStatuses')
             ->distinct()
-            ->where(['Events.live' => true]);
+            ->where(['EventStatuses.live' => true]);
 
         return $query->where([
             'OR' => [

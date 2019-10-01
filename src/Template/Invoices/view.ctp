@@ -59,9 +59,9 @@
     <div class="col-lg-6 col-md-6">
         <div class="panel panel-yellow">
             <div class="panel-body">
-                <span><?= __('Date Created') ?>: <?= h($this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London')) ?></span>
+                <span><?= __('Date Created') ?>: <?= h($this->Time->format($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London')) ?></span>
                 <br/>
-                <span><?= __('Date Last Modified') ?>: <?= h($this->Time->i18nFormat($invoice->modified,'dd-MMM-YY HH:mm', 'Europe/London')) ?></span>
+                <span><?= __('Date Last Modified') ?>: <?= h($this->Time->format($invoice->modified,'dd-MMM-YY HH:mm', 'Europe/London')) ?></span>
             </div>
         </div>
     </div>
@@ -104,8 +104,8 @@
                         <tr>
                             <td><?= h($invoiceItems->description) ?></td>
                             <td><?= h($invoiceItems->quantity) ?></td>
-                            <td><?= h($this->number->currency($invoiceItems->value,'GBP')) ?></td>
-                            <td><?= h($this->number->currency($invoiceItems->quantity_price,'GBP')) ?></td>
+                            <td><?= h($this->Number->currency($invoiceItems->value,'GBP')) ?></td>
+                            <td><?= h($this->Number->currency($invoiceItems->quantity_price,'GBP')) ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </table>
@@ -149,8 +149,8 @@
                                 <tr>
                                     <td><?= h($invoiceItems->description) ?></td>
                                     <td><?= h($invoiceItems->quantity) ?></td>
-                                    <td><?= h($this->number->currency($invoiceItems->value,'GBP')) ?></td>
-                                    <td><?= h($this->number->currency($invoiceItems->quantity_price,'GBP')) ?></td>
+                                    <td><?= h($this->Number->currency($invoiceItems->value,'GBP')) ?></td>
+                                    <td><?= h($this->Number->currency($invoiceItems->quantity_price,'GBP')) ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>
@@ -168,7 +168,7 @@
         <?php if (!empty($invoice->payments)): ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fal fa-receipt fa-fw"></i> Payments Recieved
+                    <i class="fal fa-receipt fa-fw"></i> Payments Received
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -185,8 +185,8 @@
                                 <tr>
                                     <td><?= h($payments->id) ?></td>
                                     <td><?= $this->Number->currency($payments->value,'GBP') ?></td>
-                                    <td><?= $this->Time->i18nFormat($payments->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
-                                    <td><?= $this->Time->i18nFormat($payments->paid,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                    <td><?= $this->Time->format($payments->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                    <td><?= $this->Time->format($payments->paid,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                     <td><?= h($payments->name_on_cheque) ?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -224,7 +224,7 @@
                                 <tr>
                                     <td><?= h($notes->id) ?></td>
                                     <td><?= $this->Text->autoParagraph($notes->note_text) ?></td>
-                                    <td><?= $this->Time->i18nFormat($notes->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                                    <td><?= $this->Time->format($notes->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>
