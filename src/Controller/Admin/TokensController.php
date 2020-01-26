@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller\Admin;
+declare(strict_types=1);
 
-use Cake\ORM\TableRegistry;
+namespace App\Controller\Admin;
 
 /**
  * Tokens Controller
@@ -10,7 +10,6 @@ use Cake\ORM\TableRegistry;
  */
 class TokensController extends AppController
 {
-
     /**
      * Index method
      *
@@ -19,7 +18,7 @@ class TokensController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'EmailSends']
+            'contain' => ['Users', 'EmailSends'],
         ];
         $tokens = $this->paginate($this->Tokens);
 
@@ -37,7 +36,7 @@ class TokensController extends AppController
     public function view($id = null)
     {
         $token = $this->Tokens->get($id, [
-            'contain' => ['Users', 'EmailSends']
+            'contain' => ['Users', 'EmailSends'],
         ]);
 
         $this->set('token', $token);
@@ -78,7 +77,7 @@ class TokensController extends AppController
     public function edit($id = null)
     {
         $token = $this->Tokens->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $token = $this->Tokens->patchEntity($token, $this->request->getData());

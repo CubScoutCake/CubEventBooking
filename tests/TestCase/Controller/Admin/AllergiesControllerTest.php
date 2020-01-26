@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\AllergiesController;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class AllergiesControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -60,7 +60,7 @@ class AllergiesControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/allergies');
@@ -72,7 +72,7 @@ class AllergiesControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/allergies?page=1');
@@ -98,7 +98,7 @@ class AllergiesControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/allergies/view/1');
@@ -118,7 +118,7 @@ class AllergiesControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/allergies/add');
@@ -130,7 +130,7 @@ class AllergiesControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableSecurityToken();
@@ -138,7 +138,7 @@ class AllergiesControllerTest extends IntegrationTestCase
         $data = [
             'id' => 2,
             'allergy' => 'Test Me',
-            'description' => 'This is a test Allergy'
+            'description' => 'This is a test Allergy',
         ];
         $this->post('/admin/allergies/add', $data);
 
@@ -149,7 +149,7 @@ class AllergiesControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableCsrfToken();
@@ -175,13 +175,13 @@ class AllergiesControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $data = [
             'id' => '4',
             'allergy' => null,
-            'description' => null
+            'description' => null,
         ];
         $this->post('/admin/allergies', $data);
 
@@ -192,7 +192,7 @@ class AllergiesControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/allergies/edit/1');
@@ -204,7 +204,7 @@ class AllergiesControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableCsrfToken();

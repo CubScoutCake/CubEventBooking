@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Entity\User;
@@ -6,7 +8,6 @@ use App\Model\Table\UsersTable;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Cake\Utility\Hash;
 use Cake\Utility\Security;
 
 /**
@@ -529,7 +530,7 @@ class UsersTableTest extends TestCase
             'city' => 'Biggleswade',
             'county' => 'Bedfordshire',
             'country' => 'United Kingdom',
-            'postcode' => 'SG18 8HS'
+            'postcode' => 'SG18 8HS',
         ], 1);
 
         $this->assertInstanceOf('\App\Model\Entity\User', $user);
@@ -577,7 +578,7 @@ class UsersTableTest extends TestCase
             'city' => 'Biggleswade',
             'county' => 'Bedfordshire',
             'country' => 'United Kingdom',
-            'postcode' => 'SG18 8HS'
+            'postcode' => 'SG18 8HS',
         ], '1');
 
         $this->assertInstanceOf('\App\Model\Entity\User', $user);

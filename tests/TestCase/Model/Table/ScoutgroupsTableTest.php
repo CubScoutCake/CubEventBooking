@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ScoutgroupsTable;
@@ -66,7 +68,7 @@ class ScoutgroupsTableTest extends TestCase
             'scoutgroup' => $rand . 'th Letchworth',
             'district_id' => 1,
             'number_stripped' => $rand,
-            'deleted' => null
+            'deleted' => null,
         ];
 
         return $good;
@@ -86,7 +88,7 @@ class ScoutgroupsTableTest extends TestCase
             'scoutgroup' => '12th Letchworth',
             'district_id' => 1,
             'number_stripped' => 1,
-            'deleted' => null
+            'deleted' => null,
         ];
         $this->assertEquals($expected, $actual);
 

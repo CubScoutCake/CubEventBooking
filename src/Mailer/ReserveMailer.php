@@ -1,14 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Mailer;
 
-use App\Model\Entity\Notification;
-use App\Model\Entity\Scoutgroup;
-use App\Model\Entity\User;
 use Cake\Core\Configure;
-use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
-use Cake\ORM\Entity;
 
 class ReserveMailer extends Mailer
 {
@@ -22,6 +18,7 @@ class ReserveMailer extends Mailer
         $this
             ->setTo($emailSend->user->email, $emailSend->user->full_name)
             ->setLayout('default')
+            ->setDomain(Configure::read('App.domain'))
             ->setTransport('sparkpost')
             ->setEmailFormat('both')
             ->setSender('info@hertscubs.uk', 'HertsCubs County Cub Team')

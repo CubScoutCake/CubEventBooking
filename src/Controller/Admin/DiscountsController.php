@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class DiscountsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -30,7 +31,7 @@ class DiscountsController extends AppController
     public function view($discountId = null)
     {
         $discount = $this->Discounts->get($discountId, [
-            'contain' => ['Events']
+            'contain' => ['Events'],
         ]);
         $this->set('discount', $discount);
         $this->set('_serialize', ['discount']);
@@ -68,7 +69,7 @@ class DiscountsController extends AppController
     public function edit($discountId = null)
     {
         $discount = $this->Discounts->get($discountId, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $discount = $this->Discounts->patchEntity($discount, $this->request->getData());

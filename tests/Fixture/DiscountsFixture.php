@@ -46,7 +46,7 @@ class DiscountsFixture extends TestFixture
                 'discount_value' => 1,
                 'discount_number' => 1,
                 'uses' => 0,
-                'max_uses' => 1
+                'max_uses' => 1,
             ],
             [
                 'discount' => 'Lorem ipsum dolor go amet',
@@ -56,7 +56,7 @@ class DiscountsFixture extends TestFixture
                 'discount_value' => 1,
                 'discount_number' => 1,
                 'uses' => 1,
-                'max_uses' => 1
+                'max_uses' => 1,
             ],
         ];
         parent::init();

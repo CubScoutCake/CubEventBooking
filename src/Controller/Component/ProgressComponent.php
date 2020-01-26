@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Component;
 
 use Cake\Cache\Cache;
@@ -46,7 +48,6 @@ class ProgressComponent extends Component
 
         // Get Application
         /** @var \App\Model\Entity\Application $application */
-
         $application = $this->Applications->get($appID, ['contain' => 'Invoices']);
 
         // Determine Invoice Progress
@@ -79,8 +80,16 @@ class ProgressComponent extends Component
         $sumPayments = 0;
 
         if ($invCount > 0) {
-            $sumValues = $this->Invoices->find('totalInitialValue')->where(['id' => $application->invoice->id])->first()->sum;
-            $sumPayments = $this->Invoices->find('totalValue')->where(['id' => $application->invoice->id])->first()->sum;
+            $sumValues = $this->Invoices
+                ->find('totalInitialValue')
+                ->where(['id' => $application->invoice->id])
+                ->first()
+                ->sum;
+            $sumPayments = $this->Invoices
+                ->find('totalValue')
+                ->where(['id' => $application->invoice->id])
+                ->first()
+                ->sum;
         }
 
         $sumBalances = $sumValues - $sumPayments;
@@ -210,7 +219,15 @@ class ProgressComponent extends Component
     {
         $usrs = TableRegistry::get('Users');
 
-        $user = $usrs->get($userID, ['contain' => ['Applications.Events' => ['conditions' => ['Events.live' => true]]]]);
+        $user = $usrs->get($userID, [
+            'contain' => [
+                'Applications.Events' => [
+                    'conditions' => [
+                        'Events.live' => true
+                    ]
+                ]
+            ]
+        ]);
         $appProgress = [];
 
         if (!empty($user->applications)) {

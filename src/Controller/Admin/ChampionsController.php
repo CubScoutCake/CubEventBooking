@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class ChampionsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -17,7 +18,7 @@ class ChampionsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Districts', 'Users']
+            'contain' => ['Districts', 'Users'],
         ];
         $this->set('champions', $this->paginate($this->Champions));
         $this->set('_serialize', ['champions']);
@@ -34,7 +35,7 @@ class ChampionsController extends AppController
     public function view($championId = null)
     {
         $champion = $this->Champions->get($championId, [
-            'contain' => ['Districts', 'Users']
+            'contain' => ['Districts', 'Users'],
         ]);
         $this->set('champion', $champion);
         $this->set('_serialize', ['champion']);
@@ -77,7 +78,7 @@ class ChampionsController extends AppController
     public function edit($championId = null)
     {
         $champion = $this->Champions->get($championId, [
-            'contain' => ['Users', 'Districts']
+            'contain' => ['Users', 'Districts'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $champion = $this->Champions->patchEntity($champion, $this->request->getData());

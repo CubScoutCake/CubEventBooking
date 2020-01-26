@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\EventTypesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -69,7 +70,7 @@ class EventTypesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['controller' => 'EventTypes', 'prefix' => 'admin', 'action' => 'index']);
@@ -86,7 +87,7 @@ class EventTypesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['controller' => 'EventTypes', 'prefix' => 'admin', 'action' => 'view', 1]);
@@ -103,7 +104,7 @@ class EventTypesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['controller' => 'EventTypes', 'prefix' => 'admin', 'action' => 'add']);
@@ -120,7 +121,7 @@ class EventTypesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 2,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['controller' => 'EventTypes', 'prefix' => 'admin', 'action' => 'edit', 1]);
@@ -137,7 +138,7 @@ class EventTypesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableCsrfToken();

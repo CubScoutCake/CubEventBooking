@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -47,7 +49,7 @@ class Token extends Entity
         'hash' => true,
         'random_number' => true,
         'token_header' => true,
-        'email_send' => true
+        'email_send' => true,
     ];
 
     /**
@@ -56,6 +58,6 @@ class Token extends Entity
      * @var array
      */
     protected $_hidden = [
-        'hash', 'token'
+        'hash', 'token',
     ];
 }

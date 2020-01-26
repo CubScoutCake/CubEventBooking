@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -44,16 +45,16 @@ class TasksTable extends Table
 
         $this->belongsTo('TaskTypes', [
             'foreignKey' => 'task_type_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('CompletingUsers', [
             'className' => 'Users',
             'property' => 'completing_user',
-            'foreignKey' => 'completed_by_user_id'
+            'foreignKey' => 'completed_by_user_id',
         ]);
     }
 

@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\AttendeesAllergiesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class AttendeesAllergiesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -91,7 +91,7 @@ class AttendeesAllergiesTableTest extends TestCase
         $expected = [
             [
                 'attendee_id' => 1,
-                'allergy_id' => 1
+                'allergy_id' => 1,
             ],
         ];
 
@@ -107,23 +107,23 @@ class AttendeesAllergiesTableTest extends TestCase
     {
         $badData = [
             'attendee_id' => 99,
-            'allergy_id' => 99
+            'allergy_id' => 99,
         ];
 
         $goodData = [
             'attendee_id' => 1,
-            'allergy_id' => 2
+            'allergy_id' => 2,
         ];
 
         $expected = [
             [
                 'attendee_id' => 1,
-                'allergy_id' => 1
+                'allergy_id' => 1,
             ],
             [
                 'attendee_id' => 1,
-                'allergy_id' => 2
-            ]
+                'allergy_id' => 2,
+            ],
         ];
 
         $badEntity = $this->AttendeesAllergies->newEntity($badData, ['accessibleFields' => ['allergy_id' => true, 'attendee_id' => true]]);

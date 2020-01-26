@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use App\Utility\TextSafe;
 use Cake\Database\Schema\TableSchema;
 use Cake\Event\Event;
 use Cake\I18n\Time;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Security;
@@ -28,7 +29,6 @@ use Cake\Validation\Validator;
  */
 class TokensTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -48,17 +48,17 @@ class TokensTable extends Table
                 'Model.beforeSave' => [
                     'created' => 'new',
                     'modified' => 'always',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('EmailSends', [
             'foreignKey' => 'email_send_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
     }
 
@@ -100,7 +100,7 @@ class TokensTable extends Table
     /**
      * @param \Cake\Database\Schema\TableSchema $schema The Schema to be modified
      *
-     * @return TableSchema|\Cake\Database\Schema\TableSchema
+     * @return \Cake\Database\Schema\TableSchema
      *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
@@ -128,8 +128,8 @@ class TokensTable extends Table
     /**
      *
      * @param \Cake\Event\Event $event The Event to be processed
-     * @param ArrayObject $data The data to be modified
-     * @param ArrayObject $options The Options Contained
+     * @param \App\Model\Table\ArrayObject $data The data to be modified
+     * @param \App\Model\Table\ArrayObject $options The Options Contained
      *
      * @return void
      */

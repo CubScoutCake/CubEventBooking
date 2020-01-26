@@ -1,6 +1,10 @@
 <?php
 /**
  * @var \App\Model\Entity\Event[]|\Cake\Collection\CollectionInterface  $events
+ * @var int $countApplications
+ * @var int $countAttendees
+ * @var int $countInvoices
+ * @var int $countPayments
  */
 ?>
 

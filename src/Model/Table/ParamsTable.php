@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use App\Model\Entity\Param;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -15,7 +15,6 @@ use Cake\Validation\Validator;
  */
 class ParamsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -31,10 +30,10 @@ class ParamsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Parameters', [
-            'foreignKey' => 'parameter_id'
+            'foreignKey' => 'parameter_id',
         ]);
         $this->hasMany('LogisticItems', [
-            'foreignKey' => 'param_id'
+            'foreignKey' => 'param_id',
         ]);
     }
 

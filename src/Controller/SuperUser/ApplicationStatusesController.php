@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\SuperUser;
 
 use App\Controller\AppController;
@@ -34,7 +36,7 @@ class ApplicationStatusesController extends AppController
     public function view($id = null)
     {
         $applicationStatus = $this->ApplicationStatuses->get($id, [
-            'contain' => ['Applications']
+            'contain' => ['Applications'],
         ]);
 
         $this->set('applicationStatus', $applicationStatus);
@@ -70,7 +72,7 @@ class ApplicationStatusesController extends AppController
     public function edit($id = null)
     {
         $applicationStatus = $this->ApplicationStatuses->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $applicationStatus = $this->ApplicationStatuses->patchEntity($applicationStatus, $this->request->getData());

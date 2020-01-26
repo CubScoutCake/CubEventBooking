@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -37,7 +39,7 @@ class SectionType extends Entity
         'lower_age' => true,
         'role_id' => true,
         'role' => true,
-        'sections' => true
+        'sections' => true,
     ];
 
     /**

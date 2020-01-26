@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 /**
@@ -46,7 +48,7 @@ class TokensController extends AppController
                     '?' => [
                         'token_id' => $validated,
                         'token' => urldecode($token),
-                    ]
+                    ],
                 ];
                 $redirect = array_merge($location, $tokenReData);
 

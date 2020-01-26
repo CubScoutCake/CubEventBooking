@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\PaymentsTable;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -11,7 +12,6 @@ use Cake\TestSuite\TestCase;
  */
 class PaymentsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -108,7 +108,7 @@ class PaymentsTableTest extends TestCase
                 'name_on_cheque' => 'Lorem ipsum dolor sit amet',
                 'user_id' => 1,
                 'payment_notes' => 'Lorem ipsum dolor sit amet',
-                'deleted' => null
+                'deleted' => null,
             ],
         ];
 

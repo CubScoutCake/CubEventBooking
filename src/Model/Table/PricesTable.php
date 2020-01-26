@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -22,7 +23,6 @@ use Cake\Validation\Validator;
  */
 class PricesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -42,11 +42,11 @@ class PricesTable extends Table
         ]);
 
         $this->belongsTo('ItemTypes', [
-            'foreignKey' => 'item_type_id'
+            'foreignKey' => 'item_type_id',
         ]);
         $this->belongsTo('Events', [
             'foreignKey' => 'event_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
     }
 
@@ -94,9 +94,9 @@ class PricesTable extends Table
     /**
      * Finder to locate Parent Accounts
      *
-     * @param Query $query the Query to be modified.
+     * @param \Cake\ORM\Query $query the Query to be modified.
      *
-     * @return Query
+     * @return \Cake\ORM\Query
      */
     public function findDeposits($query)
     {

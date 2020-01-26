@@ -1,9 +1,7 @@
 <?php
-namespace App\Controller;
+declare(strict_types=1);
 
-use App\Form\DiscountForm;
-use App\Model\Entity\User;
-use Cake\ORM\TableRegistry;
+namespace App\Controller;
 
 /**
  * Invoices Controller
@@ -15,7 +13,6 @@ use Cake\ORM\TableRegistry;
  */
 class InvoicesController extends AppController
 {
-
     /**
      * Initialisation - Load Component
      *
@@ -38,7 +35,7 @@ class InvoicesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Users'],
-            'conditions' => ['user_id' => $this->Auth->user('id')]
+            'conditions' => ['user_id' => $this->Auth->user('id')],
         ];
         $this->set('invoices', $this->paginate($this->Invoices));
         $this->set('_serialize', ['invoices']);
@@ -63,8 +60,8 @@ class InvoicesController extends AppController
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
-                   'filename' => 'Invoice #' . $invoiceId
-               ]
+                   'filename' => 'Invoice #' . $invoiceId,
+               ],
            ]);
 
         $invoice = $this->Invoices->get($invoiceId, [
@@ -73,18 +70,18 @@ class InvoicesController extends AppController
                 'Payments',
                 'InvoiceItems' => [
                     'conditions' => [
-                        'visible' => true
-                    ]
+                        'visible' => true,
+                    ],
                 ],
                 'ScheduleItems' => [
                     'conditions' => [
-                        'visible' => true
-                    ]
+                        'visible' => true,
+                    ],
                 ],
                 'Applications' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts', 'Payable'
+                            'LegalTexts', 'InvoiceTexts', 'Payable',
                         ],
                         'AdminUsers',
                     ],
@@ -93,17 +90,17 @@ class InvoicesController extends AppController
                 'Reservations' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts', 'Payable'
+                            'LegalTexts', 'InvoiceTexts', 'Payable',
                         ],
                         'AdminUsers',
                     ],
                 ],
                 'Notes' => [
                     'conditions' => [
-                        'visible' => true
-                    ]
-                ]
-            ]
+                        'visible' => true,
+                    ],
+                ],
+            ],
         ]);
 
         $this->set(compact('invoice'));
@@ -121,8 +118,8 @@ class InvoicesController extends AppController
         $this->viewBuilder()->setOptions([
             'pdfConfig' => [
                 'orientation' => 'portrait',
-                'filename' => 'Invoice #' . $invoiceId
-            ]
+                'filename' => 'Invoice #' . $invoiceId,
+            ],
         ]);
 
         // Insantiate Objects
@@ -132,13 +129,13 @@ class InvoicesController extends AppController
                 'Payments',
                 'InvoiceItems' => [
                     'conditions' => [
-                        'visible' => 1
-                    ]
+                        'visible' => 1,
+                    ],
                 ],
                 'Applications' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts'
+                            'LegalTexts', 'InvoiceTexts',
                         ],
                         'AdminUsers',
                     ],
@@ -146,10 +143,10 @@ class InvoicesController extends AppController
                 ],
                 'Notes' => [
                     'conditions' => [
-                        'visible' => true
-                    ]
-                ]
-            ]
+                        'visible' => true,
+                    ],
+                ],
+            ],
         ]);
 
         // Set Deadline Variable
@@ -171,7 +168,12 @@ class InvoicesController extends AppController
         $cakePDF->template('invoice', 'default');
         $cakePDF->viewVars($this->viewVars);
         // Or write it to file directly
-        $cakePDF->write(FILES . DS . 'Event ' . $invoice->application->event->id . DS . 'Invoices' . DS . 'Invoice #' . $invoice->id . '.pdf');
+        $cakePDF->write(
+            FILES
+            . DS . 'Event ' . $invoice->application->event->id
+            . DS . 'Invoices'
+            . DS . 'Invoice #' . $invoice->id . '.pdf'
+        );
 
         return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invoice->id, '_ext' => 'pdf']);
     }
@@ -186,11 +188,13 @@ class InvoicesController extends AppController
     public function regenerate($invoiceID = null)
     {
         $invoice = $this->Invoices->get($invoiceID, [
-            'contain' => ['Applications.Events.AdminUsers']
+            'contain' => ['Applications.Events.AdminUsers'],
         ]);
 
         if ($invoice->application->event->invoices_locked) {
-            $errorMsg = 'This event has been LOCKED to prevent updates to invoices. Please contact ' . $invoice->application->event->admin_user->full_name . '.';
+            $errorMsg = 'This event has been LOCKED to prevent updates to invoices. Please contact '
+                        . $invoice->application->event->admin_user->full_name
+                        . '.';
             $this->Flash->error(__($errorMsg));
             $this->log($errorMsg, 'info');
         } else {
@@ -200,7 +204,12 @@ class InvoicesController extends AppController
             if ($parse) {
                 $this->Flash->success('Your Invoice has been updated from your Application.');
 
-                return $this->redirect($this->referer(['controller' => 'Invoices', 'action' => 'view', 'prefix' => false, $invoiceID]));
+                return $this->redirect($this->referer([
+                    'controller' => 'Invoices',
+                    'action' => 'view',
+                    'prefix' => false,
+                    $invoiceID,
+                ]));
             }
 
             $errorMsg = 'Issue Regenerating Invoice.';
@@ -208,7 +217,12 @@ class InvoicesController extends AppController
             $this->log($errorMsg, 'info');
         }
 
-        return $this->redirect($this->referer(['controller' => 'Invoices', 'action' => 'view', 'prefix' => false, $invoiceID]));
+        return $this->redirect($this->referer([
+            'controller' => 'Invoices',
+            'action' => 'view',
+            'prefix' => false,
+            $invoiceID,
+        ]));
     }
 
     /**
@@ -273,7 +287,7 @@ class InvoicesController extends AppController
     /**
      * Determine Authorisation
      *
-     * @param User $user the Logged In User
+     * @param \App\Model\Entity\User $user the Logged In User
      *
      * @return bool - Can the User access the Invoice
      */

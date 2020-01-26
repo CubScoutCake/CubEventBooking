@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: jacob
@@ -7,21 +9,18 @@
  */
 namespace App\Model\Behavior;
 
-use Cake\Event\Event;
 use Cake\ORM\Behavior;
-use Cake\ORM\Entity;
 use Cake\ORM\Query;
-use Cake\ORM\TableRegistry;
 
 class SectionAuthBehavior extends Behavior
 {
     /**
      * Find Section Types Directly
      *
-     * @param Query $query The Query to be returned.
+     * @param \Cake\ORM\Query $query The Query to be returned.
      * @param array $options Options for the query etc.
      *
-     * @return Query
+     * @return \Cake\ORM\Query
      */
     public function findSameSection(Query $query, array $options)
     {
@@ -35,19 +34,25 @@ class SectionAuthBehavior extends Behavior
             }
 
             if ($assoc->has('Sections')) {
-                $query = $query->contain('Sections.SectionTypes')->where(['SectionTypes.id' => $options['section_type_id']]);
+                $query = $query
+                    ->contain('Sections.SectionTypes')
+                    ->where(['SectionTypes.id' => $options['section_type_id']]);
 
                 return $query;
             }
 
             if ($assoc->has('Users')) {
-                $query = $query->contain('Users.Sections.SectionTypes')->where(['SectionTypes.id' => $options['section_type_id']]);
+                $query = $query
+                    ->contain('Users.Sections.SectionTypes')
+                    ->where(['SectionTypes.id' => $options['section_type_id']]);
 
                 return $query;
             }
 
             if ($assoc->has('Applications')) {
-                $query = $query->contain('Applications.Sections.SectionTypes')->where(['SectionTypes.id' => $options['section_type_id']]);
+                $query = $query
+                    ->contain('Applications.Sections.SectionTypes')
+                    ->where(['SectionTypes.id' => $options['section_type_id']]);
 
                 return $query;
             }

@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Behavior;
 
-use App\Model\Behavior\SectionAuthBehavior;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -9,7 +10,6 @@ use Cake\TestSuite\TestCase;
  */
 class SectionAuthBehaviorTest extends TestCase
 {
-
     /**
      * Test subject
      *

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class ParameterSetsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -32,7 +33,7 @@ class ParameterSetsController extends AppController
     public function view($id = null)
     {
         $parameterSet = $this->ParameterSets->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
 
         $this->set('parameterSet', $parameterSet);
@@ -71,7 +72,7 @@ class ParameterSetsController extends AppController
     public function edit($id = null)
     {
         $parameterSet = $this->ParameterSets->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $parameterSet = $this->ParameterSets->patchEntity($parameterSet, $this->request->getData());

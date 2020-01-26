@@ -1,11 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Form\AttNumberForm;
 use App\Form\SyncBookForm;
-use App\Model\Entity\Price;
-use Cake\I18n\Time;
-use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 
 /**
@@ -17,7 +16,6 @@ use Cake\Utility\Inflector;
  */
 class EventsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -27,7 +25,7 @@ class EventsController extends AppController
     {
         $this->paginate = [
             'contain' => ['Settings', 'Discounts', 'AdminUsers', 'EventTypes'],
-            'conditions' => ['live' => true]
+            'conditions' => ['live' => true],
         ];
         $events = $this->paginate($this->Events);
 
@@ -45,7 +43,14 @@ class EventsController extends AppController
     public function book($eventID)
     {
         $event = $this->Events->get($eventID, [
-            'contain' => ['Discounts', 'SectionTypes.Roles', 'Applications', 'EventTypes.InvoiceTexts', 'EventTypes.LegalTexts', 'EventTypes.ApplicationRefs']
+            'contain' => [
+                'Discounts',
+                'SectionTypes.Roles',
+                'Applications',
+                'EventTypes.InvoiceTexts',
+                'EventTypes.LegalTexts',
+                'EventTypes.ApplicationRefs'
+            ],
         ]);
 
         $this->loadComponent('ScoutManager');
@@ -106,7 +111,7 @@ class EventsController extends AppController
                     'action' => 'sync_book',
                     'prefix' => false,
                     $event->id,
-                    $bookingData['osm_event']
+                    $bookingData['osm_event'],
                 ]);
             }
         }
@@ -115,7 +120,7 @@ class EventsController extends AppController
         $singleTerm = $term;
         $pluralTerm = Inflector::pluralize($term);
 
-        if (($event->max_apps - $event->cc_apps) > 1) {
+        if ($event->max_apps - $event->cc_apps > 1) {
             $term = $pluralTerm;
         }
 

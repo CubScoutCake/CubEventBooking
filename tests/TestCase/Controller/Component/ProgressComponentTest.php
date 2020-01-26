@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Component;
 
 use App\Controller\Component\ProgressComponent;
@@ -12,7 +14,6 @@ use Cake\TestSuite\TestCase;
  */
 class ProgressComponentTest extends TestCase
 {
-
     /**
      * Test subject
      *

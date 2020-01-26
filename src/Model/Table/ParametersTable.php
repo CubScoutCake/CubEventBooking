@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -24,7 +25,6 @@ use Cake\Validation\Validator;
  */
 class ParametersTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -40,17 +40,17 @@ class ParametersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('ParameterSets', [
-            'foreignKey' => 'set_id'
+            'foreignKey' => 'set_id',
         ]);
         $this->hasMany('Logistics', [
-            'foreignKey' => 'parameter_id'
+            'foreignKey' => 'parameter_id',
         ]);
         $this->hasMany('Params', [
-            'foreignKey' => 'parameter_id'
+            'foreignKey' => 'parameter_id',
         ]);
     }
 

@@ -49,7 +49,7 @@ class PaymentsFixture extends TestFixture
                 'name_on_cheque' => 'Lorem ipsum dolor sit amet',
                 'user_id' => 1,
                 'payment_notes' => 'Lorem ipsum dolor sit amet',
-                'deleted' => null
+                'deleted' => null,
             ],
             [
                 'value' => 1,
@@ -59,7 +59,7 @@ class PaymentsFixture extends TestFixture
                 'name_on_cheque' => 'Lorem ipsum dolor sit amet',
                 'user_id' => 1,
                 'payment_notes' => 'Lorem ipsum dolor sit amet',
-                'deleted' => 1484948568
+                'deleted' => 1484948568,
             ],
         ];
         parent::init();

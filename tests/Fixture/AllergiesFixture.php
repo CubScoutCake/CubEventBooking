@@ -39,35 +39,35 @@ class AllergiesFixture extends TestFixture
                 'description' => 'Fish Allergies can kill cuttlefish',
                 'is_medical' => false,
                 'is_specific' => false,
-                'is_dietary' => true
+                'is_dietary' => true,
             ],
             [
                 'allergy' => 'Goats',
                 'description' => 'Goat Allergy is very serious',
                 'is_medical' => false,
                 'is_specific' => false,
-                'is_dietary' => true
+                'is_dietary' => true,
             ],
             [
                 'allergy' => 'Diabetes',
                 'description' => 'Crazy sugar thing',
                 'is_medical' => true,
                 'is_specific' => false,
-                'is_dietary' => true
+                'is_dietary' => true,
             ],
             [
                 'allergy' => 'Epilepsy',
                 'description' => 'Serious Neural disorder',
                 'is_medical' => false,
                 'is_specific' => false,
-                'is_dietary' => true
+                'is_dietary' => true,
             ],
             [
                 'allergy' => 'Cream',
                 'description' => 'Jacob is very dangerously allergic to cream',
                 'is_medical' => false,
                 'is_specific' => true,
-                'is_dietary' => true
+                'is_dietary' => true,
             ],
         ];
         parent::init();

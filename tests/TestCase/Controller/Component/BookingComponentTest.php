@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Component;
 
 use App\Controller\Component\BookingComponent;
@@ -170,18 +172,18 @@ class BookingComponentTest extends TestCase
                 'city' => 'Farmland',
                 'county' => 'Farmshire',
                 'country' => 'United Kingdom',
-                'postcode' => 'FARM 123'
+                'postcode' => 'FARM 123',
             ],
             'attendee' => [
                 'firstname' => 'Timmy',
                 'lastname' => 'Tyler',
-                'section_id' => '1'
+                'section_id' => '1',
             ],
             'logistics_item' => [
                 0 => [
                     'logistic_id' => 1,
                     'param_id' => 2,
-                ]
+                ],
             ],
         ];
 

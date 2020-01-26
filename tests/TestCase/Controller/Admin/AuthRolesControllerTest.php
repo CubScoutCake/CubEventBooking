@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\AuthRolesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -9,14 +10,13 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class AuthRolesControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
      * @var array
      */
     public $fixtures = [
-        'app.auth_roles'
+        'app.auth_roles',
     ];
 
     /**
@@ -28,7 +28,7 @@ class AuthRolesControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/auth-roles');
@@ -45,7 +45,7 @@ class AuthRolesControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/auth-roles/view/1');

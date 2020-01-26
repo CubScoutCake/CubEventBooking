@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\SuperUser;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\SuperUser;
  */
 class EmailSendsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -17,7 +18,7 @@ class EmailSendsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'NotificationTypes', 'Notifications']
+            'contain' => ['Users', 'NotificationTypes', 'Notifications'],
         ];
         $emailSends = $this->paginate($this->EmailSends);
 
@@ -36,7 +37,7 @@ class EmailSendsController extends AppController
     public function view($emailSendId = null)
     {
         $emailSend = $this->EmailSends->get($emailSendId, [
-            'contain' => ['Users', 'NotificationTypes', 'Notifications', 'EmailResponses', 'Tokens']
+            'contain' => ['Users', 'NotificationTypes', 'Notifications', 'EmailResponses', 'Tokens'],
         ]);
 
         $this->set('emailSend', $emailSend);
@@ -78,7 +79,7 @@ class EmailSendsController extends AppController
     public function edit($emailSendId = null)
     {
         $emailSend = $this->EmailSends->get($emailSendId, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $emailSend = $this->EmailSends->patchEntity($emailSend, $this->request->getData());

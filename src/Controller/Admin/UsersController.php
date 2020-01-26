@@ -1,10 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use Cake\Cache\Cache;
-use Cake\Event\Event;
 use Cake\Mailer\MailerAwareTrait;
-use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
@@ -28,7 +28,7 @@ class UsersController extends AppController
     {
         parent::initialize();
         $this->loadComponent('Search.Prg', [
-            'actions' => ['index', 'lookup']
+            'actions' => ['index', 'lookup'],
         ]);
     }
 
@@ -55,7 +55,7 @@ class UsersController extends AppController
         $this->paginate = [
             'contain' => ['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes'],
             'order' => ['last_login' => 'DESC'],
-            'conditions' => ['SectionTypes.id' => $section->section_type_id]
+            'conditions' => ['SectionTypes.id' => $section->section_type_id],
         ];
         //$this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
@@ -65,7 +65,7 @@ class UsersController extends AppController
             [
                     'keyField' => 'id',
                     'valueField' => 'section',
-                    'groupField' => 'scoutgroup.district.district'
+                    'groupField' => 'scoutgroup.district.district',
             ]
         )
             ->where(['section_type_id' => $section['section_type_id']])
@@ -95,7 +95,7 @@ class UsersController extends AppController
                 'Notes' => ['Invoices', 'Applications'],
                 'Notifications' => ['NotificationTypes', 'sort' => ['read_date' => 'DESC', 'created' => 'DESC']],
                 'Reservations' => ['Events', 'ReservationStatuses', 'Attendees'],
-            ]
+            ],
         ]);
 
         $numOSM = $this->Users->Attendees->find('osm')->where(['user_id' => $user->id])->count();
@@ -133,8 +133,8 @@ class UsersController extends AppController
                     'address_2',
                     'city',
                     'county',
-                    'postcode'
-                ]
+                    'postcode',
+                ],
             ]);
 
             if ($this->Users->save($user)) {
@@ -152,7 +152,7 @@ class UsersController extends AppController
             [
                     'keyField' => 'id',
                     'valueField' => 'section',
-                    'groupField' => 'scoutgroup.district.district'
+                    'groupField' => 'scoutgroup.district.district',
                 ]
         )
             ->contain(['Scoutgroups.Districts']);
@@ -175,12 +175,12 @@ class UsersController extends AppController
 
         $attRef = $this->Users->Attendees->find('all')->where([
             'user_attendee' => true,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
         $attName = $this->Users->Attendees->find('all')->where([
             'firstname' => $user->firstname,
             'lastname' => $user->lastname,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $count = max($attRef->count(), $attName->count());
@@ -207,7 +207,7 @@ class UsersController extends AppController
             'postcode' => $user->postcode,
             'role_id' => $user->role_id,
             'section_id' => $user->section_id,
-            'phone' => $user->phone
+            'phone' => $user->phone,
         ];
 
         $att = $this->Users->Attendees->patchEntity($att, $attendeeData);
@@ -278,7 +278,7 @@ class UsersController extends AppController
     public function edit($userId = null)
     {
         $user = $this->Users->get($userId, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -304,7 +304,7 @@ class UsersController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'section',
-                'groupField' => 'scoutgroup.scoutgroup'
+                'groupField' => 'scoutgroup.scoutgroup',
             ]
         )
             ->contain(['Scoutgroups']);
@@ -366,7 +366,7 @@ class UsersController extends AppController
         return $this->redirect([
             'controller' => 'Users',
             'action' => 'login',
-            'prefix' => false
+            'prefix' => false,
         ]);
     }
 

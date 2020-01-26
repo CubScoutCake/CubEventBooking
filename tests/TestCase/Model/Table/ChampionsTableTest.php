@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\ChampionsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class ChampionsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -80,7 +80,7 @@ class ChampionsTableTest extends TestCase
                 'lastname' => 'Lorem ipsum dolor sit amet',
                 'email' => 'jacob@fish.com',
                 'user_id' => 1,
-                'deleted' => null
+                'deleted' => null,
             ],
         ];
 
@@ -101,7 +101,7 @@ class ChampionsTableTest extends TestCase
             'lastname' => null,
             'email' => 'Jacob@Fish.com',
             'user_id' => null,
-            'deleted' => null
+            'deleted' => null,
         ];
 
         $badEmailData = [
@@ -111,7 +111,7 @@ class ChampionsTableTest extends TestCase
             'lastname' => null,
             'email' => 'this is a goat',
             'user_id' => null,
-            'deleted' => null
+            'deleted' => null,
         ];
 
         $goodData = [
@@ -121,7 +121,7 @@ class ChampionsTableTest extends TestCase
             'lastname' => 'Lorem ipsum dolor sit amet',
             'email' => 'Jacob@GOAT.com',
             'user_id' => 1,
-            'deleted' => null
+            'deleted' => null,
         ];
 
         $expected = [
@@ -132,7 +132,7 @@ class ChampionsTableTest extends TestCase
                 'lastname' => 'Lorem ipsum dolor sit amet',
                 'email' => 'jacob@fish.com',
                 'user_id' => 1,
-                'deleted' => null
+                'deleted' => null,
             ],
             [
                 'id' => 3,
@@ -141,7 +141,7 @@ class ChampionsTableTest extends TestCase
                 'lastname' => 'Lorem ipsum dolor sit amet',
                 'email' => 'jacob@goat.com',
                 'user_id' => 1,
-                'deleted' => null
+                'deleted' => null,
             ],
         ];
 
@@ -175,7 +175,7 @@ class ChampionsTableTest extends TestCase
             'lastname' => 'Lorem ipsum dolor sit amet',
             'email' => 'jacob@FISH.com',
             'user_id' => 1,
-            'deleted' => null
+            'deleted' => null,
         ];
 
         $badDistrictData = [
@@ -185,7 +185,7 @@ class ChampionsTableTest extends TestCase
             'lastname' => 'Lorem ipsum dolor sit amet',
             'email' => 'jacob@goat.com',
             'user_id' => 1,
-            'deleted' => null
+            'deleted' => null,
         ];
 
         $badUserData = [
@@ -195,7 +195,7 @@ class ChampionsTableTest extends TestCase
             'lastname' => 'Lorem ipsum dolor sit amet',
             'email' => 'Jacob@Goat.com',
             'user_id' => 2,
-            'deleted' => null
+            'deleted' => null,
         ];
 
         $goodData = [
@@ -205,7 +205,7 @@ class ChampionsTableTest extends TestCase
             'lastname' => 'Lorem ipsum dolor sit amet',
             'email' => 'Jacob@goat.com',
             'user_id' => 1,
-            'deleted' => null
+            'deleted' => null,
         ];
 
         $expected = [
@@ -216,7 +216,7 @@ class ChampionsTableTest extends TestCase
                 'lastname' => 'Lorem ipsum dolor sit amet',
                 'email' => 'jacob@fish.com',
                 'user_id' => 1,
-                'deleted' => null
+                'deleted' => null,
             ],
             [
                 'id' => 3,
@@ -225,7 +225,7 @@ class ChampionsTableTest extends TestCase
                 'lastname' => 'Lorem ipsum dolor sit amet',
                 'email' => 'jacob@goat.com',
                 'user_id' => 1,
-                'deleted' => null
+                'deleted' => null,
             ],
         ];
 

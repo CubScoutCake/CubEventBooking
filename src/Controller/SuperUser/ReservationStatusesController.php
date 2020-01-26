@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\SuperUser;
 
 /**
@@ -10,7 +12,6 @@ namespace App\Controller\SuperUser;
  */
 class ReservationStatusesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -33,7 +34,7 @@ class ReservationStatusesController extends AppController
     public function view($id = null)
     {
         $reservationStatus = $this->ReservationStatuses->get($id, [
-            'contain' => ['Reservations']
+            'contain' => ['Reservations'],
         ]);
 
         $this->set('reservationStatus', $reservationStatus);
@@ -69,7 +70,7 @@ class ReservationStatusesController extends AppController
     public function edit($id = null)
     {
         $reservationStatus = $this->ReservationStatuses->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $reservationStatus = $this->ReservationStatuses->patchEntity($reservationStatus, $this->request->getData());

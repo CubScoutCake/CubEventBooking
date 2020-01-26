@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Component;
 
 use App\Controller\Component\PasswordComponent;
@@ -14,7 +16,6 @@ use Cake\TestSuite\TestCase;
  */
 class PasswordComponentTest extends TestCase
 {
-
     /**
      * Fixtures
      *
@@ -37,7 +38,7 @@ class PasswordComponentTest extends TestCase
         'app.notification_types',
         'app.email_sends',
         'app.email_responses',
-        'app.email_response_types'
+        'app.email_response_types',
     ];
 
     /**

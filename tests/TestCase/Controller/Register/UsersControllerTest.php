@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Register;
 
-use App\Controller\UsersController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -9,7 +10,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class UsersControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *

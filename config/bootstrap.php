@@ -34,10 +34,8 @@ require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
-use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
-use Cake\Core\Plugin;
 use Cake\Database\Type;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\ErrorHandler;
@@ -45,9 +43,6 @@ use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use Cake\Mailer\Email;
 use Cake\Mailer\TransportFactory;
-use Cake\Network\Request;
-use Cake\Routing\DispatcherFactory;
-use Cake\Utility\Inflector;
 use Cake\Utility\Security;
 
 /**
@@ -161,7 +156,7 @@ TransportFactory::setConfig(Configure::consume('EmailTransport'));
 Email::setConfig(Configure::consume('Email'));
 TransportFactory::setConfig('sparkpost', [
     'className' => 'SparkPost',
-    'apiKey' => Configure::read('SparkPost.Api.key')
+    'apiKey' => Configure::read('SparkPost.Api.key'),
 ]);
 Log::setConfig(Configure::consume('Log'));
 Security::setSalt(Configure::consume('Security.salt'));

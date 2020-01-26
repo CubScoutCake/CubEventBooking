@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\SuperUser;
 
-use App\Controller\SuperUser\SectionsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -9,7 +10,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class SectionsControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -38,7 +38,7 @@ class SectionsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/sections');
@@ -55,7 +55,7 @@ class SectionsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/sections/view/1');

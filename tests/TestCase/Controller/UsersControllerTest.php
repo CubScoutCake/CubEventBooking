@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\UsersController;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -41,7 +42,7 @@ class UsersControllerTest extends TestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 1
+           'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get('/users');
@@ -60,7 +61,7 @@ class UsersControllerTest extends TestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 1
+           'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get('/users/view/1');
@@ -79,7 +80,7 @@ class UsersControllerTest extends TestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 1
+           'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get('/users/edit/1');

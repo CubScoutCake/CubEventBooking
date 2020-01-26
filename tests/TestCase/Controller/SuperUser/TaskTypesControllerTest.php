@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\SuperUser;
 
-use App\Controller\SuperUser\TaskTypesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -75,7 +76,7 @@ class TaskTypesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
@@ -98,14 +99,14 @@ class TaskTypesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'controller' => 'TaskTypes',
             'action' => 'view',
             'prefix' => 'super_user',
-            1
+            1,
         ]);
 
         $this->assertResponseOk();
@@ -122,7 +123,7 @@ class TaskTypesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
@@ -164,14 +165,14 @@ class TaskTypesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'controller' => 'TaskTypes',
             'action' => 'edit',
             'prefix' => 'super_user',
-            1
+            1,
         ]);
 
         $this->assertResponseOk();
@@ -184,7 +185,7 @@ class TaskTypesControllerTest extends TestCase
             'controller' => 'TaskTypes',
             'action' => 'edit',
             'prefix' => 'super_user',
-            1
+            1,
         ], [
             'task_type' => 'Attendee Clean',
             'shared_type' => '0',
@@ -208,7 +209,7 @@ class TaskTypesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableSecurityToken();
@@ -219,7 +220,7 @@ class TaskTypesControllerTest extends TestCase
             'controller' => 'TaskTypes',
             'action' => 'delete',
             'prefix' => 'super_user',
-            2
+            2,
         ]);
 
         $this->assertRedirect();

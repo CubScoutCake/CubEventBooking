@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Mailer;
 
+use Cake\Core\Configure;
 use Cake\Mailer\Mailer;
 
 class BasicMailer extends Mailer
@@ -18,6 +20,7 @@ class BasicMailer extends Mailer
         $this
             ->setTo($emailSend->user->email, $emailSend->user->full_name)
             ->setLayout('default')
+            ->setDomain(Configure::read('App.domain'))
             ->setTransport('sparkpost')
             ->setEmailFormat('both')
             ->setSender('info@hertscubs.uk', 'HertsCubs County Cub Team')

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -34,6 +36,6 @@ class EventStatus extends Entity
         'spaces_full' => true,
         'pending_date' => true,
         'status_order' => true,
-        'events' => true
+        'events' => true,
     ];
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -37,11 +39,11 @@ class AppController extends Controller
             'authenticate' => [
                 'Basic' => [
                     'fields' => ['username' => 'username', 'password' => 'api_key'],
-                    'userModel' => 'Users'
+                    'userModel' => 'Users',
                 ],
             ],
             'storage' => 'Memory',
-            'unauthorizedRedirect' => false
+            'unauthorizedRedirect' => false,
         ]);
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,

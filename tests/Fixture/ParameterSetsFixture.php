@@ -34,7 +34,7 @@ class ParameterSetsFixture extends TestFixture
             [
                 'id' => 1,
                 'name' => 'Lorem ipsum dolor sit amet',
-                'deleted' => null
+                'deleted' => null,
             ],
         ];
         parent::init();

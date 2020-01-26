@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\InvoicesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -9,7 +10,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class InvoicesControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -87,13 +87,13 @@ class InvoicesControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'controller' => 'Invoices',
             'prefix' => 'admin',
-            'action' => 'index'
+            'action' => 'index',
         ]);
 
         $this->assertResponseOk();
@@ -118,14 +118,14 @@ class InvoicesControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'controller' => 'Invoices',
             'prefix' => 'admin',
             'action' => 'view',
-            1
+            1,
         ]);
 
         $this->assertResponseOk();
@@ -152,14 +152,14 @@ class InvoicesControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'controller' => 'Invoices',
             'prefix' => 'admin',
             'action' => 'edit',
-            1
+            1,
         ]);
 
         $this->assertResponseOk();
@@ -172,7 +172,7 @@ class InvoicesControllerTest extends IntegrationTestCase
             'controller' => 'Invoices',
             'prefix' => 'admin',
             'action' => 'edit',
-            1
+            1,
         ], [
             'user_id' => 3,
             'application_id' => 1,
@@ -186,7 +186,7 @@ class InvoicesControllerTest extends IntegrationTestCase
             'controller' => 'Invoices',
             'prefix' => 'admin',
             'action' => 'edit',
-            1
+            1,
         ], [
             'user_id' => 100,
             'application_id' => 100,
@@ -218,7 +218,7 @@ class InvoicesControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableRetainFlashMessages();
@@ -227,7 +227,7 @@ class InvoicesControllerTest extends IntegrationTestCase
             'controller' => 'Invoices',
             'prefix' => 'admin',
             'action' => 'regenerate',
-            1
+            1,
         ]);
 
         $this->assertFlashMessageAt(0, 'Invoice Regenerated from Application.');
@@ -241,7 +241,7 @@ class InvoicesControllerTest extends IntegrationTestCase
             1,
             '?' => [
                 'force' => true,
-            ]
+            ],
         ]);
 
         $this->assertFlashMessageAt(0, 'Invoice Regenerated from Application (bypassing limits).');

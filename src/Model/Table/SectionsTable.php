@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -27,7 +28,6 @@ use Cake\Validation\Validator;
  */
 class SectionsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -45,7 +45,7 @@ class SectionsTable extends Table
         $this->addBehavior('Timestamp');
         $this->addBehavior('SectionAuth');
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('SectionTypes', [
@@ -55,13 +55,13 @@ class SectionsTable extends Table
             'foreignKey' => 'scoutgroup_id',
         ]);
         $this->hasMany('Applications', [
-            'foreignKey' => 'section_id'
+            'foreignKey' => 'section_id',
         ]);
         $this->hasMany('Attendees', [
-            'foreignKey' => 'section_id'
+            'foreignKey' => 'section_id',
         ]);
         $this->hasMany('Users', [
-            'foreignKey' => 'section_id'
+            'foreignKey' => 'section_id',
         ]);
     }
 

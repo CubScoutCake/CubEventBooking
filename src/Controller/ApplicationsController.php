@@ -1,12 +1,14 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Form\CancellationForm;
 use App\Form\SyncBookForm;
-use CakePdf\Pdf;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
+use CakePdf\Pdf;
 
 /**
  * Applications Controller
@@ -21,7 +23,6 @@ use Cake\Utility\Inflector;
  */
 class ApplicationsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -30,9 +31,14 @@ class ApplicationsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'Sections.Scoutgroups', 'Events']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Events'],
         ];
-        $this->set('applications', $this->paginate($this->Applications->find('unarchived')->find('ownedBy', ['userId' => $this->Auth->user('id')])));
+        $this->set('applications', $this->paginate(
+            $this->Applications
+                ->find('unarchived')
+                ->find('ownedBy', ['userId' => $this->Auth->user('id')])
+            )
+        );
         $this->set('_serialize', ['applications']);
     }
 
@@ -67,8 +73,8 @@ class ApplicationsController extends AppController
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
-                   'filename' => 'Application #' . $applicationId
-               ]
+                   'filename' => 'Application #' . $applicationId,
+               ],
            ]);
 
         $application = $this->Applications->get($applicationId, [
@@ -81,19 +87,19 @@ class ApplicationsController extends AppController
                     'sort' => [
                         'Attendees.role_id' => 'ASC',
                         'Attendees.lastname' => 'ASC',
-                    ]
+                    ],
                 ],
                 'Attendees.Roles' => [
                     'conditions' => [
-                        'Attendees.user_id' => $this->Auth->user('id')
-                    ]
+                        'Attendees.user_id' => $this->Auth->user('id'),
+                    ],
                 ],
                 'Attendees.Sections.Scoutgroups' => [
                     'conditions' => [
-                        'Attendees.user_id' => $this->Auth->user('id')
-                    ]
+                        'Attendees.user_id' => $this->Auth->user('id'),
+                    ],
                 ],
-                'Notes' => ['conditions' => ['visible' => true]]]
+                'Notes' => ['conditions' => ['visible' => true]]],
         ]);
 
         $this->set('application', $application);
@@ -117,7 +123,7 @@ class ApplicationsController extends AppController
                 'user_id' => $application->user->id,
                 'invoice_id' => $application->invoice->id,
                 'application_id' => $application->id,
-                'note_text' => $content
+                'note_text' => $content,
             ];
             $note = $this->Applications->Notes->patchEntity($note, $noteData);
             if ($this->Applications->Notes->save($note)) {
@@ -158,26 +164,26 @@ class ApplicationsController extends AppController
                     'sort' => [
                         'Attendees.role_id' => 'ASC',
                         'Attendees.lastname' => 'ASC',
-                    ]
+                    ],
                 ],
                 'Attendees.Roles' => [
                     'conditions' => [
-                        'Attendees.user_id' => $this->Auth->user('id')
-                    ]
+                        'Attendees.user_id' => $this->Auth->user('id'),
+                    ],
                 ],
                 'Attendees.Sections.Scoutgroups' => [
                     'conditions' => [
-                        'Attendees.user_id' => $this->Auth->user('id')
-                    ]
+                        'Attendees.user_id' => $this->Auth->user('id'),
+                    ],
                 ],
-                'Notes' => ['conditions' => ['visible' => true]]]
+                'Notes' => ['conditions' => ['visible' => true]]],
         ]);
 
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
-                   'filename' => 'Invoice #' . $eventId
-               ]
+                   'filename' => 'Invoice #' . $eventId,
+               ],
            ]);
 
         $this->set('application', $application);
@@ -193,7 +199,11 @@ class ApplicationsController extends AppController
         $cakePDF->template('application', 'default');
         $this->set($cakePDF->viewVars());
 
-        $cakePDF->write(FILES . DS . 'Event ' . $event->id . DS . 'Applications' . DS . 'Application #' . $eventId . '.pdf');
+        $cakePDF->write(FILES
+                        . DS . 'Event ' . $event->id
+                        . DS . 'Applications'
+                        . DS . 'Application #' . $eventId . '.pdf'
+        );
 
         $this->redirect(['controller' => 'Applications', 'action' => 'view', $application->id, '_ext' => 'pdf']);
     }
@@ -259,8 +269,18 @@ class ApplicationsController extends AppController
             }
         }
 
-        $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
-        $events = $this->Applications->Events->find('list', ['limit' => 200, 'conditions' => ['end >' => $now, 'live' => 1]]);
+        $attendees = $this->Applications->Attendees->find('list', [
+            'limit' => 200,
+            'conditions' => [
+                'user_id' => $this->Auth->user('id')
+            ]
+        ]);
+        $events = $this->Applications->Events->find('list', [
+            'limit' => 200, 'conditions' => [
+                'end >' => $now,
+                'live' => 1
+            ]
+        ]);
         $this->set(compact('application', 'events', 'attendees'));
         $this->set('_serialize', ['application']);
     }
@@ -313,7 +333,7 @@ class ApplicationsController extends AppController
                 'event_id' => $eventId,
                 'invoice' => [
                     'user_id' => $userId,
-                ]
+                ],
             ];
 
             $application = $this->Applications->patchEntity(
@@ -341,7 +361,11 @@ class ApplicationsController extends AppController
                 $this->loadComponent('Line');
                 $parse = $this->Line->parseInvoice($application->invoice->id);
 
-                $this->Flash->success(__('Your ' . $event->event_type->application_ref->text . ' has been registered.'));
+                $this->Flash->success(__(
+                    'Your '
+                    . $event->event_type->application_ref->text
+                    . ' has been registered.'
+                ));
 
                 if ($parse) {
                     $this->Flash->success(__('Your Invoice has been created automatically.'));
@@ -356,9 +380,18 @@ class ApplicationsController extends AppController
         $this->set(compact('application', 'event', 'user', 'attendees', 'nonSectionAtts', 'leaderAtts'));
 
         // Option Groups
-        $sectionRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->where(['id' => $user->section->section_type->role_id]);
-        $nonSectionRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('nonAuto')->find('minors')->where(['id <>' => $user->section->section_type->role_id]);
-        $leaderRoles = $this->Applications->Attendees->Roles->find('list', ['limit' => 200])->find('leaders')->find('nonAuto');
+        $sectionRoles = $this->Applications->Attendees->Roles
+            ->find('list', ['limit' => 200])
+            ->where(['id' => $user->section->section_type->role_id]);
+        $nonSectionRoles = $this->Applications->Attendees->Roles
+            ->find('list', ['limit' => 200])
+            ->find('nonAuto')
+            ->find('minors')
+            ->where(['id <>' => $user->section->section_type->role_id]);
+        $leaderRoles = $this->Applications->Attendees->Roles
+            ->find('list', ['limit' => 200])
+            ->find('leaders')
+            ->find('nonAuto');
         $this->set(compact('sectionRoles', 'nonSectionRoles', 'leaderRoles'));
 
         $this->set('_serialize', ['application']);
@@ -387,13 +420,15 @@ class ApplicationsController extends AppController
             return $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
         }
 
-        /** @var \App\Model\Entity\Event $event */
         $userId = $this->Auth->user('id');
         /** @var \App\Model\Entity\User $user */
         $user = $this->Applications->Users->get($userId, ['contain' => ['Sections.SectionTypes.Roles']]);
 
         $this->Applications->ApplicationStatuses->installBaseStatuses();
-        $status = $this->Applications->ApplicationStatuses->find('all')->where(['application_status' => 'Reserved'])->first();
+        $status = $this->Applications->ApplicationStatuses
+            ->find('all')
+            ->where(['application_status' => 'Reserved'])
+            ->first();
 
         $newData = [
             'modification' => 0,
@@ -459,7 +494,9 @@ class ApplicationsController extends AppController
             }
         }
         /** @var \App\Model\Entity\User $user */
-        $user = $this->Applications->Users->get($this->Auth->user('id'), ['contain' => ['Sections.SectionTypes.Roles']]);
+        $user = $this->Applications->Users->get($this->Auth->user('id'), [
+            'contain' => ['Sections.SectionTypes.Roles']
+        ]);
 
         $sectionType = Inflector::singularize($user->section->section_type->section_type);
 
@@ -499,17 +536,16 @@ class ApplicationsController extends AppController
                 ],
             ];
 
+            /** @var \App\Model\Entity\Application $application */
             $application = $this->Applications->patchEntity($application, $appData, [
                 'associated' => [
                     'Invoices',
-                    'Attendees'
-                ]
+                    'Attendees',
+                ],
             ]);
         }
 
-        /**
-         * @var \App\Model\Entity\Application $application
-         */
+
 
         $this->loadComponent('ScoutManager');
         $attendees = $this->ScoutManager->getEventAttendees($this->Auth->user([ 'id' ]), $osmEvent);
@@ -544,7 +580,7 @@ class ApplicationsController extends AppController
                     'osm_id' => $attendee['scoutid'],
                     'osm_sync_date' => Time::now(),
                     'dateofbirth' => $attendee['dob'],
-                    'section_id' => $user->section_id
+                    'section_id' => $user->section_id,
                 ];
 
                 array_push($data, $attendeeArr);
@@ -556,8 +592,8 @@ class ApplicationsController extends AppController
         $application = $this->Applications->patchEntity($application, $appData, [
             'associated' => [
                 'Invoices',
-                'Attendees'
-            ]
+                'Attendees',
+            ],
         ]);
 
         $attendeeCount = count($data);
@@ -568,7 +604,7 @@ class ApplicationsController extends AppController
                 ->find('all')
                 ->where([
                     'event_id' => $event->id,
-                    'ItemTypes.team_price' => true
+                    'ItemTypes.team_price' => true,
                 ])
                 ->contain('ItemTypes')
                 ->first();
@@ -578,12 +614,19 @@ class ApplicationsController extends AppController
                 return $this->redirect($this->referer([
                     'controller' => 'Events',
                     'action' => 'book',
-                    $event->id
+                    $event->id,
                 ]));
             }
         }
 
-        $this->set(compact('application', 'attendeeCount', 'teamLeaderBool', 'permitHolderBool', 'term', 'sectionType'));
+        $this->set(compact(
+            'application',
+            'attendeeCount',
+            'teamLeaderBool',
+            'permitHolderBool',
+            'term',
+            'sectionType'
+        ));
 
         if ($this->request->is(['post', 'put'])) {
             // Patch Data
@@ -619,7 +662,12 @@ class ApplicationsController extends AppController
             }
         }
 
-        $sections = $this->Applications->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
+        $sections = $this->Applications->Sections->find('list', [
+            'limit' => 200,
+            'conditions' => [
+                'id' => $this->Auth->user('section_id')
+            ]
+        ]);
         $roles = $this->Applications->Attendees->Roles->find('nonAuto')->find('list', ['limit' => 200]);
 
         $this->set(compact('application', 'term', 'roles', 'sections', 'sectionType'));
@@ -658,7 +706,7 @@ class ApplicationsController extends AppController
                     'prefix' => false,
                     $eventId,
                     $osmEvent,
-                    $applicationId
+                    $applicationId,
                 ]);
             }
         }
@@ -676,12 +724,9 @@ class ApplicationsController extends AppController
      */
     public function edit($applicationId = null)
     {
-        /**
-         * @var \App\Model\Entity\Application $application
-         */
-
+        /** @var \App\Model\Entity\Application $application */
         $application = $this->Applications->get($applicationId, [
-            'contain' => ['Attendees', 'Sections', 'Events.EventTypes' => ['ApplicationRefs'], 'Invoices']
+            'contain' => ['Attendees', 'Sections', 'Events.EventTypes' => ['ApplicationRefs'], 'Invoices'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             // Check Max Applications
@@ -692,7 +737,7 @@ class ApplicationsController extends AppController
                 return $this->redirect(['controller' => 'Applications',
                     'action' => 'view',
                     'prefix' => false,
-                    $applicationId
+                    $applicationId,
                 ]);
             } else {
                 $newData = ['user_id' => $this->Auth->user('id'), 'modification' => $application->modification + 1];
@@ -725,13 +770,24 @@ class ApplicationsController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'section',
-                'groupField' => 'scoutgroup.district.district'
+                'groupField' => 'scoutgroup.district.district',
             ]
         )
             ->contain(['Scoutgroups.Districts']);
-        $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
+        $attendees = $this->Applications->Attendees->find('list', [
+            'limit' => 200,
+            'conditions' => ['user_id' => $this->Auth->user('id')]
+        ]);
         $events = $this->Applications->Events->find('unarchived')->find('list', ['limit' => 200]);
-        $this->set(compact('application', 'sections', 'events', 'attendees', 'term', 'teamLeaderBool', 'permitHolderBool'));
+        $this->set(compact(
+            'application',
+            'sections',
+            'events',
+            'attendees',
+            'term',
+            'teamLeaderBool',
+            'permitHolderBool'
+        ));
         $this->set('_serialize', ['application']);
     }
 
@@ -743,7 +799,7 @@ class ApplicationsController extends AppController
     public function link($applicationId = null)
     {
         $application = $this->Applications->get($applicationId, [
-            'contain' => ['Attendees', 'Sections.Scoutgroups']
+            'contain' => ['Attendees', 'Sections.Scoutgroups'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $mod = $application->modification + 1;
@@ -761,7 +817,12 @@ class ApplicationsController extends AppController
             $this->Flash->error(__('The application could not be saved. Please, try again.'));
             // }
         }
-        $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
+        $attendees = $this->Applications->Attendees->find('list', [
+            'limit' => 200,
+            'conditions' => [
+                'user_id' => $this->Auth->user('id')
+            ]
+        ]);
 
         $this->set(compact('application', 'attendees'));
         $this->set('_serialize', ['application']);

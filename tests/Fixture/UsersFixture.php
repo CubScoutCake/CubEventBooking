@@ -118,7 +118,7 @@ class UsersFixture extends TestFixture
                 'simple_attendees' => 1,
                 'member_validated' => 1,
                 'section_validated' => 1,
-                'email_validated' => 1
+                'email_validated' => 1,
             ],
             [
                 'role_id' => 2,
@@ -159,7 +159,7 @@ class UsersFixture extends TestFixture
                 'simple_attendees' => 1,
                 'member_validated' => 1,
                 'section_validated' => 1,
-                'email_validated' => 1
+                'email_validated' => 1,
             ],
             [
                 'role_id' => 2,
@@ -200,7 +200,7 @@ class UsersFixture extends TestFixture
                 'simple_attendees' => 1,
                 'member_validated' => 1,
                 'section_validated' => 1,
-                'email_validated' => 1
+                'email_validated' => 1,
             ],
             [
                 'role_id' => 2,
@@ -241,7 +241,7 @@ class UsersFixture extends TestFixture
                 'simple_attendees' => 1,
                 'member_validated' => 1,
                 'section_validated' => 1,
-                'email_validated' => 1
+                'email_validated' => 1,
             ],
             [
                 'role_id' => 2,
@@ -282,7 +282,7 @@ class UsersFixture extends TestFixture
                 'simple_attendees' => 1,
                 'member_validated' => 1,
                 'section_validated' => 1,
-                'email_validated' => 1
+                'email_validated' => 1,
             ],
         ];
         parent::init();

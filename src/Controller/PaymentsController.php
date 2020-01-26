@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller;
  */
 class PaymentsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -36,87 +37,4 @@ class PaymentsController extends AppController
         $this->set('payments', $myPayments);
         $this->set('_serialize', ['payments']);
     }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Payment id.
-     * @return void
-     * @throws \Cake\Http\Exception\NotFoundException When record not found.
-     */
-    /*public function view($id = null)
-    {
-        $payment = $this->Payments->get($id, [
-            'contain' => ['Invoices']
-        ]);
-        $this->set('payment', $payment);
-        $this->set('_serialize', ['payment']);
-    }
-
-    /**
-     * Add method
-     *
-     * @return void Redirects on successful add, renders view otherwise.
-     */
-    /*public function add()
-    {
-        $payment = $this->Payments->newEntity();
-        if ($this->request->is('post')) {
-            $payment = $this->Payments->patchEntity($payment, $this->request->getData());
-            if ($this->Payments->save($payment)) {
-                $this->Flash->success(__('The payment has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The payment could not be saved. Please, try again.'));
-            }
-        }
-        $invoices = $this->Payments->Invoices->find('list', ['limit' => 200]);
-        $this->set(compact('payment', 'invoices'));
-        $this->set('_serialize', ['payment']);
-    }
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Payment id.
-     * @return void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Http\Exception\NotFoundException When record not found.
-     */
-    /*public function edit($id = null)
-    {
-        $payment = $this->Payments->get($id, [
-            'contain' => ['Invoices']
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $payment = $this->Payments->patchEntity($payment, $this->request->getData());
-            if ($this->Payments->save($payment)) {
-                $this->Flash->success(__('The payment has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The payment could not be saved. Please, try again.'));
-            }
-        }
-        $invoices = $this->Payments->Invoices->find('list', ['limit' => 200]);
-        $this->set(compact('payment', 'invoices'));
-        $this->set('_serialize', ['payment']);
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Payment id.
-     * @return void Redirects to index.
-     * @throws \Cake\Http\Exception\NotFoundException When record not found.
-     */
-    /*public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $payment = $this->Payments->get($id);
-        if ($this->Payments->delete($payment)) {
-            $this->Flash->success(__('The payment has been deleted.'));
-        } else {
-            $this->Flash->error(__('The payment could not be deleted. Please, try again.'));
-        }
-        return $this->redirect(['action' => 'index']);
-    }*/
 }

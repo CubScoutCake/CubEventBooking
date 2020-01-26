@@ -38,7 +38,7 @@
                 <h5 class="subheader"><?= __('Role') ?></h5>
                 <p><?= $user->has('role') ? $this->Html->link($user->role->role, ['controller' => 'Roles', 'action' => 'view', $user->role->id]) : '' ?></p>
                 <h5 class="subheader"><?= __('Scoutgroup') ?></h5>
-                <p><?= $user->has('scoutgroup') ? $this->Html->link($user->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $user->scoutgroup->id]) : '' ?></p>                
+                <p><?= $user->has('scoutgroup') ? $this->Html->link($user->scoutgroup->scoutgroup, ['controller' => 'Scoutgroups', 'action' => 'view', $user->scoutgroup->id]) : '' ?></p>
             </div>
             <div class="panel-footer">
                 <div class="row">
@@ -186,7 +186,7 @@
                                                     </div>
                                                 </td>
                                                 <td><?= $invoices->has('application') ? $this->Html->link($invoices->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoices->application->id]) : '' ?></td>
-                                                <td><?= $this->Number->currency($invoices->initialvalue,'GBP') ?></td>
+                                                <td><?= $this->Number->currency($invoices->initial_value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoices->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoices->balance,'GBP') ?></td>
                                                 <td><?= $this->Time->i18nFormat($invoices->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>

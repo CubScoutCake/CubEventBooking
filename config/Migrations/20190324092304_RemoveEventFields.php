@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class RemoveEventFields extends AbstractMigration
@@ -46,7 +47,7 @@ class RemoveEventFields extends AbstractMigration
                 ['id'],
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addForeignKey(
@@ -55,7 +56,7 @@ class RemoveEventFields extends AbstractMigration
                 ['id'],
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();

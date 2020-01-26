@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller;
+declare(strict_types=1);
 
-use App\Controller\AppController;
+namespace App\Controller;
 
 /**
  * Tasks Controller
@@ -23,8 +23,8 @@ class TasksController extends AppController
             'contain' => ['TaskTypes', 'Users', 'CompletingUsers'],
             'finder' => [
                 'ownedBy' => [
-                    'userId' => $this->Auth->user('id')
-                ]
+                    'userId' => $this->Auth->user('id'),
+                ],
             ],
         ];
         $tasks = $this->paginate($this->Tasks);
@@ -43,7 +43,7 @@ class TasksController extends AppController
     public function view($taskId = null)
     {
         $task = $this->Tasks->get($taskId, [
-            'contain' => ['TaskTypes', 'Users']
+            'contain' => ['TaskTypes', 'Users'],
         ]);
 
         $this->set('task', $task);

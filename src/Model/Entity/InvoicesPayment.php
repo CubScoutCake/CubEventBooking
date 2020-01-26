@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -15,7 +17,6 @@ use Cake\ORM\Entity;
  */
 class InvoicesPayment extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -28,6 +29,6 @@ class InvoicesPayment extends Entity
     protected $_accessible = [
         '*' => true,
         'payment_id' => false,
-        'invoice_id' => false
+        'invoice_id' => false,
     ];
 }

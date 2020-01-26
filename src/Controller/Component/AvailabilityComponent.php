@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: jacob
@@ -68,17 +70,30 @@ class AvailabilityComponent extends Component
     {
         $this->Applications = TableRegistry::getTableLocator()->get('Applications');
         /** @var \App\Model\Entity\Application $application */
-        $application = $this->Applications->get($applicationId, ['contain' => [ 'Events.SectionTypes.Roles', 'ApplicationStatuses']]);
+        $application = $this->Applications->get($applicationId, ['contain' => [
+            'Events.SectionTypes.Roles',
+            'ApplicationStatuses'
+        ]]);
 
-        if (is_array($results = $this->getReservedNumbers($application))) {
+        $results = $this->getReservedNumbers($application);
+        if (is_array($results)) {
             return $results;
         }
 
         $roleId = $application->event->section_type->role->id;
 
-        $section = $this->Applications->find('section', ['role_id' => $roleId])->where(['Applications.id' => $applicationId])->count();
-        $nonSection = $this->Applications->find('nonSection', ['role_id' => $roleId])->where(['Applications.id' => $applicationId])->count();
-        $leaders = $this->Applications->find('leaders')->where(['Applications.id' => $applicationId])->count();
+        $section = $this->Applications
+            ->find('section', ['role_id' => $roleId])
+            ->where(['Applications.id' => $applicationId])
+            ->count();
+        $nonSection = $this->Applications
+            ->find('nonSection', ['role_id' => $roleId])
+            ->where(['Applications.id' => $applicationId])
+            ->count();
+        $leaders = $this->Applications
+            ->find('leaders')
+            ->where(['Applications.id' => $applicationId])
+            ->count();
 
         $results = [
             'NumSection' => $section,
@@ -138,11 +153,17 @@ class AvailabilityComponent extends Component
         $invoice = $this->Invoices->get($invoiceID, ['contain' => 'Applications.Events.SectionTypes']);
         $appID = $invoice->application->id;
 
-        $invSectionCount = $this->Invoices->InvoiceItems->find('minors', ['application_id' => $appID, 'role_id' => $invoice->application->event->section_type->role_id])->count();
+        $invSectionCount = $this->Invoices->InvoiceItems->find('minors', [
+            'application_id' => $appID,
+            'role_id' => $invoice->application->event->section_type->role_id
+        ])->count();
 
         if ($invSectionCount > 0) {
             $invItemSectionCounts = $this->Invoices->InvoiceItems
-                ->find('minors', ['application_id' => $appID, 'role_id' => $invoice->application->event->section_type->role_id])
+                ->find('minors', [
+                    'application_id' => $appID,
+                    'role_id' => $invoice->application->event->section_type->role_id
+                ])
                 ->find('totalQuantity')
                 ->toArray();
 
@@ -177,7 +198,7 @@ class AvailabilityComponent extends Component
         $results = [
             'NumSection' => $invSection,
             'NumNonSection' => $invNonSection,
-            'NumLeaders' => $invLeaders
+            'NumLeaders' => $invLeaders,
         ];
 
         return $results;
@@ -195,9 +216,18 @@ class AvailabilityComponent extends Component
         $event = $this->Events->get($eventId, ['contain' => 'SectionTypes.Roles']);
         $roleId = $event->section_type->role->id;
 
-        $section = $this->Events->Applications->find('section', ['role_id' => $roleId])->where(['Applications.event_id' => $eventId])->count();
-        $nonSection = $this->Events->Applications->find('nonSection', ['role_id' => $roleId])->where(['Applications.event_id' => $eventId])->count();
-        $leaders = $this->Events->Applications->find('leaders')->where(['Applications.event_id' => $eventId])->count();
+        $section = $this->Events->Applications
+            ->find('section', ['role_id' => $roleId])
+            ->where(['Applications.event_id' => $eventId])
+            ->count();
+        $nonSection = $this->Events->Applications
+            ->find('nonSection', ['role_id' => $roleId])
+            ->where(['Applications.event_id' => $eventId])
+            ->count();
+        $leaders = $this->Events->Applications
+            ->find('leaders')
+            ->where(['Applications.event_id' => $eventId])
+            ->count();
 
         $results = [
             'NumSection' => $section,
@@ -312,7 +342,6 @@ class AvailabilityComponent extends Component
             return false;
         }
 
-        /** @var \App\Model\Table\ApplicationsTable Applications */
         $this->Applications = TableRegistry::getTableLocator()->get('Applications');
         $applicationCount = $this->Applications->find('all')->where(['event_id' => $event->id])->count();
 
@@ -351,7 +380,6 @@ class AvailabilityComponent extends Component
             return false;
         }
 
-        /** @var \App\Model\Table\ReservationsTable Reservations */
         $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
         $reservationCount = $this->Reservations->find('active')->where(['event_id' => $event->id])->count();
 
@@ -423,7 +451,7 @@ class AvailabilityComponent extends Component
             'contain' => [
                 'SectionTypes.Roles',
                 'EventTypes',
-            ]
+            ],
         ]);
 
         if (!$this->checkEventOpen($event, $flash)) {
@@ -464,7 +492,7 @@ class AvailabilityComponent extends Component
             'contain' => [
                 'SectionTypes.Roles',
                 'EventTypes',
-            ]
+            ],
         ]);
 
         if (!$this->checkEventOpen($event, $flash)) {
@@ -491,7 +519,7 @@ class AvailabilityComponent extends Component
             'contain' => [
                 'SectionTypes.Roles',
                 'EventTypes',
-            ]
+            ],
         ]);
 
         if (!$this->checkEventOpen($event, $flash)) {

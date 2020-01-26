@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\SuperUser;
 
-use App\Controller\SuperUser\LogsController;
 use Cake\Core\Configure;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
@@ -33,7 +34,7 @@ class LogsControllerTest extends TestCase
     {
         if (Configure::read('travis')) {
             $this->markTestSkipped('Unable to replicate fixtures on Travis.');
-        };
+        }
 
         $this->Logs = TableRegistry::getTableLocator()->get('DatabaseLog.DatabaseLogs');
         if (!$this->Logs->find()->count()) {
@@ -59,17 +60,17 @@ class LogsControllerTest extends TestCase
     {
         if (Configure::read('travis')) {
             $this->markTestSkipped('Unable to replicate fixtures on Travis.');
-        };
+        }
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'prefix' => 'super_user',
             'controller' => 'logs',
-            'action' => 'index'
+            'action' => 'index',
         ]);
 
         $this->assertResponseOk();
@@ -86,11 +87,11 @@ class LogsControllerTest extends TestCase
     {
         if (Configure::read('travis')) {
             $this->markTestSkipped('Unable to replicate fixtures on Travis.');
-        };
+        }
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $msgId = $this->doLog();
@@ -99,7 +100,7 @@ class LogsControllerTest extends TestCase
             'prefix' => 'super_user',
             'controller' => 'logs',
             'action' => 'view',
-            $msgId
+            $msgId,
         ]);
 
         $this->assertResponseOk();
@@ -116,11 +117,11 @@ class LogsControllerTest extends TestCase
     {
         if (Configure::read('travis')) {
             $this->markTestSkipped('Unable to replicate fixtures on Travis.');
-        };
+        }
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableRetainFlashMessages();

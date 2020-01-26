@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\AuthRolesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class AuthRolesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -24,7 +24,7 @@ class AuthRolesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.AuthRoles'
+        'app.AuthRoles',
     ];
 
     /**
@@ -179,7 +179,7 @@ class AuthRolesTableTest extends TestCase
             'super_user',
             'parent_access',
             'user_access',
-            'section_limited'
+            'section_limited',
         ];
 
         foreach ($empty as $field) {

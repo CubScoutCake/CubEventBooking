@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -18,7 +20,6 @@ use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\Middleware\EncryptedCookieMiddleware;
 use Cake\Http\Middleware\SecurityHeadersMiddleware;
 use Cake\Routing\Middleware\AssetMiddleware;
@@ -58,6 +59,7 @@ class Application extends BaseApplication
         $this->addPlugin('Search');
         $this->addPlugin('CakePdf', ['bootstrap' => true, 'routes' => true]);
     }
+
     /**
      * Setup the middleware queue your application will use.
      *
@@ -72,7 +74,7 @@ class Application extends BaseApplication
 
         // Handle plugin/theme assets like CakePHP normally does.
         $middlewareQueue->add(new AssetMiddleware([
-            'cacheTime' => Configure::read('Asset.cacheTime')
+            'cacheTime' => Configure::read('Asset.cacheTime'),
         ]));
 
         // Add routing middleware.
@@ -99,6 +101,7 @@ class Application extends BaseApplication
 
         return $middlewareQueue;
     }
+
     /**
      * @return void
      */

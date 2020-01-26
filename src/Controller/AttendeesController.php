@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 /**
@@ -19,7 +21,7 @@ class AttendeesController extends AppController
             'contain' => ['Users', 'Sections.Scoutgroups', 'Roles'],
             'finder' => [
                 'ownedBy' => [
-                    'userId' => $this->Auth->user('id')
+                    'userId' => $this->Auth->user('id'),
                 ],
             ],
         ];
@@ -38,7 +40,14 @@ class AttendeesController extends AppController
     public function view($attendeeID = null)
     {
         $attendee = $this->Attendees->get($attendeeID, [
-            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
+            'contain' => [
+                'Users',
+                'Sections.Scoutgroups',
+                'Roles',
+                'Applications.Sections.Scoutgroups',
+                'Applications.Events',
+                'Allergies'
+            ],
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);
@@ -67,9 +76,18 @@ class AttendeesController extends AppController
             }
         }
 
-        $sections = $this->Attendees->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
+        $sections = $this->Attendees->Sections->find('list', [
+            'limit' => 200,
+            'conditions' => ['id' => $this->Auth->user('section_id')
+            ]
+        ]);
         $roles = $this->Attendees->Roles->find('nonAuto')->find('adults')->find('list', ['limit' => 200]);
-        $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
+        $applications = $this->Attendees->Applications->find('list', [
+            'limit' => 200,
+            'conditions' => [
+                'user_id' => $this->Auth->user('id')
+            ]
+        ]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
         $this->set(compact('attendee', 'sections', 'roles', 'applications', 'allergies'));
@@ -106,9 +124,16 @@ class AttendeesController extends AppController
             }
         }
 
-        $sections = $this->Attendees->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $this->Auth->user('section_id')]]);
+        $sections = $this->Attendees->Sections->find('list', [
+            'limit' => 200,
+            'conditions' => [
+                'id' => $this->Auth->user('section_id')
+            ]
+        ]);
         $roles = $this->Attendees->Roles->find('nonAuto')->find('minors')->find('list', ['limit' => 200]);
-        $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
+        $applications = $this->Attendees->Applications->find('list', [
+            'limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]
+        ]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
         $this->set(compact('attendee', 'sections', 'roles', 'applications', 'allergies'));
@@ -132,7 +157,7 @@ class AttendeesController extends AppController
     public function edit($attendeeId = null)
     {
         $attendee = $this->Attendees->get($attendeeId, [
-            'contain' => ['Applications', 'Allergies', 'Users', 'Sections', 'Roles']
+            'contain' => ['Applications', 'Allergies', 'Users', 'Sections', 'Roles'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $this->Attendees->patchEntity($attendee, $this->request->getData());
@@ -147,7 +172,12 @@ class AttendeesController extends AppController
         }
         $sections = $this->Attendees->Sections->find('list', ['limit' => 200]);
         $roles = $this->Attendees->Roles->find('nonAuto')->find('list', ['limit' => 200]);
-        $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]]);
+        $applications = $this->Attendees->Applications->find('list', [
+            'limit' => 200,
+            'conditions' => [
+                'user_id' => $this->Auth->user('id')
+            ]
+        ]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
         $this->set(compact('attendee', 'sections', 'roles', 'applications', 'allergies'));

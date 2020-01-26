@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\SuperUser;
 
 use App\Controller\AppController;
@@ -34,7 +36,7 @@ class TaskTypesController extends AppController
     public function view($taskId = null)
     {
         $taskType = $this->TaskTypes->get($taskId, [
-            'contain' => ['Tasks']
+            'contain' => ['Tasks'],
         ]);
 
         $this->set('taskType', $taskType);
@@ -70,7 +72,7 @@ class TaskTypesController extends AppController
     public function edit($taskId = null)
     {
         $taskType = $this->TaskTypes->get($taskId, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $taskType = $this->TaskTypes->patchEntity($taskType, $this->request->getData());

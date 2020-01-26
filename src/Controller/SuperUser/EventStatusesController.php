@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller\SuperUser;
+declare(strict_types=1);
 
-use App\Controller\SuperUser\AppController;
+namespace App\Controller\SuperUser;
 
 /**
  * EventStatuses Controller
@@ -34,7 +34,7 @@ class EventStatusesController extends AppController
     public function view($id = null)
     {
         $eventStatus = $this->EventStatuses->get($id, [
-            'contain' => ['Events']
+            'contain' => ['Events'],
         ]);
 
         $this->set('eventStatus', $eventStatus);
@@ -70,7 +70,7 @@ class EventStatusesController extends AppController
     public function edit($id = null)
     {
         $eventStatus = $this->EventStatuses->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $eventStatus = $this->EventStatuses->patchEntity($eventStatus, $this->request->getData());

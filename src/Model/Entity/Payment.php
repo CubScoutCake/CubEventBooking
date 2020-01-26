@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -21,7 +23,6 @@ use Cake\ORM\Entity;
  */
 class Payment extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -41,6 +42,6 @@ class Payment extends Entity
         'payment_notes' => true,
         'deleted' => true,
         'user' => true,
-        'invoices' => true
+        'invoices' => true,
     ];
 }

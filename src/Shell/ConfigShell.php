@@ -1,15 +1,15 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Shell;
 
 use Cake\Console\Shell;
-use Cake\Core\Configure;
 
 /**
  * Config shell command.
  */
 class ConfigShell extends Shell
 {
-
     /**
      * Manage the available sub-commands along with their arguments and help
      *

@@ -1,10 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -23,7 +23,6 @@ use Cake\Validation\Validator;
  */
 class InvoicesPaymentsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -40,22 +39,22 @@ class InvoicesPaymentsTable extends Table
 
         $this->belongsTo('Invoices', [
             'foreignKey' => 'invoice_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Payments', [
             'foreignKey' => 'payment_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->addBehavior('CounterCache', [
             'Invoices' => [
-                'value' => function ($event, $entity, $table) {
+                'paid_value' => function ($event, $entity, $table) {
 
                     $query = $this->find()->where(['invoice_id' => $entity->invoice_id]);
                     $query = $query->select(['sum' => $query->func()->sum('x_value')]);
                     $query = $query->first();
 
                     return $query->sum;
-                }
+                },
             ],
             'Payments' => [
                 'value' => function ($event, $entity, $table) {
@@ -65,8 +64,8 @@ class InvoicesPaymentsTable extends Table
                     $query = $query->first();
 
                     return $query->sum;
-                }
-            ]
+                },
+            ],
         ]);
     }
 

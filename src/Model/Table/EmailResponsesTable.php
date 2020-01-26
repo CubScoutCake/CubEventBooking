@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -24,7 +25,6 @@ use Cake\Validation\Validator;
  */
 class EmailResponsesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -44,21 +44,21 @@ class EmailResponsesTable extends Table
                 'Model.beforeSave' => [
                     'created' => 'new',
                     'modified' => 'always',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('EmailSends', [
             'foreignKey' => 'email_send_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('EmailResponseTypes', [
             'foreignKey' => 'email_response_type_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
     }
 

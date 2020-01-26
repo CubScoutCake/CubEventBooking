@@ -39,91 +39,91 @@ class ApplicationsAttendeesFixture extends TestFixture
         $this->records = [
             [
                 'application_id' => 1,
-                'attendee_id' => 2
+                'attendee_id' => 2,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 3
+                'attendee_id' => 3,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 4
+                'attendee_id' => 4,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 5
+                'attendee_id' => 5,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 6
+                'attendee_id' => 6,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 7
+                'attendee_id' => 7,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 8
+                'attendee_id' => 8,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 9
+                'attendee_id' => 9,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 11
+                'attendee_id' => 11,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 12
+                'attendee_id' => 12,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 1
+                'attendee_id' => 1,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 2
+                'attendee_id' => 2,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 3
+                'attendee_id' => 3,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 4
+                'attendee_id' => 4,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 5
+                'attendee_id' => 5,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 6
+                'attendee_id' => 6,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 7
+                'attendee_id' => 7,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 8
+                'attendee_id' => 8,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 9
+                'attendee_id' => 9,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 10
+                'attendee_id' => 10,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 11
+                'attendee_id' => 11,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 12
+                'attendee_id' => 12,
             ],
         ];
         parent::init();

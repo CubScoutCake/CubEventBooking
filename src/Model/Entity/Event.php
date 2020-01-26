@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -114,7 +116,7 @@ class Event extends Entity
         'logistics' => true,
         'prices' => true,
         'reservations' => true,
-        'settings' => true
+        'settings' => true,
     ];
 
     /**
@@ -133,7 +135,13 @@ class Event extends Entity
             }
         }
 
-        if ((isset($this->_properties['cc_apps']) || isset($this->_properties['cc_res'])) && isset($this->_properties['max_apps'])) {
+        if (
+            (
+                isset($this->_properties['cc_apps'])
+                || isset($this->_properties['cc_res'])
+            )
+            && isset($this->_properties['max_apps'])
+        ) {
             if ($this->_properties['cc_apps'] >= $this->_properties['max_apps'] && $this->_properties['max']) {
                 return true;
             }

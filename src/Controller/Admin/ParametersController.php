@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller\Admin;
+declare(strict_types=1);
 
-use Cake\Utility\Inflector;
+namespace App\Controller\Admin;
 
 /**
  * Parameters Controller
@@ -10,7 +10,6 @@ use Cake\Utility\Inflector;
  */
 class ParametersController extends AppController
 {
-
     /**
      * Index method
      *
@@ -34,7 +33,7 @@ class ParametersController extends AppController
     public function view($id = null)
     {
         $parameter = $this->Parameters->get($id, [
-            'contain' => ['Logistics', 'Params']
+            'contain' => ['Logistics', 'Params'],
         ]);
 
         $this->set('parameter', $parameter);
@@ -74,7 +73,7 @@ class ParametersController extends AppController
     public function edit($id = null)
     {
         $parameter = $this->Parameters->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $parameter = $this->Parameters->patchEntity($parameter, $this->request->getData());

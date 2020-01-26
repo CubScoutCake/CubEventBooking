@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * Copyright (c) 2015 Syntax Era Development Studio
@@ -18,12 +19,12 @@
 namespace App\Mailer\Transport;
 
 use Cake\Core\Configure;
-use Cake\Http\Client;
-use Cake\I18n\FrozenTime;
+use Cake\Log\Log;
 use Cake\Mailer\AbstractTransport;
 use Cake\Mailer\Email;
-use Cake\Network\Exception\BadRequestException;
 use Cake\ORM\TableRegistry;
+use GuzzleHttp\Client as GuzzleClient;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 use SparkPost\SparkPost;
 use SparkPost\SparkPostException;
 
@@ -45,17 +46,13 @@ class SparkPostTransport extends AbstractTransport
      *
      * @return void
      */
-    public function send(Email $email)
+    public function send(Email $email): void
     {
         // Load SparkPost configuration settings
         $apiKey = Configure::read('SparkPost.Api.key');
 
-        // Set up HTTP request adapter
-        $client = new Client([
-            'host' => 'api.sparkpost.com',
-            'scheme' => 'https'
-        ]);
-        $url = '/api/v1/transmissions';
+        $httpClient = new GuzzleAdapter(new GuzzleClient());
+        $sparky = new SparkPost($httpClient, ['key' => $apiKey]);
 
         // Pre-process CakePHP email object fields
         $from = (array)$email->getSender();
@@ -68,32 +65,28 @@ class SparkPostTransport extends AbstractTransport
             'from' => $sender,
             'html' => empty($email->message('html')) ? $email->message('text') : $email->message('html'),
             'text' => $email->message('text'),
-            'subject' => $email->getSubject()
+            'subject' => $email->getSubject(),
         ];
 
         $body = [
             'content' => $message,
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ];
 
-        // Send message
-        $response = $client->post($url, json_encode($body), [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-                'Authorization' => $apiKey,
-            ]
-        ]);
+        $promise = $sparky->transmissions->post($body);
 
-        /** @var \stdClass $responseBody */
-        $responseBody = json_decode($response->getBody());
-        /** @var \stdClass $results */
-        $results = $responseBody->results;
+        try {
+            $response = $promise->wait();
 
-        $sendHeaders = $email->getHeaders(['X-Email-Gen-Code', 'X-Gen-ID']);
+            /** @var \SparkPost\SparkPostResponse $response */
+            $results = $response->getBody();
+            /** @var \Cake\Mailer\Email $email */
+            $sendHeaders = $email->getHeaders(['X-Email-Gen-Code', 'X-Gen-ID']);
 
-        $this->EmailSends = TableRegistry::getTableLocator()->get('EmailSends');
-
-        $this->EmailSends->sendRegister($results, $sendHeaders);
+            $this->EmailSends = TableRegistry::getTableLocator()->get('EmailSends');
+            $this->EmailSends->sendRegister($results, $sendHeaders);
+        } catch (SparkPostException $e) {
+            Log::error($e->getCode());
+        }
     }
 }

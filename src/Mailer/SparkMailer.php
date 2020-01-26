@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Mailer;
 
 use Cake\Mailer\Mailer;
@@ -8,7 +10,6 @@ use Cake\Mailer\Mailer;
  */
 class SparkMailer extends Mailer
 {
-
     /**
      * Mailer's name.
      *

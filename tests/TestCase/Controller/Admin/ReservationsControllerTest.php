@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\ReservationsController;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -77,7 +78,7 @@ class ReservationsControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['controller' => 'Reservations', 'prefix' => 'admin', 'action' => 'index']);
@@ -96,7 +97,7 @@ class ReservationsControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['controller' => 'Reservations', 'prefix' => 'admin', 'action' => 'view', 1]);
@@ -115,7 +116,7 @@ class ReservationsControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
@@ -129,7 +130,7 @@ class ReservationsControllerTest extends TestCase
             'prefix' => 'admin',
             'controller' => 'Reservations',
             'action' => 'add',
-            3
+            3,
         ]);
 
         $this->assertResponseOk();
@@ -145,38 +146,38 @@ class ReservationsControllerTest extends TestCase
                 'city' => 'Biggleswade',
                 'county' => 'Bedfordshire',
                 'country' => 'United Kingdom',
-                'postcode' => 'SG18 8HS'
+                'postcode' => 'SG18 8HS',
             ],
             'attendee' => [
                 'firstname' => 'Timmy',
                 'lastname' => 'Tyler',
-                'section_id' => '1'
+                'section_id' => '1',
             ],
             'logistics_item' => [
                 0 => [
                     'logistic_id' => 1,
                     'param_id' => 2,
-                ]
+                ],
             ],
         ];
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->post([
             'prefix' => 'admin',
             'controller' => 'Reservations',
             'action' => 'add',
-            3
+            3,
         ], $testData);
 
         $this->assertRedirect([
             'prefix' => 'admin',
             'controller' => 'Reservations',
             'action' => 'view',
-            2
+            2,
         ]);
 
         $testData['attendee']['firstname'] = 'Joan';
@@ -185,14 +186,14 @@ class ReservationsControllerTest extends TestCase
             'prefix' => 'admin',
             'controller' => 'Reservations',
             'action' => 'add',
-            3
+            3,
         ], $testData);
 
         $this->assertRedirect([
             'prefix' => 'admin',
             'controller' => 'Reservations',
             'action' => 'view',
-            3
+            3,
         ]);
 
         // Check Bypasses Fill
@@ -202,14 +203,14 @@ class ReservationsControllerTest extends TestCase
             'prefix' => 'admin',
             'controller' => 'Reservations',
             'action' => 'add',
-            3
+            3,
         ], $testData);
 
         $this->assertRedirect([
             'prefix' => 'admin',
             'controller' => 'Reservations',
             'action' => 'view',
-            4
+            4,
         ]);
     }
 

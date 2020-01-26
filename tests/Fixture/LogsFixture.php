@@ -16,7 +16,6 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class LogsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -35,7 +34,7 @@ class LogsFixture extends TestFixture
         'user_agent' => ['type' => 'string', 'null' => true, 'default' => null],
         'count' => ['type' => 'integer', 'null' => false, 'default' => 0],
         '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
-        '_options' => []
+        '_options' => [],
     ];
 
     /**
@@ -57,7 +56,7 @@ class LogsFixture extends TestFixture
                 'uri' => 'Lorem ipsum dolor sit amet',
                 'refer' => 'Lorem ipsum dolor sit amet',
                 'user_agent' => 'Lorem ipsum dolor sit amet',
-                'count' => 1
+                'count' => 1,
             ],
         ];
         parent::init();

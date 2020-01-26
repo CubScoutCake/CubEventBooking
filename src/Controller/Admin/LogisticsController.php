@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -10,7 +12,6 @@ namespace App\Controller\Admin;
  */
 class LogisticsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -19,7 +20,7 @@ class LogisticsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Parameters', 'Events']
+            'contain' => ['Parameters', 'Events'],
         ];
         $logistics = $this->paginate($this->Logistics);
 
@@ -36,7 +37,7 @@ class LogisticsController extends AppController
     public function view($id = null)
     {
         $logistic = $this->Logistics->get($id, [
-            'contain' => ['Parameters', 'Events', 'LogisticItems']
+            'contain' => ['Parameters', 'Events', 'LogisticItems'],
         ]);
 
         $this->set('logistic', $logistic);
@@ -74,7 +75,7 @@ class LogisticsController extends AppController
     public function edit($id = null)
     {
         $logistic = $this->Logistics->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $logistic = $this->Logistics->patchEntity($logistic, $this->request->getData());

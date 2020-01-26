@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -18,7 +20,7 @@ class EventTypesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['InvoiceTexts', 'LegalTexts', 'ApplicationRefs', 'Payable']
+            'contain' => ['InvoiceTexts', 'LegalTexts', 'ApplicationRefs', 'Payable'],
         ];
         $eventTypes = $this->paginate($this->EventTypes);
 
@@ -35,7 +37,7 @@ class EventTypesController extends AppController
     public function view($id = null)
     {
         $eventType = $this->EventTypes->get($id, [
-            'contain' => ['InvoiceTexts', 'LegalTexts', 'ApplicationRefs', 'Payable', 'Events']
+            'contain' => ['InvoiceTexts', 'LegalTexts', 'ApplicationRefs', 'Payable', 'Events'],
         ]);
 
         $this->set('eventType', $eventType);
@@ -75,7 +77,7 @@ class EventTypesController extends AppController
     public function edit($id = null)
     {
         $eventType = $this->EventTypes->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $eventType = $this->EventTypes->patchEntity($eventType, $this->request->getData());

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
@@ -128,7 +130,7 @@ class User extends Entity
         'notes' => true,
         'notifications' => true,
         'payments' => true,
-        'tokens' => true
+        'tokens' => true,
     ];
 
     /**

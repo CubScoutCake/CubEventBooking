@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\RolesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class RolesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -199,7 +199,7 @@ class RolesTableTest extends TestCase
                 'automated' => 0,
                 'deleted' => null,
                 'short_role' => 'Lorem',
-            ]
+            ],
         ];
 
         $badEntity = $this->Roles->newEntity($badData, ['accessibleFields' => ['id' => true]]);

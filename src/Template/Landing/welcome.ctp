@@ -55,8 +55,8 @@ $this->append('parent-nav', '<li class="nav-item">' . $this->Html->link('Login',
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto">
-                <h2 class="text-white mb-4">Canoeing, Kayaking & Dragon Boating</h2>
-                <p class="text-white-50">2 - 3 badges and 3 hours on the water.</p>
+                <h2 class="text-white mb-4">Book online</h2>
+                <p class="text-white-50">Payments can be made by BACS or Cheque.</p>
             </div>
         </div>
     </div>

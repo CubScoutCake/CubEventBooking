@@ -49,7 +49,7 @@ class InvoiceItemsFixture extends TestFixture
                 'quantity' => 5,
                 'item_type_id' => 2,
                 'visible' => 1,
-                'schedule_line' => 0
+                'schedule_line' => 0,
             ],
             [
                 'invoice_id' => 1,
@@ -58,7 +58,7 @@ class InvoiceItemsFixture extends TestFixture
                 'quantity' => 4,
                 'item_type_id' => 5,
                 'visible' => 1,
-                'schedule_line' => 0
+                'schedule_line' => 0,
             ],
             [
                 'invoice_id' => 1,

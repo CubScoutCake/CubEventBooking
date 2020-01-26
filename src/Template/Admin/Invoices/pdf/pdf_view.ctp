@@ -15,7 +15,7 @@
         </tr>
         <tr>
             <th><?= __('Initial Value') ?></th>
-            <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+            <td><?= $this->Number->currency($invoice->initial_value,'GBP') ?></td>
         </tr>
         <tr>
             <th><?= __('Payments Recieved') ?></th>

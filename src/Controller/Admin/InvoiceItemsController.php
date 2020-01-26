@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class InvoiceItemsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -18,7 +19,7 @@ class InvoiceItemsController extends AppController
     {
         $this->paginate = [
             'contain' => ['Invoices'],
-            'conditions' => ['Invoices.user_id' => $this->Auth->user('id')]
+            'conditions' => ['Invoices.user_id' => $this->Auth->user('id')],
         ];
         $this->set('invoiceItems', $this->paginate($this->InvoiceItems));
         $this->set('_serialize', ['invoiceItems']);
@@ -34,7 +35,7 @@ class InvoiceItemsController extends AppController
     public function view($invoiceItemId = null)
     {
         $invoiceItem = $this->InvoiceItems->get($invoiceItemId, [
-            'contain' => ['Invoices' => ['conditions' => ['user_id' => $this->Auth->user('id')]]]
+            'contain' => ['Invoices' => ['conditions' => ['user_id' => $this->Auth->user('id')]]],
         ]);
         $this->set('invoiceItem', $invoiceItem);
         $this->set('_serialize', ['invoiceItem']);
@@ -88,7 +89,7 @@ class InvoiceItemsController extends AppController
 
             $feePercent = $percentage / 100;
 
-            $totalBalance = $invoice->initialvalue - $invoice->value;
+            $totalBalance = $invoice->initial_value - $invoice->value;
             $fee = $totalBalance * $feePercent;
 
             $feeItem = $this->InvoiceItems->newEntity();
@@ -99,7 +100,7 @@ class InvoiceItemsController extends AppController
                 'Value' => $fee,
                 'Description' => 'Late Payment Surcharge - 10% of Balance',
                 'itemtype_id' => 11,
-                'visible' => 1
+                'visible' => 1,
             ];
 
             $feeItem = $this->InvoiceItems->patchEntity($feeItem, $feeData);

@@ -40,7 +40,7 @@ class InvoicesPaymentsFixture extends TestFixture
             [
                 'invoice_id' => 1,
                 'payment_id' => 1,
-                'x_value' => 1
+                'x_value' => 1,
             ],
         ];
         parent::init();

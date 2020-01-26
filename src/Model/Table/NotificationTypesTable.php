@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use Cake\Core\Configure;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -39,10 +40,10 @@ class NotificationTypesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->hasMany('EmailSends', [
-            'foreignKey' => 'notification_type_id'
+            'foreignKey' => 'notification_type_id',
         ]);
         $this->hasMany('Notifications', [
-            'foreignKey' => 'notification_type_id'
+            'foreignKey' => 'notification_type_id',
         ]);
     }
 
@@ -116,7 +117,7 @@ class NotificationTypesTable extends Table
             $this->patchEntity($status, $baseType);
             if ($this->save($status)) {
                 $total += 1;
-            };
+            }
         }
 
         return $total;

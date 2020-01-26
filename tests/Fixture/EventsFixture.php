@@ -114,7 +114,7 @@ class EventsFixture extends TestFixture
                 'cc_atts' => 1,
                 'deposit_is_schedule' => false,
                 'force_full' => false,
-                'cc_complete_reservations' => 0
+                'cc_complete_reservations' => 0,
             ],
             // Available Event Type 1 - Leader
             [

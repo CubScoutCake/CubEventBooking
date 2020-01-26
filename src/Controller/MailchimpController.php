@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -14,10 +16,6 @@
  */
 namespace App\Controller;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
-
 /**
  * Static content controller
  *
@@ -27,7 +25,6 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class MailchimpController extends AppController
 {
-
     /**
      * Displays a view
      *

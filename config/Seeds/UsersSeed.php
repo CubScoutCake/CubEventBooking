@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractSeed;
 
 /**
@@ -62,7 +63,7 @@ class UsersSeed extends AbstractSeed
                 'deleted' => null,
                 'auth_role_id' => '3',
                 'password_state_id' => 1,
-            ]
+            ],
         ];
 
         $table = $this->table('users');

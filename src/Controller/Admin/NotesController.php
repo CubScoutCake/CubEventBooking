@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use Cake\ORM\TableRegistry;
@@ -10,7 +12,6 @@ use Cake\ORM\TableRegistry;
  */
 class NotesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -20,7 +21,7 @@ class NotesController extends AppController
     {
         $this->paginate = [
             'contain' => ['Applications', 'Invoices', 'Users'],
-            'order' => ['created' => 'DESC']
+            'order' => ['created' => 'DESC'],
         ];
         $notes = $this->paginate($this->Notes);
 
@@ -36,7 +37,7 @@ class NotesController extends AppController
         $this->paginate = [
             'contain' => ['Applications', 'Invoices', 'Users'],
             'order' => ['created' => 'DESC'],
-            'conditions' => ['visible' => true]
+            'conditions' => ['visible' => true],
         ];
         $notes = $this->paginate($this->Notes);
 
@@ -54,7 +55,7 @@ class NotesController extends AppController
     public function view($id = null)
     {
         $note = $this->Notes->get($id, [
-            'contain' => ['Applications', 'Invoices', 'Users']
+            'contain' => ['Applications', 'Invoices', 'Users'],
         ]);
 
         $this->set('note', $note);
@@ -85,7 +86,7 @@ class NotesController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'display_code',
-                'groupField' => 'event.name'
+                'groupField' => 'event.name',
             ]
         )->contain('Events');
         $invoices = $this->Notes->Invoices->find(
@@ -93,7 +94,7 @@ class NotesController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'display_code',
-                'groupField' => 'application.event.name'
+                'groupField' => 'application.event.name',
             ]
         )->contain('Applications.Events');
         $users = $this->Notes->Users->find(
@@ -101,7 +102,7 @@ class NotesController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'full_name',
-                'groupField' => 'scoutgroup.district.district'
+                'groupField' => 'scoutgroup.district.district',
             ]
         )
             ->contain(['Scoutgroups.Districts']);
@@ -126,7 +127,7 @@ class NotesController extends AppController
                 $invoiceLink = [
                     'invoice_id' => $invoice->id,
                     'user_id' => $invoice->user_id,
-                    'application_id' => $invoice->application_id
+                    'application_id' => $invoice->application_id,
                 ];
                 $note = $this->Notes->patchEntity($note, $invoiceLink);
                 if ($this->Notes->save($note)) {
@@ -166,7 +167,7 @@ class NotesController extends AppController
                 $applicationLink = [
                     'application_id' => $application->id,
                     'invoice_id' => $invFirst->id,
-                    'user_id' => $application->user_id
+                    'user_id' => $application->user_id,
                 ];
                 $note = $this->Notes->patchEntity($note, $applicationLink);
                 if ($this->Notes->save($note)) {
@@ -242,7 +243,7 @@ class NotesController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'display_code',
-                'groupField' => 'event.name'
+                'groupField' => 'event.name',
             ]
         )->contain('Events');
         $invoices = $this->Notes->Invoices->find(
@@ -250,7 +251,7 @@ class NotesController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'display_code',
-                'groupField' => 'application.event.name'
+                'groupField' => 'application.event.name',
             ]
         )->contain('Applications.Events');
         $users = $this->Notes->Users->find(
@@ -258,7 +259,7 @@ class NotesController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'full_name',
-                'groupField' => 'scoutgroup.district.district'
+                'groupField' => 'scoutgroup.district.district',
             ]
         )
             ->contain(['Scoutgroups.Districts']);

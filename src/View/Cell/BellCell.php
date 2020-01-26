@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\View\Cell;
 
 use Cake\View\Cell;
@@ -8,7 +10,6 @@ use Cake\View\Cell;
  */
 class BellCell extends Cell
 {
-
     /**
      * List of valid options that can be passed into this
      * cell's constructor.
@@ -27,7 +28,10 @@ class BellCell extends Cell
     public function display($userId = null)
     {
         $this->loadModel('Notifications');
-        $unread = $this->Notifications->find('all')->where(['user_id' => $userId, 'new' => 1])->contain(['NotificationTypes']);
+        $unread = $this->Notifications
+            ->find('all')
+            ->where(['user_id' => $userId, 'new' => 1])
+            ->contain(['NotificationTypes']);
         $this->set('notifications', $unread);
 
         //$this->set('notifications', $this->paginate($this->Notifications));

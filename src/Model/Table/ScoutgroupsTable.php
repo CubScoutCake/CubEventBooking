@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Search\Manager;
 
 /**
  * Scoutgroups Model
@@ -39,7 +39,7 @@ class ScoutgroupsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
         $this->addBehavior('Search.Search');
 
@@ -47,7 +47,7 @@ class ScoutgroupsTable extends Table
             'foreignKey' => 'district_id',
         ]);
         $this->hasMany('Sections', [
-            'foreignKey' => 'scoutgroup_id'
+            'foreignKey' => 'scoutgroup_id',
         ]);
 
         $this->searchManager()
@@ -59,7 +59,7 @@ class ScoutgroupsTable extends Table
                 'comparison' => 'LIKE',
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
-                'field' => ['scoutgroup']
+                'field' => ['scoutgroup'],
             ]);
     }
 

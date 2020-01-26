@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -10,7 +12,6 @@ namespace App\Controller\Admin;
  */
 class InvoicesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -61,8 +62,8 @@ class InvoicesController extends AppController
         $this->viewBuilder()->setOptions([
             'pdfConfig' => [
                 'orientation' => 'portrait',
-                'filename' => 'Invoice #' . $invoiceId
-            ]
+                'filename' => 'Invoice #' . $invoiceId,
+            ],
         ]);
 
         $invoice = $this->Invoices->get($invoiceId, [
@@ -70,10 +71,11 @@ class InvoicesController extends AppController
                 'Users',
                 'Payments',
                 'InvoiceItems',
+                'ScheduleItems',
                 'Applications' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts', 'Payable'
+                            'LegalTexts', 'InvoiceTexts', 'Payable',
                         ],
                         'AdminUsers',
                     ],
@@ -82,14 +84,14 @@ class InvoicesController extends AppController
                 'Reservations' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts', 'Payable'
+                            'LegalTexts', 'InvoiceTexts', 'Payable',
                         ],
                         'AdminUsers',
                     ],
                     'Attendees.Sections.Scoutgroups.Districts',
                 ],
-                'Notes'
-            ]
+                'Notes',
+            ],
         ]);
 
         $this->set(compact('invoice'));
@@ -108,8 +110,8 @@ class InvoicesController extends AppController
         $this->viewBuilder()->setOptions([
             'pdfConfig' => [
                 'orientation' => 'portrait',
-                'filename' => 'Invoice #' . $invoiceId
-            ]
+                'filename' => 'Invoice #' . $invoiceId,
+            ],
         ]);
 
         $invoice = $this->Invoices->get($invoiceId, [
@@ -118,13 +120,13 @@ class InvoicesController extends AppController
                 'Payments',
                 'InvoiceItems' => [
                     'conditions' => [
-                        'visible' => 1
-                    ]
+                        'visible' => 1,
+                    ],
                 ],
                 'Applications' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts', 'Payable'
+                            'LegalTexts', 'InvoiceTexts', 'Payable',
                         ],
                         'AdminUsers',
                     ],
@@ -132,10 +134,10 @@ class InvoicesController extends AppController
                 ],
                 'Notes' => [
                     'conditions' => [
-                        'visible' => true
-                    ]
-                ]
-            ]
+                        'visible' => true,
+                    ],
+                ],
+            ],
         ]);
 
         $this->set(compact('invoice'));
@@ -167,8 +169,8 @@ class InvoicesController extends AppController
                     $this->viewBuilder()->setOptions([
                         'pdfConfig' => [
                             'orientation' => 'portrait',
-                            'filename' => 'Invoice #' . $application->invoice->id
-                        ]
+                            'filename' => 'Invoice #' . $application->invoice->id,
+                        ],
                     ]);
 
                     $invoice = $this->Invoices->get($application->invoice->id, [
@@ -177,13 +179,13 @@ class InvoicesController extends AppController
                             'Payments',
                             'InvoiceItems' => [
                                 'conditions' => [
-                                    'visible' => true
-                                ]
+                                    'visible' => true,
+                                ],
                             ],
                             'Applications' => [
                                 'Events' => [
                                     'EventTypes' => [
-                                        'LegalTexts', 'InvoiceTexts', 'Payable'
+                                        'LegalTexts', 'InvoiceTexts', 'Payable',
                                     ],
                                     'AdminUsers',
                                 ],
@@ -191,10 +193,10 @@ class InvoicesController extends AppController
                             ],
                             'Notes' => [
                                 'conditions' => [
-                                    'visible' => true
-                                ]
-                            ]
-                        ]
+                                    'visible' => true,
+                                ],
+                            ],
+                        ],
                     ]);
 
                     $this->set(compact('invoice'));
@@ -237,7 +239,7 @@ class InvoicesController extends AppController
             [
                         'keyField' => 'id',
                         'valueField' => 'full_name',
-                        'groupField' => 'scoutgroup.district.district'
+                        'groupField' => 'scoutgroup.district.district',
             ]
         )
                     ->contain(['Scoutgroups.Districts']);
@@ -263,7 +265,7 @@ class InvoicesController extends AppController
     public function edit($invoiceId = null)
     {
         $invoice = $this->Invoices->get($invoiceId, [
-            'contain' => ['Payments']
+            'contain' => ['Payments'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->getData());
@@ -281,7 +283,7 @@ class InvoicesController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'full_name',
-                'groupField' => 'section.scoutgroup.district.district'
+                'groupField' => 'section.scoutgroup.district.district',
             ]
         )
             ->contain(['Sections.Scoutgroups.Districts']);

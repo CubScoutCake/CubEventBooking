@@ -39,7 +39,7 @@ class AttendeesAllergiesFixture extends TestFixture
         $this->records = [
             [
                 'attendee_id' => 1,
-                'allergy_id' => 1
+                'allergy_id' => 1,
             ],
         ];
         parent::init();

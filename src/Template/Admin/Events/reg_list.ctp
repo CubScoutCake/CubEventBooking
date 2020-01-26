@@ -115,7 +115,7 @@
                 } elseif (isset($event->available_apps)) {
                     echo 'Available Apps Limited';
                 } else {
-                   echo 'Available Cubs & Apps Unlimited'; 
+                   echo 'Available Cubs & Apps Unlimited';
                 }  ?></th>
         </tr>
     </table>
@@ -179,16 +179,16 @@
             <tr>
                 <th><?= __('Maximum Total Applications') ?></th>
 
-                <td><?php if (isset($event->available_apps) && $event->available_apps > 0) 
-                    { echo $this->Number->format($event->available_apps); } 
-                else 
+                <td><?php if (isset($event->available_apps) && $event->available_apps > 0)
+                    { echo $this->Number->format($event->available_apps); }
+                else
                     { echo 'Unlimited'; } ?></td>
 
                 <th><?= __('Maximum Total Cubs') ?></th>
 
-                <td><?php if (isset($event->available_cubs) && $event->available_cubs > 0) 
-                    { echo $this->Number->format($event->available_cubs); } 
-                else 
+                <td><?php if (isset($event->available_cubs) && $event->available_cubs > 0)
+                    { echo $this->Number->format($event->available_cubs); }
+                else
                     { echo 'Unlimited'; } ?></td>
             </tr>
         <?php endif ?>
@@ -240,7 +240,7 @@
             <td><?= h($administrator->phone) ?></td>
         </tr>
     </table>
-        
+
     </table>
     <div class="related">
         <h4><?= __('Related Applications') ?></h4>
@@ -295,7 +295,7 @@
             <tr>
                 <td><?= h($invoice->id) ?></td>
                 <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
-                <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+                <td><?= $this->Number->currency($invoice->initial_value,'GBP') ?></td>
                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
                 <td><?= $this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>

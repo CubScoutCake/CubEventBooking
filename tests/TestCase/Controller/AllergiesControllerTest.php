@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\Admin\AllergiesController;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class AllergiesControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -143,7 +143,7 @@ class AllergiesControllerTest extends IntegrationTestCase
         $data = [
             'id' => 2,
             'allergy' => 'Test Me',
-            'description' => 'This is a test Allergy'
+            'description' => 'This is a test Allergy',
         ];
         $this->post('/allergies/add', $data);
 
@@ -154,7 +154,7 @@ class AllergiesControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableCsrfToken();
@@ -186,7 +186,7 @@ class AllergiesControllerTest extends IntegrationTestCase
         $data = [
             'id' => '4',
             'allergy' => null,
-            'description' => null
+            'description' => null,
         ];
         $this->post('/allergies', $data);
 

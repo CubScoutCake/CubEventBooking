@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Command;
 
 use Cake\Console\Arguments;
@@ -110,8 +112,6 @@ class ScheduleCommand extends Command
         foreach ($reservations as $reservation) {
             if ($this->Reservations->schedule($reservation->id)) {
                 $happenings += 1;
-
-                $this->Reservations->Users->EmailSends->make('RSV-' . $reservation->id . '-EXP');
             }
         }
 

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -40,6 +42,6 @@ class ItemType extends Entity
         'deposit' => true,
         'role' => true,
         'invoice_items' => true,
-        'prices' => true
+        'prices' => true,
     ];
 }

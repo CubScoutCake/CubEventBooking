@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\PaymentsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -9,7 +10,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class PaymentsControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -75,7 +75,7 @@ class PaymentsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/payments');

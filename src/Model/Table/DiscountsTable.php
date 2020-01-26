@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use App\Model\Entity\Discount;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -14,7 +14,6 @@ use Cake\Validation\Validator;
  */
 class DiscountsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -30,7 +29,7 @@ class DiscountsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->hasMany('Events', [
-            'foreignKey' => 'discount_id'
+            'foreignKey' => 'discount_id',
         ]);
     }
 

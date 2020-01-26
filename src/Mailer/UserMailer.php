@@ -1,21 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Mailer;
 
-use App\Model\Entity\Notification;
-use App\Model\Entity\Scoutgroup;
-use App\Model\Entity\User;
 use Cake\Core\Configure;
-use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
-use Cake\ORM\Entity;
 
 class UserMailer extends Mailer
 {
     /**
-     * @param User $user The User Entity
-     * @param Scoutgroup $group The Scoutgroup associated
-     * @param Notification $notification The Notification Entity.
+     * @param \App\Model\Entity\User $user The User Entity
+     * @param \App\Model\Entity\Scoutgroup $group The Scoutgroup associated
+     * @param \App\Model\Entity\Notification $notification The Notification Entity.
      *
      * @return void
      */
@@ -26,6 +22,7 @@ class UserMailer extends Mailer
             ->transport('sparkpost')
             ->template('welcome', 'default')
             ->emailFormat('html')
+            ->setDomain(Configure::read('App.domain'))
             ->to([$user->email => $user->full_name])
             ->from(['info@hertscubs.uk' => 'HertsCubs Booking Site'])
             ->subject('Welcome to the Hertfordshire Cubs Booking System')
@@ -42,7 +39,7 @@ class UserMailer extends Mailer
                  'link_action' => $notification->link_action,
                  'link_id' => $notification->link_id,
                  'link_prefix' => $notification->link_prefix,
-                 'notification_id' => $notification->id
+                 'notification_id' => $notification->id,
             ])
             ->helpers(['Html', 'Text', 'Time']);
         //->send();
@@ -79,7 +76,7 @@ class UserMailer extends Mailer
     }
 
     /**
-     * @param User $user The User Entity.
+     * @param \App\Model\Entity\User $user The User Entity.
      * @param string $token The String of the Token Generated
      *
      * @return void

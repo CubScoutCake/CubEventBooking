@@ -105,11 +105,11 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="table-responsive">
-            <table class="table table-hover">  
+            <table class="table table-hover">
                 <tr>
                     <th><?= __('Initial Value') ?></th>
                     <th><?= __('Payments Recieved') ?></th>
-                    <th><?= __('Balance') ?></th>          
+                    <th><?= __('Balance') ?></th>
                 </tr>
                 <tr>
                     <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
@@ -167,6 +167,41 @@
     </div>
 </div>
 <?php endif; ?>
+<?php if (!empty($invoice->schedule_items)): ?>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <i class="fal fa-clock fa-fw"></i> Deposit Schedule
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tr>
+                                <th><?= __('Description') ?></th>
+                                <th><?= __('Quantity') ?></th>
+                                <th><?= __('Value') ?></th>
+                                <th><?= __('Sum Price') ?></th>
+                            </tr>
+                            <?php foreach ($invoice->schedule_items as $invoiceItems): ?>
+                                <tr>
+                                    <td><?= h($invoiceItems->description) ?></td>
+                                    <td><?= h($invoiceItems->quantity) ?></td>
+                                    <td><?= h($this->Number->currency($invoiceItems->value,'GBP')) ?></td>
+                                    <td><?= h($this->Number->currency($invoiceItems->quantity_price,'GBP')) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <?php $invoice->has('application') ? $depositDate = $invoice->application->event->deposit_date : $depositDate = $invoice->reservation->event->deposit_date ?>
+                    <p>The full value of the Deposit above is due before: <strong><?= h($this->Time->format($depositDate,'dd-MMM-YY', 'Europe/London')) ?></strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
 <div class="row">
     <div class="col-lg-12">
         <?php if (!empty($invoice->payments)): ?>
@@ -213,7 +248,7 @@
                     </div>
                 </div>
             </div>
-            </div> 
+            </div>
         <?php endif; ?>
         <?php if (empty($invoice->payments)): ?>
             <div class="panel panel-yellow">

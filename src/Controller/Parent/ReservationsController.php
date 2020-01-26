@@ -1,10 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Parent;
 
-use App\Model\Entity\Attendee;
-use App\Model\Entity\User;
 use Cake\Log\Log;
-use Cake\Utility\Security;
 
 /**
  * Reservations Controller
@@ -19,7 +18,6 @@ use Cake\Utility\Security;
  */
 class ReservationsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -28,7 +26,7 @@ class ReservationsController extends AppController
     public function events()
     {
         $this->paginate = [
-            'contain' => ['Events', 'Users', 'Attendees', 'ReservationStatuses']
+            'contain' => ['Events', 'Users', 'Attendees', 'ReservationStatuses'],
         ];
         $reservations = $this->paginate($this->Reservations);
 
@@ -56,15 +54,15 @@ class ReservationsController extends AppController
                 ],
                 'Users',
                 'Attendees' => [
-                    'Sections.Scoutgroups.Districts'
+                    'Sections.Scoutgroups.Districts',
                 ],
                 'ReservationStatuses',
                 'Invoices',
                 'LogisticItems' => [
                     'Logistics',
                     'Params',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->set('reservation', $reservation);
@@ -84,7 +82,13 @@ class ReservationsController extends AppController
         $reservation = $this->Reservations->newEntity();
 
         if (!is_null($eventId) && isset($eventId)) {
-            $event = $this->Reservations->Events->get($eventId, ['contain' => [ 'Logistics.Parameters.Params', 'EventTypes', 'Prices']]);
+            $event = $this->Reservations->Events->get($eventId, [
+                'contain' => [
+                    'Logistics.Parameters.Params',
+                    'EventTypes',
+                    'Prices'
+                ]
+            ]);
             $reservation->set('event_id', $event->id);
         }
 
@@ -115,7 +119,7 @@ class ReservationsController extends AppController
                 'valueField' => function ($e) {
                     return $e->scoutgroup->scoutgroup . ' - ' . $e->section;
                 },
-                'groupField' => 'scoutgroup.district.district'
+                'groupField' => 'scoutgroup.district.district',
             ]
         )
         ->where(['section_type_id' => $event->section_type_id])
@@ -123,7 +127,7 @@ class ReservationsController extends AppController
 
         $sessions = $this->Reservations->Events->Logistics->Parameters->Params->find('list');
 
-        $this->set(compact('reservation', 'events', 'event', 'sections', 'attendees', 'sessions'));
+        $this->set(compact('reservation', 'events', 'event', 'sections', 'sessions'));
     }
 
     /**
@@ -137,7 +141,7 @@ class ReservationsController extends AppController
     public function cancel($reservationId = null)
     {
         $reservation = $this->Reservations->get($reservationId, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $reservation = $this->Reservations->patchEntity($reservation, $this->request->getData());

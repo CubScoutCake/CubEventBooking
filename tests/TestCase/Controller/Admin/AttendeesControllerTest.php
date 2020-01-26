@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\AttendeesController;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class AttendeesControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -68,7 +68,7 @@ class AttendeesControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/attendees');
@@ -85,7 +85,7 @@ class AttendeesControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/attendees/view/1');
@@ -102,14 +102,14 @@ class AttendeesControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'prefix' => 'admin',
             'controller' => 'Attendees',
             'action' => 'edit',
-            1
+            1,
         ]);
 
         $this->assertResponseOk();
@@ -142,26 +142,26 @@ class AttendeesControllerTest extends IntegrationTestCase
             'applications' => [
                 '_ids' => [
                     1, 2,
-                ]
+                ],
             ],
             'allergies' => [
                 '_ids' => [
                     1, 2,
-                ]
+                ],
             ],
         ];
 
         $this->post([
             'controller' => 'Attendees',
             'action' => 'edit',
-            1
+            1,
         ], $postData);
 
         $this->assertRedirect([
             'prefix' => 'admin',
             'controller' => 'Attendees',
             'action' => 'view',
-            1
+            1,
         ]);
         $this->assertFlashMessageAt(0, 'The attendee has been saved.');
 
@@ -187,7 +187,7 @@ class AttendeesControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableCsrfToken();
@@ -198,7 +198,7 @@ class AttendeesControllerTest extends IntegrationTestCase
             'controller' => 'Attendees',
             'action' => 'delete',
             'prefix' => 'admin',
-            1
+            1,
         ]);
 
         $this->assertRedirect();

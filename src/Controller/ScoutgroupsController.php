@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller;
  */
 class ScoutgroupsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -17,7 +18,7 @@ class ScoutgroupsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Districts']
+            'contain' => ['Districts'],
         ];
         $this->set('scoutgroups', $this->paginate($this->Scoutgroups));
         $this->set('_serialize', ['scoutgroups']);
@@ -33,7 +34,7 @@ class ScoutgroupsController extends AppController
     public function view($id = null)
     {
         $scoutgroup = $this->Scoutgroups->get($id, [
-            'contain' => ['Districts', 'Sections', 'Sections.Applications', 'Sections.Attendees', 'Sections.Users']
+            'contain' => ['Districts', 'Sections', 'Sections.Applications', 'Sections.Attendees', 'Sections.Users'],
         ]);
         $this->set('scoutgroup', $scoutgroup);
         $this->set('_serialize', ['scoutgroup']);

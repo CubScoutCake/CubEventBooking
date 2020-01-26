@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller\SuperUser;
+declare(strict_types=1);
 
-use App\Controller\SuperUser\AppController;
+namespace App\Controller\SuperUser;
 
 /**
  * EventTypes Controller
@@ -10,7 +10,6 @@ use App\Controller\SuperUser\AppController;
  */
 class EventTypesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -19,7 +18,7 @@ class EventTypesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['LegalTexts', 'InvoiceTexts', 'ApplicationRefs']
+            'contain' => ['LegalTexts', 'InvoiceTexts', 'ApplicationRefs'],
         ];
         $eventTypes = $this->paginate($this->EventTypes);
 
@@ -38,7 +37,7 @@ class EventTypesController extends AppController
     public function view($eventTypeId = null)
     {
         $eventType = $this->EventTypes->get($eventTypeId, [
-            'contain' => ['LegalTexts', 'InvoiceTexts', 'ApplicationRefs', 'Events']
+            'contain' => ['LegalTexts', 'InvoiceTexts', 'ApplicationRefs', 'Events'],
         ]);
 
         $this->set('eventType', $eventType);
@@ -81,7 +80,7 @@ class EventTypesController extends AppController
     public function edit($eventTypeId = null)
     {
         $eventType = $this->EventTypes->get($eventTypeId, [
-            'contain' => ['InvoiceTexts', 'LegalTexts', 'ApplicationRefs']
+            'contain' => ['InvoiceTexts', 'LegalTexts', 'ApplicationRefs'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $eventType = $this->EventTypes->patchEntity($eventType, $this->request->getData());

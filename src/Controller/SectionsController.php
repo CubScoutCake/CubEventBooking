@@ -1,5 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
+
+use Cake\Utility\Text;
 
 /**
  * Sections Controller
@@ -8,7 +12,6 @@ namespace App\Controller;
  */
 class SectionsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -17,7 +20,7 @@ class SectionsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['SectionTypes', 'Scoutgroups']
+            'contain' => ['SectionTypes', 'Scoutgroups'],
         ];
         $sections = $this->paginate($this->Sections);
 
@@ -35,7 +38,7 @@ class SectionsController extends AppController
     public function view($id = null)
     {
         $section = $this->Sections->get($id, [
-            'contain' => ['SectionTypes', 'Scoutgroups.Districts', 'Applications', 'Users']
+            'contain' => ['SectionTypes', 'Scoutgroups.Districts', 'Applications', 'Users'],
         ]);
 
         $this->set('section', $section);
@@ -53,9 +56,16 @@ class SectionsController extends AppController
     {
         $section = $this->Sections->get($sectionId);
 
-        if ($this->Auth->user('section_id') <> $section->id && !is_null($section->cc_users) && $section->cc_users == 1) {
+        if (
+            $this->Auth->user('section_id') <> $section->id
+            && !is_null($section->cc_users)
+            && $section->cc_users == 1
+        ) {
             $this->Flash->error('You can only edit your own section');
-            $errorMsg = 'SECTION:EDIT:' . $section->id . ' edited without authorisation User:' . $this->Auth->user('id');
+            $errorMsg = 'SECTION:EDIT:'
+                        . $section->id
+                        . ' edited without authorisation User:'
+                        . $this->Auth->user('id');
             $this->log($errorMsg, 'notice');
 
             return $this->redirect(['action' => 'view']);
@@ -90,13 +100,15 @@ class SectionsController extends AppController
 
             $this->redirect(['action' => 'existing', $groupId, $typeId]);
         }
-        $sectionTypes = $this->Sections->SectionTypes->find('list', ['limit' => 200])->order(['lower_age' => 'ASC']);
+        $sectionTypes = $this->Sections->SectionTypes
+            ->find('list', ['limit' => 200])
+            ->order(['lower_age' => 'ASC']);
         $scoutgroups = $this->Sections->Scoutgroups->find(
             'list',
             [
                 'keyField' => 'id',
                 'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
+                'groupField' => 'district.district',
             ]
         ) ->contain(['Districts']);
         $section = $this->Sections->newEntity();
@@ -158,7 +170,8 @@ class SectionsController extends AppController
             $group = $this->Sections->Scoutgroups->get($groupId);
             $type = $this->Sections->SectionTypes->get($typeId);
 
-            $suggestion = Text::truncate($group['scoutgroup'], 8, ['ellipsis' => false]) . ' - ' . $type['section_type'];
+            $suggestion = Text::truncate($group['scoutgroup'], 8, ['ellipsis' => false])
+                          . ' - ' . $type['section_type'];
 
             $this->request->getData()['section'] = $suggestion;
         }
@@ -169,7 +182,7 @@ class SectionsController extends AppController
                 'fieldList' => [
                     'section_type_id',
                     'scoutgroup_id',
-                    'section'
+                    'section',
                 ]]);
             $section = $section->set('validated', true);
             if ($this->Sections->save($section)) {

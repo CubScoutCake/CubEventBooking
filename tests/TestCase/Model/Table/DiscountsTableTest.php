@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\DiscountsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class DiscountsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -24,7 +24,7 @@ class DiscountsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.Discounts'
+        'app.Discounts',
     ];
 
     /**
@@ -72,7 +72,7 @@ class DiscountsTableTest extends TestCase
                 'discount_value' => 1,
                 'discount_number' => 1,
                 'uses' => 0,
-                'max_uses' => 1
+                'max_uses' => 1,
             ],
             [
                 'id' => 2,
@@ -83,7 +83,7 @@ class DiscountsTableTest extends TestCase
                 'discount_value' => 1,
                 'discount_number' => 1,
                 'uses' => 1,
-                'max_uses' => 1
+                'max_uses' => 1,
             ],
         ];
 
@@ -106,7 +106,7 @@ class DiscountsTableTest extends TestCase
             'discount_value' => 'Monkey',
             'discount_number' => 'Goat',
             'uses' => 1,
-            'max_uses' => 1
+            'max_uses' => 1,
         ];
 
         $goodData = [
@@ -118,7 +118,7 @@ class DiscountsTableTest extends TestCase
             'discount_value' => 1,
             'discount_number' => 1,
             'uses' => 1,
-            'max_uses' => 1
+            'max_uses' => 1,
         ];
 
         $expected = [
@@ -131,7 +131,7 @@ class DiscountsTableTest extends TestCase
                 'discount_value' => 1,
                 'discount_number' => 1,
                 'uses' => 0,
-                'max_uses' => 1
+                'max_uses' => 1,
             ],
             [
                 'id' => 2,
@@ -142,7 +142,7 @@ class DiscountsTableTest extends TestCase
                 'discount_value' => 1,
                 'discount_number' => 1,
                 'uses' => 1,
-                'max_uses' => 1
+                'max_uses' => 1,
             ],
             [
                 'id' => 3,
@@ -153,7 +153,7 @@ class DiscountsTableTest extends TestCase
                 'discount_value' => 1,
                 'discount_number' => 1,
                 'uses' => 1,
-                'max_uses' => 1
+                'max_uses' => 1,
             ],
         ];
 
@@ -187,7 +187,7 @@ class DiscountsTableTest extends TestCase
             'discount_value' => 1,
             'discount_number' => 1,
             'uses' => 1,
-            'max_uses' => 1
+            'max_uses' => 1,
         ];
 
         $goodData = [
@@ -199,7 +199,7 @@ class DiscountsTableTest extends TestCase
             'discount_value' => 1,
             'discount_number' => 1,
             'uses' => 1,
-            'max_uses' => 1
+            'max_uses' => 1,
         ];
 
         $expected = [
@@ -212,7 +212,7 @@ class DiscountsTableTest extends TestCase
                 'discount_value' => 1,
                 'discount_number' => 1,
                 'uses' => 0,
-                'max_uses' => 1
+                'max_uses' => 1,
             ],
             [
                 'id' => 2,
@@ -223,7 +223,7 @@ class DiscountsTableTest extends TestCase
                 'discount_value' => 1,
                 'discount_number' => 1,
                 'uses' => 1,
-                'max_uses' => 1
+                'max_uses' => 1,
             ],
             [
                 'id' => 3,
@@ -234,7 +234,7 @@ class DiscountsTableTest extends TestCase
                 'discount_value' => 1,
                 'discount_number' => 1,
                 'uses' => 1,
-                'max_uses' => 1
+                'max_uses' => 1,
             ],
         ];
 

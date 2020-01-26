@@ -8,7 +8,7 @@
                         <th><?= $this->Paginator->sort('id','Invoice Number') ?></th>
                         <th class="actions"><?= __('Actions') ?></th>
                         <th><?= $this->Paginator->sort('user_id', 'User ID') ?></th>
-                        <th><?= $this->Paginator->sort('initialvalue', 'Total Invoice Value') ?></th>
+                        <th><?= $this->Paginator->sort('initial_value', 'Total Invoice Value') ?></th>
                         <th><?= $this->Paginator->sort('value', 'Payments Received') ?></th>
                         <th><?= $this->Paginator->sort('Balance') ?></th>
                         <th><?= $this->Paginator->sort('created', 'Date Created') ?></th>
@@ -32,7 +32,7 @@
                             </div>
                         </td>
                         <td><?= $invoice->has('user') ? $this->Html->link($this->Text->truncate($invoice->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></td>
-                        <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+                        <td><?= $this->Number->currency($invoice->initial_value,'GBP') ?></td>
                         <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                         <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
                         <td><?= $this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>

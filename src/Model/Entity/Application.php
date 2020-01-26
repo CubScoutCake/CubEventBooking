@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -88,7 +90,7 @@ class Application extends Entity
         'invoice' => true,
         'logistic_items' => true,
         'notes' => true,
-        'attendees' => true
+        'attendees' => true,
     ];
 
     /**

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ParametersTable;
@@ -11,7 +13,6 @@ use Cake\Utility\Security;
  */
 class ParametersTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -100,7 +101,7 @@ class ParametersTableTest extends TestCase
             'constant' => 'Lorem ipsum dolor sit amet',
             'set_id' => 1,
             'deleted' => null,
-            'limited' => 1
+            'limited' => 1,
         ];
 
         return $good;
@@ -116,7 +117,7 @@ class ParametersTableTest extends TestCase
         $actual = $this->Parameters->get(1)->toArray();
 
         $dates = [
-            'deleted'
+            'deleted',
         ];
 
         foreach ($dates as $date) {
@@ -132,7 +133,7 @@ class ParametersTableTest extends TestCase
             'parameter' => 'Lorem ipsum dolor sit amet',
             'constant' => 'Lorem ipsum dolor sit amet',
             'set_id' => 1,
-            'limited' => 1
+            'limited' => 1,
         ];
         $this->assertEquals($expected, $actual);
 
@@ -154,7 +155,7 @@ class ParametersTableTest extends TestCase
 
         $required = [
             'parameter',
-            'limited'
+            'limited',
         ];
 
         foreach ($required as $require) {
@@ -167,7 +168,7 @@ class ParametersTableTest extends TestCase
         $notEmpties = [
             'parameter',
             'limited',
-            'constant'
+            'constant',
         ];
 
         foreach ($notEmpties as $not_empty) {

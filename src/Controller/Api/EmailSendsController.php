@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller\Api;
+declare(strict_types=1);
 
-use App\Controller\Api\AppController;
+namespace App\Controller\Api;
 
 /**
  * EmailSends Controller
@@ -10,7 +10,6 @@ use App\Controller\Api\AppController;
  */
 class EmailSendsController extends AppController
 {
-
     /**
      * Index method
      *

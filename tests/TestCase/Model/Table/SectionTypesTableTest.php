@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\SectionTypesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class SectionTypesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -76,35 +76,35 @@ class SectionTypesTableTest extends TestCase
                 'section_type' => 'Beavers',
                 'upper_age' => 8,
                 'lower_age' => 6,
-                'role_id' => 2
+                'role_id' => 2,
             ],
             [
                 'id' => 2,
                 'section_type' => 'Cubs',
                 'upper_age' => 10,
                 'lower_age' => 8,
-                'role_id' => 3
+                'role_id' => 3,
             ],
             [
                 'id' => 3,
                 'section_type' => 'Scouts',
                 'upper_age' => 14,
                 'lower_age' => 10,
-                'role_id' => 4
+                'role_id' => 4,
             ],
             [
                 'id' => 4,
                 'section_type' => 'Explorers',
                 'upper_age' => 18,
                 'lower_age' => 14,
-                'role_id' => 5
+                'role_id' => 5,
             ],
             [
                 'id' => 5,
                 'section_type' => 'Adults',
                 'upper_age' => 99,
                 'lower_age' => 18,
-                'role_id' => 1
+                'role_id' => 1,
             ],
         ];
 
@@ -122,14 +122,14 @@ class SectionTypesTableTest extends TestCase
             'section_type' => null,
             'upper_age' => null,
             'lower_age' => 'This is',
-            'role_id' => null
+            'role_id' => null,
         ];
 
         $goodData = [
             'section_type' => 'aksfka ips',
             'upper_age' => 14,
             'lower_age' => 10,
-            'role_id' => 1
+            'role_id' => 1,
         ];
 
         $expected = [
@@ -138,43 +138,43 @@ class SectionTypesTableTest extends TestCase
                 'section_type' => 'Beavers',
                 'upper_age' => 8,
                 'lower_age' => 6,
-                'role_id' => 2
+                'role_id' => 2,
             ],
             [
                 'id' => 2,
                 'section_type' => 'Cubs',
                 'upper_age' => 10,
                 'lower_age' => 8,
-                'role_id' => 3
+                'role_id' => 3,
             ],
             [
                 'id' => 3,
                 'section_type' => 'Scouts',
                 'upper_age' => 14,
                 'lower_age' => 10,
-                'role_id' => 4
+                'role_id' => 4,
             ],
             [
                 'id' => 4,
                 'section_type' => 'Explorers',
                 'upper_age' => 18,
                 'lower_age' => 14,
-                'role_id' => 5
+                'role_id' => 5,
             ],
             [
                 'id' => 5,
                 'section_type' => 'Adults',
                 'upper_age' => 99,
                 'lower_age' => 18,
-                'role_id' => 1
+                'role_id' => 1,
             ],
             [
                 'id' => 6,
                 'section_type' => 'aksfka ips',
                 'upper_age' => 14,
                 'lower_age' => 10,
-                'role_id' => 1
-            ]
+                'role_id' => 1,
+            ],
         ];
 
         $badEntity = $this->SectionTypes->newEntity($badData);
@@ -202,14 +202,14 @@ class SectionTypesTableTest extends TestCase
             'section_type' => 'aksfasfa',
             'upper_age' => 99,
             'lower_age' => 2451,
-            'role_id' => 288
+            'role_id' => 288,
         ];
 
         $goodData = [
             'section_type' => 'Octopus',
             'upper_age' => 8,
             'lower_age' => 6,
-            'role_id' => 1
+            'role_id' => 1,
         ];
 
         $expected = [
@@ -218,43 +218,43 @@ class SectionTypesTableTest extends TestCase
                 'section_type' => 'Beavers',
                 'upper_age' => 8,
                 'lower_age' => 6,
-                'role_id' => 2
+                'role_id' => 2,
             ],
             [
                 'id' => 2,
                 'section_type' => 'Cubs',
                 'upper_age' => 10,
                 'lower_age' => 8,
-                'role_id' => 3
+                'role_id' => 3,
             ],
             [
                 'id' => 3,
                 'section_type' => 'Scouts',
                 'upper_age' => 14,
                 'lower_age' => 10,
-                'role_id' => 4
+                'role_id' => 4,
             ],
             [
                 'id' => 4,
                 'section_type' => 'Explorers',
                 'upper_age' => 18,
                 'lower_age' => 14,
-                'role_id' => 5
+                'role_id' => 5,
             ],
             [
                 'id' => 5,
                 'section_type' => 'Adults',
                 'upper_age' => 99,
                 'lower_age' => 18,
-                'role_id' => 1
+                'role_id' => 1,
             ],
             [
                 'id' => 6,
                 'section_type' => 'Octopus',
                 'upper_age' => 8,
                 'lower_age' => 6,
-                'role_id' => 1
-            ]
+                'role_id' => 1,
+            ],
         ];
 
         $badEntity = $this->SectionTypes->newEntity($badData);

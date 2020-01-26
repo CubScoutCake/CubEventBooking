@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -13,7 +15,7 @@ use Cake\ORM\Entity;
  * @property string $section
  * @property int $section_type_id
  * @property int $scoutgroup_id
- * @property boolean $validated
+ * @property bool $validated
  * @property int $cc_users
  * @property int $cc_atts
  * @property int $cc_apps
@@ -28,7 +30,6 @@ use Cake\ORM\Entity;
  */
 class Section extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -40,6 +41,6 @@ class Section extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'id' => false,
     ];
 }

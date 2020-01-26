@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -56,7 +58,7 @@ class Reservation extends Entity
         'attendee' => true,
         'reservation_status' => true,
         'invoice' => true,
-        'logistic_items' => true
+        'logistic_items' => true,
     ];
 
     /**
@@ -69,7 +71,9 @@ class Reservation extends Entity
     protected function _getReservationNumber()
     {
         if (!$this->isNew()) {
-            return $this->_properties['id'] . '-' . $this->_properties['attendee_id'] . '-' . $this->_properties['reservation_code'];
+            return $this->_properties['id']
+                   . '-' . $this->_properties['attendee_id']
+                   . '-' . $this->_properties['reservation_code'];
         }
 
         return 'Unsaved Reservation';

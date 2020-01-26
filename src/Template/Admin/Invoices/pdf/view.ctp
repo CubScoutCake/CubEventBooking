@@ -50,10 +50,10 @@
                     <tr>
                         <th><?= __('Initial Value') ?></th>
                         <th><?= __('Payments Received') ?></th>
-                        <th><?= __('Balance') ?></th>          
+                        <th><?= __('Balance') ?></th>
                     </tr>
                     <tr>
-                        <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+                        <td><?= $this->Number->currency($invoice->initial_value,'GBP') ?></td>
                         <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                         <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
                     </tr>

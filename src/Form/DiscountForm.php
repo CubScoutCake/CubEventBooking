@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Form;
 
-use Cake\Controller\Controller;
 use Cake\Form\Form;
 use Cake\Form\Schema;
 use Cake\Validation\Validator;
@@ -11,9 +12,9 @@ class DiscountForm extends Form
     /**
      * Specify the Schema of this Form.
      *
-     * @param Schema $schema The Schema to be built
+     * @param \Cake\Form\Schema $schema The Schema to be built
      *
-     * @return  Schema $schema
+     * @return \Cake\Form\Schema $schema
      */
     protected function _buildSchema(Schema $schema)
     {
@@ -25,9 +26,9 @@ class DiscountForm extends Form
     /**
      * Validation of the discount default.
      *
-     * @param Validator $validator The basic validation to be extended.
+     * @param \Cake\Validation\Validator $validator The basic validation to be extended.
      *
-     * @return Validator
+     * @return \Cake\Validation\Validator
      */
     protected function _buildValidator(Validator $validator)
     {

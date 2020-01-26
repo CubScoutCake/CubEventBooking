@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -24,7 +25,6 @@ use Cake\Validation\Validator;
  */
 class SettingsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -42,10 +42,10 @@ class SettingsTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->belongsTo('Events', [
-            'foreignKey' => 'event_id'
+            'foreignKey' => 'event_id',
         ]);
         $this->belongsTo('SettingTypes', [
-            'foreignKey' => 'setting_type_id'
+            'foreignKey' => 'setting_type_id',
         ]);
     }
 

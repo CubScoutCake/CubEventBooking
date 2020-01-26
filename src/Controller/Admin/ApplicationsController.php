@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use Cake\ORM\TableRegistry;
@@ -14,7 +16,6 @@ use Cake\ORM\TableRegistry;
  */
 class ApplicationsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -60,7 +61,7 @@ class ApplicationsController extends AppController
     public function view($applicationId = null)
     {
         $application = $this->Applications->get($applicationId, [
-            'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes']
+            'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes'],
         ]);
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
@@ -83,7 +84,7 @@ class ApplicationsController extends AppController
     {
         // Insantiate Objects
         $application = $this->Applications->get($applicationId, [
-            'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes']
+            'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes'],
         ]);
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
@@ -95,8 +96,8 @@ class ApplicationsController extends AppController
         $this->viewBuilder()->setOptions([
                'pdfConfig' => [
                    'orientation' => 'portrait',
-                   'filename' => 'Invoice #' . $applicationId
-               ]
+                   'filename' => 'Invoice #' . $applicationId,
+               ],
            ]);
 
         $this->Progress->determineApp($application->id, true, $this->Auth->user('id'), true);
@@ -127,15 +128,15 @@ class ApplicationsController extends AppController
             foreach ($event->applications as $applications) {
                 // Insantiate Objects
                 $application = $this->Applications->get($applications->id, [
-                    'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes']
+                    'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes'],
                 ]);
                 $this->set('application', $application);
                 $this->set('_serialize', ['application']);
                 $this->viewBuilder()->options([
                     'pdfConfig' => [
                         'orientation' => 'portrait',
-                        'filename' => 'Application ' . $application->id
-                    ]
+                        'filename' => 'Application ' . $application->id,
+                    ],
                 ]);
                 $this->set('application', $application);
                 $this->set('_serialize', ['application']);
@@ -218,7 +219,7 @@ class ApplicationsController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'full_name',
-                'groupField' => 'sections.scoutgroup.district.district'
+                'groupField' => 'sections.scoutgroup.district.district',
             ]
         )
             ->contain(['Sections.Scoutgroups.Districts']);
@@ -227,7 +228,7 @@ class ApplicationsController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'section',
-                'groupField' => 'scoutgroup.district.district'
+                'groupField' => 'scoutgroup.district.district',
             ]
         )
             ->contain(['Scoutgroups.Districts']);
@@ -256,7 +257,7 @@ class ApplicationsController extends AppController
     public function edit($applicationId = null)
     {
         $application = $this->Applications->get($applicationId, [
-            'contain' => ['Attendees', 'Events.EventTypes.ApplicationRefs', 'Sections.Scoutgroups', 'Users']
+            'contain' => ['Attendees', 'Events.EventTypes.ApplicationRefs', 'Sections.Scoutgroups', 'Users'],
         ]);
 
         $permitHolderBool = $application->event->event_type->permit_holder;
@@ -278,7 +279,7 @@ class ApplicationsController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'full_name',
-                'groupField' => 'section.scoutgroup.district.district'
+                'groupField' => 'section.scoutgroup.district.district',
             ]
         )
             ->contain(['Sections.Scoutgroups.Districts']);
@@ -289,7 +290,7 @@ class ApplicationsController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'section',
-                'groupField' => 'scoutgroup.district.district'
+                'groupField' => 'scoutgroup.district.district',
             ]
         )
             ->contain(['Scoutgroups.Districts']);
@@ -305,7 +306,7 @@ class ApplicationsController extends AppController
     public function link($applicationId = null)
     {
         $application = $this->Applications->get($applicationId, [
-            'contain' => ['Attendees', 'Events', 'Sections.Scoutgroups', 'Users']
+            'contain' => ['Attendees', 'Events', 'Sections.Scoutgroups', 'Users'],
         ]);
 
         if ($this->request->is(['patch', 'post', 'put'])) {

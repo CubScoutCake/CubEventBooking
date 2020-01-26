@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller;
  */
 class RolesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -33,7 +34,7 @@ class RolesController extends AppController
             'contain' => [
                 'Attendees.Scoutgroups' => [
                     'conditions' => [
-                        'Attendees.user_id' => $this->Auth->user('id')]]]
+                        'Attendees.user_id' => $this->Auth->user('id')]]],
         ]);
         $this->set('role', $role);
         $this->set('_serialize', ['role']);

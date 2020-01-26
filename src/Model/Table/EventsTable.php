@@ -1,12 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use App\Model\Entity\Event;
-use App\Model\Entity\Param;
-use Cake\Core\Configure;
 use Cake\I18n\Time;
 use Cake\Log\Log;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -59,16 +58,16 @@ class EventsTable extends Table
                 'Model.beforeSave' => [
                     'created' => 'new',
                     'modified' => 'always',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('Discounts', [
-            'foreignKey' => 'discount_id'
+            'foreignKey' => 'discount_id',
         ]);
         $this->belongsTo('AdminUsers', [
             'className' => 'Users',
@@ -84,19 +83,19 @@ class EventsTable extends Table
             'foreignKey' => 'event_status_id',
         ]);
         $this->hasMany('Applications', [
-            'foreignKey' => 'event_id'
+            'foreignKey' => 'event_id',
         ]);
         $this->hasMany('Logistics', [
-            'foreignKey' => 'event_id'
+            'foreignKey' => 'event_id',
         ]);
         $this->hasMany('Prices', [
-            'foreignKey' => 'event_id'
+            'foreignKey' => 'event_id',
         ]);
         $this->hasMany('Reservations', [
-            'foreignKey' => 'event_id'
+            'foreignKey' => 'event_id',
         ]);
         $this->hasMany('Settings', [
-            'foreignKey' => 'event_id'
+            'foreignKey' => 'event_id',
         ]);
     }
 
@@ -327,7 +326,7 @@ class EventsTable extends Table
     {
         $event = $this->get($eventId, ['contain' => [
             'Prices.ItemTypes',
-            'SectionTypes'
+            'SectionTypes',
         ]]);
 
         if (!($event instanceof Event)) {
@@ -565,7 +564,11 @@ class EventsTable extends Table
             $entity->set('complete', $this->determineComplete($entity->id));
 
             if ($entity->isDirty('event_status_id')) {
-                Log::info($entity->name . ' Status ' . $this->EventStatuses->get($entity->event_status_id)->event_status);
+                Log::info(
+                    $entity->name
+                    . ' Status '
+                    . $this->EventStatuses->get($entity->event_status_id)->event_status
+                );
             }
         }
 

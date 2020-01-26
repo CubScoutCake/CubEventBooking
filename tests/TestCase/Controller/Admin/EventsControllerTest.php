@@ -1,17 +1,15 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\EventsController;
 use Cake\TestSuite\IntegrationTestCase;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * App\Admin\EventsController Test Case
  */
 class EventsControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -71,7 +69,7 @@ class EventsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'index']);
@@ -90,7 +88,7 @@ class EventsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'view', 2]);
@@ -182,7 +180,7 @@ class EventsControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/events/edit/2');
@@ -201,7 +199,7 @@ class EventsControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['controller' => 'Events', 'prefix' => 'admin', 'action' => 'prices', 2]);

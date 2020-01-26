@@ -46,7 +46,7 @@
                         <th><?= __('Detail') ?></th>
                     </tr>
                     <tr>
-                        <td><span>Invoice</span></td> 
+                        <td><span>Invoice</span></td>
                         <td><span><?= $this->Number->toPercentage($invDone,1,['multiply' => true]); ?></span></td>
                         <td><span class="text-muted"><?= $this->Number->format($invCount); ?> <?php if ($invCount == 1) : ?>Invoice<?php else : ?>Invoices<?php endif ?></span></td>
                     </tr>
@@ -56,7 +56,7 @@
                         <td><span class="text-muted"><?= $this->Number->format($attCubs); ?> Cubs of <?= $this->Number->format($invCubs); ?> on Invoice</span></td>
                     </tr>
                     <tr>
-                        <td><span>Leaders &amp; YLs</span></td> 
+                        <td><span>Leaders &amp; YLs</span></td>
                         <td><span><?= $this->Number->toPercentage($cubsNotDone,1,['multiply' => true]); ?></span></td>
                         <td><span class="text-muted"><?= $this->Number->format($attNotCubs); ?> Leaders of <?= $this->Number->format($invNotCubs); ?> on Invoice</span></td>
                     </tr>
@@ -87,7 +87,7 @@
                         </tr>
                         <?php foreach ($application->attendees as $attendees): ?>
                         <tr>
-                            <td><span><?= h($attendees->firstname) ?> <?= h($attendees->lastname) ?></span></td> 
+                            <td><span><?= h($attendees->firstname) ?> <?= h($attendees->lastname) ?></span></td>
                             <td><span><?= $attendees->has('role') ? $this->Text->truncate($attendees->role->role,10) : '' ?></span></td>
                             <td><span>
                                 <?php if (!empty($attendees->allergies)): ?>
@@ -100,7 +100,7 @@
                         <?php endforeach; ?>
                     </table>
                 </div>
-            </div>   
+            </div>
         <?php endif; ?>
     </div>
 </div>
@@ -123,14 +123,14 @@
                         </tr>
                         <tr>
                             <td><span><?= h($application->invoice->id) ?></span></td>
-                            <td><span><?= $this->Number->currency($application->invoice->initialvalue,'GBP') ?></span></td>
+                            <td><span><?= $this->Number->currency($application->invoice->initial_value,'GBP') ?></span></td>
                             <td><span><?= $this->Number->currency($application->invoice->value,'GBP') ?></span></td>
                             <td><span><?= $this->Number->currency($application->invoice->balance,'GBP') ?></span></td>
                             <td><span><?= $this->Time->i18nFormat($application->invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></span></td>
                         </tr>
                     </table>
                 </div>
-            </div>      
+            </div>
         <?php endif; ?>
     </div>
 </div>

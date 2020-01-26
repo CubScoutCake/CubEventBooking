@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class CounterEvent extends AbstractMigration
@@ -17,7 +18,7 @@ class CounterEvent extends AbstractMigration
             ->renameColumn('available_cubs', 'max_section')
             ->addColumn('cc_apps', 'integer', [
                 'default' => 0,
-                'null' => true
+                'null' => true,
             ])
             //->addColumn('cc_invs')
             ->addColumn('complete', 'boolean', [

@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use App\Model\Entity\Notification;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -16,7 +16,6 @@ use Cake\Validation\Validator;
  */
 class NotificationsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -36,19 +35,19 @@ class NotificationsTable extends Table
             'events' => [
                 'Model.beforeSave' => [
                     'created' => 'new',
-                    ]
-                ]
+                    ],
+                ],
             ]);
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('Users', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->belongsTo('NotificationTypes', [
-            'foreignKey' => 'notification_type_id'
+            'foreignKey' => 'notification_type_id',
         ]);
     }
 

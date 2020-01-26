@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class LogisticItemsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -17,7 +18,7 @@ class LogisticItemsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Applications', 'Logistics', 'Params']
+            'contain' => ['Applications', 'Logistics', 'Params'],
         ];
         $logisticItems = $this->paginate($this->LogisticItems);
 
@@ -35,7 +36,7 @@ class LogisticItemsController extends AppController
     public function view($id = null)
     {
         $logisticItem = $this->LogisticItems->get($id, [
-            'contain' => ['Applications', 'Logistics', 'Params']
+            'contain' => ['Applications', 'Logistics', 'Params'],
         ]);
 
         $this->set('logisticItem', $logisticItem);
@@ -77,7 +78,7 @@ class LogisticItemsController extends AppController
     public function edit($id = null)
     {
         $logisticItem = $this->LogisticItems->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $logisticItem = $this->LogisticItems->patchEntity($logisticItem, $this->request->getData());

@@ -2,7 +2,7 @@
 echo $this->element('pdf-head');
 // NB: footer must be at the beginning of the file...
 echo $this->element('pdf-foot');
- 
+
 // here is the body of your content as such
 echo $this->Html->tag('h2', $invoice['id']);
 
@@ -21,7 +21,7 @@ echo $this->Html->tag('h2', $invoice['id']);
         </tr>
         <tr>
             <th><?= __('Initial Value') ?></th>
-            <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+            <td><?= $this->Number->currency($invoice->initial_value,'GBP') ?></td>
         </tr>
         <tr>
             <th><?= __('Payments Recieved') ?></th>

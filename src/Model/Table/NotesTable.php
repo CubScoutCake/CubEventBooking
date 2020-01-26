@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use App\Model\Entity\Note;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -16,7 +16,6 @@ use Cake\Validation\Validator;
  */
 class NotesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -37,22 +36,22 @@ class NotesTable extends Table
                 'Model.beforeSave' => [
                     'created' => 'new',
                     'modified' => 'always',
-                    ]
-                ]
+                    ],
+                ],
             ]);
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('Applications', [
-            'foreignKey' => 'application_id'
+            'foreignKey' => 'application_id',
         ]);
         $this->belongsTo('Invoices', [
-            'foreignKey' => 'invoice_id'
+            'foreignKey' => 'invoice_id',
         ]);
         $this->belongsTo('Users', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
     }
 

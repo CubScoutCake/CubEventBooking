@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class EventTypes extends AbstractMigration
@@ -108,7 +109,7 @@ class EventTypes extends AbstractMigration
                 'id',
                 [
                 'delete' => 'RESTRICT',
-                'update' => 'CASCADE'
+                'update' => 'CASCADE',
                 ]
             )
             ->addColumn('section_type_id', 'integer', [
@@ -122,7 +123,7 @@ class EventTypes extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addIndex(['event_type_id'])
@@ -137,7 +138,7 @@ class EventTypes extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'RESTRICT'
+                    'update' => 'RESTRICT',
                 ]
             )
             ->addColumn('available', 'boolean', [
@@ -203,7 +204,7 @@ class EventTypes extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -212,7 +213,7 @@ class EventTypes extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addIndex(['item_type_id'])

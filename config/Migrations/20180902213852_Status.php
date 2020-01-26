@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class Status extends AbstractMigration
@@ -40,7 +41,7 @@ class Status extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addIndex('application_status_id')
@@ -75,7 +76,7 @@ class Status extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addIndex('event_status_id')

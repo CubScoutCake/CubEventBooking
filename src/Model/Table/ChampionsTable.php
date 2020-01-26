@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use Cake\Event\Event;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -23,7 +24,6 @@ use Cake\Validation\Validator;
  */
 class ChampionsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -39,15 +39,15 @@ class ChampionsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('Districts', [
             'foreignKey' => 'district_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Users', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
     }
 

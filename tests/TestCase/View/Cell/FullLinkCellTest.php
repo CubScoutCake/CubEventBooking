@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\View\Cell;
 
 use App\View\Cell\FullLinkCell;
@@ -9,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class FullLinkCellTest extends TestCase
 {
-
     /**
      * Request mock
      *

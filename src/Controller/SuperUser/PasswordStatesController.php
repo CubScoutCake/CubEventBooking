@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\SuperUser;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\SuperUser;
  */
 class PasswordStatesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -33,7 +34,7 @@ class PasswordStatesController extends AppController
     public function view($passwordStateId = null)
     {
         $passwordState = $this->PasswordStates->get($passwordStateId, [
-            'contain' => ['Users']
+            'contain' => ['Users'],
         ]);
 
         $this->set('passwordState', $passwordState);
@@ -72,7 +73,7 @@ class PasswordStatesController extends AppController
     public function edit($passwordStateId = null)
     {
         $passwordState = $this->PasswordStates->get($passwordStateId, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $passwordState = $this->PasswordStates->patchEntity($passwordState, $this->request->getData());

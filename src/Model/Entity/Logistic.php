@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -23,7 +25,6 @@ use Cake\ORM\Entity;
  */
 class Logistic extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -43,6 +44,6 @@ class Logistic extends Entity
         'max_value' => true,
         'parameter' => true,
         'event' => true,
-        'logistic_items' => true
+        'logistic_items' => true,
     ];
 }

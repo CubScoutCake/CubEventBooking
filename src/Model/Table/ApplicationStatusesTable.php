@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use Cake\Core\Configure;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -38,7 +39,7 @@ class ApplicationStatusesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->hasMany('Applications', [
-            'foreignKey' => 'application_status_id'
+            'foreignKey' => 'application_status_id',
         ]);
     }
 
@@ -118,7 +119,7 @@ class ApplicationStatusesTable extends Table
             $this->patchEntity($status, $baseStatus);
             if ($this->save($status)) {
                 $total += 1;
-            };
+            }
         }
 
         return $total;

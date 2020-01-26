@@ -19,7 +19,7 @@
 
 <p><strong>Please arrange payment as soon as possible.</strong></p>
 
-<p>This invoice currently has a balance of <?= $this->Number->currency($balance,'GBP') ?>. The initial value of this invoice was <?= $this->Number->currency($initialvalue,'GBP') ?> and the total sum of payments received on this invoice to date is <?= $this->Number->currency($value,'GBP') ?>.</p>
+<p>This invoice currently has a balance of <?= $this->Number->currency($balance,'GBP') ?>. The initial value of this invoice was <?= $this->Number->currency($initial_value,'GBP') ?> and the total sum of payments received on this invoice to date is <?= $this->Number->currency($value,'GBP') ?>.</p>
 <p>If outstanding balances are not received, it is likely that your application and invoice will be cancelled. In the event of cancellation due to non-payment all existing sums recieved are non-refundable.</p>
 <h3>Actions</h3>
 <ul>

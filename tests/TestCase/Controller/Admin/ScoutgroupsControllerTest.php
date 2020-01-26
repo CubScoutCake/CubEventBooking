@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\ScoutgroupsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -9,7 +10,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class ScoutgroupsControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -48,7 +48,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 1
+           'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get('/admin/scoutgroups');
@@ -60,7 +60,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/scoutgroups');
@@ -80,7 +80,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 1
+           'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get('/admin/scoutgroups/view/1');
@@ -97,7 +97,7 @@ class ScoutgroupsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/scoutgroups/view/1');

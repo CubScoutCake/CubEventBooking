@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller\Api;
 
@@ -30,7 +31,7 @@ class ApplicationsController extends AppController
                 'permit_holder',
                 'team_leader',
                 'event_id',
-            ]
+            ],
         ]);
 
         // Set the view vars that have to be serialized.

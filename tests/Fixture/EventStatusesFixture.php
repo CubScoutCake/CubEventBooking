@@ -41,7 +41,7 @@ class EventStatusesFixture extends TestFixture
                 'accepting_applications' => true,
                 'spaces_full' => true,
                 'pending_date' => true,
-                'status_order' => 1
+                'status_order' => 1,
             ],
         ];
         parent::init();

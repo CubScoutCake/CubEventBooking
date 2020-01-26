@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class ParamsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -17,7 +18,7 @@ class ParamsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Parameters']
+            'contain' => ['Parameters'],
         ];
         $params = $this->paginate($this->Params);
 
@@ -35,7 +36,7 @@ class ParamsController extends AppController
     public function view($id = null)
     {
         $param = $this->Params->get($id, [
-            'contain' => ['Parameters', 'LogisticItems']
+            'contain' => ['Parameters', 'LogisticItems'],
         ]);
 
         $this->set('param', $param);
@@ -75,7 +76,7 @@ class ParamsController extends AppController
     public function edit($id = null)
     {
         $param = $this->Params->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $param = $this->Params->patchEntity($param, $this->request->getData());

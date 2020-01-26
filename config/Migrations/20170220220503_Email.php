@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class Email extends AbstractMigration
@@ -78,7 +79,7 @@ class Email extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -87,7 +88,7 @@ class Email extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -96,7 +97,7 @@ class Email extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->create();
@@ -163,7 +164,7 @@ class Email extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -172,7 +173,7 @@ class Email extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->create();
@@ -224,7 +225,7 @@ class Email extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -233,7 +234,7 @@ class Email extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->create();
@@ -270,7 +271,7 @@ class Email extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->save();

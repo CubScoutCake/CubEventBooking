@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Form\PasswordForm;
@@ -23,10 +25,10 @@ class UsersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Roles', 'Sections.Scoutgroups']
+            'contain' => ['Roles', 'Sections.Scoutgroups'],
         ];
         $this->paginate['conditions'] = [
-            'section_id' => $this->Auth->user('section_id')
+            'section_id' => $this->Auth->user('section_id'),
         ];
         $this->set('users', $this->paginate($this->Users));
         $this->set('_serialize', ['users']);
@@ -49,11 +51,11 @@ class UsersController extends AppController
                 'Applications.Events',
                 'Attendees' => [
                     'Sections.Scoutgroups',
-                    'Roles'
+                    'Roles',
                 ],
                 'Notes' => ['conditions' => ['visible' => true]],
-                'Notifications.NotificationTypes'
-            ]
+                'Notifications.NotificationTypes',
+            ],
         ]);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
@@ -71,7 +73,7 @@ class UsersController extends AppController
     public function edit($userID = null)
     {
         $user = $this->Users->get($userID, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -90,7 +92,7 @@ class UsersController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'section',
-                'groupField' => 'scoutgroup.district.district'
+                'groupField' => 'scoutgroup.district.district',
             ]
         )
             ->contain(['Scoutgroups.Districts']);
@@ -134,7 +136,7 @@ class UsersController extends AppController
             'postcode' => $user->postcode,
             'role_id' => $user->role_id,
             'section_id' => $user->section_id,
-            'phone' => $user->phone
+            'phone' => $user->phone,
         ];
 
         $att = $this->Users->Attendees->patchEntity($att, $attendeeData);
@@ -269,7 +271,7 @@ class UsersController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
+                'groupField' => 'district.district',
             ]
         )->contain(['Districts']);
         $session = $this->request->getSession();

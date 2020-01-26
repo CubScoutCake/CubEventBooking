@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\PricesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class PricesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -88,7 +88,7 @@ class PricesTableTest extends TestCase
                 'event_id' => 2,
                 'max_number' => 6,
                 'value' => 20.0,
-                'description' => 'Team Booking Price'
+                'description' => 'Team Booking Price',
             ],
             [
                 'id' => 2,
@@ -96,7 +96,7 @@ class PricesTableTest extends TestCase
                 'event_id' => 3,
                 'max_number' => 5,
                 'value' => 25.0,
-                'description' => 'Cub Price'
+                'description' => 'Cub Price',
             ],
             [
                 'id' => 3,
@@ -104,7 +104,7 @@ class PricesTableTest extends TestCase
                 'event_id' => 3,
                 'max_number' => 2,
                 'value' => 30.0,
-                'description' => 'Beaver Price'
+                'description' => 'Beaver Price',
             ],
             [
                 'id' => 4,
@@ -112,7 +112,7 @@ class PricesTableTest extends TestCase
                 'event_id' => 3,
                 'max_number' => 3,
                 'value' => 35.0,
-                'description' => 'Scout Price'
+                'description' => 'Scout Price',
             ],
             [
                 'id' => 5,
@@ -120,7 +120,7 @@ class PricesTableTest extends TestCase
                 'event_id' => 3,
                 'max_number' => 3,
                 'value' => 10.0,
-                'description' => 'Explorer Price'
+                'description' => 'Explorer Price',
             ],
             [
                 'id' => 6,
@@ -128,7 +128,7 @@ class PricesTableTest extends TestCase
                 'event_id' => 3,
                 'max_number' => 10,
                 'value' => 15.0,
-                'description' => 'Adult Price'
+                'description' => 'Adult Price',
             ],
             [
                 'id' => 7,
@@ -136,7 +136,7 @@ class PricesTableTest extends TestCase
                 'event_id' => 3,
                 'max_number' => 0,
                 'value' => 20,
-                'description' => 'Team Deposit Price'
+                'description' => 'Team Deposit Price',
             ],
             [
                 'id' => 8,
@@ -144,7 +144,7 @@ class PricesTableTest extends TestCase
                 'event_id' => 3,
                 'max_number' => 20,
                 'value' => 10,
-                'description' => 'Section Deposit Price'
+                'description' => 'Section Deposit Price',
             ],
         ];
 

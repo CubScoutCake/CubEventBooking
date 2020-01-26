@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class RolesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -30,7 +31,7 @@ class RolesController extends AppController
     public function view($id = null)
     {
         $role = $this->Roles->get($id, [
-            'contain' => ['Attendees', 'Users']
+            'contain' => ['Attendees', 'Users'],
         ]);
         $this->set('role', $role);
         $this->set('_serialize', ['role']);
@@ -68,7 +69,7 @@ class RolesController extends AppController
     public function edit($id = null)
     {
         $role = $this->Roles->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $role = $this->Roles->patchEntity($role, $this->request->getData());

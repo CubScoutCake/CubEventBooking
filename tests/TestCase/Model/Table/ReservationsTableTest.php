@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ReservationsTable;
@@ -102,7 +104,7 @@ class ReservationsTableTest extends TestCase
             'user_id' => 1,
             'attendee_id' => 1,
             'reservation_status_id' => 1,
-            'reservation_code' => 'PLX'
+            'reservation_code' => 'PLX',
         ];
 
         return $good;

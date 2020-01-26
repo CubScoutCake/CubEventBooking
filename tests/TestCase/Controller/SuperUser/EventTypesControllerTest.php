@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\SuperUser;
 
-use App\Controller\SuperUser\EventTypesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -9,7 +10,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class EventTypesControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -50,7 +50,7 @@ class EventTypesControllerTest extends IntegrationTestCase
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['prefix' => 'super_user', 'controller' => 'EventTypes', 'action' => 'index']);
@@ -71,7 +71,7 @@ class EventTypesControllerTest extends IntegrationTestCase
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['prefix' => 'super_user', 'controller' => 'EventTypes', 'action' => 'view', 1]);
@@ -92,7 +92,7 @@ class EventTypesControllerTest extends IntegrationTestCase
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['prefix' => 'super_user', 'controller' => 'EventTypes', 'action' => 'add']);
@@ -113,7 +113,7 @@ class EventTypesControllerTest extends IntegrationTestCase
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get(['prefix' => 'super_user', 'controller' => 'EventTypes', 'action' => 'edit', 1]);
@@ -134,7 +134,7 @@ class EventTypesControllerTest extends IntegrationTestCase
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableCsrfToken();

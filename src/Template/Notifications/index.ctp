@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Notification[] $notifications
+ */
+?>
+
 <div class="row">
     <div class="col-lg-12">
         <h3><i class="fal fa-bell fa-fw"></i> Your Notifications</h3>
@@ -22,7 +29,7 @@
                         </td>
                         <td><?= $notification->new ? '' : '<i class="fal fa-check fa-fw"></i>' ?></td>
                         <td><?= $notification->has('notification_type') ? h($notification->notification_type->notification_type) : '' ?></td>
-                        <td><?= $this->Time->i18nFormat($notification->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
+                        <td><?= $this->Time->format($notification->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

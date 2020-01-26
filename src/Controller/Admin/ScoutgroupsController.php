@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class ScoutgroupsController extends AppController
 {
-
     /**
      * setup config
      *
@@ -20,7 +21,7 @@ class ScoutgroupsController extends AppController
         $this->loadComponent('Search.Prg', [
             // This is default config. You can modify "actions" as needed to make
             // the PRG component work only for specified methods.
-            'actions' => ['index', 'lookup']
+            'actions' => ['index', 'lookup'],
         ]);
     }
 
@@ -56,7 +57,7 @@ class ScoutgroupsController extends AppController
     public function view($id = null)
     {
         $scoutgroup = $this->Scoutgroups->get($id, [
-            'contain' => ['Districts', 'Sections.Applications.Events', 'Sections.Applications.Users', 'Sections.Attendees.Roles', 'Sections.Attendees.Users', 'Sections.Users.Roles']
+            'contain' => ['Districts', 'Sections.Applications.Events', 'Sections.Applications.Users', 'Sections.Attendees.Roles', 'Sections.Attendees.Users', 'Sections.Users.Roles'],
         ]);
         $this->set('scoutgroup', $scoutgroup);
         $this->set('_serialize', ['scoutgroup']);

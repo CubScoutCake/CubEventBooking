@@ -45,7 +45,7 @@
 			                $application->id
                         ],['_full']); ?>">Re-sync with OSM Event</a>
                     </li>
-                    <li><a href="<?php 
+                    <li><a href="<?php
                         if ($invDone < 0.5) :
                             echo $this->Url->build([
                             'controller' => 'Invoices',
@@ -53,7 +53,7 @@
                             'prefix' => false,
                             $application->id],['_full']); ?>">Update Application
 
-                        <?php else : 
+                        <?php else :
                             echo $this->Url->build([
                             'controller' => 'Invoices',
                             'action' => 'regenerate',
@@ -157,7 +157,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <div>   
+                <div>
                     <div class="progress progress-striped active">
                         <div class="progress-bar progress-bar-<?= h($status) ?>" role="progressbar" aria-valuenow="<?php echo ($done * 100); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $this->Number->toPercentage($done,1,['multiply' => true]); ?>">
                             <span class="sr-only"><?= $this->Number->toPercentage($done,1,['multiply' => true]); ?> Complete</span>
@@ -192,7 +192,7 @@
                     </div>
                     <h2><?= $this->Number->toPercentage($invDone,1,['multiply' => true]); ?></h2>
                 </div>
-                <a href="<?php 
+                <a href="<?php
                     if ($invDone < 0.5) :
                         echo $this->Url->build([
                         'controller' => 'Invoices',
@@ -202,7 +202,7 @@
                         <div class="panel-footer">
                             <span class="pull-left">Generate a New Invoice</span>
 
-                    <?php else : 
+                    <?php else :
                         echo $this->Url->build([
                             'controller' => 'Invoices',
                             'action' => 'regenerate',
@@ -211,7 +211,7 @@
                         <div class="panel-footer">
                             <span class="pull-left">Update Existing Invoice</span>
                     <?php endif ?>
-                    
+
                         <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -239,7 +239,7 @@
                     </div>
                     <h2><?= $this->Number->toPercentage($cubsDone,1,['multiply' => true]); ?></h2>
                 </div>
-                <a href="<?php 
+                <a href="<?php
                     if ($cubsDone < 1) :
                         echo $this->Url->build([
                         'controller' => 'Applications',
@@ -249,7 +249,7 @@
                         <div class="panel-footer">
                             <span class="pull-left">Link Attendees</span>
 
-                    <?php else : 
+                    <?php else :
                         echo $this->Url->build([
                         'controller' => 'Attendees',
                         'action' => 'cub',
@@ -285,7 +285,7 @@
                     </div>
                     <h2><?= $this->Number->toPercentage($cubsNotDone,1,['multiply' => true]); ?></h2>
                 </div>
-                <a href="<?php 
+                <a href="<?php
                     if ($cubsNotDone < 1) :
                         echo $this->Url->build([
                         'controller' => 'Applications',
@@ -295,7 +295,7 @@
                         <div class="panel-footer">
                             <span class="pull-left">Link Attendees</span>
 
-                    <?php else : 
+                    <?php else :
                         echo $this->Url->build([
                         'controller' => 'Attendees',
                         'action' => 'adult',
@@ -303,7 +303,7 @@
                         <div class="panel-footer">
                             <span class="pull-left">Add an Adult</span>
                     <?php endif ?>
-                    
+
                         <span class="pull-right"><i class="fal fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -370,7 +370,7 @@
                                 <td class="actions">
                                     <?= $this->Html->link('<i class="fal fa-eye"></i> View', ['controller' => 'Invoices','action' => 'view', $application->invoice->id], ['title' => __('View'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                                 </td>
-                                <td><?= $this->Number->currency($application->invoice->initialvalue,'GBP') ?></td>
+                                <td><?= $this->Number->currency($application->invoice->initial_value,'GBP') ?></td>
                                 <td><?= $this->Number->currency($application->invoice->value,'GBP') ?></td>
                                 <td><?= $this->Number->currency($application->invoice->balance,'GBP') ?></td>
                                 <td><?= $this->Time->i18nFormat($application->invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
@@ -378,7 +378,7 @@
                         </table>
                     </div>
                 </div>
-            </div>      
+            </div>
         <?php endif; ?>
     </div>
 </div>
@@ -436,7 +436,7 @@
                         </table>
                     </div>
                 </div>
-            </div>   
+            </div>
         <?php endif; ?>
     </div>
 </div>

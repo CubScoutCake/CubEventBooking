@@ -11,7 +11,7 @@ use Cake\Core\Configure;
  * @var \App\Model\Entity\Invoice $invoice
  * @var \App\View\AppView $this
  */
- 
+
 $bacs = Configure::read('bacs');
 
 ?>
@@ -45,11 +45,11 @@ $bacs = Configure::read('bacs');
     <br/>
     <p>Payment must be made by <strong><?= $this->Time->format($invoice->application->event->closing_date,'dd-MMM-yyyy') ?></strong>.</p>
 <?php endif; ?>
-        
+
 <?php if ($invoice->has('reservation')) : ?>
     <ul>
         <li>
-            <p><strong>BACS:</strong> Reference: <strong><?= h($invoice->reservation->reservation_code) ?></strong> Sort: <strong><?= h($bacs['sort']) ?></strong> Account Number: <strong><?= h($bacs['account']) ?></strong> Account Name: <strong><?= h($bacs['name']) ?></strong></p>
+            <p><strong>BACS:</strong> Reference: <strong>CUBS-<?= h($invoice->reservation->reservation_number) ?></strong> Sort: <strong><?= h($bacs['sort']) ?></strong> Account Number: <strong><?= h($bacs['account']) ?></strong> Account Name: <strong><?= h($bacs['name']) ?></strong></p>
         </li>
         <li>
             <p>

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP DatabaseLog Plugin
  *
@@ -16,7 +18,6 @@ use DatabaseLog\Model\Table\DatabaseLogsTable;
  */
 class LogsController extends AppController
 {
-
     /**
      * Explicitly use the Log model.
      *
@@ -45,8 +46,8 @@ class LogsController extends AppController
             'DatabaseLogs.count',
             'DatabaseLogs.type',
             'DatabaseLogs.message',
-            'DatabaseLogs.id'
-        ]
+            'DatabaseLogs.id',
+        ],
     ];
 
     /**
@@ -138,7 +139,7 @@ class LogsController extends AppController
         $type = $this->request->getQuery('type');
         if ($type) {
             $this->DatabaseLogs->deleteAll([
-                'type' => $type
+                'type' => $type,
             ]);
         } else {
             $this->DatabaseLogs->truncate();

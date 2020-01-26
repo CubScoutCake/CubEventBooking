@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Form\LinkForm;
@@ -197,7 +199,6 @@ class OsmController extends AppController
         } else {
             $userOsmId = $user->osm_user_id;
             $userOsmSecret = $user->osm_secret . $session->read('OSM.Secret');
-            ;
             $userOsmSection = $user->osm_section_id;
             $userOsmTerm = $user->osm_current_term;
         }
@@ -212,7 +213,7 @@ class OsmController extends AppController
 
         $http = new Client([
           'host' => $apiBase,
-          'scheme' => 'https'
+          'scheme' => 'https',
         ]);
 
         $url = '/ext/members/contact/grid/' . '?action=getMembers';
@@ -223,7 +224,7 @@ class OsmController extends AppController
             'token' => $apiToken,
             'apiid' => $apiId,
             'section_id' => $userOsmSection,
-            'term_id' => $userOsmTerm
+            'term_id' => $userOsmTerm,
         ]);
 
         if ($response->isOk()) {
@@ -445,7 +446,7 @@ class OsmController extends AppController
                             'phone' => strtoupper($phone1),
                             'phone2' => strtoupper($phone2),
                             'osm_sync_date' => $now,
-                            'deleted' => null
+                            'deleted' => null,
                         ];
                     } else {
                         $att = $atts->newEntity();
@@ -466,7 +467,7 @@ class OsmController extends AppController
                             'postcode' => strtoupper($postcode),
                             'phone' => strtoupper($phone1),
                             'phone2' => strtoupper($phone2),
-                            'osm_sync_date' => $now
+                            'osm_sync_date' => $now,
                         ];
                     }
 
@@ -497,8 +498,8 @@ class OsmController extends AppController
                 'Modified' => null,
                 'OSM' => [
                     'ErrorNumber' => $errCnt,
-                    'SuccessNumber' => $successCnt
-                    ]
+                    'SuccessNumber' => $successCnt,
+                    ],
                 ];
 
             $sets = TableRegistry::get('Settings');

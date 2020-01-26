@@ -1,10 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\Validation\Validator;
 
 /**
  * AttendeesAllergies Model
@@ -22,7 +22,6 @@ use Cake\Validation\Validator;
  */
 class AttendeesAllergiesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -39,11 +38,11 @@ class AttendeesAllergiesTable extends Table
 
         $this->belongsTo('Attendees', [
             'foreignKey' => 'attendee_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Allergies', [
             'foreignKey' => 'allergy_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
     }
 

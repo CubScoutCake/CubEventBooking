@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -14,19 +16,19 @@
  */
 namespace App\Controller;
 
-use Cake\Core\Configure;
-use Cake\ORM\TableRegistry;
-
 /**
  * Static content controller
  *
  * This controller will render views from Template/Pages/
  *
  * @property \App\Model\Table\EventsTable $Events
+ * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Model\Table\AttendeesTable $Attendees
+ * @property \App\Model\Table\InvoicesTable $Invoices
+ * @property \App\Model\Table\PaymentsTable $Payments
  */
 class LandingController extends AppController
 {
-
     /**
      * Displays a view
      *
@@ -37,19 +39,36 @@ class LandingController extends AppController
     public function userHome()
     {
         // Get Entities from Registry
-        $apps = TableRegistry::getTableLocator()->get('Applications');
-        $atts = TableRegistry::getTableLocator()->get('Attendees');
-        $invs = TableRegistry::getTableLocator()->get('Invoices');
-        $pays = TableRegistry::getTableLocator()->get('Payments');
-        $evs = TableRegistry::getTableLocator()->get('Events');
+        $this->loadModel('Applications');
+        $this->loadModel('Attendees');
+        $this->loadModel('Invoices');
+        $this->loadModel('Payments');
+        $this->loadModel('Events');
 
         $userId = $this->Auth->user('id');
 
         // Table Entities
-        $applications = $apps->find('all', ['conditions' => ['Applications.user_id' => $userId]])->contain(['Events', 'Sections.Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(5);
-        $events = $evs->find('upcoming')->find('unarchived')->contain(['Settings'])->limit(3)->order(['Events.start_date' => 'DESC']);
-        $invoices = $invs->find('all', ['conditions' => ['Invoices.user_id' => $userId]])->contain(['Users', 'Applications', 'Payments'])->order(['Invoices.created' => 'DESC'])->limit(5);
-        $payments = $countPayments = $pays->find('all')->matching('Invoices', function ($q) {
+        $applications = $this->Applications
+            ->find('all', ['conditions' => ['Applications.user_id' => $userId]])
+            ->contain(['Events', 'Sections.Scoutgroups'])
+            ->order(['Applications.modified' => 'DESC'])
+            ->limit(5);
+        $events = $this->Events
+            ->find('upcoming')
+            ->find('unarchived')
+            ->contain(['EventStatuses', 'EventTypes'])
+            ->limit(3)
+            ->order(['Events.start_date' => 'ASC']);
+        $invoices = $this->Invoices
+            ->find('all', [
+                'conditions' => [
+                    'Invoices.user_id' => $userId
+                ]
+            ])
+            ->contain(['Users', 'Applications', 'Payments'])
+            ->order(['Invoices.created' => 'DESC'])
+            ->limit(5);
+        $payments = $this->Payments->find('all')->matching('Invoices', function ($q) {
                 return $q->where(['Invoices.user_id' => $this->Auth->user('id')]);
         });
 
@@ -63,15 +82,8 @@ class LandingController extends AppController
         // Counts of Entities
         $countApplications = $applications->count();
         $countInvoices = $invoices->count();
-        $countAttendees = $atts->find('all', ['conditions' => ['user_id' => $userId]])->count();
-
-        if (empty($payments)) {
-            $countPayments = 0;
-        }
-
-        if (!empty($payments)) {
-            $countPayments = $payments->count();
-        }
+        $countPayments = $payments->count();
+        $countAttendees = $this->Attendees->find('all', ['conditions' => ['user_id' => $userId]])->count();
 
         // Pass to View
         $this->set(compact('countApplications', 'countAttendees', 'countInvoices', 'countPayments', 'userId'));

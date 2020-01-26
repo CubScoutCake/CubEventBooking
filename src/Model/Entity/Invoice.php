@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -9,11 +11,13 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $user_id
  * @property int|null $application_id
- * @property float|null $value
+ * @deprecated  float|null $value
+ * @property float|null $paid_value
  * @property \Cake\I18n\Time|null $created
  * @property \Cake\I18n\Time|null $modified
  * @property bool|null $paid
- * @property float|null $initialvalue
+ * @deprecated float|null $initialvalue
+ * @property float|null $initial_value
  * @property \Cake\I18n\Time|null $deleted
  * @property int|null $reservation_id
  *
@@ -45,19 +49,21 @@ class Invoice extends Entity
     protected $_accessible = [
         'user_id' => true,
         'application_id' => true,
-        'value' => true,
+        'paid_value' => true,
         'created' => true,
         'modified' => true,
         'paid' => true,
-        'initialvalue' => true,
+        'initial_value' => true,
         'deleted' => true,
         'reservation_id' => true,
-        'reservation' => true,
+        'minimum_deposit' => true,
         'user' => true,
         'application' => true,
+        'reservation' => true,
         'invoice_items' => true,
+        'schedule_items' => true,
         'notes' => true,
-        'payments' => true
+        'payments' => true,
     ];
 
     /**
@@ -69,7 +75,7 @@ class Invoice extends Entity
      */
     protected function _getBalance()
     {
-        return $this->_properties['initialvalue'] - $this->_properties['value'];
+        return $this->_properties['initial_value'] - $this->_properties['paid_value'];
     }
 
     /**
@@ -94,12 +100,47 @@ class Invoice extends Entity
      */
     protected function _getIsPaid()
     {
-        if ($this->_properties['initialvalue'] <= $this->_properties['value'] && $this->_properties['initialvalue'] != 0) {
+        if (!is_null($this->_properties['minimum_deposit'])) {
+            if ($this->_properties['minimum_deposit'] <= $this->_properties['paid_value']) {
+                return true;
+            }
+        }
+
+        if (
+            $this->_properties['initial_value'] <= $this->_properties['paid_value']
+            && $this->_properties['initial_value'] != 0
+        ) {
             return true;
         }
 
         return false;
     }
 
-    protected $_virtual = ['balance', 'display_code', 'is_paid'];
+    /**
+     * Build the is paid property.
+     *
+     * @return float|null
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+     */
+    protected function _getInitialvalue()
+    {
+        return $this->_properties['initial_value'];
+    }
+
+    /**
+     * Build the is paid property.
+     *
+     * @return float|null
+     *
+     * @deprecated use Paid Value Instead
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+     */
+    protected function _getValue()
+    {
+        return $this->_properties['paid_value'];
+    }
+
+    protected $_virtual = ['balance', 'display_code', 'is_paid', 'initialvalue', 'value'];
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -41,15 +43,15 @@ class InvoiceItemsTable extends Table
 
         $this->belongsTo('Invoices', [
             'foreignKey' => 'invoice_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('ItemTypes', [
-            'foreignKey' => 'item_type_id'
+            'foreignKey' => 'item_type_id',
         ]);
 
         $this->addBehavior('CounterCache', [
             'Invoices' => [
-                'initialvalue' => function ($event, $entity, $table) {
+                'initial_value' => function ($event, $entity, $table) {
 
                     $query = $this->find()->where([
                         'invoice_id' => $entity->invoice_id,
@@ -59,8 +61,21 @@ class InvoiceItemsTable extends Table
                     $query = $query->first();
 
                     return $query->sum;
-                }
-            ]
+                },
+                'minimum_deposit' => function ($event, $entity, $table) {
+
+                    $query = $this->find()->where([
+                        'invoice_id' => $entity->invoice_id,
+                    ]);
+                    $query = $query->matching('ItemTypes', function ($q) {
+                        return $q->where(['ItemTypes.deposit' => true]);
+                    });
+                    $query = $query->select(['sum' => $query->func()->sum('(value * quantity)')]);
+                    $query = $query->first();
+
+                    return $query->sum;
+                },
+            ],
         ]);
     }
 
@@ -168,7 +183,7 @@ class InvoiceItemsTable extends Table
     }
 
     /**
-     * @param Query $query The Query Object
+     * @param \Cake\ORM\Query $query The Query Object
      *
      * @return array|\Cake\ORM\Query
      */

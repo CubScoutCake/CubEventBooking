@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
-use Cake\I18n\Time;
-use Cake\Mailer\Email;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\Network\Http\Client;
 use Cake\ORM\TableRegistry;
@@ -14,7 +14,6 @@ use Cake\ORM\TableRegistry;
  */
 class NotificationsController extends AppController
 {
-
     use MailerAwareTrait;
 
     /**
@@ -26,7 +25,7 @@ class NotificationsController extends AppController
     {
         $this->paginate = [
             'contain' => ['Users', 'NotificationTypes'],
-            'order' => ['created' => 'DESC']
+            'order' => ['created' => 'DESC'],
         ];
         $this->set('notifications', $this->paginate($this->Notifications));
         $this->set('_serialize', ['notifications']);
@@ -42,7 +41,7 @@ class NotificationsController extends AppController
         $this->paginate = [
             'contain' => ['Users', 'NotificationTypes'],
             'conditions' => ['new' => 1],
-            'order' => ['created' => 'DESC']
+            'order' => ['created' => 'DESC'],
         ];
         $this->set('notifications', $this->paginate($this->Notifications));
         $this->set('_serialize', ['notifications']);
@@ -58,7 +57,7 @@ class NotificationsController extends AppController
     public function view($id = null)
     {
         $notification = $this->Notifications->get($id, [
-            'contain' => ['Users', 'NotificationTypes']
+            'contain' => ['Users', 'NotificationTypes'],
         ]);
         $this->set('notification', $notification);
         $this->set('_serialize', ['notification']);
@@ -180,7 +179,7 @@ class NotificationsController extends AppController
             ->enableHydration(true)
             ->join([
                 'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id', ],
-                't' => ['table' => 'payments', 'type' => 'INNER', 'conditions' => 't.id = x.payment_id', ]
+                't' => ['table' => 'payments', 'type' => 'INNER', 'conditions' => 't.id = x.payment_id', ],
             ])
             ->where(['t.id' => $payId])
             ->first();
@@ -265,7 +264,7 @@ class NotificationsController extends AppController
             ->enableHydration(true)
             ->join([
                 'x' => ['table' => 'invoices_payments', 'type' => 'INNER', 'conditions' => 'x.invoice_id = Invoices.id', ],
-                't' => ['table' => 'payments', 'type' => 'INNER', 'conditions' => 't.id = x.payment_id', ]
+                't' => ['table' => 'payments', 'type' => 'INNER', 'conditions' => 't.id = x.payment_id', ],
             ])
             ->where(['t.id' => $payId])
             ->first();
@@ -373,7 +372,7 @@ class NotificationsController extends AppController
                     'visible' => false,
                     'user_id' => $user->id,
                     'invoice_id' => $invoice->id,
-                    'application_id' => $app->id
+                    'application_id' => $app->id,
                 ];
 
                 $note = $notes->newEntity();
@@ -467,13 +466,13 @@ class NotificationsController extends AppController
                     'visible' => true,
                     'user_id' => $user->id,
                     'invoice_id' => $invoice->id,
-                    'application_id' => $app->id
+                    'application_id' => $app->id,
                 ];
 
                 $note = $notes->newEntity();
                 $note = $notes->patchEntity($note, $noteData);
 
-                $feeVal = $invoice->initialvalue - $invoice->value;
+                $feeVal = $invoice->initial_value - $invoice->value;
                 $fee = $feeVal * $feePercentage;
 
                 if ($notes->save($note)) {
@@ -831,7 +830,7 @@ class NotificationsController extends AppController
     public function edit($notificationId = null)
     {
         $notification = $this->Notifications->get($notificationId, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $notification = $this->Notifications->patchEntity($notification, $this->request->getData());

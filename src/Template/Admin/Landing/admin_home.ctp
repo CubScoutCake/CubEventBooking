@@ -22,7 +22,7 @@
         <h1 class="page-header"><i class='fal fa-rocket fa-fw'></i> Admin Home</h1>
     </div>
     <!-- /.col-lg-12 -->
-</div>   
+</div>
     <!-- /.row -->
 <div class="row">
     <div class="col-lg-4 col-md-6">
@@ -100,7 +100,7 @@
             </a>
         </div>
     </div>
-    
+
     <div class="col-lg-4 col-md-6">
         <div class="panel panel-yellow">
             <div class="panel-heading">
@@ -186,7 +186,7 @@
 			  projectId: <?php //echo $keenProject;?>,
 			  readKey: <?php //echo $keenRead;?>});
 
-				Keen.ready(function(){			  
+				Keen.ready(function(){
 				  var query = new Keen.Query("count", {
 				    eventCollection: "Action",
 				    groupBy: [
@@ -197,11 +197,11 @@
 				    timeframe: "this_14_days",
 				    timezone: "UTC"
 				  });
-				  
+
 				  client.draw(query, document.getElementById("chart-of-actions"), {
 				    // Custom configuration here
 				  });
-			  
+
 			});
 
 
@@ -306,7 +306,7 @@
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
-                        </div>                        
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="even-pills">
                         <div class="table-responsive">
@@ -374,7 +374,7 @@
                                                     echo $this->Html->link($invoice->reservation->reservation_number, ['controller' => 'Reservations', 'action' => 'view', $invoice->reservation->id]);
                                                 }
                                                 ?></td>
-                                            <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+                                            <td><?= $this->Number->currency($invoice->initial_value,'GBP') ?></td>
                                             <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                             <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
                                             <td><?= $this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>

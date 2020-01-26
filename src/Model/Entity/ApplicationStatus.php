@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -32,6 +34,7 @@ class ApplicationStatus extends Entity
         'no_money' => true,
         'reserved' => true,
         'attendees_added' => true,
-        'applications' => true
+        'applications' => true,
+        'email_code' => true,
     ];
 }

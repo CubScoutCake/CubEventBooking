@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class ObfuscateAttendees extends AbstractMigration
@@ -19,7 +20,7 @@ class ObfuscateAttendees extends AbstractMigration
                 'null' => true,
             ])
             ->addIndex('identity_hash', [
-                'unique' => true
+                'unique' => true,
             ])
             ->addColumn('obfuscated', 'boolean', [
                 'null' => false,

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\LogisticItemsTable;
@@ -10,7 +12,6 @@ use Cake\TestSuite\TestCase;
  */
 class LogisticItemsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *

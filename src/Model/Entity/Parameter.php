@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -19,7 +21,6 @@ use Cake\ORM\Entity;
  */
 class Parameter extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -37,6 +38,6 @@ class Parameter extends Entity
         'limited' => true,
         'parameter_set' => true,
         'logistics' => true,
-        'params' => true
+        'params' => true,
     ];
 }

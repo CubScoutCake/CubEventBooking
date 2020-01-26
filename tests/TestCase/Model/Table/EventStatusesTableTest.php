@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\EventStatusesTable;
@@ -67,7 +69,7 @@ class EventStatusesTableTest extends TestCase
             'accepting_applications' => true,
             'spaces_full' => true,
             'pending_date' => true,
-            'order' => 1
+            'order' => 1,
         ];
 
         return $good;
@@ -89,7 +91,7 @@ class EventStatusesTableTest extends TestCase
             'accepting_applications' => true,
             'spaces_full' => true,
             'pending_date' => true,
-            'status_order' => 1
+            'status_order' => 1,
         ];
         $this->assertEquals($expected, $actual);
 

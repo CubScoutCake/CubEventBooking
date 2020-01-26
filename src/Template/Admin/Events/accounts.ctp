@@ -71,7 +71,7 @@
             </div>
         </div>
         <br/>
-    </div> 
+    </div>
 </div>
 <div class="row">
     <div class="col-lg-12">
@@ -357,7 +357,7 @@
                                                     </div>
                                                 </td>
                                                 <td><?= $invoice->has('application') && !empty($invoice->application) ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : ($invoice->has('reservation') ? $this->Html->link($invoice->reservation->reservation_number, ['controller' => 'Reservations', 'action' => 'view', $invoice->reservation->id]) : '' )?></td>
-                                                <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+                                                <td><?= $this->Number->currency($invoice->initial_value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
                                                 <td><?= $this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
@@ -402,7 +402,7 @@
                                                     </div>
                                                 </td>
                                                 <td><?= $invoice->has('application') && !empty($invoice->application) ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : ($invoice->has('reservation') ? $this->Html->link($invoice->reservation->reservation_number, ['controller' => 'Reservations', 'action' => 'view', $invoice->reservation->id]) : '' )?></td>
-                                                <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+                                                <td><?= $this->Number->currency($invoice->initial_value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
                                                 <td><?= $this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
@@ -447,7 +447,7 @@
                                                     </div>
                                                 </td>
                                                 <td><?= $invoice->has('application') && !empty($invoice->application) ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : ($invoice->has('reservation') ? $this->Html->link($invoice->reservation->reservation_number, ['controller' => 'Reservations', 'action' => 'view', $invoice->reservation->id]) : '' )?></td>
-                                                <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+                                                <td><?= $this->Number->currency($invoice->initial_value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                                 <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
                                                 <td><?= $this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\SuperUser;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\SuperUser;
  */
 class SectionTypesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -17,7 +18,7 @@ class SectionTypesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Roles']
+            'contain' => ['Roles'],
         ];
         $sectionTypes = $this->paginate($this->SectionTypes);
 
@@ -36,7 +37,7 @@ class SectionTypesController extends AppController
     public function view($sectionTypeId = null)
     {
         $sectionType = $this->SectionTypes->get($sectionTypeId, [
-            'contain' => ['Roles', 'Sections']
+            'contain' => ['Roles', 'Sections'],
         ]);
 
         $this->set('sectionType', $sectionType);
@@ -77,7 +78,7 @@ class SectionTypesController extends AppController
     public function edit($sectionTypeId = null)
     {
         $sectionType = $this->SectionTypes->get($sectionTypeId, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $sectionType = $this->SectionTypes->patchEntity($sectionType, $this->request->getData());

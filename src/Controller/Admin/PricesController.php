@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class PricesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -17,7 +18,7 @@ class PricesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['ItemTypes', 'Events']
+            'contain' => ['ItemTypes', 'Events'],
         ];
         $prices = $this->paginate($this->Prices);
 
@@ -35,7 +36,7 @@ class PricesController extends AppController
     public function view($id = null)
     {
         $price = $this->Prices->get($id, [
-            'contain' => ['ItemTypes', 'Events']
+            'contain' => ['ItemTypes', 'Events'],
         ]);
 
         $this->set('price', $price);
@@ -76,7 +77,7 @@ class PricesController extends AppController
     public function edit($id = null)
     {
         $price = $this->Prices->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $price = $this->Prices->patchEntity($price, $this->request->getData());

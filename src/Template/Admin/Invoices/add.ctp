@@ -7,7 +7,7 @@
             echo $this->Form->input('application_id', ['options' => $applications, 'empty' => true]);
             echo $this->Form->input('value');
             echo $this->Form->input('paid');
-            echo $this->Form->input('initialvalue');
+            echo $this->Form->input('initial_value');
             echo $this->Form->input('payments._ids', ['options' => $payments]);
         ?>
     </fieldset>

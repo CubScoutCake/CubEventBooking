@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -28,6 +30,6 @@ class PasswordState extends Entity
         'password_state' => true,
         'active' => true,
         'expired' => true,
-        'users' => true
+        'users' => true,
     ];
 }

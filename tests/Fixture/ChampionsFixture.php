@@ -47,7 +47,7 @@ class ChampionsFixture extends TestFixture
                 'lastname' => 'Lorem ipsum dolor sit amet',
                 'email' => 'jacob@fish.com',
                 'user_id' => 1,
-                'deleted' => null
+                'deleted' => null,
             ],
             [
                 'district_id' => 1,
@@ -55,7 +55,7 @@ class ChampionsFixture extends TestFixture
                 'lastname' => 'Lorem ipsum dolor sit amet',
                 'email' => 'Lorem goat dolor sit amet',
                 'user_id' => 2,
-                'deleted' => 2482061379
+                'deleted' => 2482061379,
             ],
         ];
         parent::init();

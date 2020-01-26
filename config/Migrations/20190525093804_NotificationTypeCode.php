@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class NotificationTypeCode extends AbstractMigration
@@ -17,7 +18,7 @@ class NotificationTypeCode extends AbstractMigration
             ->addColumn('type_code', 'string', [
                 'limit' => 7,
                 'null' => false,
-                'default' => 'ABC-DEF'
+                'default' => 'ABC-DEF',
             ])
             ->update();
     }

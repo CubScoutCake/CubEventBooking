@@ -50,7 +50,7 @@ class TasksFixture extends TestFixture
                 'modified' => 1553974122,
                 'completed' => 0,
                 'date_completed' => null,
-                'completed_by_user_id' => null
+                'completed_by_user_id' => null,
             ],
             [
                 'task_type_id' => 1,
@@ -59,7 +59,7 @@ class TasksFixture extends TestFixture
                 'modified' => 1553974122,
                 'completed' => 1,
                 'date_completed' => 1553974122,
-                'completed_by_user_id' => 1
+                'completed_by_user_id' => 1,
             ],
         ];
         parent::init();

@@ -1,19 +1,18 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use App\Model\Entity\User;
 use ArrayObject;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Auth\DigestAuthenticate;
 use Cake\Event\Event;
 use Cake\I18n\Time;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Security;
 use Cake\Utility\Text;
 use Cake\Validation\Validator;
-use Search\Manager;
 
 /**
  * Users Model
@@ -67,63 +66,63 @@ class UsersTable extends Table
                 'Model.beforeSave' => [
                     'created' => 'new',
                     'modified' => 'always',
-                    ]
-                ]
+                    ],
+                ],
             ]);
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
         $this->addBehavior('Search.Search');
         $this->addBehavior('CounterCache', [
             'Sections' => [
-                'cc_users'
-            ]
+                'cc_users',
+            ],
         ]);
 
         $this->belongsTo('Roles', [
             'foreignKey' => 'role_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
 
         $this->belongsTo('AuthRoles', [
             'foreignKey' => 'auth_role_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('PasswordStates', [
-            'foreignKey' => 'password_state_id'
+            'foreignKey' => 'password_state_id',
         ]);
         $this->belongsTo('Sections', [
-            'foreignKey' => 'section_id'
+            'foreignKey' => 'section_id',
         ]);
         $this->hasMany('Applications', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Attendees', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Champions', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('EmailSends', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Invoices', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Notes', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Notifications', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Payments', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Reservations', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Tasks', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
 
         $this->searchManager()
@@ -140,7 +139,7 @@ class UsersTable extends Table
                  'comparison' => 'ILIKE',
                  'wildcardAny' => '*',
                  'wildcardOne' => '?',
-                 'field' => ['firstname', 'lastname', 'email', 'username']
+                 'field' => ['firstname', 'lastname', 'email', 'username'],
              ]);
     }
 
@@ -499,9 +498,9 @@ class UsersTable extends Table
     public $initCase = ['firstname', 'lastname', 'address_1', 'address_2', 'city', 'county'];
 
     /**
-     * @param User $entity The Attendee Entity to be Case Fixed
+     * @param \App\Model\Entity\User $entity The Attendee Entity to be Case Fixed
      *
-     * @return User
+     * @return \App\Model\Entity\User
      */
     public function changeCase($entity)
     {
@@ -566,9 +565,9 @@ class UsersTable extends Table
     /**
      * Finder to locate Parent Accounts
      *
-     * @param Query $query the Query to be modified.
+     * @param \Cake\ORM\Query $query the Query to be modified.
      *
-     * @return Query
+     * @return \Cake\ORM\Query
      */
     public function findParents($query)
     {
@@ -580,9 +579,9 @@ class UsersTable extends Table
     /**
      * Finder to locate Access User Accounts
      *
-     * @param Query $query the Query to be modified.
+     * @param \Cake\ORM\Query $query the Query to be modified.
      *
-     * @return Query
+     * @return \Cake\ORM\Query
      */
     public function findAccess($query)
     {
@@ -603,8 +602,8 @@ class UsersTable extends Table
         $user = $this->detectExisting($userArray);
 
         if ($user !== false) {
-            /** @var User $user */
             $userId = $user->id;
+            /** @var \App\Model\Entity\User $user */
             $user = $this->get($userId, ['contain' => 'AuthRoles']);
 
             $user->set('auth_role_id', $this->AuthRoles->parentAuthRole($user->auth_role));
@@ -629,7 +628,7 @@ class UsersTable extends Table
             'OR' => [
                 'email ILIKE' => $userArray['email'],
                 'postcode ILIKE' => $userArray['postcode'],
-            ]
+            ],
         ]);
 
         if (!is_null($existingFind->count()) && $existingFind->count() == 1) {
@@ -645,7 +644,7 @@ class UsersTable extends Table
      * @param array $userData Request Data for User
      * @param int $sectionId ID of the Section
      *
-     * @return bool|User
+     * @return bool|\App\Model\Entity\User
      */
     public function createParent($userData, $sectionId)
     {
@@ -677,7 +676,7 @@ class UsersTable extends Table
      * @param array $userData Request Data for User
      * @param int $sectionId ID of the Section
      *
-     * @return bool|User
+     * @return bool|\App\Model\Entity\User
      */
     public function createOrDetectParent($userData, $sectionId)
     {

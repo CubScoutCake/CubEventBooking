@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -62,6 +64,6 @@ class EmailSend extends Entity
         'notification_type' => true,
         'notification' => true,
         'email_responses' => true,
-        'tokens' => true
+        'tokens' => true,
     ];
 }

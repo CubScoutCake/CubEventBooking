@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -14,11 +16,7 @@
  */
 namespace App\Controller\Admin;
 
-use Cake\Core\Configure;
-use Cake\Mailer\Email;
-use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
-use Cake\View\Exception\MissingTemplateException;
 
 /**
  * Static content controller
@@ -54,7 +52,7 @@ class LandingController extends AppController
         $this->loadComponent('Search.Prg', [
             // This is default config. You can modify "actions" as needed to make
             // the PRG component work only for specified methods.
-            'actions' => ['link']
+            'actions' => ['link'],
         ]);
     }
 
@@ -175,7 +173,7 @@ class LandingController extends AppController
                 'contain' => ['Roles', 'Sections.Scoutgroups', 'Sections.SectionTypes'],
                 'order' => ['last_login' => 'DESC'],
                 'limit' => 10,
-                'conditions' => ['SectionTypes.id' => $section['section_type_id']]
+                'conditions' => ['SectionTypes.id' => $section['section_type_id']],
             ];
 
             $this->Scoutgroups = TableRegistry::getTableLocator()->get('Scoutgroups');
@@ -186,7 +184,7 @@ class LandingController extends AppController
                     [
                         'keyField' => 'id',
                         'valueField' => 'section',
-                        'groupField' => 'scoutgroup.district.district'
+                        'groupField' => 'scoutgroup.district.district',
                     ]
                 )
                 ->where(['section_type_id' => $section['section_type_id']])

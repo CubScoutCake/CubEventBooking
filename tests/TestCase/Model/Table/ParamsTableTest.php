@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\ParamsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class ParamsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -63,12 +63,12 @@ class ParamsTableTest extends TestCase
             [
                 'id' => 1,
                 'parameter_id' => 1,
-                'constant' => 'Morning'
+                'constant' => 'Morning',
             ],
             [
                 'id' => 2,
                 'parameter_id' => 1,
-                'constant' => 'Afternoon'
+                'constant' => 'Afternoon',
             ],
         ];
 

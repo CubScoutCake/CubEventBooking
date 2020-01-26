@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class AuthSection extends AbstractMigration
@@ -15,7 +16,7 @@ class AuthSection extends AbstractMigration
         $table = $this->table('auth_roles');
 
         $table->addColumn('section_limited', 'boolean', [
-                'null' => true
+                'null' => true,
             ])
             ->renameColumn('user', 'user_access')
             ->renameColumn('parent', 'parent_access')

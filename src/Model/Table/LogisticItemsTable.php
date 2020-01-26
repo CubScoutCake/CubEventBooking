@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -25,7 +26,6 @@ use Cake\Validation\Validator;
  */
 class LogisticItemsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -41,20 +41,20 @@ class LogisticItemsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('Applications', [
-            'foreignKey' => 'application_id'
+            'foreignKey' => 'application_id',
         ]);
         $this->belongsTo('Logistics', [
-            'foreignKey' => 'logistic_id'
+            'foreignKey' => 'logistic_id',
         ]);
         $this->belongsTo('Params', [
-            'foreignKey' => 'param_id'
+            'foreignKey' => 'param_id',
         ]);
         $this->belongsTo('Reservations', [
-            'foreignKey' => 'reservation_id'
+            'foreignKey' => 'reservation_id',
         ]);
     }
 

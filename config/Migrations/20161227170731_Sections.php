@@ -46,7 +46,7 @@ class Sections extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->create();
@@ -89,7 +89,7 @@ class Sections extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -98,7 +98,7 @@ class Sections extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addIndex(['section_type_id'])
@@ -116,7 +116,7 @@ class Sections extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addIndex(['section_id'])
@@ -135,7 +135,7 @@ class Sections extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addIndex(['section_id'])
@@ -153,7 +153,7 @@ class Sections extends AbstractMigration
                 'id',
                 [
                     'delete' => 'RESTRICT',
-                    'update' => 'CASCADE'
+                    'update' => 'CASCADE',
                 ]
             )
             ->addIndex(['section_id'])

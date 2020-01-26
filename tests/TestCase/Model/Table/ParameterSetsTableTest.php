@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ParameterSetsTable;
@@ -10,7 +12,6 @@ use Cake\TestSuite\TestCase;
  */
 class ParameterSetsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -24,7 +25,7 @@ class ParameterSetsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.ParameterSets'
+        'app.ParameterSets',
     ];
 
     /**

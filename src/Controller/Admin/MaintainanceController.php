@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -15,7 +17,6 @@
 namespace App\Controller\Admin;
 
 use Cake\Core\Configure;
-use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 
 /**
@@ -27,7 +28,6 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class MaintainanceController extends AppController
 {
-
     /**
      * Displays a view
      *

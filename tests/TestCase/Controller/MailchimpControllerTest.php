@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\MailchimpController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -18,7 +19,7 @@ class MailchimpControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/mailchimp/mailchimp');

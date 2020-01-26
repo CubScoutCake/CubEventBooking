@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -49,22 +50,22 @@ class InvoicesTable extends Table
                 'Model.beforeSave' => [
                     'created' => 'new',
                     'modified' => 'always',
-                    ]
-                ]
+                    ],
+                ],
             ]);
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Applications', [
-            'foreignKey' => 'application_id'
+            'foreignKey' => 'application_id',
         ]);
         $this->belongsTo('Reservations', [
-            'foreignKey' => 'reservation_id'
+            'foreignKey' => 'reservation_id',
         ]);
         $this->hasMany('InvoiceItems', [
             'foreignKey' => 'invoice_id',
@@ -77,7 +78,7 @@ class InvoicesTable extends Table
             'conditions' => ['ScheduleItems.schedule_line' => true],
         ]);
         $this->hasMany('Notes', [
-            'foreignKey' => 'invoice_id'
+            'foreignKey' => 'invoice_id',
         ]);
         $this->belongsToMany('Payments', [
             'through' => 'InvoicesPayments',
@@ -87,7 +88,7 @@ class InvoicesTable extends Table
         // Adding Counter Caches
 
         $this->addBehavior('CounterCache', [
-            'Applications' => ['cc_inv_count']
+            'Applications' => ['cc_inv_count'],
         ]);
     }
 
@@ -112,8 +113,8 @@ class InvoicesTable extends Table
             ->allowEmptyString('paid');
 
         $validator
-            ->numeric('initialvalue')
-            ->allowEmptyString('initialvalue');
+            ->numeric('initial_value')
+            ->allowEmptyString('initial_value');
 
         return $validator;
     }
@@ -139,7 +140,8 @@ class InvoicesTable extends Table
      *
      * @param int $invoiceId The configuration for the Table.
      * @param int $userId The configuration for the Table.
-     * @return \App\Model\Entity\Invoice The Auth function for ownership;
+     *
+     * @return bool The Auth function for ownership;
      */
     public function isOwnedBy($invoiceId, $userId)
     {
@@ -168,7 +170,12 @@ class InvoicesTable extends Table
      */
     public function findOutstanding($query)
     {
-        return $query->where(['Invoices.value < Invoices.initialvalue'])->orWhere(['Invoices.value IS' => null]);
+        return $query->where([
+            'OR' => [
+                ['Invoices.paid_value < Invoices.initial_value'],
+                ['Invoices.paid_value IS' => null],
+            ],
+        ]);
     }
 
     /**
@@ -179,7 +186,12 @@ class InvoicesTable extends Table
      */
     public function findUnpaid($query)
     {
-        return $query->where(['Invoices.value IS' => 0])->orWhere(['Invoices.value IS' => null]);
+        return $query->where([
+            'OR' => [
+                ['Invoices.paid_value IS' => 0],
+                ['Invoices.paid_value IS' => null],
+            ],
+        ]);
     }
 
     /**
@@ -193,13 +205,13 @@ class InvoicesTable extends Table
         return $query
             ->contain([
                 'Reservations.ReservationStatuses',
-                'Applications.ApplicationStatuses'
+                'Applications.ApplicationStatuses',
             ])
             ->where([
                 'OR' => [
                     'ApplicationStatuses.active' => true,
                     'ReservationStatuses.active' => true,
-                ]
+                ],
             ]);
     }
 
@@ -232,7 +244,7 @@ class InvoicesTable extends Table
             'OR' => [
                 'Invoices.id IN' => $matchingApplications,
                 'Invoices.id IN ' => $matchingReservations,
-            ]
+            ],
          ]);
     }
 
@@ -268,7 +280,7 @@ class InvoicesTable extends Table
      */
     public function findTotalValue($query)
     {
-        return $query->select(['sum' => $query->func()->sum('value')])->group('id');
+        return $query->select(['sum' => $query->func()->sum('paid_value')])->group('id');
     }
 
     /**
@@ -279,6 +291,6 @@ class InvoicesTable extends Table
      */
     public function findTotalInitialValue($query)
     {
-        return $query->select(['sum' => $query->func()->sum('initialvalue')])->group('id');
+        return $query->select(['sum' => $query->func()->sum('initial_value')])->group('id');
     }
 }

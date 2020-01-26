@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller;
  */
 class DistrictsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -30,7 +31,7 @@ class DistrictsController extends AppController
     public function view($id = null)
     {
         $district = $this->Districts->get($id, [
-            'contain' => ['Champions', 'Scoutgroups']
+            'contain' => ['Champions', 'Scoutgroups'],
         ]);
         $this->set('district', $district);
         $this->set('_serialize', ['district']);

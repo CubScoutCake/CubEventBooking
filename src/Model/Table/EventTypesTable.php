@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -64,7 +65,7 @@ class EventTypesTable extends Table
             'conditions' => ['Payable.setting_type_id' => 7],
         ]);
         $this->hasMany('Events', [
-            'foreignKey' => 'event_type_id'
+            'foreignKey' => 'event_type_id',
         ]);
     }
 

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class DistrictsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -34,7 +35,7 @@ class DistrictsController extends AppController
                 'Champions.Users',
                 'Scoutgroups.Sections.Applications.Events',
                 'Scoutgroups.Sections.Applications.Users',
-            ]
+            ],
         ]);
         $this->set('district', $district);
         $this->set('_serialize', ['district']);
@@ -72,7 +73,7 @@ class DistrictsController extends AppController
     public function edit($districtId = null)
     {
         $district = $this->Districts->get($districtId, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $district = $this->Districts->patchEntity($district, $this->request->getData());

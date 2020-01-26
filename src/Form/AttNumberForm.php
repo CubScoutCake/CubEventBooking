@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Form;
 
 use Cake\Form\Form;
 use Cake\Form\Schema;
-use Cake\Network\Response;
 use Cake\Validation\Validator;
 
 /**
@@ -29,9 +30,9 @@ class AttNumberForm extends Form
     /**
      * Function to Validate the Form
      *
-     * @param Validator $validator The basic Validation to be extended.
+     * @param \Cake\Validation\Validator $validator The basic Validation to be extended.
      *
-     * @return Validator $validator
+     * @return \Cake\Validation\Validator $validator
      */
     protected function _buildValidator(Validator $validator)
     {

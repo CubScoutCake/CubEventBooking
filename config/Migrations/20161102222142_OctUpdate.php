@@ -1,9 +1,9 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class OctUpdate extends AbstractMigration
 {
-
     public function up()
     {
         $this->table('applications')
@@ -960,7 +960,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addForeignKey(
@@ -969,7 +969,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();
@@ -981,7 +981,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -990,7 +990,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();
@@ -1002,7 +1002,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addForeignKey(
@@ -1011,7 +1011,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();
@@ -1023,7 +1023,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addForeignKey(
@@ -1032,7 +1032,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();
@@ -1044,7 +1044,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addForeignKey(
@@ -1061,7 +1061,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addForeignKey(
@@ -1070,7 +1070,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addForeignKey(
@@ -1079,7 +1079,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();
@@ -1091,7 +1091,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -1108,7 +1108,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addForeignKey(
@@ -1117,7 +1117,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();
@@ -1132,7 +1132,7 @@ class OctUpdate extends AbstractMigration
                 '',
                 [
                     'update' => '',
-                    'delete' => ''
+                    'delete' => '',
                 ]
             )
             ->addForeignKey(
@@ -1141,7 +1141,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addForeignKey(
@@ -1150,7 +1150,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->update();
@@ -1162,7 +1162,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -1171,7 +1171,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -1180,7 +1180,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->update();
@@ -1192,7 +1192,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -1201,7 +1201,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->update();
@@ -1213,7 +1213,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -1222,7 +1222,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -1231,7 +1231,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'SETNULL'
+                    'delete' => 'SETNULL',
                 ]
             )
             ->update();
@@ -1243,7 +1243,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->addForeignKey(
@@ -1252,7 +1252,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->update();
@@ -1264,7 +1264,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();
@@ -1276,7 +1276,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'CASCADE'
+                    'delete' => 'CASCADE',
                 ]
             )
             ->update();
@@ -1296,7 +1296,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();
@@ -1308,7 +1308,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();
@@ -1320,7 +1320,7 @@ class OctUpdate extends AbstractMigration
                 'id',
                 [
                     'update' => 'CASCADE',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();

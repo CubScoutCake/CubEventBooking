@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -26,7 +28,6 @@ use Cake\Controller\Controller;
  */
 class AppController extends Controller
 {
-
     /**
      * Initialise Function - Setup Application Config
      * @return void
@@ -39,18 +40,18 @@ class AppController extends Controller
             'loginRedirect' => [
                 'controller' => 'Landing',
                 'action' => 'user_home',
-                'prefix' => false
+                'prefix' => false,
                 ],
             'logoutRedirect' => [
                 'controller' => 'Landing',
                 'action' => 'welcome',
-                'prefix' => false
+                'prefix' => false,
                 ],
             'loginAction' => [
                 'controller' => 'Users',
                 'action' => 'login',
                 'prefix' => false,
-                ]
+                ],
         ]);
 
         $this->loadComponent('RequestHandler', [

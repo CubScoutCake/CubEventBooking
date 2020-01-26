@@ -82,7 +82,7 @@ class ApplicationsFixture extends TestFixture
                 'cc_inv_yls' => 1,
                 'cc_inv_leaders' => 1,
                 'deleted' => null,
-                'hold_numbers' => ''
+                'hold_numbers' => '',
             ],
             [
                 'user_id' => 1,
@@ -105,7 +105,7 @@ class ApplicationsFixture extends TestFixture
                 'cc_inv_yls' => 1,
                 'cc_inv_leaders' => 1,
                 'deleted' => 1481841289,
-                'hold_numbers' => ''
+                'hold_numbers' => '',
             ],
             [
                 'user_id' => 1,
@@ -128,7 +128,7 @@ class ApplicationsFixture extends TestFixture
                 'cc_inv_yls' => 1,
                 'cc_inv_leaders' => 1,
                 'deleted' => null,
-                'hold_numbers' => ''
+                'hold_numbers' => '',
             ],
         ];
         parent::init();

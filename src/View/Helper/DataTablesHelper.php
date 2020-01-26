@@ -1,10 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\View\Helper;
 
-use Cake\ORM\Query;
 use Cake\View\Helper;
 use Cake\View\StringTemplateTrait;
-use Cake\View\View;
 
 /**
  * DataTables helper
@@ -13,7 +13,6 @@ use Cake\View\View;
  */
 class DataTablesHelper extends Helper
 {
-
     use StringTemplateTrait;
 
     protected $_defaultConfig = [
@@ -66,6 +65,11 @@ class DataTablesHelper extends Helper
      */
     public function draw($selector)
     {
-        return sprintf('delay=%d;table=jQuery("%s").dataTable(%s);initSearch();', $this->config('delay'), $selector, json_encode($this->config()));
+        return sprintf(
+            'delay=%d;table=jQuery("%s").dataTable(%s);initSearch();',
+            $this->getConfig('delay'),
+            $selector,
+            json_encode($this->getConfig())
+        );
     }
 }

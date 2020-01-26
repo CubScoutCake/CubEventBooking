@@ -39,7 +39,7 @@ class ReservationStatusesFixture extends TestFixture
                 'active' => true,
                 'complete' => false,
                 'cancelled' => false,
-                'status_order' => 1
+                'status_order' => 1,
             ],
             [
                 'reservation_status' => 'Complete',
@@ -60,7 +60,7 @@ class ReservationStatusesFixture extends TestFixture
                 'active' => false,
                 'complete' => false,
                 'cancelled' => true,
-                'status_order' => 0
+                'status_order' => 0,
             ],
         ];
         parent::init();

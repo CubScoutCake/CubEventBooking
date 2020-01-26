@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\SuperUser;
 
-use App\Controller\SuperUser\ApplicationStatusesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -74,7 +75,7 @@ class ApplicationStatusesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
@@ -97,14 +98,14 @@ class ApplicationStatusesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'controller' => 'ApplicationStatuses',
             'action' => 'view',
             'prefix' => 'super_user',
-            1
+            1,
         ]);
 
         $this->assertResponseOk();
@@ -121,7 +122,7 @@ class ApplicationStatusesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
@@ -163,14 +164,14 @@ class ApplicationStatusesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'controller' => 'ApplicationStatuses',
             'action' => 'edit',
             'prefix' => 'super_user',
-            1
+            1,
         ]);
 
         $this->assertResponseOk();
@@ -183,7 +184,7 @@ class ApplicationStatusesControllerTest extends TestCase
             'controller' => 'ApplicationStatuses',
             'action' => 'edit',
             'prefix' => 'super_user',
-            1
+            1,
         ], [
             'application_status' => 'Old Application',
             'active' => false,
@@ -207,7 +208,7 @@ class ApplicationStatusesControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableRetainFlashMessages();
@@ -233,7 +234,7 @@ class ApplicationStatusesControllerTest extends TestCase
             'controller' => 'ApplicationStatuses',
             'action' => 'delete',
             'prefix' => 'super_user',
-            2
+            2,
         ]);
 
         $this->assertRedirect();

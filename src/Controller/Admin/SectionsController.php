@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use Cake\ORM\TableRegistry;
@@ -10,7 +12,6 @@ use Cake\ORM\TableRegistry;
  */
 class SectionsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -44,7 +45,7 @@ class SectionsController extends AppController
     public function view($id = null)
     {
         $section = $this->Sections->get($id, [
-            'contain' => ['SectionTypes', 'Scoutgroups', 'Applications', 'Attendees', 'Users']
+            'contain' => ['SectionTypes', 'Scoutgroups', 'Applications', 'Attendees', 'Users'],
         ]);
 
         $this->set('section', $section);
@@ -75,7 +76,7 @@ class SectionsController extends AppController
             [
             'keyField' => 'id',
             'valueField' => 'scoutgroup',
-            'groupField' => 'district.district'
+            'groupField' => 'district.district',
             ]
         )
         ->contain(['Districts']);
@@ -93,7 +94,7 @@ class SectionsController extends AppController
     public function edit($id = null)
     {
         $section = $this->Sections->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $section = $this->Sections->patchEntity($section, $this->request->getData());
@@ -111,7 +112,7 @@ class SectionsController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
+                'groupField' => 'district.district',
             ]
         )
             ->contain(['Districts']);

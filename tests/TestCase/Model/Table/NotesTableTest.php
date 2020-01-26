@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\NotesTable;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -11,7 +12,6 @@ use Cake\TestSuite\TestCase;
  */
 class NotesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -100,7 +100,7 @@ class NotesTableTest extends TestCase
                 'note_text' => 'Lorem ipsum dolor sit amet',
                 'deleted' => null,
                 'created' => $timeNow,
-                'modified' => $timeNow
+                'modified' => $timeNow,
             ],
         ];
 
@@ -125,7 +125,7 @@ class NotesTableTest extends TestCase
             'note_text' => 'Lorem ipsum dolor sit amet',
             'deleted' => $timeNow,
             'created' => $timeNow,
-            'modified' => $timeNow
+            'modified' => $timeNow,
         ];
 
         $goodData = [
@@ -137,7 +137,7 @@ class NotesTableTest extends TestCase
             'note_text' => 'Lorem ipsum dolor sit amet',
             'deleted' => null,
             'created' => $timeNow,
-            'modified' => $timeNow
+            'modified' => $timeNow,
         ];
 
         $expected = [
@@ -150,7 +150,7 @@ class NotesTableTest extends TestCase
                 'note_text' => 'Lorem ipsum dolor sit amet',
                 'deleted' => null,
                 'created' => $timeNow,
-                'modified' => $timeNow
+                'modified' => $timeNow,
             ],
             [
                 'id' => 2,
@@ -161,8 +161,8 @@ class NotesTableTest extends TestCase
                 'note_text' => 'Lorem ipsum dolor sit amet',
                 'deleted' => null,
                 'created' => $timeNow,
-                'modified' => $timeNow
-            ]
+                'modified' => $timeNow,
+            ],
         ];
 
         $badEntity = $this->Notes->newEntity($badData);
@@ -197,7 +197,7 @@ class NotesTableTest extends TestCase
             'note_text' => 'Lorem ipsum dolor sit amet',
             'deleted' => $timeNow,
             'created' => $timeNow,
-            'modified' => $timeNow
+            'modified' => $timeNow,
         ];
 
         $outData = [
@@ -209,7 +209,7 @@ class NotesTableTest extends TestCase
             'note_text' => 'Lorem ipsum dolor sit amet',
             'deleted' => $timeNow,
             'created' => $timeNow,
-            'modified' => $timeNow
+            'modified' => $timeNow,
         ];
 
         $goodData = [
@@ -221,7 +221,7 @@ class NotesTableTest extends TestCase
             'note_text' => 'Lorem ipsum dolor sit amet',
             'deleted' => null,
             'created' => $timeNow,
-            'modified' => $timeNow
+            'modified' => $timeNow,
         ];
 
         $expected = [
@@ -234,7 +234,7 @@ class NotesTableTest extends TestCase
                 'note_text' => 'Lorem ipsum dolor sit amet',
                 'deleted' => null,
                 'created' => $timeNow,
-                'modified' => $timeNow
+                'modified' => $timeNow,
             ],
             [
                 'id' => 2,
@@ -245,8 +245,8 @@ class NotesTableTest extends TestCase
                 'note_text' => 'Lorem ipsum dolor sit amet',
                 'deleted' => null,
                 'created' => $timeNow,
-                'modified' => $timeNow
-            ]
+                'modified' => $timeNow,
+            ],
         ];
 
         $badEntity = $this->Notes->newEntity($badData, ['accessibleFields' => ['id' => true]]);

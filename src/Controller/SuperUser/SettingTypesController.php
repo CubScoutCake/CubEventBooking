@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\SuperUser;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\SuperUser;
  */
 class SettingTypesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -33,7 +34,7 @@ class SettingTypesController extends AppController
     public function view($settingTypeId = null)
     {
         $settingType = $this->SettingTypes->get($settingTypeId, [
-            'contain' => ['Settings']
+            'contain' => ['Settings'],
         ]);
 
         $this->set('settingType', $settingType);
@@ -72,7 +73,7 @@ class SettingTypesController extends AppController
     public function edit($settingTypeId = null)
     {
         $settingType = $this->SettingTypes->get($settingTypeId, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $settingType = $this->SettingTypes->patchEntity($settingType, $this->request->getData());

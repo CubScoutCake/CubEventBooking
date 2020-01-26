@@ -18,11 +18,10 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-use Cake\Core\Plugin;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 
 /**
  * The default class to use for all routes
@@ -53,7 +52,7 @@ Router::defaultRouteClass(DashedRoute::class);
 Router::scope('/', function (RouteBuilder $routes) {
 
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
-        'httpOnly' => true
+        'httpOnly' => true,
     ]));
 
     /**
@@ -118,7 +117,7 @@ Router::prefix('admin', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'adminHome', 'admin_home']);
 
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
-        'httpOnly' => true
+        'httpOnly' => true,
     ]));
 
     $routes->applyMiddleware('csrf');
@@ -133,7 +132,7 @@ Router::prefix('super_user', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'superUserHome', 'super_user_home']);
 
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
-        'httpOnly' => false
+        'httpOnly' => false,
     ]));
 
     /**
@@ -152,7 +151,7 @@ Router::prefix('champion', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Landing', 'action' => 'championHome', 'champion_home']);
 
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
-        'httpOnly' => true
+        'httpOnly' => true,
     ]));
 
     $routes->applyMiddleware('csrf');
@@ -167,7 +166,7 @@ Router::prefix('parent', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Reservation', 'action' => 'index', 'index']);
 
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
-        'httpOnly' => true
+        'httpOnly' => true,
     ]));
 
     $routes->applyMiddleware('csrf');
@@ -182,7 +181,7 @@ Router::prefix('register', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Users', 'action' => 'register']);
 
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
-        'httpOnly' => true
+        'httpOnly' => true,
     ]));
 
     $routes->applyMiddleware('csrf');
@@ -197,7 +196,7 @@ Router::prefix('api', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Users', 'action' => 'register']);
 
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
-        'httpOnly' => true
+        'httpOnly' => true,
     ]));
 
     $routes->applyMiddleware('csrf');

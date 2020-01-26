@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\SuperUser;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\SuperUser;
  */
 class NotificationTypesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -31,7 +32,7 @@ class NotificationTypesController extends AppController
     public function view($notificationTypeId = null)
     {
         $notificationType = $this->NotificationTypes->get($notificationTypeId, [
-            'contain' => ['Notifications']
+            'contain' => ['Notifications'],
         ]);
         $this->set('notificationType', $notificationType);
         $this->set('_serialize', ['notificationType']);
@@ -69,7 +70,7 @@ class NotificationTypesController extends AppController
     public function edit($notificationTypeId = null)
     {
         $notificationType = $this->NotificationTypes->get($notificationTypeId, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $notificationType = $this->NotificationTypes->patchEntity($notificationType, $this->request->getData());

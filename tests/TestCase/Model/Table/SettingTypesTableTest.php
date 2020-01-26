@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\SettingTypesTable;
@@ -11,7 +13,6 @@ use Cake\Utility\Security;
  */
 class SettingTypesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -64,7 +65,7 @@ class SettingTypesTableTest extends TestCase
         $good = [
             'setting_type' => 'Max Cheese ' . random_int(111, 999) . ' ' . random_int(111, 999),
             'description' => 'The largest limit of Cheese',
-            'min_auth' => 1
+            'min_auth' => 1,
         ];
 
         return $good;
@@ -83,7 +84,7 @@ class SettingTypesTableTest extends TestCase
             'id' => 1,
             'setting_type' => 'Lorem ipsum dolor sit amet',
             'description' => 'Lorem ipsum dolor sit amet',
-            'min_auth' => 1
+            'min_auth' => 1,
         ];
         $this->assertEquals($expected, $actual);
 
@@ -105,7 +106,7 @@ class SettingTypesTableTest extends TestCase
 
         $required = [
             'setting_type',
-            'min_auth'
+            'min_auth',
         ];
 
         foreach ($required as $require) {

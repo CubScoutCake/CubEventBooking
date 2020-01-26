@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -34,6 +36,6 @@ class Scoutgroup extends Entity
         'number_stripped' => true,
         'deleted' => true,
         'district' => true,
-        'sections' => true
+        'sections' => true,
     ];
 }

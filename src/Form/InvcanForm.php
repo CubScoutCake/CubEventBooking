@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Form;
 
 use Cake\Form\Form;
@@ -10,9 +12,9 @@ class InvcanForm extends Form
     /**
      * Build schema for the form.
      *
-     * @param Schema $schema The basic schema to be extended.
+     * @param \Cake\Form\Schema $schema The basic schema to be extended.
      *
-     * @return Schema
+     * @return \Cake\Form\Schema
      */
     protected function _buildSchema(Schema $schema)
     {
@@ -29,9 +31,9 @@ class InvcanForm extends Form
     /**
      * Build Validator array.
      *
-     * @param Validator $validator The Basic Validator to be Extended.
+     * @param \Cake\Validation\Validator $validator The Basic Validator to be Extended.
      *
-     * @return Validator
+     * @return \Cake\Validation\Validator
      */
     protected function _buildValidator(Validator $validator)
     {

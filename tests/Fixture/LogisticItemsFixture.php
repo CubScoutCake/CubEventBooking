@@ -49,7 +49,7 @@ class LogisticItemsFixture extends TestFixture
                 'logistic_id' => 1,
                 'param_id' => 1,
                 'deleted' => null,
-                'reservation_id' => null
+                'reservation_id' => null,
             ],
         ];
         parent::init();

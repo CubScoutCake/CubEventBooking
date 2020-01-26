@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class Reservations extends AbstractMigration
@@ -46,7 +47,7 @@ class Reservations extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addColumn('user_id', 'integer', [
@@ -59,7 +60,7 @@ class Reservations extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addColumn('attendee_id', 'integer', [
@@ -72,7 +73,7 @@ class Reservations extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addColumn('reservation_status_id', 'integer', [
@@ -85,7 +86,7 @@ class Reservations extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->addColumn('created', 'datetime', [
@@ -120,7 +121,7 @@ class Reservations extends AbstractMigration
         $table
             ->addColumn('reservation_id', 'integer', [
                 'default' => null,
-                'null' => true
+                'null' => true,
             ])
             ->addForeignKey(
                 'reservation_id',
@@ -128,7 +129,7 @@ class Reservations extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->save();
@@ -138,7 +139,7 @@ class Reservations extends AbstractMigration
         $table
             ->addColumn('reservation_id', 'integer', [
                 'default' => null,
-                'null' => true
+                'null' => true,
             ])
             ->addForeignKey(
                 'reservation_id',
@@ -146,7 +147,7 @@ class Reservations extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->save();

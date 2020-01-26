@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
@@ -18,7 +20,6 @@ use Cake\Utility\Inflector;
  */
 class ScoutManagerComponent extends Component
 {
-
     /**
      * Default configuration.
      *
@@ -26,10 +27,14 @@ class ScoutManagerComponent extends Component
      */
     protected $_defaultConfig = [];
 
-    /** @var \Cake\Http\Client $http */
+    /**
+     * @var \Cake\Http\Client $http
+     */
     public $http;
 
-    /** @var array $components */
+    /**
+     * @var array $components
+     */
     public $components = ['Flash'];
 
     /**
@@ -48,7 +53,7 @@ class ScoutManagerComponent extends Component
         if (!is_null($client)) {
             $this->http = new Client([
                 'host' => Configure::readOrFail('OSM.api_base'),
-                'scheme' => 'https'
+                'scheme' => 'https',
             ]);
         }
 
@@ -64,23 +69,24 @@ class ScoutManagerComponent extends Component
      */
     public function getOsmSettings()
     {
-        if (!($apiId = Configure::readOrFail('OSM.api_id'))) {
+        $apiId = Configure::readOrFail('OSM.api_id');
+        if (!$apiId) {
             return false;
-        };
-        if (!($apiToken = Configure::readOrFail('OSM.api_token'))) {
+        }
+        $apiToken = Configure::readOrFail('OSM.api_token');
+        if (!$apiToken) {
             return false;
-        };
-        if (!($apiBase = Configure::readOrFail('OSM.api_base'))) {
+        }
+        $apiBase = Configure::readOrFail('OSM.api_base');
+        if (!$apiBase) {
             return false;
-        };
+        }
 
-        $returnArray = [
+        return [
             'api_id' => $apiId,
             'api_base' => $apiBase,
             'api_token' => $apiToken,
         ];
-
-        return $returnArray;
     }
 
     /**
@@ -203,7 +209,8 @@ class ScoutManagerComponent extends Component
     {
         $controller = $this->_registry->getController();
 
-        if (!($settingsArray = $this->getOsmSettings())) {
+        $settingsArray = $this->getOsmSettings();
+        if (!$settingsArray) {
             $errorMessage = 'Error in retrieving OSM settings.';
             $this->log($errorMessage);
 
@@ -225,11 +232,13 @@ class ScoutManagerComponent extends Component
             'apiid' => $settingsArray['api_id'],
         ]);
 
+        $FailMessage = 'Incorrect password - you have 5 more attempts before your account is locked for 15 minutes.';
+
         if ($response->isOk()) {
             $body = json_decode($response->getStringBody());
 
             if (isset($body->error)) {
-                if ($body->error == 'Incorrect password - you have 5 more attempts before your account is locked for 15 minutes.') {
+                if ($body->error == $FailMessage) {
                     $errorMessage = 'Incorrect password - OSM will lock your account after 5 attempts.';
                 } else {
                     $errorMessage = 'Unknown Error.';
@@ -304,7 +313,8 @@ class ScoutManagerComponent extends Component
     {
         $controller = $this->_registry->getController();
 
-        if (!($settingsArray = $this->getOsmSettings())) {
+        $settingsArray = $this->getOsmSettings();
+        if (!$settingsArray) {
             $errorMessage = 'Error retrieving OSM settings.';
             $this->log($errorMessage);
 
@@ -336,7 +346,7 @@ class ScoutManagerComponent extends Component
 
         $http = new Client([
             'host' => $settingsArray['api_base'],
-            'scheme' => 'https'
+            'scheme' => 'https',
         ]);
 
         $url = '/api.php?action=getUserRoles';
@@ -358,7 +368,7 @@ class ScoutManagerComponent extends Component
             'userid' => $user->osm_user_id,
             'secret' => $secret,
             'token' => $settingsArray['api_token'],
-            'apiid' => $settingsArray['api_id']
+            'apiid' => $settingsArray['api_id'],
         ]);
 
         if ($response->isOk() && $response->body <> false) {
@@ -372,13 +382,21 @@ class ScoutManagerComponent extends Component
 
             foreach ($selectArray as $key => $section) {
                 if ($section['section'] == $sectionType) {
-                    $sectionArray = Hash::insert($sectionArray, $section['sectionid'], $section['groupname'] . ': ' . $section['sectionname']);
+                    $sectionArray = Hash::insert(
+                        $sectionArray,
+                        $section['sectionid'],
+                        $section['groupname'] . ': ' . $section['sectionname']
+                    );
                     $sectionSelected = $section;
                 }
             }
 
             if (count($sectionArray) == 1 && isset($controller) && isset($sectionSelected)) {
-                $this->Flash->success(__('Only one section of section type ' . $sectionType . ' found. Section assigned.'));
+                $this->Flash->success(__(
+                    'Only one section of section type '
+                    . $sectionType
+                    . ' found. Section assigned.'
+                ));
 
                 $user->osm_section_id = $sectionSelected['sectionid'];
                 $user->osm_linked = 2;
@@ -412,7 +430,8 @@ class ScoutManagerComponent extends Component
     {
         $controller = $this->_registry->getController();
 
-        if (!($settingsArray = $this->getOsmSettings())) {
+        $settingsArray = $this->getOsmSettings();
+        if (!$settingsArray) {
             $errorMessage = 'Error retrieving OSM settings.';
             $this->log($errorMessage);
 
@@ -464,7 +483,7 @@ class ScoutManagerComponent extends Component
             'userid' => $user->osm_user_id,
             'secret' => $secret,
             'token' => $settingsArray['api_token'],
-            'apiid' => $settingsArray['api_id']
+            'apiid' => $settingsArray['api_id'],
         ]);
 
         $now = Time::now();
@@ -564,7 +583,8 @@ class ScoutManagerComponent extends Component
     {
         $controller = $this->_registry->getController();
 
-        if (!($settingsArray = $this->getOsmSettings())) {
+        $settingsArray = $this->getOsmSettings();
+        if (!$settingsArray) {
             $errorMessage = 'Error retrieving OSM settings.';
             $this->log($errorMessage);
 
@@ -597,7 +617,7 @@ class ScoutManagerComponent extends Component
 
         $http = new Client([
             'host' => $settingsArray['api_base'],
-            'scheme' => 'https'
+            'scheme' => 'https',
         ]);
 
         if (!is_int($user->osm_user_id) || $user->osm_user_id == 0) {
@@ -613,13 +633,14 @@ class ScoutManagerComponent extends Component
             return false;
         }
 
-        $url = '/ext/events/summary/?action=get&sectionid=' . $user->osm_section_id . '&termid=' . $user->osm_current_term;
+        $url = '/ext/events/summary/?action=get&sectionid=' . $user->osm_section_id
+               . '&termid=' . $user->osm_current_term;
 
         $response = $http->post($url, [
             'userid' => $user->osm_user_id,
             'secret' => $secret,
             'token' => $settingsArray['api_token'],
-            'apiid' => $settingsArray['api_id']
+            'apiid' => $settingsArray['api_id'],
         ]);
 
         if ($response->isOk()) {
@@ -663,7 +684,8 @@ class ScoutManagerComponent extends Component
     {
         $controller = $this->_registry->getController();
 
-        if (!($settingsArray = $this->getOsmSettings())) {
+        $settingsArray = $this->getOsmSettings();
+        if (!$settingsArray) {
             $errorMessage = 'Error retrieving OSM settings.';
             $this->log($errorMessage);
 
@@ -707,13 +729,15 @@ class ScoutManagerComponent extends Component
             return false;
         }
 
-        $url = '/ext/events/event/?action=getAttendance&eventid=' . $osmEventId . '&sectionid=' . $user->osm_section_id . '&termid=' . $user->osm_current_term;
+        $url = '/ext/events/event/?action=getAttendance&eventid='. $osmEventId
+               . '&sectionid=' . $user->osm_section_id
+               . '&termid=' . $user->osm_current_term;
 
         $response = $this->http->post($url, [
             'userid' => $user->osm_user_id,
             'secret' => $secret,
             'token' => $settingsArray['api_token'],
-            'apiid' => $settingsArray['api_id']
+            'apiid' => $settingsArray['api_id'],
         ]);
 
         if ($response->isOk()) {

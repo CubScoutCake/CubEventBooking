@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use App\Utility\TextSafe;
 use Cake\Core\Configure;
 use Cake\I18n\FrozenTime;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -51,8 +52,8 @@ class ReservationsTable extends Table
                 'Model.beforeSave' => [
                     'created' => 'new',
                     'modified' => 'always',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->addBehavior('CounterCache', [
@@ -62,12 +63,12 @@ class ReservationsTable extends Table
                 ],
                 'cc_complete_reservations' => [
                     'finder' => 'complete',
-                ]
+                ],
             ],
         ]);
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('Events', [
@@ -89,7 +90,7 @@ class ReservationsTable extends Table
              ->setCascadeCallbacks(true);
 
         $this->hasMany('LogisticItems', [
-            'foreignKey' => 'reservation_id'
+            'foreignKey' => 'reservation_id',
         ])
             ->setDependent(true)
             ->setCascadeCallbacks(true);
@@ -371,6 +372,9 @@ class ReservationsTable extends Table
             if ($this->ReservationStatuses->get($status)->cancelled) {
                 $this->cancelAssociated($reservationId);
             }
+
+            $statusEntity = $this->ReservationStatuses->get($status);
+            $this->Users->EmailSends->make('RSV-' . $reservation->id . '-' . $statusEntity->email_code);
 
             return true;
         }

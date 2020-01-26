@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Component;
 
 use Cake\Controller\Component;
@@ -15,6 +17,7 @@ use Cake\ORM\TableRegistry;
  * @property \App\Model\Table\EmailSendsTable $EmailSends
  * @property \App\Model\Table\UsersTable $Users
  * @property \App\Model\Table\SectionTypesTable $SectionTypes
+ * @property \App\Model\Table\TokensTable $Tokens
  *
  * @property \App\Controller\Component\AvailabilityComponent Availability
  * @property \Cake\Controller\Component\FlashComponent $Flash
@@ -26,9 +29,9 @@ use Cake\ORM\TableRegistry;
  */
 class BookingComponent extends Component
 {
-    public $components = ['Availability', 'Flash', 'Line', 'Auth'];
-
     use MailerAwareTrait;
+
+    public $components = ['Availability', 'Flash', 'Line', 'Auth'];
 
     /**
      * Default configuration.
@@ -101,7 +104,7 @@ class BookingComponent extends Component
                 $diffProb = 1 / $diff;
             }
 
-            if ($age >= ( $lower - 1)) {
+            if ($age >= $lower - 1) {
                 $lowerProb = 1;
             }
 
@@ -113,14 +116,14 @@ class BookingComponent extends Component
                 }
             }
 
-            if ($age <= ( $upper + 1)) {
+            if ($age <= $upper + 1) {
                 $upperProb = 1;
             }
 
             if ($age == $upper) {
                 if ($ageArr->m == 0) {
                     $upperMonthProb = 0;
-                } elseif ((12 / $ageArr->m) == 0) {
+                } elseif (12 / $ageArr->m == 0) {
                     $upperMonthProb = 1;
                 } else {
                     $upperMonthProb = 1 / (12 / $ageArr->m);
@@ -229,7 +232,13 @@ class BookingComponent extends Component
                 $logisticData = $requestData['logistics_item'];
 
                 foreach ($logisticData as $logisticDatum) {
-                    if (!$this->Availability->checkVariableLogistic($logisticDatum['logistic_id'], $logisticDatum['param_id']) && !$admin) {
+                    if (
+                        !$this->Availability->checkVariableLogistic(
+                            $logisticDatum['logistic_id'],
+                            $logisticDatum['param_id']
+                        )
+                        && !$admin
+                    ) {
                         if ($flash) {
                             $this->Flash->error('Spaces not available on Session.');
                         }
@@ -352,7 +361,10 @@ class BookingComponent extends Component
 
         $now = FrozenTime::now();
 
-        $notificationType = $this->Tokens->EmailSends->NotificationTypes->find()->where(['notification_type' => 'Reservation Payment Received'])->first();
+        $notificationType = $this->Tokens->EmailSends->NotificationTypes
+            ->find()
+            ->where(['notification_type' => 'Reservation Payment Received'])
+            ->first();
         $notificationTypeId = $notificationType->id;
 
         $subject = 'Reservation ' . $reservation->reservation_number . ' Expires Soon';
@@ -371,17 +383,17 @@ class BookingComponent extends Component
                     'new' => true,
                     'notification_source' => 'Admin',
                     'text' => $subject,
-                ]
+                ],
             ],
             'token_header' => [
                 'redirect' => [
                     'controller' => 'Reservations',
                     'action' => 'view',
                     'prefix' => 'parent',
-                    $reservation->id
+                    $reservation->id,
                 ],
                 'authenticate' => true,
-            ]
+            ],
         ];
 
         $tokenEntity = $this->Tokens->newEntity($data);
@@ -390,7 +402,15 @@ class BookingComponent extends Component
             $tokenId = $tokenEntity->get('id');
 
             $token = $this->Tokens->buildToken($tokenId);
-            $tokenEntity = $this->Tokens->get($tokenId, ['contain' => ['EmailSends' => ['Users', 'Tokens', 'Notifications']]]);
+            $tokenEntity = $this->Tokens->get($tokenId, [
+                'contain' => [
+                    'EmailSends' => [
+                        'Users',
+                        'Tokens',
+                        'Notifications'
+                    ]
+                ]
+            ]);
 
             $this->getMailer('Reserve')->send('expiry', [$tokenEntity->email_send, $reservation, $token]);
 

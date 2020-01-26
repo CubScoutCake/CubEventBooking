@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Entity\LogisticItem;
@@ -101,7 +103,7 @@ class LogisticsTableTest extends TestCase
             'text' => 'Lorem ipsum dolor sit amet',
             'parameter_id' => 1,
             'variable_max_values' => '',
-            'max_value' => 1
+            'max_value' => 1,
         ];
 
         return $good;
@@ -117,7 +119,7 @@ class LogisticsTableTest extends TestCase
         $actual = $this->Logistics->get(1)->toArray();
 
         $dates = [
-            'deleted'
+            'deleted',
         ];
 
         foreach ($dates as $date) {
@@ -140,9 +142,9 @@ class LogisticsTableTest extends TestCase
                 ],
                 2 => [
                     'limit' => 2,
-                ]
+                ],
             ],
-            'max_value' => 1
+            'max_value' => 1,
         ];
         $this->assertEquals($expected, $actual);
 
@@ -271,13 +273,13 @@ class LogisticsTableTest extends TestCase
             1 => [
                 'limit' => 3,
                 'current' => 0,
-                'remaining' => 3
+                'remaining' => 3,
             ],
             2 => [
                 'limit' => 2,
                 'current' => 0,
-                'remaining' => 2
-            ]
+                'remaining' => 2,
+            ],
         ];
         $this->assertEquals($expected, $after->variable_max_values);
 
@@ -300,13 +302,13 @@ class LogisticsTableTest extends TestCase
             1 => [
                 'limit' => 3,
                 'current' => 1,
-                'remaining' => 2
+                'remaining' => 2,
             ],
             2 => [
                 'limit' => 2,
                 'current' => 1,
-                'remaining' => 1
-            ]
+                'remaining' => 1,
+            ],
         ];
         $this->assertEquals($expected, $booked->variable_max_values);
     }

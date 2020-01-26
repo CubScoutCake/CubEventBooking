@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -40,7 +42,7 @@ class InvoiceItem extends Entity
         'visible' => true,
         'schedule_line' => true,
         'invoice' => true,
-        'item_type' => true
+        'item_type' => true,
     ];
 
     /**

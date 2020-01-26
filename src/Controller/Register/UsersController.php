@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Register;
 
-use App\Controller\Register\AppController;
 use Cake\ORM\TableRegistry;
 
 //use Cake\Mailer\MailerAwareTrait;
@@ -13,7 +14,6 @@ use Cake\ORM\TableRegistry;
  */
 class UsersController extends AppController
 {
-
     /**
      * Register Function
      *
@@ -56,7 +56,7 @@ class UsersController extends AppController
                     'address_2',
                     'city',
                     'county',
-                    'postcode', ]
+                    'postcode', ],
             ]);
 
             if ($this->Users->save($user)) {
@@ -76,7 +76,7 @@ class UsersController extends AppController
                     'postcode' => $user->postcode,
                     'role_id' => $user->role_id,
                     'section_id' => $user->section_id,
-                    'phone' => $user->phone
+                    'phone' => $user->phone,
                 ];
 
                 $att = $atts->patchEntity($att, $attendeeData);
@@ -101,7 +101,7 @@ class UsersController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'section',
-                'groupField' => 'scoutgroup.district.district'
+                'groupField' => 'scoutgroup.district.district',
             ]
         )
             ->contain(['Scoutgroups.Districts']);

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -19,7 +21,6 @@ use Cake\ORM\Entity;
  */
 class Allergy extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -35,6 +36,6 @@ class Allergy extends Entity
         'is_medical' => true,
         'is_specific' => true,
         'is_dietary' => true,
-        'attendees' => true
+        'attendees' => true,
     ];
 }

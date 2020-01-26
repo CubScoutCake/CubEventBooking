@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Form;
 
 use Cake\Form\Form;
@@ -10,9 +12,9 @@ class DirectForm extends Form
     /**
      * Basic schema definition
      *
-     * @param Schema $schema The Schema to be extended.
+     * @param \Cake\Form\Schema $schema The Schema to be extended.
      *
-     * @return Schema
+     * @return \Cake\Form\Schema
      */
     protected function _buildSchema(Schema $schema)
     {
@@ -26,9 +28,9 @@ class DirectForm extends Form
     /**
      * Validator for validating the entered Data.
      *
-     * @param Validator $validator The Validation Rules to be modified.
+     * @param \Cake\Validation\Validator $validator The Validation Rules to be modified.
      *
-     * @return Validator
+     * @return \Cake\Validation\Validator
      */
     protected function _buildValidator(Validator $validator)
     {

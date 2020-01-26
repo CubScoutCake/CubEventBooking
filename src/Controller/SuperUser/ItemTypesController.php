@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\SuperUser;
 
 /**
@@ -18,7 +20,7 @@ class ItemTypesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Roles']
+            'contain' => ['Roles'],
         ];
         $itemTypes = $this->paginate($this->ItemTypes);
 
@@ -35,7 +37,7 @@ class ItemTypesController extends AppController
     public function view($id = null)
     {
         $itemType = $this->ItemTypes->get($id, [
-            'contain' => ['Roles', 'InvoiceItems', 'Prices']
+            'contain' => ['Roles', 'InvoiceItems', 'Prices'],
         ]);
 
         $this->set('itemType', $itemType);
@@ -72,7 +74,7 @@ class ItemTypesController extends AppController
     public function edit($id = null)
     {
         $itemType = $this->ItemTypes->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $itemType = $this->ItemTypes->patchEntity($itemType, $this->request->getData());

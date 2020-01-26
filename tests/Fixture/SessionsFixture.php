@@ -34,7 +34,7 @@ class SessionsFixture extends TestFixture
             [
                 'id' => 'd982ca23-c9b1-4e49-815c-a9c115943ade',
                 'data' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'expires' => 1468316269
+                'expires' => 1468316269,
             ],
         ];
         parent::init();

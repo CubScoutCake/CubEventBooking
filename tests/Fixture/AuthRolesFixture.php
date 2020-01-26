@@ -44,7 +44,7 @@ class AuthRolesFixture extends TestFixture
             'auth' => 1,
             'parent_access' => false,
             'user_access' => true,
-            'section_limited' => true
+            'section_limited' => true,
         ],
         [
             'auth_role' => 'SuperUser',
@@ -54,7 +54,7 @@ class AuthRolesFixture extends TestFixture
             'auth' => 12,
             'parent_access' => false,
             'user_access' => true,
-            'section_limited' => false
+            'section_limited' => false,
         ],
         [
             'auth_role' => 'Admin',

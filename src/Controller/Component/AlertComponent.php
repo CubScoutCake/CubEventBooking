@@ -1,17 +1,17 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Component;
 
-use Cake\Cache\Cache;
 use Cake\Controller\Component;
-use Cake\Mailer\Email;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
 
 class AlertComponent extends Component
 {
-    public $components = ['Flash', 'Progress'];
-
     use MailerAwareTrait;
+
+    public $components = ['Flash', 'Progress'];
 
     /**
      * @param int $userID The User ID to be loaded
@@ -66,31 +66,38 @@ class AlertComponent extends Component
 
                 // Check 1 - does it have an invoice
                 if ($results->invDone != 1 && $results->invCount != 1) {
-                    arraypush($issues, 'An invoice has not been generated.');
+                    arraypush($issues,
+                        'An invoice has not been generated.');
                     arraypush($issueKeys, 0);
                 }
 
                 // Check 2 - does it have the right number of Cubs
                 if ($results->cubsDone != 1 || $results->invCubs != $results->attCubs) {
-                    arraypush($issues, 'There are Cubs names missing or some that have not been cancelled on the invoice.');
+                    arraypush($issues,
+                        'There are Cubs names missing or some that have not been cancelled on the invoice.');
                     arraypush($issueKeys, 1);
 
-                    arraypush($issues, 'There are more Cubs names on the application than invoiced for.');
+                    arraypush($issues,
+                        'There are more Cubs names on the application than invoiced for.');
                     arraypush($issueKeys, 2);
                 }
 
                 // Check 3 - does it have the right number of Leaders & YLs
                 if ($results->cubsNotDone != 1 || $results->invNotCubs != $results->attNotCubs) {
-                    arraypush($issues, 'There are Young Leaders names missing or some that have not been cancelled on the invoice.');
+                    arraypush($issues,
+                        'There are Young Leaders names missing or some that have not been cancelled on the invoice.');
                     arraypush($issueKeys, 3);
 
-                    arraypush($issues, 'There are more Young Leaders names on the application than invoiced for.');
+                    arraypush($issues,
+                        'There are more Young Leaders names on the application than invoiced for.');
                     arraypush($issueKeys, 4);
 
-                    arraypush($issues, 'There are Leaders names missing or some that have not been cancelled on the invoice.');
+                    arraypush($issues,
+                        'There are Leaders names missing or some that have not been cancelled on the invoice.');
                     arraypush($issueKeys, 5);
 
-                    arraypush($issues, 'There are more Leaders names on the application than invoiced for.');
+                    arraypush($issues,
+                        'There are more Leaders names on the application than invoiced for.');
                     arraypush($issueKeys, 6);
                 }
 
@@ -108,11 +115,12 @@ class AlertComponent extends Component
                     $notificationId = $notification->get('id');
 
                     $noteData = [
-                        'note_text' => 'A Balance Outstanding Prompt Email was Sent with Notification id #' . $notificationId,
+                        'note_text' => 'A Balance Outstanding Prompt Email was Sent with Notification id #'
+                                       . $notificationId,
                         'visible' => false,
                         'user_id' => $user->id,
                         'invoice_id' => $invoice->id,
-                        'application_id' => $app->id
+                        'application_id' => $app->id,
                     ];
 
                     $note = $notes->newEntity();
@@ -121,7 +129,13 @@ class AlertComponent extends Component
                     if ($notes->save($note)) {
                         $this->Flash->success(__('Outstanding Balance Prompt Sent.'));
 
-                        $this->getMailer('Payment')->send('outstanding', [$user, $group, $notification, $invoice, $app]);
+                        $this->getMailer('Payment')->send('outstanding', [
+                            $user,
+                            $group,
+                            $notification,
+                            $invoice,
+                            $app
+                        ]);
 
                         $sets = TableRegistry::get('Settings');
 
@@ -130,7 +144,10 @@ class AlertComponent extends Component
                         $projectId = $sets->get(14)->text;
                         $eventType = 'OutstandingPayment';
 
-                        $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $pApiKey;
+                        $keenURL = 'https://api.keen.io/3.0/projects/'
+                                   . $projectId . '/events/'
+                                   . $eventType . '?api_key='
+                                   . $pApiKey;
 
                         $http = new Client();
                         $response = $http->post(
@@ -141,7 +158,10 @@ class AlertComponent extends Component
 
                         $genericType = 'Notification';
 
-                        $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $pApiKey;
+                        $keenGenURL = 'https://api.keen.io/3.0/projects/'
+                                      . $projectId . '/events/'
+                                      . $genericType . '?api_key='
+                                      . $pApiKey;
 
                         $http = new Client();
                         $response = $http->post(
@@ -150,7 +170,12 @@ class AlertComponent extends Component
                             ['type' => 'json']
                         );
 
-                        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', 'prefix' => 'admin', $invoiceId]);
+                        return $this->redirect([
+                            'controller' => 'Invoices',
+                            'action' => 'view',
+                            'prefix' => 'admin',
+                            $invoiceId
+                        ]);
                     } else {
                         $this->Flash->error(__('The note could not be saved. Please, try again.'));
                     }

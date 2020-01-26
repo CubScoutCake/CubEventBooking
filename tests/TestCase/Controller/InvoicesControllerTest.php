@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\InvoicesController;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class InvoicesControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -179,14 +179,14 @@ class InvoicesControllerTest extends IntegrationTestCase
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 1
+            'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get([
             'action' => 'regenerate',
             'controller' => 'Invoices',
             'prefix' => false,
-            1
+            1,
         ]);
 
         $this->assertRedirect();
@@ -204,7 +204,7 @@ class InvoicesControllerTest extends IntegrationTestCase
             'action' => 'regenerate',
             'controller' => 'Invoices',
             'prefix' => false,
-            1
+            1,
         ]);
 
         $this->assertRedirect();

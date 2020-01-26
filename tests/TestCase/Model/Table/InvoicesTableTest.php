@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\InvoicesTable;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -11,7 +12,6 @@ use Cake\TestSuite\TestCase;
  */
 class InvoicesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -93,37 +93,40 @@ class InvoicesTableTest extends TestCase
                 'id' => 1,
                 'user_id' => 1,
                 'application_id' => 1,
-                'value' => 1.0,
+                'paid_value' => 1.0,
                 'created' => $timeNow,
                 'modified' => $timeNow,
                 'paid' => true,
-                'initialvalue' => 1.0,
+                'initial_value' => 1.0,
                 'deleted' => null,
                 'reservation_id' => null,
+                'minimum_deposit' => null,
             ],
             [
                 'id' => 2,
                 'user_id' => 1,
                 'application_id' => 3,
-                'value' => 1.0,
+                'paid_value' => 1.0,
                 'created' => $timeNow,
                 'modified' => $timeNow,
                 'paid' => true,
-                'initialvalue' => 1.0,
+                'initial_value' => 1.0,
                 'deleted' => null,
                 'reservation_id' => null,
+                'minimum_deposit' => null,
             ],
             [
                 'id' => 4,
                 'user_id' => 1,
                 'application_id' => null,
-                'value' => 0,
+                'paid_value' => 0,
                 'created' => $timeNow,
                 'modified' => $timeNow,
                 'paid' => true,
-                'initialvalue' => 1.0,
+                'initial_value' => 1.0,
                 'deleted' => null,
                 'reservation_id' => 1,
+                'minimum_deposit' => null,
             ],
         ];
 

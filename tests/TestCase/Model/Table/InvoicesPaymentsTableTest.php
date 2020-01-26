@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\InvoicesPaymentsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class InvoicesPaymentsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -87,7 +87,7 @@ class InvoicesPaymentsTableTest extends TestCase
             [
                 'invoice_id' => 1,
                 'payment_id' => 1,
-                'x_value' => 1
+                'x_value' => 1,
             ],
         ];
 

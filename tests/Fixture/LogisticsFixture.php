@@ -53,9 +53,9 @@ class LogisticsFixture extends TestFixture
                     ],
                     2 => [
                         'limit' => 2,
-                    ]
+                    ],
                 ],
-                'max_value' => 1
+                'max_value' => 1,
             ],
         ];
         parent::init();

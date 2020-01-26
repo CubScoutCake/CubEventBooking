@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Entity\ApplicationsAttendee;
 use App\Model\Table\ApplicationsAttendeesTable;
-use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -16,7 +17,6 @@ use Cake\TestSuite\TestCase;
  */
 class ApplicationsAttendeesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -97,91 +97,91 @@ class ApplicationsAttendeesTableTest extends TestCase
         $expected = [
             [
                 'application_id' => 1,
-                'attendee_id' => 2
+                'attendee_id' => 2,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 3
+                'attendee_id' => 3,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 4
+                'attendee_id' => 4,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 5
+                'attendee_id' => 5,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 6
+                'attendee_id' => 6,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 7
+                'attendee_id' => 7,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 8
+                'attendee_id' => 8,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 9
+                'attendee_id' => 9,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 11
+                'attendee_id' => 11,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 12
+                'attendee_id' => 12,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 1
+                'attendee_id' => 1,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 2
+                'attendee_id' => 2,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 3
+                'attendee_id' => 3,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 4
+                'attendee_id' => 4,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 5
+                'attendee_id' => 5,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 6
+                'attendee_id' => 6,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 7
+                'attendee_id' => 7,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 8
+                'attendee_id' => 8,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 9
+                'attendee_id' => 9,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 10
+                'attendee_id' => 10,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 11
+                'attendee_id' => 11,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 12
+                'attendee_id' => 12,
             ],
         ];
 
@@ -197,116 +197,116 @@ class ApplicationsAttendeesTableTest extends TestCase
     {
         $badData = [
             'application_id' => 98,
-            'attendee_id' => 98
+            'attendee_id' => 98,
         ];
 
         $goodData = [
             'application_id' => 1,
-            'attendee_id' => 1
+            'attendee_id' => 1,
         ];
 
         $expected = [
             [
                 'application_id' => 1,
-                'attendee_id' => 2
+                'attendee_id' => 2,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 3
+                'attendee_id' => 3,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 4
+                'attendee_id' => 4,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 5
+                'attendee_id' => 5,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 6
+                'attendee_id' => 6,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 7
+                'attendee_id' => 7,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 8
+                'attendee_id' => 8,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 9
+                'attendee_id' => 9,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 11
+                'attendee_id' => 11,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 12
+                'attendee_id' => 12,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 1
+                'attendee_id' => 1,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 2
+                'attendee_id' => 2,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 3
+                'attendee_id' => 3,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 4
+                'attendee_id' => 4,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 5
+                'attendee_id' => 5,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 6
+                'attendee_id' => 6,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 7
+                'attendee_id' => 7,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 8
+                'attendee_id' => 8,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 9
+                'attendee_id' => 9,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 10
+                'attendee_id' => 10,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 11
+                'attendee_id' => 11,
             ],
             [
                 'application_id' => 3,
-                'attendee_id' => 12
+                'attendee_id' => 12,
             ],
             [
                 'application_id' => 1,
-                'attendee_id' => 1
+                'attendee_id' => 1,
             ],
         ];
 
         $badEntity = $this->ApplicationsAttendees->newEntity($badData, ['accessibleFields' => [
             'application_id' => true,
-            'attendee_id' => true
+            'attendee_id' => true,
         ]]);
         $goodEntity = $this->ApplicationsAttendees->newEntity($goodData, ['accessibleFields' => [
             'application_id' => true,
-            'attendee_id' => true
+            'attendee_id' => true,
         ]]);
 
         $this->assertFalse($this->ApplicationsAttendees->save($badEntity));

@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Component;
 
 use App\Controller\Component\LineComponent;
 use Cake\Controller\ComponentRegistry;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -255,7 +256,7 @@ class LineComponentTest extends TestCase
 
         $this->assertTrue($reservation->has('invoice'));
 
-        $this->assertEquals(1, $reservation->invoice->initialvalue);
+        $this->assertEquals(1, $reservation->invoice->initial_value);
         $this->assertEquals(1, $reservation->invoice->balance);
         $this->assertEquals(0, count($reservation->invoice->invoice_items));
 
@@ -264,7 +265,7 @@ class LineComponentTest extends TestCase
         $reservation = $this->Reservations->get(1, ['contain' => 'Invoices.InvoiceItems']);
 
         $this->assertTrue($response);
-        $this->assertEquals(20, $reservation->invoice->initialvalue);
+        $this->assertEquals(20, $reservation->invoice->initial_value);
         $this->assertEquals(20, $reservation->invoice->balance);
         $this->assertEquals(1, count($reservation->invoice->invoice_items));
     }

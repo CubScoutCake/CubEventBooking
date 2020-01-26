@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
+use Cake\Core\Configure;
 use Cake\I18n\FrozenTime;
 use Cake\Mailer\MailerAwareTrait;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -51,28 +53,28 @@ class EmailSendsTable extends Table
                 'Model.beforeSave' => [
                     'created' => 'new',
                     'modified' => 'always',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('Users', [
-            'foreignKey' => 'user_id'
+            'foreignKey' => 'user_id',
         ]);
         $this->belongsTo('NotificationTypes', [
-            'foreignKey' => 'notification_type_id'
+            'foreignKey' => 'notification_type_id',
         ]);
         $this->belongsTo('Notifications', [
-            'foreignKey' => 'notification_id'
+            'foreignKey' => 'notification_id',
         ]);
         $this->hasMany('EmailResponses', [
-            'foreignKey' => 'email_send_id'
+            'foreignKey' => 'email_send_id',
         ]);
         $this->hasMany('Tokens', [
-            'foreignKey' => 'email_send_id'
+            'foreignKey' => 'email_send_id',
         ]);
     }
 
@@ -226,7 +228,7 @@ class EmailSendsTable extends Table
                     'controller' => 'Reservations',
                     'action' => 'view',
                     'prefix' => 'parent',
-                    $reservation->id
+                    $reservation->id,
                 ];
                 $authenticate = true;
 
@@ -248,11 +250,11 @@ class EmailSendsTable extends Table
                         $source = 'Admin';
                         break;
                     case 'R5D':
-                        $subject = 'Reservation ' . $reservation->reservation_number . ' Expires Soon';
+                        $subject = 'Reservation ' . $reservation->reservation_number . ' Expires in Five Days';
                         $source = 'System';
                         break;
                     case 'R2D':
-                        $subject = 'Reservation ' . $reservation->reservation_number . ' Expires Soon';
+                        $subject = 'Reservation ' . $reservation->reservation_number . ' Expires in Two Days';
                         $source = 'System';
                         break;
                     case 'VIE':
@@ -279,6 +281,29 @@ class EmailSendsTable extends Table
                             'controller' => 'Users',
                             'action' => 'token',
                             'prefix' => false,
+                        ];
+                        break;
+                    default:
+                        return false;
+                }
+
+                break;
+            case 'INV':
+                $invoice = $this->Users->Invoices->get($entityId);
+                $userId = $invoice->user_id;
+                $authenticate = true;
+
+                switch ($subType) {
+                    case 'REC':
+                        $layout = 'payment';
+                        $subject = 'Payment Received against INV #' . $invoice->id;
+                        $source = 'Admin';
+
+                        $redirect = [
+                            'controller' => 'Invoices',
+                            'action' => 'view',
+                            'prefix' => false,
+                            $invoice->get('id'),
                         ];
                         break;
                     default:
@@ -322,9 +347,9 @@ class EmailSendsTable extends Table
                         'token_header' => [
                             'redirect' => $redirect,
                             'authenticate' => $authenticate,
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ];
             $data = array_merge($data, $tokenData);
         }
@@ -369,13 +394,16 @@ class EmailSendsTable extends Table
             case 'RSV':
                 $entity = $this->Users->Reservations->get($entityId, ['contain' => ['ReservationStatuses']]);
                 break;
+            case 'INV':
+                $entity = $this->Users->Invoices->get($entityId);
+                break;
             default:
                 $entity = null;
         }
 
         /** @var \App\Mailer\BasicMailer $mailer */
         $mailer = $this->getMailer('Basic');
-        $mailer->send('basic', [$email, $token, $entity]);
+        $mailer->setDomain(Configure::read('App.domain'))->send('basic', [$email, $token, $entity]);
 
         $email->set('sent', FrozenTime::now());
         $this->save($email, ['validate' => false]);
@@ -421,7 +449,12 @@ class EmailSendsTable extends Table
             $emailSend = $this->get($sendHeaders['X-Gen-ID']);
         }
 
-        $emailSend->set('message_send_code', $results->id);
+        if (key_exists('results', $results)) {
+            $results = $results['results'];
+        }
+        if (key_exists('id', $results)) {
+            $emailSend->set('message_send_code', $results['id']);
+        }
         $emailSend->set('sent', FrozenTime::now());
 
         $this->save($emailSend);

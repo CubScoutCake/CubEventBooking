@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -32,6 +34,6 @@ class TaskType extends Entity
         'type_icon' => true,
         'type_code' => true,
         'task_requirement' => true,
-        'tasks' => true
+        'tasks' => true,
     ];
 }

@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Parent;
 
-use App\Controller\Parent\ReservationsController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -77,7 +78,7 @@ class ReservationsControllerTest extends TestCase
         $this->get([
             'prefix' => 'parent',
             'controller' => 'Reservations',
-            'action' => 'events'
+            'action' => 'events',
         ]);
 
         $this->assertResponseOk();
@@ -96,35 +97,35 @@ class ReservationsControllerTest extends TestCase
             'prefix' => 'parent',
             'controller' => 'Reservations',
             'action' => 'view',
-            1
+            1,
         ]);
 
         $this->assertRedirect();
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 4
+            'Auth.User.auth_role_id' => 4,
         ]);
 
         $this->get([
             'prefix' => 'parent',
             'controller' => 'Reservations',
             'action' => 'view',
-            1
+            1,
         ]);
 
         $this->assertResponseOk();
 
         $this->session([
             'Auth.User.id' => 2,
-            'Auth.User.auth_role_id' => 4
+            'Auth.User.auth_role_id' => 4,
         ]);
 
         $this->get([
             'prefix' => 'parent',
             'controller' => 'Reservations',
             'action' => 'view',
-            1
+            1,
         ]);
 
         $this->assertRedirect();
@@ -150,7 +151,7 @@ class ReservationsControllerTest extends TestCase
             'prefix' => 'parent',
             'controller' => 'Reservations',
             'action' => 'reserve',
-            3
+            3,
         ]);
 
         $this->assertResponseOk();
@@ -166,18 +167,18 @@ class ReservationsControllerTest extends TestCase
                 'city' => 'Biggleswade',
                 'county' => 'Bedfordshire',
                 'country' => 'United Kingdom',
-                'postcode' => 'SG18 8HS'
+                'postcode' => 'SG18 8HS',
             ],
             'attendee' => [
                 'firstname' => 'Timmy',
                 'lastname' => 'Tyler',
-                'section_id' => '1'
+                'section_id' => '1',
             ],
             'logistics_item' => [
                 0 => [
                     'logistic_id' => 1,
                     'param_id' => 2,
-                ]
+                ],
             ],
         ];
 
@@ -185,14 +186,14 @@ class ReservationsControllerTest extends TestCase
             'prefix' => 'parent',
             'controller' => 'Reservations',
             'action' => 'reserve',
-            3
+            3,
         ], $testData);
 
         $this->assertRedirect([
             'prefix' => 'parent',
             'controller' => 'Reservations',
             'action' => 'view',
-            2
+            2,
         ]);
 
         $testData['attendee']['firstname'] = 'Joan';
@@ -201,14 +202,14 @@ class ReservationsControllerTest extends TestCase
             'prefix' => 'parent',
             'controller' => 'Reservations',
             'action' => 'reserve',
-            3
+            3,
         ], $testData);
 
         $this->assertRedirect([
             'prefix' => 'parent',
             'controller' => 'Reservations',
             'action' => 'view',
-            3
+            3,
         ]);
 
         // Check Fills Up
@@ -218,7 +219,7 @@ class ReservationsControllerTest extends TestCase
             'prefix' => 'parent',
             'controller' => 'Reservations',
             'action' => 'reserve',
-            3
+            3,
         ], $testData);
 
         $this->assertNoRedirect();

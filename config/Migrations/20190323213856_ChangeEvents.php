@@ -1,4 +1,5 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class ChangeEvents extends AbstractMigration
@@ -34,7 +35,7 @@ class ChangeEvents extends AbstractMigration
                 ['id'],
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();

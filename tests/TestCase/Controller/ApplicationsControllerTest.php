@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\ApplicationsController;
 use App\Controller\Component\AvailabilityComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -79,7 +80,7 @@ class ApplicationsControllerTest extends TestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 1
+           'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get('/applications');
@@ -108,7 +109,7 @@ class ApplicationsControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 1
+            'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get(['controller' => 'Applications', 'action' => 'view', 1]);
@@ -174,7 +175,7 @@ class ApplicationsControllerTest extends TestCase
                     ['firstname' => 'Cub', 'lastname' => 'F', 'role_id' => 3, 'vegetarian' => false, ],
                     ['firstname' => 'Young Leader', 'lastname' => 'B', 'role_id' => 5, 'vegetarian' => false, ],
                     ['firstname' => 'Leader', 'lastname' => 'B', 'role_id' => 1, 'vegetarian' => true, ],
-                ]
+                ],
             ]
         );
 

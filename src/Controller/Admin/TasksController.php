@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -18,7 +20,7 @@ class TasksController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['TaskTypes', 'Users', 'CompletingUsers']
+            'contain' => ['TaskTypes', 'Users', 'CompletingUsers'],
         ];
         $tasks = $this->paginate($this->Tasks);
 
@@ -35,7 +37,7 @@ class TasksController extends AppController
     public function view($id = null)
     {
         $task = $this->Tasks->get($id, [
-            'contain' => ['TaskTypes', 'Users', 'CompletingUsers']
+            'contain' => ['TaskTypes', 'Users', 'CompletingUsers'],
         ]);
 
         $this->set('task', $task);
@@ -74,7 +76,7 @@ class TasksController extends AppController
     public function edit($id = null)
     {
         $task = $this->Tasks->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $task = $this->Tasks->patchEntity($task, $this->request->getData());

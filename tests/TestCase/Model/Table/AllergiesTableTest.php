@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\AllergiesTable;
@@ -10,7 +12,6 @@ use Cake\TestSuite\TestCase;
  */
 class AllergiesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -24,7 +25,7 @@ class AllergiesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.Allergies'
+        'app.Allergies',
     ];
 
     /**
@@ -67,7 +68,7 @@ class AllergiesTableTest extends TestCase
                 'description' => 'Fish Allergies can kill cuttlefish',
                 'is_medical' => false,
                 'is_specific' => false,
-                'is_dietary' => true
+                'is_dietary' => true,
             ],
             [
                 'id' => 2,
@@ -75,7 +76,7 @@ class AllergiesTableTest extends TestCase
                 'description' => 'Goat Allergy is very serious',
                 'is_medical' => false,
                 'is_specific' => false,
-                'is_dietary' => true
+                'is_dietary' => true,
             ],
             [
                 'id' => 3,
@@ -83,7 +84,7 @@ class AllergiesTableTest extends TestCase
                 'description' => 'Crazy sugar thing',
                 'is_medical' => true,
                 'is_specific' => false,
-                'is_dietary' => true
+                'is_dietary' => true,
             ],
             [
                 'id' => 4,
@@ -91,7 +92,7 @@ class AllergiesTableTest extends TestCase
                 'description' => 'Serious Neural disorder',
                 'is_medical' => false,
                 'is_specific' => false,
-                'is_dietary' => true
+                'is_dietary' => true,
             ],
         ];
     }
@@ -121,7 +122,7 @@ class AllergiesTableTest extends TestCase
     {
         $badData = [
             'allergy' => null,
-            'description' => null
+            'description' => null,
         ];
 
         $goodData = [

@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Component;
 
 use App\Model\Entity\Invoice;
 use Cake\Controller\Component;
-use Cake\Controller\ComponentRegistry;
+use Cake\Datasource\ModelAwareTrait;
+use Cake\Log\Log;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 
@@ -21,6 +24,8 @@ use Cake\ORM\TableRegistry;
  */
 class LineComponent extends Component
 {
+    use ModelAwareTrait;
+
     public $components = ['Flash', 'Availability'];
 
     /**
@@ -38,7 +43,7 @@ class LineComponent extends Component
      */
     public function parseInvoice($invoiceID, $admin = false)
     {
-        $this->Invoices = TableRegistry::getTableLocator()->get('Invoices');
+        $this->loadModel('Invoices');
 
         /** @var \App\Model\Entity\Invoice $invoice */
         $invoice = $this->Invoices->get($invoiceID, [
@@ -46,7 +51,7 @@ class LineComponent extends Component
                 'Applications' => [
                     'Events' => [
                         'Prices' => [
-                            'ItemTypes'
+                            'ItemTypes',
                         ],
                         'SectionTypes',
                     ],
@@ -59,7 +64,7 @@ class LineComponent extends Component
                         'SectionTypes',
                     ],
                 ],
-            ]
+            ],
         ]);
 
         if ($invoice->has('application')) {
@@ -72,20 +77,29 @@ class LineComponent extends Component
                 if ($price->item_type->team_price) {
                     $this->parseLine($invoiceID, $price->id, $appNumbers['NumTeams'], $admin);
                 } else {
-                    if (!is_null($price->item_type->role_id)
+                    if (
+                        !is_null($price->item_type->role_id)
                         && $price->item_type->role_id == $invoice->application->event->section_type->role_id
                     ) {
                         $this->parseLine($invoiceID, $price->id, $appNumbers['NumSection'], $admin);
                     }
 
-                    if (!$price->item_type->minor
-                        && (is_null($price->item_type->role_id) || $price->item_type->role_id != $invoice->application->event->section_type->role_id)
+                    if (
+                        !$price->item_type->minor
+                        && (
+                            is_null($price->item_type->role_id)
+                            || $price->item_type->role_id != $invoice->application->event->section_type->role_id
+                        )
                     ) {
                         $this->parseLine($invoiceID, $price->id, $appNumbers['NumLeaders'], $admin);
                     }
 
-                    if ($price->item_type->minor
-                        && (is_null($price->item_type->role_id) || $price->item_type->role_id != $invoice->application->event->section_type->role_id)
+                    if (
+                        $price->item_type->minor
+                        && (
+                            is_null($price->item_type->role_id)
+                            || $price->item_type->role_id != $invoice->application->event->section_type->role_id
+                        )
                     ) {
                         $this->parseLine($invoiceID, $price->id, $appNumbers['NumNonSection'], $admin);
                     }
@@ -96,6 +110,13 @@ class LineComponent extends Component
         }
 
         if ($invoice->has('reservation')) {
+            $this->parseDeposit($invoice->reservation->event_id, $invoice->id, [
+                'NumTeams' => 0,
+                'NumSection' => 1,
+                'NumLeaders' => 0,
+                'NumNonSection' => 0,
+            ], $admin);
+
             foreach ($invoice->reservation->event->prices as $price) {
                 if ($price->item_type->team_price) {
                     return $this->parseLine($invoiceID, $price->id, 1, $admin);
@@ -120,9 +141,9 @@ class LineComponent extends Component
      */
     public function parseLine($invoiceID, $priceID, $quantity, $admin = false)
     {
-        $this->Invoices = TableRegistry::getTableLocator()->get('Invoices');
-        $this->InvoiceItems = $this->Invoices->InvoiceItems;
-        $this->Prices = $this->Invoices->Applications->Events->Prices;
+        $this->loadModel('Invoices');
+        $this->loadModel('InvoiceItems');
+        $this->loadModel('Prices');
 
         $price = $this->Prices->get($priceID, ['contain' => ['ItemTypes', 'Events']]);
 
@@ -176,7 +197,7 @@ class LineComponent extends Component
         ];
 
         $invoiceItem = $this->InvoiceItems->patchEntity($invoiceItem, $data, ['fields' => [
-            'value', 'description', 'quantity', 'visible', 'schedule_line'
+            'value', 'description', 'quantity', 'visible', 'schedule_line',
         ]]);
 
         if ($this->InvoiceItems->save($invoiceItem)) {
@@ -196,8 +217,8 @@ class LineComponent extends Component
      */
     public function parseDeposit($eventId, $invoiceId, $appNumbers, $admin)
     {
-        $this->Prices = TableRegistry::getTableLocator()->get('Prices');
-        $this->Events = $this->Prices->Events;
+        $this->loadModel('Prices');
+        $this->loadModel('Events');
 
         $event = $this->Events->get($eventId);
 
@@ -219,6 +240,8 @@ class LineComponent extends Component
                     $quantity += $appNumbers['NumLeaders'];
                 }
             }
+            Log::debug($quantity);
+            Log::debug($depositPrice->id);
             $this->parseLine($invoiceId, $depositPrice->id, $quantity, $admin);
         }
 

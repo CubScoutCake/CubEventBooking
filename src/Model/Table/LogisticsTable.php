@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
 use Cake\Database\Schema\TableSchema;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -25,7 +26,6 @@ use Cake\Validation\Validator;
  */
 class LogisticsTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -41,17 +41,17 @@ class LogisticsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->belongsTo('Events', [
-            'foreignKey' => 'event_id'
+            'foreignKey' => 'event_id',
         ]);
         $this->belongsTo('Parameters', [
-            'foreignKey' => 'parameter_id'
+            'foreignKey' => 'parameter_id',
         ]);
         $this->hasMany('LogisticItems', [
-            'foreignKey' => 'logistic_id'
+            'foreignKey' => 'logistic_id',
         ]);
     }
 
@@ -92,7 +92,7 @@ class LogisticsTable extends Table
     /**
      * @param \Cake\Database\Schema\TableSchema $schema The Schema to be modified
      *
-     * @return TableSchema|\Cake\Database\Schema\TableSchema
+     * @return \Cake\Database\Schema\TableSchema
      *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */

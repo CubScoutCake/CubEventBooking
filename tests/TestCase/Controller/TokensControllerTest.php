@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\TokensController;
-use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -80,7 +80,7 @@ class TokensControllerTest extends TestCase
             'controller' => 'Tokens',
             'action' => 'validate',
             'prefix' => false,
-            $token
+            $token,
         ]);
 
         $this->assertRedirect([
@@ -91,7 +91,7 @@ class TokensControllerTest extends TestCase
             '?' => [
                 'token_id' => 1,
                 'token' => $token,
-            ]
+            ],
         ]);
     }
 }

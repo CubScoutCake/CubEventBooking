@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller\SuperUser;
+declare(strict_types=1);
 
-use App\Controller\SuperUser\AppController;
+namespace App\Controller\SuperUser;
 
 /**
  * EmailResponses Controller
@@ -10,7 +10,6 @@ use App\Controller\SuperUser\AppController;
  */
 class EmailResponsesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -19,7 +18,7 @@ class EmailResponsesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['EmailSends', 'EmailResponseTypes']
+            'contain' => ['EmailSends', 'EmailResponseTypes'],
         ];
         $emailResponses = $this->paginate($this->EmailResponses);
 
@@ -37,7 +36,7 @@ class EmailResponsesController extends AppController
     public function view($id = null)
     {
         $emailResponse = $this->EmailResponses->get($id, [
-            'contain' => ['EmailSends', 'EmailResponseTypes']
+            'contain' => ['EmailSends', 'EmailResponseTypes'],
         ]);
 
         $this->set('emailResponse', $emailResponse);
@@ -77,7 +76,7 @@ class EmailResponsesController extends AppController
     public function edit($id = null)
     {
         $emailResponse = $this->EmailResponses->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $emailResponse = $this->EmailResponses->patchEntity($emailResponse, $this->request->getData());

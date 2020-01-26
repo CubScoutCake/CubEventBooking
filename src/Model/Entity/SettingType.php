@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -28,6 +30,6 @@ class SettingType extends Entity
         'setting_type' => true,
         'description' => true,
         'min_auth' => true,
-        'settings' => true
+        'settings' => true,
     ];
 }

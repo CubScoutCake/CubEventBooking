@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Form\PaymentAssocationForm;
@@ -7,10 +9,10 @@ use App\Form\PaymentAssocationForm;
  * Payments Controller
  *
  * @property \App\Model\Table\PaymentsTable $Payments
+ * @property \App\Model\Table\EmailSendsTable $EmailSends
  */
 class PaymentsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -19,7 +21,7 @@ class PaymentsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'order' => ['Payments.created' => 'DESC']
+            'order' => ['Payments.created' => 'DESC'],
         ];
         $this->set('payments', $this->paginate($this->Payments));
         $this->set('_serialize', ['payments']);
@@ -35,7 +37,7 @@ class PaymentsController extends AppController
     public function view($paymentId = null)
     {
         $payment = $this->Payments->get($paymentId, [
-            'contain' => ['Invoices', 'Users', 'Invoices.Users']
+            'contain' => ['Invoices', 'Users', 'Invoices.Users'],
         ]);
         $this->set('payment', $payment);
         $this->set('_serialize', ['payment']);
@@ -70,21 +72,18 @@ class PaymentsController extends AppController
 
                 $payment = $this->Payments->patchEntity($payment, $this->request->getData(), [
                     'associated' => [
-                        'Invoices'
-                    ]
+                        'Invoices',
+                    ],
                 ]);
 
                 if ($this->Payments->save($payment)) {
-                    $redir = $payment->get('id');
-
                     $this->Flash->success(__('The payment has been saved.'));
 
-                    return $this->redirect([
-                        'controller' => 'Notifications',
-                        'action' => 'new_payment',
-                        'prefix' => 'admin',
-                        $redir
-                    ]);
+                    $payment = $this->Payments->get($payment->get('id'), ['contain' => 'Invoices']);
+                    $this->loadModel('EmailSends');
+                    $this->EmailSends->make('PAY-' . $payment->get('id') . '-REC');
+
+                    return $this->redirect(['action' => 'add']);
                 } else {
                     $this->Flash->error(__('The payment could not be saved. Please, try again.'));
                 }
@@ -92,7 +91,7 @@ class PaymentsController extends AppController
 
             $invoices = $this->Payments->Invoices->find('unarchived')->find('outstanding')->find('active')->find('list', [
                 'limit' => 500,
-                'order' => [ 'Invoices.id' => 'DESC' ]
+                'order' => [ 'Invoices.id' => 'DESC' ],
             ]);
 
             $invDefault = $invId;
@@ -118,15 +117,15 @@ class PaymentsController extends AppController
     public function edit($paymentId = null, $numInvAssociated = null)
     {
         $payment = $this->Payments->get($paymentId, [
-            'contain' => ['Invoices']
+            'contain' => ['Invoices'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $payment = $this->Payments->patchEntity($payment, $this->request->getData());
 
             $payment = $this->Payments->patchEntity($payment, $this->request->getData(), [
                 'associated' => [
-                    'Invoices'
-                ]
+                    'Invoices',
+                ],
             ]);
 
             if ($this->Payments->save($payment)) {

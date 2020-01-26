@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\View\Cell;
 
 use Cake\ORM\TableRegistry;
@@ -9,7 +11,6 @@ use Cake\View\Cell;
  */
 class AppsCell extends Cell
 {
-
     /**
      * List of valid options that can be passed into this
      * cell's constructor.
@@ -99,7 +100,7 @@ class AppsCell extends Cell
             $invNotCubs = $invYls + $invLeaders;
             $this->set(compact('invCubs','invYls','invLeaders','invNotCubs'));
 
-            $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initialvalue')])->first();
+            $sumValueItem = $invoices->select(['sum' => $invoices->func()->sum('initial_value')])->first();
             $sumPaymentItem = $invoices->select(['sum' => $invoices->func()->sum('value')])->first();
 
             $sumValues = $sumValueItem->sum;

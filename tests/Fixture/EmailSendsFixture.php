@@ -67,7 +67,7 @@ class EmailSendsFixture extends TestFixture
                 'deleted' => null,
                 'email_generation_code' => 'RSV-2-5DR',
                 'email_template' => 'reservation',
-                'include_token' => 1
+                'include_token' => 1,
             ],
         ];
         parent::init();

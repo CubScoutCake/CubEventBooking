@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller;
  */
 class AllergiesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -48,7 +49,7 @@ class AllergiesController extends AppController
     public function view($allergyId = null)
     {
         $allergy = $this->Allergies->get($allergyId, [
-            'contain' => ['Attendees']
+            'contain' => ['Attendees'],
         ]);
         $this->set('allergy', $allergy);
         $this->set('_serialize', ['allergy']);
@@ -64,7 +65,11 @@ class AllergiesController extends AppController
         $allergy = $this->Allergies->newEntity(['is_specific' => false]);
 
         if ($this->request->is('post')) {
-            $allergy = $this->Allergies->patchEntity($allergy, $this->request->getData(), ['accessibleFields' => ['id' => true]]);
+            $allergy = $this->Allergies->patchEntity(
+                $allergy,
+                $this->request->getData(),
+                ['accessibleFields' => ['id' => true]]
+            );
             if ($this->Allergies->save($allergy)) {
                 $this->Flash->success(__('The allergy has been saved.'));
 

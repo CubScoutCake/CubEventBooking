@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -38,14 +39,14 @@ class DistrictsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->hasMany('Scoutgroups', [
-            'foreignKey' => 'district_id'
+            'foreignKey' => 'district_id',
         ]);
         $this->hasMany('Champions', [
-            'foreignKey' => 'district_id'
+            'foreignKey' => 'district_id',
         ]);
     }
 

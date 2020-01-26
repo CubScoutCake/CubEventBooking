@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use Cake\ORM\TableRegistry;
@@ -13,7 +15,6 @@ use Cake\Utility\Inflector;
  */
 class EventsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -23,7 +24,7 @@ class EventsController extends AppController
     {
         $this->paginate = [
             'contain' => ['Settings', 'Discounts', 'EventStatuses'],
-            'order' => ['modified' => 'DESC']
+            'order' => ['modified' => 'DESC'],
         ];
         $this->set('events', $this->paginate($this->Events));
         $this->set('_serialize', ['events']);
@@ -44,19 +45,19 @@ class EventsController extends AppController
                 'Discounts',
                 'AdminUsers',
                 'Applications' => [
-                    'Sections.Scoutgroups.Districts'
+                    'Sections.Scoutgroups.Districts',
                 ],
                 'EventTypes' => [
                     'LegalTexts',
                     'Payable',
                     'ApplicationRefs',
-                    'InvoiceTexts'
+                    'InvoiceTexts',
                 ],
                 'Logistics.Parameters.Params',
                 'EventStatuses',
                 'SectionTypes.Roles',
                 'Prices.ItemTypes.Roles',
-            ]
+            ],
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);
@@ -66,7 +67,7 @@ class EventsController extends AppController
 
         $lineQuery = $lineQuery->select([
                 'value' => $lineQuery->func()->count('*'),
-                'label' => 'Districts.district'
+                'label' => 'Districts.district',
             ])
             ->group('Districts.district');
 
@@ -80,7 +81,7 @@ class EventsController extends AppController
 
         $lineResQuery = $lineResQuery->select([
             'value' => $lineResQuery->func()->count('*'),
-            'label' => 'Districts.district'
+            'label' => 'Districts.district',
         ])
         ->group('Districts.district');
 
@@ -100,7 +101,7 @@ class EventsController extends AppController
         $singleTerm = $term;
         $pluralTerm = Inflector::pluralize($term);
 
-        if (($event->max_apps - $event->cc_apps) > 1) {
+        if ($event->max_apps - $event->cc_apps > 1) {
             $term = $pluralTerm;
         }
 
@@ -144,7 +145,7 @@ class EventsController extends AppController
                     'ReservationStatuses',
                     'Events',
                 ],
-            ]
+            ],
         ]);
         $this->set('event', $event);
         $this->set('_serialize', ['event']);
@@ -363,7 +364,7 @@ class EventsController extends AppController
     public function edit($eventId = null)
     {
         $event = $this->Events->get($eventId, [
-            'contain' => ['Settings']
+            'contain' => ['Settings'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $event = $this->Events->patchEntity($event, $this->request->getData());
@@ -462,7 +463,7 @@ class EventsController extends AppController
             return $this->redirect(['action' => 'prices', $eventId, $this->request->getData('boxes')]);
         }
         $event = $this->Events->get($eventId, [
-            'contain' => ['Settings', 'Prices']
+            'contain' => ['Settings', 'Prices'],
         ]);
         $prices = count($event->prices);
 

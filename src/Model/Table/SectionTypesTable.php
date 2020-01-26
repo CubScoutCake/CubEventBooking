@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -22,7 +23,6 @@ use Cake\Validation\Validator;
  */
 class SectionTypesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -38,10 +38,10 @@ class SectionTypesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Roles', [
-            'foreignKey' => 'role_id'
+            'foreignKey' => 'role_id',
         ]);
         $this->hasMany('Sections', [
-            'foreignKey' => 'section_type_id'
+            'foreignKey' => 'section_type_id',
         ]);
     }
 

@@ -132,7 +132,7 @@
                                     </div>
                                 </td>
                                 <td><?= $invoices->has('user') ? $this->Html->link($this->Text->truncate($invoices->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $invoices->user->id]) : '' ?></td>
-                                <td><?= $this->Number->currency($invoices->initialvalue,'GBP') ?></td>
+                                <td><?= $this->Number->currency($invoices->initial_value,'GBP') ?></td>
                                 <td><?= $this->Number->currency($invoices->value,'GBP') ?></td>
                                 <td><?= $this->Number->currency($invoices->balance,'GBP') ?></td>
                                 <td><?= $this->Time->i18nFormat($invoices->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>

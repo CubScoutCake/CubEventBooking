@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\SuperUser;
 
 use App\Controller\AppController;
@@ -34,7 +36,7 @@ class AuthRolesController extends AppController
     public function view($id = null)
     {
         $authRole = $this->AuthRoles->get($id, [
-            'contain' => ['Users']
+            'contain' => ['Users'],
         ]);
 
         $this->set('authRole', $authRole);
@@ -70,7 +72,7 @@ class AuthRolesController extends AppController
     public function edit($id = null)
     {
         $authRole = $this->AuthRoles->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $authRole = $this->AuthRoles->patchEntity($authRole, $this->request->getData());

@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use App\Model\Entity\Attendee;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Event\Event;
 use Cake\Log\Log;
@@ -33,7 +34,6 @@ use Cake\Validation\Validator;
  */
 class AttendeesTable extends Table
 {
-
     /**
      * Initialize method
      *
@@ -55,29 +55,29 @@ class AttendeesTable extends Table
                 'Model.beforeSave' => [
                     'created' => 'new',
                     'modified' => 'always',
-                    ]
-                ]
+                    ],
+                ],
             ]);
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->addBehavior('CounterCache', [
             'Sections' => [
-                'cc_atts'
-            ]
+                'cc_atts',
+            ],
         ]);
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Sections', [
             'foreignKey' => 'section_id',
         ]);
         $this->belongsTo('Roles', [
             'foreignKey' => 'role_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsToMany('Applications', [
             'through' => 'ApplicationsAttendees',
@@ -244,7 +244,7 @@ class AttendeesTable extends Table
                     'table' => 'applications_attendees',
                     'type' => 'LEFT',
                     'conditions' => 'x.attendee_id = Attendees.id',
-                ]
+                ],
             ])
             ->group(['Attendees.id'])
             ->autoFields(true);
@@ -278,7 +278,7 @@ class AttendeesTable extends Table
                     'table' => 'applications_attendees',
                     'type' => 'LEFT',
                     'conditions' => 'x.attendee_id = Attendees.id',
-                ]
+                ],
             ])
             ->group(['Attendees.id'])
             ->having(['total_applications <' => 1])
@@ -311,7 +311,7 @@ class AttendeesTable extends Table
     }
 
     /**
-     * @param Event $event The Event Lifecycle
+     * @param \Cake\Event\Event $event The Event Lifecycle
      * @param array $data The Data Present
      *
      * @return void
@@ -324,9 +324,9 @@ class AttendeesTable extends Table
     /**
      * Check for Duplicate Attendee
      *
-     * @param Attendee $entity The Entity for DeDuplication
+     * @param \App\Model\Entity\Attendee $entity The Entity for DeDuplication
      *
-     * @return Attendee
+     * @return \App\Model\Entity\Attendee
      */
     public function checkDuplicate($entity)
     {
@@ -341,7 +341,7 @@ class AttendeesTable extends Table
                     'osm_id' => $entity->osm_id,
                     'osm_generated' => true,
                 ],
-            ]
+            ],
         ]);
 
         $countOriginal = $original->count();
@@ -361,7 +361,7 @@ class AttendeesTable extends Table
                 foreach ($changedValues as $changed_value) {
                     $value = $entity->get($changed_value);
                     if (!empty($value)) {
-                        $newData = $newData[$changed_value] = $value;
+                        $newData[$changed_value] = $value;
                     }
                 }
 
@@ -409,9 +409,9 @@ class AttendeesTable extends Table
     }
 
     /**
-     * @param Attendee $entity The Attendee Entity to be Case Fixed
+     * @param \App\Model\Entity\Attendee $entity The Attendee Entity to be Case Fixed
      *
-     * @return Attendee
+     * @return \App\Model\Entity\Attendee
      */
     public function changeCase($entity)
     {
@@ -482,11 +482,11 @@ class AttendeesTable extends Table
                 'osm_sync_date',
                 'modified'],
             'conditions' => [
-                'osm_id IS NOT' => null
-            ]
+                'osm_id IS NOT' => null,
+            ],
         ])->order([
             'osm_sync_date' => 'DESC',
-            'modified' => 'DESC'
+            'modified' => 'DESC',
         ])->first();
 
         $address = $this->find('all', $options)->find('all', [
@@ -498,19 +498,19 @@ class AttendeesTable extends Table
                 'postcode',
             ],
             'conditions' => [
-                'address_1 IS NOT' => ''
-            ]
+                'address_1 IS NOT' => '',
+            ],
         ])->order([
-            'modified' => 'DESC'
+            'modified' => 'DESC',
         ])->first();
 
         $userAttendee = $this->find('all', $options)->find('all', [
             'fields' => [
-                'user_attendee'
+                'user_attendee',
             ],
             'conditions' => [
-                'user_attendee' => true
-            ]
+                'user_attendee' => true,
+            ],
         ])->count();
 
         if ($userAttendee > 0) {
@@ -543,7 +543,7 @@ class AttendeesTable extends Table
      * @param array $attendeeData Attendee Request data
      * @param int $userId The User ID
      *
-     * @return bool|Attendee
+     * @return bool|\App\Model\Entity\Attendee
      */
     public function createReservationAttendee($attendeeData, $userId)
     {
@@ -560,9 +560,9 @@ class AttendeesTable extends Table
         ]);
         $attendeeData['role_id'] = $cubRole->id;
 
+        /** @var \App\Model\Entity\Attendee $attendee */
         $attendee = $this->newEntity($attendeeData);
 
-        /** @var \App\Model\Entity\Attendee $attendee */
         return $this->save($attendee);
     }
 }

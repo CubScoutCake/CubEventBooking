@@ -1,11 +1,11 @@
-{   
+{
     "name": "cub-scout-cake/cub-event-booking",
     "description": "An app to manage booking for Scouting by leaders.",
     "homepage": "https://github.com/CubScoutCake/CubEventBooking",
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "@stable",
+        "php": ">=7.1",
         "ext-json": "@stable",
         "cakephp/cakephp": "@stable",
         "mobiledetect/mobiledetectlib": "@stable",
@@ -19,7 +19,9 @@
         "robmorgan/phinx": "@stable",
         "dereuromark/cakephp-databaselog": "@stable",
         "josegonzalez/cakephp-upload": "@stable",
-        "riesenia/cakephp-duplicatable": "@stable"
+        "riesenia/cakephp-duplicatable": "@stable",
+        "php-http/guzzle6-adapter": "^2.0",
+        "sparkpost/sparkpost": "^2.2"
     },
     "require-dev": {
         "psy/psysh": "@stable",
@@ -50,7 +52,14 @@
         "test": "phpunit --colors=always",
         "test-model": "phpunit --colors=always --testsuite Model",
         "test-controller": "phpunit --colors=always --testsuite Controller",
-        "test-other": "phpunit --colors=always --testsuite Other"
+        "test-other": "phpunit --colors=always --testsuite Other",
+        "migrate": [
+            "@migrate-app",
+            "@migrate-database-log"
+        ],
+        "migrate-app": "bin/cake migrations migrate",
+        "migrate-database-log": "bin/cake migrations migrate -p DatabaseLog -c database_log --no-lock",
+        "seed": "bin/cake migrations seed --seed DatabaseSeed"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -39,13 +40,13 @@ class ItemTypesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Roles', [
-            'foreignKey' => 'role_id'
+            'foreignKey' => 'role_id',
         ]);
         $this->hasMany('InvoiceItems', [
-            'foreignKey' => 'item_type_id'
+            'foreignKey' => 'item_type_id',
         ]);
         $this->hasMany('Prices', [
-            'foreignKey' => 'item_type_id'
+            'foreignKey' => 'item_type_id',
         ]);
     }
 

@@ -1,16 +1,16 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class Authrole extends AbstractMigration
 {
-
     public function up()
     {
         $this->table('auth_roles')
             ->addColumn('auth_role', 'string', [
                 'default' => 'user',
                 'limit' => 255,
-                'null' => false
+                'null' => false,
             ])
             ->addColumn('admin_access', 'boolean', [
                 'default' => null,
@@ -88,7 +88,7 @@ class Authrole extends AbstractMigration
                 'id',
                 [
                     'update' => 'RESTRICT',
-                    'delete' => 'RESTRICT'
+                    'delete' => 'RESTRICT',
                 ]
             )
             ->update();

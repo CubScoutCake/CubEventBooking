@@ -3,7 +3,7 @@
         <h1 class="page-header"><i class='fab fa-ravelry fa-fw'></i> SuperUser Home</h1>
     </div>
     <!-- /.col-lg-12 -->
-</div>   
+</div>
     <!-- /.row -->
 <div class="row">
     <div class="col-lg-4 col-md-6">
@@ -91,7 +91,7 @@
 			  projectId: <?php //echo $keenProject;?>,
 			  readKey: <?php //echo $keenRead;?>});
 
-				Keen.ready(function(){			  
+				Keen.ready(function(){
 				  var query = new Keen.Query("count", {
 				    eventCollection: "Action",
 				    groupBy: [
@@ -102,11 +102,11 @@
 				    timeframe: "this_14_days",
 				    timezone: "UTC"
 				  });
-				  
+
 				  client.draw(query, document.getElementById("chart-of-actions"), {
 				    // Custom configuration here
 				  });
-			  
+
 			});
 
 
@@ -228,7 +228,7 @@
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
-                        </div>                        
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="even-pills">
                         <div class="table-responsive">
@@ -260,7 +260,7 @@
                                                     <li><?= $this->Html->link(__('View Outstanding Invoices'), ['controller' => 'Invoices','action' => 'outstanding', $event->id]) ?></li>
                                                     <li class="divider"></li>
                                                     <li><?= $this->Html->link(__('Edit'), ['controller' => 'Events', 'action' => 'edit', $event->id]) ?></li>
-                                                    
+
                                                 </ul>
                                             </div>
                                         </td>
@@ -308,7 +308,7 @@
                                             </td>
                                             <td><?= $invoice->has('user') ? $this->Html->link($this->Text->truncate($invoice->user->full_name,18), ['controller' => 'Users', 'action' => 'view', $invoice->user->id]) : '' ?></td>
                                             <td><?= $invoice->has('application') ? $this->Html->link($invoice->application->display_code, ['controller' => 'Applications', 'action' => 'view', $invoice->application->id]) : '' ?></td>
-                                            <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
+                                            <td><?= $this->Number->currency($invoice->initial_value,'GBP') ?></td>
                                             <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
                                             <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
                                             <td><?= $this->Time->i18nFormat($invoice->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>

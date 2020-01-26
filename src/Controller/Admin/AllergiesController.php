@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class AllergiesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -48,7 +49,7 @@ class AllergiesController extends AppController
     public function view($allergyId = null)
     {
         $allergy = $this->Allergies->get($allergyId, [
-            'contain' => ['Attendees.Users', 'Attendees.Sections.Scoutgroups', 'Attendees.Roles']
+            'contain' => ['Attendees.Users', 'Attendees.Sections.Scoutgroups', 'Attendees.Roles'],
         ]);
         $this->set('allergy', $allergy);
         $this->set('_serialize', ['allergy']);
@@ -89,7 +90,7 @@ class AllergiesController extends AppController
     public function edit($allergyId = null)
     {
         $allergy = $this->Allergies->get($allergyId, [
-            'contain' => ['Attendees']
+            'contain' => ['Attendees'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $allergy = $this->Allergies->patchEntity($allergy, $this->request->getData());

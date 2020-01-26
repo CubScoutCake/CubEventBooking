@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class SettingsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -18,7 +19,7 @@ class SettingsController extends AppController
     {
         $superAuth = bindec('0' . '1' . '000');
         $this->paginate = [
-            'contain' => ['SettingTypes'], 'conditions' => ['SettingTypes.min_auth <=' => $superAuth]
+            'contain' => ['SettingTypes'], 'conditions' => ['SettingTypes.min_auth <=' => $superAuth],
         ];
         $this->set('settings', $this->paginate($this->Settings));
         $this->set('_serialize', ['settings']);
@@ -34,7 +35,7 @@ class SettingsController extends AppController
     public function view($id = null)
     {
         $setting = $this->Settings->get($id, [
-            'contain' => ['Events', 'SettingTypes']
+            'contain' => ['Events', 'SettingTypes'],
         ]);
 
         $this->set('setting', $setting);
@@ -74,7 +75,7 @@ class SettingsController extends AppController
     public function edit($id = null)
     {
         $setting = $this->Settings->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $setting = $this->Settings->patchEntity($setting, $this->request->getData());

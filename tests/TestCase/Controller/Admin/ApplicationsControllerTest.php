@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\ApplicationsController;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class ApplicationsControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -70,7 +70,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/applications');
@@ -89,7 +89,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/applications/index/2');
@@ -98,7 +98,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/applications/index');
@@ -117,7 +117,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/applications/view/1');
@@ -136,7 +136,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         //$this->get('/admin/applications/view/1.pdf');
@@ -145,7 +145,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
 
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         //$this->get('/admin/applications/pdf-view/1');
@@ -164,13 +164,13 @@ class ApplicationsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'action' => 'add',
             'controller' => 'Applications',
-            'prefix' => 'admin'
+            'prefix' => 'admin',
         ]);
 
         $this->assertResponseOk();
@@ -182,7 +182,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
         $this->post([
             'action' => 'add',
             'controller' => 'Applications',
-            'prefix' => 'admin'
+            'prefix' => 'admin',
         ], [
             'user_id' => 1,
             'event_id' => 2,
@@ -208,7 +208,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/applications/edit/1');
@@ -228,7 +228,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
             'action' => 'edit',
             'controller' => 'Applications',
             'prefix' => 'admin',
-            1
+            1,
         ], [
             'user_id' => 1,
             'event_id' => 2,
@@ -254,7 +254,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/applications/link/1');
@@ -271,7 +271,7 @@ class ApplicationsControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableCsrfToken();

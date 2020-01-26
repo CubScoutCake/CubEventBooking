@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Mailer;
 
-use App\Mailer\SparkMailer;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -9,7 +10,6 @@ use Cake\TestSuite\TestCase;
  */
 class SparkMailerTest extends TestCase
 {
-
     /**
      * Test subject
      *

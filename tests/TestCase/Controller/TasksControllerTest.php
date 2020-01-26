@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\TasksController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -75,7 +76,7 @@ class TasksControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 1
+            'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get([
@@ -99,28 +100,28 @@ class TasksControllerTest extends TestCase
         // Correct View Access
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 1
+            'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get([
             'controller' => 'Tasks',
             'action' => 'view',
             'prefix' => false,
-            1
+            1,
         ]);
         $this->assertResponseOk();
 
         // Unauthorised Redirect (Not own Task)
         $this->session([
             'Auth.User.id' => 2,
-            'Auth.User.auth_role_id' => 1
+            'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get([
             'controller' => 'Tasks',
             'action' => 'view',
             'prefix' => false,
-            1
+            1,
         ]);
         $this->assertRedirect();
     }

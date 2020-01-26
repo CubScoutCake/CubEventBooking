@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class AuthRolesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -33,7 +34,7 @@ class AuthRolesController extends AppController
     public function view($authRoleId = null)
     {
         $authRole = $this->AuthRoles->get($authRoleId, [
-            'contain' => ['Users']
+            'contain' => ['Users'],
         ]);
 
         $this->set('authRole', $authRole);

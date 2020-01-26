@@ -1,7 +1,7 @@
 <?php
-namespace App\Controller;
+declare(strict_types=1);
 
-use App\Controller\AppController;
+namespace App\Controller;
 
 /**
  * Reservations Controller
@@ -20,9 +20,11 @@ class ReservationsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Events', 'Users', 'Attendees', 'ReservationStatuses']
+            'contain' => ['Events', 'Users', 'Attendees', 'ReservationStatuses'],
         ];
-        $this->set('reservations', $this->paginate($this->Reservations->find('ownedBy', ['userId' => $this->Auth->user('id')])));
+        $this->set('reservations', $this->paginate(
+            $this->Reservations->find('ownedBy', ['userId' => $this->Auth->user('id')]))
+        );
     }
 
     /**
@@ -49,15 +51,15 @@ class ReservationsController extends AppController
                 ],
                 'Users',
                 'Attendees' => [
-                    'Sections.Scoutgroups.Districts'
+                    'Sections.Scoutgroups.Districts',
                 ],
                 'ReservationStatuses',
                 'Invoices',
                 'LogisticItems' => [
                     'Logistics',
                     'Params',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->set('reservation', $reservation);

@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Entity\Attendees;
-use App\Model\Table\AttendeesTable;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
@@ -16,7 +16,6 @@ use Cake\Utility\Security;
  */
 class AttendeesTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -494,7 +493,7 @@ class AttendeesTableTest extends TestCase
             'modified',
             'created',
             'deleted',
-            'osm_sync_date'
+            'osm_sync_date',
         ];
 
         $this->assertInstanceOf('Cake\I18n\FrozenDate', $actual['dateofbirth']);
@@ -826,7 +825,7 @@ class AttendeesTableTest extends TestCase
                 'firstname',
                 'lastname',
                 'osm_id',
-                'osm_generated'
+                'osm_generated',
             ];
 
             foreach ($extractedData as $extract) {
@@ -874,7 +873,7 @@ class AttendeesTableTest extends TestCase
                 'firstname',
                 'lastname',
                 'osm_id',
-                'osm_generated'
+                'osm_generated',
             ];
 
             foreach ($extractedData as $extract) {

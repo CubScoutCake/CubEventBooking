@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -12,6 +14,7 @@ use Cake\ORM\Entity;
  * @property bool $complete
  * @property bool $cancelled
  * @property int $status_order
+ * @property string $email_code
  *
  * @property \App\Model\Entity\Reservation[] $reservations
  */
@@ -32,6 +35,7 @@ class ReservationStatus extends Entity
         'complete' => true,
         'cancelled' => true,
         'status_order' => true,
-        'reservations' => true
+        'reservations' => true,
+        'email_code' => true,
     ];
 }

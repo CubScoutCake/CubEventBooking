@@ -43,7 +43,7 @@ class ParametersFixture extends TestFixture
                 'constant' => 'Lorem ipsum dolor sit amet',
                 'set_id' => 1,
                 'deleted' => null,
-                'limited' => 1
+                'limited' => 1,
             ],
         ];
         parent::init();

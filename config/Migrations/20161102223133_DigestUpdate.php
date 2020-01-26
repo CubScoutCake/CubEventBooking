@@ -1,9 +1,9 @@
 <?php
+
 use Migrations\AbstractMigration;
 
 class DigestUpdate extends AbstractMigration
 {
-
     public function up()
     {
 

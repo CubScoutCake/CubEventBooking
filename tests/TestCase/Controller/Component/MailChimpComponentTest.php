@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Component;
 
 use App\Controller\Component\MailChimpComponent;
@@ -10,7 +12,6 @@ use Cake\TestSuite\TestCase;
  */
 class MailChimpComponentTest extends TestCase
 {
-
     /**
      * Test subject
      *

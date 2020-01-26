@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Register;
 
-use App\Controller\Register\AppController;
 use Cake\Utility\Text;
 
 /**
@@ -32,7 +33,7 @@ class SectionsController extends AppController
             [
                 'keyField' => 'id',
                 'valueField' => 'scoutgroup',
-                'groupField' => 'district.district'
+                'groupField' => 'district.district',
             ]
         )->contain(['Districts']);
         $section = $this->Sections->newEntity();

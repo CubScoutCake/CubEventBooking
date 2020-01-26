@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Form;
 
 use Cake\Form\Form;
@@ -10,9 +12,9 @@ class AdminForm extends Form
     /**
      * Basic Structure of the Schema
      *
-     * @param Schema $schema The standard schema to be modified.
+     * @param \Cake\Form\Schema $schema The standard schema to be modified.
      *
-     * @return Schema $schema
+     * @return \Cake\Form\Schema $schema
      */
     protected function _buildSchema(Schema $schema)
     {
@@ -22,9 +24,9 @@ class AdminForm extends Form
     /**
      * Function to Validate the Form
      *
-     * @param Validator $validator The basic Validation to be extended.
+     * @param \Cake\Validation\Validator $validator The basic Validation to be extended.
      *
-     * @return Validator $validator
+     * @return \Cake\Validation\Validator $validator
      */
     protected function _buildValidator(Validator $validator)
     {

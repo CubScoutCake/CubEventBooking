@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\View\Cell;
 
 use App\Form\AdminForm;
@@ -9,7 +11,6 @@ use Cake\View\Cell;
  */
 class QuickLinkCell extends Cell
 {
-
     /**
      * List of valid options that can be passed into this
      * cell's constructor.

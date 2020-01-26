@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Register;
 
-use App\Controller\SectionsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -9,7 +10,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class SectionsControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -45,7 +45,7 @@ class SectionsControllerTest extends IntegrationTestCase
 
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
@@ -110,7 +110,7 @@ class SectionsControllerTest extends IntegrationTestCase
             'prefix' => 'register',
             'controller' => 'Sections',
             'action' => 'existing',
-            1
+            1,
         ]);
         $this->assertRedirect([
             'prefix' => 'register',
@@ -176,7 +176,7 @@ class SectionsControllerTest extends IntegrationTestCase
             'prefix' => 'register',
             'controller' => 'Sections',
             'action' => 'add',
-            1
+            1,
         ]);
         $this->assertRedirect([
             'prefix' => 'register',
@@ -190,7 +190,7 @@ class SectionsControllerTest extends IntegrationTestCase
             'controller' => 'Sections',
             'action' => 'add',
             1,
-            2
+            2,
         ]);
         $this->assertResponseOk();
 
@@ -218,14 +218,14 @@ class SectionsControllerTest extends IntegrationTestCase
             'controller' => 'Sections',
             'action' => 'add',
             1,
-            2
+            2,
         ], $sectionData);
 
         $this->assertRedirect([
             'prefix' => 'register',
             'controller' => 'Users',
             'action' => 'register',
-            3
+            3,
         ]);
         $this->assertFlashMessageAt(0, 'The section has been saved.');
 

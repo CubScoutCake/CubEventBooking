@@ -69,11 +69,11 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="table-responsive">
-            <table class="table table-hover">  
+            <table class="table table-hover">
                 <tr>
                     <th><?= __('Initial Value') ?></th>
                     <th><?= __('Payments Received') ?></th>
-                    <th><?= __('Balance') ?></th>          
+                    <th><?= __('Balance') ?></th>
                 </tr>
                 <tr>
                     <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
@@ -157,7 +157,8 @@
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <p>The full value of the Deposit above is due before: <strong><?= h($this->Time->format($invoice->application->event->deposit_date,'dd-MMM-YY', 'Europe/London')) ?></strong></p>
+                    <?php $invoice->has('application') ? $depositDate = $invoice->application->event->deposit_date : $depositDate = $invoice->reservation->event->deposit_date ?>
+                    <p>The full value of the Deposit above is due before: <strong><?= h($this->Time->format($depositDate,'dd-MMM-YY', 'Europe/London')) ?></strong></p>
                 </div>
             </div>
         </div>
@@ -231,7 +232,7 @@
                     </div>
                 </div>
             </div>
-        <?php endif; ?>     
+        <?php endif; ?>
     </div>
 </div>
 

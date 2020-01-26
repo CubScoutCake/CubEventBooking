@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Form;
 
 use App\Form\AttNumberForm;
@@ -9,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class AttNumberFormTest extends TestCase
 {
-
     /**
      * Test subject
      *

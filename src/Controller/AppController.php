@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -46,16 +48,16 @@ class AppController extends Controller
             'authorize' => 'Controller',
             'loginRedirect' => [
                 'controller' => 'Landing',
-                'action' => 'user_home'
+                'action' => 'user_home',
                 ],
             'logoutRedirect' => [
                 'controller' => 'Landing',
-                'action' => 'welcome'
+                'action' => 'welcome',
                 ],
             'loginAction' => [
                 'controller' => 'Users',
-                'action' => 'login'
-                ]
+                'action' => 'login',
+                ],
         ]);
 
         $this->loadComponent('RequestHandler', [

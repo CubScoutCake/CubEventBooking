@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\PasswordStatesTable;
@@ -82,7 +84,7 @@ class PasswordStatesTableTest extends TestCase
             'id' => 1,
             'password_state' => 'Lorem ipsum dolor sit amet',
             'active' => true,
-            'expired' => false
+            'expired' => false,
         ];
         $this->assertEquals($expected, $actual);
 

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 /**
@@ -8,7 +10,6 @@ namespace App\Controller\Admin;
  */
 class AttendeesController extends AppController
 {
-
     /**
      * Index method
      *
@@ -23,9 +24,9 @@ class AttendeesController extends AppController
                 'Roles',
                 'Applications.Sections.Scoutgroups',
                 'Applications.Events',
-                'Allergies'
+                'Allergies',
             ],
-            'order' => ['modified' => 'DESC']
+            'order' => ['modified' => 'DESC'],
         ];
         if ($this->request->getParam('unattached')) {
             $this->set('attendees', $this->paginate($this->Attendees->find('unattached')));
@@ -46,7 +47,7 @@ class AttendeesController extends AppController
     public function view($attendeeId = null)
     {
         $attendee = $this->Attendees->get($attendeeId, [
-            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies']
+            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies'],
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);
@@ -79,7 +80,7 @@ class AttendeesController extends AppController
                 [
                     'keyField' => 'id',
                     'valueField' => 'section',
-                    'groupField' => 'scoutgroup.district.district'
+                    'groupField' => 'scoutgroup.district.district',
                 ]
             )
             ->contain(['Scoutgroups.Districts']);
@@ -90,10 +91,10 @@ class AttendeesController extends AppController
             $applications = $this->Attendees->Applications->find('list', [
                 'limit' => 200,
                 'conditions' => [
-                    'user_id' => $userId
+                    'user_id' => $userId,
                 ],
                 'order' => [
-                    'id' => 'DESC'
+                    'id' => 'DESC',
                 ]]);
             $sections = $this->Attendees->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $user->section_id]]);
         }
@@ -132,7 +133,7 @@ class AttendeesController extends AppController
     public function edit($attendeeId = null)
     {
         $attendee = $this->Attendees->get($attendeeId, [
-            'contain' => ['Applications', 'Allergies']
+            'contain' => ['Applications', 'Allergies'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $attendee = $this->Attendees->patchEntity($attendee, $this->request->getData());
@@ -152,7 +153,7 @@ class AttendeesController extends AppController
             [
                     'keyField' => 'id',
                     'valueField' => 'section',
-                    'groupField' => 'scoutgroup.district.district'
+                    'groupField' => 'scoutgroup.district.district',
             ]
         )
                 ->contain(['Scoutgroups.Districts']);
@@ -200,7 +201,7 @@ class AttendeesController extends AppController
 
         $phoneAttendee = [
             'phone' => $phone1,
-            'phone2' => $phone2
+            'phone2' => $phone2,
             ];
 
         $attendee = $this->Attendees->patchEntity($attendee, $phoneAttendee);

@@ -47,7 +47,7 @@ class SettingsFixture extends TestFixture
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'event_id' => 1,
                 'setting_type_id' => 1,
-                'number' => 1
+                'number' => 1,
             ],
             [
                 'name' => 'Lorem dolor sit amet',
@@ -56,7 +56,7 @@ class SettingsFixture extends TestFixture
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'event_id' => null,
                 'setting_type_id' => 2,
-                'number' => 1
+                'number' => 1,
             ],
             [
                 'name' => 'LegalTxt',
@@ -65,7 +65,7 @@ class SettingsFixture extends TestFixture
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'event_id' => 1,
                 'setting_type_id' => 3,
-                'number' => 1
+                'number' => 1,
             ],
             [
                 'name' => 'InvTxt',
@@ -74,7 +74,7 @@ class SettingsFixture extends TestFixture
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'event_id' => 1,
                 'setting_type_id' => 4,
-                'number' => 1
+                'number' => 1,
             ],
             [
                 'name' => 'Lorem ipsum sit amet',
@@ -83,7 +83,7 @@ class SettingsFixture extends TestFixture
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'event_id' => 1,
                 'setting_type_id' => 5,
-                'number' => 1
+                'number' => 1,
             ],
             [
                 'name' => 'Application Reference',
@@ -92,7 +92,7 @@ class SettingsFixture extends TestFixture
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'event_id' => 1,
                 'setting_type_id' => 6,
-                'number' => 1
+                'number' => 1,
             ],
             [
                 'name' => 'Payment Reference',
@@ -101,7 +101,7 @@ class SettingsFixture extends TestFixture
                 'modified' => date_create('2016-12-26 23:22:30'),
                 'event_id' => 1,
                 'setting_type_id' => 7,
-                'number' => 1
+                'number' => 1,
             ],
         ];
         parent::init();

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Component;
 
 use App\Controller\Component\ScoutManagerComponent;
@@ -18,7 +20,6 @@ use Cake\TestSuite\TestCase;
  */
 class ScoutManagerComponentTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -65,7 +66,7 @@ class ScoutManagerComponentTest extends TestCase
     {
         $http = $this->getMockBuilder(Client::class)->getMock();
 
-        $response = new Response;
+        $response = new Response();
 
         $http->expects($this->once())
             ->method('post')
@@ -154,7 +155,7 @@ class ScoutManagerComponentTest extends TestCase
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
             'osm_password' => 'Rho9Sigma',
-            'user_id' => 1
+            'user_id' => 1,
         ];
 
         $component = $this->ScoutManager->linkUser($authArray);
@@ -174,7 +175,7 @@ class ScoutManagerComponentTest extends TestCase
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
             'osm_password' => 'afsjflkaljksg',
-            'user_id' => 1
+            'user_id' => 1,
         ];
 
         $component = $this->ScoutManager->linkUser($authArray);
@@ -226,7 +227,7 @@ class ScoutManagerComponentTest extends TestCase
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
             'osm_password' => 'Rho9Sigma',
-            'user_id' => 1
+            'user_id' => 1,
         ];
 
         $component = $this->ScoutManager->linkUser($authArray);
@@ -247,7 +248,7 @@ class ScoutManagerComponentTest extends TestCase
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
             'osm_password' => 'Rho9Sigma',
-            'user_id' => 1
+            'user_id' => 1,
         ];
 
         $component = $this->ScoutManager->linkUser($authArray);
@@ -281,7 +282,7 @@ class ScoutManagerComponentTest extends TestCase
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
             'osm_password' => 'Rho9Sigma',
-            'user_id' => 1
+            'user_id' => 1,
         ];
 
         $component = $this->ScoutManager->linkUser($authArray);
@@ -313,7 +314,7 @@ class ScoutManagerComponentTest extends TestCase
         $authArray = [
             'osm_email' => 'jacob@4thletchworth.com',
             'osm_password' => 'Rho9Sigma',
-            'user_id' => 1
+            'user_id' => 1,
         ];
 
         $component = $this->ScoutManager->linkUser($authArray);
@@ -352,7 +353,7 @@ class ScoutManagerComponentTest extends TestCase
                 'firstname' => 'Jude',
                 'lastname' => 'Davies',
                 'dob' => '2007-12-12',
-                'patrolid' => '47677'
+                'patrolid' => '47677',
             ],
             [
                 'scoutid' => '343556',
@@ -361,7 +362,7 @@ class ScoutManagerComponentTest extends TestCase
                 'firstname' => 'Oscar',
                 'lastname' => 'Davies',
                 'dob' => '2007-12-12',
-                'patrolid' => '47677'
+                'patrolid' => '47677',
             ],
             [
                  'scoutid' => '607747',
@@ -370,7 +371,7 @@ class ScoutManagerComponentTest extends TestCase
                 'firstname' => 'Owen ',
                 'lastname' => 'Humpherys ',
                 'dob' => '2008-02-23',
-                'patrolid' => '59853'
+                'patrolid' => '59853',
             ],
             [
                 'scoutid' => '274599',
@@ -379,7 +380,7 @@ class ScoutManagerComponentTest extends TestCase
                 'firstname' => 'Oliver',
                 'lastname' => 'Kersley-Allinson',
                 'dob' => '2008-07-06',
-                'patrolid' => '59853'
+                'patrolid' => '59853',
             ],
             [
                 'scoutid' => '230067',
@@ -406,7 +407,7 @@ class ScoutManagerComponentTest extends TestCase
                 'firstname' => 'Kirian ',
                 'lastname' => 'Thode',
                 'dob' => '2008-09-21',
-                'patrolid' => '18238'
+                'patrolid' => '18238',
             ],
             [
                 'scoutid' => '842477',
@@ -415,7 +416,7 @@ class ScoutManagerComponentTest extends TestCase
                 'firstname' => 'Emily',
                 'lastname' => 'Thompson',
                 'dob' => '2007-11-06',
-                'patrolid' => '18237'
+                'patrolid' => '18237',
             ],
             [
                 'scoutid' => '680628',
@@ -424,7 +425,7 @@ class ScoutManagerComponentTest extends TestCase
                 'firstname' => 'Oscar',
                 'lastname' => 'Vincent',
                 'dob' => '2008-01-01',
-                'patrolid' => '18237'
+                'patrolid' => '18237',
             ],
         ];
 

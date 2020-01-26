@@ -73,7 +73,7 @@ return [
      */
     'Security' => [
         'salt' => '__SALT__',
-        'cookieKey' => '__COOKIE_SALT__'
+        'cookieKey' => '__COOKIE_SALT__',
     ],
 
     /**
@@ -224,7 +224,7 @@ return [
     'EmailTransport' => [
         'default' => [
             'className' => 'SparkPost',
-            'apiKey' => '__SPARKPOST_API_KEY__'
+            'apiKey' => '__SPARKPOST_API_KEY__',
         ],
     ],
 
@@ -232,7 +232,7 @@ return [
         'default' => [
             'transport' => 'sparkpost',
             'from' => 'info@hertscubs.uk',
-            'to' => 'info@hertscubs.uk'
+            'to' => 'info@hertscubs.uk',
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
@@ -240,8 +240,8 @@ return [
 
     'SparkPost' => [
         'Api' => [
-            'key' => '__SPARKPOST_API_KEY__'
-        ]
+            'key' => '__SPARKPOST_API_KEY__',
+        ],
     ],
 
     /**
@@ -328,7 +328,7 @@ return [
      */
     'GA' => [
         'ua' => 'UA CODE',
-        'userCode' => 'USR:'
+        'userCode' => 'USR:',
     ],
 
     /**
@@ -339,7 +339,7 @@ return [
     'OSM' => [
         'api_id' => 'osm_secret_id_travis',
         'api_token' => 'osm_secret_token_travis',
-        'api_base' => 'www.onlinescoutmanager.co.uk'
+        'api_base' => 'www.onlinescoutmanager.co.uk',
     ],
 
     /**
@@ -350,7 +350,7 @@ return [
     'KeenIO' => [
         'project_id' => 'secret project id',
         'read_key' => 'the secret read key',
-        'write_key' => 'the secret write key'
+        'write_key' => 'the secret write key',
     ],
 
     'Schedule' => [
@@ -369,17 +369,17 @@ return [
             'options' => [
                 // 'print-media-type' => false,
                 'outline' => true,
-                'dpi' => 128
+                'dpi' => 128,
             ],
         ],
         'margin' => [
             'bottom' => 15,
             'left' => 15,
             'right' => 15,
-            'top' => 15
+            'top' => 15,
         ],
         'dpi' => 128,
         'orientation' => 'portrait',
-        'download' => true
-    ]
+        'download' => true,
+    ],
 ];

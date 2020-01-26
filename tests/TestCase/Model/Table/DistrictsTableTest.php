@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\DistrictsTable;
@@ -137,7 +139,7 @@ class DistrictsTableTest extends TestCase
                 'county' => 'Lorem ipsum fish dolor amet',
                 'deleted' => null,
                 'short_name' => 'Lorem',
-            ]
+            ],
         ];
 
         $badEntity = $this->Districts->newEntity($badData);

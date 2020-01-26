@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -24,7 +26,6 @@ use Psy\Shell as PsyShell;
  */
 class ConsoleShell extends Shell
 {
-
     /**
      * Start the shell and interactive console.
      *
@@ -62,7 +63,7 @@ class ConsoleShell extends Shell
     /**
      * Display help for this console.
      *
-     * @return ConsoleOptionParser
+     * @return \Cake\Console\ConsoleOptionParser
      */
     public function getOptionParser()
     {

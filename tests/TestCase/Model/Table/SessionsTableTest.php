@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\SessionsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -10,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class SessionsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -24,7 +24,7 @@ class SessionsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.sessions'
+        'app.sessions',
     ];
 
     /**
@@ -66,7 +66,7 @@ class SessionsTableTest extends TestCase
             [
                 'id' => 'd982ca23-c9b1-4e49-815c-a9c115943ade',
                 'data' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'expires' => 1468316269
+                'expires' => 1468316269,
             ],
         ];
 
@@ -83,25 +83,25 @@ class SessionsTableTest extends TestCase
         $badData = [
             'id' => 'd982ca23-9sac-4e49-87ba-a9c215943ade',
             'data' => 'Lorem ipsum dolor OMega amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-            'expires' => null
+            'expires' => null,
         ];
 
         $goodData = [
             'id' => 'd982ca23-9sac-4e49-87ba-a9c215943ade',
             'data' => 'Lorem ipsum dolor OMega amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-            'expires' => 1468316269
+            'expires' => 1468316269,
         ];
 
         $expected = [
             [
                 'id' => 'd982ca23-c9b1-4e49-815c-a9c115943ade',
                 'data' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'expires' => 1468316269
+                'expires' => 1468316269,
             ],
             [
                 'id' => 'd982ca23-9sac-4e49-87ba-a9c215943ade',
                 'data' => 'Lorem ipsum dolor OMega amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'expires' => 1468316269
+                'expires' => 1468316269,
             ],
         ];
 

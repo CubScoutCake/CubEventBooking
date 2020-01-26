@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\EmailSendsTable;
@@ -159,7 +161,7 @@ class EmailSendsTableTest extends TestCase
                         ],
                         'authenticate' => true,
                     ],
-                ]
+                ],
             ],
             'notification' => [
                 'notification_header' => 'Reservation Confirmation 1-1-PLX',
@@ -181,7 +183,7 @@ class EmailSendsTableTest extends TestCase
                 'notification_description' => 'Reservation received, awaiting payment.',
                 'icon' => 'fa-ticket-alt',
                 'type_code' => 'RSV-NEW',
-            ]
+            ],
         ];
     }
 
@@ -329,7 +331,7 @@ class EmailSendsTableTest extends TestCase
     {
         $makeArray = [
             'RSV-1-NEW' => 2,
-            'RSV-1-CNF' => 3
+            'RSV-1-CNF' => 3,
         ];
 
         foreach ($makeArray as $genCode => $expId) {
@@ -346,7 +348,7 @@ class EmailSendsTableTest extends TestCase
             'contain' => [
                 'NotificationTypes',
                 'Notifications',
-                'Tokens'
+                'Tokens',
             ]])->toArray();
 
         $dates = [

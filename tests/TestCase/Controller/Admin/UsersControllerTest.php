@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\UsersController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -9,7 +10,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class UsersControllerTest extends IntegrationTestCase
 {
-
     /**
      * Fixtures
      *
@@ -70,7 +70,7 @@ class UsersControllerTest extends IntegrationTestCase
         $this->session([
            'Auth.User.id' => 1,
            'Auth.User.auth_role_id' => 2,
-            'Auth.User.section_id' => 1
+            'Auth.User.section_id' => 1,
         ]);
 
         $this->get(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'index']);
@@ -87,7 +87,7 @@ class UsersControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/users/view/1');
@@ -104,7 +104,7 @@ class UsersControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/users/add');
@@ -148,7 +148,7 @@ class UsersControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/users/sync/1');
@@ -165,7 +165,7 @@ class UsersControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/users/sync-all');
@@ -182,7 +182,7 @@ class UsersControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 2
+           'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/users/edit/1');
@@ -199,7 +199,7 @@ class UsersControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableCsrfToken();

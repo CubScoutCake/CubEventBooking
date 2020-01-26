@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -42,7 +44,7 @@ class AuthRole extends Entity
         'parent_access' => true,
         'user_access' => true,
         'section_limited' => true,
-        'users' => true
+        'users' => true,
     ];
 
     /**
@@ -60,31 +62,31 @@ class AuthRole extends Entity
             $super = 1;
         } else {
             $super = 0;
-        };
+        }
 
         if ($this->_properties['admin_access'] && isset($this->_properties['admin_access'])) {
             $admin = 1;
         } else {
             $admin = 0;
-        };
+        }
 
         if ($this->_properties['champion_access'] && isset($this->_properties['champion_access'])) {
             $champion = 1;
         } else {
             $champion = 0;
-        };
+        }
 
         if ($this->_properties['user_access'] && isset($this->_properties['user_access'])) {
             $user = 1;
         } else {
             $user = 0;
-        };
+        }
 
         if ($this->_properties['parent_access'] && isset($this->_properties['parent_access'])) {
             $parent = 1;
         } else {
             $parent = 0;
-        };
+        }
 
         $binary = $super . $admin . $champion . $user . $parent;
 

@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\LandingController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -95,7 +96,7 @@ class LandingControllerTest extends IntegrationTestCase
     {
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 1
+           'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get('/admin/landing/admin-home');
@@ -104,7 +105,7 @@ class LandingControllerTest extends IntegrationTestCase
 
         $this->session([
            'Auth.User.id' => 1,
-           'Auth.User.auth_role_id' => 1
+           'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get('/admin/landing/admin-home');

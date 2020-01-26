@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\SettingsTable;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -11,7 +12,6 @@ use Cake\TestSuite\TestCase;
  */
 class SettingsTableTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -79,7 +79,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 1,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 2,
@@ -89,7 +89,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => null,
                 'setting_type_id' => 2,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 3,
@@ -99,7 +99,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 3,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 4,
@@ -109,7 +109,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 4,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 5,
@@ -119,7 +119,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 5,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 6,
@@ -129,7 +129,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 6,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 7,
@@ -139,7 +139,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 7,
-                'number' => 1.0
+                'number' => 1.0,
             ],
         ];
 
@@ -161,7 +161,7 @@ class SettingsTableTest extends TestCase
             'text' => null,
             'event_id' => 99,
             'setting_type_id' => 24,
-            'number' => 'the fish'
+            'number' => 'the fish',
         ];
 
         $goodData = [
@@ -172,7 +172,7 @@ class SettingsTableTest extends TestCase
             'modified' => $timeNow,
             'event_id' => null,
             'setting_type_id' => 1,
-            'number' => 2.9
+            'number' => 2.9,
         ];
 
         $expected = [
@@ -184,7 +184,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 1,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 2,
@@ -194,7 +194,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => null,
                 'setting_type_id' => 2,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 3,
@@ -204,7 +204,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 3,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 4,
@@ -214,7 +214,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 4,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 5,
@@ -224,7 +224,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 5,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 6,
@@ -234,7 +234,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 6,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 7,
@@ -244,7 +244,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => null,
                 'setting_type_id' => 1,
-                'number' => 2.9
+                'number' => 2.9,
             ],
         ];
 
@@ -274,7 +274,7 @@ class SettingsTableTest extends TestCase
             'modified' => $timeNow,
             'event_id' => 1,
             'setting_type_id' => 109,
-            'number' => 2.9
+            'number' => 2.9,
         ];
 
         $outData = [
@@ -285,7 +285,7 @@ class SettingsTableTest extends TestCase
             'modified' => $timeNow,
             'event_id' => 209,
             'setting_type_id' => 1,
-            'number' => 2.9
+            'number' => 2.9,
         ];
 
         $goodData = [
@@ -296,7 +296,7 @@ class SettingsTableTest extends TestCase
             'modified' => $timeNow,
             'event_id' => 3,
             'setting_type_id' => 1,
-            'number' => 2.9
+            'number' => 2.9,
         ];
 
         $expected = [
@@ -308,7 +308,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 1,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 2,
@@ -318,7 +318,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => null,
                 'setting_type_id' => 2,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 3,
@@ -328,7 +328,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 3,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 4,
@@ -338,7 +338,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 4,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 5,
@@ -348,7 +348,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 5,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 6,
@@ -358,7 +358,7 @@ class SettingsTableTest extends TestCase
                 'modified' => $timeNow,
                 'event_id' => 1,
                 'setting_type_id' => 6,
-                'number' => 1.0
+                'number' => 1.0,
             ],
             [
                 'id' => 7,

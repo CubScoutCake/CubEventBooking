@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ReservationStatusesTable;
@@ -65,7 +67,7 @@ class ReservationStatusesTableTest extends TestCase
             'active' => true,
             'complete' => true,
             'cancelled' => false,
-            'status_order' => random_int(0, 999)
+            'status_order' => random_int(0, 999),
         ];
 
         return $good;
@@ -110,7 +112,7 @@ class ReservationStatusesTableTest extends TestCase
             'reservation_status',
             'active',
             'complete',
-            'cancelled'
+            'cancelled',
         ];
 
         foreach ($required as $require) {

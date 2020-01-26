@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Shell;
 
 use App\Shell\DatabaseShell;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\ConsoleIntegrationTestTrait;
-use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -13,6 +14,7 @@ use Cake\TestSuite\TestCase;
 class DatabaseShellTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
+
 //    use IntegrationTestTrait;
 
     /**

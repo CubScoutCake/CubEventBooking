@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\LogisticsController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -66,7 +67,7 @@ class LogisticsControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
@@ -89,14 +90,14 @@ class LogisticsControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'controller' => 'Logistics',
             'action' => 'view',
             'prefix' => 'admin',
-            1
+            1,
         ]);
 
         $this->assertResponseOk();
@@ -113,7 +114,7 @@ class LogisticsControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
@@ -144,7 +145,7 @@ class LogisticsControllerTest extends TestCase
                     2 => 6,
                 ],
                 'option_count' => 2,
-            ]
+            ],
         ]);
 
         $this->assertRedirect();
@@ -162,14 +163,14 @@ class LogisticsControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get([
             'controller' => 'Logistics',
             'action' => 'edit',
             'prefix' => 'admin',
-            1
+            1,
         ]);
 
         $this->assertResponseOk();
@@ -182,7 +183,7 @@ class LogisticsControllerTest extends TestCase
             'controller' => 'Logistics',
             'action' => 'edit',
             'prefix' => 'admin',
-            1
+            1,
         ], [
             'event_id' => 2,
             'header' => 'Session',
@@ -205,7 +206,7 @@ class LogisticsControllerTest extends TestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->enableRetainFlashMessages();
@@ -216,7 +217,7 @@ class LogisticsControllerTest extends TestCase
             'controller' => 'Logistics',
             'action' => 'delete',
             'prefix' => 'admin',
-            1
+            1,
         ]);
 
         $this->assertRedirect();

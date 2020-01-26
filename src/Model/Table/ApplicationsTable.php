@@ -1,11 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use App\Model\Entity\Application;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -52,23 +51,23 @@ class ApplicationsTable extends Table
                 'Model.beforeSave' => [
                     'created' => 'new',
                     'modified' => 'always',
-                    ]
-                ]
+                    ],
+                ],
             ]);
 
         $this->addBehavior('Muffin/Trash.Trash', [
-            'field' => 'deleted'
+            'field' => 'deleted',
         ]);
 
         $this->addBehavior('SectionAuth');
 
         $this->addBehavior('CounterCache', [
             'Events' => [
-                'cc_apps'
+                'cc_apps',
             ],
             'Sections' => [
-                'cc_apps'
-            ]
+                'cc_apps',
+            ],
         ]);
 
         $this->belongsTo('Users', [
@@ -81,7 +80,7 @@ class ApplicationsTable extends Table
             'foreignKey' => 'application_status_id',
         ]);
         $this->belongsTo('Events', [
-            'foreignKey' => 'event_id'
+            'foreignKey' => 'event_id',
         ]);
         $this->hasOne('Invoices', [
                 'foreignKey' => 'application_id',
@@ -90,10 +89,10 @@ class ApplicationsTable extends Table
             ->setCascadeCallbacks(true);
 
         $this->hasMany('LogisticItems', [
-            'foreignKey' => 'application_id'
+            'foreignKey' => 'application_id',
         ]);
         $this->hasMany('Notes', [
-            'foreignKey' => 'application_id'
+            'foreignKey' => 'application_id',
         ]);
         $this->belongsToMany('Attendees', [
             'through' => 'ApplicationsAttendees',
@@ -209,7 +208,7 @@ class ApplicationsTable extends Table
                         return $q->where([
                             'Attendees.deleted IS' => null,
                             'Roles.minor' => true,
-                            'Roles.id' => 1
+                            'Roles.id' => 1,
                         ]);
                     }
                 );
@@ -221,7 +220,7 @@ class ApplicationsTable extends Table
                         return $q->where([
                             'Attendees.deleted IS' => null,
                             'Roles.minor' => true,
-                            'Roles.id' => 2
+                            'Roles.id' => 2,
                         ]);
                     }
                 );
@@ -233,7 +232,7 @@ class ApplicationsTable extends Table
                         return $q->where([
                             'Attendees.deleted IS' => null,
                             'Roles.minor' => true,
-                            'Roles.id' => 3
+                            'Roles.id' => 3,
                         ]);
                     }
                 );
@@ -246,7 +245,7 @@ class ApplicationsTable extends Table
                         return $q->where([
                             'Attendees.deleted IS' => null,
                             'Roles.minor' => true,
-                            'Roles.id' => 4
+                            'Roles.id' => 4,
                         ]);
                     }
                 );
@@ -259,7 +258,7 @@ class ApplicationsTable extends Table
                         return $q->where([
                             'Attendees.deleted IS' => null,
                             'Roles.minor' => true,
-                            'Roles.id' => 3
+                            'Roles.id' => 3,
                         ]);
                     }
                 );

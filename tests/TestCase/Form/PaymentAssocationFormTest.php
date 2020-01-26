@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Form;
 
 use App\Form\PaymentAssocationForm;
@@ -9,7 +11,6 @@ use Cake\TestSuite\TestCase;
  */
 class PaymentAssocationFormTest extends TestCase
 {
-
     /**
      * Test subject
      *

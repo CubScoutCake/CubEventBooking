@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\DistrictsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -9,7 +10,6 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class DistrictsAdminControllerTest extends IntegrationTestCase
 {
-
     public $fixtures = [
         'app.districts',
         'app.auth_roles',
@@ -27,7 +27,7 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 1
+            'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get('/admin/districts');
@@ -41,7 +41,7 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 1
+            'Auth.User.auth_role_id' => 1,
         ]);
 
         $this->get('/admin/districts/add');
@@ -55,7 +55,7 @@ class DistrictsAdminControllerTest extends IntegrationTestCase
     {
         $this->session([
             'Auth.User.id' => 1,
-            'Auth.User.auth_role_id' => 2
+            'Auth.User.auth_role_id' => 2,
         ]);
 
         $this->get('/admin/districts/add');
