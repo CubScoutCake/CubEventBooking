@@ -411,6 +411,14 @@
                                 <tbody>
                                     <?php foreach ($notifications as $notification): ?>
                                         <tr>
+                                            <?php
+                                            $urlArray = [];
+                                            $urlArray['prefix'] = $notification->link_prefix;
+                                            $urlArray['controller'] = $notification->link_controller ?? 'Landing';
+                                            $urlArray['action'] = $notification->link_action ?? 'super-user-home';
+                                            $urlArray[0] = $notification->link_id;
+                                            ?>
+
                                             <td><?= $this->Number->format($notification->id) ?></td>
                                             <td class="actions">
                                                 <div class="dropdown btn-group">
@@ -419,7 +427,7 @@
                                                     </button>
                                                     <ul class="dropdown-menu " role="menu">
                                                         <li><?= $this->Html->link(__('View Notification'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'view', $notification->id]) ?></li>
-                                                        <li><?= $this->Html->link(__('View Subject'), ['prefix' => $notification->link_prefix,'controller' => $notification->link_controller,'action' => $notification->link_action, $notification->link_id]) ?></li>
+                                                        <li><?= $this->Html->link(__('View Subject'), $urlArray) ?></li>
                                                         <li><?= $this->Html->link(__('Edit'), ['prefix' => 'admin','controller' => 'Notifications','action' => 'edit', $notification->id]) ?></li>
                                                     </ul>
                                                 </div>

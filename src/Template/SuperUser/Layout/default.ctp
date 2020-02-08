@@ -53,7 +53,7 @@ $cakeDescription = 'HertsCubs Booking System';
                 <?php
 
                     echo $this->Html->link($this->fetch('title')
-                        ,['controller' => 'Landing', 'action' => 'super_user_home', 'prefix' => 'super_user']
+                        ,['controller' => 'Landing', 'action' => 'super-user-home', 'prefix' => 'super_user']
                         ,['class' => 'navbar-brand']);
 
                  ?>
@@ -74,8 +74,8 @@ $cakeDescription = 'HertsCubs Booking System';
                                 echo $cell; ?>
                         <li>
                             <a class="text-center" href="<?php echo $this->Url->build([
-                                'controller' => 'Notifications', 
-                                'action' => 'index', 
+                                'controller' => 'Notifications',
+                                'action' => 'index',
                                 'prefix' => false]); ?>">
                                 <strong>See All Notifications</strong>
                                 <i class="fal fa-angle-right"></i>
@@ -282,7 +282,7 @@ $cakeDescription = 'HertsCubs Booking System';
                                         'prefix' => 'super_user']); ?>">Add a Champion</a>
                                         </li>
                                     </ul>
-                                </li>                                
+                                </li>
                             </ul>
                         </li>
                         <li>
@@ -511,8 +511,8 @@ $cakeDescription = 'HertsCubs Booking System';
             echo $this->fetch('tb_flash'); ?>
             <?= $this->Flash->render() ?>
             <?= $this->Flash->render('auth') ?>
-                 
-            <?= $this->fetch('content') ?>    
+
+            <?= $this->fetch('content') ?>
 
         </div>
     </div>

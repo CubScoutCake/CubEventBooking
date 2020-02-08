@@ -25,7 +25,7 @@
         </tr>
         <tr>
             <th scope="row"><?= __('User') ?></th>
-            <td><?= $token->has('user') ? $this->Html->link($token->user->full_name, ['controller' => 'Users', 'action' => 'view', $token->user->id]) : '' ?></td>
+            <td><?= $token->has('user') ? $this->Html->link($token->email_send->user->full_name, ['controller' => 'Users', 'action' => 'view', $token->email_send->user->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Email Send') ?></th>

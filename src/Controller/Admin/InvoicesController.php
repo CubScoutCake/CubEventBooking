@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use CakePdf\Pdf\CakePdf;
+
 /**
  * Invoices Controller
  *
@@ -59,6 +61,7 @@ class InvoicesController extends AppController
      */
     public function view($invoiceId = null)
     {
+        debug('this');
         $this->viewBuilder()->setOptions([
             'pdfConfig' => [
                 'orientation' => 'portrait',
@@ -143,7 +146,7 @@ class InvoicesController extends AppController
         $this->set(compact('invoice'));
         $this->set('_serialize', ['invoice']);
 
-        $cakePDF = new \CakePdf\Pdf\CakePdf();
+        $cakePDF = new CakePdf();
         $cakePDF->template('invoice', 'default');
 
         $cakePDF->write(FILES . DS . 'Event ' . $invoice->application->event->id . DS . 'Invoices' . DS . 'Invoice #' . $invoiceId . '.pdf');
@@ -201,7 +204,7 @@ class InvoicesController extends AppController
 
                     $this->set(compact('invoice'));
                     $this->set('_serialize', ['invoice']);
-                    $cakePDF = new \CakePdf\Pdf\CakePdf();
+                    $cakePDF = new CakePdf();
                     $cakePDF->template('invoice', 'default');
                     $cakePDF->viewVars($this->viewVars);
 

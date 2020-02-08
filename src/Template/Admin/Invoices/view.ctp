@@ -112,8 +112,8 @@
                     <th><?= __('Balance') ?></th>
                 </tr>
                 <tr>
-                    <td><?= $this->Number->currency($invoice->initialvalue,'GBP') ?></td>
-                    <td><?= $this->Number->currency($invoice->value,'GBP') ?></td>
+                    <td><?= $this->Number->currency($invoice->initial_value,'GBP') ?></td>
+                    <td><?= $this->Number->currency($invoice->paid_value,'GBP') ?></td>
                     <td><?= $this->Number->currency($invoice->balance,'GBP') ?></td>
                 </tr>
             </table>
@@ -141,7 +141,7 @@
                         <tr>
                             <td><?= h($invoiceItems->description) ?></td>
                             <td><?= h($invoiceItems->quantity) ?></td>
-                            <td><?= h($this->number->currency($invoiceItems->value,'GBP')) ?></td>
+                            <td><?= h($this->Number->currency($invoiceItems->value,'GBP')) ?></td>
                             <td><?= (strpos($invoiceItems->description, 'CANCELLED') !== false)  ? $this->Html->link($this->number->currency($invoiceItems->quantity_price,'GBP'),['controller' => 'InvoiceItems', 'action' => 'edit', $invoiceItems->id, 'prefix' => 'admin' ]) : $this->number->currency($invoiceItems->quantity_price,'GBP'); ?></td>
                             <td><?= $invoiceItems->visible ? __('Yes') : __('No'); ?>
                         </tr>

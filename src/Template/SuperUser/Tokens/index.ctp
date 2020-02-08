@@ -1,6 +1,7 @@
 <?php
 /**
-  * @var \App\View\AppView $this
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Token[] $tokens
   */
 ?>
 <div class="row">
@@ -30,7 +31,7 @@
                             <?= $this->Html->link('<i class="fal fa-pencil"></i>', ['action' => 'edit', $token->id], ['title' => __('Edit'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                             <?= $this->Form->postLink('<i class="fal fa-trash-alt"></i>', ['action' => 'delete', $token->id], ['confirm' => __('Are you sure you want to delete # {0}?', $token->id), 'title' => __('Delete'), 'class' => 'btn btn-default btn-sm', 'escape' => false]) ?>
                         </td>
-                        <td><?= $token->has('user') ? $this->Html->link($token->user->full_name, ['controller' => 'Users', 'action' => 'view', $token->user->id]) : '' ?></td>
+                        <td><?= $token->email_send->has('user') ? $this->Html->link($token->email_send->user->full_name, ['controller' => 'Users', 'action' => 'view', $token->email_send->user->id]) : '' ?></td>
                         <td><?= $token->has('email_send') ? $this->Html->link($token->email_send->id, ['controller' => 'EmailSends', 'action' => 'view', $token->email_send->id]) : '' ?></td>
                         <td><?= $this->Time->i18nFormat($token->created,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>
                         <td><?= $this->Time->i18nFormat($token->modified,'dd-MMM-YY HH:mm', 'Europe/London') ?></td>

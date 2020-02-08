@@ -38,6 +38,15 @@ class Application extends BaseApplication
      */
     public function bootstrap()
     {
+        // Include Plugins
+        $this->addPlugin('Muffin/Trash');
+        $this->addPlugin('DatabaseLog', ['bootstrap' => true, 'routes' => true]);
+        $this->addPlugin('CsvView');
+        $this->addPlugin('Migrations');
+        $this->addPlugin('BootstrapUI');
+        $this->addPlugin('Search');
+        $this->addPlugin('CakePdf', ['bootstrap' => true, 'routes' => true]);
+
         // Call parent to load bootstrap from files.
         parent::bootstrap();
         if (PHP_SAPI === 'cli') {
@@ -50,14 +59,6 @@ class Application extends BaseApplication
         if (Configure::read('debug')) {
             $this->addPlugin(\DebugKit\Plugin::class);
         }
-        // Include Plugins
-        $this->addPlugin('Muffin/Trash');
-        $this->addPlugin('DatabaseLog', ['bootstrap' => true, 'routes' => true]);
-        $this->addPlugin('CsvView');
-        $this->addPlugin('Migrations');
-        $this->addPlugin('BootstrapUI');
-        $this->addPlugin('Search');
-        $this->addPlugin('CakePdf', ['bootstrap' => true, 'routes' => true]);
     }
 
     /**

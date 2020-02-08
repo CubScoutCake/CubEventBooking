@@ -18,7 +18,7 @@ class TokensController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'EmailSends'],
+            'contain' => ['EmailSends.Users'],
         ];
         $tokens = $this->paginate($this->Tokens);
 
@@ -37,7 +37,7 @@ class TokensController extends AppController
     public function view($tokenId = null)
     {
         $token = $this->Tokens->get($tokenId, [
-            'contain' => ['Users', 'EmailSends'],
+            'contain' => ['EmailSends.Users'],
         ]);
 
         $this->set('token', $token);
