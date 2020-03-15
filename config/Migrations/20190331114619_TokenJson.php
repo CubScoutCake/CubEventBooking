@@ -16,6 +16,10 @@ class TokenJson extends AbstractMigration
         $this
             ->table('tokens')
             ->removeColumn('header')
+            ->update();
+
+        $this
+            ->table('tokens')
             ->addColumn('header', 'json', [
                 'null' => true,
             ])
