@@ -8,7 +8,8 @@ namespace App\Controller\SuperUser;
  *
  * @property \App\Model\Table\ReservationStatusesTable $ReservationStatuses
  *
- * @method \App\Model\Entity\ReservationStatus[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\ReservationStatus[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array
+ *     $settings = [])
  */
 class ReservationStatusesController extends AppController
 {
@@ -28,6 +29,7 @@ class ReservationStatusesController extends AppController
      * View method
      *
      * @param string|null $id Reservation Status id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -64,6 +66,7 @@ class ReservationStatusesController extends AppController
      * Edit method
      *
      * @param string|null $id Reservation Status id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -88,6 +91,7 @@ class ReservationStatusesController extends AppController
      * Delete method
      *
      * @param string|null $id Reservation Status id.
+     *
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

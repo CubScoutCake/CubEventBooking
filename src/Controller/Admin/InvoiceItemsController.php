@@ -29,6 +29,7 @@ class InvoiceItemsController extends AppController
      * View method
      *
      * @param string|null $invoiceItemId Invoice Item id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -45,6 +46,7 @@ class InvoiceItemsController extends AppController
      * Edit method
      *
      * @param string|null $invoiceItemId Invoice Item id.
+     *
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -55,7 +57,7 @@ class InvoiceItemsController extends AppController
         $invNum = $invoiceItem->invoice_id;
 
         $permitted = [7, 8, 9, 10];
-        if (!in_array($invoiceItem->item_type_id, $permitted)) {
+        if (! in_array($invoiceItem->item_type_id, $permitted)) {
             $this->Flash->error(__('You can only edit cancelled values.'));
 
             return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invNum]);

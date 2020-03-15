@@ -27,7 +27,7 @@ class TokensController extends AppController
         // Validate Token
         $validated = $this->Tokens->validateToken($token);
 
-        if (!is_numeric($validated) || (!$validated && is_bool($validated))) {
+        if (! is_numeric($validated) || ( ! $validated && is_bool($validated))) {
             $this->Flash->error('This Token is Invalid');
 
             return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);

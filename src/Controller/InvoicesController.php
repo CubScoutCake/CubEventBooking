@@ -58,11 +58,11 @@ class InvoicesController extends AppController
         $this->set('auth_role', $this->AuthRoles->get($this->Auth->user('auth_role_id')));
 
         $this->viewBuilder()->setOptions([
-               'pdfConfig' => [
-                   'orientation' => 'portrait',
-                   'filename' => 'Invoice #' . $invoiceId,
-               ],
-           ]);
+            'pdfConfig' => [
+                'orientation' => 'portrait',
+                'filename' => 'Invoice #' . $invoiceId,
+            ],
+        ]);
 
         $invoice = $this->Invoices->get($invoiceId, [
             'contain' => [
@@ -81,7 +81,9 @@ class InvoicesController extends AppController
                 'Applications' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts', 'Payable',
+                            'LegalTexts',
+                            'InvoiceTexts',
+                            'Payable',
                         ],
                         'AdminUsers',
                     ],
@@ -90,7 +92,9 @@ class InvoicesController extends AppController
                 'Reservations' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts', 'Payable',
+                            'LegalTexts',
+                            'InvoiceTexts',
+                            'Payable',
                         ],
                         'AdminUsers',
                     ],
@@ -135,7 +139,8 @@ class InvoicesController extends AppController
                 'Applications' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts',
+                            'LegalTexts',
+                            'InvoiceTexts',
                         ],
                         'AdminUsers',
                     ],
@@ -226,63 +231,64 @@ class InvoicesController extends AppController
     }
 
     /**
-
-    public function discount($invId = null)
-    {
-        $disForm = new DiscountForm();
-        $this->set(compact('disForm'));
-
-        $ints = TableRegistry::get('InvoiceItems');
-        $dics = TableRegistry::get('Discounts');
-
-        if ($this->request->is('post')) {
-            $disCode = $this->request->getData()['discount'];
-
-            if (isset($disCode) && strlen($disCode) >= 5 && strlen($disCode) <= 45) {
-            // Check the code and match to a discount
-                $discount = $dics->find('all')->where(['code' => $disCode])->first();
-
-                if (isset($discount) && isset($invId)) {
-                    $disValue = $discount->discount_value;
-                    $disDescription = $discount->text;
-                    $disQty = $discount->discount_number;
-
-                    $disData = ['invoice_id' => $invId, 'Value' => $disValue, 'Description' => $disDescription, 'Quantity' => $disQty, 'itemtype_id' => 6, 'visible' => 1];
-                    $disItem = $this->$ints->newEntity();
-                    $disItem = $this->$ints->patchEntity($disItem, $disData);
-
-                    $disUse = $discount->uses + 1;
-                    $uses = ['uses' => $disUse];
-                    $discount = $this->$dics->patchEntity($discount, $uses);
-
-                    if ($this->$dics->save($discount) && $this->$ints->save($disItem)) {
-                        $this->Flash->success(__('The Discount has been added to the Invoice.'));
-
-                        return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
-                    } else {
-                        $this->Flash->error(__('There was an error.'));
-                    }
-                } else {
-                    $this->Flash->error(__('The Discount Code was not recognised, please try again.'));
-
-                    return $this->redirect(['Controller' => 'Invoices', 'action' => 'discount', $invId]);
-                }
-            } else {
-                $this->Flash->error(__('Please enter a valid discount code.'));
-
-                return $this->redirect(['Controller' => 'Invoices', 'action' => 'discount', $invId]);
-            }
-        }
-    }
-
-    public function sendFile($id)
-    {
-        $file = $this->Invoices->getFile($id);
-        $this->response->file($file['path']);
-        // Return response object to prevent controller from trying to render
-        // a view.
-        return $this->response;
-    } */
+     *
+     * public function discount($invId = null)
+     * {
+     * $disForm = new DiscountForm();
+     * $this->set(compact('disForm'));
+     *
+     * $ints = TableRegistry::get('InvoiceItems');
+     * $dics = TableRegistry::get('Discounts');
+     *
+     * if ($this->request->is('post')) {
+     * $disCode = $this->request->getData()['discount'];
+     *
+     * if (isset($disCode) && strlen($disCode) >= 5 && strlen($disCode) <= 45) {
+     * // Check the code and match to a discount
+     * $discount = $dics->find('all')->where(['code' => $disCode])->first();
+     *
+     * if (isset($discount) && isset($invId)) {
+     * $disValue = $discount->discount_value;
+     * $disDescription = $discount->text;
+     * $disQty = $discount->discount_number;
+     *
+     * $disData = ['invoice_id' => $invId, 'Value' => $disValue, 'Description' => $disDescription, 'Quantity' =>
+     * $disQty, 'itemtype_id' => 6, 'visible' => 1];
+     * $disItem = $this->$ints->newEntity();
+     * $disItem = $this->$ints->patchEntity($disItem, $disData);
+     *
+     * $disUse = $discount->uses + 1;
+     * $uses = ['uses' => $disUse];
+     * $discount = $this->$dics->patchEntity($discount, $uses);
+     *
+     * if ($this->$dics->save($discount) && $this->$ints->save($disItem)) {
+     * $this->Flash->success(__('The Discount has been added to the Invoice.'));
+     *
+     * return $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invID]);
+     * } else {
+     * $this->Flash->error(__('There was an error.'));
+     * }
+     * } else {
+     * $this->Flash->error(__('The Discount Code was not recognised, please try again.'));
+     *
+     * return $this->redirect(['Controller' => 'Invoices', 'action' => 'discount', $invId]);
+     * }
+     * } else {
+     * $this->Flash->error(__('Please enter a valid discount code.'));
+     *
+     * return $this->redirect(['Controller' => 'Invoices', 'action' => 'discount', $invId]);
+     * }
+     * }
+     * }
+     *
+     * public function sendFile($id)
+     * {
+     * $file = $this->Invoices->getFile($id);
+     * $this->response->file($file['path']);
+     * // Return response object to prevent controller from trying to render
+     * // a view.
+     * return $this->response;
+     * } */
 
     /**
      * Determine Authorisation

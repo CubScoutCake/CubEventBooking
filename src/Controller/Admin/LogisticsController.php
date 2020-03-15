@@ -8,7 +8,8 @@ namespace App\Controller\Admin;
  *
  * @property \App\Model\Table\LogisticsTable $Logistics
  *
- * @method \App\Model\Entity\Logistic[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\Logistic[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings =
+ *     [])
  */
 class LogisticsController extends AppController
 {
@@ -31,6 +32,7 @@ class LogisticsController extends AppController
      * View method
      *
      * @param string|null $id Logistic id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -69,6 +71,7 @@ class LogisticsController extends AppController
      * Edit method
      *
      * @param string|null $id Logistic id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -95,6 +98,7 @@ class LogisticsController extends AppController
      * Delete method
      *
      * @param string|null $id Logistic id.
+     *
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

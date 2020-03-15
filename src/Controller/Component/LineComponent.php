@@ -78,14 +78,14 @@ class LineComponent extends Component
                     $this->parseLine($invoiceID, $price->id, $appNumbers['NumTeams'], $admin);
                 } else {
                     if (
-                        !is_null($price->item_type->role_id)
+                        ! is_null($price->item_type->role_id)
                         && $price->item_type->role_id == $invoice->application->event->section_type->role_id
                     ) {
                         $this->parseLine($invoiceID, $price->id, $appNumbers['NumSection'], $admin);
                     }
 
                     if (
-                        !$price->item_type->minor
+                        ! $price->item_type->minor
                         && (
                             is_null($price->item_type->role_id)
                             || $price->item_type->role_id != $invoice->application->event->section_type->role_id
@@ -184,7 +184,7 @@ class LineComponent extends Component
             'item_type_id' => $price->item_type_id,
         ], null, ['atomic' => false]);
 
-        if (!($invoiceItem instanceof Entity)) {
+        if (! ($invoiceItem instanceof Entity)) {
             return false;
         }
 
@@ -196,9 +196,15 @@ class LineComponent extends Component
             'schedule_line' => $schedule,
         ];
 
-        $invoiceItem = $this->InvoiceItems->patchEntity($invoiceItem, $data, ['fields' => [
-            'value', 'description', 'quantity', 'visible', 'schedule_line',
-        ]]);
+        $invoiceItem = $this->InvoiceItems->patchEntity($invoiceItem, $data, [
+            'fields' => [
+                'value',
+                'description',
+                'quantity',
+                'visible',
+                'schedule_line',
+            ],
+        ]);
 
         if ($this->InvoiceItems->save($invoiceItem)) {
             return true;
@@ -223,7 +229,7 @@ class LineComponent extends Component
         $event = $this->Events->get($eventId);
 
         // Quit if Event does not have registered deposit
-        if (!$event->deposit) {
+        if (! $event->deposit) {
             return false;
         }
 
@@ -263,7 +269,7 @@ class LineComponent extends Component
             'contain' => ['Invoices'],
         ]);
 
-        if (!$reservation->has('invoice')) {
+        if (! $reservation->has('invoice')) {
             $invoice = $this->Reservations->Invoices->newEntity([
                 'user_id' => $reservation->user_id,
                 'reservation_id' => $reservation->id,

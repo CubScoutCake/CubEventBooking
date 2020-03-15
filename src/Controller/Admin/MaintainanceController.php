@@ -14,6 +14,7 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller\Admin;
 
 use Cake\Core\Configure;
@@ -40,15 +41,15 @@ class MaintainanceController extends AppController
         $path = func_get_args();
 
         $count = count($path);
-        if (!$count) {
+        if (! $count) {
             return $this->redirect('/');
         }
         $page = $subpage = null;
 
-        if (!empty($path[0])) {
+        if (! empty($path[0])) {
             $page = $path[0];
         }
-        if (!empty($path[1])) {
+        if (! empty($path[1])) {
             $subpage = $path[1];
         }
         $this->set(compact('page', 'subpage'));

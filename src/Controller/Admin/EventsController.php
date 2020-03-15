@@ -66,9 +66,9 @@ class EventsController extends AppController
             ->where(['event_id' => $eventId]);
 
         $lineQuery = $lineQuery->select([
-                'value' => $lineQuery->func()->count('*'),
-                'label' => 'Districts.district',
-            ])
+            'value' => $lineQuery->func()->count('*'),
+            'label' => 'Districts.district',
+        ])
             ->group('Districts.district');
 
         $lineArray = $lineQuery->enableHydration(false)->toArray();
@@ -83,7 +83,7 @@ class EventsController extends AppController
             'value' => $lineResQuery->func()->count('*'),
             'label' => 'Districts.district',
         ])
-        ->group('Districts.district');
+            ->group('Districts.district');
 
         $lineResArray = $lineResQuery->enableHydration(false)->toArray();
 
@@ -120,9 +120,9 @@ class EventsController extends AppController
     /**
      * @param null $eventId The ID of the Event
      *
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function accounts($eventId = null)
     {
@@ -265,8 +265,14 @@ class EventsController extends AppController
 
         if ($cntInvoices >= 1) {
             // Sum Values & Calculate Balances
-            $sumInvoices = $this->Events->Applications->Invoices->find('active')->contain(['Applications', 'Reservations'])->where(['OR' => ['Applications.event_id' => $event->id, 'Reservations.event_id' => $event->id]]);
-            $sumInvoices = $sumInvoices->select(['initial_sum' => $sumInvoices->func()->sum('initialvalue'), 'value_sum' => $sumInvoices->func()->sum('value')])->group(['Applications.event_id', 'Reservations.event_id'])->first();
+            $sumInvoices = $this->Events->Applications->Invoices->find('active')->contain([
+                'Applications',
+                'Reservations',
+            ])->where(['OR' => ['Applications.event_id' => $event->id, 'Reservations.event_id' => $event->id]]);
+            $sumInvoices = $sumInvoices->select([
+                'initial_sum' => $sumInvoices->func()->sum('initialvalue'),
+                'value_sum' => $sumInvoices->func()->sum('value'),
+            ])->group(['Applications.event_id', 'Reservations.event_id'])->first();
 
             $sumValues = $sumInvoices->initial_sum;
             $sumPayments = $sumInvoices->value_sum;
@@ -274,12 +280,23 @@ class EventsController extends AppController
             $sumBalances = $sumValues - $sumPayments;
 
             // Count of Line Items
-            $invItemCounts = $this->Events->Applications->Invoices->InvoiceItems->find()->contain(['Invoices' => ['Applications.ApplicationStatuses', 'Reservations.ReservationStatuses'], 'ItemTypes'])->where([
+            $invItemCounts = $this->Events->Applications->Invoices->InvoiceItems->find()->contain([
+                'Invoices' => [
+                    'Applications.ApplicationStatuses',
+                    'Reservations.ReservationStatuses',
+                ],
+                'ItemTypes',
+            ])->where([
                 'OR' => [
                     ['Applications.event_id' => $event->id, 'ApplicationStatuses.active' => true],
                     ['Reservations.event_id' => $event->id, 'ReservationStatuses.active' => true],
-                ]]);
-            $invItemCounts = $invItemCounts->select(['ItemTypes.item_type', 'sum_qty' => $invItemCounts->func()->sum('quantity'), 'value' => $invItemCounts->func()->max('InvoiceItems.value')])->group('ItemTypes.item_type')->toArray();
+                ],
+            ]);
+            $invItemCounts = $invItemCounts->select([
+                'ItemTypes.item_type',
+                'sum_qty' => $invItemCounts->func()->sum('quantity'),
+                'value' => $invItemCounts->func()->max('InvoiceItems.value'),
+            ])->group('ItemTypes.item_type')->toArray();
 
             $this->set(compact('invItemCounts'));
 
@@ -348,7 +365,10 @@ class EventsController extends AppController
         $discounts = $this->Events->Discounts->find('list', ['limit' => 200]);
         $eventTypes = $this->Events->EventTypes->find('list', ['limit' => 200]);
         $sectionTypes = $this->Events->SectionTypes->find('list', ['limit' => 200]);
-        $users = $this->Events->AdminUsers->find('list', ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]);
+        $users = $this->Events->AdminUsers->find(
+            'list',
+            ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]
+        );
         $this->set(compact('event', 'eventTypes', 'discounts', 'users', 'sectionTypes'));
         $this->set('_serialize', ['event']);
     }
@@ -379,7 +399,10 @@ class EventsController extends AppController
         $eventTypes = $this->Events->EventTypes->find('list', ['limit' => 200]);
         $sectionTypes = $this->Events->SectionTypes->find('list', ['limit' => 200]);
         $discounts = $this->Events->Discounts->find('list', ['limit' => 200]);
-        $users = $this->Events->AdminUsers->find('list', ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]);
+        $users = $this->Events->AdminUsers->find(
+            'list',
+            ['limit' => 200, 'contain' => 'AuthRoles', 'conditions' => ['AuthRoles.admin_access' => true]]
+        );
         $this->set(compact('event', 'eventTypes', 'sectionTypes', 'discounts', 'users'));
         $this->set('_serialize', ['event']);
     }
@@ -401,7 +424,7 @@ class EventsController extends AppController
         $event->set('team_price', true);
 
         foreach ($event->prices as $price) {
-            if (!$price->item_type->team_price) {
+            if (! $price->item_type->team_price) {
                 $this->Events->Prices->delete($price);
             }
         }
@@ -471,7 +494,7 @@ class EventsController extends AppController
             $event = $this->Events->patchEntity(
                 $event,
                 $this->request->getData(),
-                ['associated' => [ 'Prices']]
+                ['associated' => ['Prices']]
             );
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
@@ -523,7 +546,7 @@ class EventsController extends AppController
             return $this->redirect(['action' => 'logistics', $eventId, $this->request->getData('boxes')]);
         }
         $event = $this->Events->get($eventId, [
-            'contain' => ['Settings', 'Logistics' => ['Parameters' => [ 'Params', 'ParameterSets']]],
+            'contain' => ['Settings', 'Logistics' => ['Parameters' => ['Params', 'ParameterSets']]],
         ]);
         $logisticsCount = count($event->logistics);
 
@@ -531,7 +554,7 @@ class EventsController extends AppController
             $event = $this->Events->patchEntity(
                 $event,
                 $this->request->getData(),
-                ['associated' => [ 'Logistics']]
+                ['associated' => ['Logistics']]
             );
             if ($this->Events->save($event)) {
                 $this->Flash->success(__('The event has been saved.'));
@@ -584,9 +607,24 @@ class EventsController extends AppController
      */
     public function export($eventID)
     {
-        $events = $this->Events->Applications->find('all', ['contain' => ['Sections.Scoutgroups.Districts', 'Users']])->where(['Applications.event_id' => $eventID])->toArray();
+        $events = $this->Events->Applications->find('all', [
+            'contain' => [
+                'Sections.Scoutgroups.Districts',
+                'Users',
+            ],
+        ])->where(['Applications.event_id' => $eventID])->toArray();
         $_serialize = 'events';
-        $_header = ['App ID', 'Section', 'PermitHolder', 'TeamLeader', 'Created', 'User', 'Email', 'Scout Group', 'District'];
+        $_header = [
+            'App ID',
+            'Section',
+            'PermitHolder',
+            'TeamLeader',
+            'Created',
+            'User',
+            'Email',
+            'Scout Group',
+            'District',
+        ];
 
         $_extract = [
             'id',

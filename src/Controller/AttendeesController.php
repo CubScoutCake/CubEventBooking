@@ -46,7 +46,7 @@ class AttendeesController extends AppController
                 'Roles',
                 'Applications.Sections.Scoutgroups',
                 'Applications.Events',
-                'Allergies'
+                'Allergies',
             ],
         ]);
         $this->set('attendee', $attendee);
@@ -78,15 +78,16 @@ class AttendeesController extends AppController
 
         $sections = $this->Attendees->Sections->find('list', [
             'limit' => 200,
-            'conditions' => ['id' => $this->Auth->user('section_id')
-            ]
+            'conditions' => [
+                'id' => $this->Auth->user('section_id'),
+            ],
         ]);
         $roles = $this->Attendees->Roles->find('nonAuto')->find('adults')->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', [
             'limit' => 200,
             'conditions' => [
-                'user_id' => $this->Auth->user('id')
-            ]
+                'user_id' => $this->Auth->user('id'),
+            ],
         ]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
@@ -127,12 +128,13 @@ class AttendeesController extends AppController
         $sections = $this->Attendees->Sections->find('list', [
             'limit' => 200,
             'conditions' => [
-                'id' => $this->Auth->user('section_id')
-            ]
+                'id' => $this->Auth->user('section_id'),
+            ],
         ]);
         $roles = $this->Attendees->Roles->find('nonAuto')->find('minors')->find('list', ['limit' => 200]);
         $applications = $this->Attendees->Applications->find('list', [
-            'limit' => 200, 'conditions' => ['user_id' => $this->Auth->user('id')]
+            'limit' => 200,
+            'conditions' => ['user_id' => $this->Auth->user('id')],
         ]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 
@@ -175,8 +177,8 @@ class AttendeesController extends AppController
         $applications = $this->Attendees->Applications->find('list', [
             'limit' => 200,
             'conditions' => [
-                'user_id' => $this->Auth->user('id')
-            ]
+                'user_id' => $this->Auth->user('id'),
+            ],
         ]);
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
 

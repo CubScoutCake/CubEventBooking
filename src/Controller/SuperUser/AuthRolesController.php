@@ -10,7 +10,8 @@ use App\Controller\AppController;
  *
  * @property \App\Model\Table\AuthRolesTable $AuthRoles
  *
- * @method \App\Model\Entity\AuthRole[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\AuthRole[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings =
+ *     [])
  */
 class AuthRolesController extends AppController
 {
@@ -30,6 +31,7 @@ class AuthRolesController extends AppController
      * View method
      *
      * @param string|null $id Auth Role id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -66,6 +68,7 @@ class AuthRolesController extends AppController
      * Edit method
      *
      * @param string|null $id Auth Role id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -90,6 +93,7 @@ class AuthRolesController extends AppController
      * Delete method
      *
      * @param string|null $id Auth Role id.
+     *
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

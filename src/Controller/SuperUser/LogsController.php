@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  * @link https://github.com/dereuromark/CakePHP-DatabaseLog
  */
+
 namespace App\Controller\SuperUser;
 
 use DatabaseLog\Model\Table\DatabaseLogsTable;
@@ -59,7 +60,7 @@ class LogsController extends AppController
     {
         parent::initialize();
 
-        if (!DatabaseLogsTable::isSearchEnabled()) {
+        if (! DatabaseLogsTable::isSearchEnabled()) {
             return;
         }
         $this->loadComponent('Search.Prg', [

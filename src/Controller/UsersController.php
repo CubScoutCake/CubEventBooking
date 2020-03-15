@@ -38,13 +38,15 @@ class UsersController extends AppController
      * View method
      *
      * @param string|null $userID User id.
+     *
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($userID = null)
     {
         $user = $this->Users->get($userID, [
-            'contain' => ['Roles',
+            'contain' => [
+                'Roles',
                 'Sections.Scoutgroups',
                 'Invoices.Applications',
                 'Applications.Sections.Scoutgroups',
@@ -110,7 +112,11 @@ class UsersController extends AppController
         $user = $this->Users->get($this->Auth->user('id'));
 
         $attRef = $this->Users->Attendees->find('all')->where(['user_attendee' => true, 'user_id' => $user->id]);
-        $attName = $this->Users->Attendees->find('all')->where(['firstname' => $user->firstname, 'lastname' => $user->lastname, 'user_id' => $user->id]);
+        $attName = $this->Users->Attendees->find('all')->where([
+            'firstname' => $user->firstname,
+            'lastname' => $user->lastname,
+            'user_id' => $user->id,
+        ]);
 
         $count = max($attRef->count(), $attName->count());
 
@@ -170,7 +176,7 @@ class UsersController extends AppController
             $tries = $session->read('Reset.lgTries');
         }
 
-        if (!isset($tries)) {
+        if (! isset($tries)) {
             $tries = 0;
         }
 
@@ -194,12 +200,16 @@ class UsersController extends AppController
                 $logins = 1;
                 $syncRedir = 1;
 
-                if (!empty($loggedInUser->logins)) {
+                if (! empty($loggedInUser->logins)) {
                     $logins = $loggedInUser->logins + 1;
                     $syncRedir = 0;
                 }
 
-                $loginPass = ['last_login' => $now, 'logins' => $logins, 'pw_salt' => $this->request->getQuery('redirect')];
+                $loginPass = [
+                    'last_login' => $now,
+                    'logins' => $logins,
+                    'pw_salt' => $this->request->getQuery('redirect'),
+                ];
 
                 $loggedInUser = $this->Users->patchEntity($loggedInUser, $loginPass, ['validate' => false]);
                 $loggedInUser->setDirty('modified', true);
@@ -212,11 +222,11 @@ class UsersController extends AppController
                     $session->delete('Reset.lgTries');
                     $session->delete('Reset.rsTries');
 
-                    if (!empty($this->request->getQuery('redirect'))) {
+                    if (! empty($this->request->getQuery('redirect'))) {
                         return $this->redirect($this->request->getQuery('redirect'));
                     }
 
-                    if (!empty($this->request->getQueryParams())) {
+                    if (! empty($this->request->getQueryParams())) {
                         return $this->redirect($this->request->getQueryParams());
                     }
 
@@ -227,19 +237,31 @@ class UsersController extends AppController
                     $superBinary = 1 . 0 . 0 . 1 . 0; // Redirect SuperUsers
 
                     if ($loggedInUser->auth_role->auth_value >= bindec($superBinary)) {
-                        return $this->redirect(['prefix' => 'super_user', 'controller' => 'Landing', 'action' => 'super_user_home']);
+                        return $this->redirect([
+                            'prefix' => 'super_user',
+                            'controller' => 'Landing',
+                            'action' => 'super_user_home',
+                        ]);
                     }
 
                     $adminBinary = 0 . 1 . 0 . 1 . 0; // Redirect Admins
 
                     if ($loggedInUser->auth_role->auth_value >= bindec($adminBinary)) {
-                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Landing', 'action' => 'admin_home']);
+                        return $this->redirect([
+                            'prefix' => 'admin',
+                            'controller' => 'Landing',
+                            'action' => 'admin_home',
+                        ]);
                     }
 
                     $champBinary = 0 . 0 . 1 . 1 . 0; // Redirect Champions
 
                     if ($loggedInUser->auth_role->auth_value >= bindec($champBinary)) {
-                        return $this->redirect(['prefix' => 'champion', 'controller' => 'Landing', 'action' => 'champion_home']);
+                        return $this->redirect([
+                            'prefix' => 'champion',
+                            'controller' => 'Landing',
+                            'action' => 'champion_home',
+                        ]);
                     }
 
                     return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
@@ -283,7 +305,7 @@ class UsersController extends AppController
                 $tries = $session->read('Reset.rsTries');
             }
 
-            if (!isset($tries)) {
+            if (! isset($tries)) {
                 $tries = 0;
             }
 
@@ -340,7 +362,7 @@ class UsersController extends AppController
         $qParams = $this->request->getQueryParams();
 
         $valid = $this->Users->EmailSends->Tokens->validateToken($qParams['token']);
-        if (!$valid || $qParams['token_id'] != $valid) {
+        if (! $valid || $qParams['token_id'] != $valid) {
             $this->Flash->error('Password Reset Token could not be validated.');
 
             return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'welcome']);
@@ -369,7 +391,11 @@ class UsersController extends AppController
                             'password' => $fmPassword,
                         ];
 
-                        $resetUser = $this->Users->patchEntity($resetUser, $newPw, [ 'fields' => ['password'], 'validate' => false ]);
+                        $resetUser = $this->Users->patchEntity(
+                            $resetUser,
+                            $newPw,
+                            ['fields' => ['password'], 'validate' => false]
+                        );
 
                         if ($this->Users->save($resetUser)) {
                             $this->Flash->success('Your password was saved successfully.');
@@ -379,7 +405,11 @@ class UsersController extends AppController
 
                             $this->Auth->setUser($resetUser->toArray());
 
-                            return $this->redirect(['prefix' => false, 'controller' => 'Landing', 'action' => 'user_home']);
+                            return $this->redirect([
+                                'prefix' => false,
+                                'controller' => 'Landing',
+                                'action' => 'user_home',
+                            ]);
                         } else {
                             $this->Flash->error(__('The user could not be saved. Please try again.'));
                         }

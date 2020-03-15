@@ -39,6 +39,7 @@ class SectionsController extends AppController
      * View method
      *
      * @param string|null $id Section id.
+     *
      * @return void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -74,12 +75,12 @@ class SectionsController extends AppController
         $scoutgroups = $this->Sections->Scoutgroups->find(
             'list',
             [
-            'keyField' => 'id',
-            'valueField' => 'scoutgroup',
-            'groupField' => 'district.district',
+                'keyField' => 'id',
+                'valueField' => 'scoutgroup',
+                'groupField' => 'district.district',
             ]
         )
-        ->contain(['Districts']);
+            ->contain(['Districts']);
         $this->set(compact('section', 'sectionTypes', 'scoutgroups'));
         $this->set('_serialize', ['section']);
     }
@@ -88,6 +89,7 @@ class SectionsController extends AppController
      * Edit method
      *
      * @param string|null $id Section id.
+     *
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -124,6 +126,7 @@ class SectionsController extends AppController
      * Delete method
      *
      * @param string|null $id Section id.
+     *
      * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

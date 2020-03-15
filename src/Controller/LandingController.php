@@ -14,6 +14,7 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 /**
@@ -62,14 +63,14 @@ class LandingController extends AppController
         $invoices = $this->Invoices
             ->find('all', [
                 'conditions' => [
-                    'Invoices.user_id' => $userId
-                ]
+                    'Invoices.user_id' => $userId,
+                ],
             ])
             ->contain(['Users', 'Applications', 'Payments'])
             ->order(['Invoices.created' => 'DESC'])
             ->limit(5);
         $payments = $this->Payments->find('all')->matching('Invoices', function ($q) {
-                return $q->where(['Invoices.user_id' => $this->Auth->user('id')]);
+            return $q->where(['Invoices.user_id' => $this->Auth->user('id')]);
         });
 
         if ($events->count() > 0) {

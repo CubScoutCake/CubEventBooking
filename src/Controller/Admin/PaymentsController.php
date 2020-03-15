@@ -31,6 +31,7 @@ class PaymentsController extends AppController
      * View method
      *
      * @param int $paymentId Payment id.
+     *
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -64,10 +65,10 @@ class PaymentsController extends AppController
             }
         }
 
-        if (!is_null($numberOfInvAssocs) && $numberOfInvAssocs > 0) {
+        if (! is_null($numberOfInvAssocs) && $numberOfInvAssocs > 0) {
             $payment = $this->Payments->newEntity();
             if ($this->request->is('post')) {
-                $newData = [ 'user_id' => $this->Auth->user('id') ];
+                $newData = ['user_id' => $this->Auth->user('id')];
                 $payment = $this->Payments->patchEntity($payment, $newData);
 
                 $payment = $this->Payments->patchEntity($payment, $this->request->getData(), [
@@ -89,19 +90,22 @@ class PaymentsController extends AppController
                 }
             }
 
-            $invoices = $this->Payments->Invoices->find('unarchived')->find('outstanding')->find('active')->find('list', [
-                'limit' => 500,
-                'order' => [ 'Invoices.id' => 'DESC' ],
-            ]);
+            $invoices = $this->Payments->Invoices->find('unarchived')->find('outstanding')->find('active')->find(
+                'list',
+                [
+                    'limit' => 500,
+                    'order' => ['Invoices.id' => 'DESC'],
+                ]
+            );
 
             $invDefault = $invId;
 
-            if (!isset($invId)) {
+            if (! isset($invId)) {
                 $invDefault = 'empty';
             }
 
             $this->set(compact('payment', 'invoices', 'numberOfInvAssocs', 'invId', 'invDefault'));
-            $this->set('_serialize', [ 'payment' ]);
+            $this->set('_serialize', ['payment']);
         }
     }
 
@@ -136,7 +140,10 @@ class PaymentsController extends AppController
                 $this->Flash->error(__('The payment could not be saved. Please, try again.'));
             }
         }
-        $invoices = $this->Payments->Invoices->find('unarchived')->find('list', ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]);
+        $invoices = $this->Payments->Invoices->find('unarchived')->find(
+            'list',
+            ['limit' => 200, 'order' => ['Invoices.id' => 'DESC']]
+        );
 
         if (is_null($numInvAssociated)) {
             $numInvAssociated = 1;
@@ -150,6 +157,7 @@ class PaymentsController extends AppController
      * Delete method
      *
      * @param string|null $paymentId Payment id.
+     *
      * @return \Cake\Http\Response Redirects to index.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */

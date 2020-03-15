@@ -14,6 +14,7 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller\Admin;
 
 use Cake\Controller\Controller;
@@ -32,9 +33,9 @@ use Cake\ORM\TableRegistry;
 class AppController extends Controller
 {
     /**
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function initialize()
     {
@@ -45,12 +46,12 @@ class AppController extends Controller
                 'prefix' => false,
                 'controller' => 'Landing',
                 'action' => 'user_home',
-                ],
+            ],
             'loginAction' => [
                 'prefix' => false,
                 'controller' => 'Users',
                 'action' => 'login',
-                ],
+            ],
         ]);
 
         $this->loadComponent('RequestHandler', [
@@ -74,7 +75,7 @@ class AppController extends Controller
 
         $adminTrue = $auth->get($user['auth_role_id']);
 
-        if (!isset($user['auth_role_id'])) {
+        if (! isset($user['auth_role_id'])) {
             return false;
         }
 

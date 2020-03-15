@@ -14,6 +14,7 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller\Parent;
 
 use Cake\Controller\Controller;
@@ -30,6 +31,7 @@ class AppController extends Controller
 {
     /**
      * Initialise Function - Setup Application Config
+     *
      * @return void
      *
      * @throws \Exception
@@ -43,17 +45,17 @@ class AppController extends Controller
                 'controller' => 'Landing',
                 'action' => 'user_home',
                 'prefix' => false,
-                ],
+            ],
             'logoutRedirect' => [
                 'controller' => 'Landing',
                 'action' => 'welcome',
                 'prefix' => false,
-                ],
+            ],
             'loginAction' => [
                 'controller' => 'Users',
                 'action' => 'login',
                 'prefix' => false,
-                ],
+            ],
         ]);
 
         $this->loadComponent('RequestHandler', [
@@ -67,6 +69,7 @@ class AppController extends Controller
      * Determine Authorisation for User in /Register
      *
      * @param \App\Model\Entity\User $user The User to be Evaluated
+     *
      * @return bool
      */
     public function isAuthorized($user)

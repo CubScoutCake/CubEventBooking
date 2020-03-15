@@ -27,7 +27,7 @@ class ApplicationsController extends AppController
     {
         $query = $this->Applications->find('all');
 
-        if (!is_null($eventID)) {
+        if (! is_null($eventID)) {
             $query->where(['event_id' => $eventID]);
 
             $event = $this->Applications->Events->get($eventID);
@@ -61,7 +61,19 @@ class ApplicationsController extends AppController
     public function view($applicationId = null)
     {
         $application = $this->Applications->get($applicationId, [
-            'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes'],
+            'contain' => [
+                'Users',
+                'Sections.Scoutgroups.Districts',
+                'Events',
+                'Invoices',
+                'Attendees' => [
+                    'sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'],
+                    'Roles',
+                    'Sections.Scoutgroups',
+                    'Allergies',
+                ],
+                'Notes',
+            ],
         ]);
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
@@ -76,15 +88,27 @@ class ApplicationsController extends AppController
      *
      * @param null $applicationId ID of the Application
      *
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function pdfView($applicationId = null)
     {
         // Insantiate Objects
         $application = $this->Applications->get($applicationId, [
-            'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes'],
+            'contain' => [
+                'Users',
+                'Sections.Scoutgroups.Districts',
+                'Events',
+                'Invoices',
+                'Attendees' => [
+                    'sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'],
+                    'Roles',
+                    'Sections.Scoutgroups',
+                    'Allergies',
+                ],
+                'Notes',
+            ],
         ]);
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
@@ -94,11 +118,11 @@ class ApplicationsController extends AppController
         $this->Progress->determineApp($application->id, true, $this->Auth->user('id'), true);
 
         $this->viewBuilder()->setOptions([
-               'pdfConfig' => [
-                   'orientation' => 'portrait',
-                   'filename' => 'Invoice #' . $applicationId,
-               ],
-           ]);
+            'pdfConfig' => [
+                'orientation' => 'portrait',
+                'filename' => 'Invoice #' . $applicationId,
+            ],
+        ]);
 
         $this->Progress->determineApp($application->id, true, $this->Auth->user('id'), true);
 
@@ -116,9 +140,9 @@ class ApplicationsController extends AppController
      *
      * @param null $eventId Event ID to be parsed.
      *
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function eventPdf($eventId = null)
     {
@@ -128,7 +152,19 @@ class ApplicationsController extends AppController
             foreach ($event->applications as $applications) {
                 // Insantiate Objects
                 $application = $this->Applications->get($applications->id, [
-                    'contain' => ['Users', 'Sections.Scoutgroups.Districts', 'Events', 'Invoices', 'Attendees' => ['sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'], 'Roles', 'Sections.Scoutgroups', 'Allergies'], 'Notes'],
+                    'contain' => [
+                        'Users',
+                        'Sections.Scoutgroups.Districts',
+                        'Events',
+                        'Invoices',
+                        'Attendees' => [
+                            'sort' => ['Attendees.role_id' => 'ASC', 'Attendees.lastname' => 'ASC'],
+                            'Roles',
+                            'Sections.Scoutgroups',
+                            'Allergies',
+                        ],
+                        'Notes',
+                    ],
                 ]);
                 $this->set('application', $application);
                 $this->set('_serialize', ['application']);
@@ -170,7 +206,10 @@ class ApplicationsController extends AppController
             /**
              * @var \App\Model\Entity\User $user
              */
-            $user = $this->Applications->Users->get($userId, ['contain' => ['Roles', 'Applications', 'Sections.Scoutgroups']]);
+            $user = $this->Applications->Users->get(
+                $userId,
+                ['contain' => ['Roles', 'Applications', 'Sections.Scoutgroups']]
+            );
             $userSectionId = $user->section_id;
         }
 
@@ -209,7 +248,10 @@ class ApplicationsController extends AppController
         }
 
         if (isset($userId)) {
-            $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
+            $attendees = $this->Applications->Attendees->find(
+                'list',
+                ['limit' => 200, 'conditions' => ['user_id' => $userId]]
+            );
         } else {
             $attendees = $this->Applications->Attendees->find('list', ['limit' => 200]);
         }
@@ -283,7 +325,10 @@ class ApplicationsController extends AppController
             ]
         )
             ->contain(['Sections.Scoutgroups.Districts']);
-        $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $application->user_id]]);
+        $attendees = $this->Applications->Attendees->find(
+            'list',
+            ['limit' => 200, 'conditions' => ['user_id' => $application->user_id]]
+        );
         $events = $this->Applications->Events->find('list', ['limit' => 200]);
         $sections = $this->Applications->Sections->find(
             'list',
@@ -294,7 +339,16 @@ class ApplicationsController extends AppController
             ]
         )
             ->contain(['Scoutgroups.Districts']);
-        $this->set(compact('application', 'users', 'attendees', 'events', 'sections', 'permitHolderBool', 'teamLeaderBool', 'term'));
+        $this->set(compact(
+            'application',
+            'users',
+            'attendees',
+            'events',
+            'sections',
+            'permitHolderBool',
+            'teamLeaderBool',
+            'term'
+        ));
         $this->set('_serialize', ['application']);
     }
 
@@ -319,7 +373,10 @@ class ApplicationsController extends AppController
                 $this->Flash->error(__('The application could not be saved. Please, try again.'));
             }
         }
-        $attendees = $this->Applications->Attendees->find('list', ['limit' => 200, 'conditions' => ['user_id' => $application->user_id]]);
+        $attendees = $this->Applications->Attendees->find(
+            'list',
+            ['limit' => 200, 'conditions' => ['user_id' => $application->user_id]]
+        );
         $this->set(compact('application', 'attendees'));
         $this->set('_serialize', ['application']);
     }

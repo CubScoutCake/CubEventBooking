@@ -8,7 +8,8 @@ namespace App\Controller;
  *
  * @property \App\Model\Table\ReservationsTable $Reservations
  *
- * @method \App\Model\Entity\Reservation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\Reservation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings
+ *     = [])
  */
 class ReservationsController extends AppController
 {
@@ -23,8 +24,8 @@ class ReservationsController extends AppController
             'contain' => ['Events', 'Users', 'Attendees', 'ReservationStatuses'],
         ];
         $this->set('reservations', $this->paginate(
-            $this->Reservations->find('ownedBy', ['userId' => $this->Auth->user('id')]))
-        );
+            $this->Reservations->find('ownedBy', ['userId' => $this->Auth->user('id')])
+        ));
     }
 
     /**

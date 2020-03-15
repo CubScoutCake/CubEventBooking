@@ -51,6 +51,7 @@ class NotificationsController extends AppController
      * View method
      *
      * @param string|null $id Notification id.
+     *
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -83,8 +84,8 @@ class NotificationsController extends AppController
                         'Controller' => $notification->link_controller,
                         'Source' => $notification->notification_source,
                         'Header' => $notification->notification_header,
-                        ],
-                    ];
+                    ],
+                ];
 
                 $sets = TableRegistry::get('Settings');
 

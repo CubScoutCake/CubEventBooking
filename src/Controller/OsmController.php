@@ -20,9 +20,9 @@ use Cake\Utility\Hash;
 class OsmController extends AppController
 {
     /**
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function initialize()
     {
@@ -85,7 +85,7 @@ class OsmController extends AppController
     {
         $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
 
-        if (!$checkArray['linked']) {
+        if (! $checkArray['linked']) {
             $this->Flash->error(__('Please link your account first'));
 
             return $this->redirect(['action' => 'link']);
@@ -98,7 +98,7 @@ class OsmController extends AppController
         if ($this->request->is('get')) {
             $sections = $this->ScoutManager->getSectionIds($this->Auth->user('id'));
 
-            if (!is_array($sections)) {
+            if (! is_array($sections)) {
                 $this->Flash->error(__('There was a request error, please try again.'));
 
                 return $this->redirect(['action' => 'home']);
@@ -118,7 +118,7 @@ class OsmController extends AppController
 
             if ($users->save($user)) {
                 $this->Flash->success(__('You have selected your OSM section.'));
-                if (!empty($user->osm_current_term) && $user->osm_term_end > $now) {
+                if (! empty($user->osm_current_term) && $user->osm_term_end > $now) {
                     return $this->redirect(['action' => 'home']);
                 } else {
                     return $this->redirect(['action' => 'term']);
@@ -140,13 +140,13 @@ class OsmController extends AppController
     {
         $checkArray = $this->ScoutManager->checkOsmStatus($this->Auth->user('id'));
 
-        if (!$checkArray['linked']) {
+        if (! $checkArray['linked']) {
             $this->Flash->error(__('Please link your account first'));
 
             return $this->redirect(['action' => 'link']);
         }
 
-        if (!$checkArray['sectionSet']) {
+        if (! $checkArray['sectionSet']) {
             $this->Flash->error(__('Please set your section first'));
 
             return $this->redirect(['action' => 'section']);
@@ -184,7 +184,7 @@ class OsmController extends AppController
         $apiToken = $settings->get('11')->text;
         $apiBase = $settings->get('12')->text;
 
-        if (empty($user->osm_secret) || !$session->check('OSM.Secret')) {
+        if (empty($user->osm_secret) || ! $session->check('OSM.Secret')) {
             $this->Flash->error(__('Please link your account first'));
 
             return $this->redirect(['action' => 'link']);
@@ -203,17 +203,17 @@ class OsmController extends AppController
             $userOsmTerm = $user->osm_current_term;
         }
 
-        if (!isset($successCnt)) {
+        if (! isset($successCnt)) {
             $successCnt = 0;
         }
 
-        if (!isset($errCnt)) {
+        if (! isset($errCnt)) {
             $errCnt = 0;
         }
 
         $http = new Client([
-          'host' => $apiBase,
-          'scheme' => 'https',
+            'host' => $apiBase,
+            'scheme' => 'https',
         ]);
 
         $url = '/ext/members/contact/grid/' . '?action=getMembers';
@@ -408,7 +408,7 @@ class OsmController extends AppController
                     $phone1 = str_replace('+44', '0', $phone1);
                     $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
 
-                    if (!empty($phone2)) {
+                    if (! empty($phone2)) {
                         $phone2 = str_replace(' ', '', $phone2);
                         $phone2 = str_replace('-', '', $phone2);
                         $phone2 = str_replace('/', '', $phone2);
@@ -422,7 +422,11 @@ class OsmController extends AppController
 
                     //Debugger::dump($address);
 
-                    $attsName = $atts->find('all')->where(['firstname' => $firstname, 'lastname' => $lastname, 'user_id' => $user->id]);
+                    $attsName = $atts->find('all')->where([
+                        'firstname' => $firstname,
+                        'lastname' => $lastname,
+                        'user_id' => $user->id,
+                    ]);
 
                     $attsID = $atts->find('all')->where(['osm_id' => $osmId, 'user_id' => $user->id]);
 
@@ -499,8 +503,8 @@ class OsmController extends AppController
                 'OSM' => [
                     'ErrorNumber' => $errCnt,
                     'SuccessNumber' => $successCnt,
-                    ],
-                ];
+                ],
+            ];
 
             $sets = TableRegistry::get('Settings');
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Controller\Controller;
@@ -37,9 +38,9 @@ class AppController extends Controller
     /**
      * The App Initialisation Method.
      *
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function initialize()
     {
@@ -49,15 +50,15 @@ class AppController extends Controller
             'loginRedirect' => [
                 'controller' => 'Landing',
                 'action' => 'user_home',
-                ],
+            ],
             'logoutRedirect' => [
                 'controller' => 'Landing',
                 'action' => 'welcome',
-                ],
+            ],
             'loginAction' => [
                 'controller' => 'Users',
                 'action' => 'login',
-                ],
+            ],
         ]);
 
         $this->loadComponent('RequestHandler', [
@@ -75,7 +76,7 @@ class AppController extends Controller
      */
     public function isAuthorized($user)
     {
-        if (!isset($user['auth_role_id'])) {
+        if (! isset($user['auth_role_id'])) {
             return false;
         }
 
@@ -89,12 +90,12 @@ class AppController extends Controller
         /** @var \App\Model\Entity\AuthRole $authRole */
         $authRole = $auth->get($user['auth_role_id']);
 
-        if (!$authRole->user_access) {
+        if (! $authRole->user_access) {
             return false;
         }
 
         if (isset($user['id'])) {
-            if (!empty($this->request->getParam('prefix')) && $this->request->getParam('prefix') === 'admin') {
+            if (! empty($this->request->getParam('prefix')) && $this->request->getParam('prefix') === 'admin') {
                 return false;
             } else {
                 return true;

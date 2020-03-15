@@ -37,8 +37,7 @@ class ApplicationsController extends AppController
             $this->Applications
                 ->find('unarchived')
                 ->find('ownedBy', ['userId' => $this->Auth->user('id')])
-            )
-        );
+        ));
         $this->set('_serialize', ['applications']);
     }
 
@@ -71,11 +70,11 @@ class ApplicationsController extends AppController
     public function view($applicationId = null)
     {
         $this->viewBuilder()->setOptions([
-               'pdfConfig' => [
-                   'orientation' => 'portrait',
-                   'filename' => 'Application #' . $applicationId,
-               ],
-           ]);
+            'pdfConfig' => [
+                'orientation' => 'portrait',
+                'filename' => 'Application #' . $applicationId,
+            ],
+        ]);
 
         $application = $this->Applications->get($applicationId, [
             'contain' => [
@@ -99,7 +98,8 @@ class ApplicationsController extends AppController
                         'Attendees.user_id' => $this->Auth->user('id'),
                     ],
                 ],
-                'Notes' => ['conditions' => ['visible' => true]]],
+                'Notes' => ['conditions' => ['visible' => true]],
+            ],
         ]);
 
         $this->set('application', $application);
@@ -146,10 +146,10 @@ class ApplicationsController extends AppController
      *
      * @param int $eventId The ID of the Event
      *
-     * @throws \Cake\Http\Exception\NotFoundException When record not found
+     * @return void
      * @throws \Exception
      *
-     * @return void
+     * @throws \Cake\Http\Exception\NotFoundException When record not found
      */
     public function pdfView($eventId = null)
     {
@@ -176,15 +176,16 @@ class ApplicationsController extends AppController
                         'Attendees.user_id' => $this->Auth->user('id'),
                     ],
                 ],
-                'Notes' => ['conditions' => ['visible' => true]]],
+                'Notes' => ['conditions' => ['visible' => true]],
+            ],
         ]);
 
         $this->viewBuilder()->setOptions([
-               'pdfConfig' => [
-                   'orientation' => 'portrait',
-                   'filename' => 'Invoice #' . $eventId,
-               ],
-           ]);
+            'pdfConfig' => [
+                'orientation' => 'portrait',
+                'filename' => 'Invoice #' . $eventId,
+            ],
+        ]);
 
         $this->set('application', $application);
         $this->set('_serialize', ['application']);
@@ -202,8 +203,7 @@ class ApplicationsController extends AppController
         $cakePDF->write(FILES
                         . DS . 'Event ' . $event->id
                         . DS . 'Applications'
-                        . DS . 'Application #' . $eventId . '.pdf'
-        );
+                        . DS . 'Application #' . $eventId . '.pdf');
 
         $this->redirect(['controller' => 'Applications', 'action' => 'view', $application->id, '_ext' => 'pdf']);
     }
@@ -227,7 +227,7 @@ class ApplicationsController extends AppController
                 $this->Flash->error(__('Apologies this Event is Full.'));
 
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
-            } elseif (!$event->new_apps) {
+            } elseif (! $event->new_apps) {
                 $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
 
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
@@ -247,7 +247,7 @@ class ApplicationsController extends AppController
                 $this->Flash->error(__('Apologies this Event is Full.'));
 
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
-            } elseif (!$event->new_apps) {
+            } elseif (! $event->new_apps) {
                 $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
 
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
@@ -272,14 +272,15 @@ class ApplicationsController extends AppController
         $attendees = $this->Applications->Attendees->find('list', [
             'limit' => 200,
             'conditions' => [
-                'user_id' => $this->Auth->user('id')
-            ]
+                'user_id' => $this->Auth->user('id'),
+            ],
         ]);
         $events = $this->Applications->Events->find('list', [
-            'limit' => 200, 'conditions' => [
+            'limit' => 200,
+            'conditions' => [
                 'end >' => $now,
-                'live' => 1
-            ]
+                'live' => 1,
+            ],
         ]);
         $this->set(compact('application', 'events', 'attendees'));
         $this->set('_serialize', ['application']);
@@ -290,16 +291,16 @@ class ApplicationsController extends AppController
      *
      * @param int $eventId The ID of the Event to be booked
      *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      * @throws \Exception
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function simpleBook($eventId)
     {
         $this->loadComponent('Availability');
         $bookingData = $this->request->getQueryParams();
 
-        if (!isset($eventId) || !key_exists('section', $bookingData)) {
+        if (! isset($eventId) || ! key_exists('section', $bookingData)) {
             $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
         }
 
@@ -308,7 +309,7 @@ class ApplicationsController extends AppController
         $leaderAtts = $bookingData['leaders'];
         $bookingData['booking_type'] = 'list';
 
-        if (!$this->Availability->checkBooking($eventId, $bookingData, true)) {
+        if (! $this->Availability->checkBooking($eventId, $bookingData, true)) {
             $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
         }
 
@@ -339,13 +340,13 @@ class ApplicationsController extends AppController
             $application = $this->Applications->patchEntity(
                 $application,
                 $newData,
-                ['associated' => [ 'Invoices' ]]
+                ['associated' => ['Invoices']]
             );
 
             $application = $this->Applications->patchEntity(
                 $application,
                 $this->request->getData(),
-                ['associated' => [ 'Attendees', 'Invoices' ]]
+                ['associated' => ['Attendees', 'Invoices']]
             );
 
             foreach ($application->attendees as $idx => $attendee) {
@@ -402,21 +403,21 @@ class ApplicationsController extends AppController
      *
      * @param int $eventId The ID of the Event to be booked
      *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      * @throws \Exception
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function holdBook($eventId)
     {
         $this->loadComponent('Availability');
         $bookingData = $this->request->getQueryParams();
 
-        if (!isset($eventId) || !key_exists('section', $bookingData)) {
+        if (! isset($eventId) || ! key_exists('section', $bookingData)) {
             return $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
         }
 
         $bookingData['booking_type'] = 'hold';
-        if (!$this->Availability->checkBooking($eventId, $bookingData, true)) {
+        if (! $this->Availability->checkBooking($eventId, $bookingData, true)) {
             return $this->redirect(['controller' => 'Events', 'action' => 'book', $eventId]);
         }
 
@@ -487,7 +488,7 @@ class ApplicationsController extends AppController
 
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
             }
-            if (!$event->new_apps) {
+            if (! $event->new_apps) {
                 $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
 
                 return $this->redirect(['controller' => 'Landing', 'action' => 'user_home']);
@@ -495,7 +496,7 @@ class ApplicationsController extends AppController
         }
         /** @var \App\Model\Entity\User $user */
         $user = $this->Applications->Users->get($this->Auth->user('id'), [
-            'contain' => ['Sections.SectionTypes.Roles']
+            'contain' => ['Sections.SectionTypes.Roles'],
         ]);
 
         $sectionType = Inflector::singularize($user->section->section_type->section_type);
@@ -505,9 +506,9 @@ class ApplicationsController extends AppController
         $permitHolderBool = $event->event_type->permit_holder;
 
         if (is_null($appID)) {
-            $application = $this->Applications->newEntity([ 'contain' => 'Attendees' ]);
+            $application = $this->Applications->newEntity(['contain' => 'Attendees']);
         } else {
-            $application = $this->Applications->get($appID, [ 'contain' => 'Attendees' ]);
+            $application = $this->Applications->get($appID, ['contain' => 'Attendees']);
             if (is_null($osmEvent)) {
                 $osmEvent = $application->osm_event_id;
             } else {
@@ -518,10 +519,10 @@ class ApplicationsController extends AppController
         if (! isset($osmEvent) || is_null($osmEvent)) {
             $this->Flash->error('OSM Event Not Selected.');
             if (! is_null($appID)) {
-                return $this->redirect([ 'action' => 'choose_osm_event', $eventID, $appID ]);
+                return $this->redirect(['action' => 'choose_osm_event', $eventID, $appID]);
             }
 
-            return $this->redirect([ 'controller' => 'Events', 'action' => 'book', $eventID ]);
+            return $this->redirect(['controller' => 'Events', 'action' => 'book', $eventID]);
         }
 
         if ($application->isNew()) {
@@ -545,10 +546,8 @@ class ApplicationsController extends AppController
             ]);
         }
 
-
-
         $this->loadComponent('ScoutManager');
-        $attendees = $this->ScoutManager->getEventAttendees($this->Auth->user([ 'id' ]), $osmEvent);
+        $attendees = $this->ScoutManager->getEventAttendees($this->Auth->user(['id']), $osmEvent);
 
         $data = [];
         $this->loadComponent('Booking');
@@ -587,7 +586,7 @@ class ApplicationsController extends AppController
             }
         }
 
-        $appData = [ 'attendees' => $data ];
+        $appData = ['attendees' => $data];
 
         $application = $this->Applications->patchEntity($application, $appData, [
             'associated' => [
@@ -665,8 +664,8 @@ class ApplicationsController extends AppController
         $sections = $this->Applications->Sections->find('list', [
             'limit' => 200,
             'conditions' => [
-                'id' => $this->Auth->user('section_id')
-            ]
+                'id' => $this->Auth->user('section_id'),
+            ],
         ]);
         $roles = $this->Applications->Attendees->Roles->find('nonAuto')->find('list', ['limit' => 200]);
 
@@ -678,9 +677,9 @@ class ApplicationsController extends AppController
      * @param int $eventId The ID of the Event booking onto
      * @param int|null $applicationId The Application being booked
      *
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function chooseOsmEvent($eventId, $applicationId = null)
     {
@@ -699,7 +698,7 @@ class ApplicationsController extends AppController
         if ($this->request->is('post')) {
             $osmEvent = $this->request->getData('osm_event');
 
-            if (!is_null($osmEvent)) {
+            if (! is_null($osmEvent)) {
                 $this->redirect([
                     'controller' => 'Applications',
                     'action' => 'sync_book',
@@ -734,7 +733,8 @@ class ApplicationsController extends AppController
             if ($event->invoices_locked) {
                 $this->Flash->error(__('Apologies this Event is Currently Locked.'));
 
-                return $this->redirect(['controller' => 'Applications',
+                return $this->redirect([
+                    'controller' => 'Applications',
                     'action' => 'view',
                     'prefix' => false,
                     $applicationId,
@@ -776,7 +776,7 @@ class ApplicationsController extends AppController
             ->contain(['Scoutgroups.Districts']);
         $attendees = $this->Applications->Attendees->find('list', [
             'limit' => 200,
-            'conditions' => ['user_id' => $this->Auth->user('id')]
+            'conditions' => ['user_id' => $this->Auth->user('id')],
         ]);
         $events = $this->Applications->Events->find('unarchived')->find('list', ['limit' => 200]);
         $this->set(compact(
@@ -820,8 +820,8 @@ class ApplicationsController extends AppController
         $attendees = $this->Applications->Attendees->find('list', [
             'limit' => 200,
             'conditions' => [
-                'user_id' => $this->Auth->user('id')
-            ]
+                'user_id' => $this->Auth->user('id'),
+            ],
         ]);
 
         $this->set(compact('application', 'attendees'));

@@ -52,7 +52,7 @@ class SectionsController extends AppController
      */
     public function existing($groupId = null, $typeId = null)
     {
-        if (!isset($groupId) || !isset($typeId)) {
+        if (! isset($groupId) || ! isset($typeId)) {
             return $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
@@ -84,7 +84,7 @@ class SectionsController extends AppController
      */
     public function add($groupId = null, $typeId = null)
     {
-        if (!isset($groupId) || !isset($typeId)) {
+        if (! isset($groupId) || ! isset($typeId)) {
             return $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
@@ -96,7 +96,9 @@ class SectionsController extends AppController
             $group = $this->Sections->Scoutgroups->get($groupId);
             $type = $this->Sections->SectionTypes->get($typeId);
 
-            $suggestion = Text::truncate($group['scoutgroup'], 8, ['ellipsis' => false]) . ' - ' . $type['section_type'];
+            $suggestion = Text::truncate($group['scoutgroup'], 8, ['ellipsis' => false])
+                          . ' - '
+                          . $type['section_type'];
 
             $section->set('section', $suggestion);
         }

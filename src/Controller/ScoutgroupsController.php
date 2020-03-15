@@ -28,6 +28,7 @@ class ScoutgroupsController extends AppController
      * View method
      *
      * @param string|null $id Scoutgroup id.
+     *
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */

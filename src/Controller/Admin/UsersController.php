@@ -63,9 +63,9 @@ class UsersController extends AppController
         $sections = $this->Users->Sections->find(
             'list',
             [
-                    'keyField' => 'id',
-                    'valueField' => 'section',
-                    'groupField' => 'scoutgroup.district.district',
+                'keyField' => 'id',
+                'valueField' => 'section',
+                'groupField' => 'scoutgroup.district.district',
             ]
         )
             ->where(['section_type_id' => $section['section_type_id']])
@@ -86,7 +86,8 @@ class UsersController extends AppController
     public function view($userId = null)
     {
         $user = $this->Users->get($userId, [
-            'contain' => ['Roles',
+            'contain' => [
+                'Roles',
                 'Sections.Scoutgroups',
                 'Applications' => ['Sections.Scoutgroups', 'Events'],
                 'Attendees' => ['Sections.Scoutgroups', 'Roles', 'sort' => ['role_id' => 'ASC', 'lastname' => 'ASC']],
@@ -150,10 +151,10 @@ class UsersController extends AppController
         $sections = $this->Users->Sections->find(
             'list',
             [
-                    'keyField' => 'id',
-                    'valueField' => 'section',
-                    'groupField' => 'scoutgroup.district.district',
-                ]
+                'keyField' => 'id',
+                'valueField' => 'section',
+                'groupField' => 'scoutgroup.district.district',
+            ]
         )
             ->contain(['Scoutgroups.Districts']);
         $this->set(compact('user', 'roles', 'sections', 'auth_roles'));
@@ -270,6 +271,7 @@ class UsersController extends AppController
      * Edit method
      *
      * @param int $userId The ID of the User to be Edited.
+     *
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      *
@@ -340,6 +342,7 @@ class UsersController extends AppController
      * Delete method
      *
      * @param string|null $userId User id.
+     *
      * @return \Cake\Http\Response Redirects to index.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */

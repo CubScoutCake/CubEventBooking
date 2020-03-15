@@ -19,22 +19,24 @@ class MailChimpComponent extends Component
 
     /**
      * @param null $subscriptionArray Array The array for Subscribing.
+     *
      * @return bool
      */
     public function subscribeArray($subscriptionArray = null)
     {
-        if (!isset($subscriptionArray)) {
+        if (! isset($subscriptionArray)) {
             return false;
         }
     }
 
     /**
      * @param null $userId int UserId for the user to be subscribed.
+     *
      * @return bool
      */
     public function subscribeUser($userId = null)
     {
-        if (!isset($userId)) {
+        if (! isset($userId)) {
             return false;
         }
 

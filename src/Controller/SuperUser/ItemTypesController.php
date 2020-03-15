@@ -8,7 +8,8 @@ namespace App\Controller\SuperUser;
  *
  * @property \App\Model\Table\ItemTypesTable $ItemTypes
  *
- * @method \App\Model\Entity\ItemType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\ItemType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings =
+ *     [])
  */
 class ItemTypesController extends AppController
 {
@@ -31,6 +32,7 @@ class ItemTypesController extends AppController
      * View method
      *
      * @param string|null $id Item Type id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -68,6 +70,7 @@ class ItemTypesController extends AppController
      * Edit method
      *
      * @param string|null $id Item Type id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -93,6 +96,7 @@ class ItemTypesController extends AppController
      * Delete method
      *
      * @param string|null $id Item Type id.
+     *
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

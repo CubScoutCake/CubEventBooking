@@ -31,6 +31,7 @@ class TasksController extends AppController
      * View method
      *
      * @param string|null $id Task id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -70,6 +71,7 @@ class TasksController extends AppController
      * Edit method
      *
      * @param string|null $id Task id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -97,6 +99,7 @@ class TasksController extends AppController
      * Delete method
      *
      * @param string|null $id Task id.
+     *
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

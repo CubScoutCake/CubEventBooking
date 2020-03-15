@@ -57,11 +57,11 @@ class BookingComponent extends Component
         $leaderSecType = $this->SectionTypes->find('all')->where(['lower_age' => 18])->first();
         $leaderRole = $leaderSecType->role_id;
 
-        if (!isset($dateOfBirth) || !preg_match('/[0-9]+-[0-9]+-[0-9]+/', $dateOfBirth)) {
-            if (is_null($leaderPatrol) || !$leaderPatrol) {
+        if (! isset($dateOfBirth) || ! preg_match('/[0-9]+-[0-9]+-[0-9]+/', $dateOfBirth)) {
+            if (is_null($leaderPatrol) || ! $leaderPatrol) {
                 return false;
             }
-            if (!is_null($leaderPatrol) && $leaderPatrol) {
+            if (! is_null($leaderPatrol) && $leaderPatrol) {
                 return $leaderRole;
             }
         }
@@ -100,7 +100,7 @@ class BookingComponent extends Component
             $diffProb = 1;
 
             $diff = abs($age - $avg);
-            if ($diff <> 0 && !is_null($diff)) {
+            if ($diff <> 0 && ! is_null($diff)) {
                 $diffProb = 1 / $diff;
             }
 
@@ -130,7 +130,7 @@ class BookingComponent extends Component
                 }
             }
 
-            $prob = ($diffProb + (( $lowerProb + $lowerMonthProb ) / 2) + (($upperProb + $upperMonthProb) / 2)) / 3;
+            $prob = ($diffProb + (($lowerProb + $lowerMonthProb) / 2) + (($upperProb + $upperMonthProb) / 2)) / 3;
 
             if ($prob > $currentProb) {
                 $currentProb = $prob;
@@ -209,7 +209,7 @@ class BookingComponent extends Component
     {
         $this->Reservations = TableRegistry::getTableLocator()->get('Reservations');
 
-        if (!$this->Availability->checkReservation($eventId, $flash) && !$admin) {
+        if (! $this->Availability->checkReservation($eventId, $flash) && ! $admin) {
             if ($flash) {
                 $this->Flash->error('Spaces not available on Event');
             }
@@ -221,23 +221,23 @@ class BookingComponent extends Component
         $attendeeData = $requestData['attendee'];
         $userData = $requestData['user'];
 
-        if (!is_array($userData) || !is_array($attendeeData)) {
+        if (! is_array($userData) || ! is_array($attendeeData)) {
             return false;
         }
 
         $doLogistics = false;
         if (isset($requestData['logistics_item'])) {
-            if (is_array($requestData['logistics_item']) && !empty($requestData['logistics_item'])) {
+            if (is_array($requestData['logistics_item']) && ! empty($requestData['logistics_item'])) {
                 $doLogistics = true;
                 $logisticData = $requestData['logistics_item'];
 
                 foreach ($logisticData as $logisticDatum) {
                     if (
-                        !$this->Availability->checkVariableLogistic(
+                        ! $this->Availability->checkVariableLogistic(
                             $logisticDatum['logistic_id'],
                             $logisticDatum['param_id']
                         )
-                        && !$admin
+                        && ! $admin
                     ) {
                         if ($flash) {
                             $this->Flash->error('Spaces not available on Session.');
@@ -276,7 +276,9 @@ class BookingComponent extends Component
         // Reservation Status
         $reservationStatus = $this->Reservations->ReservationStatuses->find()->where([
             'reservation_status' => 'Pending Payment',
-            'active' => true, 'complete' => false, 'cancelled' => false,
+            'active' => true,
+            'complete' => false,
+            'cancelled' => false,
             'status_order' => 2,
         ])->first();
         $reservation->set('reservation_status_id', $reservationStatus->id);
@@ -288,7 +290,7 @@ class BookingComponent extends Component
             if ($doLogistics && isset($logisticData)) {
                 foreach ($logisticData as $logisticDatum) {
                     $result = $this->addResLogistic($reservation->id, $logisticDatum['param_id'], $admin);
-                    if (!$result) {
+                    if (! $result) {
                         if ($flash) {
                             $this->Flash->error('There was an Error Adding you to the Session');
                         }
@@ -301,7 +303,7 @@ class BookingComponent extends Component
             if ($flash) {
                 $this->Flash->success(__('The reservation has been saved.'));
 
-                if (!$admin) {
+                if (! $admin) {
                     $this->Auth->setUser($user->toArray());
                 }
             }
@@ -407,9 +409,9 @@ class BookingComponent extends Component
                     'EmailSends' => [
                         'Users',
                         'Tokens',
-                        'Notifications'
-                    ]
-                ]
+                        'Notifications',
+                    ],
+                ],
             ]);
 
             $this->getMailer('Reserve')->send('expiry', [$tokenEntity->email_send, $reservation, $token]);

@@ -8,7 +8,8 @@ namespace App\Controller\Admin;
  *
  * @property \App\Model\Table\EventTypesTable $EventTypes
  *
- * @method \App\Model\Entity\EventType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\EventType[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings =
+ *     [])
  */
 class EventTypesController extends AppController
 {
@@ -31,6 +32,7 @@ class EventTypesController extends AppController
      * View method
      *
      * @param string|null $id Event Type id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -71,6 +73,7 @@ class EventTypesController extends AppController
      * Edit method
      *
      * @param string|null $id Event Type id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -99,6 +102,7 @@ class EventTypesController extends AppController
      * Delete method
      *
      * @param string|null $id Event Type id.
+     *
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

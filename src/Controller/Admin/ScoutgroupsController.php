@@ -51,13 +51,21 @@ class ScoutgroupsController extends AppController
      * View method
      *
      * @param string|null $id Scoutgroup id.
+     *
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
     {
         $scoutgroup = $this->Scoutgroups->get($id, [
-            'contain' => ['Districts', 'Sections.Applications.Events', 'Sections.Applications.Users', 'Sections.Attendees.Roles', 'Sections.Attendees.Users', 'Sections.Users.Roles'],
+            'contain' => [
+                'Districts',
+                'Sections.Applications.Events',
+                'Sections.Applications.Users',
+                'Sections.Attendees.Roles',
+                'Sections.Attendees.Users',
+                'Sections.Users.Roles',
+            ],
         ]);
         $this->set('scoutgroup', $scoutgroup);
         $this->set('_serialize', ['scoutgroup']);
@@ -90,6 +98,7 @@ class ScoutgroupsController extends AppController
      * Edit method
      *
      * @param int $id the ID of the Scout Group.
+     *
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -115,6 +124,7 @@ class ScoutgroupsController extends AppController
      * Delete method
      *
      * @param string|null $id Scoutgroup id.
+     *
      * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */

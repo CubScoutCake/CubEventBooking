@@ -32,6 +32,7 @@ class SectionsController extends AppController
      * View method
      *
      * @param string|null $id Section id.
+     *
      * @return void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -49,6 +50,7 @@ class SectionsController extends AppController
      * Edit method
      *
      * @param string|null $sectionId Section id.
+     *
      * @return \Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -58,7 +60,7 @@ class SectionsController extends AppController
 
         if (
             $this->Auth->user('section_id') <> $section->id
-            && !is_null($section->cc_users)
+            && ! is_null($section->cc_users)
             && $section->cc_users == 1
         ) {
             $this->Flash->error('You can only edit your own section');
@@ -110,7 +112,7 @@ class SectionsController extends AppController
                 'valueField' => 'scoutgroup',
                 'groupField' => 'district.district',
             ]
-        ) ->contain(['Districts']);
+        )->contain(['Districts']);
         $section = $this->Sections->newEntity();
         $this->set(compact('section', 'sectionTypes', 'scoutgroups'));
         $this->set('_serialize', ['section']);
@@ -127,7 +129,7 @@ class SectionsController extends AppController
      */
     public function existing($groupId = null, $typeId = null)
     {
-        if (!isset($groupId) || !isset($typeId)) {
+        if (! isset($groupId) || ! isset($typeId)) {
             return $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
@@ -159,7 +161,7 @@ class SectionsController extends AppController
      */
     public function add($groupId = null, $typeId = null)
     {
-        if (!isset($groupId) || !isset($typeId)) {
+        if (! isset($groupId) || ! isset($typeId)) {
             return $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
@@ -183,7 +185,8 @@ class SectionsController extends AppController
                     'section_type_id',
                     'scoutgroup_id',
                     'section',
-                ]]);
+                ],
+            ]);
             $section = $section->set('validated', true);
             if ($this->Sections->save($section)) {
                 $this->Flash->success(__('The section has been saved.'));

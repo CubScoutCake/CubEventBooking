@@ -18,13 +18,14 @@ class UsersController extends AppController
      * Register Function
      *
      * @param null $sectionId The ID of the Section Selected.
+     *
      * @return \Cake\Http\Response|void
      */
     public function register($sectionId = null)
     {
         $this->viewBuilder()->setLayout('outside');
 
-        if (!isset($sectionId) || is_null($sectionId)) {
+        if (! isset($sectionId) || is_null($sectionId)) {
             $this->redirect(['controller' => 'Sections', 'prefix' => 'register', 'action' => 'select']);
         }
 
@@ -56,7 +57,8 @@ class UsersController extends AppController
                     'address_2',
                     'city',
                     'county',
-                    'postcode', ],
+                    'postcode',
+                ],
             ]);
 
             if ($this->Users->save($user)) {
@@ -114,6 +116,7 @@ class UsersController extends AppController
      * Before Filter Function
      *
      * @param \Cake\Event\Event $event The Event to be modified
+     *
      * @return void
      */
     public function beforeFilter(\Cake\Event\Event $event)

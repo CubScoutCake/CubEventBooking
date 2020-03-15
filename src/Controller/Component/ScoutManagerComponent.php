@@ -46,7 +46,7 @@ class ScoutManagerComponent extends Component
      */
     public function __construct($registry, $config = [], $client = null)
     {
-        if (!is_null($client)) {
+        if (! is_null($client)) {
             $this->http = $client;
         }
 
@@ -70,15 +70,15 @@ class ScoutManagerComponent extends Component
     public function getOsmSettings()
     {
         $apiId = Configure::readOrFail('OSM.api_id');
-        if (!$apiId) {
+        if (! $apiId) {
             return false;
         }
         $apiToken = Configure::readOrFail('OSM.api_token');
-        if (!$apiToken) {
+        if (! $apiToken) {
             return false;
         }
         $apiBase = Configure::readOrFail('OSM.api_base');
-        if (!$apiBase) {
+        if (! $apiBase) {
             return false;
         }
 
@@ -107,19 +107,19 @@ class ScoutManagerComponent extends Component
         $attendeesPresent = false;
         $nextStep = 'link';
 
-        if (!empty($user->osm_user_id) /*&& $session->check('OSM.Secret')*/) {
+        if (! empty($user->osm_user_id) /*&& $session->check('OSM.Secret')*/) {
             $linked = true;
             $nextStep = 'section';
         }
 
-        if (!empty($user->osm_section_id)) {
+        if (! empty($user->osm_section_id)) {
             $sectionSet = true;
             if ($nextStep == 'section') {
                 $nextStep = 'term';
             }
         }
 
-        if (!empty($user->osm_current_term) && $user->osm_term_end > $now) {
+        if (! empty($user->osm_current_term) && $user->osm_term_end > $now) {
             $termCurrent = true;
             if ($nextStep == 'term') {
                 $nextStep = 'sync';
@@ -210,14 +210,14 @@ class ScoutManagerComponent extends Component
         $controller = $this->_registry->getController();
 
         $settingsArray = $this->getOsmSettings();
-        if (!$settingsArray) {
+        if (! $settingsArray) {
             $errorMessage = 'Error in retrieving OSM settings.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'section']);
             }
 
             return false;
@@ -248,7 +248,7 @@ class ScoutManagerComponent extends Component
                 if (isset($controller)) {
                     $this->Flash->error(__($errorMessage));
 
-                    return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
+                    return $controller->redirect(['controller' => 'Osm', 'action' => 'link']);
                 } else {
                     return false;
                 }
@@ -271,7 +271,7 @@ class ScoutManagerComponent extends Component
                 $user->osm_user_id = $body->userid;
                 $user->osm_linkdate = $now;
 
-                if (!isset($user->osm_linked)) {
+                if (! isset($user->osm_linked)) {
                     $user->osm_linked = 1;
                 }
 
@@ -280,9 +280,9 @@ class ScoutManagerComponent extends Component
                     if (isset($controller)) {
                         $this->Flash->success(__('You have linked your OSM account.'));
                         if (is_null($user->osm_section_id)) {
-                            return $controller->redirect(['controller' => 'Osm', 'action' => 'section' ]);
+                            return $controller->redirect(['controller' => 'Osm', 'action' => 'section']);
                         } else {
-                            return $controller->redirect(['controller' => 'Osm', 'action' => 'home' ]);
+                            return $controller->redirect(['controller' => 'Osm', 'action' => 'home']);
                         }
                     } else {
                         return true;
@@ -314,14 +314,14 @@ class ScoutManagerComponent extends Component
         $controller = $this->_registry->getController();
 
         $settingsArray = $this->getOsmSettings();
-        if (!$settingsArray) {
+        if (! $settingsArray) {
             $errorMessage = 'Error retrieving OSM settings.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect(['controller' => 'Osm', 'action' => 'section' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'section']);
             }
 
             return false;
@@ -331,14 +331,14 @@ class ScoutManagerComponent extends Component
 
         $secret = $this->retrieveUserSecret($userId);
 
-        if (!is_string($secret) || is_bool($secret)) {
+        if (! is_string($secret) || is_bool($secret)) {
             $errorMessage = 'Error retrieving OSM User Secret.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect(['controller' => 'Osm', 'action' => 'section' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'section']);
             }
 
             return false;
@@ -351,14 +351,14 @@ class ScoutManagerComponent extends Component
 
         $url = '/api.php?action=getUserRoles';
 
-        if (!is_int($user->osm_user_id) || $user->osm_user_id == 0) {
+        if (! is_int($user->osm_user_id) || $user->osm_user_id == 0) {
             $errorMessage = 'Error retrieving OSM User Id.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect(['controller' => 'Osm', 'action' => 'link' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'link']);
             }
 
             return false;
@@ -402,7 +402,7 @@ class ScoutManagerComponent extends Component
                 $user->osm_linked = 2;
 
                 if ($this->Users->save($user, ['validation' => false])) {
-                    return $controller->redirect([ 'action' => 'term' ]);
+                    return $controller->redirect(['action' => 'term']);
                 }
             }
 
@@ -414,7 +414,7 @@ class ScoutManagerComponent extends Component
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'home' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'home']);
             }
 
             return false;
@@ -431,14 +431,14 @@ class ScoutManagerComponent extends Component
         $controller = $this->_registry->getController();
 
         $settingsArray = $this->getOsmSettings();
-        if (!$settingsArray) {
+        if (! $settingsArray) {
             $errorMessage = 'Error retrieving OSM settings.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'section']);
             }
 
             return false;
@@ -451,27 +451,27 @@ class ScoutManagerComponent extends Component
 
         $secret = $this->retrieveUserSecret($userId);
 
-        if (!is_string($secret) || is_bool($secret)) {
+        if (! is_string($secret) || is_bool($secret)) {
             $errorMessage = 'Error retrieving OSM User Secret.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'section']);
             }
 
             return false;
         }
 
-        if (!is_int($user->osm_user_id) || $user->osm_user_id == 0) {
+        if (! is_int($user->osm_user_id) || $user->osm_user_id == 0) {
             $errorMessage = 'Error retrieving OSM User Id.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'link']);
             }
 
             return false;
@@ -499,7 +499,7 @@ class ScoutManagerComponent extends Component
                 if (isset($controller)) {
                     $this->Flash->error(__($errorMessage));
 
-                    return $controller->redirect([ 'controller' => 'Osm', 'action' => 'access' ]);
+                    return $controller->redirect(['controller' => 'Osm', 'action' => 'access']);
                 }
 
                 return false;
@@ -584,14 +584,14 @@ class ScoutManagerComponent extends Component
         $controller = $this->_registry->getController();
 
         $settingsArray = $this->getOsmSettings();
-        if (!$settingsArray) {
+        if (! $settingsArray) {
             $errorMessage = 'Error retrieving OSM settings.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'section']);
             }
 
             return false;
@@ -602,14 +602,14 @@ class ScoutManagerComponent extends Component
 
         $secret = $this->retrieveUserSecret($userId);
 
-        if (!is_string($secret) || is_bool($secret)) {
+        if (! is_string($secret) || is_bool($secret)) {
             $errorMessage = 'Error retrieving OSM User Secret.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'section']);
             }
 
             return false;
@@ -620,14 +620,14 @@ class ScoutManagerComponent extends Component
             'scheme' => 'https',
         ]);
 
-        if (!is_int($user->osm_user_id) || $user->osm_user_id == 0) {
+        if (! is_int($user->osm_user_id) || $user->osm_user_id == 0) {
             $errorMessage = 'Error retrieving OSM User Id.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'link']);
             }
 
             return false;
@@ -685,14 +685,14 @@ class ScoutManagerComponent extends Component
         $controller = $this->_registry->getController();
 
         $settingsArray = $this->getOsmSettings();
-        if (!$settingsArray) {
+        if (! $settingsArray) {
             $errorMessage = 'Error retrieving OSM settings.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'section']);
             }
 
             return false;
@@ -703,33 +703,33 @@ class ScoutManagerComponent extends Component
 
         $secret = $this->retrieveUserSecret($userId);
 
-        if (!is_string($secret) || is_bool($secret)) {
+        if (! is_string($secret) || is_bool($secret)) {
             $errorMessage = 'Error retrieving OSM User Secret.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'section' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'section']);
             }
 
             return false;
         }
 
-        if (!is_int($user->osm_user_id) || $user->osm_user_id == 0) {
+        if (! is_int($user->osm_user_id) || $user->osm_user_id == 0) {
             $errorMessage = 'Error retrieving OSM User Id.';
             $this->log($errorMessage);
 
             if (isset($controller)) {
                 $this->Flash->error(__($errorMessage));
 
-                return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
+                return $controller->redirect(['controller' => 'Osm', 'action' => 'link']);
             }
 
             return false;
         }
 
-        $url = '/ext/events/event/?action=getAttendance&eventid='. $osmEventId
+        $url = '/ext/events/event/?action=getAttendance&eventid=' . $osmEventId
                . '&sectionid=' . $user->osm_section_id
                . '&termid=' . $user->osm_current_term;
 
@@ -764,7 +764,7 @@ class ScoutManagerComponent extends Component
         if (isset($controller)) {
             $this->Flash->error(__($errorMessage));
 
-            return $controller->redirect([ 'controller' => 'Osm', 'action' => 'link' ]);
+            return $controller->redirect(['controller' => 'Osm', 'action' => 'link']);
         }
 
         return false;

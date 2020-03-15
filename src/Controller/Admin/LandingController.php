@@ -14,6 +14,7 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller\Admin;
 
 use Cake\ORM\TableRegistry;
@@ -84,13 +85,37 @@ class LandingController extends AppController
         ];
 
         // Limited Table Entities
-        $applications = $apps->find('sameSection', $authArray)->contain(['Users', 'Sections.Scoutgroups.Districts'])->order(['Applications.modified' => 'DESC'])->limit(10);
-        $events = $evs->find('upcoming')->find('sameSection', $authArray)->contain(['EventStatuses'])->order(['Events.start_date' => 'ASC']);
-        $invoices = $invs->find('sameSection', $authArray)->contain(['Users', 'Applications', 'Reservations'])->order(['Invoices.modified' => 'DESC'])->limit(10);
-        $users = $usrs->find('sameSection', $authArray)->find('access')->contain(['Roles', 'Sections.Scoutgroups.Districts', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
-        $payments = $pays->find('sameSection', $authArray)->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
-        $notes = $nts->find('sameSection', $authArray)->contain(['Invoices', 'Applications', 'Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
-        $notifications = $notifs->find('sameSection', $authArray)->contain(['NotificationTypes', 'Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
+        $applications = $apps->find('sameSection', $authArray)->contain([
+            'Users',
+            'Sections.Scoutgroups.Districts',
+        ])->order(['Applications.modified' => 'DESC'])->limit(10);
+        $events = $evs->find('upcoming')->find(
+            'sameSection',
+            $authArray
+        )->contain(['EventStatuses'])->order(['Events.start_date' => 'ASC']);
+        $invoices = $invs->find('sameSection', $authArray)->contain([
+            'Users',
+            'Applications',
+            'Reservations',
+        ])->order(['Invoices.modified' => 'DESC'])->limit(10);
+        $users = $usrs->find('sameSection', $authArray)->find('access')->contain([
+            'Roles',
+            'Sections.Scoutgroups.Districts',
+            'AuthRoles',
+        ])->order(['Users.last_login' => 'DESC'])->limit(10);
+        $payments = $pays->find(
+            'sameSection',
+            $authArray
+        )->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
+        $notes = $nts->find('sameSection', $authArray)->contain([
+            'Invoices',
+            'Applications',
+            'Users',
+        ])->order(['Notes.modified' => 'DESC'])->limit(10);
+        $notifications = $notifs->find('sameSection', $authArray)->contain([
+            'NotificationTypes',
+            'Users',
+        ])->order(['Notifications.created' => 'DESC'])->limit(10);
 
         // Pass to View
         $this->set(compact('applications', 'events', 'invoices', 'users', 'payments', 'notes', 'notifications'));
@@ -104,18 +129,27 @@ class LandingController extends AppController
         $cntAttendees = $atts->find('sameSection', $authArray)->count();
 
         // Pass to View
-        $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntAttendees', 'userId'));
+        $this->set(compact(
+            'cntApplications',
+            'cntEvents',
+            'cntInvoices',
+            'cntUsers',
+            'cntPayments',
+            'cntAttendees',
+            'userId'
+        ));
     }
 
     /**
      * @param int $linkEntry Search Parameter
+     *
      * @return \Cake\Http\Response|null
      */
     public function link($linkEntry = null)
     {
         $searchEntry = $this->request->getQuery('q');
 
-        if (!is_null($linkEntry)) {
+        if (! is_null($linkEntry)) {
             $searchEntry = $linkEntry;
         }
 
@@ -123,7 +157,7 @@ class LandingController extends AppController
 
         $idNum = null;
 
-        if (isset($searchEntry) || !is_null($searchEntry)) {
+        if (isset($searchEntry) || ! is_null($searchEntry)) {
             $entStr = strtoupper($searchEntry);
 
             $cont = substr($entStr, 0, 1);
@@ -157,7 +191,7 @@ class LandingController extends AppController
             }
         }
 
-        if (!is_int($idNum) || $idNum == 0 || is_null($idNum)) {
+        if (! is_int($idNum) || $idNum == 0 || is_null($idNum)) {
             $this->Sections = TableRegistry::getTableLocator()->get('Sections');
             $this->Users = TableRegistry::getTableLocator()->get('Users');
             $section = $this->Sections->get($this->Auth->user('section_id'));

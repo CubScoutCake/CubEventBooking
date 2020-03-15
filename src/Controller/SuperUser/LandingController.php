@@ -14,6 +14,7 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller\SuperUser;
 
 use Cake\ORM\TableRegistry;
@@ -31,9 +32,9 @@ use Cake\ORM\TableRegistry;
 class LandingController extends AppController
 {
     /**
+     * @return void
      * @throws \Exception
      *
-     * @return void
      */
     public function initialize()
     {
@@ -67,13 +68,40 @@ class LandingController extends AppController
         $userId = $this->Auth->user('id');
 
         // Table Entities
-        $applications = $apps->find()->contain(['Users', 'Sections.Scoutgroups'])->order(['Applications.modified' => 'DESC'])->limit(10);
-        $events = $evs->find('upcoming')->contain(['Settings'])->order(['Events.start_date' => 'ASC']);
-        $invoices = $invs->find()->contain(['Users', 'Applications'])->order(['Invoices.modified' => 'DESC'])->limit(10);
-        $users = $usrs->find()->contain(['Roles', 'Sections.SectionTypes', 'AuthRoles'])->order(['Users.last_login' => 'DESC'])->limit(10);
-        $payments = $pays->find()->contain(['Invoices'])->order(['Payments.created' => 'DESC'])->limit(10);
-        $notes = $nts->find()->contain(['Invoices', 'Applications', 'Users'])->order(['Notes.modified' => 'DESC'])->limit(10);
-        $notifications = $notifs->find()->contain(['NotificationTypes', 'Users'])->order(['Notifications.created' => 'DESC'])->limit(10);
+        $applications = $apps
+            ->find()
+            ->contain(['Users', 'Sections.Scoutgroups'])
+            ->order(['Applications.modified' => 'DESC'])
+            ->limit(10);
+        $events = $evs
+            ->find('upcoming')
+            ->contain(['Settings'])
+            ->order(['Events.start_date' => 'ASC']);
+        $invoices = $invs
+            ->find()
+            ->contain(['Users', 'Applications'])
+            ->order(['Invoices.modified' => 'DESC'])
+            ->limit(10);
+        $users = $usrs
+            ->find()
+            ->contain(['Roles', 'Sections.SectionTypes', 'AuthRoles'])
+            ->order(['Users.last_login' => 'DESC'])
+            ->limit(10);
+        $payments = $pays
+            ->find()
+            ->contain(['Invoices'])
+            ->order(['Payments.created' => 'DESC'])
+            ->limit(10);
+        $notes = $nts
+            ->find()
+            ->contain(['Invoices', 'Applications', 'Users'])
+            ->order(['Notes.modified' => 'DESC'])
+            ->limit(10);
+        $notifications = $notifs
+            ->find()
+            ->contain(['NotificationTypes', 'Users'])
+            ->order(['Notifications.created' => 'DESC'])
+            ->limit(10);
 
         // Pass to View
         $this->set(compact('applications', 'events', 'invoices', 'users', 'payments', 'notes', 'notifications'));
@@ -87,7 +115,15 @@ class LandingController extends AppController
         $cntTokens = $tokens->find('all')->count();
 
         // Pass to View
-        $this->set(compact('cntApplications', 'cntEvents', 'cntInvoices', 'cntUsers', 'cntPayments', 'cntTokens', 'userId'));
+        $this->set(compact(
+            'cntApplications',
+            'cntEvents',
+            'cntInvoices',
+            'cntUsers',
+            'cntPayments',
+            'cntTokens',
+            'userId'
+        ));
     }
 
     /**
@@ -99,7 +135,7 @@ class LandingController extends AppController
     {
         $searchEntry = $this->request->getQuery('q');
 
-        if (!is_null($linkEntry)) {
+        if (! is_null($linkEntry)) {
             $searchEntry = $linkEntry;
         }
 
@@ -107,7 +143,7 @@ class LandingController extends AppController
 
         $idNum = null;
 
-        if (isset($searchEntry) || !is_null($searchEntry)) {
+        if (isset($searchEntry) || ! is_null($searchEntry)) {
             $entStr = strtoupper($searchEntry);
 
             $cont = substr($entStr, 0, 1);
@@ -118,19 +154,54 @@ class LandingController extends AppController
             if (is_int($idNum) && $idNum != 0) {
                 switch ($cont) {
                     case "U":
-                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Users', 'action' => 'view', $idNum]);
+                        return $this->redirect([
+                            'prefix' => 'admin',
+                            'controller' => 'Users',
+                            'action' => 'view',
+                            $idNum,
+                        ]);
                     case "I":
-                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Invoices', 'action' => 'view', $idNum]);
+                        return $this->redirect([
+                            'prefix' => 'admin',
+                            'controller' => 'Invoices',
+                            'action' => 'view',
+                            $idNum,
+                        ]);
                     case "A":
-                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Applications', 'action' => 'view', $idNum]);
+                        return $this->redirect([
+                            'prefix' => 'admin',
+                            'controller' => 'Applications',
+                            'action' => 'view',
+                            $idNum,
+                        ]);
                     case "N":
-                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Notes', 'action' => 'view', $idNum]);
+                        return $this->redirect([
+                            'prefix' => 'admin',
+                            'controller' => 'Notes',
+                            'action' => 'view',
+                            $idNum,
+                        ]);
                     case "P":
-                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Payments', 'action' => 'view', $idNum]);
+                        return $this->redirect([
+                            'prefix' => 'admin',
+                            'controller' => 'Payments',
+                            'action' => 'view',
+                            $idNum,
+                        ]);
                     case "T":
-                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Attendees', 'action' => 'view', $idNum]);
+                        return $this->redirect([
+                            'prefix' => 'admin',
+                            'controller' => 'Attendees',
+                            'action' => 'view',
+                            $idNum,
+                        ]);
                     case "E":
-                        return $this->redirect(['prefix' => 'admin', 'controller' => 'Events', 'action' => 'view', $idNum]);
+                        return $this->redirect([
+                            'prefix' => 'admin',
+                            'controller' => 'Events',
+                            'action' => 'view',
+                            $idNum,
+                        ]);
                     case "S":
                         return $this->redirect(['controller' => 'Settings', 'action' => 'view', $idNum]);
                     default:
@@ -139,7 +210,7 @@ class LandingController extends AppController
             }
         }
 
-        if (!is_int($idNum) || $idNum == 0 || is_null($idNum)) {
+        if (! is_int($idNum) || $idNum == 0 || is_null($idNum)) {
             $this->Users = TableRegistry::getTableLocator()->get('Users');
 
             $userQuery = $this->Users

@@ -25,6 +25,7 @@ class RolesController extends AppController
      * View method
      *
      * @param string|null $id Role id.
+     *
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -34,7 +35,10 @@ class RolesController extends AppController
             'contain' => [
                 'Attendees.Scoutgroups' => [
                     'conditions' => [
-                        'Attendees.user_id' => $this->Auth->user('id')]]],
+                        'Attendees.user_id' => $this->Auth->user('id'),
+                    ],
+                ],
+            ],
         ]);
         $this->set('role', $role);
         $this->set('_serialize', ['role']);

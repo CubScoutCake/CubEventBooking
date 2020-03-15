@@ -13,7 +13,8 @@ use Cake\ORM\Entity;
  * @property \App\Controller\Component\BookingComponent $Booking
  * @property \App\Model\Table\EmailSendsTable $EmailSends
  *
- * @method \App\Model\Entity\Reservation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\Reservation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings
+ *     = [])
  */
 class ReservationsController extends AppController
 {
@@ -88,15 +89,18 @@ class ReservationsController extends AppController
     {
         $reservation = $this->Reservations->newEntity();
 
-        if (!is_null($eventId) && isset($eventId)) {
-            $event = $this->Reservations->Events->get($eventId, ['contain' => [ 'Logistics.Parameters.Params', 'EventTypes', 'Prices']]);
+        if (! is_null($eventId) && isset($eventId)) {
+            $event = $this->Reservations->Events->get(
+                $eventId,
+                ['contain' => ['Logistics.Parameters.Params', 'EventTypes', 'Prices']]
+            );
             $reservation->set('event_id', $event->id);
         }
 
 //        $this->loadComponent('Availability');
         $this->loadComponent('Booking');
 
-        if (!isset($event)) {
+        if (! isset($event)) {
             return $this->redirect('/');
         }
 
@@ -123,8 +127,8 @@ class ReservationsController extends AppController
                 'groupField' => 'scoutgroup.district.district',
             ]
         )
-        ->where(['section_type_id' => $event->section_type_id])
-        ->contain(['Scoutgroups.Districts']);
+            ->where(['section_type_id' => $event->section_type_id])
+            ->contain(['Scoutgroups.Districts']);
 
         $sessions = $this->Reservations->Events->Logistics->Parameters->Params->find('list');
 
@@ -221,7 +225,7 @@ class ReservationsController extends AppController
             $this->redirect(['controller' => 'Reservations', 'action' => 'process', $this->request->getData('id')]);
         }
 
-        if (!empty($reservationId)) {
+        if (! empty($reservationId)) {
             $reservation = $this->Reservations->get($reservationId, [
                 'contain' => [
                     'Events' => [
@@ -244,7 +248,7 @@ class ReservationsController extends AppController
                     ],
                 ],
             ]);
-            if ($this->request->is(['patch', 'post', 'put']) && !$this->request->getData('id')) {
+            if ($this->request->is(['patch', 'post', 'put']) && ! $this->request->getData('id')) {
                 $paymentData = $this->request->getData('invoice.payments.0');
                 $payment = $this->Reservations->Invoices->Payments->newEntity($paymentData);
                 $payment = $this->Reservations->Invoices->Payments->save($payment);

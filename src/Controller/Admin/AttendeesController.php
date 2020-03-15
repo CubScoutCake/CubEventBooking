@@ -47,7 +47,14 @@ class AttendeesController extends AppController
     public function view($attendeeId = null)
     {
         $attendee = $this->Attendees->get($attendeeId, [
-            'contain' => ['Users', 'Sections.Scoutgroups', 'Roles', 'Applications.Sections.Scoutgroups', 'Applications.Events', 'Allergies'],
+            'contain' => [
+                'Users',
+                'Sections.Scoutgroups',
+                'Roles',
+                'Applications.Sections.Scoutgroups',
+                'Applications.Events',
+                'Allergies',
+            ],
         ]);
         $this->set('attendee', $attendee);
         $this->set('_serialize', ['attendee']);
@@ -57,6 +64,7 @@ class AttendeesController extends AppController
      * Add method
      *
      * @param int $userId The ID of the User
+     *
      * @return \Cake\Http\Response|void Redirects on successful add, renders view otherwise.
      */
     public function add($userId = null)
@@ -83,7 +91,7 @@ class AttendeesController extends AppController
                     'groupField' => 'scoutgroup.district.district',
                 ]
             )
-            ->contain(['Scoutgroups.Districts']);
+                ->contain(['Scoutgroups.Districts']);
         } else {
             $user = $this->Attendees->Users->get($userId);
 
@@ -95,8 +103,12 @@ class AttendeesController extends AppController
                 ],
                 'order' => [
                     'id' => 'DESC',
-                ]]);
-            $sections = $this->Attendees->Sections->find('list', ['limit' => 200, 'conditions' => ['id' => $user->section_id]]);
+                ],
+            ]);
+            $sections = $this->Attendees->Sections->find(
+                'list',
+                ['limit' => 200, 'conditions' => ['id' => $user->section_id]]
+            );
         }
 
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
@@ -146,17 +158,20 @@ class AttendeesController extends AppController
             }
         }
         $users = $this->Attendees->Users->find('list');
-        $applications = $this->Attendees->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $attendee->user_id]]);
+        $applications = $this->Attendees->Applications->find(
+            'list',
+            ['limit' => 200, 'conditions' => ['user_id' => $attendee->user_id]]
+        );
         $allergies = $this->Attendees->Allergies->find('list', ['limit' => 200]);
         $sections = $this->Attendees->Sections->find(
             'list',
             [
-                    'keyField' => 'id',
-                    'valueField' => 'section',
-                    'groupField' => 'scoutgroup.district.district',
+                'keyField' => 'id',
+                'valueField' => 'section',
+                'groupField' => 'scoutgroup.district.district',
             ]
         )
-                ->contain(['Scoutgroups.Districts']);
+            ->contain(['Scoutgroups.Districts']);
         $roles = $this->Attendees->Roles->find('list', ['limit' => 200]);
 
         $this->set(compact('attendee', 'users', 'applications', 'allergies', 'sections', 'roles'));
@@ -192,7 +207,7 @@ class AttendeesController extends AppController
         $phone1 = str_replace('/', '', $phone1);
         $phone1 = substr($phone1, 0, 5) . ' ' . substr($phone1, 5);
 
-        if (!empty($phone2)) {
+        if (! empty($phone2)) {
             $phone2 = str_replace(' ', '', $phone2);
             $phone2 = str_replace('-', '', $phone2);
             $phone2 = str_replace('/', '', $phone2);
@@ -202,7 +217,7 @@ class AttendeesController extends AppController
         $phoneAttendee = [
             'phone' => $phone1,
             'phone2' => $phone2,
-            ];
+        ];
 
         $attendee = $this->Attendees->patchEntity($attendee, $phoneAttendee);
 

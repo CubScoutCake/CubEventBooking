@@ -68,6 +68,7 @@ class SettingsController extends AppController
      * Edit method
      *
      * @param string|null $settingId Setting id.
+     *
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */

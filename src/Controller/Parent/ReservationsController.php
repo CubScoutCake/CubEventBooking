@@ -14,7 +14,8 @@ use Cake\Log\Log;
  * @property \App\Controller\Component\BookingComponent $Booking
  * @property \App\Controller\Component\AvailabilityComponent $Availability
  *
- * @method \App\Model\Entity\Reservation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\Reservation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings
+ *     = [])
  */
 class ReservationsController extends AppController
 {
@@ -37,6 +38,7 @@ class ReservationsController extends AppController
      * View method
      *
      * @param string|null $id Reservation id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -81,13 +83,13 @@ class ReservationsController extends AppController
     {
         $reservation = $this->Reservations->newEntity();
 
-        if (!is_null($eventId) && isset($eventId)) {
+        if (! is_null($eventId) && isset($eventId)) {
             $event = $this->Reservations->Events->get($eventId, [
                 'contain' => [
                     'Logistics.Parameters.Params',
                     'EventTypes',
-                    'Prices'
-                ]
+                    'Prices',
+                ],
             ]);
             $reservation->set('event_id', $event->id);
         }
@@ -95,7 +97,7 @@ class ReservationsController extends AppController
 //        $this->loadComponent('Availability');
         $this->loadComponent('Booking');
 
-        if (!isset($event)) {
+        if (! isset($event)) {
             return $this->redirect('/');
         }
 
@@ -122,8 +124,8 @@ class ReservationsController extends AppController
                 'groupField' => 'scoutgroup.district.district',
             ]
         )
-        ->where(['section_type_id' => $event->section_type_id])
-        ->contain(['Scoutgroups.Districts']);
+            ->where(['section_type_id' => $event->section_type_id])
+            ->contain(['Scoutgroups.Districts']);
 
         $sessions = $this->Reservations->Events->Logistics->Parameters->Params->find('list');
 

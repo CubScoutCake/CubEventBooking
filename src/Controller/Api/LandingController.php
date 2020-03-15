@@ -14,6 +14,7 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller\Api;
 
 /**
@@ -27,6 +28,7 @@ class LandingController extends AppController
 {
     /**
      * @param int $eventId The ID of the Event
+     *
      * @return void
      */
     public function welcome($eventId = null)
@@ -37,6 +39,7 @@ class LandingController extends AppController
      * Authorisation Filter
      *
      * @param \Cake\Event\Event $event The Event to be Processed
+     *
      * @return void
      */
     public function beforeFilter(\Cake\Event\Event $event)

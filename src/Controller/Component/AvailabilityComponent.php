@@ -16,6 +16,7 @@ use Cake\Utility\Inflector;
 
 /**
  * Class ApplicationComponent
+ *
  * @package App\Controller\Component
  *
  * @property \App\Model\Table\ApplicationsTable $Applications
@@ -64,16 +65,19 @@ class AvailabilityComponent extends Component
      * Retrieve an Array of Numbers for the Number of Attendees.
      *
      * @param int $applicationId The application to be analysed
+     *
      * @return array
      */
     public function getApplicationNumbers($applicationId)
     {
         $this->Applications = TableRegistry::getTableLocator()->get('Applications');
         /** @var \App\Model\Entity\Application $application */
-        $application = $this->Applications->get($applicationId, ['contain' => [
-            'Events.SectionTypes.Roles',
-            'ApplicationStatuses'
-        ]]);
+        $application = $this->Applications->get($applicationId, [
+            'contain' => [
+                'Events.SectionTypes.Roles',
+                'ApplicationStatuses',
+            ],
+        ]);
 
         $results = $this->getReservedNumbers($application);
         if (is_array($results)) {
@@ -155,14 +159,14 @@ class AvailabilityComponent extends Component
 
         $invSectionCount = $this->Invoices->InvoiceItems->find('minors', [
             'application_id' => $appID,
-            'role_id' => $invoice->application->event->section_type->role_id
+            'role_id' => $invoice->application->event->section_type->role_id,
         ])->count();
 
         if ($invSectionCount > 0) {
             $invItemSectionCounts = $this->Invoices->InvoiceItems
                 ->find('minors', [
                     'application_id' => $appID,
-                    'role_id' => $invoice->application->event->section_type->role_id
+                    'role_id' => $invoice->application->event->section_type->role_id,
                 ])
                 ->find('totalQuantity')
                 ->toArray();
@@ -208,6 +212,7 @@ class AvailabilityComponent extends Component
      * Retrieve an Array of Numbers for the Number of Attendees.
      *
      * @param int $eventId The Event to be analysed
+     *
      * @return array
      */
     public function getEventNumbers($eventId)
@@ -249,7 +254,7 @@ class AvailabilityComponent extends Component
      */
     private function checkEventOpen($event, $flash)
     {
-        if (!$this->Events->checkEventOpen($event->id)) {
+        if (! $this->Events->checkEventOpen($event->id)) {
             if ($flash) {
                 $this->Flash->error(__('Apologies this Event is Not Currently Accepting Applications.'));
             }
@@ -273,7 +278,7 @@ class AvailabilityComponent extends Component
     {
         switch ($type) {
             case 'list':
-                if (!$eventType->simple_booking) {
+                if (! $eventType->simple_booking) {
                     if ($flash) {
                         $this->Flash->error(__('This event is not configured for List Booking.'));
                     }
@@ -283,7 +288,7 @@ class AvailabilityComponent extends Component
 
                 return true;
             case 'hold':
-                if (!$eventType->hold_booking) {
+                if (! $eventType->hold_booking) {
                     if ($flash) {
                         $this->Flash->error(__('This event is not configured for Hold Booking.'));
                     }
@@ -293,7 +298,7 @@ class AvailabilityComponent extends Component
 
                 return true;
             case 'district':
-                if (!$eventType->district_booking) {
+                if (! $eventType->district_booking) {
                     if ($flash) {
                         $this->Flash->error(__('This event is not configured for District Booking.'));
                     }
@@ -303,7 +308,7 @@ class AvailabilityComponent extends Component
 
                 return true;
             case 'parent':
-                if (!$eventType->parent_applications) {
+                if (! $eventType->parent_applications) {
                     if ($flash) {
                         $this->Flash->error(__('This event is not configured for Parent Applications.'));
                     }
@@ -326,7 +331,7 @@ class AvailabilityComponent extends Component
      */
     private function checkBookingApp($event, $flash, $appId = null)
     {
-        if (!$event->max) {
+        if (! $event->max) {
             return true;
         }
 
@@ -364,7 +369,7 @@ class AvailabilityComponent extends Component
      */
     private function checkBookingRes($event, $flash)
     {
-        if (!$event->max) {
+        if (! $event->max) {
             return true;
         }
 
@@ -404,14 +409,14 @@ class AvailabilityComponent extends Component
      */
     private function checkBookingSection($sectionNumbers, $event, $flash, $appId = null)
     {
-        if (!$event->max) {
+        if (! $event->max) {
             return true;
         }
 
         $this->Events = TableRegistry::getTableLocator()->get('Events');
         $maxSection = $this->Events->getPriceSection($event->id);
 
-        if ($sectionNumbers > $maxSection && !$maxSection == 0 && !is_null($maxSection)) {
+        if ($sectionNumbers > $maxSection && ! $maxSection == 0 && ! is_null($maxSection)) {
             if ($flash) {
                 $this->Flash->error(__('The team size is limited, please select fewer attendees.'));
             }
@@ -454,23 +459,23 @@ class AvailabilityComponent extends Component
             ],
         ]);
 
-        if (!$this->checkEventOpen($event, $flash)) {
+        if (! $this->checkEventOpen($event, $flash)) {
             return false;
         }
 
         if (key_exists('booking_type', $bookingData)) {
-            if (!$this->checkBookingType($bookingData['booking_type'], $event->event_type, $flash)) {
+            if (! $this->checkBookingType($bookingData['booking_type'], $event->event_type, $flash)) {
                 return false;
             }
         }
 
         if (key_exists('section', $bookingData)) {
-            if (!$this->checkBookingSection($bookingData['section'], $event, $flash)) {
+            if (! $this->checkBookingSection($bookingData['section'], $event, $flash)) {
                 return false;
             }
         }
 
-        if (!$this->checkBookingApp($event, $flash)) {
+        if (! $this->checkBookingApp($event, $flash)) {
             return false;
         }
 
@@ -495,11 +500,11 @@ class AvailabilityComponent extends Component
             ],
         ]);
 
-        if (!$this->checkEventOpen($event, $flash)) {
+        if (! $this->checkEventOpen($event, $flash)) {
             return true;
         }
 
-        if (!$this->checkBookingApp($event, $flash)) {
+        if (! $this->checkBookingApp($event, $flash)) {
             return true;
         }
 
@@ -522,11 +527,11 @@ class AvailabilityComponent extends Component
             ],
         ]);
 
-        if (!$this->checkEventOpen($event, $flash)) {
+        if (! $this->checkEventOpen($event, $flash)) {
             return false;
         }
 
-        if (!$this->checkBookingType('parent', $event->event_type, $flash)) {
+        if (! $this->checkBookingType('parent', $event->event_type, $flash)) {
             return false;
         }
 
@@ -534,7 +539,7 @@ class AvailabilityComponent extends Component
 //            return false;
 //        }
 
-        if (!$this->checkBookingRes($event, $flash)) {
+        if (! $this->checkBookingRes($event, $flash)) {
             return false;
         }
 
@@ -563,7 +568,7 @@ class AvailabilityComponent extends Component
 
         $maxVariable = $logistic->get('variable_max_values');
 
-        if (!key_exists($paramId, $maxVariable)) {
+        if (! key_exists($paramId, $maxVariable)) {
             return false;
         }
 

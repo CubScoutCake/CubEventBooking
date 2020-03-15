@@ -25,6 +25,7 @@ class RolesController extends AppController
      * View method
      *
      * @param string|null $id Role id.
+     *
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -63,6 +64,7 @@ class RolesController extends AppController
      * Edit method
      *
      * @param string|null $id Role id.
+     *
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -89,6 +91,7 @@ class RolesController extends AppController
      * Delete method
      *
      * @param string|null $roleId Role id.
+     *
      * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */

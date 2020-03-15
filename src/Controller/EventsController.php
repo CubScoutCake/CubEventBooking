@@ -37,6 +37,7 @@ class EventsController extends AppController
      * View method
      *
      * @param int|null $eventID Event id.
+     *
      * @return void|\Cake\Http\Response
      * @throws \Cake\Datasource\Exception\RecordNotFoundException|\Exception When record not found.
      */
@@ -49,7 +50,7 @@ class EventsController extends AppController
                 'Applications',
                 'EventTypes.InvoiceTexts',
                 'EventTypes.LegalTexts',
-                'EventTypes.ApplicationRefs'
+                'EventTypes.ApplicationRefs',
             ],
         ]);
 
@@ -73,9 +74,9 @@ class EventsController extends AppController
         $attForm = new AttNumberForm();
         $syncForm = new SyncBookForm();
 
-        if ($this->request->is('post') && !$eventFull) {
+        if ($this->request->is('post') && ! $eventFull) {
             $bookingData = $this->request->getData();
-            if (!empty($this->request->getData('section'))) {
+            if (! empty($this->request->getData('section'))) {
                 if ($this->Availability->checkBooking($eventID, $bookingData, true)) {
                     $redirectArray = [
                         'section' => $bookingData['section'],
@@ -105,7 +106,7 @@ class EventsController extends AppController
                 }
             }
 
-            if (!is_null($bookingData['osm_event'])) {
+            if (! is_null($bookingData['osm_event'])) {
                 $this->redirect([
                     'controller' => 'Applications',
                     'action' => 'sync_book',

@@ -42,7 +42,7 @@ class InvoicesController extends AppController
             'order' => ['modified' => 'DESC'],
         ];
 
-        if (!is_null($eventId)) {
+        if (! is_null($eventId)) {
             $data = $data->where(['Events.id' => $eventId]);
             $event = $this->Invoices->Applications->Events->get($eventId);
             $this->set(compact('event'));
@@ -56,6 +56,7 @@ class InvoicesController extends AppController
      * View method
      *
      * @param string|null $invoiceId Invoice id.
+     *
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -78,7 +79,9 @@ class InvoicesController extends AppController
                 'Applications' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts', 'Payable',
+                            'LegalTexts',
+                            'InvoiceTexts',
+                            'Payable',
                         ],
                         'AdminUsers',
                     ],
@@ -87,7 +90,9 @@ class InvoicesController extends AppController
                 'Reservations' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts', 'Payable',
+                            'LegalTexts',
+                            'InvoiceTexts',
+                            'Payable',
                         ],
                         'AdminUsers',
                     ],
@@ -104,9 +109,9 @@ class InvoicesController extends AppController
     /**
      * @param null $invoiceId The ID of the Invoice
      *
+     * @return \Cake\Http\Response|void
      * @throws \Exception
      *
-     * @return \Cake\Http\Response|void
      */
     public function pdfView($invoiceId = null)
     {
@@ -129,7 +134,9 @@ class InvoicesController extends AppController
                 'Applications' => [
                     'Events' => [
                         'EventTypes' => [
-                            'LegalTexts', 'InvoiceTexts', 'Payable',
+                            'LegalTexts',
+                            'InvoiceTexts',
+                            'Payable',
                         ],
                         'AdminUsers',
                     ],
@@ -149,7 +156,12 @@ class InvoicesController extends AppController
         $cakePDF = new CakePdf();
         $cakePDF->template('invoice', 'default');
 
-        $cakePDF->write(FILES . DS . 'Event ' . $invoice->application->event->id . DS . 'Invoices' . DS . 'Invoice #' . $invoiceId . '.pdf');
+        $cakePDF->write(
+            FILES
+            . DS . 'Event ' . $invoice->application->event->id
+            . DS . 'Invoices'
+            . DS . 'Invoice #' . $invoiceId . '.pdf'
+        );
 
         $this->redirect(['controller' => 'Invoices', 'action' => 'view', $invoice->id, '_ext' => 'pdf']);
     }
@@ -165,7 +177,10 @@ class InvoicesController extends AppController
     {
         if (isset($eventId)) {
             /** @var \App\Model\Entity\Event $event */
-            $event = $this->Invoices->Applications->Events->get($eventId, ['contain' => ['Applications.Invoices', 'Settings']]);
+            $event = $this->Invoices->Applications->Events->get(
+                $eventId,
+                ['contain' => ['Applications.Invoices', 'Settings']]
+            );
 
             foreach ($event->applications as $application) {
                 if ($application->has('invoice')) {
@@ -188,7 +203,9 @@ class InvoicesController extends AppController
                             'Applications' => [
                                 'Events' => [
                                     'EventTypes' => [
-                                        'LegalTexts', 'InvoiceTexts', 'Payable',
+                                        'LegalTexts',
+                                        'InvoiceTexts',
+                                        'Payable',
                                     ],
                                     'AdminUsers',
                                 ],
@@ -209,7 +226,12 @@ class InvoicesController extends AppController
                     $cakePDF->viewVars($this->viewVars);
 
                     // write it to file directly
-                    $cakePDF->write(FILES . DS . 'Event ' . $event->id . DS . 'Invoices' . DS . 'Invoice #' . $invoice->id . '.pdf');
+                    $cakePDF->write(
+                        FILES
+                        . DS . 'Event ' . $event->id
+                        . DS . 'Invoices'
+                        . DS . 'Invoice #' . $invoice->id . '.pdf'
+                    );
                 }
             }
             $this->redirect(['controller' => 'Events', 'action' => 'view', $event->id]);
@@ -240,18 +262,24 @@ class InvoicesController extends AppController
         $users = $this->Invoices->Users->find(
             'list',
             [
-                        'keyField' => 'id',
-                        'valueField' => 'full_name',
-                        'groupField' => 'scoutgroup.district.district',
+                'keyField' => 'id',
+                'valueField' => 'full_name',
+                'groupField' => 'scoutgroup.district.district',
             ]
         )
-                    ->contain(['Scoutgroups.Districts']);
+            ->contain(['Scoutgroups.Districts']);
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
 
         // If User Set or Not - Limit the list.
-        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'order' => ['modified' => 'DESC']]);
-        if (isset($userId) && !is_null($userId)) {
-            $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'conditions' => ['user_id' => $userId]]);
+        $applications = $this->Invoices->Applications->find(
+            'list',
+            ['limit' => 200, 'order' => ['modified' => 'DESC']]
+        );
+        if (isset($userId) && ! is_null($userId)) {
+            $applications = $this->Invoices->Applications->find(
+                'list',
+                ['limit' => 200, 'conditions' => ['user_id' => $userId]]
+            );
         }
 
         $this->set(compact('invoice', 'users', 'payments', 'applications'));
@@ -262,6 +290,7 @@ class InvoicesController extends AppController
      * Edit method
      *
      * @param string|null $invoiceId Invoice id.
+     *
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -291,7 +320,10 @@ class InvoicesController extends AppController
         )
             ->contain(['Sections.Scoutgroups.Districts']);
         $payments = $this->Invoices->Payments->find('list', ['limit' => 200]);
-        $applications = $this->Invoices->Applications->find('list', ['limit' => 200, 'order' => ['modified' => 'DESC']]);
+        $applications = $this->Invoices->Applications->find(
+            'list',
+            ['limit' => 200, 'order' => ['modified' => 'DESC']]
+        );
 
         $this->set(compact('invoice', 'users', 'payments', 'applications'));
         $this->set('_serialize', ['invoice']);
@@ -301,6 +333,7 @@ class InvoicesController extends AppController
      * Delete method
      *
      * @param string|null $invoiceId Invoice id.
+     *
      * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -319,6 +352,7 @@ class InvoicesController extends AppController
 
     /**
      * @param int $invoiceId The Invoice ID
+     *
      * @return \Cake\Http\Response|void
      *
      * @throws \Exception

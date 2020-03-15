@@ -25,6 +25,7 @@ class DistrictsController extends AppController
      * View method
      *
      * @param string|null $id District id.
+     *
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */

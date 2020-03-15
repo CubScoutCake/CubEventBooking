@@ -49,6 +49,7 @@ class NotesController extends AppController
      * View method
      *
      * @param string|null $id Note id.
+     *
      * @return void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -112,11 +113,12 @@ class NotesController extends AppController
 
     /**
      * @param int $invId the Invoice ID
+     *
      * @return \Cake\Http\Response|null
      */
     public function newInvoice($invId)
     {
-        if (!is_null($invId)) {
+        if (! is_null($invId)) {
             $note = $this->Notes->newEntity();
             if ($this->request->is('post')) {
                 $note = $this->Notes->patchEntity($note, $this->request->getData());
@@ -149,11 +151,12 @@ class NotesController extends AppController
 
     /**
      * @param int $appId The Application ID
+     *
      * @return \Cake\Http\Response|null
      */
     public function newApplication($appId)
     {
-        if (!is_null($appId)) {
+        if (! is_null($appId)) {
             $note = $this->Notes->newEntity();
             if ($this->request->is('post')) {
                 $note = $this->Notes->patchEntity($note, $this->request->getData());
@@ -189,11 +192,12 @@ class NotesController extends AppController
 
     /**
      * @param int $userId the ID of the User
+     *
      * @return \Cake\Http\Response|null
      */
     public function newUser($userId)
     {
-        if (!is_null($userId)) {
+        if (! is_null($userId)) {
             $note = $this->Notes->newEntity();
             if ($this->request->is('post')) {
                 $note = $this->Notes->patchEntity($note, $this->request->getData());
@@ -221,6 +225,7 @@ class NotesController extends AppController
      * Edit method
      *
      * @param string|null $id Note id.
+     *
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -271,6 +276,7 @@ class NotesController extends AppController
      * Delete method
      *
      * @param string|null $id Note id.
+     *
      * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

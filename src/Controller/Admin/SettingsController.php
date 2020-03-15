@@ -19,7 +19,8 @@ class SettingsController extends AppController
     {
         $superAuth = bindec('0' . '1' . '000');
         $this->paginate = [
-            'contain' => ['SettingTypes'], 'conditions' => ['SettingTypes.min_auth <=' => $superAuth],
+            'contain' => ['SettingTypes'],
+            'conditions' => ['SettingTypes.min_auth <=' => $superAuth],
         ];
         $this->set('settings', $this->paginate($this->Settings));
         $this->set('_serialize', ['settings']);
@@ -29,6 +30,7 @@ class SettingsController extends AppController
      * View method
      *
      * @param string|null $id Setting id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -60,7 +62,10 @@ class SettingsController extends AppController
             $this->Flash->error(__('The setting could not be saved. Please, try again.'));
         }
         $events = $this->Settings->Events->find('list', ['limit' => 200]);
-        $settingTypes = $this->Settings->SettingTypes->find('list', ['limit' => 200])->where(['min_auth <=' => bindec('01000')]);
+        $settingTypes = $this->Settings->SettingTypes->find(
+            'list',
+            ['limit' => 200]
+        )->where(['min_auth <=' => bindec('01000')]);
         $this->set(compact('setting', 'events', 'settingTypes'));
         $this->set('_serialize', ['setting']);
     }
@@ -69,6 +74,7 @@ class SettingsController extends AppController
      * Edit method
      *
      * @param string|null $id Setting id.
+     *
      * @return \Cake\Http\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
@@ -86,7 +92,10 @@ class SettingsController extends AppController
             }
             $this->Flash->error(__('The setting could not be saved. Please, try again.'));
         }
-        $settingTypes = $this->Settings->SettingTypes->find('list', ['limit' => 200])->where(['min_auth <=' => bindec('01000')]);
+        $settingTypes = $this->Settings->SettingTypes->find(
+            'list',
+            ['limit' => 200]
+        )->where(['min_auth <=' => bindec('01000')]);
         $this->set(compact('setting', 'events', 'settingTypes'));
         $this->set('_serialize', ['setting']);
     }
@@ -95,6 +104,7 @@ class SettingsController extends AppController
      * Delete method
      *
      * @param string|null $id Setting id.
+     *
      * @return \Cake\Http\Response|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

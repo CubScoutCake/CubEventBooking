@@ -213,6 +213,7 @@ class ProgressComponent extends Component
 
     /**
      * @param int $userID The ID of the User
+     *
      * @return void
      */
     public function cacheApps($userID)
@@ -223,14 +224,14 @@ class ProgressComponent extends Component
             'contain' => [
                 'Applications.Events' => [
                     'conditions' => [
-                        'Events.live' => true
-                    ]
-                ]
-            ]
+                        'Events.live' => true,
+                    ],
+                ],
+            ],
         ]);
         $appProgress = [];
 
-        if (!empty($user->applications)) {
+        if (! empty($user->applications)) {
             foreach ($user->applications as $applications => $applications) {
                 $appProgress = ['this' => 'is a new value'];
 

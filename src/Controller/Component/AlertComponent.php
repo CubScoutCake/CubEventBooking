@@ -15,11 +15,12 @@ class AlertComponent extends Component
 
     /**
      * @param int $userID The User ID to be loaded
+     *
      * @return void
      */
     public function appLoad($userID)
     {
-        if (!is_null($userID)) {
+        if (! is_null($userID)) {
             $notificationTable = TableRegistry::get('Notifications');
             $controller = $this->_registry->getController();
 
@@ -49,6 +50,7 @@ class AlertComponent extends Component
      * App Query
      *
      * @param int $appID to be Queried
+     *
      * @return mixed
      */
     public function queryApp($appID)
@@ -66,38 +68,52 @@ class AlertComponent extends Component
 
                 // Check 1 - does it have an invoice
                 if ($results->invDone != 1 && $results->invCount != 1) {
-                    arraypush($issues,
-                        'An invoice has not been generated.');
+                    arraypush(
+                        $issues,
+                        'An invoice has not been generated.'
+                    );
                     arraypush($issueKeys, 0);
                 }
 
                 // Check 2 - does it have the right number of Cubs
                 if ($results->cubsDone != 1 || $results->invCubs != $results->attCubs) {
-                    arraypush($issues,
-                        'There are Cubs names missing or some that have not been cancelled on the invoice.');
+                    arraypush(
+                        $issues,
+                        'There are Cubs names missing or some that have not been cancelled on the invoice.'
+                    );
                     arraypush($issueKeys, 1);
 
-                    arraypush($issues,
-                        'There are more Cubs names on the application than invoiced for.');
+                    arraypush(
+                        $issues,
+                        'There are more Cubs names on the application than invoiced for.'
+                    );
                     arraypush($issueKeys, 2);
                 }
 
                 // Check 3 - does it have the right number of Leaders & YLs
                 if ($results->cubsNotDone != 1 || $results->invNotCubs != $results->attNotCubs) {
-                    arraypush($issues,
-                        'There are Young Leaders names missing or some that have not been cancelled on the invoice.');
+                    arraypush(
+                        $issues,
+                        'There are Young Leaders names missing or some that have not been cancelled on the invoice.'
+                    );
                     arraypush($issueKeys, 3);
 
-                    arraypush($issues,
-                        'There are more Young Leaders names on the application than invoiced for.');
+                    arraypush(
+                        $issues,
+                        'There are more Young Leaders names on the application than invoiced for.'
+                    );
                     arraypush($issueKeys, 4);
 
-                    arraypush($issues,
-                        'There are Leaders names missing or some that have not been cancelled on the invoice.');
+                    arraypush(
+                        $issues,
+                        'There are Leaders names missing or some that have not been cancelled on the invoice.'
+                    );
                     arraypush($issueKeys, 5);
 
-                    arraypush($issues,
-                        'There are more Leaders names on the application than invoiced for.');
+                    arraypush(
+                        $issues,
+                        'There are more Leaders names on the application than invoiced for.'
+                    );
                     arraypush($issueKeys, 6);
                 }
 
@@ -134,7 +150,7 @@ class AlertComponent extends Component
                             $group,
                             $notification,
                             $invoice,
-                            $app
+                            $app,
                         ]);
 
                         $sets = TableRegistry::get('Settings');
@@ -174,7 +190,7 @@ class AlertComponent extends Component
                             'controller' => 'Invoices',
                             'action' => 'view',
                             'prefix' => 'admin',
-                            $invoiceId
+                            $invoiceId,
                         ]);
                     } else {
                         $this->Flash->error(__('The note could not be saved. Please, try again.'));

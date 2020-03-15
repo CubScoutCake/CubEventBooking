@@ -65,7 +65,11 @@ class AllergiesController extends AppController
         $allergy = $this->Allergies->newEntity(['is_specific' => false]);
 
         if ($this->request->is('post')) {
-            $allergy = $this->Allergies->patchEntity($allergy, $this->request->getData(), ['accessibleFields' => ['id' => true]]);
+            $allergy = $this->Allergies->patchEntity(
+                $allergy,
+                $this->request->getData(),
+                ['accessibleFields' => ['id' => true]]
+            );
             if ($this->Allergies->save($allergy)) {
                 $this->Flash->success(__('The allergy has been saved.'));
 
