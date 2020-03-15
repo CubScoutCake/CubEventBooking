@@ -46,11 +46,11 @@ class ScoutManagerComponent extends Component
      */
     public function __construct($registry, $config = [], $client = null)
     {
-        if (is_null($client)) {
+        if (!is_null($client)) {
             $this->http = $client;
         }
 
-        if (!is_null($client)) {
+        if (is_null($client)) {
             $this->http = new Client([
                 'host' => Configure::readOrFail('OSM.api_base'),
                 'scheme' => 'https',
