@@ -185,7 +185,8 @@ class NotificationsController extends AppController
                 'link_action' => 'view',
                 'notification_type_id' => 2,
                 'user_id' => $invoice->user_id,
-                'text' => 'We have received a payment and have recorded it against your invoice. Please check that everything is in order.',
+                'text' => 'We have received a payment and have recorded it against your invoice. '
+                    . 'Please check that everything is in order.',
                 'notification_header' => 'A payment has been recorded.',
                 'notification_source' => 'System Generated',
                 'new' => 1,
@@ -200,41 +201,11 @@ class NotificationsController extends AppController
 
                 $this->getMailer('Payment')->send('payment', [$user, $group, $notification, $invoice, $payment]);
 
-                $sets = TableRegistry::get('Settings');
-
-                $jsonPayment = json_encode($paymentData);
-                $pApiKey = $sets->get(13)->text;
-                $projectId = $sets->get(14)->text;
-                $eventType = 'NewPayment';
-
-                $keenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $eventType . '?api_key=' . $pApiKey;
-
-                $http = new Client();
-                $response = $http->post(
-                    $keenURL,
-                    $jsonPayment,
-                    ['type' => 'json']
-                );
-
-                $genericType = 'Notification';
-
-                $keenGenURL = 'https://api.keen.io/3.0/projects/' . $projectId . '/events/' . $genericType . '?api_key=' . $pApiKey;
-
-                $http = new Client();
-                $response = $http->post(
-                    $keenGenURL,
-                    $jsonPayment,
-                    ['type' => 'json']
-                );
-
                 return $this->redirect(['controller' => 'Payments', 'action' => 'add', 'prefix' => 'admin']);
             } else {
                 $this->Flash->error(__('The notification could not be saved. Please, try again.'));
             }
-        } //else {
-        //     $this->Flash->error(__('Parameters were not set!'));
-        //     return $this->redirect(['action' => 'index']);
-        // }
+        }
     }
 
     /**

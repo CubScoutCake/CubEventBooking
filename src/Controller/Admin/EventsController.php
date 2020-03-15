@@ -270,7 +270,7 @@ class EventsController extends AppController
                 'Reservations',
             ])->where(['OR' => ['Applications.event_id' => $event->id, 'Reservations.event_id' => $event->id]]);
             $sumInvoices = $sumInvoices->select([
-                'initial_sum' => $sumInvoices->func()->sum('initialvalue'),
+                'initial_sum' => $sumInvoices->func()->sum('initial_value'),
                 'value_sum' => $sumInvoices->func()->sum('value'),
             ])->group(['Applications.event_id', 'Reservations.event_id'])->first();
 

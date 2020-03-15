@@ -16,7 +16,7 @@ use Cake\TestSuite\TestCase;
  *
  * @property \App\Model\Table\EventsTable $Events
  */
-class UpdateTableCommandTest extends TestCase
+class ScheduleCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
 

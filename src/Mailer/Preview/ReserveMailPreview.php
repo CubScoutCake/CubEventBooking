@@ -32,7 +32,6 @@ class ReserveMailPreview extends MailPreview
         $token = $this->Tokens->find()->contain(['EmailSends' => ['Users', 'Tokens', 'Notifications']])->first();
         $reservation = $this->Reservations->find()->contain('ReservationStatuses')->first();
 
-        /** @var \App\Mailer\ReserveMailer $this */
         return $this
             ->getMailer('Reserve')
             ->confirmation($token->email_send, $reservation, $token);

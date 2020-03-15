@@ -76,11 +76,10 @@ class SparkPostTransport extends AbstractTransport
         $promise = $sparky->transmissions->post($body);
 
         try {
+            /** @var \SparkPost\SparkPostResponse $response */
             $response = $promise->wait();
 
-            /** @var \SparkPost\SparkPostResponse $response */
             $results = $response->getBody();
-            /** @var \Cake\Mailer\Email $email */
             $sendHeaders = $email->getHeaders(['X-Email-Gen-Code', 'X-Gen-ID']);
 
             $this->EmailSends = TableRegistry::getTableLocator()->get('EmailSends');
